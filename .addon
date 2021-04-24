@@ -1,0 +1,24 @@
+{
+		"name": "Trouble in Terrorist Town",
+		"version": "1.0",
+		"sharedassets": "*.*",
+
+		"depends": 
+		[
+			"base",
+			"citizen",
+			"rust"
+		],
+
+		//
+		// Addons can contain multiple addons, describe them here
+		//
+		"gamemodes":
+		[
+				{
+						"name": "TTT",
+						"title": "Trouble in Terrorist Town",
+						"description": "Find and kill the traitors before they kill you"
+				}
+		]
+}
