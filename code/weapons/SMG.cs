@@ -29,6 +29,7 @@ namespace TTTGamemode
             if (!TakeAmmo(1))
             {
                 PlaySound("pistol.dryfire");
+
                 return;
             }
 

@@ -14,18 +14,18 @@ namespace TTTGamemode
 
         public int AmmoCount(AmmoType type)
         {
-            if (Ammo == null) return 0;
+            if (Ammo == null)
+                return 0;
 
             return Ammo.Get(type);
         }
 
         public bool GiveAmmo(AmmoType type, int amount)
         {
-            if (!Host.IsServer) return false;
-            if (Ammo == null) return false;
+            if (!Host.IsServer || Ammo == null)
+                return false;
 
-            var currentAmmo = AmmoCount(type);
-            return Ammo.Set(type, currentAmmo + amount);
+            return Ammo.Set(type, AmmoCount(type) + amount);
         }
 
         public int TakeAmmo(AmmoType type, int amount)

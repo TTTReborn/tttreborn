@@ -29,6 +29,7 @@ namespace TTTGamemode
             if (!TakeAmmo(1))
             {
                 PlaySound("pistol.dryfire");
+
                 return;
             }
 
@@ -74,6 +75,7 @@ namespace TTTGamemode
             if (Owner is Player player)
             {
                 var ammo = player.TakeAmmo(AmmoType, 1);
+
                 if (ammo == 0)
                     return;
 

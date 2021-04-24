@@ -33,16 +33,19 @@ namespace TTTGamemode
 
         public void RegisterPlayer(Player player)
         {
-            if (KarmaRecords.ContainsKey(player)) return;
+            if (KarmaRecords.ContainsKey(player))
+                return;
 
             KarmaRecords[player] = TTTKarmaDefault;
         }
 
         public void RegisterPlayerDamage(Player attacker, Player victim, int damage)
         {
-            if (!IsTracking) return;
+            if (!IsTracking)
+                return;
 
             int updatedDamage = 0;
+
             DamageRecords.TryGetValue((attacker.SteamId, victim.SteamId), out updatedDamage);
 
             updatedDamage += damage;
@@ -59,10 +62,12 @@ namespace TTTGamemode
         public void UpdateSteamIdKarma(string steamId, int delta)
         {
             int updatedKarma = 0;
+
             KarmaRecords.TryGetValue(steamId, out updatedKarma);
 
             updatedKarma += delta;
 
+            // Math.Clamp(updatedKarma, TTTKarmaMin, TTTKarmaMax)
             updatedKarma = updatedKarma > TTTKarmaMax ? TTTKarmaMax : updatedKarma;
             updatedKarma = updatedKarma < TTTKarmaMin ? TTTKarmaMin : updatedKarma;
 
@@ -71,16 +76,13 @@ namespace TTTGamemode
 
         public void ResolveKarma()
         {
-            if (!IsTracking)
+            if (IsTracking)
             {
-                DamageRecords = new();
-                return;
-            }
-
-            // Update karma records based on the damage done this round
-            foreach (var record in DamageRecords)
-            {
-                UpdateSteamIdKarma(record.Key.Item1, record.Value);
+                // Update karma records based on the damage done this round
+                foreach (var record in DamageRecords)
+                {
+                    UpdateSteamIdKarma(record.Key.Item1, record.Value);
+                }
             }
 
             // Clear all damage records

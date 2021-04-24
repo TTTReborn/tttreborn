@@ -30,7 +30,9 @@ namespace TTTGamemode
 
         public int AvailableAmmo()
         {
-            if (Owner is not Player owner) return 0;
+            if (Owner is not Player owner)
+                return 0;
+
             return owner.AmmoCount(AmmoType);
         }
 
@@ -69,17 +71,10 @@ namespace TTTGamemode
             if (AmmoClip >= ClipSize)
                 return;
 
+            if (!UnlimitedAmmo && AvailableAmmo() <= 0)
+                return;
+
             TimeSinceReload = 0;
-
-            if (Owner is Player player)
-            {
-                if (!UnlimitedAmmo)
-                {
-                    if (player.AmmoCount(AmmoType) <= 0)
-                        return;
-                }
-            }
-
             IsReloading = true;
 
             Owner.SetAnimParam("b_reload", true);
@@ -102,8 +97,7 @@ namespace TTTGamemode
             {
                 base.OnPlayerControlTick(owner);
             }
-
-            if (IsReloading && TimeSinceReload > ReloadTime)
+            else if (TimeSinceReload > ReloadTime)
             {
                 OnReloadFinish();
             }
@@ -175,8 +169,8 @@ namespace TTTGamemode
             {
                 tr.Surface.DoBulletImpact(tr);
 
-                if (!IsServer) continue;
-                if (!tr.Entity.IsValid()) continue;
+                if (!IsServer || !tr.Entity.IsValid())
+                    continue;
 
                 using (Prediction.Off())
                 {
@@ -208,6 +202,7 @@ namespace TTTGamemode
                 return false;
 
             AmmoClip -= amount;
+
             return true;
         }
 
@@ -230,7 +225,8 @@ namespace TTTGamemode
 
         public override void CreateHudElements()
         {
-            if (Sandbox.Hud.CurrentPanel == null) return;
+            if (Sandbox.Hud.CurrentPanel == null)
+                return;
 
             CrosshairPanel = new Crosshair
             {

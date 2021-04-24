@@ -68,9 +68,7 @@ namespace TTTGamemode
             }
 
             if (LifeState != LifeState.Alive)
-            {
                 return;
-            }
 
             TickPlayerUse();
 
@@ -90,14 +88,16 @@ namespace TTTGamemode
 
         public override void StartTouch(Entity other)
         {
-            if (_timeSinceDropped < 1) return;
+            if (_timeSinceDropped < 1)
+                return;
 
             base.StartTouch(other);
         }
 
         private void TickInspectBody()
         {
-            if (!Input.Pressed(InputButton.Use)) return;
+            if (!Input.Pressed(InputButton.Use))
+                return;
 
             var trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * 80f)
                 .HitLayer(CollisionLayer.Debris)
@@ -116,7 +116,7 @@ namespace TTTGamemode
                 }
 
                 // Allow traitors to inspect body without identifying it by holding crouch
-                if (!(Role == Role.Traitor && Input.Down(InputButton.Crouch)))
+                if (Role != Role.Traitor || !Input.Down(InputButton.Crouch))
                 {
                     body.Identified = true;
                 }
@@ -135,7 +135,7 @@ namespace TTTGamemode
 
             if (info.Attacker is Player attacker && attacker != this)
             {
-                attacker.DidDamage(info.Position, info.Damage, ((float)Health).LerpInverse(100, 0));
+                attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
 
             TookDamage(info.Weapon.IsValid() ? info.Weapon.WorldPos : info.Attacker.WorldPos);
@@ -200,7 +200,7 @@ namespace TTTGamemode
         [ClientRpc]
         public void InspectedBody(Body body)
         {
-            // TODO: Display body inspection UI
+            
         }
 
         protected override void OnRemove()

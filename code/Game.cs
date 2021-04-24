@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TTTGamemode
 {
-    [ClassLibrary("sbox-ttt", Title = "Trouble in Terrorist Town")]
+    [ClassLibrary("ttt-reborn", Title = "Trouble in Terry's Town")]
     partial class Game : Sandbox.Game
     {
         public enum Round { Waiting, PreRound, InProgress, PostRound }
@@ -45,17 +45,17 @@ namespace TTTGamemode
 
                 case Game.Round.PreRound:
                     TimeRemaining = TTTPreRoundTime;
-                    // TODO: Make players invincible or something
+
                     break;
 
                 case Game.Round.InProgress:
                     TimeRemaining = TTTRoundTime;
 
                     #region Select Roles
-                    int detectiveCount = (int)((float)Sandbox.Player.All.Count * 0.125f);
-                    int traitorCount = (int)Math.Max((float)Sandbox.Player.All.Count * 0.25f, 1f);
+                    int detectiveCount = (int) ((float) Sandbox.Player.All.Count * 0.125f);
+                    int traitorCount = (int) Math.Max((float) Sandbox.Player.All.Count * 0.25f, 1f);
 
-                    List<Player> _players = Sandbox.Player.ConvertAll(p => (Player)p);
+                    List<Player> _players = Sandbox.Player.ConvertAll(p => (Player) p);
                     Random random = new Random();
 
                     // SELECT DETECTIVES
@@ -63,7 +63,8 @@ namespace TTTGamemode
                     {
                         int randomID = random.Next(_players.Count);
                         _players[randomID].PlayerRole = Player.Role.Detective;
-                        _players.Remove(Players[randomID]);
+
+                        _players.RemoveAt(randomID);
                     }
 
                     // SELECT TRAITORS
@@ -71,7 +72,8 @@ namespace TTTGamemode
                     {
                         int randomID = random.Next(_players.Count);
                         _players[randomID].PlayerRole = Player.Role.Traitor;
-                        _players.Remove(Players[randomID]);
+
+                        _players.RemoveAt(randomID);
                     }
 
                     // SET REMAINING PLAYERS TO INNOCENT
@@ -82,6 +84,7 @@ namespace TTTGamemode
                     #endregion
 
                     Karma.IsTracking = true;
+
                     break;
 
                 case Game.Round.PostRound:
@@ -89,6 +92,7 @@ namespace TTTGamemode
 
                     Karma.ResolveKarma();
                     Karma.IsTracking = false;
+
                     break;
             }
 
@@ -112,61 +116,61 @@ namespace TTTGamemode
 
         private void CheckRoundState()
         {
-            if (CurrentRound != Round.InProgress) return;
+            if (CurrentRound != Round.InProgress)
+                return;
 
             bool traitorsDead = true;
             bool innocentsDead = true;
 
             Player player;
+
+            // Check for alive players
             for (int i = 0; i < Sandbox.Player.All.Count; i++)
             {
                 player = Sandbox.Player.All[i] as Player;
 
-                if (player.Role == player.Role.Traitor && player.LifeState == LifeState.Alive)
+                if (player.LifeState == LifeState.Alive)
+                    continue;
+
+                if (player.Role == Player.Role.Traitor)
                 {
                     traitorsDead = false;
                 }
-
-                if (player.Role != player.Role.Traitor && player.LifeState == LifeState.Alive)
+                else
                 {
                     innocentsDead = false;
                 }
             }
 
-            if (innocentsDead)
+            // End this round if there is just one team alive
+            if (innocentsDead || traitorsDead)
             {
-                // TODO: Display traitor victory
-
-                ChangeRound(Round.PostRound);
-                return;
-            }
-
-            if (traitorsDead)
-            {
-                // TODO: Display innocent victory
-
                 ChangeRound(Round.PostRound);
             }
         }
 
         private void UpdateRoundTimer()
         {
-            if (CurrentRound == Round.Waiting) return;
+            if (CurrentRound == Round.Waiting)
+                return;
 
-            if (TimeRemaining <= 0)
+            if (TimeRemaining == 0)
             {
                 switch (CurrentRound)
                 {
                     case Round.PreRound:
                         ChangeRound(Round.InProgress);
+
                         break;
 
                     case Round.InProgress:
                         ChangeRound(Round.PostRound);
+
                         break;
 
                     case Round.PostRound:
                         ChangeRound(Round.PreRound);
+
                         break;
                 }
             }
@@ -203,7 +207,6 @@ namespace TTTGamemode
 
         public override void DoPlayerSuicide(Sandbox.Player player)
         {
-            // Do nothing. The player can't suicide in this mode.
             base.DoPlayerSuicide(player);
         }
 
@@ -223,9 +226,12 @@ namespace TTTGamemode
 
         public override void PlayerJoined(Player player)
         {
+            Karma.RegisterPlayer(player);
+
             if (Karma.IsBanned(player))
             {
                 KickPlayer(player);
+
                 return;
             }
 
