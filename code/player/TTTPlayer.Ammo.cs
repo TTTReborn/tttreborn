@@ -3,7 +3,7 @@ using System;
 
 namespace TTTGamemode
 {
-    partial class Player
+    partial class TTTPlayer
     {
         [Net] public NetList<int> Ammo { get; set; } = new();
 

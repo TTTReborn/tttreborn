@@ -5,23 +5,23 @@ using System.Linq;
 
 namespace TTTGamemode
 {
-    public partial class Player : BasePlayer
+	public enum Role { None, Innocent, Detective, Traitor }
+	
+    public partial class TTTPlayer : Player
     {
-        public enum Role { None, Innocent, Detective, Traitor }
-
-        public Body Body { get; set; }
-        public Role Role { get; set; } = Player.Role.None;
+	    public Body Body { get; set; }
+        public Role CurrentRole { get; set; }
         public int Credits { get; set; } = 0;
 
         private TimeSince _timeSinceDropped;
         private DamageInfo _lastDamageInfo;
 
-        public Player()
+        public TTTPlayer()
         {
             Inventory = new Inventory(this);
             Animator = new StandardPlayerAnimator();
 
-            Role = Role.None;
+            CurrentRole = Role.None;
             Credits = 0;
         }
 
@@ -58,9 +58,9 @@ namespace TTTGamemode
             MakeSpectator();
         }
 
-        protected override void Tick()
+        public override void Simulate( Client client )
         {
-            TickActiveChild();
+            SimulateActiveChild(client, ActiveChild);
 
             if (Input.ActiveChild != null)
             {
@@ -106,17 +106,17 @@ namespace TTTGamemode
                 .Radius(2)
                 .Run();
 
-            if (trace.Hit && trace.Entity is Body body && body.Player != null)
+            if (trace.Hit && trace.Entity is Body body && body.TttPlayer != null)
             {
                 // Scoop up the credits on the body
-                if (Role == Role.Traitor)
+                if (CurrentRole == Role.Traitor)
                 {
-                    Credits += body.Player.Credits;
-                    body.Player.Credits = 0;
+                    Credits += body.TttPlayer.Credits;
+                    body.TttPlayer.Credits = 0;
                 }
 
                 // Allow traitors to inspect body without identifying it by holding crouch
-                if (Role != Role.Traitor || !Input.Down(InputButton.Crouch))
+                if (CurrentRole != Role.Traitor || !Input.Down(InputButton.Duck))
                 {
                     body.Identified = true;
                 }
@@ -133,7 +133,7 @@ namespace TTTGamemode
                 info.Damage *= 2.0f;
             }
 
-            if (info.Attacker is Player attacker && attacker != this)
+            if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
                 attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
@@ -151,7 +151,7 @@ namespace TTTGamemode
             }
 
             // Register player damage with the Karma system
-            Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker, this, info.Damage);
+            Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
 
             _lastDamageInfo = info;
 
@@ -160,17 +160,18 @@ namespace TTTGamemode
 
         private void CreateBodyOnServer(Vector3 force, int forceBone)
         {
-            var ragdoll = new PlayerCorpse
-            {
-                Pos = Pos,
-                Rot = Rot
-            };
-
-            ragdoll.CopyFrom(this);
-            ragdoll.ApplyForceToBone(force, forceBone);
-            ragdoll.Player = this;
-
-            Body = ragdoll;
+	        // TTT TODO: Create a ragdoll.
+            // var ragdoll = new PlayerCorpse
+            // {
+            //     Pos = Pos,
+            //     Rot = Rot
+            // };
+            //
+            // ragdoll.CopyFrom(this);
+            // ragdoll.ApplyForceToBone(force, forceBone);
+            // ragdoll.Player = this;
+            //
+            // Body = ragdoll;
         }
 
         public void RemoveBodyEntity()
@@ -187,14 +188,12 @@ namespace TTTGamemode
         {
             Sound.FromScreen("dm.ui_attacker")
                 .SetPitch(1 + inverseHealth * 1);
-
-            HitIndicator.Current?.OnHit(position, amount);
         }
 
         [ClientRpc]
         public void TookDamage(Vector3 position)
         {
-            DamageIndicator.Current?.OnHit(position);
+	        
         }
 
         [ClientRpc]
@@ -203,11 +202,11 @@ namespace TTTGamemode
             
         }
 
-        protected override void OnRemove()
+        protected override void OnDestroy()
         {
             RemoveBodyEntity();
 
-            base.OnRemove();
+            base.OnDestroy();
         }
     }
 }

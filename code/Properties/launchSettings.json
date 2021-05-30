@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ttt-reborn": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\sbox.exe",
+      "commandLineArgs": "\u002Bdeveloper \u002Bsw -noassert -tools"
+    }
+  }
+}

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TTTGamemode
 {
-    public class KarmaSystem
+    public partial class KarmaSystem
     {
         [ServerVar("ttt_karma_default", Help = "The default amount of karma given to a player.")]
         public static int TTTKarmaDefault { get; set; } = 1000;
@@ -27,71 +27,48 @@ namespace TTTGamemode
         [ServerVar("ttt_karma_penalty_max", Help = "The maximum amount of karma loss per player.")]
         public static int TTTKarmaPenaltyMax { get; set; } = 100;
 
-        [Net] public Dictionary<string, int> KarmaRecords => new();
-        [Net] public Dictionary<(string, string), int> DamageRecords => new();
-        [Net] public bool IsTracking = false;
+        // TODO: Network dictionaries are not supported yet.
+        // [Net] public Dictionary<string, int> KarmaRecords => new();
+        // [Net] public Dictionary<(string, string), int> DamageRecords => new();
+        
+        [Net] 
+        public bool IsTracking { get; set; }
 
-        public void RegisterPlayer(Player player)
+        public void RegisterPlayer(TTTPlayer tttPlayer)
         {
-            if (KarmaRecords.ContainsKey(player))
-                return;
 
-            KarmaRecords[player] = TTTKarmaDefault;
         }
 
-        public void RegisterPlayerDamage(Player attacker, Player victim, int damage)
+        public void RegisterPlayerDamage(TTTPlayer attacker, TTTPlayer victim, float damage)
         {
             if (!IsTracking)
                 return;
 
             int updatedDamage = 0;
-
-            DamageRecords.TryGetValue((attacker.SteamId, victim.SteamId), out updatedDamage);
-
-            updatedDamage += damage;
-            updatedDamage = Math.Min(updatedDamage, 100);
-
-            DamageRecords[(attacker.SteamId, victim.SteamId)] = updatedDamage;
         }
 
-        public void UpdatePlayerKarma(Player player, int delta)
+        public void UpdatePlayerKarma(TTTPlayer tttPlayer, int delta)
         {
-            UpdateSteamIdKarma(player.SteamId, delta);
+            UpdateSteamIdKarma(tttPlayer.GetClientOwner().SteamId, delta);
         }
 
-        public void UpdateSteamIdKarma(string steamId, int delta)
+        public void UpdateSteamIdKarma(ulong steamId, int delta)
         {
             int updatedKarma = 0;
-
-            KarmaRecords.TryGetValue(steamId, out updatedKarma);
 
             updatedKarma += delta;
 
             // Math.Clamp(updatedKarma, TTTKarmaMin, TTTKarmaMax)
             updatedKarma = updatedKarma > TTTKarmaMax ? TTTKarmaMax : updatedKarma;
             updatedKarma = updatedKarma < TTTKarmaMin ? TTTKarmaMin : updatedKarma;
-
-            KarmaRecords[player.SteamId] = updatedKarma;
         }
 
         public void ResolveKarma()
         {
             if (IsTracking)
             {
-                // Update karma records based on the damage done this round
-                foreach (var record in DamageRecords)
-                {
-                    UpdateSteamIdKarma(record.Key.Item1, record.Value);
-                }
+
             }
-
-            // Clear all damage records
-            DamageRecords = new();
-        }
-
-        public bool IsBanned(Player player)
-        {
-            return (KarmaRecords[player.SteamId] < TTTKarmaMin && TTTKarmaBan);
         }
     }
 }

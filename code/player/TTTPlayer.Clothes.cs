@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TTTGamemode
 {
-    partial class Player
+    partial class TTTPlayer
     {
         List<ModelEntity> Clothing = new();
 

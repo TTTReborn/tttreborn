@@ -1,11 +1,12 @@
 ﻿using System;
 using Sandbox;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace TTTGamemode
 {
-    [ClassLibrary("ttt-reborn", Title = "Trouble in Terry's Town")]
+    [Library("TTT", Title = "Trouble in Terrorist Town")]
     partial class Game : Sandbox.Game
     {
         public enum Round { Waiting, PreRound, InProgress, PostRound }
@@ -27,10 +28,10 @@ namespace TTTGamemode
         [ServerVar("ttt_kill_time_reward", Help = "The amount of extra time given to traitors for killing an innocent.")]
         public static int TTTKillTimeReward { get; set; } = 30;
 
-        [Net] public Round CurrentRound => Game.Round.Waiting;
-        [Net] public int TimeRemaining => 0;
+        [Net] public Round CurrentRound { get; set; }
+        [Net] public int TimeRemaining { get; set; }
 
-        public KarmaSystem Karma => new KarmaSystem();
+        public KarmaSystem Karma = new KarmaSystem();
 
         #region TTT Methods
         private void ChangeRound(Round round)
@@ -52,34 +53,34 @@ namespace TTTGamemode
                     TimeRemaining = TTTRoundTime;
 
                     #region Select Roles
-                    int detectiveCount = (int) ((float) Sandbox.Player.All.Count * 0.125f);
-                    int traitorCount = (int) Math.Max((float) Sandbox.Player.All.Count * 0.25f, 1f);
+                    int detectiveCount = (int) (All.Count * 0.125f);
+                    int traitorCount = (int) Math.Max(All.Count * 0.25f, 1f);
 
-                    List<Player> _players = Sandbox.Player.ConvertAll(p => (Player) p);
+                    var players = Client.All.ToList().ConvertAll(p => p.Pawn as TTTPlayer);
                     Random random = new Random();
 
                     // SELECT DETECTIVES
                     for (int i = 0; i < detectiveCount; i++)
                     {
-                        int randomID = random.Next(_players.Count);
-                        _players[randomID].PlayerRole = Player.Role.Detective;
+                        int randomId = random.Next(players.Count);
+                        players[randomId].CurrentRole = Role.Detective;
 
-                        _players.RemoveAt(randomID);
+                        players.RemoveAt(randomId);
                     }
 
                     // SELECT TRAITORS
                     for (int i = 0; i < traitorCount; i++)
                     {
-                        int randomID = random.Next(_players.Count);
-                        _players[randomID].PlayerRole = Player.Role.Traitor;
+                        int randomId = random.Next(players.Count);
+                        players[randomId].CurrentRole = Role.Traitor;
 
-                        _players.RemoveAt(randomID);
+                        players.RemoveAt(randomId);
                     }
 
                     // SET REMAINING PLAYERS TO INNOCENT
-                    for (int i = 0; i < _players.Count; i++)
+                    for (int i = 0; i < players.Count; i++)
                     {
-                        _players[i].PlayerRole = Player.Role.Innocent;
+                        players[i].CurrentRole = Role.Innocent;
                     }
                     #endregion
 
@@ -122,17 +123,17 @@ namespace TTTGamemode
             bool traitorsDead = true;
             bool innocentsDead = true;
 
-            Player player;
+            TTTPlayer tttPlayer;
 
             // Check for alive players
             for (int i = 0; i < Sandbox.Player.All.Count; i++)
             {
-                player = Sandbox.Player.All[i] as Player;
+                tttPlayer = Sandbox.Player.All[i] as TTTPlayer;
 
-                if (player.LifeState == LifeState.Alive)
+                if (tttPlayer.LifeState == LifeState.Alive)
                     continue;
 
-                if (player.Role == Player.Role.Traitor)
+                if (tttPlayer.CurrentRole == Role.Traitor)
                 {
                     traitorsDead = false;
                 }
@@ -200,14 +201,14 @@ namespace TTTGamemode
         #endregion
 
         #region Gamemode Overrides
-        public override void DoPlayerNoclip(Sandbox.Player player)
+        public override void DoPlayerNoclip(Client client)
         {
             // Do nothing. The player can't noclip in this mode.
         }
 
-        public override void DoPlayerSuicide(Sandbox.Player player)
+        public override void DoPlayerSuicide(Client client)
         {
-            base.DoPlayerSuicide(player);
+            base.DoPlayerSuicide(client);
         }
 
         public override void PostLevelLoaded()
@@ -217,37 +218,28 @@ namespace TTTGamemode
             base.PostLevelLoaded();
         }
 
-        public override void PlayerKilled(Sandbox.Player player)
+        public override void OnKilled(Entity entity)
         {
             CheckRoundState();
 
-            base.PlayerKilled(player);
+            base.OnKilled(entity);
         }
 
-        public override void PlayerJoined(Player player)
+        public override void ClientJoined(Client client)
         {
-            Karma.RegisterPlayer(player);
-
-            if (Karma.IsBanned(player))
-            {
-                KickPlayer(player);
-
-                return;
-            }
-
-            base.PlayerJoined();
+	        Karma.RegisterPlayer(client.Pawn as TTTPlayer);
+	        
+            base.ClientJoined(client);
         }
 
-        public override void PlayerDisconnected(Sandbox.Player player, NetworkDisconnectionReason reason)
+        public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
         {
-            Log.Info(player.Name + " left, checking minimum player count...");
+            Log.Info(client.Name + " left, checking minimum player count...");
 
             CheckRoundState();
 
-            base.PlayerDisconnected(player, reason);
+            base.ClientDisconnect(client, reason);
         }
-
-        public override Player CreatePlayer() => new();
         #endregion
     }
 }

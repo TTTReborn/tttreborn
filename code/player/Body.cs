@@ -9,7 +9,7 @@ namespace TTTGamemode
 {
     public class Body : ModelEntity
     {
-        public Player Player { get; set; }
+        public TTTPlayer TttPlayer { get; set; }
         public bool Identified { get; set; } = false;
 
         public Body()
@@ -24,16 +24,16 @@ namespace TTTGamemode
             Identified = false;
         }
 
-        public void CopyFrom(Player player)
+        public void CopyFrom(TTTPlayer tttPlayer)
         {
-            SetModel(player.GetModelName());
-            TakeDecalsFrom(player);
+            SetModel(tttPlayer.GetModelName());
+            TakeDecalsFrom(tttPlayer);
 
             // We have to use `this` to refer to the extension methods.
-            this.CopyBonesFrom(player);
-            this.SetRagdollVelocityFrom(player);
+            this.CopyBonesFrom(tttPlayer);
+            this.SetRagdollVelocityFrom(tttPlayer);
 
-            foreach (var child in player.Children)
+            foreach (var child in tttPlayer.Children)
             {
                 if (child is ModelEntity e)
                 {

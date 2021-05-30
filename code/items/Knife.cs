@@ -3,7 +3,7 @@ using System;
 
 namespace TTTGamemode
 {
-    [ClassLibrary("ttt_knife", Title = "Knife")]
+    [Library("ttt_knife", Title = "Knife")]
     partial class Knife : Weapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
@@ -58,7 +58,7 @@ namespace TTTGamemode
         {
             TimeSinceSecondaryAttack = 0;
 
-            var player = (owner as Player);
+            var player = (owner as TTTPlayer);
 
             if (player.Controller is not HiddenController controller)
                 return;

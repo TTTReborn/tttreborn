@@ -54,7 +54,7 @@ namespace TTTGamemode
 
             ViewModelEntity?.SetAnimParam("fire", true);
 
-            if (Owner == Player.Local)
+            if (Owner == TTTPlayer.Local)
             {
                 _ = new Sandbox.ScreenShake.Perlin(1.0f, 1.5f, 2.0f);
             }
@@ -72,7 +72,7 @@ namespace TTTGamemode
             if (AmmoClip >= ClipSize)
                 return;
 
-            if (Owner is Player player)
+            if (Owner is TTTPlayer player)
             {
                 var ammo = player.TakeAmmo(AmmoType, 1);
 

@@ -14,23 +14,23 @@ namespace TTTGamemode
         public virtual bool HasFlashlight => false;
         public virtual int HoldType => 1;
 
-        [NetPredicted]
+        [Net, Predicted]
         public int AmmoClip { get; set; }
 
-        [NetPredicted]
+        [Net, Predicted]
         public TimeSince TimeSinceReload { get; set; }
 
-        [NetPredicted]
+        [Net, Predicted]
         public bool IsReloading { get; set; }
 
-        [NetPredicted]
+        [Net, Predicted]
         public TimeSince TimeSinceDeployed { get; set; }
 
         protected SpotLight _flashlight;
 
         public int AvailableAmmo()
         {
-            if (Owner is not Player owner)
+            if (Owner is not TTTPlayer owner)
                 return 0;
 
             return owner.AmmoCount(AmmoType);
@@ -107,7 +107,7 @@ namespace TTTGamemode
         {
             IsReloading = false;
 
-            if (Owner is Player player)
+            if (Owner is TTTPlayer player)
             {
                 if (!UnlimitedAmmo)
                 {

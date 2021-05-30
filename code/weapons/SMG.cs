@@ -48,7 +48,7 @@ namespace TTTGamemode
             Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
             Particles.Create("particles/pistol_ejectbrass.vpcf", EffectEntity, "ejection_point");
 
-            if (Owner == Player.Local)
+            if (Owner == TTTPlayer.Local)
             {
                 _ = new Sandbox.ScreenShake.Perlin(0.5f, 4.0f, 1.0f, 0.5f);
             }
