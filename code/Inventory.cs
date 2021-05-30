@@ -4,39 +4,39 @@ using System.Linq;
 
 namespace TTTGamemode
 {
-    partial class Inventory : BaseInventory
-    {
-        public Inventory(TTTPlayer tttPlayer) : base(tttPlayer)
-        {
+	partial class Inventory : BaseInventory
+	{
+		public Inventory( Player player ) : base( player )
+		{
 
-        }
+		}
 
-        public override bool Add(Entity entity, bool makeActive = false)
-        {
-            var player = Owner as TTTPlayer;
-            var weapon = entity as Weapon;
+		public override bool Add( Entity entity, bool makeActive = false )
+		{
+			var player = Owner as TTTPlayer;
+			var weapon = entity as Weapon;
 
-            if (weapon != null && IsCarryingType(entity.GetType()))
-            {
-                var ammo = weapon.AmmoClip;
-                var ammoType = weapon.AmmoType;
+			if ( weapon != null && IsCarryingType( entity.GetType() ) )
+			{
+				var ammo = weapon.AmmoClip;
+				var ammoType = weapon.AmmoType;
 
-                if (ammo > 0)
-                {
-                    player.GiveAmmo(ammoType, ammo);
-                }
+				if ( ammo > 0 )
+				{
+					player.GiveAmmo( ammoType, ammo );
+				}
 
-                entity.Delete();
+				entity.Delete();
 
-                return false;
-            }
+				return false;
+			}
 
-            return base.Add(entity, makeActive);
-        }
+			return base.Add( entity, makeActive );
+		}
 
-        public bool IsCarryingType(Type t)
-        {
-            return List.Any(x => x.GetType() == t);
-        }
-    }
+		public bool IsCarryingType( Type t )
+		{
+			return List.Any( x => x.GetType() == t );
+		}
+	}
 }

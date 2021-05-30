@@ -28,12 +28,19 @@ namespace TTTGamemode
         [ServerVar("ttt_kill_time_reward", Help = "The amount of extra time given to traitors for killing an innocent.")]
         public static int TTTKillTimeReward { get; set; } = 30;
 
-        [Net] public Round CurrentRound { get; set; }
-        [Net] public int TimeRemaining { get; set; }
+        [Net] public Round CurrentRound { get; private set; }
+        [Net] public int TimeRemaining { get; private set; }
 
         public KarmaSystem Karma = new KarmaSystem();
+        
+        public Game()
+        {
+	        if ( IsServer )
+	        {
+				new Hud();
+	        }
+        }
 
-        #region TTT Methods
         private void ChangeRound(Round round)
         {
             switch (round)
@@ -51,8 +58,7 @@ namespace TTTGamemode
 
                 case Game.Round.InProgress:
                     TimeRemaining = TTTRoundTime;
-
-                    #region Select Roles
+                    
                     int detectiveCount = (int) (All.Count * 0.125f);
                     int traitorCount = (int) Math.Max(All.Count * 0.25f, 1f);
 
@@ -82,7 +88,6 @@ namespace TTTGamemode
                     {
                         players[i].CurrentRole = Role.Innocent;
                     }
-                    #endregion
 
                     Karma.IsTracking = true;
 
@@ -180,9 +185,7 @@ namespace TTTGamemode
                 TimeRemaining--;
             }
         }
-        #endregion
-
-        #region Game Timer
+        
         private async Task StartGameTimer()
         {
             while (true)
@@ -194,13 +197,11 @@ namespace TTTGamemode
 
         private void UpdateGameTimer()
         {
-            CheckMinimumPlayers();
+	        CheckMinimumPlayers();
             CheckRoundState();
             UpdateRoundTimer();
         }
-        #endregion
-
-        #region Gamemode Overrides
+        
         public override void DoPlayerNoclip(Client client)
         {
             // Do nothing. The player can't noclip in this mode.
@@ -227,9 +228,13 @@ namespace TTTGamemode
 
         public override void ClientJoined(Client client)
         {
-	        Karma.RegisterPlayer(client.Pawn as TTTPlayer);
+	        base.ClientJoined(client);
 	        
-            base.ClientJoined(client);
+	        var player = new TTTPlayer();
+	        Karma.RegisterPlayer(player);
+	        client.Pawn = player;
+	        
+	        player.Respawn();
         }
 
         public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
@@ -240,6 +245,5 @@ namespace TTTGamemode
 
             base.ClientDisconnect(client, reason);
         }
-        #endregion
     }
 }

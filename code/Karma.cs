@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TTTGamemode
 {
-    public partial class KarmaSystem
+    public partial class KarmaSystem: NetworkComponent
     {
         [ServerVar("ttt_karma_default", Help = "The default amount of karma given to a player.")]
         public static int TTTKarmaDefault { get; set; } = 1000;

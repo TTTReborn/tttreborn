@@ -1,249 +1,272 @@
 ﻿using Sandbox;
+using System;
 
 namespace TTTGamemode
 {
-    partial class Weapon : BaseWeapon
-    {
-        public virtual AmmoType AmmoType => AmmoType.Pistol;
-        public virtual int ClipSize => 16;
-        public virtual float ReloadTime => 3.0f;
-        public virtual bool IsMelee => false;
-        public virtual int Bucket => 1;
-        public virtual int BucketWeight => 100;
-        public virtual bool UnlimitedAmmo => false;
-        public virtual bool HasFlashlight => false;
-        public virtual int HoldType => 1;
+	partial class Weapon : BaseWeapon
+	{
+		public virtual AmmoType AmmoType => AmmoType.Pistol;
+		public virtual int ClipSize => 16;
+		public virtual float ReloadTime => 3.0f;
+		public virtual bool IsMelee => false;
+		public virtual int Bucket => 1;
+		public virtual int BucketWeight => 100;
+		public virtual bool UnlimitedAmmo => false;
+		public virtual float ChargeAttackDuration => 2;
+		public virtual bool HasFlashlight => false;
+		public virtual bool HasLaserDot => false;
+		public virtual int BaseDamage => 10;
+		public virtual int HoldType => 1;
+		public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
 
-        [Net, Predicted]
-        public int AmmoClip { get; set; }
+		[Net, Predicted]
+		public int AmmoClip { get; set; }
 
-        [Net, Predicted]
-        public TimeSince TimeSinceReload { get; set; }
+		[Net, Predicted]
+		public TimeSince TimeSinceReload { get; set; }
 
-        [Net, Predicted]
-        public bool IsReloading { get; set; }
+		[Net, Predicted]
+		public bool IsReloading { get; set; }
 
-        [Net, Predicted]
-        public TimeSince TimeSinceDeployed { get; set; }
+		[Net, Predicted]
+		public TimeSince TimeSinceDeployed { get; set; }
 
-        protected SpotLight _flashlight;
+		[Net, Predicted]
+		public TimeSince TimeSinceChargeAttack { get; set; }
 
-        public int AvailableAmmo()
-        {
-            if (Owner is not TTTPlayer owner)
-                return 0;
+		public float ChargeAttackEndTime;
 
-            return owner.AmmoCount(AmmoType);
-        }
+		public int AvailableAmmo()
+		{
+			if ( Owner is not TTTPlayer owner ) return 0;
+			return owner.AmmoCount( AmmoType );
+		}
 
-        public override void ActiveStart(Entity owner)
-        {
-            base.ActiveStart(owner);
+		public override void ActiveStart( Entity owner )
+		{
+			base.ActiveStart( owner );
 
-            TimeSinceDeployed = 0;
+			TimeSinceDeployed = 0;
+		}
 
-            ShowFlashlight(false);
-        }
+		public override void Spawn()
+		{
+			base.Spawn();
 
-        public override void ActiveEnd(Entity owner, bool wasDropped)
-        {
-            ShowFlashlight(false);
+			AmmoClip = ClipSize;
 
-            base.ActiveEnd(owner, wasDropped);
-        }
+			SetModel( "weapons/rust_pistol/rust_pistol.vmdl" );
+		}
 
-        public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
+		public override void Reload()
+		{
+			if ( IsMelee || IsReloading )
+				return;
 
-        public override void Spawn()
-        {
-            base.Spawn();
+			if ( AmmoClip >= ClipSize )
+				return;
 
-            AmmoClip = ClipSize;
+			TimeSinceReload = 0;
 
-            SetModel("weapons/rust_pistol/rust_pistol.vmdl");
-        }
+			if ( Owner is TTTPlayer player )
+			{
+				if ( !UnlimitedAmmo )
+				{
+					if ( player.AmmoCount( AmmoType ) <= 0 )
+						return;
+				}
+			}
 
-        public override void Reload(Sandbox.Player owner)
-        {
-            if (IsMelee || IsReloading)
-                return;
+			IsReloading = true;
 
-            if (AmmoClip >= ClipSize)
-                return;
+			(Owner as AnimEntity).SetAnimParam( "b_reload", true );
 
-            if (!UnlimitedAmmo && AvailableAmmo() <= 0)
-                return;
+			DoClientReload();
+		}
 
-            TimeSinceReload = 0;
-            IsReloading = true;
+		public override void Simulate( Client owner )
+		{
+			if ( owner.Pawn is Player player )
+			{
+				if ( owner.Pawn.LifeState == LifeState.Alive )
+				{
+					if ( ChargeAttackEndTime > 0f && Time.Now >= ChargeAttackEndTime )
+					{
+						OnChargeAttackFinish();
+						ChargeAttackEndTime = 0f;
+					}
+				}
+				else
+				{
+					ChargeAttackEndTime = 0f;
+				}
+			}
 
-            Owner.SetAnimParam("b_reload", true);
+			if ( !IsReloading )
+			{
+				base.Simulate( owner );
+			}
 
-            DoClientReload();
-        }
+			if ( IsReloading && TimeSinceReload > ReloadTime )
+			{
+				OnReloadFinish();
+			}
+		}
 
-        public override void TickPlayerAnimator(PlayerAnimator anim)
-        {
-            anim.SetParam("holdtype", HoldType);
-            anim.SetParam("aimat_weight", 1.0f);
-        }
+		public override bool CanPrimaryAttack()
+		{
+			if ( ChargeAttackEndTime > 0f && Time.Now < ChargeAttackEndTime )
+				return false;
 
-        public override void OnPlayerControlTick(Sandbox.Player owner)
-        {
-            if (TimeSinceDeployed < 0.6f)
-                return;
+			return base.CanPrimaryAttack();
+		}
 
-            if (!IsReloading)
-            {
-                base.OnPlayerControlTick(owner);
-            }
-            else if (TimeSinceReload > ReloadTime)
-            {
-                OnReloadFinish();
-            }
-        }
+		public override bool CanSecondaryAttack()
+		{
+			if ( ChargeAttackEndTime > 0f && Time.Now < ChargeAttackEndTime )
+				return false;
 
-        public virtual void OnReloadFinish()
-        {
-            IsReloading = false;
+			return base.CanSecondaryAttack();
+		}
 
-            if (Owner is TTTPlayer player)
-            {
-                if (!UnlimitedAmmo)
-                {
-                    var ammo = player.TakeAmmo(AmmoType, ClipSize - AmmoClip);
+		public virtual void StartChargeAttack()
+		{
+			ChargeAttackEndTime = Time.Now + ChargeAttackDuration;
+		}
 
-                    if (ammo == 0)
-                        return;
+		public virtual void OnChargeAttackFinish() { }
 
-                    AmmoClip += ammo;
-                }
-                else
-                {
-                    AmmoClip = ClipSize;
-                }
-            }
-        }
+		public virtual void OnReloadFinish()
+		{
+			IsReloading = false;
 
-        [ClientRpc]
-        public virtual void DoClientReload()
-        {
-            ViewModelEntity?.SetAnimParam("reload", true);
-        }
+			if ( Owner is TTTPlayer player )
+			{
+				if ( !UnlimitedAmmo )
+				{
+					var ammo = player.TakeAmmo( AmmoType, ClipSize - AmmoClip );
 
-        public override void AttackPrimary(Sandbox.Player owner)
-        {
-            TimeSincePrimaryAttack = 0;
-            TimeSinceSecondaryAttack = 0;
+					if ( ammo == 0 )
+						return;
 
-            ShootEffects();
-            ShootBullet(0.05f, 1.5f, 9.0f, 3.0f);
-        }
+					AmmoClip += ammo;
+				}
+				else
+				{
+					AmmoClip = ClipSize;
+				}
+			}
+		}
 
-        [ClientRpc]
-        protected virtual void ShootEffects()
-        {
-            Host.AssertClient();
+		[ClientRpc]
+		public virtual void DoClientReload()
+		{
+			ViewModelEntity?.SetAnimParam( "reload", true );
+		}
 
-            if (!IsMelee)
-            {
-                Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
-            }
+		public override void AttackPrimary()
+		{
+			TimeSincePrimaryAttack = 0;
+			TimeSinceSecondaryAttack = 0;
 
-            if (Owner == Sandbox.Player.Local)
-            {
-                _ = new Sandbox.ScreenShake.Perlin();
-            }
+			ShootEffects();
+			ShootBullet( 0.05f, 1.5f, BaseDamage, 3.0f );
+		}
 
-            ViewModelEntity?.SetAnimParam("fire", true);
-            CrosshairPanel?.OnEvent("fire");
-        }
+		[ClientRpc]
+		protected virtual void ShootEffects()
+		{
+			Host.AssertClient();
 
-        public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
-        {
-            var forward = Owner.EyeRot.Forward;
-            forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
-            forward = forward.Normal;
+			if (!IsMelee)
+			{
+				Particles.Create( "particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle" );
+			}
 
-            foreach (var tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
-            {
-                tr.Surface.DoBulletImpact(tr);
+			if ( IsLocalPawn )
+			{
+				_ = new Sandbox.ScreenShake.Perlin();
+			}
 
-                if (!IsServer || !tr.Entity.IsValid())
-                    continue;
+			ViewModelEntity?.SetAnimParam( "fire", true );
+			CrosshairPanel?.OnEvent( "fire" );
+		}
 
-                using (Prediction.Off())
-                {
-                    var damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
-                        .UsingTraceResult(tr)
-                        .WithAttacker(Owner)
-                        .WithWeapon(this);
+		public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
+		{
+			var forward = Owner.EyeRot.Forward;
+			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
+			forward = forward.Normal;
 
-                    tr.Entity.TakeDamage(damageInfo);
-                }
-            }
-        }
+			foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize ) )
+			{
+				tr.Surface.DoBulletImpact( tr );
 
-        public void ShowFlashlight(bool shouldShow)
-        {
-            if (HasFlashlight && shouldShow)
-            {
-                // Create or enable the spot light.
-            }
-            else
-            {
-                // Disable the spot light.
-            }
-        }
+				if ( !IsServer ) continue;
+				if ( !tr.Entity.IsValid() ) continue;
 
-        public bool TakeAmmo(int amount)
-        {
-            if (AmmoClip < amount)
-                return false;
+				using ( Prediction.Off() )
+				{
+					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100 * force, damage )
+						.UsingTraceResult( tr )
+						.WithAttacker( Owner )
+						.WithWeapon( this );
 
-            AmmoClip -= amount;
+					tr.Entity.TakeDamage( damageInfo );
+				}
+			}
+		}
 
-            return true;
-        }
+		public bool TakeAmmo( int amount )
+		{
+			if ( AmmoClip < amount )
+				return false;
 
-        public override void CreateViewModel()
-        {
-            Host.AssertClient();
+			AmmoClip -= amount;
+			return true;
+		}
 
-            if (string.IsNullOrEmpty(ViewModelPath))
-                return;
+		public override void CreateViewModel()
+		{
+			Host.AssertClient();
 
-            ViewModelEntity = new ViewModel
-            {
-                WorldPos = WorldPos,
-                Owner = Owner,
-                EnableViewmodelRendering = true
-            };
+			if ( string.IsNullOrEmpty( ViewModelPath ) )
+				return;
 
-            ViewModelEntity.SetModel(ViewModelPath);
-        }
+			ViewModelEntity = new ViewModel
+			{
+				Position = Position,
+				Owner = Owner,
+				EnableViewmodelRendering = true
+			};
 
-        public override void CreateHudElements()
-        {
-            if (Sandbox.Hud.CurrentPanel == null)
-                return;
+			ViewModelEntity.SetModel( ViewModelPath );
+		}
 
-            CrosshairPanel = new Crosshair
-            {
-                Parent = Sandbox.Hud.CurrentPanel
-            };
+		public override void CreateHudElements()
+		{
+			if ( Local.Hud == null ) return;
+			
+			Crosshair.Current?.SetupCrosshair(new Crosshair.Properties(
+				true,
+				false,
+				false,
+				25,
+				2,
+				2,
+				-25,
+				new Color(0.1f, 1f, 0.3f, 1f)
+			));
+		}
 
-            CrosshairPanel.AddClass(ClassInfo.Name);
-        }
+		public bool IsUsable()
+		{
+			if ( IsMelee || ClipSize == 0 || AmmoClip > 0 )
+			{
+				return true;
+			}
 
-        public bool IsUsable()
-        {
-            if (IsMelee || ClipSize == 0 || AmmoClip > 0)
-            {
-                return true;
-            }
-
-            return AvailableAmmo() > 0;
-        }
-    }
+			return AvailableAmmo() > 0;
+		}
+	}
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Sandbox;
 
 namespace TTTGamemode
@@ -26,11 +27,12 @@ namespace TTTGamemode
 			if ( Local.Pawn is not Player player )
 				return;
 
+			// TODO: Rework spectate camera logic.
 			if ( TargetPlayer == null || !TargetPlayer.IsValid() || Local.Client.Input.Pressed(InputButton.Attack1) )
 			{
-				var players = Game.Instance.GetTeamPlayers<IrisTeam>(true);
+				var players = Client.All.ToList().ConvertAll( p => p.Pawn as TTTPlayer );
 
-				if ( players != null && players.Count > 0 )
+				if ( players.Count > 0 )
 				{
 					if ( ++_targetIdx >= players.Count )
 						_targetIdx = 0;

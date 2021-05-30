@@ -18,11 +18,26 @@ namespace TTTGamemode
 
         public TTTPlayer()
         {
-            Inventory = new Inventory(this);
-            Animator = new StandardPlayerAnimator();
+	        Inventory = new Inventory(this);
 
             CurrentRole = Role.None;
             Credits = 0;
+        }
+
+        public override void Respawn()
+        {
+	        SetModel( "models/citizen/citizen.vmdl" );
+
+	        Controller = new WalkController();
+	        Animator = new StandardPlayerAnimator();
+	        Camera = new FirstPersonCamera();
+	        
+	        EnableAllCollisions = true;
+	        EnableDrawing = true;
+	        EnableHideInFirstPerson = true;
+	        EnableShadowInFirstPerson = true;
+	        
+	        base.Respawn();
         }
 
         public bool IsSpectator
@@ -42,13 +57,6 @@ namespace TTTGamemode
             };
         }
 
-        public override void Respawn()
-        {
-            RemoveBodyEntity();
-
-            base.Respawn();
-        }
-
         public override void OnKilled()
         {
             base.OnKilled();
@@ -60,25 +68,23 @@ namespace TTTGamemode
 
         public override void Simulate( Client client )
         {
-            SimulateActiveChild(client, ActiveChild);
+	        SimulateActiveChild( client, ActiveChild );
 
-            if (Input.ActiveChild != null)
-            {
-                ActiveChild = Input.ActiveChild;
-            }
+	        if ( Input.ActiveChild != null )
+	        {
+		        ActiveChild = Input.ActiveChild;
+	        }
 
-            if (LifeState != LifeState.Alive)
-                return;
+	        if ( LifeState != LifeState.Alive )
+	        {
 
-            TickPlayerUse();
+		        return;
+	        }
 
-            if (IsServer)
-            {
-                using (Prediction.Off())
-                {
-                    TickInspectBody();
-                }
-            }
+	        TickPlayerUse();
+
+	        var controller = GetActiveController();
+	        controller?.Simulate( client, this, GetActiveAnimator() );
         }
 
         protected override void UseFail()
