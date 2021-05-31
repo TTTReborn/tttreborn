@@ -38,7 +38,7 @@ namespace TTTGamemode
 
 		public int AvailableAmmo()
 		{
-			if ( Owner is not TTTPlayer owner ) return 0;
+			if ( Owner is not Player owner ) return 0;
 			return owner.AmmoCount( AmmoType );
 		}
 
@@ -68,7 +68,7 @@ namespace TTTGamemode
 
 			TimeSinceReload = 0;
 
-			if ( Owner is TTTPlayer player )
+			if ( Owner is Player player )
 			{
 				if ( !UnlimitedAmmo )
 				{
@@ -86,7 +86,7 @@ namespace TTTGamemode
 
 		public override void Simulate( Client owner )
 		{
-			if ( owner.Pawn is Player player )
+			if ( owner.Pawn is Sandbox.Player player )
 			{
 				if ( owner.Pawn.LifeState == LifeState.Alive )
 				{
@@ -140,11 +140,11 @@ namespace TTTGamemode
 		{
 			IsReloading = false;
 
-			if ( Owner is TTTPlayer player )
+			if ( Owner is Player player )
 			{
 				if ( !UnlimitedAmmo )
 				{
-					var ammo = player.TakeAmmo( AmmoType, ClipSize - AmmoClip );
+					int ammo = player.TakeAmmo( AmmoType, ClipSize - AmmoClip );
 
 					if ( ammo == 0 )
 						return;
@@ -194,11 +194,11 @@ namespace TTTGamemode
 
 		public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
 		{
-			var forward = Owner.EyeRot.Forward;
+			Vector3 forward = Owner.EyeRot.Forward;
 			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
 			forward = forward.Normal;
 
-			foreach ( var tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize ) )
+			foreach ( TraceResult tr in TraceBullet( Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize ) )
 			{
 				tr.Surface.DoBulletImpact( tr );
 
@@ -207,7 +207,7 @@ namespace TTTGamemode
 
 				using ( Prediction.Off() )
 				{
-					var damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100 * force, damage )
+					DamageInfo damageInfo = DamageInfo.FromBullet( tr.EndPos, forward * 100 * force, damage )
 						.UsingTraceResult( tr )
 						.WithAttacker( Owner )
 						.WithWeapon( this );

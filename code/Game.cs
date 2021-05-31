@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TTTGamemode
 {
-    [Library("ttt", Title = "Trouble in Terrorist Town")]
+    [Library("tttreborn", Title = "Trouble in Terry's Town")]
     partial class Game : Sandbox.Game
     {
         public enum Round { Waiting, PreRound, InProgress, PostRound }
@@ -62,31 +62,31 @@ namespace TTTGamemode
                     int detectiveCount = (int) (All.Count * 0.125f);
                     int traitorCount = (int) Math.Max(All.Count * 0.25f, 1f);
 
-                    var players = Client.All.ToList().ConvertAll(p => p.Pawn as TTTPlayer);
+                    List<Player> _players = Client.All.ToList().ConvertAll(p => p.Pawn as TTTGamemode.Player);
                     Random random = new Random();
 
                     // SELECT DETECTIVES
-                    for (var i = 0; i < detectiveCount; i++)
+                    for (int i = 0; i < detectiveCount; i++)
                     {
-                        var randomId = random.Next(players.Count);
-                        players[randomId].CurrentRole = Role.Detective;
+                        int randomId = random.Next(_players.Count);
+                        _players[randomId].Role = RoleType.Detective;
 
-                        players.RemoveAt(randomId);
+                        _players.RemoveAt(randomId);
                     }
 
                     // SELECT TRAITORS
-                    for (var i = 0; i < traitorCount; i++)
+                    for (int i = 0; i < traitorCount; i++)
                     {
-                        var randomId = random.Next(players.Count);
-                        players[randomId].CurrentRole = Role.Traitor;
+                        int randomId = random.Next(_players.Count);
+                        _players[randomId].Role = RoleType.Traitor;
 
-                        players.RemoveAt(randomId);
+                        _players.RemoveAt(randomId);
                     }
 
                     // SET REMAINING PLAYERS TO INNOCENT
-                    foreach (var player in players)
+                    for ( int i = 0; i < _players.Count; ++i )
                     {
-	                    player.CurrentRole = Role.Innocent;
+	                    _players[i].Role = RoleType.Innocent;
                     }
 
                     Karma.IsTracking = true;
@@ -129,16 +129,14 @@ namespace TTTGamemode
             bool innocentsDead = true;
 
             // Check for alive players
-            for (int i = 0; i < Sandbox.Player.All.Count; i++)
+            for (int i = 0; i < Client.All.Count; i++)
             {
-	            TTTPlayer player = Sandbox.Player.All[i] as TTTPlayer;
+	            Player player = Client.All[i].Pawn as TTTGamemode.Player;
 
-                if ( player == null ) continue;
-
-                if (player.LifeState == LifeState.Alive)
+	            if (player.LifeState == LifeState.Alive)
                     continue;
 
-                if (player.CurrentRole == Role.Traitor)
+                if (player.Role == RoleType.Traitor)
                 {
                     traitorsDead = false;
                 }
@@ -198,8 +196,8 @@ namespace TTTGamemode
         private void UpdateGameTimer()
         {
 	        CheckMinimumPlayers();
-            CheckRoundState();
-            UpdateRoundTimer();
+	        CheckRoundState();
+	        UpdateRoundTimer();
         }
         
         public override void DoPlayerNoclip(Client client)
@@ -221,18 +219,24 @@ namespace TTTGamemode
 
         public override void OnKilled(Entity entity)
         {
-            CheckRoundState();
+	        Client client = entity.GetClientOwner();
+	        if ( client != null )
+	        {
+		        CheckRoundState();
+	        }
 
-            base.OnKilled(entity);
+		    base.OnKilled(entity);
         }
 
         public override void ClientJoined(Client client)
         {
 	        base.ClientJoined(client);
 	        
-	        var player = new TTTPlayer();
+	        Player player = new TTTGamemode.Player();
 	        Karma.RegisterPlayer(player);
 	        client.Pawn = player;
+	        
+	        // TODO: Check karma, below threshold kick player.
 	        
 	        player.Respawn();
         }

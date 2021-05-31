@@ -18,9 +18,9 @@ namespace TTTGamemode
 		{
 			Rotation = Local.Pawn.EyeRot;
 
-			var speed = Owner.Velocity.Length.LerpInverse( 0, 320 );
-			var left = camSetup.Rotation.Left;
-			var up = camSetup.Rotation.Up;
+			float speed = Owner.Velocity.Length.LerpInverse( 0, 320 );
+			Vector3 left = camSetup.Rotation.Left;
+			Vector3 up = camSetup.Rotation.Up;
 
 			if ( Owner.GroundEntity != null )
 			{

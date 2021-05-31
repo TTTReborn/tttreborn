@@ -6,23 +6,23 @@ namespace TTTGamemode
 {
 	partial class Inventory : BaseInventory
 	{
-		public Inventory( Player player ) : base( player )
+		public Inventory( Sandbox.Player player ) : base( player )
 		{
 
 		}
 
 		public override bool Add( Entity entity, bool makeActive = false )
 		{
-			var player = Owner as TTTPlayer;
+			TTTGamemode.Player player = Owner as Player;
 
 			if ( entity is Weapon weapon && IsCarryingType( entity.GetType() ) )
 			{
-				var ammo = weapon.AmmoClip;
-				var ammoType = weapon.AmmoType;
+				int ammo = weapon.AmmoClip;
+				AmmoType ammoType = weapon.AmmoType;
 
 				if ( ammo > 0 )
 				{
-					player?.GiveAmmo( ammoType, ammo );
+					player.GiveAmmo( ammoType, ammo );
 				}
 
 				entity.Delete();

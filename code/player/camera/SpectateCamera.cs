@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
@@ -8,7 +9,7 @@ namespace TTTGamemode
 		[Net, Predicted] public TimeSince TimeSinceDied { get; set; }
 		[Net, Predicted] public Vector3 DeathPosition { get; set; }
 
-		public Player TargetPlayer { get; set; }
+		public Sandbox.Player TargetPlayer { get; set; }
 
 		private Vector3 _focusPoint;
 		public int _targetIdx;
@@ -24,13 +25,13 @@ namespace TTTGamemode
 
 		public override void Update()
 		{
-			if ( Local.Pawn is not Player player )
+			if ( Local.Pawn is not Sandbox.Player player )
 				return;
 
 			// TODO: Rework spectate camera logic.
 			if ( TargetPlayer == null || !TargetPlayer.IsValid() || Local.Client.Input.Pressed(InputButton.Attack1) )
 			{
-				var players = Client.All.ToList().ConvertAll( p => p.Pawn as TTTPlayer );
+				List<Player> players = Client.All.ToList().ConvertAll( p => p.Pawn as Player );
 
 				if ( players.Count > 0 )
 				{
@@ -52,7 +53,7 @@ namespace TTTGamemode
 
 		private Vector3 GetSpectatePoint()
 		{
-			if ( Local.Pawn is not Player )
+			if ( Local.Pawn is not Sandbox.Player )
 				return DeathPosition;
 
 			if ( TargetPlayer == null || !TargetPlayer.IsValid() || TimeSinceDied < 3 )
@@ -63,7 +64,7 @@ namespace TTTGamemode
 
 		private Vector3 GetViewOffset()
 		{
-			if ( Local.Pawn is not Player player )
+			if ( Local.Pawn is not Sandbox.Player player )
 				return Vector3.Zero;
 
 			return player.EyeRot.Forward * -150 + Vector3.Up * 10;

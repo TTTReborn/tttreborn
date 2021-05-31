@@ -34,41 +34,75 @@ namespace TTTGamemode
         [Net] 
         public bool IsTracking { get; set; }
 
-        public void RegisterPlayer(TTTPlayer tttPlayer)
+        public void RegisterPlayer(Player player)
         {
-
+	        // TODO: Once network dictionaries are supported, implement.
+	        // if (KarmaRecords.ContainsKey(player))
+		       //  return;
+	        //
+	        // KarmaRecords[player] = TTTKarmaDefault;
         }
 
-        public void RegisterPlayerDamage(TTTPlayer attacker, TTTPlayer victim, float damage)
+        public void RegisterPlayerDamage(Player attacker, Player victim, float damage)
         {
             if (!IsTracking)
                 return;
 
             int updatedDamage = 0;
+            
+            // TODO: Once network dictionaries are supported, implement.
+            // DamageRecords.TryGetValue((attacker.SteamId, victim.SteamId), out updatedDamage);
+            //
+            // updatedDamage += damage;
+            // updatedDamage = Math.Min(updatedDamage, 100);
+            //
+            // DamageRecords[(attacker.SteamId, victim.SteamId)] = updatedDamage;
         }
 
-        public void UpdatePlayerKarma(TTTPlayer tttPlayer, int delta)
+        public void UpdatePlayerKarma(Player player, int delta)
         {
-            UpdateSteamIdKarma(tttPlayer.GetClientOwner().SteamId, delta);
+            UpdateSteamIdKarma(player.GetClientOwner().SteamId, delta);
         }
 
         public void UpdateSteamIdKarma(ulong steamId, int delta)
         {
             int updatedKarma = 0;
+            
+            // TODO: Once network dictionaries are supported, implement.
+            // KarmaRecords.TryGetValue(steamId, out updatedKarma);
 
             updatedKarma += delta;
 
             // Math.Clamp(updatedKarma, TTTKarmaMin, TTTKarmaMax)
             updatedKarma = updatedKarma > TTTKarmaMax ? TTTKarmaMax : updatedKarma;
             updatedKarma = updatedKarma < TTTKarmaMin ? TTTKarmaMin : updatedKarma;
+            
+            // TODO: Once network dictionaries are supported, implement.
+            // KarmaRecords[player.SteamId] = updatedKarma;
         }
 
         public void ResolveKarma()
         {
-            if (IsTracking)
-            {
+	        if (IsTracking)
+	        {
+		        // TODO: Once network dictionaries are supported, implement.
+		        // Update karma records based on the damage done this round
+		        // foreach (var record in DamageRecords)
+		        // {
+			       //  UpdateSteamIdKarma(record.Key.Item1, record.Value);
+		        // }
+	        }
 
-            }
+	        // TODO: Once network dictionaries are supported, implement.
+	        // Clear all damage records
+	        // DamageRecords = new();
+        }
+        
+        public bool IsBanned(Player player)
+        {
+	        // TODO: Once network dictionaries are supported, implement. Return false meanwhile...
+	        // return (KarmaRecords[player.SteamId] < TTTKarmaMin && TTTKarmaBan);
+	        return false;
         }
     }
 }

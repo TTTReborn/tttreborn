@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TTTGamemode
 {
-	partial class TTTPlayer
+	partial class Player
 	{
 		[Net]
 		public List<int> Ammo { get; set; } = new();
@@ -16,7 +16,7 @@ namespace TTTGamemode
 
 		public int AmmoCount( AmmoType type )
 		{
-			var iType = (int)type;
+			int iType = (int)type;
 			if ( Ammo == null ) return 0;
 			if ( Ammo.Count <= iType ) return 0;
 			return Ammo[(int)type];
@@ -24,7 +24,7 @@ namespace TTTGamemode
 
 		public bool SetAmmo( AmmoType type, int amount )
 		{
-			var iType = (int)type;
+			int iType = (int)type;
 			if ( !Host.IsServer ) return false;
 			if ( Ammo == null ) return false;
 
@@ -50,7 +50,7 @@ namespace TTTGamemode
 		{
 			if ( Ammo == null ) return 0;
 
-			var available = AmmoCount( type );
+			int available = AmmoCount( type );
 			amount = Math.Min( available, amount );
 
 			SetAmmo( type, available - amount );

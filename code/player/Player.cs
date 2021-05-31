@@ -5,22 +5,22 @@ using System.Linq;
 
 namespace TTTGamemode
 {
-	public enum Role { None, Innocent, Detective, Traitor }
+	public enum RoleType { None, Innocent, Detective, Traitor }
 	
-    public partial class TTTPlayer : Player
+    public partial class Player : Sandbox.Player
     {
 	    public Body Body { get; set; }
-        public Role CurrentRole { get; set; }
+        public RoleType Role { get; set; }
         public int Credits { get; set; } = 0;
 
         private TimeSince _timeSinceDropped;
         private DamageInfo _lastDamageInfo;
 
-        public TTTPlayer()
+        public Player()
         {
 	        Inventory = new Inventory(this);
 
-            CurrentRole = Role.None;
+            Role = RoleType.None;
             Credits = 0;
         }
 
@@ -83,7 +83,7 @@ namespace TTTGamemode
 
 	        TickPlayerUse();
 
-	        var controller = GetActiveController();
+	        PawnController controller = GetActiveController();
 	        controller?.Simulate( client, this, GetActiveAnimator() );
         }
 
@@ -105,24 +105,24 @@ namespace TTTGamemode
             if (!Input.Pressed(InputButton.Use))
                 return;
 
-            var trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * 80f)
+            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * 80f)
                 .HitLayer(CollisionLayer.Debris)
                 .Ignore(ActiveChild)
                 .Ignore(this)
                 .Radius(2)
                 .Run();
 
-            if (trace.Hit && trace.Entity is Body body && body.TttPlayer != null)
+            if (trace.Hit && trace.Entity is Body body && body.Player != null)
             {
                 // Scoop up the credits on the body
-                if (CurrentRole == Role.Traitor)
+                if (Role == RoleType.Traitor)
                 {
-                    Credits += body.TttPlayer.Credits;
-                    body.TttPlayer.Credits = 0;
+                    Credits += body.Player.Credits;
+                    body.Player.Credits = 0;
                 }
 
                 // Allow traitors to inspect body without identifying it by holding crouch
-                if (CurrentRole != Role.Traitor || !Input.Down(InputButton.Duck))
+                if (Role != RoleType.Traitor || !Input.Down(InputButton.Duck))
                 {
                     body.Identified = true;
                 }
@@ -139,7 +139,7 @@ namespace TTTGamemode
                 info.Damage *= 2.0f;
             }
 
-            if (info.Attacker is TTTPlayer attacker && attacker != this)
+            if (info.Attacker is Player attacker && attacker != this)
             {
                 attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
@@ -157,7 +157,7 @@ namespace TTTGamemode
             }
 
             // Register player damage with the Karma system
-            Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
+            Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as Player, this, info.Damage);
 
             _lastDamageInfo = info;
 
@@ -166,18 +166,18 @@ namespace TTTGamemode
 
         private void CreateBodyOnServer(Vector3 force, int forceBone)
         {
-	        // TTT TODO: Create a ragdoll.
-            // var ragdoll = new PlayerCorpse
-            // {
-            //     Pos = Pos,
-            //     Rot = Rot
-            // };
-            //
-            // ragdoll.CopyFrom(this);
-            // ragdoll.ApplyForceToBone(force, forceBone);
-            // ragdoll.Player = this;
-            //
-            // Body = ragdoll;
+	        // TODO: Create a ragdoll.
+	        // var ragdoll = new PlayerCorpse
+	        // {
+	        //     Pos = Pos,
+	        //     Rot = Rot
+	        // };
+	        //
+	        // ragdoll.CopyFrom(this);
+	        // ragdoll.ApplyForceToBone(force, forceBone);
+	        // ragdoll.Player = this;
+	        //
+	        // Body = ragdoll;
         }
 
         public void RemoveBodyEntity()

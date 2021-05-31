@@ -47,11 +47,11 @@ public class Crosshair : Panel
 
 	public Panel SetupCrosshair(Properties crosshairProperties)
 	{
-		var crossHairLinesToCreate = crosshairProperties.ShowTop ? 4 : 3;
-		for ( var i = 0; i < crossHairLinesToCreate; ++i )
+		int crossHairLinesToCreate = crosshairProperties.ShowTop ? 4 : 3;
+		for ( int i = 0; i < crossHairLinesToCreate; ++i )
 		{
-			var isHorizontal = i % 2 == 0;
-			var crossHairLine = Add.Panel("element");
+			bool isHorizontal = i % 2 == 0;
+			Panel crossHairLine = Add.Panel("element");
 			crossHairLine.Style.BackgroundColor = crosshairProperties.Color;
 			crossHairLine.Style.Width = isHorizontal
 				? crosshairProperties.Size
@@ -85,7 +85,7 @@ public class Crosshair : Panel
 		
 		if ( crosshairProperties.ShowDot )
 		{
-			var dot = Add.Panel( "element" );
+			Panel dot = Add.Panel( "element" );
 			dot.Style.BackgroundColor = crosshairProperties.Color;
 			dot.Style.Width = crosshairProperties.Thickness;
 			dot.Style.Height = crosshairProperties.Thickness;

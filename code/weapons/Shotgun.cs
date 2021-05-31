@@ -71,9 +71,9 @@ namespace TTTGamemode
 			if ( AmmoClip >= ClipSize )
 				return;
 
-			if ( Owner is TTTPlayer player )
+			if ( Owner is Player player )
 			{
-				var ammo = player.TakeAmmo( AmmoType, 1 );
+				int ammo = player.TakeAmmo( AmmoType, 1 );
 				if ( ammo == 0 )
 					return;
 
