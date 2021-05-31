@@ -3,7 +3,7 @@ using System;
 
 namespace TTTGamemode
 {
-	[Library( "hdn_knife", Title = "Knife" )]
+	[Library( "ttt_knife", Title = "Knife" )]
 	partial class Knife : Weapon
 	{
 		public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";

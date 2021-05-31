@@ -2,7 +2,7 @@
 
 namespace TTTGamemode
 {
-	[Library( "hdn_smg", Title = "MP5" )]
+	[Library( "ttt_smg", Title = "MP5" )]
 	partial class SMG : Weapon
 	{
 		public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";

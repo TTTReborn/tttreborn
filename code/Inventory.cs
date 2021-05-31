@@ -14,16 +14,15 @@ namespace TTTGamemode
 		public override bool Add( Entity entity, bool makeActive = false )
 		{
 			var player = Owner as TTTPlayer;
-			var weapon = entity as Weapon;
 
-			if ( weapon != null && IsCarryingType( entity.GetType() ) )
+			if ( entity is Weapon weapon && IsCarryingType( entity.GetType() ) )
 			{
 				var ammo = weapon.AmmoClip;
 				var ammoType = weapon.AmmoType;
 
 				if ( ammo > 0 )
 				{
-					player.GiveAmmo( ammoType, ammo );
+					player?.GiveAmmo( ammoType, ammo );
 				}
 
 				entity.Delete();

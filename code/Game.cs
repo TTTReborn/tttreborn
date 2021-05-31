@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TTTGamemode
 {
-    [Library("TTT", Title = "Trouble in Terrorist Town")]
+    [Library("ttt", Title = "Trouble in Terrorist Town")]
     partial class Game : Sandbox.Game
     {
         public enum Round { Waiting, PreRound, InProgress, PostRound }
@@ -66,27 +66,27 @@ namespace TTTGamemode
                     Random random = new Random();
 
                     // SELECT DETECTIVES
-                    for (int i = 0; i < detectiveCount; i++)
+                    for (var i = 0; i < detectiveCount; i++)
                     {
-                        int randomId = random.Next(players.Count);
+                        var randomId = random.Next(players.Count);
                         players[randomId].CurrentRole = Role.Detective;
 
                         players.RemoveAt(randomId);
                     }
 
                     // SELECT TRAITORS
-                    for (int i = 0; i < traitorCount; i++)
+                    for (var i = 0; i < traitorCount; i++)
                     {
-                        int randomId = random.Next(players.Count);
+                        var randomId = random.Next(players.Count);
                         players[randomId].CurrentRole = Role.Traitor;
 
                         players.RemoveAt(randomId);
                     }
 
                     // SET REMAINING PLAYERS TO INNOCENT
-                    for (int i = 0; i < players.Count; i++)
+                    foreach (var player in players)
                     {
-                        players[i].CurrentRole = Role.Innocent;
+	                    player.CurrentRole = Role.Innocent;
                     }
 
                     Karma.IsTracking = true;
@@ -128,17 +128,17 @@ namespace TTTGamemode
             bool traitorsDead = true;
             bool innocentsDead = true;
 
-            TTTPlayer tttPlayer;
-
             // Check for alive players
             for (int i = 0; i < Sandbox.Player.All.Count; i++)
             {
-                tttPlayer = Sandbox.Player.All[i] as TTTPlayer;
+	            TTTPlayer player = Sandbox.Player.All[i] as TTTPlayer;
 
-                if (tttPlayer.LifeState == LifeState.Alive)
+                if ( player == null ) continue;
+
+                if (player.LifeState == LifeState.Alive)
                     continue;
 
-                if (tttPlayer.CurrentRole == Role.Traitor)
+                if (player.CurrentRole == Role.Traitor)
                 {
                     traitorsDead = false;
                 }

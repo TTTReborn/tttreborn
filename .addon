@@ -16,7 +16,7 @@
 		"gamemodes":
 		[
 				{
-						"name": "TTT",
+						"name": "ttt",
 						"title": "Trouble in Terrorist Town",
 						"description": "Find and kill the traitors before they kill you"
 				}
