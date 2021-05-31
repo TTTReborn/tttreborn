@@ -5,10 +5,11 @@ using System.Linq;
 
 namespace TTTGamemode
 {
-	public enum RoleType { None, Innocent, Detective, Traitor }
-	
-    public partial class Player : Sandbox.Player
+
+	public partial class Player : Sandbox.Player
     {
+	    public enum RoleType { None, Innocent, Detective, Traitor }
+	    
 	    public Body Body { get; set; }
         public RoleType Role { get; set; }
         public int Credits { get; set; } = 0;

@@ -69,7 +69,7 @@
 	                for (int i = 0; i < detectiveCount; i++)
 	                {
 	                    int randomId = random.Next(_players.Count);
-	                    _players[randomId].Role = RoleType.Detective;
+	                    _players[randomId].Role = TTTGamemode.Player.RoleType.Detective;
 
 	                    _players.RemoveAt(randomId);
 	                }
@@ -78,7 +78,7 @@
 	                for (int i = 0; i < traitorCount; i++)
 	                {
 	                    int randomId = random.Next(_players.Count);
-	                    _players[randomId].Role = RoleType.Traitor;
+	                    _players[randomId].Role = TTTGamemode.Player.RoleType.Traitor;
 
 	                    _players.RemoveAt(randomId);
 	                }
@@ -86,7 +86,7 @@
 	                // SET REMAINING PLAYERS TO INNOCENT
 	                for ( int i = 0; i < _players.Count; ++i )
 	                {
-	                    _players[i].Role = RoleType.Innocent;
+	                    _players[i].Role = TTTGamemode.Player.RoleType.Innocent;
 	                }
 
 	                Karma.IsTracking = true;
@@ -136,7 +136,7 @@
 	            if (player.LifeState == LifeState.Alive)
 	                continue;
 
-	            if (player.Role == RoleType.Traitor)
+	            if (player.Role == TTTGamemode.Player.RoleType.Traitor)
 	            {
 	                traitorsDead = false;
 	            }
