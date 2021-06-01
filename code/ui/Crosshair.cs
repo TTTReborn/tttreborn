@@ -1,12 +1,14 @@
 ﻿using Sandbox.UI;
 
+namespace TTTReborn.UI
+{
 public class Crosshair : Panel
 {
     public class Properties
     {
         public bool ShowTop { get; private set; }
         public bool ShowDot { get; private set; }
-        public bool ShowOutline { get; private set;  }
+        public bool ShowOutline { get; private set; }
         
         public uint Size { get; private set;  }
         public uint Thickness { get; private set; }
@@ -49,7 +51,7 @@ public class Crosshair : Panel
     {
         int crossHairLinesToCreate = crosshairProperties.ShowTop ? 4 : 3;
 
-        for (int i = 0; i < crossHairLinesToCreate; ++i)
+        for (int i = 0; i < crossHairLinesToCreate; i++)
         {
             bool isHorizontal = i % 2 == 0;
             Panel crossHairLine = Add.Panel("element");
@@ -97,4 +99,6 @@ public class Crosshair : Panel
         
         return this;
     }
+}
+
 }
