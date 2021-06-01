@@ -150,7 +150,10 @@ public partial class TTTPlayer : Sandbox.Player
             attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
         }
 
-        TookDamage(info.Weapon.IsValid() ? info.Weapon.WorldPos : info.Attacker.WorldPos);
+        if (info.Weapon != null)
+        {
+            TookDamage(info.Weapon.IsValid() ? info.Weapon.WorldPos : info.Attacker.WorldPos);
+        }
 
         // Play pain sounds
         if ((info.Flags & DamageFlags.Fall) == DamageFlags.Fall)

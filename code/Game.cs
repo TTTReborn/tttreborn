@@ -215,9 +215,9 @@ partial class Game : Sandbox.Game
 
     public override void PostLevelLoaded()
     {
-        StartGameTimer();
-
         base.PostLevelLoaded();
+
+        StartGameTimer();
     }
 
     public override void OnKilled(Entity entity)

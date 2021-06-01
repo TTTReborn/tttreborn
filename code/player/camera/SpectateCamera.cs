@@ -27,8 +27,10 @@ public partial class SpectateCamera : Sandbox.Camera
 
     public override void Update()
     {
-        if (Local.Pawn is not Sandbox.Player player)
+        if (Local.Pawn is not TTTPlayer player)
+        {
             return;
+        }
 
         // TODO: Rework spectate camera logic.
         if (TargetPlayer == null || !TargetPlayer.IsValid() || Local.Client.Input.Pressed(InputButton.Attack1))
