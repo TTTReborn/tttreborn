@@ -3,9 +3,11 @@ using Sandbox;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TTTReborn.UI;
 
-namespace TTTGamemode
+using TTTReborn.UI;
+using TTTReborn.Player;
+
+namespace TTTReborn.Gamemode
 {
     [Library("tttreborn", Title = "Trouble in Terry's Town")]
     partial class Game : Sandbox.Game
@@ -63,14 +65,14 @@ namespace TTTGamemode
                     int detectiveCount = (int) (All.Count * 0.125f);
                     int traitorCount = (int) Math.Max(All.Count * 0.25f, 1f);
 
-                    List<Player> _players = Client.All.ToList().ConvertAll(p => p.Pawn as TTTGamemode.Player);
+                    List<TTTPlayer> _players = Client.All.ToList().ConvertAll(p => p.Pawn as TTTPlayer);
                     Random random = new Random();
 
                     // SELECT DETECTIVES
                     for (int i = 0; i < detectiveCount; i++)
                     {
                         int randomId = random.Next(_players.Count);
-                        _players[randomId].Role = TTTGamemode.Player.RoleType.Detective;
+                        _players[randomId].Role = TTTPlayer.RoleType.Detective;
 
                         _players.RemoveAt(randomId);
                     }
@@ -79,7 +81,7 @@ namespace TTTGamemode
                     for (int i = 0; i < traitorCount; i++)
                     {
                         int randomId = random.Next(_players.Count);
-                        _players[randomId].Role = TTTGamemode.Player.RoleType.Traitor;
+                        _players[randomId].Role = TTTPlayer.RoleType.Traitor;
 
                         _players.RemoveAt(randomId);
                     }
@@ -87,7 +89,7 @@ namespace TTTGamemode
                     // SET REMAINING PLAYERS TO INNOCENT
                     for (int i = 0; i < _players.Count; i++)
                     {
-                        _players[i].Role = TTTGamemode.Player.RoleType.Innocent;
+                        _players[i].Role = TTTPlayer.RoleType.Innocent;
                     }
 
                     Karma.IsTracking = true;
@@ -108,7 +110,7 @@ namespace TTTGamemode
 
         private void CheckMinimumPlayers()
         {
-            if (Player.All.Count >= TTTMinPlayers)
+            if (Sandbox.Player.All.Count >= TTTMinPlayers)
             {
                 if (CurrentRound == Round.Waiting)
                 {
@@ -132,12 +134,12 @@ namespace TTTGamemode
             // Check for alive players
             for (int i = 0; i < Client.All.Count; i++)
             {
-                Player player = Client.All[i].Pawn as TTTGamemode.Player;
+                TTTPlayer player = Client.All[i].Pawn as TTTPlayer;
 
                 if (player.LifeState == LifeState.Alive)
                     continue;
 
-                if (player.Role == TTTGamemode.Player.RoleType.Traitor)
+                if (player.Role == TTTPlayer.RoleType.Traitor)
                 {
                     traitorsDead = false;
                 }
@@ -242,7 +244,7 @@ namespace TTTGamemode
             //  return;
             // }
             
-            Player player = new TTTGamemode.Player();
+            TTTPlayer player = new TTTPlayer();
             Karma.RegisterPlayer(player);
             client.Pawn = player;
 

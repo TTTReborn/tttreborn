@@ -2,7 +2,9 @@ using System;
 using Sandbox;
 using System.Collections.Generic;
 
-namespace TTTGamemode
+using TTTReborn.Player;
+
+namespace TTTReborn.Gamemode
 {
     public partial class KarmaSystem: NetworkComponent
     {
@@ -34,7 +36,7 @@ namespace TTTGamemode
         [Net] 
         public bool IsTracking { get; set; }
 
-        public void RegisterPlayer(Player player)
+        public void RegisterPlayer(TTTPlayer player)
         {
             // TODO: Once network dictionaries are supported, implement.
             // if (KarmaRecords.ContainsKey(player))
@@ -43,7 +45,7 @@ namespace TTTGamemode
             // KarmaRecords[player] = TTTKarmaDefault;
         }
 
-        public void RegisterPlayerDamage(Player attacker, Player victim, float damage)
+        public void RegisterPlayerDamage(TTTPlayer attacker, TTTPlayer victim, float damage)
         {
             if (!IsTracking)
                 return;
@@ -59,7 +61,7 @@ namespace TTTGamemode
             // DamageRecords[(attacker.SteamId, victim.SteamId)] = updatedDamage;
         }
 
-        public void UpdatePlayerKarma(Player player, int delta)
+        public void UpdatePlayerKarma(TTTPlayer player, int delta)
         {
             UpdateSteamIdKarma(player.GetClientOwner().SteamId, delta);
         }
@@ -98,7 +100,7 @@ namespace TTTGamemode
             // DamageRecords = new();
         }
         
-        public bool IsBanned(Player player)
+        public bool IsBanned(TTTPlayer player)
         {
             // TODO: Once network dictionaries are supported, implement. Return false meanwhile...
             // return (KarmaRecords[player.SteamId] < TTTKarmaMin && TTTKarmaBan);

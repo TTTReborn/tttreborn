@@ -51,7 +51,7 @@ public class Crosshair : Panel
     {
         int crossHairLinesToCreate = crosshairProperties.ShowTop ? 4 : 3;
 
-        for (int i = 0; i < crossHairLinesToCreate; ++i)
+        for (int i = 0; i < crossHairLinesToCreate; i++)
         {
             bool isHorizontal = i % 2 == 0;
             Panel crossHairLine = Add.Panel("element");
