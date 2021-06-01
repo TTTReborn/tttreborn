@@ -1,0 +1,11 @@
+﻿Crosshair {
+  position: absolute;
+  transform: translateX( -50% ) translateY( -50% );
+  left: 50%;
+  top: 50%;
+  
+  .element {
+    position: absolute;
+    transform: translateX( -50% ) translateY( -50% );
+  }
+}

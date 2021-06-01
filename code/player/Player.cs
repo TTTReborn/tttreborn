@@ -5,12 +5,13 @@ using System.Linq;
 
 namespace TTTGamemode
 {
-    public partial class Player : BasePlayer
-    {
-        public enum Role { None, Innocent, Detective, Traitor }
 
-        public Body Body { get; set; }
-        public Role Role { get; set; } = Player.Role.None;
+	public partial class Player : Sandbox.Player
+    {
+	    public enum RoleType { None, Innocent, Detective, Traitor }
+	    
+	    public Body Body { get; set; }
+        public RoleType Role { get; set; }
         public int Credits { get; set; } = 0;
 
         private TimeSince _timeSinceDropped;
@@ -18,11 +19,26 @@ namespace TTTGamemode
 
         public Player()
         {
-            Inventory = new Inventory(this);
-            Animator = new StandardPlayerAnimator();
+	        Inventory = new Inventory(this);
 
-            Role = Role.None;
+            Role = RoleType.None;
             Credits = 0;
+        }
+
+        public override void Respawn()
+        {
+	        SetModel( "models/citizen/citizen.vmdl" );
+
+	        Controller = new WalkController();
+	        Animator = new StandardPlayerAnimator();
+	        Camera = new FirstPersonCamera();
+	        
+	        EnableAllCollisions = true;
+	        EnableDrawing = true;
+	        EnableHideInFirstPerson = true;
+	        EnableShadowInFirstPerson = true;
+	        
+	        base.Respawn();
         }
 
         public bool IsSpectator
@@ -42,13 +58,6 @@ namespace TTTGamemode
             };
         }
 
-        public override void Respawn()
-        {
-            RemoveBodyEntity();
-
-            base.Respawn();
-        }
-
         public override void OnKilled()
         {
             base.OnKilled();
@@ -58,27 +67,25 @@ namespace TTTGamemode
             MakeSpectator();
         }
 
-        protected override void Tick()
+        public override void Simulate( Client client )
         {
-            TickActiveChild();
+	        SimulateActiveChild( client, ActiveChild );
 
-            if (Input.ActiveChild != null)
-            {
-                ActiveChild = Input.ActiveChild;
-            }
+	        if ( Input.ActiveChild != null )
+	        {
+		        ActiveChild = Input.ActiveChild;
+	        }
 
-            if (LifeState != LifeState.Alive)
-                return;
+	        if ( LifeState != LifeState.Alive )
+	        {
 
-            TickPlayerUse();
+		        return;
+	        }
 
-            if (IsServer)
-            {
-                using (Prediction.Off())
-                {
-                    TickInspectBody();
-                }
-            }
+	        TickPlayerUse();
+
+	        PawnController controller = GetActiveController();
+	        controller?.Simulate( client, this, GetActiveAnimator() );
         }
 
         protected override void UseFail()
@@ -99,7 +106,7 @@ namespace TTTGamemode
             if (!Input.Pressed(InputButton.Use))
                 return;
 
-            var trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * 80f)
+            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * 80f)
                 .HitLayer(CollisionLayer.Debris)
                 .Ignore(ActiveChild)
                 .Ignore(this)
@@ -109,14 +116,14 @@ namespace TTTGamemode
             if (trace.Hit && trace.Entity is Body body && body.Player != null)
             {
                 // Scoop up the credits on the body
-                if (Role == Role.Traitor)
+                if (Role == RoleType.Traitor)
                 {
                     Credits += body.Player.Credits;
                     body.Player.Credits = 0;
                 }
 
                 // Allow traitors to inspect body without identifying it by holding crouch
-                if (Role != Role.Traitor || !Input.Down(InputButton.Crouch))
+                if (Role != RoleType.Traitor || !Input.Down(InputButton.Duck))
                 {
                     body.Identified = true;
                 }
@@ -151,7 +158,7 @@ namespace TTTGamemode
             }
 
             // Register player damage with the Karma system
-            Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker, this, info.Damage);
+            Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as Player, this, info.Damage);
 
             _lastDamageInfo = info;
 
@@ -160,17 +167,18 @@ namespace TTTGamemode
 
         private void CreateBodyOnServer(Vector3 force, int forceBone)
         {
-            var ragdoll = new PlayerCorpse
-            {
-                Pos = Pos,
-                Rot = Rot
-            };
-
-            ragdoll.CopyFrom(this);
-            ragdoll.ApplyForceToBone(force, forceBone);
-            ragdoll.Player = this;
-
-            Body = ragdoll;
+	        // TODO: Create a ragdoll.
+	        // var ragdoll = new PlayerCorpse
+	        // {
+	        //     Pos = Pos,
+	        //     Rot = Rot
+	        // };
+	        //
+	        // ragdoll.CopyFrom(this);
+	        // ragdoll.ApplyForceToBone(force, forceBone);
+	        // ragdoll.Player = this;
+	        //
+	        // Body = ragdoll;
         }
 
         public void RemoveBodyEntity()
@@ -187,14 +195,12 @@ namespace TTTGamemode
         {
             Sound.FromScreen("dm.ui_attacker")
                 .SetPitch(1 + inverseHealth * 1);
-
-            HitIndicator.Current?.OnHit(position, amount);
         }
 
         [ClientRpc]
         public void TookDamage(Vector3 position)
         {
-            DamageIndicator.Current?.OnHit(position);
+	        
         }
 
         [ClientRpc]
@@ -203,11 +209,11 @@ namespace TTTGamemode
             
         }
 
-        protected override void OnRemove()
+        protected override void OnDestroy()
         {
             RemoveBodyEntity();
 
-            base.OnRemove();
+            base.OnDestroy();
         }
     }
 }

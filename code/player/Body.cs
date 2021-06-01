@@ -9,7 +9,7 @@ namespace TTTGamemode
 {
     public class Body : ModelEntity
     {
-        public Player Player { get; set; }
+        public TTTGamemode.Player Player { get; set; }
         public bool Identified { get; set; } = false;
 
         public Body()
@@ -33,16 +33,16 @@ namespace TTTGamemode
             this.CopyBonesFrom(player);
             this.SetRagdollVelocityFrom(player);
 
-            foreach (var child in player.Children)
+            foreach (Entity child in player.Children)
             {
                 if (child is ModelEntity e)
                 {
-                    var model = e.GetModelName();
+                    string model = e.GetModelName();
 
                     if (model != null && !model.Contains("clothes"))
                         continue;
 
-                    var clothing = new ModelEntity();
+                    ModelEntity clothing = new ModelEntity();
                     clothing.SetModel(model);
                     clothing.SetParent(this, true);
                 }

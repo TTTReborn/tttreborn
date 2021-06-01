@@ -1,5 +1,5 @@
 {
-		"name": "Trouble in Terrorist Town",
+		"name": "Trouble in Terry's Town",
 		"version": "1.0",
 		"sharedassets": "*.*",
 
@@ -16,8 +16,8 @@
 		"gamemodes":
 		[
 				{
-						"name": "TTT",
-						"title": "Trouble in Terrorist Town",
+						"name": "tttreborn",
+						"title": "Trouble in Terry's Town",
 						"description": "Find and kill the traitors before they kill you"
 				}
 		]
