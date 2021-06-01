@@ -5,7 +5,7 @@ public partial class Hud : HudEntity<RootPanel>
 {
 	public Hud()
 	{
-		if ( !IsClient )
+		if (!IsClient)
 			return;
 
 		// s&box defaults
@@ -18,13 +18,13 @@ public partial class Hud : HudEntity<RootPanel>
 	}
 
 	[ClientRpc]
-	public void OnPlayerDied( string victim, string attacker = null )
+	public void OnPlayerDied(string victim, string attacker = null)
 	{
 		Host.AssertClient();
 	}
 
 	[ClientRpc]
-	public void ShowDeathScreen( string attackerName )
+	public void ShowDeathScreen(string attackerName)
 	{
 		Host.AssertClient();
 	}

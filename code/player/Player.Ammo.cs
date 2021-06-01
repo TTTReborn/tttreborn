@@ -4,57 +4,72 @@ using System.Collections.Generic;
 
 namespace TTTGamemode
 {
-	partial class Player
-	{
-		[Net]
-		public List<int> Ammo { get; set; } = new();
+    partial class Player
+    {
+        [Net]
+        public List<int> Ammo { get; set; } = new();
 
-		public void ClearAmmo()
-		{
-			Ammo.Clear();
-		}
+        public void ClearAmmo()
+        {
+            Ammo.Clear();
+        }
 
-		public int AmmoCount( AmmoType type )
-		{
-			int iType = (int)type;
-			if ( Ammo == null ) return 0;
-			if ( Ammo.Count <= iType ) return 0;
-			return Ammo[(int)type];
-		}
+        public int AmmoCount(AmmoType type)
+        {
+            int iType = (int) type;
 
-		public bool SetAmmo( AmmoType type, int amount )
-		{
-			int iType = (int)type;
-			if ( !Host.IsServer ) return false;
-			if ( Ammo == null ) return false;
+            if (Ammo == null || Ammo.Count <= iType)
+            {
+                return 0;
+            }
 
-			while ( Ammo.Count <= iType )
-			{
-				Ammo.Add( 0 );
-			}
+            return Ammo[iType];
+        }
 
-			Ammo[(int)type] = amount;
-			return true;
-		}
+        public bool SetAmmo(AmmoType type, int amount)
+        {
+            int iType = (int) type;
 
-		public bool GiveAmmo( AmmoType type, int amount )
-		{
-			if ( !Host.IsServer ) return false;
-			if ( Ammo == null ) return false;
+            if (!Host.IsServer || Ammo == null)
+            {
+                return false;
+            }
 
-			SetAmmo( type, AmmoCount( type ) + amount );
-			return true;
-		}
+            while (Ammo.Count <= iType)
+            {
+                Ammo.Add(0);
+            }
 
-		public int TakeAmmo( AmmoType type, int amount )
-		{
-			if ( Ammo == null ) return 0;
+            Ammo[iType] = amount;
 
-			int available = AmmoCount( type );
-			amount = Math.Min( available, amount );
+            return true;
+        }
 
-			SetAmmo( type, available - amount );
-			return amount;
-		}
-	}
+        public bool GiveAmmo(AmmoType type, int amount)
+        {
+            if (!Host.IsServer || Ammo == null)
+            {
+                return false;
+            }
+
+            SetAmmo(type, AmmoCount(type) + amount);
+
+            return true;
+        }
+
+        public int TakeAmmo(AmmoType type, int amount)
+        {
+            if (Ammo == null)
+            {
+                return 0;
+            }
+
+            int available = AmmoCount(type);
+            amount = Math.Min(available, amount);
+
+            SetAmmo(type, available - amount);
+
+            return amount;
+        }
+    }
 }

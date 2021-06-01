@@ -23,7 +23,7 @@ namespace TTTGamemode
 
         public void RemoveClothing()
         {
-            Clothing.ForEach((entity) => entity.Delete());
+            Clothing.ForEach(entity => entity.Delete());
             Clothing.Clear();
         }
     }

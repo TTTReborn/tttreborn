@@ -36,11 +36,11 @@ namespace TTTGamemode
 
         public void RegisterPlayer(Player player)
         {
-	        // TODO: Once network dictionaries are supported, implement.
-	        // if (KarmaRecords.ContainsKey(player))
-		       //  return;
-	        //
-	        // KarmaRecords[player] = TTTKarmaDefault;
+            // TODO: Once network dictionaries are supported, implement.
+            // if (KarmaRecords.ContainsKey(player))
+               //  return;
+            //
+            // KarmaRecords[player] = TTTKarmaDefault;
         }
 
         public void RegisterPlayerDamage(Player attacker, Player victim, float damage)
@@ -83,26 +83,26 @@ namespace TTTGamemode
 
         public void ResolveKarma()
         {
-	        if (IsTracking)
-	        {
-		        // TODO: Once network dictionaries are supported, implement.
-		        // Update karma records based on the damage done this round
-		        // foreach (var record in DamageRecords)
-		        // {
-			       //  UpdateSteamIdKarma(record.Key.Item1, record.Value);
-		        // }
-	        }
+            if (IsTracking)
+            {
+                // TODO: Once network dictionaries are supported, implement.
+                // Update karma records based on the damage done this round
+                // foreach (var record in DamageRecords)
+                // {
+                   //  UpdateSteamIdKarma(record.Key.Item1, record.Value);
+                // }
+            }
 
-	        // TODO: Once network dictionaries are supported, implement.
-	        // Clear all damage records
-	        // DamageRecords = new();
+            // TODO: Once network dictionaries are supported, implement.
+            // Clear all damage records
+            // DamageRecords = new();
         }
         
         public bool IsBanned(Player player)
         {
-	        // TODO: Once network dictionaries are supported, implement. Return false meanwhile...
-	        // return (KarmaRecords[player.SteamId] < TTTKarmaMin && TTTKarmaBan);
-	        return false;
+            // TODO: Once network dictionaries are supported, implement. Return false meanwhile...
+            // return (KarmaRecords[player.SteamId] < TTTKarmaMin && TTTKarmaBan);
+            return false;
         }
     }
 }

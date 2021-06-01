@@ -1,260 +1,260 @@
-﻿	using System;
-	using Sandbox;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Threading.Tasks;
+﻿using System;
+using Sandbox;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-	namespace TTTGamemode
-	{
-	[Library("tttreborn", Title = "Trouble in Terry's Town")]
-	partial class Game : Sandbox.Game
-	{
-	    public enum Round { Waiting, PreRound, InProgress, PostRound }
+namespace TTTGamemode
+{
+    [Library("tttreborn", Title = "Trouble in Terry's Town")]
+    partial class Game : Sandbox.Game
+    {
+        public enum Round { Waiting, PreRound, InProgress, PostRound }
 
-	    public static Game Instance { get => Current as Game; }
+        public static Game Instance { get => Current as Game; }
 
-	    [ServerVar("ttt_min_players", Help = "The minimum players required to start.")]
-	    public static int TTTMinPlayers { get; set; } = 2;
+        [ServerVar("ttt_min_players", Help = "The minimum players required to start.")]
+        public static int TTTMinPlayers { get; set; } = 2;
 
-	    [ServerVar("ttt_preround_timer", Help = "The amount of time allowed for preparation.")]
-	    public static int TTTPreRoundTime { get; set; } = 20;
+        [ServerVar("ttt_preround_timer", Help = "The amount of time allowed for preparation.")]
+        public static int TTTPreRoundTime { get; set; } = 20;
 
-	    [ServerVar("ttt_round_timer", Help = "The amount of time allowed for the main round.")]
-	    public static int TTTRoundTime { get; set; } = 300;
+        [ServerVar("ttt_round_timer", Help = "The amount of time allowed for the main round.")]
+        public static int TTTRoundTime { get; set; } = 300;
 
-	    [ServerVar("ttt_postround_timer", Help = "The amount of time before the next round starts.")]
-	    public static int TTTPostRoundTime { get; set; } = 10;
+        [ServerVar("ttt_postround_timer", Help = "The amount of time before the next round starts.")]
+        public static int TTTPostRoundTime { get; set; } = 10;
 
-	    [ServerVar("ttt_kill_time_reward", Help = "The amount of extra time given to traitors for killing an innocent.")]
-	    public static int TTTKillTimeReward { get; set; } = 30;
+        [ServerVar("ttt_kill_time_reward", Help = "The amount of extra time given to traitors for killing an innocent.")]
+        public static int TTTKillTimeReward { get; set; } = 30;
 
-	    [Net] public Round CurrentRound { get; private set; }
-	    [Net] public int TimeRemaining { get; private set; }
+        [Net] public Round CurrentRound { get; private set; }
+        [Net] public int TimeRemaining { get; private set; }
 
-	    public KarmaSystem Karma = new KarmaSystem();
-	    
-	    public Game()
-	    {
-	        if ( IsServer )
-	        {
-				new Hud();
-	        }
-	    }
+        public KarmaSystem Karma = new KarmaSystem();
 
-	    private void ChangeRound(Round round)
-	    {
-	        switch (round)
-	        {
-	            case Game.Round.Waiting:
-	                TimeRemaining = 0;
-	                Karma.IsTracking = false;
+        public Game()
+        {
+            if (IsServer)
+            {
+                new Hud();
+            }
+        }
 
-	                break;
+        private void ChangeRound(Round round)
+        {
+            switch (round)
+            {
+                case Game.Round.Waiting:
+                    TimeRemaining = 0;
+                    Karma.IsTracking = false;
 
-	            case Game.Round.PreRound:
-	                TimeRemaining = TTTPreRoundTime;
+                    break;
 
-	                break;
+                case Game.Round.PreRound:
+                    TimeRemaining = TTTPreRoundTime;
 
-	            case Game.Round.InProgress:
-	                TimeRemaining = TTTRoundTime;
-	                
-	                int detectiveCount = (int) (All.Count * 0.125f);
-	                int traitorCount = (int) Math.Max(All.Count * 0.25f, 1f);
+                    break;
 
-	                List<Player> _players = Client.All.ToList().ConvertAll(p => p.Pawn as TTTGamemode.Player);
-	                Random random = new Random();
+                case Game.Round.InProgress:
+                    TimeRemaining = TTTRoundTime;
+                    
+                    int detectiveCount = (int) (All.Count * 0.125f);
+                    int traitorCount = (int) Math.Max(All.Count * 0.25f, 1f);
 
-	                // SELECT DETECTIVES
-	                for (int i = 0; i < detectiveCount; i++)
-	                {
-	                    int randomId = random.Next(_players.Count);
-	                    _players[randomId].Role = TTTGamemode.Player.RoleType.Detective;
+                    List<Player> _players = Client.All.ToList().ConvertAll(p => p.Pawn as TTTGamemode.Player);
+                    Random random = new Random();
 
-	                    _players.RemoveAt(randomId);
-	                }
+                    // SELECT DETECTIVES
+                    for (int i = 0; i < detectiveCount; i++)
+                    {
+                        int randomId = random.Next(_players.Count);
+                        _players[randomId].Role = TTTGamemode.Player.RoleType.Detective;
 
-	                // SELECT TRAITORS
-	                for (int i = 0; i < traitorCount; i++)
-	                {
-	                    int randomId = random.Next(_players.Count);
-	                    _players[randomId].Role = TTTGamemode.Player.RoleType.Traitor;
+                        _players.RemoveAt(randomId);
+                    }
 
-	                    _players.RemoveAt(randomId);
-	                }
+                    // SELECT TRAITORS
+                    for (int i = 0; i < traitorCount; i++)
+                    {
+                        int randomId = random.Next(_players.Count);
+                        _players[randomId].Role = TTTGamemode.Player.RoleType.Traitor;
 
-	                // SET REMAINING PLAYERS TO INNOCENT
-	                for ( int i = 0; i < _players.Count; ++i )
-	                {
-	                    _players[i].Role = TTTGamemode.Player.RoleType.Innocent;
-	                }
+                        _players.RemoveAt(randomId);
+                    }
 
-	                Karma.IsTracking = true;
+                    // SET REMAINING PLAYERS TO INNOCENT
+                    for (int i = 0; i < _players.Count; i++)
+                    {
+                        _players[i].Role = TTTGamemode.Player.RoleType.Innocent;
+                    }
 
-	                break;
+                    Karma.IsTracking = true;
 
-	            case Game.Round.PostRound:
-	                TimeRemaining = TTTPostRoundTime;
+                    break;
 
-	                Karma.ResolveKarma();
-	                Karma.IsTracking = false;
+                case Game.Round.PostRound:
+                    TimeRemaining = TTTPostRoundTime;
 
-	                break;
-	        }
+                    Karma.ResolveKarma();
+                    Karma.IsTracking = false;
 
-	        CurrentRound = round;
-	    }
+                    break;
+            }
 
-	    private void CheckMinimumPlayers()
-	    {
-	        if (Sandbox.Player.All.Count >= TTTMinPlayers)
-	        {
-	            if (CurrentRound == Round.Waiting)
-	            {
-	                ChangeRound(Round.PreRound);
-	            }
-	        }
-	        else if (CurrentRound != Round.Waiting)
-	        {
-	            ChangeRound(Round.Waiting);
-	        }
-	    }
+            CurrentRound = round;
+        }
 
-	    private void CheckRoundState()
-	    {
-	        if (CurrentRound != Round.InProgress)
-	            return;
+        private void CheckMinimumPlayers()
+        {
+            if (Player.All.Count >= TTTMinPlayers)
+            {
+                if (CurrentRound == Round.Waiting)
+                {
+                    ChangeRound(Round.PreRound);
+                }
+            }
+            else if (CurrentRound != Round.Waiting)
+            {
+                ChangeRound(Round.Waiting);
+            }
+        }
 
-	        bool traitorsDead = true;
-	        bool innocentsDead = true;
+        private void CheckRoundState()
+        {
+            if (CurrentRound != Round.InProgress)
+                return;
 
-	        // Check for alive players
-	        for (int i = 0; i < Client.All.Count; i++)
-	        {
-	            Player player = Client.All[i].Pawn as TTTGamemode.Player;
+            bool traitorsDead = true;
+            bool innocentsDead = true;
 
-	            if (player.LifeState == LifeState.Alive)
-	                continue;
+            // Check for alive players
+            for (int i = 0; i < Client.All.Count; i++)
+            {
+                Player player = Client.All[i].Pawn as TTTGamemode.Player;
 
-	            if (player.Role == TTTGamemode.Player.RoleType.Traitor)
-	            {
-	                traitorsDead = false;
-	            }
-	            else
-	            {
-	                innocentsDead = false;
-	            }
-	        }
+                if (player.LifeState == LifeState.Alive)
+                    continue;
 
-	        // End this round if there is just one team alive
-	        if (innocentsDead || traitorsDead)
-	        {
-	            ChangeRound(Round.PostRound);
-	        }
-	    }
+                if (player.Role == TTTGamemode.Player.RoleType.Traitor)
+                {
+                    traitorsDead = false;
+                }
+                else
+                {
+                    innocentsDead = false;
+                }
+            }
 
-	    private void UpdateRoundTimer()
-	    {
-	        if (CurrentRound == Round.Waiting)
-	            return;
+            // End this round if there is just one team alive
+            if (innocentsDead || traitorsDead)
+            {
+                ChangeRound(Round.PostRound);
+            }
+        }
 
-	        if (TimeRemaining == 0)
-	        {
-	            switch (CurrentRound)
-	            {
-	                case Round.PreRound:
-	                    ChangeRound(Round.InProgress);
+        private void UpdateRoundTimer()
+        {
+            if (CurrentRound == Round.Waiting)
+                return;
 
-	                    break;
+            if (TimeRemaining == 0)
+            {
+                switch (CurrentRound)
+                {
+                    case Round.PreRound:
+                        ChangeRound(Round.InProgress);
 
-	                case Round.InProgress:
-	                    ChangeRound(Round.PostRound);
+                        break;
 
-	                    break;
+                    case Round.InProgress:
+                        ChangeRound(Round.PostRound);
 
-	                case Round.PostRound:
-	                    ChangeRound(Round.PreRound);
+                        break;
 
-	                    break;
-	            }
-	        }
-	        else
-	        {
-	            TimeRemaining--;
-	        }
-	    }
-	    
-	    private async Task StartGameTimer()
-	    {
-	        while (true)
-	        {
-	            UpdateGameTimer();
-	            await Task.DelaySeconds(1);
-	        }
-	    }
+                    case Round.PostRound:
+                        ChangeRound(Round.PreRound);
 
-	    private void UpdateGameTimer()
-	    {
-	        CheckMinimumPlayers();
-	        CheckRoundState();
-	        UpdateRoundTimer();
-	    }
-	    
-	    public override void DoPlayerNoclip(Client client)
-	    {
-	        // Do nothing. The player can't noclip in this mode.
-	    }
+                        break;
+                }
+            }
+            else
+            {
+                TimeRemaining--;
+            }
+        }
+        
+        private async Task StartGameTimer()
+        {
+            while (true)
+            {
+                UpdateGameTimer();
+                await Task.DelaySeconds(1);
+            }
+        }
 
-	    public override void DoPlayerSuicide(Client client)
-	    {
-	        base.DoPlayerSuicide(client);
-	    }
+        private void UpdateGameTimer()
+        {
+            CheckMinimumPlayers();
+            CheckRoundState();
+            UpdateRoundTimer();
+        }
+        
+        public override void DoPlayerNoclip(Client client)
+        {
+            // Do nothing. The player can't noclip in this mode.
+        }
 
-	    public override void PostLevelLoaded()
-	    {
-	        _ = StartGameTimer();
+        public override void DoPlayerSuicide(Client client)
+        {
+            base.DoPlayerSuicide(client);
+        }
 
-	        base.PostLevelLoaded();
-	    }
+        public override void PostLevelLoaded()
+        {
+            StartGameTimer();
 
-	    public override void OnKilled(Entity entity)
-	    {
-	        Client client = entity.GetClientOwner();
-	        if ( client != null )
-	        {
-		        CheckRoundState();
-	        }
+            base.PostLevelLoaded();
+        }
 
-		    base.OnKilled(entity);
-	    }
+        public override void OnKilled(Entity entity)
+        {
+            Client client = entity.GetClientOwner();
+            if (client != null)
+            {
+                CheckRoundState();
+            }
 
-	    public override void ClientJoined(Client client)
-	    {
-			base.ClientJoined(client);
-	        
-	        // TODO: KarmaSystem is waiting on network dictionaries. 
-	        // Karma.RegisterPlayer(client);
-	        // if (Karma.IsBanned(player))
-	        // {
-		    //  KickPlayer(player);
-	        //
-		    //  return;
-	        // }
-	        
-	        Player player = new TTTGamemode.Player();
-	        Karma.RegisterPlayer(player);
-	        client.Pawn = player;
+            base.OnKilled(entity);
+        }
 
-	        player.Respawn();
-	    }
+        public override void ClientJoined(Client client)
+        {
+            base.ClientJoined(client);
+            
+            // TODO: KarmaSystem is waiting on network dictionaries. 
+            // Karma.RegisterPlayer(client);
+            // if (Karma.IsBanned(player))
+            // {
+            //  KickPlayer(player);
+            //
+            //  return;
+            // }
+            
+            Player player = new TTTGamemode.Player();
+            Karma.RegisterPlayer(player);
+            client.Pawn = player;
 
-	    public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
-	    {
-	        Log.Info(client.Name + " left, checking minimum player count...");
+            player.Respawn();
+        }
 
-	        CheckRoundState();
+        public override void ClientDisconnect(Client client, NetworkDisconnectionReason reason)
+        {
+            Log.Info(client.Name + " left, checking minimum player count...");
 
-	        base.ClientDisconnect(client, reason);
-	    }
-	}
-	}
+            CheckRoundState();
+
+            base.ClientDisconnect(client, reason);
+        }
+    }
+}

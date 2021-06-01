@@ -5,12 +5,11 @@ using System.Linq;
 
 namespace TTTGamemode
 {
-
-	public partial class Player : Sandbox.Player
+    public partial class Player : Sandbox.Player
     {
-	    public enum RoleType { None, Innocent, Detective, Traitor }
-	    
-	    public Body Body { get; set; }
+        public enum RoleType { None, Innocent, Detective, Traitor }
+        
+        public Body Body { get; set; }
         public RoleType Role { get; set; }
         public int Credits { get; set; } = 0;
 
@@ -19,7 +18,7 @@ namespace TTTGamemode
 
         public Player()
         {
-	        Inventory = new Inventory(this);
+            Inventory = new Inventory(this);
 
             Role = RoleType.None;
             Credits = 0;
@@ -27,18 +26,18 @@ namespace TTTGamemode
 
         public override void Respawn()
         {
-	        SetModel( "models/citizen/citizen.vmdl" );
+            SetModel("models/citizen/citizen.vmdl");
 
-	        Controller = new WalkController();
-	        Animator = new StandardPlayerAnimator();
-	        Camera = new FirstPersonCamera();
-	        
-	        EnableAllCollisions = true;
-	        EnableDrawing = true;
-	        EnableHideInFirstPerson = true;
-	        EnableShadowInFirstPerson = true;
-	        
-	        base.Respawn();
+            Controller = new WalkController();
+            Animator = new StandardPlayerAnimator();
+            Camera = new FirstPersonCamera();
+            
+            EnableAllCollisions = true;
+            EnableDrawing = true;
+            EnableHideInFirstPerson = true;
+            EnableShadowInFirstPerson = true;
+            
+            base.Respawn();
         }
 
         public bool IsSpectator
@@ -67,25 +66,24 @@ namespace TTTGamemode
             MakeSpectator();
         }
 
-        public override void Simulate( Client client )
+        public override void Simulate(Client client)
         {
-	        SimulateActiveChild( client, ActiveChild );
+            SimulateActiveChild(client, ActiveChild);
 
-	        if ( Input.ActiveChild != null )
-	        {
-		        ActiveChild = Input.ActiveChild;
-	        }
+            if (Input.ActiveChild != null)
+            {
+                ActiveChild = Input.ActiveChild;
+            }
 
-	        if ( LifeState != LifeState.Alive )
-	        {
+            if (LifeState != LifeState.Alive)
+            {
+                return;
+            }
 
-		        return;
-	        }
+            TickPlayerUse();
 
-	        TickPlayerUse();
-
-	        PawnController controller = GetActiveController();
-	        controller?.Simulate( client, this, GetActiveAnimator() );
+            PawnController controller = GetActiveController();
+            controller?.Simulate(client, this, GetActiveAnimator());
         }
 
         protected override void UseFail()
@@ -96,7 +94,9 @@ namespace TTTGamemode
         public override void StartTouch(Entity other)
         {
             if (_timeSinceDropped < 1)
+            {
                 return;
+            }
 
             base.StartTouch(other);
         }
@@ -104,7 +104,9 @@ namespace TTTGamemode
         private void TickInspectBody()
         {
             if (!Input.Pressed(InputButton.Use))
+            {
                 return;
+            }
 
             TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * 80f)
                 .HitLayer(CollisionLayer.Debris)
@@ -167,18 +169,18 @@ namespace TTTGamemode
 
         private void CreateBodyOnServer(Vector3 force, int forceBone)
         {
-	        // TODO: Create a ragdoll.
-	        // var ragdoll = new PlayerCorpse
-	        // {
-	        //     Pos = Pos,
-	        //     Rot = Rot
-	        // };
-	        //
-	        // ragdoll.CopyFrom(this);
-	        // ragdoll.ApplyForceToBone(force, forceBone);
-	        // ragdoll.Player = this;
-	        //
-	        // Body = ragdoll;
+            // TODO: Create a ragdoll.
+            // var ragdoll = new PlayerCorpse
+            // {
+            //     Pos = Pos,
+            //     Rot = Rot
+            // };
+            //
+            // ragdoll.CopyFrom(this);
+            // ragdoll.ApplyForceToBone(force, forceBone);
+            // ragdoll.Player = this;
+            //
+            // Body = ragdoll;
         }
 
         public void RemoveBodyEntity()
@@ -200,7 +202,7 @@ namespace TTTGamemode
         [ClientRpc]
         public void TookDamage(Vector3 position)
         {
-	        
+            
         }
 
         [ClientRpc]

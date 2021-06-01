@@ -25,38 +25,38 @@ namespace TTTGamemode
 
 		public override void Update()
 		{
-			if ( Local.Pawn is not Sandbox.Player player )
+			if (Local.Pawn is not Sandbox.Player player)
 				return;
 
 			// TODO: Rework spectate camera logic.
-			if ( TargetPlayer == null || !TargetPlayer.IsValid() || Local.Client.Input.Pressed(InputButton.Attack1) )
+			if (TargetPlayer == null || !TargetPlayer.IsValid() || Local.Client.Input.Pressed(InputButton.Attack1))
 			{
-				List<Player> players = Client.All.ToList().ConvertAll( p => p.Pawn as Player );
+				List<Player> players = Client.All.ToList().ConvertAll(p => p.Pawn as Player);
 
-				if ( players.Count > 0 )
+				if (players.Count > 0)
 				{
-					if ( ++_targetIdx >= players.Count )
+					if (++_targetIdx >= players.Count)
 						_targetIdx = 0;
 
 					TargetPlayer = players[_targetIdx];
 				}
 			}
 
-			_focusPoint = Vector3.Lerp( _focusPoint, GetSpectatePoint(), Time.Delta * 5.0f );
+			_focusPoint = Vector3.Lerp(_focusPoint, GetSpectatePoint(), Time.Delta * 5.0f);
 
 			Pos = _focusPoint + GetViewOffset();
 			Rot = player.EyeRot;
 
-			FieldOfView = FieldOfView.LerpTo( 50, Time.Delta * 3.0f );
+			FieldOfView = FieldOfView.LerpTo(50, Time.Delta * 3.0f);
 			Viewer = null;
 		}
 
 		private Vector3 GetSpectatePoint()
 		{
-			if ( Local.Pawn is not Sandbox.Player )
+			if (Local.Pawn is not Sandbox.Player)
 				return DeathPosition;
 
-			if ( TargetPlayer == null || !TargetPlayer.IsValid() || TimeSinceDied < 3 )
+			if (TargetPlayer == null || !TargetPlayer.IsValid() || TimeSinceDied < 3)
 				return DeathPosition;
 
 			return TargetPlayer.EyePos;
@@ -64,7 +64,7 @@ namespace TTTGamemode
 
 		private Vector3 GetViewOffset()
 		{
-			if ( Local.Pawn is not Sandbox.Player player )
+			if (Local.Pawn is not Sandbox.Player player)
 				return Vector3.Zero;
 
 			return player.EyeRot.Forward * -150 + Vector3.Up * 10;

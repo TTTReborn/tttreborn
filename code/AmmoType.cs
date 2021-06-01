@@ -1,8 +1,8 @@
 ﻿namespace TTTGamemode
 {
-	public enum AmmoType
-	{
-		Pistol,
-		Buckshot
-	}
+    public enum AmmoType
+    {
+        Pistol,
+        Buckshot
+    }
 }

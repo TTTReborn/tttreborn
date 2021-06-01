@@ -40,7 +40,9 @@ namespace TTTGamemode
                     string model = e.GetModelName();
 
                     if (model != null && !model.Contains("clothes"))
+                    {
                         continue;
+                    }
 
                     ModelEntity clothing = new ModelEntity();
                     clothing.SetModel(model);
