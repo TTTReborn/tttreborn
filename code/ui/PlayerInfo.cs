@@ -10,38 +10,44 @@ namespace TTTReborn.UI
 {
 public class PlayerInfo : Panel
 {
-    public Label Weapon { set; get; }
-    public Label Health { set; get; }
-
     public PlayerInfo()
     {
         StyleSheet.Load("/ui/PlayerInfo.scss");
 
-        Weapon = Add.Label("100", "weapon");
-        Health = Add.Label("100", "health");
+        new Background(this);
     }
 
-    public override void Tick()
+    public class Background : Panel
     {
-        TTTPlayer player = Local.Pawn as TTTPlayer;
+        public Label Weapon { set; get; }
+        public Label Health { set; get; }
 
-        if (player == null)
+        public Background(Panel parent)
         {
-            return;
+            Parent = parent;
+
+            Weapon = Add.Label("100", "weapon");
+            Health = Add.Label("100", "health");
         }
 
-        var weapon = player.ActiveChild as Weapon;
-
-        if (weapon != null)
+        public override void Tick()
         {
-            //Weapon.SetClass("active", weapon != null);
+            TTTPlayer player = Local.Pawn as TTTPlayer;
 
-            Weapon.Text = $"{weapon.AmmoClip}";
+            if (player == null)
+            {
+                return;
+            }
+
+            var weapon = player.ActiveChild as Weapon;
+
+            if (weapon != null)
+            {
+                Weapon.Text = $"{weapon.AmmoClip}";
+            }
+
+            Health.Text = $"{player.Health:n0}";
         }
-
-        Health.Text = $"{player.Health:n0}";
-
-        SetClass("active", true);
     }
 }
 

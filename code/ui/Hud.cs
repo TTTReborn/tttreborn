@@ -18,6 +18,7 @@ public partial class Hud : HudEntity<RootPanel>
         RootPanel.AddChild<VoiceList>();
         
         RootPanel.AddChild<Crosshair>().SetupCrosshair(new Crosshair.Properties());
+        RootPanel.AddChild<PlayerInfo>();
     }
 
     [ClientRpc]

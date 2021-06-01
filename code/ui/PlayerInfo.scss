@@ -1,5 +1,18 @@
-PlayerInfo {
+playerInfo {
     position: absolute;
-    left: 20px;
-    bottom: 20px;
+    left: 10px;
+    bottom: 10px;
+
+    Background {
+        background-color: white;
+        padding: 5px;;
+    
+        .health {
+            color: red;
+        }
+    
+        .weapon {
+            color: blue;
+        }
+    }
 }
