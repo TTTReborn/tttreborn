@@ -1,7 +1,4 @@
 ﻿using Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;

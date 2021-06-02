@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.UI;
-using TTTReborn.UI;
 
 namespace TTTReborn.UI
 {
