@@ -10,3 +10,5 @@ TTT Reborn is aimed to be the spiritual successor of [TTT](https://ttt.badking.n
 ## DEVELOPMENT
 
 We are still in the early development process due to our team having limited access to s&box. We plan to provide more information as development occurs, meanwhile, feel free to participate and chat about the project in our [Discord](https://discord.gg/Npcbb4W).
+
+You can also find additional information from our [TTT Reborn Facepunch forum post](https://forum.facepunch.com/t/ttt-reborn-for-s-box/243652).
