@@ -6,39 +6,37 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Commands
 {
-    public static class PlayerCommands
+public static class PlayerCommands
+{
+    [ServerCmd("Respawn")]
+    public static void RespawnPlayer(int id)
     {
-        [ServerCmd("Respawn")]
-        public static void RespawnPlayer(int id)
-        {
-            List<Client> playerList = Client.All.ToList();
+        List<Client> playerList = Client.All.ToList();
 
-            for (int i = 0; i < playerList.ToList().Count; i++)
+        for (int i = 0; i < playerList.ToList().Count; i++)
+        {
+            if (i == id)
             {
-                if (i == id)
+                if (playerList[i].Pawn is TTTPlayer player)
                 {
-                    if (playerList[i].Pawn is TTTPlayer player)
-                    {
-                        player.Respawn();
-                    }
-
-                    return;
+                    player.Respawn();
                 }
-            }
-        }
 
-        [ClientCmd("PlayerID")]
-        public static void PlayerID()
-        {
-            List<Client> playerList = Client.All.ToList();
-
-            for (int i = 0; i < playerList.ToList().Count; i++)
-            {
-                if (playerList[i] == null)
-                    continue;
-                
-                Log.Info("Player (ID: '" + i + "'): " + playerList[i].Name);
+                return;
             }
         }
     }
+
+    [ClientCmd("PlayerID")]
+    public static void PlayerID()
+    {
+        List<Client> playerList = Client.All.ToList();
+
+        for (int i = 0; i < playerList.ToList().Count; i++)
+        {
+            Log.Info("Player (ID: '" + i + "'): " + playerList[i].Name);
+        }
+    }
+}
+
 }
