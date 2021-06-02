@@ -1,7 +1,4 @@
 ﻿using Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
@@ -150,7 +147,10 @@ public partial class TTTPlayer : Sandbox.Player
             attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
         }
 
-        TookDamage(info.Weapon.IsValid() ? info.Weapon.WorldPos : info.Attacker.WorldPos);
+        if (info.Weapon != null)
+        {
+            TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+        }
 
         // Play pain sounds
         if ((info.Flags & DamageFlags.Fall) == DamageFlags.Fall)
@@ -205,13 +205,13 @@ public partial class TTTPlayer : Sandbox.Player
     [ClientRpc]
     public void TookDamage(Vector3 position)
     {
-        
+
     }
 
     [ClientRpc]
     public void InspectedBody(Body body)
     {
-        
+
     }
 
     protected override void OnDestroy()

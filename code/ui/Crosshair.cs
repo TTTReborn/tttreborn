@@ -9,13 +9,13 @@ public class Crosshair : Panel
         public bool ShowTop { get; private set; }
         public bool ShowDot { get; private set; }
         public bool ShowOutline { get; private set; }
-        
+
         public uint Size { get; private set;  }
         public uint Thickness { get; private set; }
         public uint OutlineThickness { get; private set; }
-        
+
         public int Gap { get; private set; }
-        
+
         public Color Color { get; private set; }
 
         public Properties(
@@ -60,7 +60,7 @@ public class Crosshair : Panel
                 ? crosshairProperties.Size
                 : crosshairProperties.Thickness;
             crossHairLine.Style.Height = isHorizontal ? crosshairProperties.Thickness : crosshairProperties.Size;
-            
+
             switch (i)
             {
                 case 0: // Left element
@@ -73,7 +73,7 @@ public class Crosshair : Panel
                     crossHairLine.Style.Left = Length.Pixels(-crosshairProperties.Size - crosshairProperties.Gap);
                     break;
                 case 3: // Top element
-                    crossHairLine.Style.Top = Length.Pixels(-crosshairProperties.Size - crosshairProperties.Gap); 
+                    crossHairLine.Style.Top = Length.Pixels(-crosshairProperties.Size - crosshairProperties.Gap);
                     break;
             }
 
@@ -82,10 +82,10 @@ public class Crosshair : Panel
                 crossHairLine.Style.BorderColor = Color.Black;
                 crossHairLine.Style.BorderWidth = crosshairProperties.OutlineThickness;
             }
-            
+
             crossHairLine.Style.Dirty();
         }
-        
+
         if (crosshairProperties.ShowDot)
         {
             Panel dot = Add.Panel("element");
@@ -94,9 +94,9 @@ public class Crosshair : Panel
             dot.Style.Height = crosshairProperties.Thickness;
             dot.Style.Dirty();
         }
-        
+
         Style.Dirty();
-        
+
         return this;
     }
 }

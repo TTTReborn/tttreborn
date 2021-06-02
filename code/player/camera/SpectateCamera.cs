@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Player.Camera
 {
 public partial class SpectateCamera : Sandbox.Camera
@@ -27,8 +25,10 @@ public partial class SpectateCamera : Sandbox.Camera
 
     public override void Update()
     {
-        if (Local.Pawn is not Sandbox.Player player)
+        if (Local.Pawn is not TTTPlayer player)
+        {
             return;
+        }
 
         // TODO: Rework spectate camera logic.
         if (TargetPlayer == null || !TargetPlayer.IsValid() || Local.Client.Input.Pressed(InputButton.Attack1))

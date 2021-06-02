@@ -1,5 +1,4 @@
 ﻿using Sandbox;
-using System;
 
 using TTTReborn.UI;
 using TTTReborn.Player;
@@ -89,7 +88,7 @@ partial class Weapon : BaseWeapon
 
         IsReloading = true;
 
-        (Owner as AnimEntity).SetAnimParam("b_reload", true);
+        (Owner as AnimEntity).SetAnimBool("b_reload", true);
 
         DoClientReload();
     }
@@ -179,7 +178,7 @@ partial class Weapon : BaseWeapon
     [ClientRpc]
     public virtual void DoClientReload()
     {
-        ViewModelEntity?.SetAnimParam("reload", true);
+        ViewModelEntity?.SetAnimBool("reload", true);
     }
 
     public override void AttackPrimary()
@@ -206,7 +205,7 @@ partial class Weapon : BaseWeapon
             new Sandbox.ScreenShake.Perlin();
         }
 
-        ViewModelEntity?.SetAnimParam("fire", true);
+        ViewModelEntity?.SetAnimBool("fire", true);
         CrosshairPanel?.OnEvent("fire");
     }
 
@@ -220,7 +219,7 @@ partial class Weapon : BaseWeapon
         {
             tr.Surface.DoBulletImpact(tr);
 
-            if (!IsServer || !tr.Entity.IsValid()) 
+            if (!IsServer || !tr.Entity.IsValid())
             {
                 continue;
             }
@@ -274,7 +273,7 @@ partial class Weapon : BaseWeapon
         {
             return;
         }
-        
+
         Crosshair.Current?.SetupCrosshair(new Crosshair.Properties(
             true,
             false,
