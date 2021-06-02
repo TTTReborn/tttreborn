@@ -110,7 +110,7 @@ partial class Game : Sandbox.Game
 
     private void CheckMinimumPlayers()
     {
-        if (Sandbox.Player.All.Count >= TTTMinPlayers)
+        if (Client.All.ToList().Count >= TTTMinPlayers)
         {
             if (CurrentRound == Round.Waiting)
             {

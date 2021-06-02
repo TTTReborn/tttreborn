@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.Commands
@@ -16,9 +17,9 @@ namespace TTTReborn.Commands
             {
                 if (i == id)
                 {
-                    if (playerList[i].Pawn is TTTPlayer)
+                    if (playerList[i].Pawn is TTTPlayer player)
                     {
-                        (playerList[i].Pawn as TTTPlayer).Respawn();
+                        player.Respawn();
                     }
 
                     return;
