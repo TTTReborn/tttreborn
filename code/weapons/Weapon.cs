@@ -219,7 +219,7 @@ partial class Weapon : BaseWeapon
         {
             tr.Surface.DoBulletImpact(tr);
 
-            if (!IsServer || !tr.Entity.IsValid()) 
+            if (!IsServer || !tr.Entity.IsValid())
             {
                 continue;
             }
@@ -273,7 +273,7 @@ partial class Weapon : BaseWeapon
         {
             return;
         }
-        
+
         Crosshair.Current?.SetupCrosshair(new Crosshair.Properties(
             true,
             false,

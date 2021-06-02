@@ -46,7 +46,7 @@ partial class Game : Sandbox.Game
 
             case Game.Round.InProgress:
                 TimeRemaining = TTTRoundTime;
-                
+
                 int detectiveCount = (int) (All.Count * 0.125f);
                 int traitorCount = (int) Math.Max(All.Count * 0.25f, 1f);
 
@@ -171,7 +171,7 @@ partial class Game : Sandbox.Game
             TimeRemaining--;
         }
     }
-    
+
     private async Task StartGameTimer()
     {
         while (true)
@@ -187,7 +187,7 @@ partial class Game : Sandbox.Game
         CheckRoundState();
         UpdateRoundTimer();
     }
-    
+
     public override void DoPlayerNoclip(Client client)
     {
         // Do nothing. The player can't noclip in this mode.
@@ -219,8 +219,8 @@ partial class Game : Sandbox.Game
     public override void ClientJoined(Client client)
     {
         base.ClientJoined(client);
-        
-        // TODO: KarmaSystem is waiting on network dictionaries. 
+
+        // TODO: KarmaSystem is waiting on network dictionaries.
         // Karma.RegisterPlayer(client);
         // if (Karma.IsBanned(player))
         // {
@@ -228,7 +228,7 @@ partial class Game : Sandbox.Game
         //
         //  return;
         // }
-        
+
         TTTPlayer player = new TTTPlayer();
         Karma.RegisterPlayer(player);
         client.Pawn = player;

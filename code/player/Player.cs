@@ -205,13 +205,13 @@ public partial class TTTPlayer : Sandbox.Player
     [ClientRpc]
     public void TookDamage(Vector3 position)
     {
-        
+
     }
 
     [ClientRpc]
     public void InspectedBody(Body body)
     {
-        
+
     }
 
     protected override void OnDestroy()
