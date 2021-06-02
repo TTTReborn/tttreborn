@@ -50,7 +50,7 @@ public partial class KarmaSystem: NetworkComponent
         if (!IsTracking)
             return;
 
-        int updatedDamage = 0;
+        //int updatedDamage = 0;
         
         // TODO: Once network dictionaries are supported, implement.
         // DamageRecords.TryGetValue((attacker.SteamId, victim.SteamId), out updatedDamage);

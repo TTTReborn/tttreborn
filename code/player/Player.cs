@@ -152,7 +152,7 @@ public partial class TTTPlayer : Sandbox.Player
 
         if (info.Weapon != null)
         {
-            TookDamage(info.Weapon.IsValid() ? info.Weapon.WorldPos : info.Attacker.WorldPos);
+            TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
         }
 
         // Play pain sounds

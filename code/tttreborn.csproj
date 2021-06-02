@@ -3,8 +3,8 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<AssemblyName>ttt-reborn</AssemblyName>
-		<PackageId>ttt-reborn</PackageId>
+		<AssemblyName>tttreborn</AssemblyName>
+		<PackageId>tttreborn</PackageId>
 		<LangVersion>preview</LangVersion>
 		<NoWarn>1701;1702;1591;</NoWarn>
 	</PropertyGroup>
@@ -19,15 +19,15 @@
 
   <PropertyGroup>
 	<OutputPath>../.intermediate/</OutputPath>
-	<DocumentationFile>../.intermediate/netstandard2.0/ttt-reborn.xml</DocumentationFile>
+	<DocumentationFile>../.intermediate/netstandard2.0/tttreborn.xml</DocumentationFile>
   </PropertyGroup>
 
 	<ItemGroup>
-		<Analyzer Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Generator.dll" />
-		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.System.dll" />
-		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Engine.dll" />
-		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Game.dll" />
-		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Hotload.dll" />
+		<Analyzer Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Generator.dll"/>
+		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.System.dll"/>
+		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Engine.dll"/>
+		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Game.dll"/>
+		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Hotload.dll"/>
 	</ItemGroup>
 
   <ItemGroup>

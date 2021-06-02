@@ -89,7 +89,7 @@ partial class Weapon : BaseWeapon
 
         IsReloading = true;
 
-        (Owner as AnimEntity).SetAnimParam("b_reload", true);
+        (Owner as AnimEntity).SetAnimBool("b_reload", true);
 
         DoClientReload();
     }
@@ -179,7 +179,7 @@ partial class Weapon : BaseWeapon
     [ClientRpc]
     public virtual void DoClientReload()
     {
-        ViewModelEntity?.SetAnimParam("reload", true);
+        ViewModelEntity?.SetAnimBool("reload", true);
     }
 
     public override void AttackPrimary()
@@ -206,7 +206,7 @@ partial class Weapon : BaseWeapon
             new Sandbox.ScreenShake.Perlin();
         }
 
-        ViewModelEntity?.SetAnimParam("fire", true);
+        ViewModelEntity?.SetAnimBool("fire", true);
         CrosshairPanel?.OnEvent("fire");
     }
 
