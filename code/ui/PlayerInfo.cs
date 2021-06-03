@@ -28,7 +28,6 @@ public class PlayerInfo : Panel
             RoleLabel = Add.Label("Unknown role", "rolelabel");
         }
 
-        /*
         public override void Tick()
         {
             TTTPlayer player = Local.Pawn as TTTPlayer;
@@ -38,16 +37,8 @@ public class PlayerInfo : Panel
                 return;
             }
 
-            var weapon = player.ActiveChild as Weapon;
-
-            if (weapon != null)
-            {
-                Weapon.Text = $"{weapon.AmmoClip}";
-            }
-
-            Health.Text = $"{player.Health:n0}";
+            RoleLabel.Text = $"{player.Role.ToString()}";
         }
-        */
     }
 
     public class IndicatorsPanel : Panel
@@ -55,15 +46,49 @@ public class PlayerInfo : Panel
         public BarPanel HealthBar { set; get; }
         public BarPanel AmmoBar { set; get; }
 
+        public bool invisibleAmmo { set; get; }
+
         public IndicatorsPanel(Panel parent)
         {
             Parent = parent;
 
-            HealthBar = new BarPanel(this, "100", "healthlabel");
+            HealthBar = new BarPanel(this, "", "healthlabel");
             HealthBar.AddClass("health");
 
-            AmmoBar = new BarPanel(this, "7/21", "ammolabel");
+            AmmoBar = new BarPanel(this, "", "ammolabel");
             AmmoBar.AddClass("ammo");
+        }
+
+        public override void Tick()
+        {
+            TTTPlayer player = Local.Pawn as TTTPlayer;
+
+            if (player == null)
+            {
+                return;
+            }
+
+            HealthBar.TextLabel.Text = $"{player.Health:n0}";
+
+            var weapon = player.ActiveChild as Weapon;
+
+            if (weapon != null)
+            {
+                if (invisibleAmmo)
+                {
+                    invisibleAmmo = false;
+
+                    AmmoBar.RemoveClass("invisible");
+                }
+
+                AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
+            }
+            else if (!invisibleAmmo)
+            {
+                invisibleAmmo = true;
+
+                AmmoBar.AddClass("invisible");
+            }
         }
     }
 }

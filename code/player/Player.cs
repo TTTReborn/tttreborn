@@ -13,7 +13,7 @@ public partial class TTTPlayer : Sandbox.Player
     public RoleType Role { get; set; }
     public int Credits { get; set; } = 0;
 
-    private TimeSince _timeSinceDropped;
+    //private TimeSince _timeSinceDropped;
     private DamageInfo _lastDamageInfo;
 
     public TTTPlayer()
@@ -93,10 +93,12 @@ public partial class TTTPlayer : Sandbox.Player
 
     public override void StartTouch(Entity other)
     {
+        /*
         if (_timeSinceDropped < 1)
         {
             return;
         }
+        */
 
         base.StartTouch(other);
     }

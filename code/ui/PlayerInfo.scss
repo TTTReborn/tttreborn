@@ -39,6 +39,10 @@ PlayerInfo {
                 margin-top: 5px;
                 background-color: #db8c17;
             }
+
+            &.invisible {
+                opacity: 0;
+            }
         }
     }
 
