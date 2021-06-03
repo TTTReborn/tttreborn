@@ -1,0 +1,441 @@
+body {
+  --traitor-red: #df2935;
+  --innocent-green: #1bc54e;
+  --detective-blue: #2196f3;
+  --font-black: #2a2a2a;
+  --font-white: #fafafa;
+  --highlight-orange: #ffae00;
+  --border-color: #363636;
+}
+
+.btn {
+  border: none;
+  color: white;
+  padding: 4px 50px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 2px;
+  background-color: var(--traitor-red);
+  opacity: 0.9;
+  -webkit-transition: all 0.05s linear;
+  transition: all 0.05s linear;
+}
+
+.btn:active, .btn:hover {
+  border: 0;
+  opacity: 1;
+}
+
+.price::before {
+  content: "$";
+  margin-right: 0.5rem;
+  background: var(--traitor-red);
+  border-radius: 50%;
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.panel, .hud .left .main, .hud .middle .top, .hud .right .top > span, .hud .right .bottom .weapons {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: #0009;
+  border: 1px solid #000;
+  border-radius: 4px;
+  margin: auto;
+  color: var(--font-white);
+  -webkit-transition: opacity linear 0.05s;
+  transition: opacity linear 0.05s;
+}
+
+.panel.fixed, .hud .left .fixed.main, .hud .middle .fixed.top, .hud .right .top > span.fixed, .hud .right .bottom .fixed.weapons {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -60%);
+          transform: translate(-50%, -60%);
+  opacity: 0%;
+}
+
+.panel.fixed.open, .hud .left .fixed.open.main, .hud .middle .fixed.open.top, .hud .right .top > span.fixed.open, .hud .right .bottom .fixed.open.weapons {
+  opacity: 100%;
+  z-index: 100;
+}
+
+.panel h2, .hud .left .main h2, .hud .middle .top h2, .hud .right .top > span h2, .hud .right .bottom .weapons h2,
+.panel h3,
+.hud .left .main h3,
+.hud .middle .top h3,
+.hud .right .top > span h3,
+.hud .right .bottom .weapons h3 {
+  margin: 0;
+}
+
+.panel h2, .hud .left .main h2, .hud .middle .top h2, .hud .right .top > span h2, .hud .right .bottom .weapons h2 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+
+.panel h3,
+.hud .left .main h3,
+.hud .middle .top h3,
+.hud .right .top > span h3,
+.hud .right .bottom .weapons h3 {
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.panel .header, .hud .left .main .header, .hud .middle .top .header, .hud .right .top > span .header, .hud .right .bottom .weapons .header {
+  border-bottom: var(--border-color) 1px solid;
+  background-color: #0007;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.panel .header.slim, .hud .left .main .header.slim, .hud .middle .top .header.slim, .hud .right .top > span .header.slim, .hud .right .bottom .weapons .header.slim {
+  max-height: 32px;
+  padding: 0;
+}
+
+.panel main, .hud .left .main main, .hud .middle .top main, .hud .right .top > span main, .hud .right .bottom .weapons main {
+  padding: 16px 30px;
+  overflow-y: auto;
+}
+
+.panel main::-webkit-scrollbar, .hud .left .main main::-webkit-scrollbar, .hud .middle .top main::-webkit-scrollbar, .hud .right .top > span main::-webkit-scrollbar, .hud .right .bottom .weapons main::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  opacity: 0;
+  margin-right: 2px;
+  -webkit-transition: all linear 0.1s;
+  transition: all linear 0.1s;
+  border-radius: 8px;
+  background: #fff0;
+}
+
+.panel main::-webkit-scrollbar:hover, .hud .left .main main::-webkit-scrollbar:hover, .hud .middle .top main::-webkit-scrollbar:hover, .hud .right .top > span main::-webkit-scrollbar:hover, .hud .right .bottom .weapons main::-webkit-scrollbar:hover {
+  background-color: #fff1;
+}
+
+.panel main::-webkit-scrollbar-thumb, .hud .left .main main::-webkit-scrollbar-thumb, .hud .middle .top main::-webkit-scrollbar-thumb, .hud .right .top > span main::-webkit-scrollbar-thumb, .hud .right .bottom .weapons main::-webkit-scrollbar-thumb {
+  background: var(--traitor-red);
+  opacity: 0;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.panel main::-webkit-scrollbar-track, .hud .left .main main::-webkit-scrollbar-track, .hud .middle .top main::-webkit-scrollbar-track, .hud .right .top > span main::-webkit-scrollbar-track, .hud .right .bottom .weapons main::-webkit-scrollbar-track {
+  border-radius: 8px;
+  -webkit-transition: all linear 0.1s;
+  transition: all linear 0.1s;
+}
+
+.panel footer, .hud .left .main footer, .hud .middle .top footer, .hud .right .top > span footer, .hud .right .bottom .weapons footer {
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  border-top: var(--border-color) 1px solid;
+  background-color: #0007;
+  padding: 16px 30px;
+}
+
+.panel.sm, .hud .left .sm.main, .hud .middle .sm.top, .hud .right .top > span.sm, .hud .right .bottom .sm.weapons {
+  border-radius: 4px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.panel.lg, .hud .left .lg.main, .hud .middle .lg.top, .hud .right .top > span.lg, .hud .right .bottom .lg.weapons {
+  border-radius: 8px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.panel.lg .header, .hud .left .lg.main .header, .hud .middle .lg.top .header, .hud .right .top > span.lg .header, .hud .right .bottom .lg.weapons .header {
+  padding: 16px 30px;
+}
+
+.panel.xl, .hud .left .xl.main, .hud .middle .xl.top, .hud .right .top > span.xl, .hud .right .bottom .xl.weapons {
+  border-radius: 8px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.panel.xl .header, .hud .left .xl.main .header, .hud .middle .xl.top .header, .hud .right .top > span.xl .header, .hud .right .bottom .xl.weapons .header {
+  padding: 16px 30px;
+}
+
+body {
+  --traitor-red: #df2935;
+  --innocent-green: #1bc54e;
+  --detective-blue: #2196f3;
+  --font-black: #2a2a2a;
+  --font-white: #fafafa;
+  --highlight-orange: #ffae00;
+  --border-color: #363636;
+}
+
+.btn {
+  border: none;
+  color: white;
+  padding: 4px 50px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 2px;
+  background-color: var(--traitor-red);
+  opacity: 0.9;
+  -webkit-transition: all 0.05s linear;
+  transition: all 0.05s linear;
+}
+
+.btn:active, .btn:hover {
+  border: 0;
+  opacity: 1;
+}
+
+.price::before {
+  content: "$";
+  margin-right: 0.5rem;
+  background: var(--traitor-red);
+  border-radius: 50%;
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.hud .left {
+  width: 350px;
+}
+
+.hud .left .effects {
+  display: table;
+  width: 350px;
+  position: absolute;
+  bottom: 192px;
+  left: 30px;
+}
+
+.hud .left .effects > * {
+  display: inline-block;
+  width: 50px;
+  margin-right: 22.5px;
+}
+
+.hud .left .effects > *:nth-child(5n) {
+  margin-right: 0;
+}
+
+.hud .left .effects .icon {
+  height: 50px;
+  width: 50px;
+  background: #fafafa5e;
+  border-radius: 4px;
+  border: 1px solid #031421;
+  text-align: center;
+  -webkit-transition: all linear 0.05s;
+  transition: all linear 0.05s;
+}
+
+.hud .left .effects .icon img {
+  -webkit-transform: translateY(5px);
+          transform: translateY(5px);
+  width: 40px;
+}
+
+.hud .left .effects .icon {
+  background-color: #0000001a;
+}
+
+.hud .left .main {
+  height: 140px;
+  width: inherit;
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  left: 30px;
+  bottom: 40px;
+}
+
+.hud .left .main .bar {
+  margin: 10px;
+  padding: 3px;
+  border-radius: 2px;
+}
+
+.hud .left .main .bar span {
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 16px;
+}
+
+.hud .left .main .bar.health {
+  background-color: #3caf07;
+}
+
+.hud .left .main .bar.ammo {
+  background-color: #db8c17;
+}
+
+.hud .left .main .role {
+  text-align: center;
+  width: 100%;
+  height: 45px;
+  border-bottom: 1px solid black;
+  background-color: var(--traitor-red);
+  vertical-align: middle;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.hud .left .main .role img {
+  height: 35px;
+  position: absolute;
+  left: 0;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 9px;
+  left: 93px;
+}
+
+.hud .left .main .role span {
+  font-size: 24px;
+  font-weight: 500;
+  vertical-align: sub;
+}
+
+.hud .middle .bottom {
+  position: absolute;
+  bottom: 40px;
+}
+
+.hud .middle .top {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  position: absolute;
+  top: 0;
+  padding: 5px 15px;
+  font-size: 22px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: 0;
+}
+
+.hud .right .top {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.hud .right .top > span {
+  padding: 0 10px;
+  text-align: right !important;
+  margin: unset;
+  margin-left: auto;
+  margin-bottom: 4px;
+  display: inline;
+}
+
+.hud .right .top > span .t {
+  color: var(--traitor-red);
+}
+
+.hud .right .top > span .dete {
+  color: var(--detective-blue);
+}
+
+.hud .right .top > span .inno {
+  color: var(--innocent-green);
+}
+
+.hud .right .top > span .misc {
+  color: var(--highlight-orange);
+}
+
+.hud .right .bottom {
+  position: absolute;
+  bottom: 40px;
+  right: 30px;
+}
+
+.hud .right .bottom .weapons {
+  counter-reset: item 5;
+  width: 270px;
+}
+
+.hud .right .bottom .weapons .weapon {
+  height: 32px;
+  font-size: 22px;
+  border-bottom: 1px solid #00000083;
+}
+
+.hud .right .bottom .weapons .weapon span {
+  float: right;
+  font-size: 0.8em;
+  vertical-align: sub;
+  margin-right: 10px;
+  margin-top: 4px;
+}
+
+.hud .right .bottom .weapons .weapon.active {
+  font-weight: 500;
+  background: #0000006b;
+}
+
+.hud .right .bottom .weapons .weapon.t::before {
+  background: var(--traitor-red);
+}
+
+.hud .right .bottom .weapons .weapon::before {
+  content: counter(item);
+  margin-right: 14px;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  background: #db8c17;
+  font-weight: 600;
+  counter-increment: item -1;
+}
+
+.hud .right .bottom .weapons .weapon:first-child::before {
+  border-top-left-radius: 4px;
+}
+
+.hud .right .bottom .weapons .weapon:last-child {
+  border-bottom: 0;
+  border-radius: 5px;
+}
+
+.hud .right .bottom .weapons .weapon:last-child::before {
+  border-bottom-left-radius: 4px;
+}
+/*# sourceMappingURL=HUD.css.map */

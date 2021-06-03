@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="scss/Panel.css" />
+    <link rel="stylesheet" href="scss/Shop.css" />
+    <link rel="stylesheet" href="scss/Scoreboard.css" />
+    <link rel="stylesheet" href="scss/HUD.css" />
+    <link rel="stylesheet" href="scss/Inspect.css" />
+    <link rel="stylesheet" href="scss/WinScreen.css" />
+    <link rel="stylesheet" href="scss/general.css" />
+
+    <style>
+        header {
+            margin: auto;
+            text-align: center;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        header .logo {
+            max-width: 200px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fafafa
+        }
+
+        .background {
+            position: absolute;
+            z-index: -100;
+            width: 100%;
+        }
+
+        section {
+            min-height: 100vh;
+        }
+
+        header {
+            display: none;
+        }
+
+        section>h1 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>s&box TTT - Design</h1>
+        <img class="logo" src="images/ttt_logo_red.svg">
+    </header>
+    <div class="hud">
+        <div class="left">
+            <div class="effects">
+                <div class="icon"><img src="images/icons/Vest.svg"></div>
+                <div class="icon"><img src="images/icons/Radar.svg"></div>
+            </div>
+            <div class="main">
+                <div class="role">
+                    <img class="icon" src="images/icons/traitor.png" />
+                    <span>Traitor</span>
+                </div>
+                <div class="indicators">
+                    <div class="bar health"><span>100</span></div>
+                    <div class="bar ammo"><span>7/21</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="middle">
+            <div class="top">
+                09:41
+            </div>
+        </div>
+        <div class="right">
+            <div class="top">
+                <span>Tom discovered the Body of <span class="t">Randy</span></span>
+                <span>You collected <span class="misc">300$</span> from the body of <span class="t">Randy</span></span>
+                <span>Ron confirmed the deaths of <span class="inno">Dan</span>, <span class="inno">Piper</span> and
+                    <span class="dete">Michelle</span></span>
+            </div>
+            <div class="bottom">
+                <div class="weapons">
+                    <div class="weapon t">Knife<span>1/1</span></div>
+                    <div class="weapon">Rifle<span>30/90</span></div>
+                    <div class="weapon active">Pistol<span>7/21</span></div>
+                    <div class="weapon">Melee<span></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section>
+        <h1>Shop</h1>
+        <div class="shop fixed">
+            <div class="header">
+                <h2>Shop</h2>
+                <h2 class="price">300</h2>
+            </div>
+            <main>
+                <div class="item-wrapper">
+                    <a class="item">
+                        <div class="item-holder">
+                            <div class="icon">
+                                <img src="images/icons/Vest.svg">
+                            </div>
+                            <span class="price">200</span>
+                        </div>
+                    </a>
+                    <a class="item">
+                        <div class="item-holder">
+                            <div class="icon">
+                                <img src="images/icons/Radar.svg">
+                            </div>
+                            <span class="price">200</span>
+                        </div>
+                    </a>
+                    <a class="item">
+                        <div class="item-holder">
+                            <div class="icon">
+                                <img src="images/icons/Distance.svg">
+                            </div>
+                            <span class="price">200</span>
+                        </div>
+                    </a>
+                    <a class="item">
+                        <div class="item-holder">
+                            <div class="icon">
+                                <img src="images/icons/DNA.svg">
+                            </div>
+                            <span class="price">200</span>
+                        </div>
+                    </a>
+                    <a class="item">
+                        <div class="item-holder">
+                            <div class="icon">
+                                <img src="images/icons/Knife.svg">
+                            </div>
+                            <span class="price">300</span>
+                        </div>
+                    </a>
+                </div>
+            </main>
+            <footer>
+                <div>
+                    <h2>Body Armor</h2>
+                    <h3>Reduces damage taken from bullets by 30%</h3>
+                </div>
+                <div class="right">
+                    <div class="btn-wrapper">
+                        <span class="price">200</span>
+                        <button class="btn">Buy</button>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </section>
+    <section>
+        <h1>Scoreboard</h1>
+        <div class="scoreboard fixed">
+            <div class="header">
+                <div class="top">
+                    <img class="logo" src="images/ttt_logo_red.svg">
+                    <div>
+                        <h2>Scoreboard (Here will be the server name)</h2>
+                        <h3><span class="playerCounter">0</span>/<span class="maxPlayerCounter">32</span> -
+                            ttt_minecraft_b5 - 3 rounds / 09:41 left</h3>
+                        <p class="description">This is the server description: Lorem ipsum dolor sit amet, consetetur
+                            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+                            erat.</p>
+                    </div>
+                </div>
+                <div class="headerline">
+                    <div><span class="enemys">3</span> Innocents left</div>
+                    <span>Karma</span>
+                    <span>Score</span>
+                    <span>Ping</span>
+                </div>
+            </div>
+            <main>
+                <div class="scoreboard-holder">
+
+                </div>
+                <!-- <div class="scoreboard-group dead">
+                    <div class="label">dead - 5</div>
+                    <div class="content">
+
+                        <div class="headerline">
+                            <div><img src="images/steam_standard.png" /></div>
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                        <div class="headerline">
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                        <div class="headerline">
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                        <div class="headerline">
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                        <div class="headerline">
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                    </div>
+
+                </div> -->
+            </main>
+            <footer></footer>
+        </div>
+    </section>
+    <section>
+        <h1>Winscreen</h1>
+        <div class="winscreen fixed">
+            <div class="header slim">X</div>
+            <div class="banner">Traitor win</div>
+            <main>
+                <div class="winscreen-holder">
+                    <div class="winscreen-cell">
+                        <div class="winscreen-row">
+                            <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player</span></div>
+                        </div>
+                        <div class="winscreen-row">
+                            <div class="winscreen-cell">
+                                <div class="winscreen-row">
+                                    <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player</span></div>
+                                </div>
+                                <div class="winscreen-row">
+                                    <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player</span></div>
+                                </div>
+                            </div>
+                            <div class="winscreen-cell">
+                                <div class="winscreen-row">
+                                    <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player</span></div>
+                                </div>
+                                <div class="winscreen-row">
+                                    <div class="winscreen-cell">
+                                        <div class="winscreen-row">
+                                            <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player X</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="winscreen-cell">
+                                        <div class="winscreen-row">
+                                            <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player X</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="winscreen-cell">
+                                <div class="winscreen-row">
+                                    <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="winscreen-cell">
+                        <div class="winscreen-row">
+                            <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player</span></div>
+                        </div>
+                        <div class="winscreen-row">
+                            <div class="winscreen-obj"><img src="images/steam_standard.png"/><span>Player</span></div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="winscreen-cell"></div> -->
+                </div>
+                <!-- <div class="scoreboard-group dead">
+                    <div class="label">dead - 5</div>
+                    <div class="content">
+
+                        <div class="headerline">
+                            <div><img src="images/steam_standard.png" /></div>
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                        <div class="headerline">
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                        <div class="headerline">
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                        <div class="headerline">
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                        <div class="headerline">
+                            <span>Jasper</span>
+                            <span>1000</span>
+                            <span>20</span>
+                            <span>12</span>
+                        </div>
+                    </div>
+
+                </div> -->
+            </main>
+            <footer></footer>
+        </div>
+    </section>
+    <section>
+        <h1>inspect</h1>
+        <div class="inspect fixed">
+            <div class="headline">
+                <h2>A player with a kinda long name</h2>
+                <span>Detective</span>
+            </div>
+            <div class="icon-wrapper">
+                <div class="avatar">
+                    <img src="images/avatar.jpg">
+                </div>
+                <div class="icon-holder">
+                    <div class="icon">
+                        <img src="images/icons/Gun_Icon.svg">
+                    </div>
+                    <span>Pistol</span>
+                </div>
+                <div class="icon-holder">
+                    <div class="icon">
+                        <img src="images/icons/Vest.svg">
+                    </div>
+                    <span>Head</span>
+                </div>
+                <div class="icon-holder">
+                    <div class="icon">
+                        <img src="images/icons/Distance.svg">
+
+                    </div>
+                    <span>7m</span>
+                </div>
+                <div class="icon-holder">
+                    <div class="icon">
+
+                        <img src="images/icons/FA_clock.svg">
+
+                    </div>
+                    <span>1:16</span>
+                </div>
+                <div class="icon-holder">
+                    <div class="icon">
+
+                        <img src="images/icons/DNA.svg">
+
+                    </div>
+                    <span>0:42</span>
+                </div>
+            </div>
+            <span class="pickup">Press E to pickup 100$</span>
+        </div>
+    </section>
+    <script src="index.js"></script>
+    <style>
+        body {
+            background-image: url(images/background.jpg);
+            background-position: bottom center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</body>
+
+</html>

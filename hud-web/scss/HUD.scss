@@ -1,0 +1,208 @@
+@import "Panel";
+@import "general";
+
+$margin-x: 30px;
+$margin-y: 40px;
+
+.hud {
+    .left {
+        $width : 350px;
+        width: $width;
+        .effects {
+            @include icon-holder(5, $width, 50px);
+            position: absolute;
+            bottom: 192px;
+            left: $margin-x;
+            .icon {
+                background-color: #0000001a;
+            }
+            // .icon-holder {
+            //     flex-basis: 20%;
+            //     @include icon(60px);
+            //     .icon {
+            //         background-color: #0000001a;
+            //         margin: auto;
+            //     }
+            //     &:first-child {
+            //     flex-basis: 50px;
+            //         .icon {
+            //             float:left
+            //         }
+            //     }
+            //     &:last-child {
+            //     flex-basis: 50px;
+
+            //         .icon {
+            //             float:right
+            //         }
+            //     }
+            //     &:nth-child(2) {
+            //         flex-basis: 20%;
+            //     }
+            // }
+        }
+        .main {
+            @extend .panel;
+            height: 140px;
+            width: inherit;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            left: $margin-x;
+            bottom: $margin-y;
+            .bar {
+                margin: 10px;
+                padding: 3px;
+                border-radius: 2px;
+                span {
+                    font-size: 18px;
+                    font-weight: 500;
+                    margin-left: 16px;
+                }
+                &.health {
+                    background-color: #3caf07;
+                }
+                &.ammo {
+                    background-color: #db8c17;
+                }
+            }
+            .indicators {
+                // position: absolute;
+                // bottom: 0;
+                // width: 100%;
+            }
+            .role {
+                text-align: center;
+                // bottom: 0;
+                width: 100%;
+                height: 45px;
+                // border-top: 1px solid black;
+                border-bottom: 1px solid black;
+                background-color: var(--traitor-red);
+                // border-bottom-left-radius: 4px;
+                // border-bottom-right-radius: 4px;
+                vertical-align: middle;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+                img {
+                    height: 35px;
+                    position: absolute;
+                    left: 0;
+                    display: inline-block;
+                    vertical-align: middle;
+                    margin-right: 9px;
+                    left: 93px;
+                }
+                span {
+                    font-size: 24px;
+                    font-weight: 500;
+                    vertical-align: sub;
+                }
+            }
+        }
+    }
+    .middle {
+        .bottom {
+            position: absolute;
+            bottom: $margin-y;
+        }
+        .top {
+            @extend .panel;
+            left: 50%;
+            transform: translateX(-50%);
+            position: absolute;
+            top: 0;
+            padding: 5px 15px;
+            font-size: 22px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-top: 0;
+        }
+    }
+    .right {
+        .top {
+            position: absolute;
+            top: 40px;
+            right: $margin-x;
+            display: flex;
+            flex-direction: column;
+            & > span {
+                @extend .panel;
+                padding: 0 10px;
+                text-align: right !important;
+                margin: unset;
+                margin-left: auto;
+                margin-bottom: 4px;
+                display: inline;
+                .t {
+                    color: var(--traitor-red);
+                }
+                .dete {
+                    color: var(--detective-blue);
+                }
+                .inno {
+                    color: var(--innocent-green);
+                }
+                .misc {
+                    color: var(--highlight-orange);
+                }
+            }
+        }
+        .bottom {
+            position: absolute;
+            bottom: $margin-y;
+            right: $margin-x;
+            .weapons {
+                @extend .panel;
+                counter-reset: item 5;
+                width: 270px;
+                .weapon {
+                    height: 32px;
+                    font-size: 22px;
+                    border-bottom: 1px solid #00000083;
+
+                    span {
+                        float: right;
+                        font-size: 0.8em;
+                        vertical-align: sub;
+                        margin-right: 10px;
+                        margin-top: 4px;
+                    }
+
+                    &.active {
+                        font-weight: 500;
+                        background: #0000006b;
+                    }
+                    &.t {
+                        &::before {
+                            background: var(--traitor-red);
+                        }
+                    }
+                    &::before {
+                        content: counter(item);
+                        margin-right: 14px;
+                        display: inline-block;
+                        width: 32px;
+                        height: 32px;
+                        text-align: center;
+                        background: #db8c17;
+                        font-weight: 600;
+                        counter-increment: item -1;
+                    }
+                    &:first-child {
+                        &::before {
+                            border-top-left-radius: 4px;
+                        }
+                    }
+                    &:last-child {
+                        &::before {
+                            border-bottom-left-radius: 4px;
+                        }
+                        border-bottom: 0;
+                        border-radius: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
