@@ -9,7 +9,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            TTTReborn.Gamemode.Game.Instance.ChangeRound( new PreRound() );
+            TTTReborn.Gamemode.Game.Instance.ChangeRound(new PreRound());
 
             base.OnTimeUp();
         }

@@ -11,7 +11,7 @@ namespace TTTReborn.Rounds
 
         public override void OnSecond()
         {
-            if ( Host.IsServer )
+            if (Host.IsServer)
             {
                 CheckMinimumPlayers();
             }
@@ -38,7 +38,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnStart()
         {
-            if ( Host.IsServer )
+            if (Host.IsServer)
             {
                 foreach (Client client in Client.All)
                 {

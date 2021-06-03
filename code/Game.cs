@@ -67,7 +67,7 @@ partial class Game : Sandbox.Game
 
         Round?.OnPlayerLeave(client.Pawn as TTTPlayer);
 
-        base.ClientDisconnect( client, reason );
+        base.ClientDisconnect(client, reason);
     }
 
     public override void PostLevelLoaded()
@@ -82,7 +82,7 @@ partial class Game : Sandbox.Game
         ChangeRound(new WaitingRound());
         while (true)
         {
-            await Task.DelaySeconds( 1 );
+            await Task.DelaySeconds(1);
             OnGameSecond();
         }
     }

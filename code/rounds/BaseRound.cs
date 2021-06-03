@@ -79,7 +79,7 @@ namespace TTTReborn.Rounds
                 }
                 else
                 {
-                    TimeLeftFormatted = TimeSpan.FromSeconds( TimeLeft ).ToString( @"mm\:ss" );
+                    TimeLeftFormatted = TimeSpan.FromSeconds(TimeLeft).ToString(@"mm\:ss");
                 }
             }
         }

@@ -10,49 +10,49 @@ namespace TTTReborn.Rounds
         public override string RoundName => "Pre";
         public override int RoundDuration => TTTReborn.Gamemode.Game.TTTPreRoundTime;
 
-        protected override void OnStart ()
+        protected override void OnStart()
         {
             if (Host.IsServer)
             {
                 foreach (Client client in Client.All)
                 {
                     if (client.Pawn is TTTPlayer player)
-                        player.Respawn ();
+                        player.Respawn();
                 }
             }
         }
 
-        public override void OnPlayerKilled (TTTPlayer player)
+        public override void OnPlayerKilled(TTTPlayer player)
         {
-            _ = StartRespawnTimer (player);
+            _ = StartRespawnTimer(player);
 
-            base.OnPlayerKilled (player);
+            base.OnPlayerKilled(player);
         }
 
-        protected override void OnTimeUp ()
+        protected override void OnTimeUp()
         {
-            TTTReborn.Gamemode.Game.Instance.ChangeRound (new InProgressRound ());
+            TTTReborn.Gamemode.Game.Instance.ChangeRound(new InProgressRound());
 
-            base.OnTimeUp ();
+            base.OnTimeUp();
         }
 
-        private async Task StartRespawnTimer (TTTPlayer player)
+        private async Task StartRespawnTimer(TTTPlayer player)
         {
-            await Task.Delay (1000);
+            await Task.Delay(1000);
 
-            player.Respawn ();
+            player.Respawn();
         }
 
-        public override void OnPlayerSpawn (TTTPlayer player)
+        public override void OnPlayerSpawn(TTTPlayer player)
         {
-            if (Players.Contains (player))
+            if (Players.Contains(player))
             {
                 return;
             }
 
-            AddPlayer (player);
+            AddPlayer(player);
 
-            base.OnPlayerSpawn (player);
+            base.OnPlayerSpawn(player);
         }
     }
 }

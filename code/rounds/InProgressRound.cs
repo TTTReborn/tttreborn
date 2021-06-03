@@ -65,7 +65,7 @@ namespace TTTReborn.Rounds
             Spectators.Add(player);
             Players.Remove(player);
 
-            base.OnPlayerSpawn( player );
+            base.OnPlayerSpawn(player);
         }
 
         private async Task ChangeToPostRound(int delay = 3)
