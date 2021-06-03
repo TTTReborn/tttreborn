@@ -13,22 +13,22 @@ public class PlayerInfo : Panel
     {
         StyleSheet.Load("/ui/PlayerInfo.scss");
 
-        new Background(this);
+        new RolePanel(this);
+        new IndicatorsPanel(this);
     }
 
-    public class Background : Panel
+    public class RolePanel : Panel
     {
-        public Label Weapon { set; get; }
-        public Label Health { set; get; }
+        public Label RoleLabel { set; get; }
 
-        public Background(Panel parent)
+        public RolePanel(Panel parent)
         {
             Parent = parent;
 
-            Weapon = Add.Label("100", "weapon");
-            Health = Add.Label("100", "health");
+            RoleLabel = Add.Label("Unknown role", "rolelabel");
         }
 
+        /*
         public override void Tick()
         {
             TTTPlayer player = Local.Pawn as TTTPlayer;
@@ -47,6 +47,36 @@ public class PlayerInfo : Panel
 
             Health.Text = $"{player.Health:n0}";
         }
+        */
+    }
+
+    public class IndicatorsPanel : Panel
+    {
+        public BarPanel HealthBar { set; get; }
+        public BarPanel AmmoBar { set; get; }
+
+        public IndicatorsPanel(Panel parent)
+        {
+            Parent = parent;
+
+            HealthBar = new BarPanel(this, "100", "healthlabel");
+            HealthBar.AddClass("health");
+
+            AmmoBar = new BarPanel(this, "7/21", "ammolabel");
+            AmmoBar.AddClass("ammo");
+        }
+    }
+}
+
+public class BarPanel : Panel
+{
+    public Label TextLabel { set; get; }
+
+    public BarPanel(Panel parent, string text, string name)
+    {
+        Parent = parent;
+
+        TextLabel = Add.Label(text, name);
     }
 }
 
