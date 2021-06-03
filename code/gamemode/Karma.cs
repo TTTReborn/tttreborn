@@ -1,6 +1,4 @@
-using System;
 using Sandbox;
-using System.Collections.Generic;
 
 using TTTReborn.Player;
 
@@ -32,8 +30,8 @@ public partial class KarmaSystem: NetworkComponent
     // TODO: Network dictionaries are not supported yet.
     // [Net] public Dictionary<string, int> KarmaRecords => new();
     // [Net] public Dictionary<(string, string), int> DamageRecords => new();
-    
-    [Net] 
+
+    [Net]
     public bool IsTracking { get; set; }
 
     public void RegisterPlayer(TTTPlayer player)
@@ -50,8 +48,8 @@ public partial class KarmaSystem: NetworkComponent
         if (!IsTracking)
             return;
 
-        int updatedDamage = 0;
-        
+        //int updatedDamage = 0;
+
         // TODO: Once network dictionaries are supported, implement.
         // DamageRecords.TryGetValue((attacker.SteamId, victim.SteamId), out updatedDamage);
         //
@@ -69,7 +67,7 @@ public partial class KarmaSystem: NetworkComponent
     public void UpdateSteamIdKarma(ulong steamId, int delta)
     {
         int updatedKarma = 0;
-        
+
         // TODO: Once network dictionaries are supported, implement.
         // KarmaRecords.TryGetValue(steamId, out updatedKarma);
 
@@ -78,7 +76,7 @@ public partial class KarmaSystem: NetworkComponent
         // Math.Clamp(updatedKarma, TTTKarmaMin, TTTKarmaMax)
         updatedKarma = updatedKarma > TTTKarmaMax ? TTTKarmaMax : updatedKarma;
         updatedKarma = updatedKarma < TTTKarmaMin ? TTTKarmaMin : updatedKarma;
-        
+
         // TODO: Once network dictionaries are supported, implement.
         // KarmaRecords[player.SteamId] = updatedKarma;
     }
@@ -99,7 +97,7 @@ public partial class KarmaSystem: NetworkComponent
         // Clear all damage records
         // DamageRecords = new();
     }
-    
+
     public bool IsBanned(TTTPlayer player)
     {
         // TODO: Once network dictionaries are supported, implement. Return false meanwhile...

@@ -1,4 +1,4 @@
-playerInfo {
+PlayerInfo {
     position: absolute;
     left: 10px;
     bottom: 10px;
@@ -6,11 +6,11 @@ playerInfo {
     Background {
         background-color: white;
         padding: 5px;;
-    
+
         .health {
             color: red;
         }
-    
+
         .weapon {
             color: blue;
         }
