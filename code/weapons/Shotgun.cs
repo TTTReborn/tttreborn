@@ -4,108 +4,109 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Weapons
 {
-[Library("ttt_shotgun", Title = "SPAS-12")]
-partial class Shotgun : Weapon
-{
-    public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
-    public override float PrimaryRate => 1;
-    public override float SecondaryRate => 1;
-    public override AmmoType AmmoType => AmmoType.Buckshot;
-    public override int ClipSize => 8;
-    public override float ReloadTime => 0.5f;
-    public override bool HasLaserDot => true;
-    public override bool HasFlashlight => true;
-    public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
-    public override int Bucket => 3;
-
-    public override void Spawn()
+    [Library("ttt_shotgun", Title = "SPAS-12")]
+    partial class Shotgun : Weapon
     {
-        base.Spawn();
+        public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
+        public override float PrimaryRate => 1;
+        public override float SecondaryRate => 1;
+        public override AmmoType AmmoType => AmmoType.Buckshot;
+        public override int ClipSize => 8;
+        public override float ReloadTime => 0.5f;
+        public override bool HasLaserDot => true;
+        public override bool HasFlashlight => true;
+        public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
+        public override int Bucket => 3;
 
-        SetModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl");
-    }
-
-    public override void AttackPrimary()
-    {
-        if (!TakeAmmo(1))
+        public override void Spawn()
         {
-            PlaySound("pistol.dryfire");
+            base.Spawn();
 
-            return;
+            SetModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl");
         }
 
-        (Owner as AnimEntity).SetAnimBool("b_attack", true);
-
-        ShootEffects();
-        PlaySound("rust_pumpshotgun.shoot");
-
-        for (int i = 0; i < 10; i++)
+        public override void AttackPrimary()
         {
-            ShootBullet(0.15f, 0.3f, BaseDamage, 3.0f);
-        }
-    }
+            if (!TakeAmmo(1))
+            {
+                PlaySound("pistol.dryfire");
 
-    [ClientRpc]
-    protected override void ShootEffects()
-    {
-        Host.AssertClient();
+                return;
+            }
 
-        Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
-        Particles.Create("particles/pistol_ejectbrass.vpcf", EffectEntity, "ejection_point");
+            (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-        ViewModelEntity?.SetAnimBool("fire", true);
+            ShootEffects();
+            PlaySound("rust_pumpshotgun.shoot");
 
-        if (IsLocalPawn)
-        {
-            new Sandbox.ScreenShake.Perlin(1.0f, 1.5f, 2.0f);
+            for (int i = 0; i < 10; i++)
+            {
+                ShootBullet(0.15f, 0.3f, BaseDamage, 3.0f);
+            }
         }
 
-        CrosshairPanel?.OnEvent("fire");
-    }
+        [ClientRpc]
+        protected override void ShootEffects()
+        {
+            Host.AssertClient();
 
-    public override void OnReloadFinish()
-    {
-        IsReloading = false;
+            Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
+            Particles.Create("particles/pistol_ejectbrass.vpcf", EffectEntity, "ejection_point");
 
-        TimeSincePrimaryAttack = 0;
-        TimeSinceSecondaryAttack = 0;
+            ViewModelEntity?.SetAnimBool("fire", true);
 
-        if (AmmoClip >= ClipSize) {
-            return;
+            if (IsLocalPawn)
+            {
+                new Sandbox.ScreenShake.Perlin(1.0f, 1.5f, 2.0f);
+            }
+
+            CrosshairPanel?.OnEvent("fire");
         }
 
-        if (Owner is TTTPlayer player)
+        public override void OnReloadFinish()
         {
-            int ammo = player.TakeAmmo(AmmoType, 1);
-            if (ammo == 0)
+            IsReloading = false;
+
+            TimeSincePrimaryAttack = 0;
+            TimeSinceSecondaryAttack = 0;
+
+            if (AmmoClip >= ClipSize)
             {
                 return;
             }
 
-            AmmoClip += ammo;
+            if (Owner is TTTPlayer player)
+            {
+                int ammo = player.TakeAmmo(AmmoType, 1);
+                if (ammo == 0)
+                {
+                    return;
+                }
 
-            if (AmmoClip < ClipSize)
-            {
-                Reload();
-            }
-            else
-            {
-                FinishReload();
+                AmmoClip += ammo;
+
+                if (AmmoClip < ClipSize)
+                {
+                    Reload();
+                }
+                else
+                {
+                    FinishReload();
+                }
             }
         }
-    }
 
-    [ClientRpc]
-    protected virtual void FinishReload()
-    {
-        ViewModelEntity?.SetAnimBool("reload_finished", true);
-    }
+        [ClientRpc]
+        protected virtual void FinishReload()
+        {
+            ViewModelEntity?.SetAnimBool("reload_finished", true);
+        }
 
-    public override void SimulateAnimator(PawnAnimator anim)
-    {
-        anim.SetParam("holdtype", 2);
-        anim.SetParam("aimat_weight", 1.0f);
+        public override void SimulateAnimator(PawnAnimator anim)
+        {
+            anim.SetParam("holdtype", 2);
+            anim.SetParam("aimat_weight", 1.0f);
+        }
     }
-}
 
 }

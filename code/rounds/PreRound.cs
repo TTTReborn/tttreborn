@@ -5,7 +5,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
 {
-    public class PreRound: BaseRound
+    public class PreRound : BaseRound
     {
         public override string RoundName => "Preparing";
         public override int RoundDuration => TTTReborn.Gamemode.Game.TTTPreRoundTime;
