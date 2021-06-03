@@ -15,6 +15,7 @@ public partial class Hud : HudEntity<RootPanel>
         RootPanel.AddChild<ChatBox>();
         RootPanel.AddChild<KillFeed>();
         RootPanel.AddChild<VoiceList>();
+        RootPanel.AddChild<GameTimer>();
 
         RootPanel.AddChild<Crosshair>().SetupCrosshair(new Crosshair.Properties());
         RootPanel.AddChild<PlayerInfo>();
