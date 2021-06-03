@@ -37,7 +37,9 @@ partial class Game : Sandbox.Game
     public override void OnKilled(Entity entity)
     {
         if (entity is TTTPlayer player)
+        {
             Round?.OnPlayerKilled(player);
+        }
 
         base.OnKilled(entity);
     }
@@ -80,9 +82,11 @@ partial class Game : Sandbox.Game
     private async Task StartGameTimer()
     {
         ChangeRound(new WaitingRound());
+
         while (true)
         {
             await Task.DelaySeconds(1);
+
             OnGameSecond();
         }
     }

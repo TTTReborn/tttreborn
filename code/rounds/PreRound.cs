@@ -7,7 +7,7 @@ namespace TTTReborn.Rounds
 {
     public class PreRound: BaseRound
     {
-        public override string RoundName => "Pre";
+        public override string RoundName => "Preparing";
         public override int RoundDuration => TTTReborn.Gamemode.Game.TTTPreRoundTime;
 
         protected override void OnStart()
@@ -17,7 +17,9 @@ namespace TTTReborn.Rounds
                 foreach (Client client in Client.All)
                 {
                     if (client.Pawn is TTTPlayer player)
+                    {
                         player.Respawn();
+                    }
                 }
             }
         }
@@ -40,7 +42,10 @@ namespace TTTReborn.Rounds
         {
             await Task.Delay(1000);
 
-            player.Respawn();
+            if (TTTReborn.Gamemode.Game.Instance.Round is PreRound)
+            {
+                player.Respawn();
+            }
         }
 
         public override void OnPlayerSpawn(TTTPlayer player)

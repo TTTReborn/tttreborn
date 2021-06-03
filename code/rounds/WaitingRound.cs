@@ -43,7 +43,9 @@ namespace TTTReborn.Rounds
                 foreach (Client client in Client.All)
                 {
                     if (client.Pawn is TTTPlayer player)
+                    {
                         player.Respawn();
+                    }
                 }
             }
         }
@@ -52,7 +54,10 @@ namespace TTTReborn.Rounds
         {
             await Task.Delay(1000);
 
-            player.Respawn();
+            if (TTTReborn.Gamemode.Game.Instance.Round is WaitingRound)
+            {
+                player.Respawn();
+            }
         }
 
         private void CheckMinimumPlayers()

@@ -16,7 +16,10 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            if (Players.Contains(player)) return;
+            if (Players.Contains( player ))
+            {
+                return;
+            }
 
             player.MakeSpectator();
 

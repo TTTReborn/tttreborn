@@ -51,7 +51,10 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            if (_isGameOver) return;
+            if (_isGameOver)
+            {
+                return;
+            }
 
             _ = ChangeToPostRound();
 
@@ -75,7 +78,9 @@ namespace TTTReborn.Rounds
             await Task.Delay(delay * 1000);
 
             if (TTTReborn.Gamemode.Game.Instance.Round != this)
+            {
                 return;
+            }
 
             TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
         }
@@ -90,8 +95,10 @@ namespace TTTReborn.Rounds
             {
                 TTTPlayer alivePlayer = Client.All[i].Pawn as TTTPlayer;
 
-                if (alivePlayer.LifeState == LifeState.Alive)
+                if (alivePlayer.LifeState != LifeState.Alive)
+                {
                     continue;
+                }
 
                 if (alivePlayer.Role == TTTPlayer.RoleType.Traitor)
                 {
