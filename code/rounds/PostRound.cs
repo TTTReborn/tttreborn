@@ -16,7 +16,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            if (Players.Contains( player ))
+            if (Players.Contains(player))
             {
                 return;
             }

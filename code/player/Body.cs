@@ -2,68 +2,68 @@
 
 namespace TTTReborn.Player
 {
-public class Body : ModelEntity
-{
-    public TTTPlayer Player { get; set; }
-    public bool Identified { get; set; } = false;
-
-    public Body()
+    public class Body : ModelEntity
     {
-        MoveType = MoveType.Physics;
-        UsePhysicsCollision = true;
+        public TTTPlayer Player { get; set; }
+        public bool Identified { get; set; } = false;
 
-        SetInteractsAs(CollisionLayer.Debris);
-        SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
-        SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
-
-        Identified = false;
-    }
-
-    public void CopyFrom(TTTPlayer player)
-    {
-        SetModel(player.GetModelName());
-        TakeDecalsFrom(player);
-
-        // We have to use `this` to refer to the extension methods.
-        this.CopyBonesFrom(player);
-        this.SetRagdollVelocityFrom(player);
-
-        foreach (Entity child in player.Children)
+        public Body()
         {
-            if (child is ModelEntity e)
-            {
-                string model = e.GetModelName();
+            MoveType = MoveType.Physics;
+            UsePhysicsCollision = true;
 
-                if (model != null && !model.Contains("clothes"))
+            SetInteractsAs(CollisionLayer.Debris);
+            SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
+            SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
+
+            Identified = false;
+        }
+
+        public void CopyFrom(TTTPlayer player)
+        {
+            SetModel(player.GetModelName());
+            TakeDecalsFrom(player);
+
+            // We have to use `this` to refer to the extension methods.
+            this.CopyBonesFrom(player);
+            this.SetRagdollVelocityFrom(player);
+
+            foreach (Entity child in player.Children)
+            {
+                if (child is ModelEntity e)
                 {
-                    continue;
+                    string model = e.GetModelName();
+
+                    if (model != null && !model.Contains("clothes"))
+                    {
+                        continue;
+                    }
+
+                    ModelEntity clothing = new ModelEntity();
+                    clothing.SetModel(model);
+                    clothing.SetParent(this, true);
                 }
-
-                ModelEntity clothing = new ModelEntity();
-                clothing.SetModel(model);
-                clothing.SetParent(this, true);
             }
         }
-    }
 
-    public void ApplyForceToBone(Vector3 force, int forceBone)
-    {
-        PhysicsGroup.AddVelocity(force);
-
-        if (forceBone >= 0)
+        public void ApplyForceToBone(Vector3 force, int forceBone)
         {
-            var body = GetBonePhysicsBody(forceBone);
+            PhysicsGroup.AddVelocity(force);
 
-            if (body != null)
+            if (forceBone >= 0)
             {
-                body.ApplyForce(force * 1000);
-            }
-            else
-            {
-                PhysicsGroup.AddVelocity(force);
+                var body = GetBonePhysicsBody(forceBone);
+
+                if (body != null)
+                {
+                    body.ApplyForce(force * 1000);
+                }
+                else
+                {
+                    PhysicsGroup.AddVelocity(force);
+                }
             }
         }
     }
-}
 
 }

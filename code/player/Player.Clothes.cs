@@ -3,29 +3,29 @@ using System.Collections.Generic;
 
 namespace TTTReborn.Player
 {
-partial class TTTPlayer
-{
-    List<ModelEntity> Clothing = new();
-
-    public ModelEntity AttachClothing(string modelName)
+    partial class TTTPlayer
     {
-        var entity = new ModelEntity();
+        List<ModelEntity> Clothing = new();
 
-        entity.SetModel(modelName);
-        entity.SetParent(this, true);
-        entity.EnableShadowInFirstPerson = true;
-        entity.EnableHideInFirstPerson = true;
+        public ModelEntity AttachClothing(string modelName)
+        {
+            var entity = new ModelEntity();
 
-        Clothing.Add(entity);
+            entity.SetModel(modelName);
+            entity.SetParent(this, true);
+            entity.EnableShadowInFirstPerson = true;
+            entity.EnableHideInFirstPerson = true;
 
-        return entity;
+            Clothing.Add(entity);
+
+            return entity;
+        }
+
+        public void RemoveClothing()
+        {
+            Clothing.ForEach(entity => entity.Delete());
+            Clothing.Clear();
+        }
     }
-
-    public void RemoveClothing()
-    {
-        Clothing.ForEach(entity => entity.Delete());
-        Clothing.Clear();
-    }
-}
 
 }

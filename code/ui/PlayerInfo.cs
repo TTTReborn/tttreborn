@@ -7,47 +7,47 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-public class PlayerInfo : Panel
-{
-    public PlayerInfo()
+    public class PlayerInfo : Panel
     {
-        StyleSheet.Load("/ui/PlayerInfo.scss");
-
-        new Background(this);
-    }
-
-    public class Background : Panel
-    {
-        public Label Weapon { set; get; }
-        public Label Health { set; get; }
-
-        public Background(Panel parent)
+        public PlayerInfo()
         {
-            Parent = parent;
+            StyleSheet.Load("/ui/PlayerInfo.scss");
 
-            Weapon = Add.Label("100", "weapon");
-            Health = Add.Label("100", "health");
+            new Background(this);
         }
 
-        public override void Tick()
+        public class Background : Panel
         {
-            TTTPlayer player = Local.Pawn as TTTPlayer;
+            public Label Weapon { set; get; }
+            public Label Health { set; get; }
 
-            if (player == null)
+            public Background(Panel parent)
             {
-                return;
+                Parent = parent;
+
+                Weapon = Add.Label("100", "weapon");
+                Health = Add.Label("100", "health");
             }
 
-            var weapon = player.ActiveChild as Weapon;
-
-            if (weapon != null)
+            public override void Tick()
             {
-                Weapon.Text = $"{weapon.AmmoClip}";
-            }
+                TTTPlayer player = Local.Pawn as TTTPlayer;
 
-            Health.Text = $"{player.Health:n0}";
+                if (player == null)
+                {
+                    return;
+                }
+
+                var weapon = player.ActiveChild as Weapon;
+
+                if (weapon != null)
+                {
+                    Weapon.Text = $"{weapon.AmmoClip}";
+                }
+
+                Health.Text = $"{player.Health:n0}";
+            }
         }
     }
-}
 
 }

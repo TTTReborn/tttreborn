@@ -7,69 +7,70 @@ using TTTReborn.Rounds;
 
 namespace TTTReborn.Gamemode
 {
-[Library("tttreborn", Title = "Trouble in Terry's Town")]
-partial class Game : Sandbox.Game
-{
-    public static Game Instance { get => Current as Game; }
-
-    [Net] public BaseRound Round { get; private set; }
-
-    public KarmaSystem Karma = new KarmaSystem();
-
-    public Game()
+    [Library("tttreborn", Title = "Trouble in Terry's Town")]
+    partial class Game : Sandbox.Game
     {
-        if (IsServer)
+        public static Game Instance { get => Current as Game; }
+
+        [Net] public BaseRound Round { get; private set; }
+
+        public KarmaSystem Karma = new KarmaSystem();
+
+        public Game()
         {
-            new Hud();
-        }
-    }
-
-    public override void DoPlayerNoclip(Client client)
-    {
-        // Do nothing. The player can't noclip in this mode.
-    }
-
-    public override void DoPlayerSuicide(Client client)
-    {
-        base.DoPlayerSuicide(client);
-    }
-
-    public override void OnKilled(Entity entity)
-    {
-        if (entity is TTTPlayer player)
-        {
-            Round?.OnPlayerKilled(player);
+            if (IsServer)
+            {
+                new Hud();
+            }
         }
 
-        base.OnKilled(entity);
-    }
+        public override void DoPlayerNoclip(Client client)
+        {
+            // Do nothing. The player can't noclip in this mode.
+        }
 
-    public override void ClientJoined(Client client)
-    {
-        // TODO: KarmaSystem is waiting on network dictionaries.
-        // Karma.RegisterPlayer(client);
-        // if (Karma.IsBanned(player))
-        // {
-        //  KickPlayer(player);
-        //
-        //  return;
-        // }
+        public override void DoPlayerSuicide(Client client)
+        {
+            base.DoPlayerSuicide(client);
+        }
 
-        TTTPlayer player = new TTTPlayer();
-        Karma.RegisterPlayer(player);
-        client.Pawn = player;
-        player.Respawn();
+        public override void OnKilled(Entity entity)
+        {
+            if (entity is TTTPlayer player)
+            {
+                Round?.OnPlayerKilled(player);
+            }
 
-        base.ClientJoined(client);
-    }
+            base.OnKilled(entity);
+        }
 
-    public override void ClientDisconnect(Client client, NetworkDisconnectionReason reason)
-    {
-        Log.Info(client.Name + " left, checking minimum player count...");
+        public override void ClientJoined(Client client)
+        {
+            // TODO: KarmaSystem is waiting on network dictionaries.
+            // Karma.RegisterPlayer(client);
+            // if (Karma.IsBanned(player))
+            // {
+            //  KickPlayer(player);
+            //
+            //  return;
+            // }
 
-        Round?.OnPlayerLeave(client.Pawn as TTTPlayer);
+            TTTPlayer player = new TTTPlayer();
+            Karma.RegisterPlayer(player);
+            client.Pawn = player;
+            player.Respawn();
 
-        base.ClientDisconnect(client, reason);
+            base.ClientJoined(client);
+        }
+
+        public override void ClientDisconnect(Client client, NetworkDisconnectionReason reason)
+        {
+            Log.Info(client.Name + " left, checking minimum player count...");
+
+            Round?.OnPlayerLeave(client.Pawn as TTTPlayer);
+
+            base.ClientDisconnect(client, reason);
+        }
     }
 
     public override void PostLevelLoaded()
@@ -104,6 +105,4 @@ partial class Game : Sandbox.Game
     {
         Round?.OnSecond();
     }
-}
-
 }

@@ -1,4 +1,5 @@
 # TTT Reborn - Trouble in Terry's Town
+
 [![Discord](https://img.shields.io/discord/442107660955942932)](https://discord.gg/9njYXGY)
 
 - Discord: https://discord.gg/Npcbb4W
