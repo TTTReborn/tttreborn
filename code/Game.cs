@@ -71,38 +71,38 @@ namespace TTTReborn.Gamemode
 
             base.ClientDisconnect(client, reason);
         }
-    }
 
-    public override void PostLevelLoaded()
-    {
-        _ = StartGameTimer();
-
-        base.PostLevelLoaded();
-    }
-
-    private async Task StartGameTimer()
-    {
-        ChangeRound(new WaitingRound());
-
-        while (true)
+        public override void PostLevelLoaded()
         {
-            await Task.DelaySeconds(1);
+            _ = StartGameTimer();
 
-            OnGameSecond();
+            base.PostLevelLoaded();
         }
-    }
 
-    public void ChangeRound(BaseRound round)
-    {
-        Assert.NotNull(round);
+        private async Task StartGameTimer()
+        {
+            ChangeRound(new WaitingRound());
 
-        Round?.Finish();
-        Round = round;
-        Round?.Start();
-    }
+            while (true)
+            {
+                await Task.DelaySeconds(1);
 
-    private void OnGameSecond()
-    {
-        Round?.OnSecond();
+                OnGameSecond();
+            }
+        }
+
+        public void ChangeRound(BaseRound round)
+        {
+            Assert.NotNull(round);
+
+            Round?.Finish();
+            Round = round;
+            Round?.Start();
+        }
+
+        private void OnGameSecond()
+        {
+            Round?.OnSecond();
+        }
     }
 }
