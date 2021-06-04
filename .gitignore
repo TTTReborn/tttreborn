@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Custom TTT-Reborn repo files
+code/Properties/
+maps/
+code/*.csproj
+tools_thumbnail_cache.bin
+
 # User-specific files
 *.rsuser
 *.suo

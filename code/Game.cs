@@ -1,249 +1,108 @@
-﻿using System;
-using Sandbox;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Sandbox;
 using System.Threading.Tasks;
 
 using TTTReborn.UI;
 using TTTReborn.Player;
+using TTTReborn.Rounds;
 
 namespace TTTReborn.Gamemode
 {
-[Library("tttreborn", Title = "Trouble in Terry's Town")]
-partial class Game : Sandbox.Game
-{
-    public enum Round { Waiting, PreRound, InProgress, PostRound }
-
-    public static Game Instance { get => Current as Game; }
-
-    [Net] public Round CurrentRound { get; private set; }
-    [Net] public int TimeRemaining { get; private set; }
-
-    public KarmaSystem Karma = new KarmaSystem();
-
-    public Game()
+    [Library("tttreborn", Title = "Trouble in Terry's Town")]
+    partial class Game : Sandbox.Game
     {
-        if (IsServer)
+        public static Game Instance { get => Current as Game; }
+
+        [Net] public BaseRound Round { get; private set; }
+
+        public KarmaSystem Karma = new KarmaSystem();
+
+        public Game()
         {
-            new Hud();
-        }
-    }
-
-    private void ChangeRound(Round round)
-    {
-        switch (round)
-        {
-            case Game.Round.Waiting:
-                TimeRemaining = 0;
-                Karma.IsTracking = false;
-
-                break;
-
-            case Game.Round.PreRound:
-                TimeRemaining = TTTPreRoundTime;
-
-                break;
-
-            case Game.Round.InProgress:
-                TimeRemaining = TTTRoundTime;
-
-                int detectiveCount = (int) (All.Count * 0.125f);
-                int traitorCount = (int) Math.Max(All.Count * 0.25f, 1f);
-
-                List<TTTPlayer> _players = Client.All.ToList().ConvertAll(p => p.Pawn as TTTPlayer);
-                Random random = new Random();
-
-                // SELECT DETECTIVES
-                for (int i = 0; i < detectiveCount; i++)
-                {
-                    int randomId = random.Next(_players.Count);
-                    _players[randomId].Role = TTTPlayer.RoleType.Detective;
-
-                    _players.RemoveAt(randomId);
-                }
-
-                // SELECT TRAITORS
-                for (int i = 0; i < traitorCount; i++)
-                {
-                    int randomId = random.Next(_players.Count);
-                    _players[randomId].Role = TTTPlayer.RoleType.Traitor;
-
-                    _players.RemoveAt(randomId);
-                }
-
-                // SET REMAINING PLAYERS TO INNOCENT
-                for (int i = 0; i < _players.Count; i++)
-                {
-                    _players[i].Role = TTTPlayer.RoleType.Innocent;
-                }
-
-                Karma.IsTracking = true;
-
-                break;
-
-            case Game.Round.PostRound:
-                TimeRemaining = TTTPostRoundTime;
-
-                Karma.ResolveKarma();
-                Karma.IsTracking = false;
-
-                break;
-        }
-
-        CurrentRound = round;
-    }
-
-    private void CheckMinimumPlayers()
-    {
-        if (Client.All.ToList().Count >= TTTMinPlayers)
-        {
-            if (CurrentRound == Round.Waiting)
+            if (IsServer)
             {
-                ChangeRound(Round.PreRound);
-            }
-        }
-        else if (CurrentRound != Round.Waiting)
-        {
-            ChangeRound(Round.Waiting);
-        }
-    }
-
-    private void CheckRoundState()
-    {
-        if (CurrentRound != Round.InProgress)
-            return;
-
-        bool traitorsDead = true;
-        bool innocentsDead = true;
-
-        // Check for alive players
-        for (int i = 0; i < Client.All.Count; i++)
-        {
-            TTTPlayer player = Client.All[i].Pawn as TTTPlayer;
-
-            if (player.LifeState == LifeState.Alive)
-                continue;
-
-            if (player.Role == TTTPlayer.RoleType.Traitor)
-            {
-                traitorsDead = false;
-            }
-            else
-            {
-                innocentsDead = false;
+                new Hud();
             }
         }
 
-        // End this round if there is just one team alive
-        if (innocentsDead || traitorsDead)
+        public override void DoPlayerNoclip(Client client)
         {
-            ChangeRound(Round.PostRound);
+            // Do nothing. The player can't noclip in this mode.
         }
-    }
 
-    private void UpdateRoundTimer()
-    {
-        if (CurrentRound == Round.Waiting)
-            return;
-
-        if (TimeRemaining == 0)
+        public override void DoPlayerSuicide(Client client)
         {
-            switch (CurrentRound)
+            base.DoPlayerSuicide(client);
+        }
+
+        public override void OnKilled(Entity entity)
+        {
+            if (entity is TTTPlayer player)
             {
-                case Round.PreRound:
-                    ChangeRound(Round.InProgress);
-
-                    break;
-
-                case Round.InProgress:
-                    ChangeRound(Round.PostRound);
-
-                    break;
-
-                case Round.PostRound:
-                    ChangeRound(Round.PreRound);
-
-                    break;
+                Round?.OnPlayerKilled(player);
             }
+
+            base.OnKilled(entity);
         }
-        else
+
+        public override void ClientJoined(Client client)
         {
-            TimeRemaining--;
-        }
-    }
+            // TODO: KarmaSystem is waiting on network dictionaries.
+            // Karma.RegisterPlayer(client);
+            // if (Karma.IsBanned(player))
+            // {
+            //  KickPlayer(player);
+            //
+            //  return;
+            // }
 
-    private async Task StartGameTimer()
-    {
-        while (true)
+            TTTPlayer player = new TTTPlayer();
+            Karma.RegisterPlayer(player);
+            client.Pawn = player;
+            player.Respawn();
+
+            base.ClientJoined(client);
+        }
+
+        public override void ClientDisconnect(Client client, NetworkDisconnectionReason reason)
         {
-            UpdateGameTimer();
-            await Task.DelaySeconds(1);
+            Log.Info(client.Name + " left, checking minimum player count...");
+
+            Round?.OnPlayerLeave(client.Pawn as TTTPlayer);
+
+            base.ClientDisconnect(client, reason);
         }
-    }
-
-    private void UpdateGameTimer()
-    {
-        CheckMinimumPlayers();
-        CheckRoundState();
-        UpdateRoundTimer();
-    }
-
-    public override void DoPlayerNoclip(Client client)
-    {
-        // Do nothing. The player can't noclip in this mode.
-    }
-
-    public override void DoPlayerSuicide(Client client)
-    {
-        base.DoPlayerSuicide(client);
     }
 
     public override void PostLevelLoaded()
     {
-        base.PostLevelLoaded();
-
         _ = StartGameTimer();
+
+        base.PostLevelLoaded();
     }
 
-    public override void OnKilled(Entity entity)
+    private async Task StartGameTimer()
     {
-        Client client = entity.GetClientOwner();
-        if (client != null)
+        ChangeRound(new WaitingRound());
+
+        while (true)
         {
-            CheckRoundState();
+            await Task.DelaySeconds(1);
+
+            OnGameSecond();
         }
-
-        base.OnKilled(entity);
     }
 
-    public override void ClientJoined(Client client)
+    public void ChangeRound(BaseRound round)
     {
-        base.ClientJoined(client);
+        Assert.NotNull(round);
 
-        // TODO: KarmaSystem is waiting on network dictionaries.
-        // Karma.RegisterPlayer(client);
-        // if (Karma.IsBanned(player))
-        // {
-        //  KickPlayer(player);
-        //
-        //  return;
-        // }
-
-        TTTPlayer player = new TTTPlayer();
-        Karma.RegisterPlayer(player);
-        client.Pawn = player;
-
-        player.Respawn();
+        Round?.Finish();
+        Round = round;
+        Round?.Start();
     }
 
-    public override void ClientDisconnect(Client client, NetworkDisconnectionReason reason)
+    private void OnGameSecond()
     {
-        Log.Info(client.Name + " left, checking minimum player count...");
-
-        CheckRoundState();
-
-        base.ClientDisconnect(client, reason);
+        Round?.OnSecond();
     }
-}
-
 }

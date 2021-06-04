@@ -7,102 +7,101 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-public class PlayerInfo : Panel
-{
-    public PlayerInfo()
+    public class PlayerInfo : Panel
     {
-        StyleSheet.Load("/ui/PlayerInfo.scss");
-
-        new RolePanel(this);
-        new IndicatorsPanel(this);
-    }
-
-    public class RolePanel : Panel
-    {
-        public Label RoleLabel { set; get; }
-
-        public RolePanel(Panel parent)
+        public PlayerInfo()
         {
-            Parent = parent;
+            StyleSheet.Load("/ui/PlayerInfo.scss");
 
-            RoleLabel = Add.Label("Unknown role", "rolelabel");
+            new RolePanel(this);
+            new IndicatorsPanel(this);
         }
 
-        public override void Tick()
+        public class RolePanel : Panel
         {
-            TTTPlayer player = Local.Pawn as TTTPlayer;
+            public Label RoleLabel { set; get; }
 
-            if (player == null)
+            public RolePanel(Panel parent)
             {
-                return;
+                Parent = parent;
+
+                RoleLabel = Add.Label("Unknown role", "rolelabel");
             }
 
-            RoleLabel.Text = $"{player.Role.ToString()}";
-        }
-    }
-
-    public class IndicatorsPanel : Panel
-    {
-        public BarPanel HealthBar { set; get; }
-        public BarPanel AmmoBar { set; get; }
-
-        public bool invisibleAmmo { set; get; }
-
-        public IndicatorsPanel(Panel parent)
-        {
-            Parent = parent;
-
-            HealthBar = new BarPanel(this, "", "healthlabel");
-            HealthBar.AddClass("health");
-
-            AmmoBar = new BarPanel(this, "", "ammolabel");
-            AmmoBar.AddClass("ammo");
-        }
-
-        public override void Tick()
-        {
-            TTTPlayer player = Local.Pawn as TTTPlayer;
-
-            if (player == null)
+            public override void Tick()
             {
-                return;
-            }
+                TTTPlayer player = Local.Pawn as TTTPlayer;
 
-            HealthBar.TextLabel.Text = $"{player.Health:n0}";
-
-            var weapon = player.ActiveChild as Weapon;
-
-            if (weapon != null)
-            {
-                if (invisibleAmmo)
+                if (player == null)
                 {
-                    invisibleAmmo = false;
-
-                    AmmoBar.RemoveClass("invisible");
+                    return;
                 }
 
-                AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
+                RoleLabel.Text = $"{player.Role.ToString()}";
             }
-            else if (!invisibleAmmo)
-            {
-                invisibleAmmo = true;
+        }
 
-                AmmoBar.AddClass("invisible");
+        public class IndicatorsPanel : Panel
+        {
+            public BarPanel HealthBar { set; get; }
+            public BarPanel AmmoBar { set; get; }
+
+            public bool invisibleAmmo { set; get; }
+
+            public IndicatorsPanel(Panel parent)
+            {
+                Parent = parent;
+
+                HealthBar = new BarPanel(this, "", "healthlabel");
+                HealthBar.AddClass("health");
+
+                AmmoBar = new BarPanel(this, "", "ammolabel");
+                AmmoBar.AddClass("ammo");
+            }
+
+            public override void Tick()
+            {
+                TTTPlayer player = Local.Pawn as TTTPlayer;
+
+                if (player == null)
+                {
+                    return;
+                }
+
+                HealthBar.TextLabel.Text = $"{player.Health:n0}";
+
+                var weapon = player.ActiveChild as Weapon;
+
+                if (weapon != null)
+                {
+                    if (invisibleAmmo)
+                    {
+                        invisibleAmmo = false;
+
+                        AmmoBar.RemoveClass("invisible");
+                    }
+
+                    AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
+                }
+                else if (!invisibleAmmo)
+                {
+                    invisibleAmmo = true;
+
+                    AmmoBar.AddClass("invisible");
+                }
             }
         }
     }
-}
 
-public class BarPanel : Panel
-{
-    public Label TextLabel { set; get; }
-
-    public BarPanel(Panel parent, string text, string name)
+    public class BarPanel : Panel
     {
-        Parent = parent;
+        public Label TextLabel { set; get; }
 
-        TextLabel = Add.Label(text, name);
+        public BarPanel(Panel parent, string text, string name)
+        {
+            Parent = parent;
+
+            TextLabel = Add.Label(text, name);
+        }
     }
-}
-
 }
