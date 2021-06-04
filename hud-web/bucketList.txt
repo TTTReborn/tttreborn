@@ -1,3 +1,0 @@
-Things I still rly want to improve:
-- Scrollbars
-- Font (size & weight) use
