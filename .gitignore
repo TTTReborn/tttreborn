@@ -6,6 +6,7 @@
 # Custom TTT-Reborn repo files
 code/Properties/
 maps/
+code/*.csproj
 tools_thumbnail_cache.bin
 
 # User-specific files
