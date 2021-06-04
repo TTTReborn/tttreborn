@@ -46,7 +46,7 @@ namespace TTTReborn.UI
             public BarPanel HealthBar { set; get; }
             public BarPanel AmmoBar { set; get; }
 
-            public bool invisibleAmmo { set; get; }
+            public bool InvisibleAmmo { set; get; }
 
             public IndicatorsPanel(Panel parent)
             {
@@ -74,18 +74,18 @@ namespace TTTReborn.UI
 
                 if (weapon != null)
                 {
-                    if (invisibleAmmo)
+                    if (InvisibleAmmo)
                     {
-                        invisibleAmmo = false;
+                        InvisibleAmmo = false;
 
                         AmmoBar.RemoveClass("invisible");
                     }
 
                     AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
                 }
-                else if (!invisibleAmmo)
+                else if (!InvisibleAmmo)
                 {
-                    invisibleAmmo = true;
+                    InvisibleAmmo = true;
 
                     AmmoBar.AddClass("invisible");
                 }
