@@ -1,8 +1,24 @@
 Scoreboard {
 	position: absolute;
+    left: 50%;
+    top: 50%;
+	transform: translate(-50%, -60%);
 	// z-index: 100;
 	// flex-direction: column;
 	font-family: Poppins;
+	border-radius: 8px;
+	max-width: 1200px;
+	width: 100%;
+	border: 1px solid #000;
+	color: #fafafa;
+	opacity: 0;
+	z-index: 100;
+	transition: opacity linear 0.05s;
+
+	&.open {
+		opacity: 1;
+		transform: scale(1);
+	}
 	// font-size: 23px;
 	// font-weight: 500;
 	// color: white;
@@ -29,6 +45,13 @@ Scoreboard {
 	}
 
 	ScoreboardHeader {
+		padding: 16px 30px;
+		padding-bottom: 0;
+		border-bottom: #363636 1px solid;
+		background-color: #0007;
+		border-top-left-radius: inherit;
+		border-top-right-radius: inherit;
+
 		ScoreboardHeaderTop {
 			display: flex;
 			ScoreboardLogo {
@@ -157,11 +180,7 @@ Scoreboard {
 	// 	font-weight: 300;
 	// 	display: flex;
 	// }
-
-	&.open {
-		opacity: 1;
-		transform: scale(1);
-	}
+}
 
 // 	.name {
 // 		flex-grow: 1;
