@@ -40,9 +40,14 @@ WeaponSelection {
             }
         }
 
-        &.traitor {
+        &.Traitor {
             Label.slotlabel {
                 background-color: #df2935;
+            }
+        }
+        &.Detective {
+            Label.slotlabel {
+                background-color: #2196f3;
             }
         }
 
