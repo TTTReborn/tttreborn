@@ -60,9 +60,18 @@ PlayerInfo {
             font-size: 24px;
             width: 100%;
         }
-        &.None {background-color: #fafafa; color: #000}
-        &.Innocent {background-color: #1bc54e;}
-        &.Detective {background-color: #2196f3;}
-        &.Traitor {background-color: #df2935;}
+        &.None {
+            background-color: #fafafa;
+            color: #000;
+        }
+        &.Innocent {
+            background-color: #1bc54e;
+        }
+        &.Detective {
+            background-color: #2196f3;
+        }
+        &.Traitor {
+            background-color: #df2935;
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace TTTReborn.UI
             RootPanel.AddChild<VoiceList>();
             RootPanel.AddChild<GameTimer>();
             RootPanel.AddChild<WeaponSelection>();
+            RootPanel.AddChild<Scoreboard>();
 
             RootPanel.AddChild<Crosshair>().SetupCrosshair(new Crosshair.Properties());
             RootPanel.AddChild<PlayerInfo>();
