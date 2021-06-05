@@ -4,9 +4,11 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
 
+// TODO export into Main and own Entry
+
 namespace TTTReborn.UI
 {
-    public class Scoreboard : Sandbox.UI.Scoreboard<ScoreboardEntry>
+    public class Scoreboard : Panel
     {
         public Scoreboard()
         {
@@ -14,6 +16,13 @@ namespace TTTReborn.UI
 
             new ScoreboardHeader(this);
             new ScoreboardMain(this);
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            SetClass("open", Local.Client?.Input.Down(InputButton.Score) ?? false);
         }
 
         public class ScoreboardHeader : Panel
@@ -158,13 +167,13 @@ namespace TTTReborn.UI
 
                     SetClass(group, true);
 
-                    Title = Add.Label(group + " - NUM.PLAYER");
+                    Title = Add.Label(group.ToUpper() + " - NUM.PLAYER");
                     Title.SetClass("groupTitle", true);
 
                     new ScoreboadGroupContent(this);
                 }
 
-                public class ScoreboadGroupContent : Panel
+                public class ScoreboadGroupContent : Sandbox.UI.Scoreboard<ScoreboardEntry>
                 {
                     public ScoreboadGroupContent(Panel parent)
                     {
@@ -174,31 +183,31 @@ namespace TTTReborn.UI
                         // for (player in groupPlayerList)
                         // new ScoreboardEntry(player)
                     }
+                }
 
-                    public class ScoreboardEntry : Sandbox.UI.ScoreboardEntry
+                public class ScoreboardEntry : Sandbox.UI.ScoreboardEntry
+                {
+                    public Label Score { set; get; }
+                    public Label Karma { set; get; }
+
+                    public ScoreboardEntry()
                     {
-                        public Label Score { set; get; }
-                        public Label Karma { set; get; }
+                        PlayerName = Add.Label("", "playername");
+                        Score = Add.Label("", "score");
+                        Karma = Add.Label("", "karma");
+                        Ping = Add.Label("", "ping");
+                    }
 
-                        public ScoreboardEntry()
-                        {
-                            PlayerName = Add.Label("", "playername");
-                            Score = Add.Label("", "score");
-                            Karma = Add.Label("", "karma");
-                            Ping = Add.Label("", "ping");
-                        }
+                    public override void UpdateFrom(PlayerScore.Entry entry)
+                    {
+                        Entry = entry;
 
-                        public override void UpdateFrom(PlayerScore.Entry entry)
-                        {
-                            Entry = entry;
+                        PlayerName.Text = entry.GetString("name"); // Does the playername need to update? In orig. you get kicked if you change ur name
+                        Score.Text = entry.Get<int>("kills", 0).ToString();
+                        Karma.Text = entry.Get<int>("karma", 0).ToString();
+                        Ping.Text = entry.Get<int>("ping", 0).ToString();
 
-                            PlayerName.Text = entry.GetString("name"); // Does the playername need to update? In orig. you get kicked if you change ur name
-                            Score.Text = entry.Get<int>("kills", 0).ToString();
-                            Karma.Text = entry.Get<int>("karma", 0).ToString();
-                            Ping.Text = entry.Get<int>("ping", 0).ToString();
-
-                            SetClass("me", Local.Client != null && entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
-                        }
+                        SetClass("me", Local.Client != null && entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
                     }
                 }
             }
