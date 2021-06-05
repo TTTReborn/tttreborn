@@ -1,0 +1,4 @@
+Minor:
+ - HEX code with alpha does not work
+ - ::before pseudo & content
+ -
