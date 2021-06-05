@@ -13,20 +13,19 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/PlayerInfo.scss");
 
-            new Background(this);
+            new RolePanel(this);
+            new IndicatorsPanel(this);
         }
 
-        public class Background : Panel
+        public class RolePanel : Panel
         {
-            public Label Weapon { set; get; }
-            public Label Health { set; get; }
+            public Label RoleLabel { set; get; }
 
-            public Background(Panel parent)
+            public RolePanel(Panel parent)
             {
                 Parent = parent;
 
-                Weapon = Add.Label("100", "weapon");
-                Health = Add.Label("100", "health");
+                RoleLabel = Add.Label("Unknown role", "rolelabel");
             }
 
             public override void Tick()
@@ -38,16 +37,71 @@ namespace TTTReborn.UI
                     return;
                 }
 
+                RoleLabel.Text = $"{player.Role.ToString()}";
+            }
+        }
+
+        public class IndicatorsPanel : Panel
+        {
+            public BarPanel HealthBar { set; get; }
+            public BarPanel AmmoBar { set; get; }
+
+            public bool InvisibleAmmo { set; get; }
+
+            public IndicatorsPanel(Panel parent)
+            {
+                Parent = parent;
+
+                HealthBar = new BarPanel(this, "", "healthlabel");
+                HealthBar.AddClass("health");
+
+                AmmoBar = new BarPanel(this, "", "ammolabel");
+                AmmoBar.AddClass("ammo");
+            }
+
+            public override void Tick()
+            {
+                TTTPlayer player = Local.Pawn as TTTPlayer;
+
+                if (player == null)
+                {
+                    return;
+                }
+
+                HealthBar.TextLabel.Text = $"{player.Health:n0}";
+
                 var weapon = player.ActiveChild as Weapon;
 
                 if (weapon != null)
                 {
-                    Weapon.Text = $"{weapon.AmmoClip}";
-                }
+                    if (InvisibleAmmo)
+                    {
+                        InvisibleAmmo = false;
 
-                Health.Text = $"{player.Health:n0}";
+                        AmmoBar.RemoveClass("invisible");
+                    }
+
+                    AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
+                }
+                else if (!InvisibleAmmo)
+                {
+                    InvisibleAmmo = true;
+
+                    AmmoBar.AddClass("invisible");
+                }
             }
         }
     }
 
+    public class BarPanel : Panel
+    {
+        public Label TextLabel { set; get; }
+
+        public BarPanel(Panel parent, string text, string name)
+        {
+            Parent = parent;
+
+            TextLabel = Add.Label(text, name);
+        }
+    }
 }

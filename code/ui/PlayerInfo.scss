@@ -1,18 +1,63 @@
 PlayerInfo {
+    background-color: #0009;
+    border: 1px solid #000;
+    border-radius: 4px;
+    margin: auto;
+    color: white;
+    min-width: 300px;
+
     position: absolute;
-    left: 10px;
-    bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    left: 30px;
+    bottom: 30px;
 
-    Background {
-        background-color: white;
-        padding: 5px;
+    Label {
+        font-weight: bold;
+    }
 
-        .health {
-            color: red;
+    IndicatorsPanel {
+        display: flex;
+        flex-direction: column;
+
+        BarPanel {
+            margin: 10px;
+            padding: 3px;
+            border-radius: 2px;
+
+            Label {
+                font-size: 18px;
+                margin-left: 16px;
+            }
+
+            &.health {
+                background-color: #3caf07;
+                margin-bottom: 5px;
+            }
+
+            &.ammo {
+                margin-top: 5px;
+                background-color: #db8c17;
+            }
+
+            &.invisible {
+                opacity: 0;
+            }
         }
+    }
 
-        .weapon {
-            color: blue;
+    RolePanel {
+        text-align: center;
+        width: 100%;
+        padding: 5px;
+        border-bottom: 1px solid black;
+        background-color: #df2935;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        Label {
+            font-size: 24px;
+            width: 100%;
         }
     }
 }

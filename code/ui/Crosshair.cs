@@ -1,4 +1,8 @@
-﻿using Sandbox.UI;
+﻿using Sandbox;
+using Sandbox.UI;
+
+using TTTReborn.Player;
+using TTTReborn.Weapons;
 
 namespace TTTReborn.UI
 {
@@ -99,6 +103,26 @@ namespace TTTReborn.UI
 
             return this;
         }
-    }
 
+        public override void Tick()
+        {
+            TTTPlayer player = Local.Pawn as TTTPlayer;
+
+            if (player == null)
+            {
+                return;
+            }
+
+            var weapon = player.ActiveChild as Weapon;
+
+            if (weapon == null)
+            {
+                this.Style.Display = DisplayMode.None;
+            }
+            else
+            {
+                this.Style.Display = DisplayMode.Flex;
+            }
+        }
+    }
 }

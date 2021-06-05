@@ -8,13 +8,17 @@ namespace TTTReborn.UI
         public Hud()
         {
             if (!IsClient)
+            {
                 return;
+            }
 
             // s&box defaults
             RootPanel.AddChild<NameTags>();
             RootPanel.AddChild<ChatBox>();
             RootPanel.AddChild<KillFeed>();
             RootPanel.AddChild<VoiceList>();
+            RootPanel.AddChild<GameTimer>();
+            RootPanel.AddChild<WeaponSelection>();
 
             RootPanel.AddChild<Crosshair>().SetupCrosshair(new Crosshair.Properties());
             RootPanel.AddChild<PlayerInfo>();
@@ -32,5 +36,4 @@ namespace TTTReborn.UI
             Host.AssertClient();
         }
     }
-
 }
