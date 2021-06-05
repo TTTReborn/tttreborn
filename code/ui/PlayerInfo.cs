@@ -36,7 +36,8 @@ namespace TTTReborn.UI
                 {
                     return;
                 }
-
+                // Give RolePanel .class for the matching role: 
+                // SetClass(player.Role.ToString(), true);
                 RoleLabel.Text = $"{player.Role.ToString()}";
             }
         }
