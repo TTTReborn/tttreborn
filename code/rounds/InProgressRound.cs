@@ -128,7 +128,7 @@ namespace TTTReborn.Rounds
 
         private void AssignRoles()
         {
-            // TODO: There might be a neater way to handle this logic.
+            // TODO: There should be a neater way to handle this logic.
             Random random = new Random();
 
             int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
@@ -142,11 +142,11 @@ namespace TTTReborn.Rounds
                 }
             }
 
-            for (int i = 0; i < Players.Count; i++)
+            foreach (TTTPlayer player in Players)
             {
-                if (Players[i].Role == TTTPlayer.RoleType.None)
+                if (player.Role == TTTPlayer.RoleType.None)
                 {
-                    Players[i].Role = TTTPlayer.RoleType.Innocent;
+                    player.Role = TTTPlayer.RoleType.Innocent;
                 }
             }
         }

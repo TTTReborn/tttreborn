@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using TTTReborn.Player;
 
-namespace TTTReborn
+namespace TTTReborn.Player
 {
 	public class PlayerCorpse : ModelEntity
 	{
