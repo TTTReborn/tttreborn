@@ -25,11 +25,6 @@ namespace TTTReborn.Player
 
         }
 
-        public bool IsSpectator
-        {
-            get => (Camera is SpectateCamera);
-        }
-
         public void MakeSpectator(Vector3 position = default)
         {
             EnableAllCollisions = false;
@@ -66,9 +61,7 @@ namespace TTTReborn.Player
         {
             base.OnKilled();
 
-            CreateBodyOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
             Inventory.DeleteContents();
-            MakeSpectator();
         }
 
         public override void Simulate(Client client)
@@ -175,22 +168,6 @@ namespace TTTReborn.Player
             _lastDamageInfo = info;
 
             base.TakeDamage(info);
-        }
-
-        private void CreateBodyOnServer(Vector3 force, int forceBone)
-        {
-            // TODO: Create a ragdoll.
-            // var ragdoll = new PlayerCorpse
-            // {
-            //     Pos = Pos,
-            //     Rot = Rot
-            // };
-            //
-            // ragdoll.CopyFrom(this);
-            // ragdoll.ApplyForceToBone(force, forceBone);
-            // ragdoll.Player = this;
-            //
-            // Body = ragdoll;
         }
 
         public void RemoveBodyEntity()

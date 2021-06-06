@@ -50,17 +50,24 @@ namespace TTTReborn.Rounds
             {
                 foreach (Client client in Client.All)
                 {
-                    if (client.Pawn is TTTPlayer player)
+                    if (client.Pawn is not TTTPlayer player)
                     {
-                        if (!Players.Contains(player))
-                        {
-                            AddPlayer(player);
-                        }
-
-                        // TODO: Remove once we can spawn in weapons into the map, for now just give the guns to people.
-                        player.Inventory.DeleteContents();
-                        player.Inventory.Add(new Shotgun(), true);
+                        continue;
                     }
+
+                    if (player.LifeState == LifeState.Dead)
+                    {
+                        player.Respawn();
+                    }
+
+                    if (!Players.Contains(player))
+                    {
+                        AddPlayer(player);
+                    }
+
+                    // TODO: Remove once we can spawn in weapons into the map, for now just give the guns to people.
+                    player.Inventory.DeleteContents();
+                    player.Inventory.Add(new Shotgun(), true);
                 }
 
                 AssignRoles();
@@ -121,16 +128,17 @@ namespace TTTReborn.Rounds
 
         private void AssignRoles()
         {
-            // TODO: Handle role logic a bit better...
+            // TODO: There might be a neater way to handle this logic.
             Random random = new Random();
 
             int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
             for (int i = 0; i < traitorCount; i++)
             {
-                int randomId = random.Next(Players.Where(p => p.Role == TTTPlayer.RoleType.None).ToList().Count);
-                if (Players[randomId].Role == TTTPlayer.RoleType.None)
+                List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role == TTTPlayer.RoleType.None).ToList();
+                int randomId = random.Next(unassignedPlayers.Count);
+                if (unassignedPlayers[randomId].Role == TTTPlayer.RoleType.None)
                 {
-                    Players[randomId].Role = TTTPlayer.RoleType.Traitor;
+                    unassignedPlayers[randomId].Role = TTTPlayer.RoleType.Traitor;
                 }
             }
 

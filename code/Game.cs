@@ -1,4 +1,5 @@
-﻿using Sandbox;
+﻿using System.Collections.Generic;
+using Sandbox;
 using System.Threading.Tasks;
 
 using TTTReborn.UI;
@@ -22,6 +23,15 @@ namespace TTTReborn.Gamemode
             {
                 new Hud();
             }
+        }
+
+        public void ChangeRound(BaseRound round)
+        {
+            Assert.NotNull(round);
+
+            Round?.Finish();
+            Round = round;
+            Round?.Start();
         }
 
         public override void DoPlayerNoclip(Client client)
@@ -91,15 +101,6 @@ namespace TTTReborn.Gamemode
 
                 OnGameSecond();
             }
-        }
-
-        public void ChangeRound(BaseRound round)
-        {
-            Assert.NotNull(round);
-
-            Round?.Finish();
-            Round = round;
-            Round?.Start();
         }
 
         private void OnGameSecond()
