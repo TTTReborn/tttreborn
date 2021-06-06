@@ -1,8 +1,11 @@
+using System;
 using Sandbox;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using TTTReborn.Player;
+using TTTReborn.Weapons;
 
 namespace TTTReborn.Rounds
 {
@@ -38,6 +41,29 @@ namespace TTTReborn.Rounds
             if (IsRoundOver())
             {
                 _ = ChangeToPostRound();
+            }
+        }
+
+        protected override void OnStart()
+        {
+            if (Host.IsServer)
+            {
+                foreach (Client client in Client.All)
+                {
+                    if (client.Pawn is TTTPlayer player)
+                    {
+                        if (!Players.Contains(player))
+                        {
+                            AddPlayer(player);
+                        }
+
+                        // TODO: Remove once we can spawn in weapons into the map, for now just give the guns to people.
+                        player.Inventory.DeleteContents();
+                        player.Inventory.Add(new Shotgun(), true);
+                    }
+                }
+
+                AssignRoles();
             }
         }
 
@@ -87,31 +113,34 @@ namespace TTTReborn.Rounds
 
         private bool IsRoundOver()
         {
-            bool traitorsDead = true;
-            bool innocentsDead = true;
+            bool innocentsAlive = Players.Exists((player) => player.Role == TTTPlayer.RoleType.Innocent);
+            bool terroristsAlive = Players.Exists((player) => player.Role == TTTPlayer.RoleType.Traitor);
 
-            // Check for alive players
-            for (int i = 0; i < Client.All.Count; i++)
+            return !innocentsAlive || !terroristsAlive;
+        }
+
+        private void AssignRoles()
+        {
+            // TODO: Handle role logic a bit better...
+            Random random = new Random();
+
+            int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
+            for (int i = 0; i < traitorCount; i++)
             {
-                TTTPlayer alivePlayer = Client.All[i].Pawn as TTTPlayer;
-
-                if (alivePlayer.LifeState != LifeState.Alive)
+                int randomId = random.Next(Players.Where(p => p.Role == TTTPlayer.RoleType.None).ToList().Count);
+                if (Players[randomId].Role == TTTPlayer.RoleType.None)
                 {
-                    continue;
-                }
-
-                if (alivePlayer.Role == TTTPlayer.RoleType.Traitor)
-                {
-                    traitorsDead = false;
-                }
-                else
-                {
-                    innocentsDead = false;
+                    Players[randomId].Role = TTTPlayer.RoleType.Traitor;
                 }
             }
 
-            // End this round if there is just one team alive
-            return innocentsDead || traitorsDead;
+            for (int i = 0; i < Players.Count; i++)
+            {
+                if (Players[i].Role == TTTPlayer.RoleType.None)
+                {
+                    Players[i].Role = TTTPlayer.RoleType.Innocent;
+                }
+            }
         }
     }
 }

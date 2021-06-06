@@ -24,18 +24,6 @@ namespace TTTReborn.Rounds
             base.OnPlayerKilled(player);
         }
 
-        public override void OnPlayerSpawn(TTTPlayer player)
-        {
-            if (Players.Contains(player))
-            {
-                return;
-            }
-
-            AddPlayer(player);
-
-            base.OnPlayerSpawn(player);
-        }
-
         protected override void OnStart()
         {
             if (Host.IsServer)

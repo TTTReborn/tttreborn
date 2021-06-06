@@ -10,7 +10,11 @@ namespace TTTReborn.Player
         public enum RoleType { None, Innocent, Detective, Traitor }
 
         public Body Body { get; set; }
+
+        [Net, Local]
         public RoleType Role { get; set; }
+
+        [Net, Local]
         public int Credits { get; set; } = 0;
 
         //private TimeSince _timeSinceDropped;
@@ -18,26 +22,7 @@ namespace TTTReborn.Player
 
         public TTTPlayer()
         {
-            Inventory = new Inventory(this);
 
-            Role = RoleType.None;
-            Credits = 0;
-        }
-
-        public override void Respawn()
-        {
-            SetModel("models/citizen/citizen.vmdl");
-
-            Controller = new WalkController();
-            Animator = new StandardPlayerAnimator();
-            Camera = new FirstPersonCamera();
-
-            EnableAllCollisions = true;
-            EnableDrawing = true;
-            EnableHideInFirstPerson = true;
-            EnableShadowInFirstPerson = true;
-
-            base.Respawn();
         }
 
         public bool IsSpectator
@@ -55,6 +40,26 @@ namespace TTTReborn.Player
                 DeathPosition = position,
                 TimeSinceDied = 0
             };
+        }
+
+        public override void Respawn()
+        {
+            SetModel("models/citizen/citizen.vmdl");
+
+            Controller = new WalkController();
+            Animator = new StandardPlayerAnimator();
+            Camera = new FirstPersonCamera();
+            Inventory = new Inventory(this);
+
+            EnableAllCollisions = true;
+            EnableDrawing = true;
+            EnableHideInFirstPerson = true;
+            EnableShadowInFirstPerson = true;
+
+            Role = RoleType.None;
+            Credits = 0;
+
+            base.Respawn();
         }
 
         public override void OnKilled()
