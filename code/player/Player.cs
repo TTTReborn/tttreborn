@@ -59,7 +59,7 @@ namespace TTTReborn.Player
         {
             base.OnKilled();
 
-            BecomePlayerCorpseOnServer( _lastDamageInfo.Force, GetHitboxBone( _lastDamageInfo.HitboxIndex ) );
+            BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
             Inventory.DeleteContents();
         }
 
@@ -102,6 +102,7 @@ namespace TTTReborn.Player
 
         private void TickInspectPlayerCorpse()
         {
+            // TODO: Handle role specific corpse inspecting.
             if (!Input.Pressed(InputButton.Use))
             {
                 return;
@@ -116,19 +117,6 @@ namespace TTTReborn.Player
 
             if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
             {
-                // Scoop up the credits on the corpse
-                if (Role == RoleType.Traitor)
-                {
-                    Credits += corpse.Player.Credits;
-                    corpse.Player.Credits = 0;
-                }
-
-                // Allow traitors to inspect corpse without identifying it by holding crouch
-                if (Role != RoleType.Traitor || !Input.Down(InputButton.Duck))
-                {
-                    corpse.IsIdentified = true;
-                }
-
                 InspectPlayerCorpse(corpse);
             }
         }
