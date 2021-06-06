@@ -97,9 +97,9 @@ namespace TTTReborn.Gamemode
 
             while (true)
             {
-                await Task.DelaySeconds(1);
-
                 OnGameSecond();
+
+                await Task.DelaySeconds(1);
             }
         }
 

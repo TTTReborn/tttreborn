@@ -17,8 +17,6 @@ namespace TTTReborn.Rounds
 
         public List<TTTPlayer> Spectators = new();
 
-        private bool _isGameOver;
-
         public override void OnPlayerKilled(TTTPlayer player)
         {
             Players.Remove(player);
@@ -28,7 +26,7 @@ namespace TTTReborn.Rounds
 
             if (IsRoundOver())
             {
-                _ = ChangeToPostRound();
+                TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
             }
         }
 
@@ -40,7 +38,7 @@ namespace TTTReborn.Rounds
 
             if (IsRoundOver())
             {
-                _ = ChangeToPostRound();
+                TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
             }
         }
 
@@ -84,12 +82,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            if (_isGameOver)
-            {
-                return;
-            }
-
-            _ = ChangeToPostRound();
+            TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
 
             base.OnTimeUp();
         }
@@ -102,20 +95,6 @@ namespace TTTReborn.Rounds
             Players.Remove(player);
 
             base.OnPlayerSpawn(player);
-        }
-
-        private async Task ChangeToPostRound(int delay = 3)
-        {
-            _isGameOver = true;
-
-            await Task.Delay(delay * 1000);
-
-            if (TTTReborn.Gamemode.Game.Instance.Round != this)
-            {
-                return;
-            }
-
-            TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
         }
 
         private bool IsRoundOver()
