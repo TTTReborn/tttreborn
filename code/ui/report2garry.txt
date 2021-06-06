@@ -13,7 +13,7 @@ Minor:
   => 
 
   - nth-child(1) { doesnt work
-  =>
+  => 
 
   - flex-flow: row wrap; doesnt work
 

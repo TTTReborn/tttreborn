@@ -58,24 +58,21 @@ namespace TTTReborn.UI
                     // Div for the textfields
                     public Label ServerName { set; get; }
                     public Label ServerDescription { set; get; }
-                    public Label PlayerConnected { set; get; }
-                    public Label MaxPlayer { set; get; }
-                    public Label Map { set; get; }
-
+                    public Label ServerInfo { set; get; }
                     public ScoreboardInformation(Panel parent)
                     {
                         Parent = parent;
 
-                        ServerName = Add.Label("Here will be the servername", "servername");
-                        ServerDescription = Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.", "serverdescription");
-                        PlayerConnected = Add.Label("1", "playerconnected");
-                        MaxPlayer = Add.Label("4", "maxplayer");
-                        Map = Add.Label("grassland", "map");
+                        ServerName = Add.Label("Here will be the servername", "serverName");
+                        ServerDescription = Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.", "serverDescription");
+                        ServerInfo = Add.Label("", "serverInfo");
                     }
 
                     public override void Tick()
                     {
-                        // Overwrite PlayerConnected
+                        // EXPECTED: player / maxPlayer - mapName - rounds left / time left 
+                        // 10/32 - ttt_minecraft_b5 - 3 rounds / 09:41 left
+                        ServerInfo.Text = "10/32 - ttt_minecraft_b5 - 3 rounds / 09:41 left";
                     }
                 }
             }

@@ -2,8 +2,6 @@ Scoreboard {
     position: absolute;
     left: 50%;
     top: 50%;
-    // z-index: 100;
-    // flex-direction: column;
     font-family: Poppins;
     border-radius: 8px;
     width: 1200px;
@@ -15,24 +13,11 @@ Scoreboard {
     transition: opacity 0.05s linear;
     display: flex;
     flex-direction: column;
+    background-color: #0009;
 
     &.open {
         opacity: 1;
     }
-    // font-size: 23px;
-    // font-weight: 500;
-    // color: white;
-    // display: inline-block;
-    // margin: auto;
-    // align-items: center;
-    // justify-content: center;
-    // opacity: 0;
-    // transition: all 0.1s ease-out;
-    // transform: scale(1.05);
-    // transform-origin: 50% 50%;
-    // background-size: 100% 100%;
-    // background-position: center center;
-    // background-color: rgba(10, 10, 10, 0.8);
 
     ScoreboardHeaderTablehead,
     ScoreboardEntry {
@@ -68,6 +53,21 @@ Scoreboard {
             ScoreboardInformation {
                 display: flex;
                 flex-direction: column;
+                .serverName {
+                    font-size: 24px;
+                    font-weight: 500;
+                }
+                .serverDescription {
+                    font-weight: 400;
+                    font-size: 18px;
+                }
+                .serverInfo {
+                    font-weight: 300;
+                    font-size: 0.9em;
+                    margin-top: 10px;
+                    margin-bottom: 0;
+                    padding-right: 75px;
+                }
             }
         }
 
@@ -183,59 +183,3 @@ Scoreboard {
             }
         }
     }
-
-    // .entry {
-    // 	mix-blend-mode: lighten;
-    // 	margin-bottom: 2px;
-    // 	padding: 4px 10px;
-    // 	color: #fff;
-    // 	font-weight: 300;
-    // 	display: flex;
-    // }
-}
-
-// 	.name {
-// 		flex-grow: 1;
-// 	}
-
-// 	.score,
-// 	.ping,
-// 	.karma {
-// 		width: 120px;
-// 		text-align: center;
-// 	}
-
-// 	.karma {
-// 		opacity: 0.3;
-// 	}
-
-// 	.ping,
-// 	.deaths {
-// 		opacity: 0.3;
-// 		width: 80px;
-// 		margin-left: 5px;
-// 	}
-
-// 	.deaths {
-// 		margin-right: 50px;
-// 	}
-
-// 	.header {
-// 		font-weight: 500;
-// 		color: white;
-// 		min-width: 30%;
-// 		margin-bottom: 10px;
-// 		padding: 5px 15px;
-// 		background-color: rgb(235, 81, 10);
-// 		border-radius: 32px;
-// 		opacity: 1;
-// 		mix-blend-mode: lighten;
-// 	}
-
-// 	.canvas {
-// 		flex-direction: column;
-// 		min-height: 50%;
-// 		min-width: 30%;
-// 		mix-blend-mode: lighten;
-// 	}
-// }
