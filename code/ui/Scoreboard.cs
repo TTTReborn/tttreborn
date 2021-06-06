@@ -57,43 +57,55 @@ namespace TTTReborn.UI
                 {
                     // Div for the textfields
                     public Label ServerName { set; get; }
-                    public Label ServerDescription { set; get; }
                     public Label ServerInfo { set; get; }
+                    public Label ServerDescription { set; get; }
                     public ScoreboardInformation(Panel parent)
                     {
                         Parent = parent;
 
                         ServerName = Add.Label("Here will be the servername", "serverName");
-                        ServerDescription = Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.", "serverDescription");
                         ServerInfo = Add.Label("", "serverInfo");
+                        ServerDescription = Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.", "serverDescription");
                     }
 
                     public override void Tick()
                     {
-                        // EXPECTED: player / maxPlayer - mapName - rounds left / time left 
+                        // EXPECTED: player / maxPlayer - mapName - rounds left / time left
                         // 10/32 - ttt_minecraft_b5 - 3 rounds / 09:41 left
-                        ServerInfo.Text = "10/32 - ttt_minecraft_b5 - 3 rounds / 09:41 left";
+                        ServerInfo.Text = "PLAYER/MAXPLAYER - MAP - 3 rounds / 09:41 left";
                     }
                 }
             }
 
             public class ScoreboardHeaderTablehead : Panel
             {
-                public Label Karma { set; get; }
-                public Label Score { set; get; }
-                public Label Ping { set; get; }
+
 
                 public ScoreboardHeaderTablehead(Panel parent)
                 {
                     Parent = parent;
 
                     new PlayerLeft(this);
-
-                    Karma = Add.Label("Karma", "karma");
-                    Score = Add.Label("Score", "score");
-                    Ping = Add.Label("Ping", "ping");
+                    new PlayerRight(this);
                 }
 
+                public class PlayerRight : Panel
+                {
+                    public PlayerRight(Panel parent)
+                    {
+                        Parent = parent;
+
+                        Parent = parent;
+                        Karma = Add.Label("Karma", "karma");
+                        Score = Add.Label("Score", "score");
+                        Ping = Add.Label("Ping", "ping");
+
+                    }
+                    public Label Karma { set; get; }
+                    public Label Score { set; get; }
+                    public Label Ping { set; get; }
+
+                }
                 public class PlayerLeft : Panel
                 {
                     public Label PlayerLeftCount { set; get; }

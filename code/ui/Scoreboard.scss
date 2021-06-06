@@ -35,8 +35,8 @@ Scoreboard {
         padding-bottom: 0;
         border-bottom: #363636 1px solid;
         background-color: #0007;
-        border-top-left-radius: inherit;
-        border-top-right-radius: inherit;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
 
         display: flex;
         flex-direction: column;
@@ -57,11 +57,11 @@ Scoreboard {
                     font-size: 24px;
                     font-weight: 500;
                 }
-                .serverDescription {
+                .serverInfo {
                     font-weight: 400;
                     font-size: 18px;
                 }
-                .serverInfo {
+                .serverDescription {
                     font-weight: 300;
                     font-size: 0.9em;
                     margin-top: 10px;
@@ -70,20 +70,56 @@ Scoreboard {
                 }
             }
         }
-
         ScoreboardHeaderTablehead {
+            // TODO: Find a good way to solve this
+            // this is far from ready, please leave it like this
+            // We have to file an Issue based on that.
+
             margin: 0px -30px;
             height: unset;
             font-weight: 500;
             font-size: 1.2em;
             align-items: baseline;
-            width: 100%;
+            width: inherit;
+            // justify-content: space-between;
+            // background-color: red;
+            // background-color: red;
+            PlayerLeft {
+                width: 870px;
+                .enemys {
+                }
+                // color: red;
+                // flex-grow: 1;
+                // flex-basis: 1000px;
 
-            & > *:first-child {
-                flex-grow: 2;
                 padding-left: 30px;
-                text-align: left;
             }
+            PlayerRight {
+                // width: 300px;
+                background-color: red;
+                // display: flex;
+                // justify-content: flex-start;
+                // overflow: visible;
+                // flex-direction:row;
+                .karma {
+                    background-color: blue;
+                }
+                .score {
+                    background-color: #000;
+                }
+                .ping {
+                    background-color: green;
+                }
+                .score, .karma, .ping {
+                    // color: blue;
+                    // flex-basis: 70px;
+                    // flex-grow: 1;
+                    // width: 100px;
+                    width: 50px;
+                }
+            }
+
+
 
             .enemys {
                 font-size: 2em;
@@ -183,3 +219,4 @@ Scoreboard {
             }
         }
     }
+}

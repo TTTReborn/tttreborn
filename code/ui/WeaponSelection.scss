@@ -5,7 +5,8 @@ WeaponSelection {
     min-width: 300px;
     display: flex;
     flex-direction: column;
-
+    border: 1px solid #000;
+    border-radius: 4px;
     font-family: Poppins;
 
     WeaponSlot {
@@ -24,8 +25,8 @@ WeaponSelection {
         Label {
             // font-size: 0.8em;
             margin-right: 10px;
-            padding-top: 4px;
-            font-weight: 500;
+            // padding-top: 4px;
+            font-weight: 400;
 
             &.slotlabel {
                 margin-right: 14px;
