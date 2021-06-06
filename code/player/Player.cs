@@ -8,16 +8,14 @@ namespace TTTReborn.Player
     public partial class TTTPlayer : Sandbox.Player
     {
         public enum RoleType { None, Innocent, Detective, Traitor }
-
-        public Body Body { get; set; }
+        public PlayerCorpse PlayerCorpse { get; set; }
 
         [Net, Local]
         public RoleType Role { get; set; }
 
         [Net, Local]
         public int Credits { get; set; } = 0;
-
-        //private TimeSince _timeSinceDropped;
+        
         private DamageInfo _lastDamageInfo;
 
         public TTTPlayer()
@@ -61,6 +59,7 @@ namespace TTTReborn.Player
         {
             base.OnKilled();
 
+            BecomeRagdollOnServer( _lastDamageInfo.Force, GetHitboxBone( _lastDamageInfo.HitboxIndex ) );
             Inventory.DeleteContents();
         }
 
@@ -115,7 +114,7 @@ namespace TTTReborn.Player
                 .Radius(2)
                 .Run();
 
-            if (trace.Hit && trace.Entity is Body body && body.Player != null)
+            if (trace.Hit && trace.Entity is PlayerCorpse body && body.Player != null)
             {
                 // Scoop up the credits on the body
                 if (Role == RoleType.Traitor)
@@ -172,10 +171,10 @@ namespace TTTReborn.Player
 
         public void RemoveBodyEntity()
         {
-            if (Body != null && Body.IsValid())
+            if (PlayerCorpse != null && PlayerCorpse.IsValid())
             {
-                Body.Delete();
-                Body = null;
+                PlayerCorpse.Delete();
+                PlayerCorpse = null;
             }
         }
 
@@ -193,7 +192,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void InspectedBody(Body body)
+        public void InspectedBody(PlayerCorpse body)
         {
 
         }
@@ -203,6 +202,21 @@ namespace TTTReborn.Player
             RemoveBodyEntity();
 
             base.OnDestroy();
+        }
+
+        private void BecomeRagdollOnServer( Vector3 force, int forceBone )
+        {
+            PlayerCorpse corpse = new PlayerCorpse
+            {
+                Position = Position,
+                Rotation = Rotation
+            };
+
+            corpse.CopyFrom(this);
+            corpse.ApplyForceToBone(force, forceBone);
+            corpse.Player = this;
+
+            PlayerCorpse = corpse;
         }
     }
 
