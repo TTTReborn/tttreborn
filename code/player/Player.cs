@@ -59,7 +59,7 @@ namespace TTTReborn.Player
         {
             base.OnKilled();
 
-            BecomeRagdollOnServer( _lastDamageInfo.Force, GetHitboxBone( _lastDamageInfo.HitboxIndex ) );
+            BecomePlayerCorpseOnServer( _lastDamageInfo.Force, GetHitboxBone( _lastDamageInfo.HitboxIndex ) );
             Inventory.DeleteContents();
         }
 
@@ -114,22 +114,22 @@ namespace TTTReborn.Player
                 .Radius(2)
                 .Run();
 
-            if (trace.Hit && trace.Entity is PlayerCorpse body && body.Player != null)
+            if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
             {
-                // Scoop up the credits on the body
+                // Scoop up the credits on the corpse
                 if (Role == RoleType.Traitor)
                 {
-                    Credits += body.Player.Credits;
-                    body.Player.Credits = 0;
+                    Credits += corpse.Player.Credits;
+                    corpse.Player.Credits = 0;
                 }
 
-                // Allow traitors to inspect body without identifying it by holding crouch
+                // Allow traitors to inspect corpse without identifying it by holding crouch
                 if (Role != RoleType.Traitor || !Input.Down(InputButton.Duck))
                 {
-                    body.IsIdentified = true;
+                    corpse.IsIdentified = true;
                 }
 
-                InspectPlayerCorpse(body);
+                InspectPlayerCorpse(corpse);
             }
         }
 
@@ -169,7 +169,7 @@ namespace TTTReborn.Player
             base.TakeDamage(info);
         }
 
-        public void RemoveBodyEntity()
+        public void RemovePlayerCorpse()
         {
             if (PlayerCorpse != null && PlayerCorpse.IsValid())
             {
@@ -192,19 +192,19 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void InspectPlayerCorpse(PlayerCorpse body)
+        public void InspectPlayerCorpse(PlayerCorpse corpse)
         {
 
         }
 
         protected override void OnDestroy()
         {
-            RemoveBodyEntity();
+            RemovePlayerCorpse();
 
             base.OnDestroy();
         }
 
-        private void BecomeRagdollOnServer(Vector3 force, int forceBone)
+        private void BecomePlayerCorpseOnServer(Vector3 force, int forceBone)
         {
             PlayerCorpse corpse = new PlayerCorpse
             {

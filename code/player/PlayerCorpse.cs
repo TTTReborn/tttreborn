@@ -58,11 +58,11 @@ namespace TTTReborn.Player
 
 			if (forceBone >= 0)
 			{
-				PhysicsBody body = GetBonePhysicsBody(forceBone);
+				PhysicsBody corpse = GetBonePhysicsBody(forceBone);
 
-				if (body != null)
+				if (corpse != null)
 				{
-					body.ApplyForce(force * 1000);
+					corpse.ApplyForce(force * 1000);
 				}
 				else
 				{
