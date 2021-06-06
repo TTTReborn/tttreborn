@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using TTTReborn.Player;
 
 namespace TTTReborn
@@ -11,7 +12,7 @@ namespace TTTReborn
 	public class PlayerCorpse : ModelEntity
 	{
 		public TTTPlayer Player { get; set; }
-		public bool Identified { get; set; } = false;
+		public bool IsIdentified { get; set; }
 
 		public PlayerCorpse()
 		{
@@ -22,7 +23,7 @@ namespace TTTReborn
 			SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
 			SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
 
-			Identified = false;
+			IsIdentified = false;
 		}
 
 		public void CopyFrom(TTTPlayer player)
@@ -40,11 +41,13 @@ namespace TTTReborn
 					string model = e.GetModelName();
 
 					if (model != null && !model.Contains("clothes"))
+					{
 						continue;
+					}
 
 					ModelEntity clothing = new ModelEntity();
 					clothing.SetModel(model);
-					clothing.SetParent( this, true);
+					clothing.SetParent(this, true);
 				}
 			}
 		}

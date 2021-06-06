@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
-using Game = TTTReborn.Gamemode.Game;
 
 namespace TTTReborn.Player.Camera
 {
@@ -34,7 +33,7 @@ namespace TTTReborn.Player.Camera
             // TODO: Rework spectate camera logic.
             if (TargetPlayer == null || !TargetPlayer.IsValid() || Local.Client.Input.Pressed(InputButton.Attack1))
             {
-                List<TTTPlayer> players = Game.Instance.Round.Players;
+                List<TTTPlayer> players = TTTReborn.Gamemode.Game.Instance.Round.Players;
 
                 if (players.Count > 0)
                 {

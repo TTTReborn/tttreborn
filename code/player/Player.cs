@@ -15,7 +15,7 @@ namespace TTTReborn.Player
 
         [Net, Local]
         public int Credits { get; set; } = 0;
-        
+
         private DamageInfo _lastDamageInfo;
 
         public TTTPlayer()
@@ -100,7 +100,7 @@ namespace TTTReborn.Player
             base.StartTouch(other);
         }
 
-        private void TickInspectBody()
+        private void TickInspectPlayerCorpse()
         {
             if (!Input.Pressed(InputButton.Use))
             {
@@ -126,10 +126,10 @@ namespace TTTReborn.Player
                 // Allow traitors to inspect body without identifying it by holding crouch
                 if (Role != RoleType.Traitor || !Input.Down(InputButton.Duck))
                 {
-                    body.Identified = true;
+                    body.IsIdentified = true;
                 }
 
-                InspectedBody(body);
+                InspectPlayerCorpse(body);
             }
         }
 
@@ -192,7 +192,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void InspectedBody(PlayerCorpse body)
+        public void InspectPlayerCorpse(PlayerCorpse body)
         {
 
         }
@@ -204,7 +204,7 @@ namespace TTTReborn.Player
             base.OnDestroy();
         }
 
-        private void BecomeRagdollOnServer( Vector3 force, int forceBone )
+        private void BecomeRagdollOnServer(Vector3 force, int forceBone)
         {
             PlayerCorpse corpse = new PlayerCorpse
             {
