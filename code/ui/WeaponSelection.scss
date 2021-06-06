@@ -14,6 +14,7 @@ WeaponSelection {
         color: white;
         border-bottom: 1px solid rgba(0, 0, 0, 0.8);
         background-color: rgba(0, 0, 0, 0.6);
+        font-size: 22px;
 
         &.active {
             font-weight: normal;
@@ -21,9 +22,10 @@ WeaponSelection {
         }
 
         Label {
-            font-size: 0.8em;
+            // font-size: 0.8em;
             margin-right: 10px;
             padding-top: 4px;
+            font-weight: 500;
 
             &.slotlabel {
                 margin-right: 14px;
@@ -31,7 +33,7 @@ WeaponSelection {
                 width: 32px;
                 text-align: center;
                 background-color: #db8c17;
-                font-weight: bold;
+                font-weight: 600;
             }
 
             &.ammolabel {
