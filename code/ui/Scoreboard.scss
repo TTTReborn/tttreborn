@@ -5,6 +5,7 @@ Scoreboard {
     font-family: Poppins;
     border-radius: 8px;
     width: 1200px;
+    height: 10px;
     transform: translateX(-50%) translateY(-60%);
     border: 1px solid #000;
     color: #fafafa;
@@ -15,8 +16,8 @@ Scoreboard {
     flex-direction: column;
     background-color: #0009;
 
+    opacity: 1;
     &.open {
-        opacity: 1;
     }
 
     ScoreboardHeaderTablehead,

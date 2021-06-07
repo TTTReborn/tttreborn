@@ -8,14 +8,14 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class Scoreboard : Panel
+    public class OldScoreboard : Panel
     {
-        public Scoreboard()
+        public OldScoreboard()
         {
             StyleSheet.Load("/ui/Scoreboard.scss");
 
-            new ScoreboardHeader(this);
-            new ScoreboardMain(this);
+            // new ScoreboardHeader(this);
+            // new ScoreboardMain(this);
         }
 
         public override void Tick()
