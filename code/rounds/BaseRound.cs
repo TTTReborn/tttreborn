@@ -31,6 +31,7 @@ namespace TTTReborn.Rounds
             if (Host.IsServer && RoundDuration > 0)
             {
                 RoundEndTime = Sandbox.Time.Now + RoundDuration;
+                TimeLeftFormatted = TimeSpan.FromSeconds(TimeLeft).ToString(@"mm\:ss");
             }
 
             OnStart();

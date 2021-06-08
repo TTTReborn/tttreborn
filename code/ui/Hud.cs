@@ -13,7 +13,6 @@ namespace TTTReborn.UI
             }
 
             // s&box defaults
-            RootPanel.AddChild<NameTags>();
             RootPanel.AddChild<ChatBox>();
             RootPanel.AddChild<KillFeed>();
             RootPanel.AddChild<VoiceList>();
@@ -22,7 +21,6 @@ namespace TTTReborn.UI
             RootPanel.AddChild<Scoreboard>();
             // RootPanel.AddChild<IssueReport>();
 
-            RootPanel.AddChild<Crosshair>().SetupCrosshair(new Crosshair.Properties());
             RootPanel.AddChild<PlayerInfo>();
         }
 
