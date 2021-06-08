@@ -21,6 +21,7 @@ namespace TTTReborn.UI
 
             PlayerScore.OnPlayerAdded += AddPlayer;
             PlayerScore.OnPlayerRemoved += RemovePlayer;
+            Add.Panel("footer");
             // TODO: Implement UpdatePlayer method
             // PlayerScore.OnPlayerUpdated += UpdatePlayer;
 

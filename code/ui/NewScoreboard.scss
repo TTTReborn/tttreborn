@@ -57,66 +57,6 @@ Scoreboard {
                 padding-right: 75px;
             }
         }
-        // }
-        // ScoreboardHeaderTablehead {
-        //     // TODO: Find a good way to solve this
-        //     // this is far from ready, please leave it like this
-        //     // We have to file an Issue based on that.
-
-        //     margin: 0px -30px;
-        //     height: unset;
-        //     font-weight: 500;
-        //     font-size: 1.2em;
-        //     align-items: baseline;
-        //     width: inherit;
-        //     // justify-content: space-between;
-        //     // background-color: red;
-        //     // background-color: red;
-        //     PlayerLeft {
-        //         width: 870px;
-        //         .enemys {
-        //         }
-        //         // color: red;
-        //         // flex-grow: 1;
-        //         // flex-basis: 1000px;
-
-        //         padding-left: 30px;
-        //     }
-        //     PlayerRight {
-        //         // width: 300px;
-        //         background-color: red;
-        //         // display: flex;
-        //         // justify-content: flex-start;
-        //         // overflow: visible;
-        //         // flex-direction:row;
-        //         .karma {
-        //             background-color: blue;
-        //         }
-        //         .score {
-        //             background-color: #000;
-        //         }
-        //         .ping {
-        //             background-color: green;
-        //         }
-        //         .score, .karma, .ping {
-        //             // color: blue;
-        //             // flex-basis: 70px;
-        //             // flex-grow: 1;
-        //             // width: 100px;
-        //             width: 50px;
-        //         }
-        //     }
-
-        //     .enemys {
-        //         font-size: 2em;
-        //         &.Traitor {
-        //             color: #df2935;
-        //         }
-        //         &.Innocent {
-        //             color: #1bc54e;
-        //         }
-        //     }
-        // }
     }
     .tableHeader {
         background-color: #0007;
@@ -153,6 +93,7 @@ Scoreboard {
                 border-bottom-width: 0;
                 display: flex;
                 flex-direction: column;
+                box-shadow: 0px 3px 5px -1px #00000040;
 
                 ScoreboardEntry {
                     width: 100%;
@@ -176,5 +117,14 @@ Scoreboard {
     .ping {
         width: 90px;
         text-align: center;
+    }
+
+    .footer {
+        margin-top:10px;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+        border-top: #363636 1px solid;
+        background-color: #0007;
+        padding: 16px 30px;
     }
 }
