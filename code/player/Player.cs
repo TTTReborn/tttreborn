@@ -8,41 +8,19 @@ namespace TTTReborn.Player
     public partial class TTTPlayer : Sandbox.Player
     {
         public enum RoleType { None, Innocent, Detective, Traitor }
+        public PlayerCorpse PlayerCorpse { get; set; }
 
-        public Body Body { get; set; }
+        [Net, Local]
         public RoleType Role { get; set; }
+
+        [Net, Local]
         public int Credits { get; set; } = 0;
 
-        //private TimeSince _timeSinceDropped;
         private DamageInfo _lastDamageInfo;
 
         public TTTPlayer()
         {
-            Inventory = new Inventory(this);
 
-            Role = RoleType.None;
-            Credits = 0;
-        }
-
-        public override void Respawn()
-        {
-            SetModel("models/citizen/citizen.vmdl");
-
-            Controller = new WalkController();
-            Animator = new StandardPlayerAnimator();
-            Camera = new FirstPersonCamera();
-
-            EnableAllCollisions = true;
-            EnableDrawing = true;
-            EnableHideInFirstPerson = true;
-            EnableShadowInFirstPerson = true;
-
-            base.Respawn();
-        }
-
-        public bool IsSpectator
-        {
-            get => (Camera is SpectateCamera);
         }
 
         public void MakeSpectator(Vector3 position = default)
@@ -57,13 +35,32 @@ namespace TTTReborn.Player
             };
         }
 
+        public override void Respawn()
+        {
+            SetModel("models/citizen/citizen.vmdl");
+
+            Controller = new WalkController();
+            Animator = new StandardPlayerAnimator();
+            Camera = new FirstPersonCamera();
+            Inventory = new Inventory(this);
+
+            EnableAllCollisions = true;
+            EnableDrawing = true;
+            EnableHideInFirstPerson = true;
+            EnableShadowInFirstPerson = true;
+
+            Role = RoleType.None;
+            Credits = 0;
+
+            base.Respawn();
+        }
+
         public override void OnKilled()
         {
             base.OnKilled();
 
-            CreateBodyOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
+            BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
             Inventory.DeleteContents();
-            MakeSpectator();
         }
 
         public override void Simulate(Client client)
@@ -103,8 +100,9 @@ namespace TTTReborn.Player
             base.StartTouch(other);
         }
 
-        private void TickInspectBody()
+        private void TickInspectPlayerCorpse()
         {
+            // TODO: Handle role specific corpse inspecting.
             if (!Input.Pressed(InputButton.Use))
             {
                 return;
@@ -117,22 +115,9 @@ namespace TTTReborn.Player
                 .Radius(2)
                 .Run();
 
-            if (trace.Hit && trace.Entity is Body body && body.Player != null)
+            if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
             {
-                // Scoop up the credits on the body
-                if (Role == RoleType.Traitor)
-                {
-                    Credits += body.Player.Credits;
-                    body.Player.Credits = 0;
-                }
-
-                // Allow traitors to inspect body without identifying it by holding crouch
-                if (Role != RoleType.Traitor || !Input.Down(InputButton.Duck))
-                {
-                    body.Identified = true;
-                }
-
-                InspectedBody(body);
+                InspectPlayerCorpse(corpse);
             }
         }
 
@@ -172,28 +157,12 @@ namespace TTTReborn.Player
             base.TakeDamage(info);
         }
 
-        private void CreateBodyOnServer(Vector3 force, int forceBone)
+        public void RemovePlayerCorpse()
         {
-            // TODO: Create a ragdoll.
-            // var ragdoll = new PlayerCorpse
-            // {
-            //     Pos = Pos,
-            //     Rot = Rot
-            // };
-            //
-            // ragdoll.CopyFrom(this);
-            // ragdoll.ApplyForceToBone(force, forceBone);
-            // ragdoll.Player = this;
-            //
-            // Body = ragdoll;
-        }
-
-        public void RemoveBodyEntity()
-        {
-            if (Body != null && Body.IsValid())
+            if (PlayerCorpse != null && PlayerCorpse.IsValid())
             {
-                Body.Delete();
-                Body = null;
+                PlayerCorpse.Delete();
+                PlayerCorpse = null;
             }
         }
 
@@ -211,16 +180,31 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void InspectedBody(Body body)
+        public void InspectPlayerCorpse(PlayerCorpse corpse)
         {
 
         }
 
         protected override void OnDestroy()
         {
-            RemoveBodyEntity();
+            RemovePlayerCorpse();
 
             base.OnDestroy();
+        }
+
+        private void BecomePlayerCorpseOnServer(Vector3 force, int forceBone)
+        {
+            PlayerCorpse corpse = new PlayerCorpse
+            {
+                Position = Position,
+                Rotation = Rotation
+            };
+
+            corpse.CopyFrom(this);
+            corpse.ApplyForceToBone(force, forceBone);
+            corpse.Player = this;
+
+            PlayerCorpse = corpse;
         }
     }
 

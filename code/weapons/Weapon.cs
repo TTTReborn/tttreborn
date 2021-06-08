@@ -273,17 +273,6 @@ namespace TTTReborn.Weapons
             {
                 return;
             }
-
-            Crosshair.Current?.SetupCrosshair(new Crosshair.Properties(
-                true,
-                false,
-                false,
-                25,
-                2,
-                2,
-                -25,
-                new Color(0.1f, 1f, 0.3f, 1f)
-            ));
         }
 
         public bool IsUsable()

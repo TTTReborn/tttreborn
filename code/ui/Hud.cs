@@ -13,14 +13,12 @@ namespace TTTReborn.UI
             }
 
             // s&box defaults
-            RootPanel.AddChild<NameTags>();
             RootPanel.AddChild<ChatBox>();
             RootPanel.AddChild<KillFeed>();
             RootPanel.AddChild<VoiceList>();
             RootPanel.AddChild<GameTimer>();
             RootPanel.AddChild<WeaponSelection>();
 
-            RootPanel.AddChild<Crosshair>().SetupCrosshair(new Crosshair.Properties());
             RootPanel.AddChild<PlayerInfo>();
         }
 

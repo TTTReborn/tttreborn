@@ -10,6 +10,13 @@ namespace TTTReborn.Rounds
         public override string RoundName => "Preparing";
         public override int RoundDuration => TTTReborn.Gamemode.Game.TTTPreRoundTime;
 
+        public override void OnPlayerKilled(TTTPlayer player)
+        {
+            _ = StartRespawnTimer(player);
+
+            base.OnPlayerKilled(player);
+        }
+
         protected override void OnStart()
         {
             if (Host.IsServer)
@@ -22,13 +29,6 @@ namespace TTTReborn.Rounds
                     }
                 }
             }
-        }
-
-        public override void OnPlayerKilled(TTTPlayer player)
-        {
-            _ = StartRespawnTimer(player);
-
-            base.OnPlayerKilled(player);
         }
 
         protected override void OnTimeUp()

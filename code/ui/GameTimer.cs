@@ -1,5 +1,6 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using TTTReborn.Gamemode;
 
 namespace TTTReborn.UI
 {
@@ -16,7 +17,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            // Round handling
+            // TODO: Handle if Instance is null and if Round is null.
+            TimeLabel.Text = $"{Game.Instance.Round.RoundName}: {Game.Instance.Round.TimeLeftFormatted}";
         }
     }
 
