@@ -5,7 +5,6 @@ Scoreboard {
     font-family: Poppins;
     border-radius: 8px;
     width: 1200px;
-    height: 10px;
     transform: translateX(-50%) translateY(-60%);
     border: 1px solid #000;
     color: #fafafa;
@@ -16,208 +15,116 @@ Scoreboard {
     flex-direction: column;
     background-color: #0009;
 
-    opacity: 1;
     &.open {
+        opacity: 1;
     }
 
-    ScoreboardHeaderTablehead,
-    ScoreboardEntry {
-        display: flex;
-        flex-wrap: wrap;
-
-        & > * {
-            flex-basis: 70px;
-            text-align: center;
-        }
-    }
-
-    ScoreboardHeader {
+    .header {
         padding: 16px 30px;
-        padding-bottom: 0;
+        padding-bottom: 25px;
         border-bottom: #363636 1px solid;
         background-color: #0007;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
         display: flex;
-        flex-direction: column;
 
-        ScoreboardHeaderTop {
-            display: flex;
-
-            ScoreboardLogo {
-                width: 100px;
-                margin-right: 20px;
-            }
-            margin-bottom: 25px;
-
-            ScoreboardInformation {
-                display: flex;
-                flex-direction: column;
-                .serverName {
-                    font-size: 24px;
-                    font-weight: 500;
-                }
-                .serverInfo {
-                    font-weight: 400;
-                    font-size: 18px;
-                }
-                .serverDescription {
-                    font-weight: 300;
-                    font-size: 0.9em;
-                    margin-top: 10px;
-                    margin-bottom: 0;
-                    padding-right: 75px;
-                }
-            }
+        .scoreboardLogo {
+            background-image: url( /assets/TTT-Reborn-Logo.png );
+            background-size: 100%;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+            // flex-basis:100px;
         }
-        ScoreboardHeaderTablehead {
-            // TODO: Find a good way to solve this
-            // this is far from ready, please leave it like this
-            // We have to file an Issue based on that.
+        // margin-bottom: 25px;
 
-            margin: 0px -30px;
-            height: unset;
-            font-weight: 500;
-            font-size: 1.2em;
-            align-items: baseline;
-            width: inherit;
-            // justify-content: space-between;
-            // background-color: red;
-            // background-color: red;
-            PlayerLeft {
-                width: 870px;
-                .enemys {
-                }
-                // color: red;
-                // flex-grow: 1;
-                // flex-basis: 1000px;
-
-                padding-left: 30px;
+        .informationHolder {
+            display: flex;
+            flex-direction: column;
+            .serverName {
+                font-size: 24px;
+                font-weight: 500;
             }
-            PlayerRight {
-                // width: 300px;
-                background-color: red;
-                // display: flex;
-                // justify-content: flex-start;
-                // overflow: visible;
-                // flex-direction:row;
-                .karma {
-                    background-color: blue;
-                }
-                .score {
-                    background-color: #000;
-                }
-                .ping {
-                    background-color: green;
-                }
-                .score, .karma, .ping {
-                    // color: blue;
-                    // flex-basis: 70px;
-                    // flex-grow: 1;
-                    // width: 100px;
-                    width: 50px;
-                }
+            .serverInfo {
+                font-weight: 400;
+                font-size: 18px;
             }
-
-
-
-            .enemys {
-                font-size: 2em;
-                &.Traitor {
-                    color: #df2935;
-                }
-                &.Innocent {
-                    color: #1bc54e;
-                }
+            .serverDescription {
+                font-weight: 300;
+                font-size: 0.9em;
+                margin-top: 10px;
+                margin-bottom: 0;
+                padding-right: 75px;
             }
         }
     }
-
-    ScoreboardMain {
-        padding: 0;
-        max-height: 500px;
-        position: relative;
-        font-weight: 300;
-
-        ScoreboadGroup {
+    .tableHeader {
+        background-color: #0007;
+        display: flex;
+        flex-direction: row;
+        font-weight: 500;
+        font-size: 20px;
+        padding-bottom: 8px;
+        .name {
+            padding-left: 20px;
+        }
+    }
+    .mainContent {
+        .scoreboardGroup {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
             margin-top: 5px;
 
-            // &.alive {
-            // 	$color: #3f7e51;
-            // }
-            // // &.missing {$color: #3f7e51;}
-            // &.dead {
-            // 	$color: #af262f;
-            // }
-            // &.spectator {
-            // 	$color: #ba8107;
-            // }
-
-            .groupTitle {
-                z-index: 100;
-                border-top-right-radius: 4px;
-                padding: 0 10px 0 0;
-                display: block;
-                font-size: 0.9em;
+            .scoreboardGroup__title {
+                background-color: #3f7e51;
+                font-size: 14px;
                 font-weight: 300;
-                background-color: #ba8107;
+                width: 100px;
+                border-top-right-radius: 4px;
+                padding: 0 10px 0 20px;
             }
-
-            ScoreboadGroupContent {
-                box-shadow: #00000040 0px 3px 5px -1px;
-                border: 2px solid #ba8107;
-                border-image: linear-gradient(to bottom, #ba8107, #ba8107, #ba8107, rgba(0, 0, 0, 0)) 1 1%;
+            .scoreboardGroup__content {
+                // border-image: linear-gradient(to bottom, #3f7e51, #3f7e51, #3f7e51, rgba(0, 0, 0, 0)) 1 1%;
+                border: 2px solid #3f7e51;
+                // border-color: #3f7e51;
                 border-right-width: 0;
                 border-left-width: 1px;
                 border-bottom-width: 0;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0px 3px 5px -1px #00000040;
 
                 ScoreboardEntry {
-                    height: 25px;
-
-                    // Are those pseudo selectors available?
-                    // &:nth-child(1n) {
-                    // 	background-color: #2a2a2a66;
-                    // }
-                    // &:nth-child(2n) {
-                    // 	background-color: #0a0a0a66;
-                    // }
+                    width: 100%;
+                    padding-left: 20px;
+                }
+                .odd {
+                    background-color: #0a0a0a66;
+                }
+                .even {
                     background-color: #2a2a2a66;
-
-                    &.me {
-                        background-color: #ffae0073;
-                    }
-                    &.Traitor {
-                        background-color: #df293554;
-                        &.me {
-                            background-color: #df2935cc;
-                        }
-                    }
-                    &.Detetive {
-                        background-color: #2196f354;
-                        &.me {
-                            background-color: #2196f3cc;
-                        }
-                    }
-
-                    & > *:first-child {
-                        // Entry avatar
-                        flex-grow: 0;
-                        flex-basis: 30px;
-                        img {
-                            height: 23px !important;
-                            border: 1px #58585859 solid;
-                        }
-                    }
-
-                    & > .playername {
-                        // Entry player name
-                        flex-grow: 2;
-                        text-align: left;
-                        padding-left: 5px;
-                    }
                 }
             }
         }
+    }
+
+    .name {
+        flex-grow: 1;
+    }
+    .score,
+    .karma,
+    .ping {
+        width: 90px;
+        text-align: center;
+    }
+
+    .footer {
+        margin-top:10px;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+        border-top: #363636 1px solid;
+        background-color: #0007;
+        padding: 16px 30px;
     }
 }

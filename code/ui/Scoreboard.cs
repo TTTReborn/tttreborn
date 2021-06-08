@@ -1,225 +1,177 @@
+using System.ComponentModel;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-
-using TTTReborn.Player;
-
-// TODO export into Main and own Entry
+using System.Collections.Generic;
 
 namespace TTTReborn.UI
 {
-    public class OldScoreboard : Panel
+    public class Scoreboard : Panel
     {
-        public OldScoreboard()
+        public Scoreboard()
         {
-            StyleSheet.Load("/ui/Scoreboard.scss");
+            StyleSheet.Load("/ui/NewScoreboard.scss");
+            header = new Header();
+            AddHeader();
+            AddTableHeader();
+            var mainContent = Add.Panel("mainContent");
+            // TODO: create playergroups & for each playergroup:
+            AddScoreboardGroup(mainContent);
 
-            // new ScoreboardHeader(this);
-            // new ScoreboardMain(this);
+            PlayerScore.OnPlayerAdded += AddPlayer;
+            PlayerScore.OnPlayerRemoved += RemovePlayer;
+            Add.Panel("footer");
+            // TODO: Implement UpdatePlayer method
+            // PlayerScore.OnPlayerUpdated += UpdatePlayer;
+
+            // why is: var (item, index) ; throwing an error here?
+            foreach (var player in PlayerScore.All)
+            {
+                AddPlayer(player);
+            }
         }
 
+        public class Header : Panel
+        {
+            public void UpdateServerInfo()
+            {
+                this.ServerInfo.Text = this.GetServerInfoStr();
+            }
+            public string GetServerInfoStr()
+            {
+                // TODO: Get this out of the header
+                // TODO: Fill the other variables
+                return $"{PlayerScore.All.Length}/MAXPLAYER - MAPNAME - ROUND/TIME LEFT";
+            }
+            public Panel ScoreboardLogo;
+            public Panel InformationHolder;
+            public Label ServerName;
+            public Label ServerInfo;
+            public Label ServerDescription;
+            public Panel Canvas;
+        }
+        public class ScoreboardGroup : Panel
+        {
+            // TODO: Implement logic for the player counter in the title
+            public void UpdateLabel()
+            {
+                this.GroupTitleLabel.Text = this.GroupTitle.ToUpper() + " - " + this.GroupMember.ToString();
+            }
+            public int GroupMember;
+            public string GroupTitle;
+            public Label GroupTitleLabel;
+            public Panel GroupContent;
+            public Panel Canvas;
+
+
+        }
+
+        public Dictionary<int, ScoreboardEntry> Entries = new();
+
+        public Dictionary<string, ScoreboardGroup> ScoreboardGroups = new();
+        public Header header;
+
+        protected void AddHeader()
+        {
+            header.Canvas = Add.Panel("header");
+            header.ScoreboardLogo = header.Canvas.Add.Panel("scoreboardLogo");
+            header.InformationHolder = header.Canvas.Add.Panel("informationHolder");
+            header.ServerName = header.InformationHolder.Add.Label("Here will be the servername", "serverName");
+            header.ServerInfo = header.InformationHolder.Add.Label(header.GetServerInfoStr(), "serverInfo");
+            header.ServerDescription = header.InformationHolder.Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat", "serverDescription");
+        }
+
+        protected void AddTableHeader()
+        {
+            var tableHeader = Add.Panel("tableHeader");
+            tableHeader.Add.Label("3 Innocents left", "name");
+            tableHeader.Add.Label("Karma", "karma");
+            tableHeader.Add.Label("Score", "score");
+            tableHeader.Add.Label("Ping", "ping");
+        }
+
+        protected void AddScoreboardGroup(Panel Content)
+        {
+            // TODO: Set proper groups dynamicly
+            string group = "alive";
+            var scoreboardGroup = new ScoreboardGroup
+            {
+
+            };
+            scoreboardGroup.GroupTitle = group;
+            scoreboardGroup.GroupMember = 0;
+            scoreboardGroup.Canvas = Content.Add.Panel("scoreboardGroup " + group);
+            scoreboardGroup.GroupTitleLabel = scoreboardGroup.Canvas.Add.Label("", "scoreboardGroup__title");
+            scoreboardGroup.UpdateLabel();
+            scoreboardGroup.GroupContent = scoreboardGroup.Canvas.Add.Panel("scoreboardGroup__content");
+
+            ScoreboardGroups[group] = scoreboardGroup;
+        }
+
+        protected void AddPlayer(PlayerScore.Entry entry)
+        {
+            // TODO: Get proper scoreboardGroup for entry
+            string group = "alive";
+            ScoreboardGroup scoreboardGroup = ScoreboardGroups[group];
+            scoreboardGroup.GroupMember++;
+            var p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
+            bool isOdd = (PlayerScore.All.Length % 2) != 0;
+            p.UpdateFrom(entry, isOdd);
+            scoreboardGroup.UpdateLabel();
+            header.UpdateServerInfo();
+            Entries[entry.Id] = p;
+        }
+        protected void RemovePlayer(PlayerScore.Entry entry)
+        {
+            if (Entries.TryGetValue(entry.Id, out var panel))
+            {
+                string group = "alive";
+                ScoreboardGroup scoreboardGroup = ScoreboardGroups[group];
+                scoreboardGroup.GroupMember--;
+                scoreboardGroup.UpdateLabel();
+                panel.Delete();
+                Entries.Remove(entry.Id);
+            }
+        }
         public override void Tick()
         {
             base.Tick();
 
             SetClass("open", Local.Client?.Input.Down(InputButton.Score) ?? false);
         }
+    }
 
-        public class ScoreboardHeader : Panel
+    public class ScoreboardEntry : Panel
+    {
+        public PlayerScore.Entry Entry;
+
+        public Label PlayerName;
+        public Label Karma;
+        public Label Score;
+        public Label Ping;
+
+        public ScoreboardEntry()
         {
-            public ScoreboardHeader(Panel parent)
-            {
-                Parent = parent;
+            AddClass("entry");
 
-                new ScoreboardHeaderTop(this);
-                new ScoreboardHeaderTablehead(this);
-            }
-
-            public class ScoreboardHeaderTop : Panel
-            {
-                public ScoreboardHeaderTop(Panel parent)
-                {
-                    Parent = parent;
-
-                    new ScoreboardLogo(this);
-                    new ScoreboardInformation(this);
-                }
-
-                public class ScoreboardLogo : Panel
-                {
-                    public ScoreboardLogo(Panel parent)
-                    {
-                        Parent = parent;
-                    }
-                }
-
-                public class ScoreboardInformation : Panel
-                {
-                    // Div for the textfields
-                    public Label ServerName { set; get; }
-                    public Label ServerInfo { set; get; }
-                    public Label ServerDescription { set; get; }
-                    public ScoreboardInformation(Panel parent)
-                    {
-                        Parent = parent;
-
-                        ServerName = Add.Label("Here will be the servername", "serverName");
-                        ServerInfo = Add.Label("", "serverInfo");
-                        ServerDescription = Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.", "serverDescription");
-                    }
-
-                    public override void Tick()
-                    {
-                        // EXPECTED: player / maxPlayer - mapName - rounds left / time left
-                        // 10/32 - ttt_minecraft_b5 - 3 rounds / 09:41 left
-                        ServerInfo.Text = "PLAYER/MAXPLAYER - MAP - 3 rounds / 09:41 left";
-                    }
-                }
-            }
-
-            public class ScoreboardHeaderTablehead : Panel
-            {
-
-
-                public ScoreboardHeaderTablehead(Panel parent)
-                {
-                    Parent = parent;
-
-                    new PlayerLeft(this);
-                    new PlayerRight(this);
-                }
-
-                public class PlayerRight : Panel
-                {
-                    public PlayerRight(Panel parent)
-                    {
-                        Parent = parent;
-
-                        Parent = parent;
-                        Karma = Add.Label("Karma", "karma");
-                        Score = Add.Label("Score", "score");
-                        Ping = Add.Label("Ping", "ping");
-
-                    }
-                    public Label Karma { set; get; }
-                    public Label Score { set; get; }
-                    public Label Ping { set; get; }
-
-                }
-                public class PlayerLeft : Panel
-                {
-                    public Label PlayerLeftCount { set; get; }
-                    public Label RoleText { set; get; }
-
-                    public PlayerLeft(Panel parent)
-                    {
-                        Parent = parent;
-
-                        PlayerLeftCount = Add.Label("X", "playerleftcount");
-                        PlayerLeftCount.SetClass("enemys", true);
-                        RoleText = Add.Label(" left", "roletext");
-                    }
-
-                    public override void Tick()
-                    {
-                        TTTPlayer player = Local.Pawn as TTTPlayer;
-
-                        if (player != null)
-                        {
-                            if (player.Role.ToString() == "Traitor")
-                            {
-                                // TODO: Get player left number
-                                PlayerLeftCount.Text = "0";
-                                RoleText.Text = " Innocents left";
-
-                                return;
-                            }
-                        }
-
-                        PlayerLeftCount.Text = "0";
-                        RoleText.Text = " Traitor left";
-                    }
-                }
-
-                // protected override void AddHeader()
-                // {
-                //     // Is the the table header?
-                //     Header = Add.Panel("header");
-                //     Header.Add.Label("Player", "name");
-                //     Header.Add.Label("Karma", "karma");
-                //     Header.Add.Label("Score", "score");
-                //     Header.Add.Label("Deaths", "deaths");
-                //     Header.Add.Label("Ping", "ping");
-                // }
-            }
+            PlayerName = Add.Label("PlayerName", "name");
+            Karma = Add.Label("", "karma");
+            Score = Add.Label("", "score");
+            Ping = Add.Label("", "ping");
         }
 
-        public class ScoreboardMain : Panel
+        public virtual void UpdateFrom(PlayerScore.Entry entry, bool isOdd)
         {
-            public ScoreboardMain(Panel parent)
-            {
-                // for each player group (alive,  missing, dead, spectator)
-                // for (group in playerGroups)
-                // new ScoreboardGroup(group);
-                Parent = parent;
+            Entry = entry;
 
-                new ScoreboardGroup(this, "alive");
-            }
+            PlayerName.Text = entry.GetString("name");
+            Karma.Text = entry.Get<int>("karma", 0).ToString();
+            Score.Text = entry.Get<int>("score", 0).ToString();
+            Ping.Text = entry.Get<int>("ping", 0).ToString();
 
-            public class ScoreboardGroup : Panel
-            {
-                public Label Title { set; get; }
-
-                public ScoreboardGroup(Panel parent, string group)
-                {
-                    Parent = parent;
-
-                    SetClass(group, true);
-
-                    Title = Add.Label(group.ToUpper() + " - NUM.PLAYER");
-                    Title.SetClass("groupTitle", true);
-
-                    new ScoreboadGroupContent(this);
-                }
-
-                public class ScoreboadGroupContent : Sandbox.UI.Scoreboard<ScoreboardEntry>
-                {
-                    public ScoreboadGroupContent(Panel parent)
-                    {
-                        Parent = parent;
-
-                        // groupPlayerList.sort()
-                        // for (player in groupPlayerList)
-                        // new ScoreboardEntry(player)
-                    }
-                }
-
-                public class ScoreboardEntry : Sandbox.UI.ScoreboardEntry
-                {
-                    public Label Score { set; get; }
-                    public Label Karma { set; get; }
-
-                    public ScoreboardEntry()
-                    {
-                        PlayerName = Add.Label("", "playername");
-                        Score = Add.Label("", "score");
-                        Karma = Add.Label("", "karma");
-                        Ping = Add.Label("", "ping");
-                    }
-
-                    public override void UpdateFrom(PlayerScore.Entry entry)
-                    {
-                        Entry = entry;
-
-                        PlayerName.Text = entry.GetString("name"); // Does the playername need to update? In orig. you get kicked if you change ur name
-                        Score.Text = entry.Get<int>("kills", 0).ToString();
-                        Karma.Text = entry.Get<int>("karma", 0).ToString();
-                        Ping.Text = entry.Get<int>("ping", 0).ToString();
-
-                        SetClass("me", Local.Client != null && entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
-                    }
-                }
-            }
+            SetClass("me", Local.Client != null && entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
+            SetClass(isOdd ? "odd" : "even", true);
         }
     }
 }
