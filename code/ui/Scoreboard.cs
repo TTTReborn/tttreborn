@@ -11,7 +11,7 @@ namespace TTTReborn.UI
     {
         public Scoreboard()
         {
-            StyleSheet.Load("/ui/NewScoreboard.scss");
+            StyleSheet.Load("/ui/Scoreboard.scss");
             header = new Header();
             AddHeader();
             AddTableHeader();
