@@ -9,8 +9,41 @@ namespace TTTReborn.UI
 {
     public class Scoreboard : Panel
     {
+        public Scoreboard()
+        {
+            StyleSheet.Load("/ui/NewScoreboard.scss");
+            header = new Header();
+            AddHeader();
+            AddTableHeader();
+            var mainContent = Add.Panel("mainContent");
+            // TODO: create playergroups & for each playergroup:
+            AddScoreboardGroup(mainContent);
+
+            PlayerScore.OnPlayerAdded += AddPlayer;
+            PlayerScore.OnPlayerRemoved += RemovePlayer;
+            // TODO: Implement UpdatePlayer method
+            // PlayerScore.OnPlayerUpdated += UpdatePlayer;
+
+            // why is: var (item, index) ; throwing an error here?
+            foreach (var player in PlayerScore.All)
+            {
+                AddPlayer(player);
+            }
+        }
+
         public class Header : Panel
         {
+            public void UpdateServerInfo()
+            {
+                Log.Info("asdasd");
+                this.ServerInfo.Text = this.GetServerInfoStr();
+            }
+            public string GetServerInfoStr()
+            {
+                // TODO: Get this out of the header
+                // TODO: Fill the other variables
+                return $"{PlayerScore.All.Length}/MAXPLAYER - MAPNAME - ROUND/TIME LEFT";
+            }
             public Panel ScoreboardLogo;
             public Panel InformationHolder;
             public Label ServerName;
@@ -20,6 +53,7 @@ namespace TTTReborn.UI
         }
         public class ScoreboardGroup : Panel
         {
+            // TODO: Implement logic for the player counter in the title
             public Label GroupTitle;
             public Panel GroupContent;
             public Panel Canvas;
@@ -27,50 +61,19 @@ namespace TTTReborn.UI
 
         }
 
-        // public TextEntry Input { get; protected set; }
-        // public Dictionary<int, ScoreboardEntry> Entries = new();
-        // public Dictionary<int, TeamSection> TeamSections = new();
+        public Dictionary<int, ScoreboardEntry> Entries = new();
 
-        // public Panel ScoreboardHeader;
-        // public Label ScoreboardTitle;
-
-
-        public Scoreboard()
-        {
-            StyleSheet.Load("/ui/NewScoreboard.scss");
-            AddHeader();
-            AddTableHeader();
-
-            var mainContent = Add.Panel("mainContent");
-            // For each playergroup:
-            AddScoreboardGroup(mainContent);
-
-            // PlayerScore.OnPlayerAdded += AddPlayer;
-            // PlayerScore.OnPlayerUpdated += UpdatePlayer;
-            // PlayerScore.OnPlayerRemoved += RemovePlayer;
-
-            // foreach ( var player in PlayerScore.All )
-            // {
-            // 	AddPlayer( player );
-            // }
-        }
+        public Dictionary<string, ScoreboardGroup> ScoreboardGroups = new();
+        public Header header;
 
         protected void AddHeader()
         {
-            var header = new Header
-            {
-
-            };
-
-
-            // Set up the Container for the Team on the scoreboard
             header.Canvas = Add.Panel("header");
             header.ScoreboardLogo = header.Canvas.Add.Panel("scoreboardLogo");
             header.InformationHolder = header.Canvas.Add.Panel("informationHolder");
-            header.ServerName = header.InformationHolder.Add.Label("Here will be the servername");
-            header.ServerInfo = header.InformationHolder.Add.Label("10/32 - ttt_minecraft_b5 - 3 rounds / 09:41 left", "serverInfo");
+            header.ServerName = header.InformationHolder.Add.Label("Here will be the servername","serverName");
+            header.ServerInfo = header.InformationHolder.Add.Label(header.GetServerInfoStr(), "serverInfo");
             header.ServerDescription = header.InformationHolder.Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat", "serverDescription");
-
         }
 
         protected void AddTableHeader()
@@ -84,50 +87,36 @@ namespace TTTReborn.UI
 
         protected void AddScoreboardGroup(Panel Content)
         {
+            string group = "alive";
             var scoreboardGroup = new ScoreboardGroup
             {
 
             };
-
             scoreboardGroup.Canvas = Content.Add.Panel("scoreboardGroup alive");
-            scoreboardGroup.GroupTitle = scoreboardGroup.Canvas.Add.Label("ALIVE - 8", "scoreboardGroup__title");
+            scoreboardGroup.GroupTitle = scoreboardGroup.Canvas.Add.Label(group.ToUpper() + " - 0", "scoreboardGroup__title");
             scoreboardGroup.GroupContent = scoreboardGroup.Canvas.Add.Panel("scoreboardGroup__content");
-            int index = 0;
-            // why is: var (item, index) ; throwing an error here?
-            foreach (var player in PlayerScore.All)
-            {
-                var p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
-                bool isOdd = (index % 2) != 0;
-                index++;
-                p.UpdateFrom(player, isOdd);
-                p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
-                isOdd = (index % 2) != 0;
-                index++;
-                p.UpdateFrom(player, isOdd);
-                p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
-                isOdd = (index % 2) != 0;
-                index++;
-                p.UpdateFrom(player, isOdd);
-                p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
-                isOdd = (index % 2) != 0;
-                index++;
-                p.UpdateFrom(player, isOdd);
-                p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
-                isOdd = (index % 2) != 0;
-                index++;
-                p.UpdateFrom(player, isOdd);
-                p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
-                isOdd = (index % 2) != 0;
-                index++;
-                p.UpdateFrom(player, isOdd);
-            }
 
-            // tableHeader.Add.Label("3 Innocents left", "groupTitle");
+            ScoreboardGroups[group] = scoreboardGroup;
         }
 
-        protected void AddPlayer(PlayerScore.Entry entry) {
-            // Do sort to propper scoreboardGroup here
-            //  scoreboardGroup
+        protected void AddPlayer(PlayerScore.Entry entry)
+        {
+            // TODO: Get proper scoreboardGroup for entry
+            string group = "alive";
+            var section = ScoreboardGroups[group].GroupContent;
+            var p = section.AddChild<ScoreboardEntry>();
+            bool isOdd = (PlayerScore.All.Length % 2) != 0;
+            p.UpdateFrom(entry, isOdd);
+            header.UpdateServerInfo();
+            Entries[entry.Id] = p;
+        }
+        protected void RemovePlayer(PlayerScore.Entry entry)
+        {
+            if (Entries.TryGetValue(entry.Id, out var panel))
+            {
+                panel.Delete();
+                Entries.Remove(entry.Id);
+            }
         }
         public override void Tick()
         {
@@ -139,34 +128,34 @@ namespace TTTReborn.UI
 
     public class ScoreboardEntry : Panel
     {
-		public PlayerScore.Entry Entry;
+        public PlayerScore.Entry Entry;
 
-		public Label PlayerName;
-		public Label Karma;
-		public Label Score;
-		public Label Ping;
+        public Label PlayerName;
+        public Label Karma;
+        public Label Score;
+        public Label Ping;
 
-		public ScoreboardEntry()
-		{
-			AddClass( "entry" );
+        public ScoreboardEntry()
+        {
+            AddClass("entry");
 
-			PlayerName = Add.Label( "PlayerName", "name" );
-			Karma = Add.Label( "", "karma" );
-			Score = Add.Label( "", "score" );
-			Ping = Add.Label( "", "ping" );
-		}
-
-		public virtual void UpdateFrom( PlayerScore.Entry entry, bool isOdd )
-		{
-			Entry = entry;
-
-			PlayerName.Text = entry.GetString( "name" );
-			Karma.Text = entry.Get<int>( "karma", 0 ).ToString();
-			Score.Text = entry.Get<int>( "score", 0 ).ToString();
-			Ping.Text = entry.Get<int>( "ping", 0 ).ToString();
-
-			SetClass( "me", Local.Client != null && entry.Get<ulong>( "steamid", 0 ) == Local.Client.SteamId );
-            SetClass(isOdd ? "odd" : "even" , true);
+            PlayerName = Add.Label("PlayerName", "name");
+            Karma = Add.Label("", "karma");
+            Score = Add.Label("", "score");
+            Ping = Add.Label("", "ping");
         }
-	}
-	}
+
+        public virtual void UpdateFrom(PlayerScore.Entry entry, bool isOdd)
+        {
+            Entry = entry;
+
+            PlayerName.Text = entry.GetString("name");
+            Karma.Text = entry.Get<int>("karma", 0).ToString();
+            Score.Text = entry.Get<int>("score", 0).ToString();
+            Ping.Text = entry.Get<int>("ping", 0).ToString();
+
+            SetClass("me", Local.Client != null && entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
+            SetClass(isOdd ? "odd" : "even", true);
+        }
+    }
+}

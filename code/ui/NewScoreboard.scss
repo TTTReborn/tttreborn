@@ -15,20 +15,9 @@ Scoreboard {
     flex-direction: column;
     background-color: #0009;
 
-    opacity: 1;
     &.open {
+        opacity: 1;
     }
-
-    // ScoreboardHeaderTablehead,
-    // ScoreboardEntry {
-    //     display: flex;
-    //     flex-wrap: wrap;
-
-    //     & > * {
-    //         flex-basis: 70px;
-    //         text-align: center;
-    //     }
-    // }
 
     .header {
         padding: 16px 30px;
@@ -155,7 +144,7 @@ Scoreboard {
             .scoreboardGroup__content {
                 // border-image: linear-gradient(to bottom, #3f7e51, #3f7e51, #3f7e51, rgba(0, 0, 0, 0)) 1 1%;
                 border: 2px solid #3f7e51;
-                border-color: #3f7e51;
+                // border-color: #3f7e51;
                 border-right-width: 0;
                 border-left-width: 1px;
                 border-bottom-width: 0;
@@ -165,11 +154,9 @@ Scoreboard {
                 ScoreboardEntry {
                     width: 100%;
                     padding-left: 20px;
-                    // background-color: red;
                 }
                 .odd {
                     background-color: #0a0a0a66;
-
                 }
                 .even {
                     background-color: #2a2a2a66;
@@ -187,91 +174,4 @@ Scoreboard {
         width: 90px;
         text-align: center;
     }
-
-    // ScoreboardMain {
-    //     padding: 0;
-    //     max-height: 500px;
-    //     position: relative;
-    //     font-weight: 300;
-
-    //     ScoreboadGroup {
-    //         margin-top: 5px;
-
-    //         // &.alive {
-    //         // 	$color: #3f7e51;
-    //         // }
-    //         // // &.missing {$color: #3f7e51;}
-    //         // &.dead {
-    //         // 	$color: #af262f;
-    //         // }
-    //         // &.spectator {
-    //         // 	$color: #ba8107;
-    //         // }
-
-    //         .groupTitle {
-    //             z-index: 100;
-    //             border-top-right-radius: 4px;
-    //             padding: 0 10px 0 0;
-    //             display: block;
-    //             font-size: 0.9em;
-    //             font-weight: 300;
-    //             background-color: #ba8107;
-    //         }
-
-    //         ScoreboadGroupContent {
-    //             box-shadow: #00000040 0px 3px 5px -1px;
-    //             border: 2px solid #ba8107;
-    //             border-image: linear-gradient(to bottom, #ba8107, #ba8107, #ba8107, rgba(0, 0, 0, 0)) 1 1%;
-    //             border-right-width: 0;
-    //             border-left-width: 1px;
-    //             border-bottom-width: 0;
-
-    //             ScoreboardEntry {
-    //                 height: 25px;
-
-    //                 // Are those pseudo selectors available?
-    //                 // &:nth-child(1n) {
-    //                 // 	background-color: #2a2a2a66;
-    //                 // }
-    //                 // &:nth-child(2n) {
-    //                 // 	background-color: #0a0a0a66;
-    //                 // }
-    //                 background-color: #2a2a2a66;
-
-    //                 &.me {
-    //                     background-color: #ffae0073;
-    //                 }
-    //                 &.Traitor {
-    //                     background-color: #df293554;
-    //                     &.me {
-    //                         background-color: #df2935cc;
-    //                     }
-    //                 }
-    //                 &.Detetive {
-    //                     background-color: #2196f354;
-    //                     &.me {
-    //                         background-color: #2196f3cc;
-    //                     }
-    //                 }
-
-    //                 & > *:first-child {
-    //                     // Entry avatar
-    //                     flex-grow: 0;
-    //                     flex-basis: 30px;
-    //                     img {
-    //                         height: 23px !important;
-    //                         border: 1px #58585859 solid;
-    //                     }
-    //                 }
-
-    //                 & > .playername {
-    //                     // Entry player name
-    //                     flex-grow: 2;
-    //                     text-align: left;
-    //                     padding-left: 5px;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
 }
