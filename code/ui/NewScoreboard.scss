@@ -29,7 +29,10 @@ Scoreboard {
         display: flex;
 
         .scoreboardLogo {
+            background-image: url( /assets/TTT-Reborn-Logo.png );
+            background-size: 100%;
             width: 100px;
+            height: 100px;
             margin-right: 20px;
             // flex-basis:100px;
         }
