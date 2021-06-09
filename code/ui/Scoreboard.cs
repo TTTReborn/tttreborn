@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -15,7 +13,7 @@ namespace TTTReborn.UI
             header = new Header();
             AddHeader();
             AddTableHeader();
-            var mainContent = Add.Panel("mainContent");
+            Panel mainContent = Add.Panel("mainContent");
             // TODO: create playergroups & for each playergroup:
             AddScoreboardGroup(mainContent);
 
@@ -26,7 +24,7 @@ namespace TTTReborn.UI
             // PlayerScore.OnPlayerUpdated += UpdatePlayer;
 
             // why is: var (item, index) ; throwing an error here?
-            foreach (var player in PlayerScore.All)
+            foreach (PlayerScore.Entry player in PlayerScore.All)
             {
                 AddPlayer(player);
             }
@@ -84,7 +82,7 @@ namespace TTTReborn.UI
 
         protected void AddTableHeader()
         {
-            var tableHeader = Add.Panel("tableHeader");
+            Panel tableHeader = Add.Panel("tableHeader");
             tableHeader.Add.Label("3 Innocents left", "name");
             tableHeader.Add.Label("Karma", "karma");
             tableHeader.Add.Label("Score", "score");
@@ -95,7 +93,7 @@ namespace TTTReborn.UI
         {
             // TODO: Set proper groups dynamicly
             string group = "alive";
-            var scoreboardGroup = new ScoreboardGroup
+            ScoreboardGroup scoreboardGroup = new ScoreboardGroup
             {
 
             };
@@ -115,7 +113,7 @@ namespace TTTReborn.UI
             string group = "alive";
             ScoreboardGroup scoreboardGroup = ScoreboardGroups[group];
             scoreboardGroup.GroupMember++;
-            var p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
+            ScoreboardEntry p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
             bool isOdd = (PlayerScore.All.Length % 2) != 0;
             p.UpdateFrom(entry, isOdd);
             scoreboardGroup.UpdateLabel();
@@ -124,7 +122,7 @@ namespace TTTReborn.UI
         }
         protected void RemovePlayer(PlayerScore.Entry entry)
         {
-            if (Entries.TryGetValue(entry.Id, out var panel))
+            if (Entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
             {
                 string group = "alive";
                 ScoreboardGroup scoreboardGroup = ScoreboardGroups[group];
