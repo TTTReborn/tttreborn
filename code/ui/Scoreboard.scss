@@ -117,6 +117,7 @@ Scoreboard {
     .ping {
         width: 90px;
         text-align: center;
+        flex-shrink: 0;
     }
 
     .footer {
