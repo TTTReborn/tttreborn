@@ -107,6 +107,15 @@ namespace TTTReborn.Player
 
         private void TickAttemptInspectPlayerCorpse()
         {
+            // Do not show InspectMenu if client isn't holding use key.
+            if (IsClient)
+            {
+                if (!Input.Down(InputButton.Use))
+                {
+                    InspectMenu.Instance.IsShowing = false;
+                }
+            }
+
             if (!IsServer)
             {
                 return;
@@ -114,7 +123,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                if (!Input.Pressed(InputButton.Use))
+                if (!Input.Down(InputButton.Use))
                 {
                     return;
                 }
@@ -128,7 +137,9 @@ namespace TTTReborn.Player
 
                 if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
                 {
-                    InspectPlayerCorpse(corpse.Player);
+                    // Only open the InspectMenu on player inspecting the corpse.
+                    // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
+                    ClientInspectCorpse(To.Single(this), corpse.Player);
                 }
             }
         }
@@ -179,6 +190,12 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
+        public static void ClientInspectCorpse(TTTPlayer deadPlayer)
+        {
+            InspectMenu.Instance.InspectCorpse(deadPlayer);
+        }
+
+        [ClientRpc]
         public void DidDamage(Vector3 position, float amount, float inverseHealth)
         {
             Sound.FromScreen("dm.ui_attacker")
@@ -189,12 +206,6 @@ namespace TTTReborn.Player
         public void TookDamage(Vector3 position)
         {
 
-        }
-
-        [ClientRpc]
-        public static void InspectPlayerCorpse(TTTPlayer deadPlayer)
-        {
-            InspectMenu.Instance.InspectCorpse(deadPlayer);
         }
 
         protected override void OnDestroy()

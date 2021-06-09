@@ -1,6 +1,6 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using TTTReborn.Gamemode;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -8,6 +8,23 @@ namespace TTTReborn.UI
     public class InspectMenu : Panel
     {
         public static InspectMenu Instance;
+        public bool IsShowing
+        {
+            get => _isShowing;
+            set
+            {
+                _isShowing = value;
+                if (_isShowing)
+                {
+                    RemoveClass("hide");
+                }
+                else
+                {
+                    AddClass("hide");
+                }
+            }
+        }
+        private bool _isShowing = false;
 
         private Label InspectLabel { set; get; }
 
@@ -18,27 +35,13 @@ namespace TTTReborn.UI
 
             InspectLabel = Add.Label("Test");
 
-            Show(false);
+            IsShowing = false;
         }
 
         public void InspectCorpse(TTTPlayer deadPlayer)
         {
-            Show(true);
+            IsShowing = true;
             InspectLabel.Text = deadPlayer.Role.ToString();
-        }
-
-        public void Show(bool isShowing)
-        {
-            if (isShowing)
-            {
-                RemoveClass("hide");
-                AddClass("show");
-            }
-            else
-            {
-                RemoveClass("show");
-                AddClass("hide");
-            }
         }
     }
 
