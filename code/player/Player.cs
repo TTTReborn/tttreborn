@@ -3,7 +3,6 @@ using Sandbox;
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
-using Game = TTTReborn.Gamemode.Game;
 
 namespace TTTReborn.Player
 {
@@ -42,7 +41,7 @@ namespace TTTReborn.Player
 
         public void RemovePlayerCorpse()
         {
-            if ( PlayerCorpse != null && PlayerCorpse.IsValid() )
+            if (PlayerCorpse != null && PlayerCorpse.IsValid())
             {
                 PlayerCorpse.Delete();
                 PlayerCorpse = null;
@@ -68,8 +67,7 @@ namespace TTTReborn.Player
             Credits = 0;
 
             RemovePlayerCorpse();
-
-            Game.Instance?.Round?.OnPlayerSpawn(this);
+            TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
             base.Respawn();
         }
 
@@ -157,19 +155,16 @@ namespace TTTReborn.Player
 
         private PlayerCorpse IsLookingAtPlayerCorpse()
         {
-            using (Prediction.Off())
-            {
-                TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * _inspectCorpseDistance)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(ActiveChild)
-                    .Ignore(this)
-                    .Radius(2)
-                    .Run();
+            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * _inspectCorpseDistance)
+                .HitLayer(CollisionLayer.Debris)
+                .Ignore(ActiveChild)
+                .Ignore(this)
+                .Radius(2)
+                .Run();
 
-                if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
-                {
-                    return corpse;
-                }
+            if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
+            {
+                return corpse;
             }
 
             return null;

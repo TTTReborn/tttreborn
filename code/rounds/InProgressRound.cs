@@ -2,11 +2,9 @@ using System;
 using Sandbox;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 using TTTReborn.Player;
 using TTTReborn.Weapons;
-using Game = TTTReborn.Gamemode.Game;
 
 namespace TTTReborn.Rounds
 {
