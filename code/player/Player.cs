@@ -2,6 +2,7 @@ using Sandbox;
 
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
+using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -10,13 +11,16 @@ namespace TTTReborn.Player
         public enum RoleType { None, Innocent, Detective, Traitor }
         public PlayerCorpse PlayerCorpse { get; set; }
 
-        [Net, Local]
+        // TODO: Make LOCAL, if it isn't this data gets networked to all players, could cause hackers.
+        // TODO: It currently isn't because all Networked information needs to be transfered to player corpse for inspecting bodies.
+        [Net]
         public RoleType Role { get; set; }
 
         [Net, Local]
         public int Credits { get; set; } = 0;
 
         private DamageInfo _lastDamageInfo;
+        private float _inspectCorpseDistance = 80f;
 
         public TTTPlayer()
         {
@@ -78,6 +82,7 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
+            TickAttemptInspectPlayerCorpse();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -100,24 +105,31 @@ namespace TTTReborn.Player
             base.StartTouch(other);
         }
 
-        private void TickInspectPlayerCorpse()
+        private void TickAttemptInspectPlayerCorpse()
         {
-            // TODO: Handle role specific corpse inspecting.
-            if (!Input.Pressed(InputButton.Use))
+            if (!IsServer)
             {
                 return;
             }
 
-            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * 80f)
-                .HitLayer(CollisionLayer.Debris)
-                .Ignore(ActiveChild)
-                .Ignore(this)
-                .Radius(2)
-                .Run();
-
-            if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
+            using (Prediction.Off())
             {
-                InspectPlayerCorpse(corpse);
+                if (!Input.Pressed(InputButton.Use))
+                {
+                    return;
+                }
+
+                TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * _inspectCorpseDistance)
+                    .HitLayer(CollisionLayer.Debris)
+                    .Ignore(ActiveChild)
+                    .Ignore(this)
+                    .Radius(2)
+                    .Run();
+
+                if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
+                {
+                    InspectPlayerCorpse(corpse.Player);
+                }
             }
         }
 
@@ -180,9 +192,9 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void InspectPlayerCorpse(PlayerCorpse corpse)
+        public static void InspectPlayerCorpse(TTTPlayer deadPlayer)
         {
-
+            InspectMenu.Instance.InspectCorpse(deadPlayer);
         }
 
         protected override void OnDestroy()
