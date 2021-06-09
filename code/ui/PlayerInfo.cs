@@ -59,6 +59,10 @@ namespace TTTReborn.UI
             public BarPanel HealthBar { set; get; }
             public BarPanel AmmoBar { set; get; }
 
+            // TODO rework event based
+            private float currentHealth;
+            private int currentAmmo;
+
             private bool invisibleAmmo;
 
             public IndicatorsPanel(Panel parent)
@@ -81,12 +85,28 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                HealthBar.TextLabel.Text = $"{player.Health:n0}";
+                if (currentHealth != player.Health)
+                {
+                    currentHealth = player.Health;
+
+                    HealthBar.TextLabel.Text = $"{player.Health:n0}";
+
+                    // bar width
+                    HealthBar.Style.Width = Length.Percent(player.Health);
+                    HealthBar.Style.Dirty();
+                }
 
                 var weapon = player.ActiveChild as Weapon;
 
                 if (weapon != null)
                 {
+                    if (currentAmmo == weapon.AmmoClip)
+                    {
+                        return;
+                    }
+
+                    currentAmmo = weapon.AmmoClip;
+
                     if (invisibleAmmo)
                     {
                         invisibleAmmo = false;
@@ -95,6 +115,10 @@ namespace TTTReborn.UI
                     }
 
                     AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
+
+                    // bar width
+                    AmmoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
+                    AmmoBar.Style.Dirty();
                 }
                 else if (!invisibleAmmo)
                 {
