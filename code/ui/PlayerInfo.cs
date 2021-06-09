@@ -21,6 +21,8 @@ namespace TTTReborn.UI
         {
             public Label RoleLabel { set; get; }
 
+            private TTTPlayer.RoleType currentRole;
+
             public RolePanel(Panel parent)
             {
                 Parent = parent;
@@ -36,9 +38,19 @@ namespace TTTReborn.UI
                 {
                     return;
                 }
-                // Give RolePanel .class for the matching role:
-                SetClass(player.Role.ToString(), true);
-                RoleLabel.Text = $"{player.Role.ToString()}";
+
+                if (currentRole != player.Role)
+                {
+                    // Remove RolePanel .class for the old role:
+                    SetClass(currentRole.ToString(), false);
+
+                    currentRole = player.Role;
+
+                    // Give RolePanel .class for the matching role:
+                    SetClass(currentRole.ToString(), true);
+
+                    RoleLabel.Text = $"{player.Role.ToString()}";
+                }
             }
         }
 
@@ -47,7 +59,7 @@ namespace TTTReborn.UI
             public BarPanel HealthBar { set; get; }
             public BarPanel AmmoBar { set; get; }
 
-            public bool InvisibleAmmo { set; get; }
+            private bool invisibleAmmo;
 
             public IndicatorsPanel(Panel parent)
             {
@@ -75,18 +87,18 @@ namespace TTTReborn.UI
 
                 if (weapon != null)
                 {
-                    if (InvisibleAmmo)
+                    if (invisibleAmmo)
                     {
-                        InvisibleAmmo = false;
+                        invisibleAmmo = false;
 
                         AmmoBar.RemoveClass("invisible");
                     }
 
                     AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
                 }
-                else if (!InvisibleAmmo)
+                else if (!invisibleAmmo)
                 {
-                    InvisibleAmmo = true;
+                    invisibleAmmo = true;
 
                     AmmoBar.AddClass("invisible");
                 }
