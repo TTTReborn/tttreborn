@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using TTTReborn.Player;
 using TTTReborn.Weapons;
+using Game = TTTReborn.Gamemode.Game;
 
 namespace TTTReborn.Rounds
 {

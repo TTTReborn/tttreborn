@@ -3,6 +3,9 @@ InspectMenu {
         display: none;
     }
 
+    background-color: #0009;
+    border: 1px solid #000;
+    border-radius: 4px;
     margin: auto;
     color: white;
     text-align: center;
@@ -10,14 +13,13 @@ InspectMenu {
     left: 50%;
     transform: translateX(-50%);
     position: absolute;
-    top: 50%;
+    top: 75%;
     padding: 5px 15px;
     font-size: 22px;
     border-radius: 0 0 4px 4px;
-
-    font-family: Poppins;
 
     Label {
         font-weight: bold;
     }
 }
+
