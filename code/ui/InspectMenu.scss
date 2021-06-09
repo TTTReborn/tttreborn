@@ -1,0 +1,27 @@
+InspectMenu {
+    &.hide {
+        display: none;
+    }
+
+    &.show {
+        display: flex;
+    }
+
+    margin: auto;
+    color: white;
+    text-align: center;
+
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    top: 50%;
+    padding: 5px 15px;
+    font-size: 22px;
+    border-radius: 0 0 4px 4px;
+
+    font-family: Poppins;
+
+    Label {
+        font-weight: bold;
+    }
+}

@@ -19,6 +19,7 @@ namespace TTTReborn.UI
             RootPanel.AddChild<GameTimer>();
             RootPanel.AddChild<WeaponSelection>();
 
+            RootPanel.AddChild<InspectMenu>();
             RootPanel.AddChild<PlayerInfo>();
         }
 
