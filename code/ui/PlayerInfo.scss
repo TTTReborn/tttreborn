@@ -12,6 +12,9 @@ PlayerInfo {
     left: 30px;
     bottom: 30px;
 
+    font-family: Poppins;
+    font-weight: 500;
+
     Label {
         font-weight: bold;
     }
@@ -27,6 +30,7 @@ PlayerInfo {
 
             Label {
                 font-size: 18px;
+                font-weight: 500;
                 margin-left: 16px;
             }
 
@@ -58,6 +62,19 @@ PlayerInfo {
         Label {
             font-size: 24px;
             width: 100%;
+        }
+        &.None {
+            background-color: #fafafa;
+            color: #000;
+        }
+        &.Innocent {
+            background-color: #1bc54e;
+        }
+        &.Detective {
+            background-color: #2196f3;
+        }
+        &.Traitor {
+            background-color: #df2935;
         }
     }
 }

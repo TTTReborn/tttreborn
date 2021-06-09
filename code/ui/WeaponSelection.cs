@@ -13,7 +13,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/WeaponSelection.scss");
 
             new WeaponSlot(this, 1, "Weapon 1", "0/0").AddClass("active");
-            new WeaponSlot(this, 2, "Weapon 2", "0/0").AddClass("traitor");
+            new WeaponSlot(this, 2, "Weapon 2", "0/0").AddClass("Traitor");
             new WeaponSlot(this, 3, "Weapon 3", "0/0");
         }
 
