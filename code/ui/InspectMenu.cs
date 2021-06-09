@@ -33,15 +33,24 @@ namespace TTTReborn.UI
             Instance = this;
             StyleSheet.Load("/ui/InspectMenu.scss");
 
-            InspectLabel = Add.Label("Test");
+            InspectLabel = Add.Label("");
 
             IsShowing = false;
         }
 
-        public void InspectCorpse(TTTPlayer deadPlayer)
+        public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified)
         {
             IsShowing = true;
-            InspectLabel.Text = deadPlayer.Role.ToString();
+            // TODO: Setup proper hud, for now everything is just being thrown into "InspectLabel"
+            if (isIdentified)
+            {
+                InspectLabel.Text = $"{deadPlayer.GetClientOwner()?.Name}\n" +
+                                    $"{deadPlayer.Role.ToString()}";
+            }
+            else
+            {
+                InspectLabel.Text = "Press E to identify this body.";
+            }
         }
     }
 

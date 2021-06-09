@@ -3,6 +3,7 @@ using Sandbox;
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
+using Game = TTTReborn.Gamemode.Game;
 
 namespace TTTReborn.Player
 {
@@ -39,8 +40,20 @@ namespace TTTReborn.Player
             };
         }
 
+        public void RemovePlayerCorpse()
+        {
+            if ( PlayerCorpse != null && PlayerCorpse.IsValid() )
+            {
+                PlayerCorpse.Delete();
+                PlayerCorpse = null;
+            }
+        }
+
         public override void Respawn()
         {
+            Game.Instance?.Round?.OnPlayerSpawn(this);
+
+            // TODO: This logic needs to be moved out here, currently players can respawn in the "In Progress Round"
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
@@ -55,6 +68,8 @@ namespace TTTReborn.Player
 
             Role = RoleType.None;
             Credits = 0;
+
+            RemovePlayerCorpse();
 
             base.Respawn();
         }
@@ -107,27 +122,44 @@ namespace TTTReborn.Player
 
         private void TickAttemptInspectPlayerCorpse()
         {
-            // Do not show InspectMenu if client isn't holding use key.
             if (IsClient)
             {
-                if (!Input.Down(InputButton.Use))
+                if (InspectMenu.Instance.IsShowing)
                 {
-                    InspectMenu.Instance.IsShowing = false;
-                }
-            }
-
-            if (!IsServer)
-            {
-                return;
-            }
-
-            using (Prediction.Off())
-            {
-                if (!Input.Down(InputButton.Use))
-                {
+                    // Menu is showing already, bail out.
                     return;
                 }
+            }
 
+            if (IsServer)
+            {
+                using (Prediction.Off())
+                {
+                    To client = To.Single(this);
+                    PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
+                    if (playerCorpse != null)
+                    {
+                        if (Input.Down(InputButton.Use))
+                        {
+                            playerCorpse.IsIdentified = true;
+                        }
+
+                        // Send the request to the player looking at the player corpse.
+                        // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
+                        // TODO: Figure out why directly passing in just playerCorpse to "ClientOpenInspectMenu" makes playerCorpse.Player null.
+                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                        return;
+                    }
+
+                    ClientCloseInspectMenu(client);
+                }
+            }
+        }
+
+        private PlayerCorpse IsLookingAtPlayerCorpse()
+        {
+            using (Prediction.Off())
+            {
                 TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * _inspectCorpseDistance)
                     .HitLayer(CollisionLayer.Debris)
                     .Ignore(ActiveChild)
@@ -137,11 +169,11 @@ namespace TTTReborn.Player
 
                 if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
                 {
-                    // Only open the InspectMenu on player inspecting the corpse.
-                    // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-                    ClientInspectCorpse(To.Single(this), corpse.Player);
+                    return corpse;
                 }
             }
+
+            return null;
         }
 
         public override void TakeDamage(DamageInfo info)
@@ -180,19 +212,19 @@ namespace TTTReborn.Player
             base.TakeDamage(info);
         }
 
-        public void RemovePlayerCorpse()
+        [ClientRpc]
+        public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
         {
-            if (PlayerCorpse != null && PlayerCorpse.IsValid())
-            {
-                PlayerCorpse.Delete();
-                PlayerCorpse = null;
-            }
+            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
         }
 
         [ClientRpc]
-        public static void ClientInspectCorpse(TTTPlayer deadPlayer)
+        public static void ClientCloseInspectMenu()
         {
-            InspectMenu.Instance.InspectCorpse(deadPlayer);
+            if (InspectMenu.Instance.IsShowing)
+            {
+                InspectMenu.Instance.IsShowing = false;
+            }
         }
 
         [ClientRpc]
