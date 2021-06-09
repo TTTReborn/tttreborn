@@ -51,9 +51,7 @@ namespace TTTReborn.Player
 
         public override void Respawn()
         {
-            Game.Instance?.Round?.OnPlayerSpawn(this);
 
-            // TODO: This logic needs to be moved out here, currently players can respawn in the "In Progress Round"
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
@@ -71,6 +69,7 @@ namespace TTTReborn.Player
 
             RemovePlayerCorpse();
 
+            Game.Instance?.Round?.OnPlayerSpawn(this);
             base.Respawn();
         }
 
@@ -124,7 +123,7 @@ namespace TTTReborn.Player
         {
             if (IsClient)
             {
-                if (InspectMenu.Instance.IsShowing)
+                if (InspectMenu.Instance?.IsShowing ?? false)
                 {
                     // Menu is showing already, bail out.
                     return;
@@ -215,13 +214,13 @@ namespace TTTReborn.Player
         [ClientRpc]
         public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
         {
-            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
+            InspectMenu.Instance?.InspectCorpse(deadPlayer, isIdentified);
         }
 
         [ClientRpc]
         public static void ClientCloseInspectMenu()
         {
-            if (InspectMenu.Instance.IsShowing)
+            if (InspectMenu.Instance?.IsShowing ?? false)
             {
                 InspectMenu.Instance.IsShowing = false;
             }
