@@ -1,8 +1,8 @@
 namespace TTTReborn.Roles
 {
-    [RoleAttribute(Name = "No Role")]
+    [RoleAttribute("None")]
     public class NoneRole : BaseRole
     {
-        public override string Name => "No Role";
+        public override string Name => "None";
     }
 }

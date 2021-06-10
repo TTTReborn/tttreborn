@@ -8,8 +8,6 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer : Sandbox.Player
     {
-        public static TTTPlayer Instance;
-
         public PlayerCorpse PlayerCorpse { get; set; }
 
         public BaseRole Role {
@@ -27,7 +25,7 @@ namespace TTTReborn.Player
             }
         }
 
-        private BaseRole role;
+        private BaseRole role = new NoneRole();
 
         [Net, Local]
         public int Credits { get; set; } = 0;
@@ -36,7 +34,7 @@ namespace TTTReborn.Player
 
         public TTTPlayer()
         {
-            Instance = this;
+
         }
 
         public void MakeSpectator(Vector3 position = default)

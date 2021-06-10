@@ -7,11 +7,9 @@ namespace TTTReborn.Player
     partial class TTTPlayer
     {
         [ClientRpc]
-        public static void SetRole(string roleName)
+        public void SetRole(string roleName)
         {
-            Log.Warning($"Role: {roleName}");
-
-            Instance.Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
+            Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
         }
     }
 }

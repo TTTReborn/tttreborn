@@ -1,15 +1,20 @@
 using System;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
+using Sandbox;
 
 namespace TTTReborn.Roles
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class RoleAttribute : Attribute
+    public class RoleAttribute : LibraryAttribute
     {
-        public string Name { get; set; }
+        public RoleAttribute(string name) : base(name)
+        {
+
+        }
     }
 
+    [RoleAttribute("Base")]
     public abstract class BaseRole
     {
         public virtual string Name => "Unknown Role";
@@ -24,19 +29,15 @@ namespace TTTReborn.Roles
     {
         public static List<Type> GetRoles()
         {
-            Type[] types = Assembly
-                .GetExecutingAssembly()
-                .GetTypes();
-
             List<Type> roleTypes = new();
 
-            foreach (Type t in types)
+            Library.GetAll<BaseRole>().ToList().ForEach(t =>
             {
                 if (t.Namespace == "TTTReborn.Roles" && !t.IsAbstract && t.BaseType == typeof(BaseRole))
                 {
                     roleTypes.Add(t);
                 }
-            }
+            });
 
             return roleTypes;
         }
@@ -45,18 +46,9 @@ namespace TTTReborn.Roles
         {
             foreach (Type roleType in GetRoles())
             {
-                foreach (Attribute attribute in System.Attribute.GetCustomAttributes(roleType))
+                if (Library.GetAttribute(roleType).Name == roleName)
                 {
-                    if (attribute is RoleAttribute roleAttribute)
-                    {
-                        if (roleAttribute.Name == roleName)
-                        {
-                            return roleType;
-                        }
-
-                        // If it failed, skip to the next role
-                        break;
-                    }
+                    return roleType;
                 }
             }
 
@@ -65,7 +57,7 @@ namespace TTTReborn.Roles
 
         public static BaseRole GetRoleByType(Type roleType)
         {
-            return (BaseRole) Activator.CreateInstance(roleType);
+            return Library.Create<BaseRole>(roleType);
         }
     }
 }
