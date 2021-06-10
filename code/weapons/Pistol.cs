@@ -5,6 +5,7 @@ namespace TTTReborn.Weapons
     [Library("ttt_pistol", Title = "Baretta")]
     partial class Pistol : Weapon
     {
+        public override string Name => "Pistol";
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
 
         public override bool UnlimitedAmmo => true;

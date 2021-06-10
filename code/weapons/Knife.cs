@@ -5,6 +5,7 @@ namespace TTTReborn.Weapons
     [Library("ttt_knife", Title = "Knife")]
     partial class Knife : Weapon
     {
+        public override string Name => "Knife";
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override float PrimaryRate => 1.0f;
         public override float SecondaryRate => 0.3f;

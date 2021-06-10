@@ -7,6 +7,7 @@ namespace TTTReborn.Weapons
 {
     partial class Weapon : BaseWeapon
     {
+        public virtual string Name => "";
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
