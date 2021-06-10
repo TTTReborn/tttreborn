@@ -1,5 +1,5 @@
 using Sandbox;
-
+using Sandbox.UI;
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
@@ -136,9 +136,15 @@ namespace TTTReborn.Player
                     PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
                     if (playerCorpse != null)
                     {
-                        if (Input.Down(InputButton.Use))
+                        if (Input.Down(InputButton.Use) && !playerCorpse.IsIdentified)
                         {
                             playerCorpse.IsIdentified = true;
+                            // TODO: Replace with a TTT specific KillFeed. Cache GetClientOwner.
+                            ClientDisplayIdentifiedMessage(this.Controller.Client.SteamId,
+                                                        this.Controller.Client.Name,
+                                                        playerCorpse.Player.GetClientOwner().SteamId,
+                                                        playerCorpse.Player.GetClientOwner().Name,
+                                                        playerCorpse.Player.Role.ToString());
                         }
 
                         // Send the request to the player looking at the player corpse.
@@ -219,6 +225,13 @@ namespace TTTReborn.Player
             {
                 InspectMenu.Instance.IsShowing = false;
             }
+        }
+
+        [ClientRpc]
+        public virtual void ClientDisplayIdentifiedMessage(ulong leftId, string left, ulong rightId, string right, string role)
+        {
+            // TODO: We should make a custom UI element that handles this.
+            KillFeed.Current?.AddEntry(leftId, left, rightId, $"{right}. They were a {role}!", "found the body of");
         }
 
         [ClientRpc]
