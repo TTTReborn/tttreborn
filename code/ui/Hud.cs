@@ -12,13 +12,11 @@ namespace TTTReborn.UI
                 return;
             }
 
-            // s&box defaults
             RootPanel.AddChild<ChatBox>();
-            RootPanel.AddChild<KillFeed>();
             RootPanel.AddChild<VoiceList>();
             RootPanel.AddChild<GameTimer>();
             RootPanel.AddChild<WeaponSelection>();
-
+            RootPanel.AddChild<InfoFeed>();
             RootPanel.AddChild<InspectMenu>();
             RootPanel.AddChild<PlayerInfo>();
         }

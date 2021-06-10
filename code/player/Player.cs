@@ -139,11 +139,11 @@ namespace TTTReborn.Player
                         if (Input.Down(InputButton.Use) && !playerCorpse.IsIdentified)
                         {
                             playerCorpse.IsIdentified = true;
-                            // TODO: Replace with a TTT specific KillFeed. Cache GetClientOwner.
+                            Client playerCorpseInfo = playerCorpse.Player.GetClientOwner();
                             ClientDisplayIdentifiedMessage(this.Controller.Client.SteamId,
                                                         this.Controller.Client.Name,
-                                                        playerCorpse.Player.GetClientOwner().SteamId,
-                                                        playerCorpse.Player.GetClientOwner().Name,
+                                                        playerCorpseInfo.SteamId,
+                                                        playerCorpseInfo.Name,
                                                         playerCorpse.Player.Role.ToString());
                         }
 
@@ -228,10 +228,10 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public virtual void ClientDisplayIdentifiedMessage(ulong leftId, string left, ulong rightId, string right, string role)
+        public static void ClientDisplayIdentifiedMessage(ulong leftId, string left, ulong rightId, string right, string role)
         {
-            // TODO: We should make a custom UI element that handles this.
-            KillFeed.Current?.AddEntry(leftId, left, rightId, $"{right}. They were a {role}!", "found the body of");
+            // TODO: Refactor the UI element, and provide a better interface for passing in these parameters.
+            InfoFeed.Current?.AddEntry(leftId, left, rightId, $"{right}.  Their role was {role}!", "found the body of");
         }
 
         [ClientRpc]
