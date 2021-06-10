@@ -38,7 +38,7 @@ namespace TTTReborn.UI
                 }
 
                 // TODO: We should see if we can add an event to update the role label, instead of updating each tick.
-                RoleLabel.Text = $"{player.Role.ToString()}";
+                RoleLabel.Text = $"{player.Role?.Name}";
             }
         }
 

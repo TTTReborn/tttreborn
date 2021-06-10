@@ -2,16 +2,15 @@ using Sandbox;
 
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Player
 {
     public partial class TTTPlayer : Sandbox.Player
     {
-        public enum RoleType { None, Innocent, Detective, Traitor }
         public PlayerCorpse PlayerCorpse { get; set; }
 
-        [Net, Local]
-        public RoleType Role { get; set; }
+        public BaseRole Role { get; set; }
 
         [Net, Local]
         public int Credits { get; set; } = 0;
@@ -49,7 +48,7 @@ namespace TTTReborn.Player
             EnableHideInFirstPerson = true;
             EnableShadowInFirstPerson = true;
 
-            Role = RoleType.None;
+            Role = new NoneRole();
             Credits = 0;
 
             base.Respawn();
