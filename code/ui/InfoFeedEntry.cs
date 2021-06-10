@@ -12,16 +12,16 @@ namespace Sandbox.UI
 
 		public InfoFeedEntry()
 		{
-			Left = Add.Label( "", "left" );
-			Method = Add.Label( "", "method" );
-			Right = Add.Label( "", "right" );
+			Left = Add.Label("", "left");
+			Method = Add.Label("", "method");
+			Right = Add.Label("", "right");
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
 
-			if ( TimeSinceBorn > 6 )
+			if (TimeSinceBorn > 6)
 			{
 				Delete();
 			}
