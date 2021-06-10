@@ -5,6 +5,11 @@ namespace TTTReborn.UI
 {
     public partial class Hud : HudEntity<RootPanel>
     {
+        public static Hud Instance { set; get; }
+
+        private PlayerInfo playerInfo;
+        private WeaponSelection weaponSelection;
+
         public Hud()
         {
             if (!IsClient)
@@ -12,28 +17,36 @@ namespace TTTReborn.UI
                 return;
             }
 
+            Instance = this;
+
             // s&box defaults
             RootPanel.AddChild<ChatBox>();
             RootPanel.AddChild<KillFeed>();
             RootPanel.AddChild<VoiceList>();
             RootPanel.AddChild<GameTimer>();
-            RootPanel.AddChild<WeaponSelection>();
             RootPanel.AddChild<Scoreboard>();
-            // RootPanel.AddChild<IssueReport>();
-
-            RootPanel.AddChild<PlayerInfo>();
         }
 
-        [ClientRpc]
-        public void OnPlayerDied(string victim, string attacker = null)
+        [Event("tttreborn.player.died")]
+        public void OnPlayerDied()
         {
-            Host.AssertClient();
+            playerInfo?.Delete();
+            playerInfo = null;
+
+            weaponSelection?.Delete();
+            weaponSelection = null;
         }
 
-        [ClientRpc]
-        public void ShowDeathScreen(string attackerName)
+        [Event("tttreborn.player.spawned")]
+        public void OnPlayerSpawned()
         {
-            Host.AssertClient();
+            if (playerInfo != null || weaponSelection != null)
+            {
+                return;
+            }
+
+            playerInfo = RootPanel.AddChild<PlayerInfo>();
+            weaponSelection = RootPanel.AddChild<WeaponSelection>();
         }
     }
 }

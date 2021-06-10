@@ -52,6 +52,11 @@ namespace TTTReborn.Player
             Role = RoleType.None;
             Credits = 0;
 
+            using(Prediction.Off())
+            {
+                this.OnPlayerSpawned(To.Single(this));
+            }
+
             base.Respawn();
         }
 
@@ -61,6 +66,11 @@ namespace TTTReborn.Player
 
             BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
             Inventory.DeleteContents();
+
+            using(Prediction.Off())
+            {
+                this.OnPlayerDied(To.Single(this));
+            }
         }
 
         public override void Simulate(Client client)
