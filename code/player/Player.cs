@@ -134,6 +134,7 @@ namespace TTTReborn.Player
                 {
                     To client = To.Single(this);
                     PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
+
                     if (playerCorpse != null)
                     {
                         if (Input.Down(InputButton.Use) && !playerCorpse.IsIdentified)
@@ -141,10 +142,11 @@ namespace TTTReborn.Player
                             playerCorpse.IsIdentified = true;
                             Client playerCorpseInfo = playerCorpse.Player.GetClientOwner();
                             ClientDisplayIdentifiedMessage(this.Controller.Client.SteamId,
-                                                        this.Controller.Client.Name,
-                                                        playerCorpseInfo.SteamId,
-                                                        playerCorpseInfo.Name,
-                                                        playerCorpse.Player.Role.ToString());
+                                this.Controller.Client.Name,
+                                playerCorpseInfo.SteamId,
+                                playerCorpseInfo.Name,
+                                playerCorpse.Player.Role.ToString()
+                            );
                         }
 
                         // Send the request to the player looking at the player corpse.
