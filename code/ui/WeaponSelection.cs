@@ -124,7 +124,13 @@ namespace TTTReborn.UI
 
         private Weapon GetNextWeapon(int weaponSlot, Weapon currentWeapon)
         {
-            List<Weapon> weaponList = _weaponsDict[weaponSlot];
+            _weaponsDict.TryGetValue(weaponSlot, out List<Weapon> weaponList);
+
+            if (weaponList == null)
+            {
+                return null;
+            }
+
             int listSize = weaponList.Count();
 
             if (listSize < 1)
