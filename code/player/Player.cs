@@ -17,7 +17,7 @@ namespace TTTReborn.Player
 
                 if (IsServer)
                 {
-                    SetRole(To.Single(this), role.Name);
+                    ClientSetRole(To.Single(this), role.Name);
                 }
             }
             get {
