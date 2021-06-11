@@ -11,7 +11,7 @@ namespace TTTReborn.UI
 {
     public class WeaponSelection : Panel
     {
-        private readonly Dictionary<int, List<Weapon>> _weaponsDict = new();
+        private readonly SortedDictionary<int, List<Weapon>> _weaponsDict = new();
         private readonly Dictionary<string, WeaponSlot> _weaponSlots = new();
 
         public WeaponSelection()
@@ -21,6 +21,7 @@ namespace TTTReborn.UI
 
         // TODO: This method could be made to be event based. Whenever a user pickups a weapon, and whenever a user fires.
         // Consider checking out DM98 or Hidden inventory HUD.
+        // TODO: Update slot position when a new weapon is picked up
         public override void Tick()
         {
             base.Tick();
