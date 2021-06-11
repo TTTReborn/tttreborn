@@ -2,6 +2,7 @@
 using Sandbox;
 
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Weapons
 {
@@ -33,7 +34,6 @@ namespace TTTReborn.Weapons
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
-        public virtual bool IsMelee => false;
         public virtual int Bucket => 1;
         public virtual int BucketWeight => 100;
         public virtual bool UnlimitedAmmo => false;
@@ -41,7 +41,6 @@ namespace TTTReborn.Weapons
         public virtual bool HasFlashlight => false;
         public virtual bool HasLaserDot => false;
         public virtual int BaseDamage => 10;
-        public virtual int HoldType => 1;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
 
         [Net, Predicted]
@@ -60,6 +59,8 @@ namespace TTTReborn.Weapons
         public TimeSince TimeSinceChargeAttack { get; set; }
 
         public float ChargeAttackEndTime;
+
+        public PickupTrigger PickupTrigger { get; protected set; }
 
         public Weapon() : base()
         {
@@ -93,11 +94,15 @@ namespace TTTReborn.Weapons
             AmmoClip = ClipSize;
 
             SetModel("weapons/rust_pistol/rust_pistol.vmdl");
+
+            PickupTrigger = new PickupTrigger();
+            PickupTrigger.Parent = this;
+            PickupTrigger.Position = Position;
         }
 
         public override void Reload()
         {
-            if (IsMelee || IsReloading)
+            if (WeaponType == WeaponType.Melee || IsReloading)
             {
                 return;
             }
@@ -178,7 +183,10 @@ namespace TTTReborn.Weapons
             ChargeAttackEndTime = Time.Now + ChargeAttackDuration;
         }
 
-        public virtual void OnChargeAttackFinish() { }
+        public virtual void OnChargeAttackFinish()
+        {
+
+        }
 
         public virtual void OnReloadFinish()
         {
@@ -226,7 +234,7 @@ namespace TTTReborn.Weapons
         {
             Host.AssertClient();
 
-            if (!IsMelee)
+            if (WeaponType != WeaponType.Melee)
             {
                 Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
             }
@@ -304,17 +312,40 @@ namespace TTTReborn.Weapons
             {
                 return;
             }
+
+            CrosshairPanel = new Crosshair();
+            CrosshairPanel.Parent = Local.Hud;
+            CrosshairPanel.AddClass(ClassInfo.Name);
         }
 
         public bool IsUsable()
         {
-            if (IsMelee || ClipSize == 0 || AmmoClip > 0)
+            if (WeaponType == WeaponType.Melee || ClipSize == 0 || AmmoClip > 0)
             {
                 return true;
             }
 
             return AvailableAmmo() > 0;
         }
-    }
 
+        public override void OnCarryStart(Entity carrier)
+        {
+            base.OnCarryStart(carrier);
+
+            if (PickupTrigger.IsValid())
+            {
+                PickupTrigger.EnableTouch = false;
+            }
+        }
+
+        public override void OnCarryDrop(Entity dropper)
+        {
+            base.OnCarryDrop(dropper);
+
+            if (PickupTrigger.IsValid())
+            {
+                PickupTrigger.EnableTouch = true;
+            }
+        }
+    }
 }

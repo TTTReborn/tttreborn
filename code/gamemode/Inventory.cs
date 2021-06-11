@@ -18,19 +18,28 @@ namespace TTTReborn.Gamemode
         {
             TTTPlayer player = Owner as TTTPlayer;
 
-            if (entity is Weapon weapon && IsCarryingType(entity.GetType()))
+            if (entity is Weapon weapon)
             {
-                int ammo = weapon.AmmoClip;
-                AmmoType ammoType = weapon.AmmoType;
-
-                if (ammo > 0)
+                if (IsCarryingType(entity.GetType()))
                 {
-                    player.GiveAmmo(ammoType, ammo);
+                    int ammo = weapon.AmmoClip;
+                    AmmoType ammoType = weapon.AmmoType;
+
+                    if (ammo > 0)
+                    {
+                        player.GiveAmmo(ammoType, ammo);
+
+                        Sound.FromWorld("dm.pickup_ammo", entity.Position);
+                    }
+
+                    entity.Delete();
+
+                    return false;
                 }
 
-                entity.Delete();
+                Sound.FromWorld("dm.pickup_weapon", entity.Position);
 
-                return false;
+                return base.Add(entity, makeActive);
             }
 
             return base.Add(entity, makeActive);

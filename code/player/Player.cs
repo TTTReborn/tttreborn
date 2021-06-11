@@ -1,8 +1,10 @@
 using Sandbox;
 using Sandbox.UI;
+
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
+using TTTReborn.Weapons;
 
 namespace TTTReborn.Player
 {
@@ -21,6 +23,8 @@ namespace TTTReborn.Player
 
         private DamageInfo _lastDamageInfo;
         private float _inspectCorpseDistance = 80f;
+
+        private TimeSince timeSinceDropped = 0;
 
         public TTTPlayer()
         {
@@ -76,13 +80,13 @@ namespace TTTReborn.Player
             base.OnKilled();
 
             BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
+
+            Inventory.DropActive();
             Inventory.DeleteContents();
         }
 
         public override void Simulate(Client client)
         {
-            SimulateActiveChild(client, ActiveChild);
-
             if (Input.ActiveChild != null)
             {
                 ActiveChild = Input.ActiveChild;
@@ -94,6 +98,27 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
+
+            if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
+            {
+                int weaponSlot = (int) (ActiveChild as Weapon).WeaponType;
+                Entity droppedEntity = Inventory.DropActive();
+
+                if (droppedEntity != null)
+                {
+                    if (droppedEntity.PhysicsGroup != null)
+                    {
+                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * 300;
+                    }
+
+                    timeSinceDropped = 0;
+
+                    WeaponSelection.OnDropWeapon(this, droppedEntity as Weapon);
+                }
+            }
+
+            SimulateActiveChild(client, ActiveChild);
+
             TickAttemptInspectPlayerCorpse();
 
             PawnController controller = GetActiveController();
@@ -107,12 +132,10 @@ namespace TTTReborn.Player
 
         public override void StartTouch(Entity other)
         {
-            /*
-            if (_timeSinceDropped < 1)
+            if (timeSinceDropped < 1)
             {
                 return;
             }
-            */
 
             base.StartTouch(other);
         }
@@ -141,6 +164,7 @@ namespace TTTReborn.Player
                         {
                             playerCorpse.IsIdentified = true;
                             Client playerCorpseInfo = playerCorpse.Player.GetClientOwner();
+
                             ClientDisplayIdentifiedMessage(this.Controller.Client.SteamId,
                                 this.Controller.Client.Name,
                                 playerCorpseInfo.SteamId,

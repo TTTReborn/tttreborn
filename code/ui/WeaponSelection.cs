@@ -11,8 +11,8 @@ namespace TTTReborn.UI
 {
     public class WeaponSelection : Panel
     {
-        private readonly SortedDictionary<int, List<Weapon>> _weaponsDict = new();
-        private readonly Dictionary<string, WeaponSlot> _weaponSlots = new();
+        private static readonly SortedDictionary<int, List<Weapon>> _weaponsDict = new();
+        private static readonly Dictionary<string, WeaponSlot> _weaponSlots = new();
 
         public WeaponSelection()
         {
@@ -122,7 +122,7 @@ namespace TTTReborn.UI
             return 0;
         }
 
-        private Weapon GetNextWeapon(int weaponSlot, Weapon currentWeapon)
+        private static Weapon GetNextWeapon(int weaponSlot, Weapon currentWeapon)
         {
             _weaponsDict.TryGetValue(weaponSlot, out List<Weapon> weaponList);
 
@@ -149,6 +149,40 @@ namespace TTTReborn.UI
             }
 
             return weaponList[0];
+        }
+
+        public static void OnDropWeapon(TTTPlayer player, Weapon weapon)
+        {
+            Weapon nextWeapon = GetNextWeapon((int) weapon.WeaponType, weapon);
+
+            if (nextWeapon != null)
+            {
+                player.ActiveChild = nextWeapon;
+            }
+            else
+            {
+                // no weapon of same type in slot
+                foreach(KeyValuePair<int, List<Weapon>> keyValuePair in _weaponsDict)
+                {
+                    foreach (Weapon wep in keyValuePair.Value)
+                    {
+                        player.ActiveChild = wep;
+
+                        break;
+                    }
+
+                    if (player.ActiveChild != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            // remove dropped weapon
+            if (player.ActiveChild != null)
+            {
+                _weaponSlots.Clear(); // TODO clear / update on pickup as well
+            }
         }
 
         private class WeaponSlot : Panel
