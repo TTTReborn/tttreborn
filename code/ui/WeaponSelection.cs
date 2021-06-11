@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-
 using TTTReborn.Player;
 using TTTReborn.Weapons;
 
@@ -11,17 +11,17 @@ namespace TTTReborn.UI
 {
     public class WeaponSelection : Panel
     {
-        List<Weapon> Weapons = new();
-        Dictionary<string, WeaponSlot> WeaponSlots = new Dictionary<string, WeaponSlot>();
+        private readonly List<Weapon> _weapons = new();
+        private readonly Dictionary<string, WeaponSlot> _weaponSlots = new();
 
-        Weapon SelectedWeapon;
+        private Weapon _selectedWeapon;
 
         public WeaponSelection()
         {
             StyleSheet.Load("/ui/WeaponSelection.scss");
         }
 
-        // TODO: This method is terrible performance, fix it.
+        // TODO: This method could be made to be event based. Whenever a user pickups a weapon, and whenever a user fires.
         // Consider checking out DM98 or Hidden inventory HUD.
         public override void Tick()
         {
@@ -30,19 +30,19 @@ namespace TTTReborn.UI
             var player = Local.Pawn as TTTPlayer;
             if (player == null) return;
 
-            Weapons.Clear();
-            Weapons.AddRange(player.Children.Select(x => x as Weapon).Where(x => x.IsValid()));
+            _weapons.Clear();
+            _weapons.AddRange(player.Children.Select(x => x as Weapon).Where(x => x.IsValid()));
 
-            SelectedWeapon = Local.Pawn.ActiveChild as Weapon;
+            _selectedWeapon = Local.Pawn.ActiveChild as Weapon;
 
-            int index = 1;
-            foreach (Weapon weapon in Weapons)
+            int weaponIndex = 1;
+            foreach (Weapon weapon in _weapons)
             {
                 WeaponSlot weaponSlot = null;
-                if (WeaponSlots.TryGetValue(weapon.Name, out weaponSlot))
+                if (_weaponSlots.TryGetValue(weapon.Name, out weaponSlot))
                 {
-                    weaponSlot.UpdateWeaponSlot(index, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}");
-                    if (weapon == SelectedWeapon)
+                    weaponSlot.UpdateWeaponSlot(weaponIndex, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}");
+                    if (weapon == _selectedWeapon)
                     {
                         weaponSlot.AddClass("active");
                     }
@@ -53,9 +53,9 @@ namespace TTTReborn.UI
                 }
                 else
                 {
-                    WeaponSlots.Add(weapon.Name, new WeaponSlot(this, index, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}"));
+                    _weaponSlots.Add(weapon.Name, new WeaponSlot(this, weaponIndex, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}"));
                 }
-                index += 1;
+                weaponIndex += 1;
             }
         }
 
@@ -66,55 +66,38 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         public void ProcessClientInput(InputBuilder input)
         {
-	        if (Weapons.Count == 0)
+	        if (_weapons.Count == 0)
         	{
 	            return;
         	}
 
-	        SelectedWeapon = Local.Pawn.ActiveChild as Weapon;
+            _selectedWeapon = Local.Pawn.ActiveChild as Weapon;
 
-        	var oldSelected = SelectedWeapon;
-        	int SelectedIndex = Weapons.IndexOf( SelectedWeapon );
-        	SelectedIndex = SlotPressInput(input);
+            int selectedWeaponIndex = SlotPressInput(input);
 
-            SelectedWeapon = Weapons[SelectedIndex];
-
-            foreach (Weapon weapon in Weapons)
+            if (selectedWeaponIndex == -1)
             {
-                WeaponSlot weaponSlot = null;
-                if (WeaponSlots.TryGetValue(weapon.Name, out weaponSlot))
-                {
-                    if (weapon == SelectedWeapon)
-                    {
-                        weaponSlot.AddClass("active");
-                    }
-                    else
-                    {
-                        weaponSlot.RemoveClass("active");
-                    }
-                }
+                return;
             }
 
-            if ( oldSelected  != SelectedWeapon )
-        	{
-        		Sound.FromScreen( "dm.ui_tap" );
-        	}
+            input.ActiveChild = _weapons[selectedWeaponIndex];
         }
 
+        // TODO: Handle mouse wheel, and additional number keys.
         int SlotPressInput(InputBuilder input)
         {
-            var columninput = 0;
+            var weaponIndex = -1;
 
-            if ( input.Pressed( InputButton.Slot1 ) ) columninput = 0;
-            if ( input.Pressed( InputButton.Slot2 ) ) columninput = 1;
-            if ( input.Pressed( InputButton.Slot3 ) ) columninput = 2;
-            if ( input.Pressed( InputButton.Slot4 ) ) columninput = 3;
-            if ( input.Pressed( InputButton.Slot5 ) ) columninput = 4;
+            if ( input.Pressed( InputButton.Slot1 ) ) weaponIndex = 0;
+            if ( input.Pressed( InputButton.Slot2 ) ) weaponIndex = 1;
+            if ( input.Pressed( InputButton.Slot3 ) ) weaponIndex = 2;
+            if ( input.Pressed( InputButton.Slot4 ) ) weaponIndex = 3;
+            if ( input.Pressed( InputButton.Slot5 ) ) weaponIndex = 4;
 
-            return columninput;
+            return weaponIndex;
         }
 
-        public class WeaponSlot : Panel
+        private class WeaponSlot : Panel
         {
             public Label SlotLabel { set; get; }
             public Label WeaponLabel { set; get; }
