@@ -28,7 +28,11 @@ namespace TTTReborn.UI
             base.Tick();
 
             var player = Local.Pawn as TTTPlayer;
-            if (player == null) return;
+
+            if (player == null)
+            {
+                return;
+            }
 
             _weapons.Clear();
             _weapons.AddRange(player.Children.Select(x => x as Weapon).Where(x => x.IsValid()));
@@ -36,12 +40,15 @@ namespace TTTReborn.UI
             _selectedWeapon = Local.Pawn.ActiveChild as Weapon;
 
             int weaponIndex = 1;
+
             foreach (Weapon weapon in _weapons)
             {
                 WeaponSlot weaponSlot = null;
+
                 if (_weaponSlots.TryGetValue(weapon.Name, out weaponSlot))
                 {
                     weaponSlot.UpdateWeaponSlot(weaponIndex, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}");
+
                     if (weapon == _selectedWeapon)
                     {
                         weaponSlot.AddClass("active");
@@ -55,6 +62,7 @@ namespace TTTReborn.UI
                 {
                     _weaponSlots.Add(weapon.Name, new WeaponSlot(this, weaponIndex, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}"));
                 }
+
                 weaponIndex += 1;
             }
         }
@@ -88,11 +96,11 @@ namespace TTTReborn.UI
         {
             var weaponIndex = -1;
 
-            if ( input.Pressed( InputButton.Slot1 ) ) weaponIndex = 0;
-            if ( input.Pressed( InputButton.Slot2 ) ) weaponIndex = 1;
-            if ( input.Pressed( InputButton.Slot3 ) ) weaponIndex = 2;
-            if ( input.Pressed( InputButton.Slot4 ) ) weaponIndex = 3;
-            if ( input.Pressed( InputButton.Slot5 ) ) weaponIndex = 4;
+            if (input.Pressed(InputButton.Slot1)) weaponIndex = 0;
+            if (input.Pressed(InputButton.Slot2)) weaponIndex = 1;
+            if (input.Pressed(InputButton.Slot3)) weaponIndex = 2;
+            if (input.Pressed(InputButton.Slot4)) weaponIndex = 3;
+            if (input.Pressed(InputButton.Slot5)) weaponIndex = 4;
 
             return weaponIndex;
         }

@@ -1,13 +1,34 @@
-﻿using Sandbox;
+﻿using System;
+using Sandbox;
 
-using TTTReborn.UI;
 using TTTReborn.Player;
 
 namespace TTTReborn.Weapons
 {
-    partial class Weapon : BaseWeapon
+    public enum WeaponType
     {
-        public virtual string Name => "";
+        Melee,
+        Pistol,
+        Primary,
+        Heavy,
+        Special
+    }
+
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class WeaponAttribute : LibraryAttribute
+    {
+        public WeaponType WeaponType;
+
+        public WeaponAttribute(string name) : base(name)
+        {
+
+        }
+    }
+
+    [WeaponAttribute("ttt_weapon")]
+    public abstract partial class Weapon : BaseWeapon
+    {
+        public string Name { get; private set; }
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
@@ -38,6 +59,11 @@ namespace TTTReborn.Weapons
         public TimeSince TimeSinceChargeAttack { get; set; }
 
         public float ChargeAttackEndTime;
+
+        public Weapon() : base()
+        {
+            Name = WeaponFunctions.GetWeaponName(GetType());
+        }
 
         public int AvailableAmmo()
         {

@@ -2,10 +2,9 @@
 
 namespace TTTReborn.Weapons
 {
-    [Library("ttt_pistol", Title = "Baretta")]
+    [WeaponAttribute("ttt_pistol", WeaponType = WeaponType.Pistol)]
     partial class Pistol : Weapon
     {
-        public override string Name => "Pistol";
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
 
         public override bool UnlimitedAmmo => true;
@@ -26,7 +25,7 @@ namespace TTTReborn.Weapons
 
         public override bool CanPrimaryAttack()
         {
-            return base.CanPrimaryAttack() && Owner.Input.Pressed(InputButton.Attack1);
+            return base.CanPrimaryAttack() && Input.Pressed(InputButton.Attack1);
         }
 
         public override void AttackPrimary()

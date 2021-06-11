@@ -2,10 +2,9 @@
 
 namespace TTTReborn.Weapons
 {
-    [Library("ttt_smg", Title = "MP5")]
+    [WeaponAttribute("ttt_smg", WeaponType = WeaponType.Primary)]
     partial class SMG : Weapon
     {
-        public override string Name => "SMG";
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
         public override float PrimaryRate => 10.0f;
         public override float SecondaryRate => 1.0f;
