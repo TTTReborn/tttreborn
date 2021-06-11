@@ -11,10 +11,8 @@ namespace TTTReborn.UI
 {
     public class WeaponSelection : Panel
     {
-        private readonly List<Weapon> _weapons = new();
+        private readonly Dictionary<int, List<Weapon>> _weaponsDict = new();
         private readonly Dictionary<string, WeaponSlot> _weaponSlots = new();
-
-        private Weapon _selectedWeapon;
 
         public WeaponSelection()
         {
@@ -34,36 +32,53 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _weapons.Clear();
-            _weapons.AddRange(player.Children.Select(x => x as Weapon).Where(x => x.IsValid()));
+            _weaponsDict.Clear();
 
-            _selectedWeapon = Local.Pawn.ActiveChild as Weapon;
-
-            int weaponIndex = 1;
-
-            foreach (Weapon weapon in _weapons)
+            foreach (Weapon weapon in player.Children)
             {
-                WeaponSlot weaponSlot = null;
-
-                if (_weaponSlots.TryGetValue(weapon.Name, out weaponSlot))
+                if (!weapon.IsValid())
                 {
-                    weaponSlot.UpdateWeaponSlot(weaponIndex, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}");
+                    continue;
+                }
 
-                    if (weapon == _selectedWeapon)
+                int weaponType = (int) weapon.WeaponType;
+
+                _weaponsDict.TryGetValue(weaponType, out List<Weapon> weaponList);
+
+                if (weaponList == null)
+                {
+                    weaponList = new();
+
+                    _weaponsDict.Add(weaponType, weaponList);
+                }
+
+                weaponList.Add(weapon);
+            }
+
+            Weapon selectedWeapon = Local.Pawn.ActiveChild as Weapon;
+
+            foreach(KeyValuePair<int, List<Weapon>> keyValuePair in _weaponsDict)
+            {
+                foreach (Weapon weapon in keyValuePair.Value)
+                {
+                    if (_weaponSlots.TryGetValue(weapon.Name, out WeaponSlot weaponSlot))
                     {
-                        weaponSlot.AddClass("active");
+                        weaponSlot.UpdateWeaponSlot(keyValuePair.Key, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}");
+
+                        if (weapon == selectedWeapon)
+                        {
+                            weaponSlot.AddClass("active");
+                        }
+                        else
+                        {
+                            weaponSlot.RemoveClass("active");
+                        }
                     }
                     else
                     {
-                        weaponSlot.RemoveClass("active");
+                        _weaponSlots.Add(weapon.Name, new WeaponSlot(this, keyValuePair.Key, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}"));
                     }
                 }
-                else
-                {
-                    _weaponSlots.Add(weapon.Name, new WeaponSlot(this, weaponIndex, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}"));
-                }
-
-                weaponIndex += 1;
             }
         }
 
@@ -74,35 +89,59 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         public void ProcessClientInput(InputBuilder input)
         {
-	        if (_weapons.Count == 0)
+	        if (_weaponsDict.Count == 0)
         	{
 	            return;
         	}
 
-            _selectedWeapon = Local.Pawn.ActiveChild as Weapon;
-
             int selectedWeaponIndex = SlotPressInput(input);
 
-            if (selectedWeaponIndex == -1)
+            if (selectedWeaponIndex == 0)
             {
                 return;
             }
 
-            input.ActiveChild = _weapons[selectedWeaponIndex];
+            Weapon nextWeapon = GetNextWeapon(selectedWeaponIndex, Local.Pawn.ActiveChild as Weapon);
+
+            if (nextWeapon != null)
+            {
+                input.ActiveChild = nextWeapon;
+            }
         }
 
         // TODO: Handle mouse wheel, and additional number keys.
         int SlotPressInput(InputBuilder input)
         {
-            var weaponIndex = -1;
+            if (input.Pressed(InputButton.Slot1)) return 1;
+            if (input.Pressed(InputButton.Slot2)) return 2;
+            if (input.Pressed(InputButton.Slot3)) return 3;
+            if (input.Pressed(InputButton.Slot4)) return 4;
+            if (input.Pressed(InputButton.Slot5)) return 5;
 
-            if (input.Pressed(InputButton.Slot1)) weaponIndex = 0;
-            if (input.Pressed(InputButton.Slot2)) weaponIndex = 1;
-            if (input.Pressed(InputButton.Slot3)) weaponIndex = 2;
-            if (input.Pressed(InputButton.Slot4)) weaponIndex = 3;
-            if (input.Pressed(InputButton.Slot5)) weaponIndex = 4;
+            return 0;
+        }
 
-            return weaponIndex;
+        private Weapon GetNextWeapon(int weaponSlot, Weapon currentWeapon)
+        {
+            List<Weapon> weaponList = _weaponsDict[weaponSlot];
+            int listSize = weaponList.Count();
+
+            if (listSize < 1)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < listSize; i++)
+            {
+                Weapon weapon = weaponList[i];
+
+                if (weapon == currentWeapon)
+                {
+                    return weaponList[i + 1 >= listSize ? 0 : i + 1];
+                }
+            }
+
+            return weaponList[0];
         }
 
         private class WeaponSlot : Panel

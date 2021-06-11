@@ -7,7 +7,7 @@ namespace TTTReborn.Weapons
 {
     public enum WeaponType
     {
-        Melee,
+        Melee = 1,
         Pistol,
         Primary,
         Heavy,
@@ -29,6 +29,7 @@ namespace TTTReborn.Weapons
     public abstract partial class Weapon : BaseWeapon
     {
         public string Name { get; private set; }
+        public WeaponType WeaponType { get; private set; }
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
@@ -62,7 +63,10 @@ namespace TTTReborn.Weapons
 
         public Weapon() : base()
         {
-            Name = WeaponFunctions.GetWeaponName(GetType());
+            WeaponAttribute weaponAttribute = Library.GetAttribute(GetType()) as WeaponAttribute;
+
+            Name = weaponAttribute.Name;
+            WeaponType = weaponAttribute.WeaponType;
         }
 
         public int AvailableAmmo()
