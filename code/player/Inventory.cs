@@ -47,46 +47,12 @@ namespace TTTReborn.Player
             return List.Any(x => x.GetType() == t);
         }
 
-        public void ProcessClientWeaponSelectionInput(InputBuilder input)
-        {
-            if (List.Count == 0)
-        	{
-	            return;
-        	}
-
-            int selectedWeaponIndex = SlotPressInput(input);
-
-            if (selectedWeaponIndex == 0)
-            {
-                return;
-            }
-
-            int nextWeaponSlot = GetNextWeaponSlot((WeaponType) selectedWeaponIndex);
-
-            if (nextWeaponSlot != -1)
-            {
-                SetActiveSlot(nextWeaponSlot);
-            }
-        }
-
-        // TODO: Handle mouse wheel, and additional number keys.
-        int SlotPressInput(InputBuilder input)
-        {
-            if (input.Pressed(InputButton.Slot1)) return 1;
-            if (input.Pressed(InputButton.Slot2)) return 2;
-            if (input.Pressed(InputButton.Slot3)) return 3;
-            if (input.Pressed(InputButton.Slot4)) return 4;
-            if (input.Pressed(InputButton.Slot5)) return 5;
-
-            return 0;
-        }
-
         int GetNextIndex(int index, int maxIndex)
         {
             return index + 1 >= maxIndex ? 0 : index + 1;
         }
 
-        private int GetNextWeaponSlot(WeaponType weaponType = 0)
+        public int GetNextWeaponSlot(WeaponType weaponType = 0)
         {
             int listSize = Count();
 
@@ -122,45 +88,5 @@ namespace TTTReborn.Player
             // edge case, if List does not contain the active weapon
             return 0;
         }
-
-		/// <summary>
-		/// Drop this entity. Will return true if successfully dropped.
-		/// </summary>
-		public override bool Drop(Entity ent)
-		{
-			if (!Host.IsServer || !Contains(ent))
-            {
-                return false;
-            }
-
-            Weapon activeWeapon = (Owner.ActiveChild as Weapon);
-
-            int nextWeaponSlot = GetNextWeaponSlot(activeWeapon.WeaponType);
-
-            if (nextWeaponSlot != -1)
-            {
-                SetActiveSlot(nextWeaponSlot);
-            }
-
-			ent.Parent = null;
-			ent.OnCarryDrop(Owner);
-
-			return true;
-		}
-
-		/// <summary>
-		/// Delete every entity we're carrying. Useful to call on death.
-		/// </summary>
-		public override void DeleteContents()
-		{
-			Host.AssertServer();
-
-			foreach (Weapon weapon in List.ToArray())
-			{
-				weapon.Delete();
-			}
-
-			List.Clear();
-		}
     }
 }

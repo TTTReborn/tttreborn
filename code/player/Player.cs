@@ -121,17 +121,6 @@ namespace TTTReborn.Player
             controller?.Simulate(client, this, GetActiveAnimator());
         }
 
-
-        /// <summary>
-        /// IClientInput implementation, calls during the client input build.
-        /// You can both read and write to input, to affect what happens down the line.
-        /// </summary>
-        [Event.BuildInput]
-        public void ProcessClientInput(InputBuilder input)
-        {
-            (Inventory as Inventory).ProcessClientWeaponSelectionInput(input);
-        }
-
         protected override void UseFail()
         {
             // Do nothing. By default this plays a sound that we don't want.

@@ -98,6 +98,47 @@ namespace TTTReborn.UI
             }
         }
 
+        /// <summary>
+        /// IClientInput implementation, calls during the client input build.
+        /// You can both read and write to input, to affect what happens down the line.
+        /// </summary>
+        [Event.BuildInput]
+        public void ProcessClientWeaponSelectionInput(InputBuilder input)
+        {
+            Inventory inventory = Local.Pawn.Inventory as Inventory;
+
+            if (inventory.Count() == 0)
+        	{
+	            return;
+        	}
+
+            int selectedWeaponIndex = SlotPressInput(input);
+
+            if (selectedWeaponIndex == 0)
+            {
+                return;
+            }
+
+            int nextWeaponSlot = inventory.GetNextWeaponSlot((WeaponType) selectedWeaponIndex);
+
+            if (nextWeaponSlot != -1)
+            {
+                input.ActiveChild = inventory.GetSlot(nextWeaponSlot);
+            }
+        }
+
+        // TODO: Handle mouse wheel, and additional number keys.
+        int SlotPressInput(InputBuilder input)
+        {
+            if (input.Pressed(InputButton.Slot1)) return 1;
+            if (input.Pressed(InputButton.Slot2)) return 2;
+            if (input.Pressed(InputButton.Slot3)) return 3;
+            if (input.Pressed(InputButton.Slot4)) return 4;
+            if (input.Pressed(InputButton.Slot5)) return 5;
+
+            return 0;
+        }
+
         public class WeaponSlot : Panel
         {
             public string WeaponName { get; private set; }
