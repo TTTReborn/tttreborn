@@ -4,6 +4,8 @@ using Sandbox.UI;
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
 using TTTReborn.Weapons;
+using TTTReborn.Player.Camera;
+using TTTReborn.Gamemode;
 
 namespace TTTReborn.Player
 {
@@ -52,8 +54,11 @@ namespace TTTReborn.Player
         }
 
         // Important: Server-side only
+        // TODO: Convert to a player.RPC, event based system found inside of...
+        // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
         {
+
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
@@ -98,6 +103,7 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
+            TickAttemptInspectPlayerCorpse();
 
             if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
             {
@@ -175,6 +181,7 @@ namespace TTTReborn.Player
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
                         // TODO: Figure out why directly passing in just playerCorpse to "ClientOpenInspectMenu" makes playerCorpse.Player null.
                         ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+
                         return;
                     }
 
@@ -252,10 +259,10 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientDisplayIdentifiedMessage(ulong leftId, string left, ulong rightId, string right, string role)
+        public static void ClientDisplayIdentifiedMessage(ulong leftId, string leftName, ulong rightId, string rightName, string role)
         {
             // TODO: Refactor the UI element, and provide a better interface for passing in these parameters.
-            InfoFeed.Current?.AddEntry(leftId, left, rightId, $"{right}.  Their role was {role}!", "found the body of");
+            InfoFeed.Current?.AddEntry(leftId, leftName, rightId, $"{rightName}. Their role was {role}!", "found the body of");
         }
 
         [ClientRpc]
