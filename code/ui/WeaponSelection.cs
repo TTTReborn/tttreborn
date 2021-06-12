@@ -8,7 +8,6 @@ using TTTReborn.Player;
 using TTTReborn.Weapons;
 
 // TODO Fix animation on dropping a higher slot weapon (instead of deleting and recreating, move and delete WeaponSlots in DOM)
-// TODO Fix bug that weapons are removed even if there is no one in the list already (ammo loadup)
 
 namespace TTTReborn.UI
 {
