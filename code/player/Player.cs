@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Player.Camera;
+using TTTReborn.Roles;
 using TTTReborn.UI;
 using TTTReborn.Weapons;
 
@@ -9,15 +10,26 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer : Sandbox.Player
     {
-        public enum RoleType { None, Innocent, Detective, Traitor }
         public PlayerCorpse PlayerCorpse { get; set; }
 
         public static int WeaponDropVelocity { get; set; } = 300;
 
-        // TODO: Make LOCAL, if it isn't this data gets networked to all players, could cause hackers.
-        // TODO: It currently isn't because all Networked information needs to be transfered to player corpse for inspecting bodies.
-        [Net]
-        public RoleType Role { get; set; }
+        public BaseRole Role {
+            set
+            {
+                role = value;
+
+                if (IsServer)
+                {
+                    ClientSetRole(To.Single(this), role.Name);
+                }
+            }
+            get {
+                return role;
+            }
+        }
+
+        private BaseRole role = new NoneRole();
 
         [Net, Local]
         public int Credits { get; set; } = 0;
@@ -70,7 +82,7 @@ namespace TTTReborn.Player
             EnableHideInFirstPerson = true;
             EnableShadowInFirstPerson = true;
 
-            Role = RoleType.None;
+            Role = new NoneRole();
             Credits = 0;
 
             RemovePlayerCorpse();
