@@ -62,8 +62,6 @@ namespace TTTReborn.Weapons
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        public WeaponSelection.WeaponSlot WeaponSlotPanel { get; set; }
-
         public Weapon() : base()
         {
             WeaponAttribute weaponAttribute = Library.GetAttribute(GetType()) as WeaponAttribute;
@@ -285,11 +283,6 @@ namespace TTTReborn.Weapons
             }
 
             AmmoClip -= amount;
-
-            if (Host.IsClient)
-            {
-                WeaponSlotPanel?.UpdateAmmo($"{AmmoClip}/{ClipSize}");
-            }
 
             return true;
         }

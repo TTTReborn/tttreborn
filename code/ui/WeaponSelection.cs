@@ -49,10 +49,11 @@ namespace TTTReborn.UI
                 if (weaponSlot == null)
                 {
                     weaponSlot = new WeaponSlot(this, weapon);
-                    weapon.WeaponSlotPanel = weaponSlot;
 
                     added++;
                 }
+
+                weaponSlot.UpdateAmmo($"{weapon.AmmoClip}/{weapon.ClipSize}");
 
                 tmpSlots.Add(weaponSlot);
             }
