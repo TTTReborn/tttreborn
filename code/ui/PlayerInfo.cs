@@ -4,6 +4,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Weapons;
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
@@ -21,6 +22,8 @@ namespace TTTReborn.UI
         {
             public Label RoleLabel { set; get; }
 
+            private BaseRole currentRole;
+
             public RolePanel(Panel parent)
             {
                 Parent = parent;
@@ -37,8 +40,21 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                // TODO: We should see if we can add an event to update the role label, instead of updating each tick.
-                RoleLabel.Text = $"{player.Role.Name}";
+                if (currentRole != player.Role)
+                {
+                    if (currentRole != null)
+                    {
+                        // Remove RolePanel .class for the old role:
+                        SetClass(currentRole.Name, false);
+                    }
+
+                    currentRole = player.Role;
+
+                    // Give RolePanel .class for the matching role:
+                    SetClass(currentRole.Name, true);
+
+                    RoleLabel.Text = $"{player.Role.Name}";
+                }
             }
         }
 
@@ -47,7 +63,9 @@ namespace TTTReborn.UI
             public BarPanel HealthBar { set; get; }
             public BarPanel AmmoBar { set; get; }
 
-            public bool InvisibleAmmo { set; get; }
+            // TODO rework event based
+            private float currentHealth;
+            private int currentAmmo;
 
             public IndicatorsPanel(Panel parent)
             {
@@ -69,27 +87,34 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                HealthBar.TextLabel.Text = $"{player.Health:n0}";
+                if (currentHealth != player.Health)
+                {
+                    currentHealth = player.Health;
 
-                var weapon = player.ActiveChild as Weapon;
+                    HealthBar.TextLabel.Text = $"{player.Health:n0}";
+
+                    HealthBar.Style.Width = Length.Percent(player.Health);
+                    HealthBar.Style.Dirty();
+                }
+
+                Weapon weapon = player.ActiveChild as Weapon;
 
                 if (weapon != null)
                 {
-                    if (InvisibleAmmo)
+                    if (currentAmmo == weapon.AmmoClip)
                     {
-                        InvisibleAmmo = false;
-
-                        AmmoBar.RemoveClass("invisible");
+                        return;
                     }
 
-                    AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
-                }
-                else if (!InvisibleAmmo)
-                {
-                    InvisibleAmmo = true;
+                    currentAmmo = weapon.AmmoClip;
 
-                    AmmoBar.AddClass("invisible");
+                    AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
+
+                    AmmoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
+                    AmmoBar.Style.Dirty();
                 }
+
+                AmmoBar.SetClass("hide", weapon == null); // TODO Add WeaponType.Melee later
             }
         }
     }

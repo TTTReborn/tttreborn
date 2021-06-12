@@ -6,6 +6,18 @@ namespace TTTReborn.Player
 {
     partial class TTTPlayer
     {
+        [ClientRpc]
+        public void ClientOnPlayerDied()
+        {
+            Event.Run("tttreborn.player.died");
+        }
+
+        [ClientRpc]
+        public void ClientOnPlayerSpawned()
+        {
+            Event.Run("tttreborn.player.spawned");
+        }
+
         /// <summary>
         /// Must be called on the server, updates TTTPlayer's `Role`.
         /// </summary>

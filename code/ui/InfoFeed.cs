@@ -13,7 +13,7 @@ namespace Sandbox.UI
 
         public virtual Panel AddEntry(ulong leftSteamId, string leftName, ulong rightSteamId, string rightName, string method)
         {
-            var e = Current.AddChild<InfoFeedEntry>();
+            InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 
             e.Left.Text = leftName;
             e.Left.SetClass("me", leftSteamId == (Local.Client?.SteamId));

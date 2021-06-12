@@ -112,7 +112,7 @@ namespace TTTReborn.UI
         /// You can both read and write to input, to affect what happens down the line.
         /// </summary>
         [Event.BuildInput]
-        public void ProcessClientWeaponSelectionInput(InputBuilder input)
+        private void ProcessClientWeaponSelectionInput(InputBuilder input)
         {
             Inventory inventory = Local.Pawn.Inventory as Inventory;
 
@@ -149,7 +149,7 @@ namespace TTTReborn.UI
         }
 
         // TODO: Handle mouse wheel, and additional number keys.
-        int SlotPressInput(InputBuilder input)
+        private int SlotPressInput(InputBuilder input)
         {
             if (input.Pressed(InputButton.Slot1)) return 1;
             if (input.Pressed(InputButton.Slot2)) return 2;

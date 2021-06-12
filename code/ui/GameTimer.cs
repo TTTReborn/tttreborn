@@ -18,6 +18,13 @@ namespace TTTReborn.UI
         public override void Tick()
         {
             // TODO: Handle if Instance is null and if Round is null.
+            if (Game.Instance.Round is Rounds.WaitingRound)
+            {
+                TimeLabel.Text = $"{Game.Instance.Round.RoundName}...";
+
+                return;
+            }
+
             TimeLabel.Text = $"{Game.Instance.Round.RoundName}: {Game.Instance.Round.TimeLeftFormatted}";
         }
     }

@@ -85,6 +85,11 @@ namespace TTTReborn.Player
             Role = new NoneRole();
             Credits = 0;
 
+            using(Prediction.Off())
+            {
+                ClientOnPlayerSpawned(To.Single(this));
+            }
+
             RemovePlayerCorpse();
             Inventory.DeleteContents();
             TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
@@ -99,6 +104,11 @@ namespace TTTReborn.Player
 
             Inventory.DropActive();
             Inventory.DeleteContents();
+
+            using(Prediction.Off())
+            {
+                ClientOnPlayerDied(To.Single(this));
+            }
         }
 
         public override void Simulate(Client client)

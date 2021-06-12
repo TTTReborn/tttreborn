@@ -5,6 +5,9 @@ WeaponSelection {
     min-width: 300px;
     display: flex;
     flex-direction: column;
+    border: 1px solid #000;
+    border-radius: 4px;
+    font-family: Poppins;
 
     WeaponSlot {
         height: 32px;
@@ -12,6 +15,7 @@ WeaponSelection {
         color: white;
         border-bottom: 1px solid rgba(0, 0, 0, 0.8);
         background-color: rgba(0, 0, 0, 0.6);
+        font-size: 22px;
 
         &.active {
             font-weight: normal;
@@ -19,9 +23,10 @@ WeaponSelection {
         }
 
         Label {
-            font-size: 0.8em;
+            // font-size: 0.8em;
             margin-right: 10px;
-            padding-top: 4px;
+            // padding-top: 4px;
+            font-weight: 400;
 
             &.slotlabel {
                 margin-right: 14px;
@@ -29,7 +34,7 @@ WeaponSelection {
                 width: 32px;
                 text-align: center;
                 background-color: #db8c17;
-                font-weight: bold;
+                font-weight: 600;
             }
 
             &.ammolabel {
@@ -38,9 +43,14 @@ WeaponSelection {
             }
         }
 
-        &.traitor {
+        &.Traitor {
             Label.slotlabel {
                 background-color: #df2935;
+            }
+        }
+        &.Detective {
+            Label.slotlabel {
+                background-color: #2196f3;
             }
         }
 
