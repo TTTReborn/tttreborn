@@ -1,17 +1,12 @@
 ﻿using Sandbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using TTTReborn.Player;
 
 namespace TTTReborn.Player
 {
-	public class PlayerCorpse : ModelEntity
+	public partial class PlayerCorpse : ModelEntity
 	{
 		public TTTPlayer Player { get; set; }
+
+		[Net]
 		public bool IsIdentified { get; set; }
 
 		public PlayerCorpse()
