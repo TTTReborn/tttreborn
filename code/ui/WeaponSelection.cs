@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+
 using TTTReborn.Player;
 using TTTReborn.Weapons;
 
@@ -10,7 +10,9 @@ namespace TTTReborn.UI
 {
     public class WeaponSelection : Panel
     {
-        private Dictionary<string, WeaponSlot> _weaponSlots = new();
+        private Dictionary<string, WeaponSlot> weaponSlots = new();
+
+        private Weapon oldActiveWeapon;
 
         public WeaponSelection()
         {
@@ -31,53 +33,91 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Weapon selectedWeapon = Local.Pawn.ActiveChild as Weapon;
+            // update weapon slots, check for removed weapons etc.
+            List<WeaponSlot> tmpSlots = new();
 
-            foreach(KeyValuePair<int, List<Weapon>> keyValuePair in player.WeaponSelection)
+            Inventory inventory = player.Inventory as Inventory;
+            int inventoryCount = inventory.Count();
+            int added = 0;
+
+            for (int i = 0; i < inventoryCount; i++)
             {
-                foreach (Weapon weapon in keyValuePair.Value)
-                {
-                    if (_weaponSlots.TryGetValue(weapon.Name, out WeaponSlot weaponSlot))
-                    {
-                        weaponSlot.UpdateWeaponSlot(keyValuePair.Key, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}");
+                Weapon weapon = inventory.GetSlot(i) as Weapon;
 
-                        if (weapon == selectedWeapon)
-                        {
-                            weaponSlot.AddClass("active");
-                        }
-                        else
-                        {
-                            weaponSlot.RemoveClass("active");
-                        }
+                weaponSlots.TryGetValue(weapon.Name, out WeaponSlot weaponSlot);
+
+                if (weaponSlot == null)
+                {
+                    weaponSlot = new WeaponSlot(this, weapon);
+                    weapon.WeaponSlotPanel = weaponSlot;
+
+                    added++;
+                }
+
+                tmpSlots.Add(weaponSlot);
+            }
+
+            // remove invalid WeaponSlots
+            if (tmpSlots.Count != weaponSlots.Count || added != 0)
+            {
+                foreach (WeaponSlot weaponSlot in weaponSlots.Values)
+                {
+                    if (!tmpSlots.Contains(weaponSlot))
+                    {
+                        weaponSlot.Delete();
+                    }
+                }
+
+                weaponSlots.Clear();
+
+                // setup
+                foreach (WeaponSlot weaponSlot in tmpSlots)
+                {
+                    weaponSlots.Add(weaponSlot.WeaponName, weaponSlot);
+                }
+            }
+
+            // update current selection
+            Weapon activeWeapon = player.ActiveChild as Weapon;
+
+            if (oldActiveWeapon != activeWeapon && activeWeapon != null)
+            {
+                foreach (WeaponSlot weaponSlot in weaponSlots.Values)
+                {
+                    if (weaponSlot.WeaponName == activeWeapon.Name)
+                    {
+                        weaponSlot.AddClass("active");
                     }
                     else
                     {
-                        _weaponSlots.Add(weapon.Name, new WeaponSlot(this, keyValuePair.Key, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}"));
+                        weaponSlot.RemoveClass("active");
                     }
                 }
+
+                oldActiveWeapon = activeWeapon;
             }
         }
 
-        private class WeaponSlot : Panel
+        public class WeaponSlot : Panel
         {
+            public string WeaponName { get; private set; }
             public Label SlotLabel { set; get; }
             public Label WeaponLabel { set; get; }
             public Label AmmoLabel { set; get; }
 
-            public WeaponSlot(Panel parent, int slotId, string weaponName, string ammo)
+            public WeaponSlot(Panel parent, Weapon weapon)
             {
                 Parent = parent;
+                WeaponName = weapon.Name;
 
-                SlotLabel = Add.Label(slotId.ToString(), "slotlabel");
-                WeaponLabel = Add.Label(weaponName, "weaponlabel");
-                AmmoLabel = Add.Label(ammo, "ammolabel");
+                SlotLabel = Add.Label(((int) weapon.WeaponType).ToString(), "slotlabel");
+                WeaponLabel = Add.Label(weapon.Name, "weaponlabel");
+                AmmoLabel = Add.Label($"{weapon.AmmoClip}/{weapon.ClipSize}", "ammolabel");
             }
 
-            public void UpdateWeaponSlot(int slotId, string weaponName, string ammo)
+            public void UpdateAmmo(string ammoText)
             {
-                SlotLabel.Text = slotId.ToString();
-                WeaponLabel.Text = weaponName;
-                AmmoLabel.Text = ammo;
+                AmmoLabel.Text = ammoText;
             }
         }
     }

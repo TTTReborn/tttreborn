@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
 using TTTReborn.Weapons;
@@ -26,7 +24,6 @@ namespace TTTReborn.Player
         private float _inspectCorpseDistance = 80f;
 
         private TimeSince timeSinceDropped = 0;
-        public SortedDictionary<int, List<Weapon>> WeaponSelection = new();
 
         public TTTPlayer()
         {
@@ -113,8 +110,6 @@ namespace TTTReborn.Player
                     }
 
                     timeSinceDropped = 0;
-
-                    Event.Run("tttreborn.player.droppedweapon");
                 }
             }
 
