@@ -73,9 +73,7 @@ namespace TTTReborn.UI
 
                 weaponSlots.Clear();
 
-                inventory.List.Sort((Entity wep1, Entity wep2) => {
-                    return (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType);
-                });
+                inventory.List.Sort((Entity wep1, Entity wep2) => (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType));
 
                 // rebuild weaponslots in the right order
                 foreach (Weapon weapon in inventory.List)
@@ -119,9 +117,9 @@ namespace TTTReborn.UI
             Inventory inventory = Local.Pawn.Inventory as Inventory;
 
             if (inventory.Count() == 0)
-        	{
-	            return;
-        	}
+            {
+                return;
+            }
 
             int selectedWeaponIndex = SlotPressInput(input);
 
@@ -141,7 +139,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            // correspondig key pressed
+            // corresponding key pressed
             int nextWeaponSlot = inventory.GetNextWeaponSlot((WeaponType) selectedWeaponIndex);
 
             if (nextWeaponSlot != -1)

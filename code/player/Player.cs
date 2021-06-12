@@ -12,7 +12,7 @@ namespace TTTReborn.Player
     {
         public PlayerCorpse PlayerCorpse { get; set; }
 
-        public static int WeaponDropVelocity { get; set; } = 300;
+        private static int WeaponDropVelocity { get; set; } = 300;
 
         public BaseRole Role {
             set
@@ -116,22 +116,7 @@ namespace TTTReborn.Player
 
             TickPlayerUse();
             TickAttemptInspectPlayerCorpse();
-
-            if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
-            {
-                int weaponSlot = (int) (ActiveChild as Weapon).WeaponType;
-                Entity droppedEntity = Inventory.DropActive();
-
-                if (droppedEntity != null)
-                {
-                    if (droppedEntity.PhysicsGroup != null)
-                    {
-                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * WeaponDropVelocity;
-                    }
-
-                    timeSinceDropped = 0;
-                }
-            }
+            TickPlayerDropWeapon();
 
             SimulateActiveChild(client, ActiveChild);
 
@@ -154,6 +139,25 @@ namespace TTTReborn.Player
             }
 
             base.StartTouch(other);
+        }
+
+        private void TickPlayerDropWeapon()
+        {
+            if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
+            {
+                int weaponSlot = (int) (ActiveChild as Weapon).WeaponType;
+                Entity droppedEntity = Inventory.DropActive();
+
+                if (droppedEntity != null)
+                {
+                    if (droppedEntity.PhysicsGroup != null)
+                    {
+                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * WeaponDropVelocity;
+                    }
+
+                    timeSinceDropped = 0;
+                }
+            }
         }
 
         private void TickAttemptInspectPlayerCorpse()

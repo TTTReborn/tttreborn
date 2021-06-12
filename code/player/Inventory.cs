@@ -29,14 +29,12 @@ namespace TTTReborn.Player
 
             bool added = base.Add(entity, makeActive);
 
-            List.Sort((Entity wep1, Entity wep2) => {
-                return (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType);
-            });
+            List.Sort((Entity wep1, Entity wep2) => (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType));
 
             return added;
         }
 
-        public bool IsCarryingType(Type t)
+        private bool IsCarryingType(Type t)
         {
             return List.Any(x => x.GetType() == t);
         }
