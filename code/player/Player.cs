@@ -1,7 +1,8 @@
 using Sandbox;
-
+using Sandbox.UI;
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
+using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -10,13 +11,16 @@ namespace TTTReborn.Player
         public enum RoleType { None, Innocent, Detective, Traitor }
         public PlayerCorpse PlayerCorpse { get; set; }
 
-        [Net, Local]
+        // TODO: Make LOCAL, if it isn't this data gets networked to all players, could cause hackers.
+        // TODO: It currently isn't because all Networked information needs to be transfered to player corpse for inspecting bodies.
+        [Net]
         public RoleType Role { get; set; }
 
         [Net, Local]
         public int Credits { get; set; } = 0;
 
         private DamageInfo _lastDamageInfo;
+        private float _inspectCorpseDistance = 80f;
 
         public TTTPlayer()
         {
@@ -35,8 +39,20 @@ namespace TTTReborn.Player
             };
         }
 
+        public void RemovePlayerCorpse()
+        {
+            if (PlayerCorpse != null && PlayerCorpse.IsValid())
+            {
+                PlayerCorpse.Delete();
+                PlayerCorpse = null;
+            }
+        }
+
+        // TODO: Convert to a player.RPC, event based system found inside of...
+        // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
         {
+
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
@@ -52,6 +68,8 @@ namespace TTTReborn.Player
             Role = RoleType.None;
             Credits = 0;
 
+            RemovePlayerCorpse();
+            TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
             base.Respawn();
         }
 
@@ -78,6 +96,7 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
+            TickAttemptInspectPlayerCorpse();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -100,15 +119,54 @@ namespace TTTReborn.Player
             base.StartTouch(other);
         }
 
-        private void TickInspectPlayerCorpse()
+        private void TickAttemptInspectPlayerCorpse()
         {
-            // TODO: Handle role specific corpse inspecting.
-            if (!Input.Pressed(InputButton.Use))
+            if (IsClient)
             {
-                return;
+                if (InspectMenu.Instance?.IsShowing ?? false)
+                {
+                    // Menu is showing already, bail out.
+                    return;
+                }
             }
 
-            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * 80f)
+            if (IsServer)
+            {
+                using (Prediction.Off())
+                {
+                    To client = To.Single(this);
+                    PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
+
+                    if (playerCorpse != null)
+                    {
+                        if (Input.Down(InputButton.Use) && !playerCorpse.IsIdentified)
+                        {
+                            playerCorpse.IsIdentified = true;
+                            Client playerCorpseInfo = playerCorpse.Player.GetClientOwner();
+                            ClientDisplayIdentifiedMessage(this.Controller.Client.SteamId,
+                                this.Controller.Client.Name,
+                                playerCorpseInfo.SteamId,
+                                playerCorpseInfo.Name,
+                                playerCorpse.Player.Role.ToString()
+                            );
+                        }
+
+                        // Send the request to the player looking at the player corpse.
+                        // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
+                        // TODO: Figure out why directly passing in just playerCorpse to "ClientOpenInspectMenu" makes playerCorpse.Player null.
+                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+
+                        return;
+                    }
+
+                    ClientCloseInspectMenu(client);
+                }
+            }
+        }
+
+        private PlayerCorpse IsLookingAtPlayerCorpse()
+        {
+            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * _inspectCorpseDistance)
                 .HitLayer(CollisionLayer.Debris)
                 .Ignore(ActiveChild)
                 .Ignore(this)
@@ -117,8 +175,10 @@ namespace TTTReborn.Player
 
             if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
             {
-                InspectPlayerCorpse(corpse);
+                return corpse;
             }
+
+            return null;
         }
 
         public override void TakeDamage(DamageInfo info)
@@ -157,13 +217,26 @@ namespace TTTReborn.Player
             base.TakeDamage(info);
         }
 
-        public void RemovePlayerCorpse()
+        [ClientRpc]
+        public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
         {
-            if (PlayerCorpse != null && PlayerCorpse.IsValid())
+            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
+        }
+
+        [ClientRpc]
+        public static void ClientCloseInspectMenu()
+        {
+            if (InspectMenu.Instance?.IsShowing ?? false)
             {
-                PlayerCorpse.Delete();
-                PlayerCorpse = null;
+                InspectMenu.Instance.IsShowing = false;
             }
+        }
+
+        [ClientRpc]
+        public static void ClientDisplayIdentifiedMessage(ulong leftId, string leftName, ulong rightId, string rightName, string role)
+        {
+            // TODO: Refactor the UI element, and provide a better interface for passing in these parameters.
+            InfoFeed.Current?.AddEntry(leftId, leftName, rightId, $"{rightName}.  Their role was {role}!", "found the body of");
         }
 
         [ClientRpc]
@@ -175,12 +248,6 @@ namespace TTTReborn.Player
 
         [ClientRpc]
         public void TookDamage(Vector3 position)
-        {
-
-        }
-
-        [ClientRpc]
-        public void InspectPlayerCorpse(PlayerCorpse corpse)
         {
 
         }
