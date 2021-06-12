@@ -10,21 +10,16 @@ namespace TTTReborn.UI
         public static InspectMenu Instance;
         public bool IsShowing
         {
-            get => _isShowing;
+            get => isShowing;
             set
             {
-                _isShowing = value;
-                if (_isShowing)
-                {
-                    RemoveClass("hide");
-                }
-                else
-                {
-                    AddClass("hide");
-                }
+                isShowing = value;
+
+                SetClass("hide", !isShowing);
             }
         }
-        private bool _isShowing = false;
+
+        private bool isShowing = false;
 
         private Label InspectLabel { set; get; }
 
@@ -41,11 +36,12 @@ namespace TTTReborn.UI
         public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified)
         {
             IsShowing = true;
+
             // TODO: Setup proper hud, for now everything is just being thrown into "InspectLabel"
             if (isIdentified)
             {
-                InspectLabel.Text = $"{deadPlayer.GetClientOwner()?.Name}\n" +
-                                    $"{deadPlayer.Role.ToString()}";
+                InspectLabel.Text = $"{deadPlayer.GetClientOwner()?.Name}\n"
+                    + $"{deadPlayer.Role.Name}";
             }
             else
             {

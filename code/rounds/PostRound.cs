@@ -1,3 +1,5 @@
+using Sandbox;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
@@ -26,6 +28,17 @@ namespace TTTReborn.Rounds
             AddPlayer(player);
 
             base.OnPlayerSpawn(player);
+        }
+
+        protected override void OnStart()
+        {
+            if (Host.IsServer)
+            {
+                foreach (TTTPlayer player in TTTPlayer.GetAll())
+                {
+                    player.ClientSetRole(player.Role.Name);
+                }
+            }
         }
     }
 }
