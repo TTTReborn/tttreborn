@@ -38,7 +38,7 @@ namespace TTTReborn.UI
             // update weapon slots, check for removed weapons etc.
             Inventory inventory = player.Inventory as Inventory;
             int inventoryCount = inventory.Count();
-            List<Weapon> toAdd = new();
+            List<Weapon> newWeapons = new();
             List<WeaponSlot> tmpSlots = new();
 
             for (int i = 0; i < inventoryCount; i++)
@@ -49,7 +49,7 @@ namespace TTTReborn.UI
 
                 if (weaponSlot == null)
                 {
-                    toAdd.Add(weapon);
+                    newWeapons.Add(weapon);
                 }
                 else
                 {
@@ -57,14 +57,14 @@ namespace TTTReborn.UI
                 }
 
                 // Do not update if we already rebuilding the WeaponSlots
-                if (toAdd.Count == 0)
+                if (newWeapons.Count == 0)
                 {
                     weaponSlot.UpdateAmmo($"{weapon.AmmoClip}/{weapon.ClipSize}");
                 }
             }
 
             // remove WeaponSlots and rebuild (to keep the right order)
-            if (toAdd.Count != 0 || tmpSlots.Count != weaponSlots.Count)
+            if (newWeapons.Count != 0 || tmpSlots.Count != weaponSlots.Count)
             {
                 foreach (WeaponSlot weaponSlot in weaponSlots.Values)
                 {
@@ -73,11 +73,11 @@ namespace TTTReborn.UI
 
                 weaponSlots.Clear();
 
-                inventory.List.Sort(delegate(Entity wep1, Entity wep2) {
+                inventory.List.Sort((Entity wep1, Entity wep2) => {
                     return (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType);
                 });
 
-                // setup
+                // rebuild weaponslots in the right order
                 foreach (Weapon weapon in inventory.List)
                 {
                     // add in order

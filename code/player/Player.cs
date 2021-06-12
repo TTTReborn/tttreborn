@@ -12,6 +12,8 @@ namespace TTTReborn.Player
         public enum RoleType { None, Innocent, Detective, Traitor }
         public PlayerCorpse PlayerCorpse { get; set; }
 
+        public static int WeaponDropVelocity { get; set; } = 300;
+
         // TODO: Make LOCAL, if it isn't this data gets networked to all players, could cause hackers.
         // TODO: It currently isn't because all Networked information needs to be transfered to player corpse for inspecting bodies.
         [Net]
@@ -112,7 +114,7 @@ namespace TTTReborn.Player
                 {
                     if (droppedEntity.PhysicsGroup != null)
                     {
-                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * 300;
+                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * WeaponDropVelocity;
                     }
 
                     timeSinceDropped = 0;

@@ -27,7 +27,13 @@ namespace TTTReborn.Player
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
-            return base.Add(entity, makeActive);
+            bool added = base.Add(entity, makeActive);
+
+            List.Sort((Entity wep1, Entity wep2) => {
+                return (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType);
+            });
+
+            return added;
         }
 
         public bool IsCarryingType(Type t)
@@ -35,21 +41,25 @@ namespace TTTReborn.Player
             return List.Any(x => x.GetType() == t);
         }
 
-        int GetNextIndex(int index, int maxIndex)
-        {
-            return NormalizeSlotIndex(index + 1, maxIndex);
-        }
-
         public int NormalizeSlotIndex(int index, int maxIndex)
         {
             return index > maxIndex ? 0 : (index < 0 ? maxIndex : index);
         }
 
+        /// <summary>
+        /// Returns the next weapon slot. If a `WeaponType` is given and the corresponding key was pressed, the index of a different weapon with
+        /// the same slot will be returned.
+        /// </summary>
+        /// <param name="weaponType">Optional. If not set, the next weapon in the list will be returned (no matter the slot)</param>
+        /// <returns>
+        /// -1: No selection / weapon switch should proceed,
+        /// >0: The index of the weapon in the inventory list that should get selected
+        /// </returns>
         public int GetNextWeaponSlot(WeaponType weaponType = 0)
         {
-            int listSize = Count();
+            int inventorySize = Count();
 
-            if (listSize < 1)
+            if (inventorySize < 1)
             {
                 return -1;
             }
@@ -58,14 +68,14 @@ namespace TTTReborn.Player
 
             if (activeSlot != -1)
             {
-                int nextIndex = GetNextIndex(activeSlot, listSize - 1);
+                int nextIndex = NormalizeSlotIndex(activeSlot + 1, inventorySize - 1); // Get next slot index
                 Weapon nextWeapon = List[nextIndex] as Weapon;
 
                 if (weaponType != 0)
                 {
                     if (nextWeapon.WeaponType != weaponType)
                     {
-                        for (int weaponIndex = 0; weaponIndex < listSize; weaponIndex++)
+                        for (int weaponIndex = 0; weaponIndex < inventorySize; weaponIndex++)
                         {
                             Weapon indexWeapon = List[weaponIndex] as Weapon;
 
