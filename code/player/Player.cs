@@ -82,7 +82,7 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                OnPlayerSpawned(To.Single(this));
+                ClientOnPlayerSpawned(To.Single(this));
             }
 
             RemovePlayerCorpse();
@@ -99,7 +99,7 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                OnPlayerDied(To.Single(this));
+                ClientOnPlayerDied(To.Single(this));
             }
         }
 

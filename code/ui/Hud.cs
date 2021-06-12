@@ -28,7 +28,7 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.died")]
-        public void OnPlayerDied()
+        private void OnPlayerDied()
         {
             playerInfo?.Delete();
             playerInfo = null;
@@ -38,7 +38,7 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.spawned")]
-        public void OnPlayerSpawned()
+        private void OnPlayerSpawned()
         {
             if (playerInfo != null || weaponSelection != null)
             {

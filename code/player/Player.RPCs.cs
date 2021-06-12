@@ -7,13 +7,13 @@ namespace TTTReborn.Player
     partial class TTTPlayer
     {
         [ClientRpc]
-        public void OnPlayerDied()
+        public void ClientOnPlayerDied()
         {
             Event.Run("tttreborn.player.died");
         }
 
         [ClientRpc]
-        public void OnPlayerSpawned()
+        public void ClientOnPlayerSpawned()
         {
             Event.Run("tttreborn.player.spawned");
         }
