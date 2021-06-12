@@ -4,8 +4,6 @@ using Sandbox.UI;
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
 using TTTReborn.Weapons;
-using TTTReborn.Player.Camera;
-using TTTReborn.Gamemode;
 
 namespace TTTReborn.Player
 {

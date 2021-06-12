@@ -1,0 +1,48 @@
+// 
+// TTTReborn.Weapons.Knife : TTTReborn.Weapons.Weapon 
+// 
+@PointClass = ttt_knife : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// TTTReborn.Weapons.Pistol : TTTReborn.Weapons.Weapon 
+// 
+@PointClass = ttt_pistol : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// TTTReborn.Weapons.Shotgun : TTTReborn.Weapons.Weapon 
+// 
+@PointClass = ttt_shotgun : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// TTTReborn.Weapons.SMG : TTTReborn.Weapons.Weapon 
+// 
+@PointClass = ttt_smg : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// TTTReborn.Weapons.Weapon : Sandbox.BaseWeapon 
+// 
+@PointClass = ttt_weapon : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// TTTReborn.Gamemode.Game : Sandbox.Game 
+// 
+@PointClass = tttreborn : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+

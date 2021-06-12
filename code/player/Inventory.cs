@@ -58,7 +58,7 @@ namespace TTTReborn.Player
 
             if (activeSlot != -1)
             {
-                int nextIndex = GetNextIndex(activeSlot, listSize);
+                int nextIndex = GetNextIndex(activeSlot, listSize - 1);
                 Weapon nextWeapon = List[nextIndex] as Weapon;
 
                 if (weaponType != 0 && nextWeapon.WeaponType != weaponType)
