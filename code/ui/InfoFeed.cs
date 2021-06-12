@@ -11,17 +11,17 @@ namespace Sandbox.UI
             StyleSheet.Load( "/ui/InfoFeed.scss" );
         }
 
-        public virtual Panel AddEntry(ulong lsteamid, string left, ulong rsteamid, string right, string method)
+        public virtual Panel AddEntry(ulong leftSteamId, string leftName, ulong rightSteamId, string rightName, string method)
         {
             var e = Current.AddChild<InfoFeedEntry>();
 
-            e.Left.Text = left;
-            e.Left.SetClass("me", lsteamid == (Local.Client?.SteamId));
+            e.Left.Text = leftName;
+            e.Left.SetClass("me", leftSteamId == (Local.Client?.SteamId));
 
             e.Method.Text = method;
 
-            e.Right.Text = right;
-            e.Right.SetClass("me", rsteamid == (Local.Client?.SteamId));
+            e.Right.Text = rightName;
+            e.Right.SetClass("me", rightSteamId == (Local.Client?.SteamId));
 
             return e;
         }

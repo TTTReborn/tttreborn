@@ -1,7 +1,7 @@
 // 
 // TTTReborn.Weapons.Knife : TTTReborn.Weapons.Weapon 
 // 
-@SolidClass = ttt_knife : ""
+@PointClass = ttt_knife : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
@@ -9,7 +9,7 @@
 // 
 // TTTReborn.Weapons.Pistol : TTTReborn.Weapons.Weapon 
 // 
-@SolidClass = ttt_pistol : ""
+@PointClass = ttt_pistol : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
@@ -17,7 +17,7 @@
 // 
 // TTTReborn.Weapons.Shotgun : TTTReborn.Weapons.Weapon 
 // 
-@SolidClass = ttt_shotgun : ""
+@PointClass = ttt_shotgun : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
@@ -25,7 +25,7 @@
 // 
 // TTTReborn.Weapons.SMG : TTTReborn.Weapons.Weapon 
 // 
-@SolidClass = ttt_smg : ""
+@PointClass = ttt_smg : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]

@@ -153,6 +153,7 @@ namespace TTTReborn.Player
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
                         // TODO: Figure out why directly passing in just playerCorpse to "ClientOpenInspectMenu" makes playerCorpse.Player null.
                         ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+
                         return;
                     }
 
@@ -217,7 +218,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
         {
-            InspectMenu.Instance?.InspectCorpse(deadPlayer, isIdentified);
+            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
         }
 
         [ClientRpc]
@@ -230,10 +231,10 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientDisplayIdentifiedMessage(ulong leftId, string left, ulong rightId, string right, string role)
+        public static void ClientDisplayIdentifiedMessage(ulong leftId, string leftName, ulong rightId, string rightName, string role)
         {
             // TODO: Refactor the UI element, and provide a better interface for passing in these parameters.
-            InfoFeed.Current?.AddEntry(leftId, left, rightId, $"{right}.  Their role was {role}!", "found the body of");
+            InfoFeed.Current?.AddEntry(leftId, leftName, rightId, $"{rightName}.  Their role was {role}!", "found the body of");
         }
 
         [ClientRpc]
