@@ -69,6 +69,7 @@ namespace TTTReborn.Player
             Credits = 0;
 
             RemovePlayerCorpse();
+            Inventory.DeleteContents();
             TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
             base.Respawn();
         }

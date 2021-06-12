@@ -17,27 +17,13 @@ namespace TTTReborn.Player
         {
             TTTPlayer player = Owner as TTTPlayer;
 
+            if (IsCarryingType(entity.GetType()))
+            {
+                return false;
+            }
+
             if (entity is Weapon weapon)
             {
-                if (IsCarryingType(weapon.GetType()))
-                {
-                    int ammo = weapon.AmmoClip;
-                    AmmoType ammoType = weapon.AmmoType;
-
-                    if (ammo > 0)
-                    {
-                        player.GiveAmmo(ammoType, ammo);
-
-                        Sound.FromWorld("dm.pickup_ammo", entity.Position);
-                    }
-
-                    Log.Warning($"Removed {weapon.Name}");
-
-                    entity.Delete();
-
-                    return false;
-                }
-
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
