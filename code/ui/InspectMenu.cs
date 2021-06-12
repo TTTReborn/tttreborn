@@ -40,8 +40,8 @@ namespace TTTReborn.UI
             // TODO: Setup proper hud, for now everything is just being thrown into "InspectLabel"
             if (isIdentified)
             {
-                InspectLabel.Text = $@"{deadPlayer.GetClientOwner()?.Name}\n
-                    {deadPlayer.Role.Name}";
+                InspectLabel.Text = $"{deadPlayer.GetClientOwner()?.Name}\n"
+                    + $"{deadPlayer.Role.Name}";
             }
             else
             {

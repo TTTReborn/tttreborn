@@ -1,5 +1,5 @@
 using Sandbox;
-using Sandbox.UI;
+
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
@@ -31,8 +31,8 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
-        private DamageInfo _lastDamageInfo;
-        private float _inspectCorpseDistance = 80f;
+        private DamageInfo lastDamageInfo;
+        private float inspectCorpseDistance = 80f;
 
         public TTTPlayer()
         {
@@ -89,7 +89,7 @@ namespace TTTReborn.Player
         {
             base.OnKilled();
 
-            BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
+            BecomePlayerCorpseOnServer(lastDamageInfo.Force, GetHitboxBone(lastDamageInfo.HitboxIndex));
             Inventory.DeleteContents();
         }
 
@@ -133,15 +133,6 @@ namespace TTTReborn.Player
 
         private void TickAttemptInspectPlayerCorpse()
         {
-            if (IsClient)
-            {
-                if (InspectMenu.Instance?.IsShowing ?? false)
-                {
-                    // Menu is showing already, bail out.
-                    return;
-                }
-            }
-
             if (IsServer)
             {
                 using (Prediction.Off())
@@ -179,7 +170,7 @@ namespace TTTReborn.Player
 
         private PlayerCorpse IsLookingAtPlayerCorpse()
         {
-            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * _inspectCorpseDistance)
+            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * inspectCorpseDistance)
                 .HitLayer(CollisionLayer.Debris)
                 .Ignore(ActiveChild)
                 .Ignore(this)
@@ -225,44 +216,9 @@ namespace TTTReborn.Player
             // Register player damage with the Karma system
             TTTReborn.Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
 
-            _lastDamageInfo = info;
+            lastDamageInfo = info;
 
             base.TakeDamage(info);
-        }
-
-        [ClientRpc]
-        public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
-        {
-            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
-        }
-
-        [ClientRpc]
-        public static void ClientCloseInspectMenu()
-        {
-            if (InspectMenu.Instance?.IsShowing ?? false)
-            {
-                InspectMenu.Instance.IsShowing = false;
-            }
-        }
-
-        [ClientRpc]
-        public static void ClientDisplayIdentifiedMessage(ulong leftId, string leftName, ulong rightId, string rightName, string role)
-        {
-            // TODO: Refactor the UI element, and provide a better interface for passing in these parameters.
-            InfoFeed.Current?.AddEntry(leftId, leftName, rightId, $"{rightName}.  Their role was {role}!", "found the body of");
-        }
-
-        [ClientRpc]
-        public void DidDamage(Vector3 position, float amount, float inverseHealth)
-        {
-            Sound.FromScreen("dm.ui_attacker")
-                .SetPitch(1 + inverseHealth * 1);
-        }
-
-        [ClientRpc]
-        public void TookDamage(Vector3 position)
-        {
-
         }
 
         protected override void OnDestroy()
