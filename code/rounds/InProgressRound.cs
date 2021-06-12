@@ -5,6 +5,7 @@ using System.Linq;
 
 using TTTReborn.Player;
 using TTTReborn.Weapons;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Rounds
 {
@@ -98,8 +99,8 @@ namespace TTTReborn.Rounds
 
         private bool IsRoundOver()
         {
-            bool innocentsAlive = Players.Exists((player) => player.Role == TTTPlayer.RoleType.Innocent);
-            bool terroristsAlive = Players.Exists((player) => player.Role == TTTPlayer.RoleType.Traitor);
+            bool innocentsAlive = Players.Exists((player) => player.Role is InnocentRole);
+            bool terroristsAlive = Players.Exists((player) => player.Role is TraitorRole);
 
             return !innocentsAlive || !terroristsAlive;
         }
@@ -112,19 +113,19 @@ namespace TTTReborn.Rounds
             int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
             for (int i = 0; i < traitorCount; i++)
             {
-                List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role == TTTPlayer.RoleType.None).ToList();
+                List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
                 int randomId = random.Next(unassignedPlayers.Count);
-                if (unassignedPlayers[randomId].Role == TTTPlayer.RoleType.None)
+                if (unassignedPlayers[randomId].Role is NoneRole)
                 {
-                    unassignedPlayers[randomId].Role = TTTPlayer.RoleType.Traitor;
+                    unassignedPlayers[randomId].Role = new TraitorRole();
                 }
             }
 
             foreach (TTTPlayer player in Players)
             {
-                if (player.Role == TTTPlayer.RoleType.None)
+                if (player.Role is NoneRole)
                 {
-                    player.Role = TTTPlayer.RoleType.Innocent;
+                    player.Role = new InnocentRole();
                 }
             }
         }
