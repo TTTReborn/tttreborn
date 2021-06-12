@@ -4,7 +4,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Weapons
 {
-    [Library("ttt_shotgun", Title = "SPAS-12")]
+    [WeaponAttribute("ttt_shotgun", WeaponType = WeaponType.Primary)]
     partial class Shotgun : Weapon
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
@@ -78,6 +78,7 @@ namespace TTTReborn.Weapons
             if (Owner is TTTPlayer player)
             {
                 int ammo = player.TakeAmmo(AmmoType, 1);
+
                 if (ammo == 0)
                 {
                     return;

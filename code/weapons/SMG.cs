@@ -2,7 +2,7 @@
 
 namespace TTTReborn.Weapons
 {
-    [Library("ttt_smg", Title = "MP5")]
+    [WeaponAttribute("ttt_smg", WeaponType = WeaponType.Primary)]
     partial class SMG : Weapon
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";

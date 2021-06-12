@@ -113,7 +113,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            var weapon = player.ActiveChild as Weapon;
+            Weapon weapon = player.ActiveChild as Weapon;
 
             if (weapon == null)
             {

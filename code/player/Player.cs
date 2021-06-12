@@ -1,15 +1,20 @@
 using System.Collections.Generic;
 using Sandbox;
+using Sandbox.UI;
 
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
+using TTTReborn.UI;
+using TTTReborn.Weapons;
 
 namespace TTTReborn.Player
 {
     public partial class TTTPlayer : Sandbox.Player
     {
         public PlayerCorpse PlayerCorpse { get; set; }
+
+        private static int WeaponDropVelocity { get; set; } = 300;
 
         public BaseRole Role {
             set
@@ -34,9 +39,11 @@ namespace TTTReborn.Player
         private DamageInfo lastDamageInfo;
         private float inspectCorpseDistance = 80f;
 
+        private TimeSince timeSinceDropped = 0;
+
         public TTTPlayer()
         {
-
+            Inventory = new Inventory(this);
         }
 
         public static List<TTTPlayer> GetAll()
@@ -75,6 +82,7 @@ namespace TTTReborn.Player
             }
         }
 
+        // Important: Server-side only
         // TODO: Convert to a player.RPC, event based system found inside of...
         // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
@@ -85,7 +93,6 @@ namespace TTTReborn.Player
             Controller = new WalkController();
             Animator = new StandardPlayerAnimator();
             Camera = new FirstPersonCamera();
-            Inventory = new Inventory(this);
 
             EnableAllCollisions = true;
             EnableDrawing = true;
@@ -95,7 +102,13 @@ namespace TTTReborn.Player
             Role = new NoneRole();
             Credits = 0;
 
+            using(Prediction.Off())
+            {
+                ClientOnPlayerSpawned(To.Single(this));
+            }
+
             RemovePlayerCorpse();
+            Inventory.DeleteContents();
             TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
             base.Respawn();
         }
@@ -105,13 +118,19 @@ namespace TTTReborn.Player
             base.OnKilled();
 
             BecomePlayerCorpseOnServer(lastDamageInfo.Force, GetHitboxBone(lastDamageInfo.HitboxIndex));
+
+            Inventory.DropActive();
             Inventory.DeleteContents();
+
+            using(Prediction.Off())
+            {
+                ClientOnPlayerDied(To.Single(this));
+            }
         }
 
         public override void Simulate(Client client)
         {
-            SimulateActiveChild(client, ActiveChild);
-
+            // Input requested a weapon switch
             if (Input.ActiveChild != null)
             {
                 ActiveChild = Input.ActiveChild;
@@ -123,6 +142,11 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
+            TickAttemptInspectPlayerCorpse();
+            TickPlayerDropWeapon();
+
+            SimulateActiveChild(client, ActiveChild);
+
             TickAttemptInspectPlayerCorpse();
 
             PawnController controller = GetActiveController();
@@ -136,14 +160,31 @@ namespace TTTReborn.Player
 
         public override void StartTouch(Entity other)
         {
-            /*
-            if (_timeSinceDropped < 1)
+            if (timeSinceDropped < 1)
             {
                 return;
             }
-            */
 
             base.StartTouch(other);
+        }
+
+        private void TickPlayerDropWeapon()
+        {
+            if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
+            {
+                int weaponSlot = (int) (ActiveChild as Weapon).WeaponType;
+                Entity droppedEntity = Inventory.DropActive();
+
+                if (droppedEntity != null)
+                {
+                    if (droppedEntity.PhysicsGroup != null)
+                    {
+                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * WeaponDropVelocity;
+                    }
+
+                    timeSinceDropped = 0;
+                }
+            }
         }
 
         private void TickAttemptInspectPlayerCorpse()

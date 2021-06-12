@@ -2,14 +2,12 @@
 
 namespace TTTReborn.Weapons
 {
-    [Library("ttt_knife", Title = "Knife")]
+    [WeaponAttribute("ttt_knife", WeaponType = WeaponType.Melee)]
     partial class Knife : Weapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override float PrimaryRate => 1.0f;
         public override float SecondaryRate => 0.3f;
-        public override bool IsMelee => true;
-        public override int HoldType => 0;
         public override int Bucket => 1;
         public override int BaseDamage => 35;
         public virtual int MeleeDistance => 80;
