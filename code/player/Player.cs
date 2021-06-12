@@ -155,11 +155,12 @@ namespace TTTReborn.Player
                         {
                             playerCorpse.IsIdentified = true;
                             Client playerCorpseInfo = playerCorpse.Player.GetClientOwner();
+
                             ClientDisplayIdentifiedMessage(this.Controller.Client.SteamId,
                                 this.Controller.Client.Name,
                                 playerCorpseInfo.SteamId,
                                 playerCorpseInfo.Name,
-                                playerCorpse.Player.Role.ToString()
+                                playerCorpse.Player.Role.Name
                             );
                         }
 
