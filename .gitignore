@@ -9,7 +9,7 @@ maps/
 code/*.csproj
 tools_thumbnail_cache.bin
 config/*
-ttt-reborn.fgd
+*.fgd
 
 # User-specific files
 *.rsuser
