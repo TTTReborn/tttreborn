@@ -9,7 +9,7 @@ namespace TTTReborn.Player
 
         public ModelEntity AttachClothing(string modelName)
         {
-            var entity = new ModelEntity();
+            ModelEntity entity = new ModelEntity();
 
             entity.SetModel(modelName);
             entity.SetParent(this, true);
