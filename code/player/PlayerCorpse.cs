@@ -2,9 +2,11 @@
 
 namespace TTTReborn.Player
 {
-	public class PlayerCorpse : ModelEntity
+	public partial class PlayerCorpse : ModelEntity
 	{
 		public TTTPlayer Player { get; set; }
+
+		[Net]
 		public bool IsIdentified { get; set; }
 
 		public PlayerCorpse()
