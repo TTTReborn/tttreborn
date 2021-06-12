@@ -85,6 +85,7 @@ namespace TTTReborn.Player
 
         public override void Simulate(Client client)
         {
+            // Input requested a weapon switch
             if (Input.ActiveChild != null)
             {
                 ActiveChild = Input.ActiveChild;

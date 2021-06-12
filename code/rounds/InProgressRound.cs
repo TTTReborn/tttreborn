@@ -67,7 +67,7 @@ namespace TTTReborn.Rounds
 
                     player.Inventory.Add(new Shotgun(), true);
                     player.Inventory.Add(new SMG(), false);
-                    player.Inventory.Add(new Pistol(), false);
+                    player.Inventory.Add(new Pistol(), false); // TODO For some reason, this still adds a pistol even if there already is one
                 }
 
                 AssignRoles();

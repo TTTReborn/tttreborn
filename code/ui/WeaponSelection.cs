@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
@@ -5,6 +6,9 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
 using TTTReborn.Weapons;
+
+// TODO Fix animation on dropping a higher slot weapon (instead of deleting and recreating, move and delete WeaponSlots in DOM)
+// TODO Fix bug that weapons are removed even if there is no one in the list already (ammo loadup)
 
 namespace TTTReborn.UI
 {
@@ -21,7 +25,6 @@ namespace TTTReborn.UI
 
         // TODO: This method could be made to be event based. Whenever a user pickups a weapon, and whenever a user fires.
         // Consider checking out DM98 or Hidden inventory HUD.
-        // TODO: Update slot position when a new weapon is picked up
         public override void Tick()
         {
             base.Tick();
@@ -37,6 +40,7 @@ namespace TTTReborn.UI
             Inventory inventory = player.Inventory as Inventory;
             int inventoryCount = inventory.Count();
             List<Weapon> toAdd = new();
+            List<WeaponSlot> tmpSlots = new();
 
             for (int i = 0; i < inventoryCount; i++)
             {
@@ -48,6 +52,10 @@ namespace TTTReborn.UI
                 {
                     toAdd.Add(weapon);
                 }
+                else
+                {
+                    tmpSlots.Add(weaponSlot);
+                }
 
                 // Do not update if we already rebuilding the WeaponSlots
                 if (toAdd.Count == 0)
@@ -57,7 +65,7 @@ namespace TTTReborn.UI
             }
 
             // remove WeaponSlots and rebuild (to keep the right order)
-            if (toAdd.Count != 0)
+            if (toAdd.Count != 0 || tmpSlots.Count != weaponSlots.Count)
             {
                 foreach (WeaponSlot weaponSlot in weaponSlots.Values)
                 {
@@ -66,12 +74,19 @@ namespace TTTReborn.UI
 
                 weaponSlots.Clear();
 
+                inventory.List.Sort(delegate(Entity wep1, Entity wep2) {
+                    return (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType);
+                });
+
                 // setup
-                foreach (Weapon weapon in toAdd)
+                foreach (Weapon weapon in inventory.List)
                 {
                     // add in order
                     weaponSlots.Add(weapon.Name, new WeaponSlot(this, weapon));
                 }
+
+                // update for dropped active weapon maybe
+                oldActiveWeapon = null;
             }
 
             // update current selection

@@ -1,6 +1,6 @@
-﻿using Sandbox;
-using System;
+﻿using System;
 using System.Linq;
+using Sandbox;
 
 using TTTReborn.Weapons;
 
@@ -19,7 +19,7 @@ namespace TTTReborn.Player
 
             if (entity is Weapon weapon)
             {
-                if (IsCarryingType(entity.GetType()))
+                if (IsCarryingType(weapon.GetType()))
                 {
                     int ammo = weapon.AmmoClip;
                     AmmoType ammoType = weapon.AmmoType;
@@ -31,6 +31,8 @@ namespace TTTReborn.Player
                         Sound.FromWorld("dm.pickup_ammo", entity.Position);
                     }
 
+                    Log.Warning($"Removed {weapon.Name}");
+
                     entity.Delete();
 
                     return false;
@@ -39,13 +41,7 @@ namespace TTTReborn.Player
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
-            bool added = base.Add(entity, makeActive);
-
-            List.Sort(delegate(Entity wep1, Entity wep2) {
-                return (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType);
-            });
-
-            return added;
+            return base.Add(entity, makeActive);
         }
 
         public bool IsCarryingType(Type t)
