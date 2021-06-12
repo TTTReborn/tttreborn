@@ -31,7 +31,7 @@ namespace TTTReborn.Player.Camera
             }
 
             // TODO: Rework spectate camera logic.
-            if (TargetPlayer == null || !TargetPlayer.IsValid() || Local.Client.Input.Pressed(InputButton.Attack1))
+            if (TargetPlayer == null || !TargetPlayer.IsValid() || Input.Pressed(InputButton.Attack1))
             {
                 List<TTTPlayer> players = TTTReborn.Gamemode.Game.Instance.Round.Players;
 
