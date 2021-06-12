@@ -67,8 +67,6 @@ namespace TTTReborn.UI
             private float currentHealth;
             private int currentAmmo;
 
-            private bool invisibleAmmo;
-
             public IndicatorsPanel(Panel parent)
             {
                 Parent = parent;
@@ -95,7 +93,6 @@ namespace TTTReborn.UI
 
                     HealthBar.TextLabel.Text = $"{player.Health:n0}";
 
-                    // bar width
                     HealthBar.Style.Width = Length.Percent(player.Health);
                     HealthBar.Style.Dirty();
                 }
@@ -111,25 +108,13 @@ namespace TTTReborn.UI
 
                     currentAmmo = weapon.AmmoClip;
 
-                    if (invisibleAmmo)
-                    {
-                        invisibleAmmo = false;
-
-                        AmmoBar.RemoveClass("invisible");
-                    }
-
                     AmmoBar.TextLabel.Text = $"{weapon.AmmoClip}";
 
-                    // bar width
                     AmmoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
                     AmmoBar.Style.Dirty();
                 }
-                else if (!invisibleAmmo)
-                {
-                    invisibleAmmo = true;
 
-                    AmmoBar.AddClass("invisible");
-                }
+                AmmoBar.SetClass("hide", weapon == null); // TODO Add WeaponType.Melee later
             }
         }
     }

@@ -11,20 +11,24 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/Scoreboard.scss");
             header = new Header();
+
             AddHeader();
             AddTableHeader();
+
             var mainContent = Add.Panel("mainContent");
+
             // TODO: create playergroups & for each playergroup:
             AddScoreboardGroup(mainContent);
 
             PlayerScore.OnPlayerAdded += AddPlayer;
             PlayerScore.OnPlayerRemoved += RemovePlayer;
+
             Add.Panel("footer");
+
             // TODO: Implement UpdatePlayer method
             // PlayerScore.OnPlayerUpdated += UpdatePlayer;
 
-            // why is: var (item, index) ; throwing an error here?
-            foreach (var player in PlayerScore.All)
+            foreach (PlayerScore.Entry player in PlayerScore.All)
             {
                 AddPlayer(player);
             }
@@ -36,12 +40,14 @@ namespace TTTReborn.UI
             {
                 this.ServerInfo.Text = this.GetServerInfoStr();
             }
+
             public string GetServerInfoStr()
             {
                 // TODO: Get this out of the header
                 // TODO: Fill the other variables
                 return $"{PlayerScore.All.Length}/MAXPLAYER - MAPNAME - ROUND/TIME LEFT";
             }
+
             public Panel ScoreboardLogo;
             public Panel InformationHolder;
             public Label ServerName;
@@ -49,6 +55,7 @@ namespace TTTReborn.UI
             public Label ServerDescription;
             public Panel Canvas;
         }
+
         public class ScoreboardGroup : Panel
         {
             // TODO: Implement logic for the player counter in the title
@@ -56,18 +63,18 @@ namespace TTTReborn.UI
             {
                 this.GroupTitleLabel.Text = this.GroupTitle.ToUpper() + " - " + this.GroupMember.ToString();
             }
+
             public int GroupMember;
             public string GroupTitle;
             public Label GroupTitleLabel;
             public Panel GroupContent;
             public Panel Canvas;
-
-
         }
 
         public Dictionary<int, ScoreboardEntry> Entries = new();
 
         public Dictionary<string, ScoreboardGroup> ScoreboardGroups = new();
+
         public Header header;
 
         protected void AddHeader()
@@ -82,7 +89,7 @@ namespace TTTReborn.UI
 
         protected void AddTableHeader()
         {
-            var tableHeader = Add.Panel("tableHeader");
+            Panel tableHeader = Add.Panel("tableHeader");
             tableHeader.Add.Label("3 Innocents left", "name");
             tableHeader.Add.Label("Karma", "karma");
             tableHeader.Add.Label("Score", "score");
@@ -93,15 +100,19 @@ namespace TTTReborn.UI
         {
             // TODO: Set proper groups dynamicly
             string group = "alive";
+
             var scoreboardGroup = new ScoreboardGroup
             {
 
             };
+
             scoreboardGroup.GroupTitle = group;
             scoreboardGroup.GroupMember = 0;
             scoreboardGroup.Canvas = Content.Add.Panel("scoreboardGroup " + group);
             scoreboardGroup.GroupTitleLabel = scoreboardGroup.Canvas.Add.Label("", "scoreboardGroup__title");
+
             scoreboardGroup.UpdateLabel();
+
             scoreboardGroup.GroupContent = scoreboardGroup.Canvas.Add.Panel("scoreboardGroup__content");
 
             ScoreboardGroups[group] = scoreboardGroup;
@@ -111,13 +122,17 @@ namespace TTTReborn.UI
         {
             // TODO: Get proper scoreboardGroup for entry
             string group = "alive";
+
             ScoreboardGroup scoreboardGroup = ScoreboardGroups[group];
             scoreboardGroup.GroupMember++;
+
             var p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
             bool isOdd = (PlayerScore.All.Length % 2) != 0;
+
             p.UpdateFrom(entry, isOdd);
             scoreboardGroup.UpdateLabel();
             header.UpdateServerInfo();
+
             Entries[entry.Id] = p;
         }
         protected void RemovePlayer(PlayerScore.Entry entry)
@@ -125,13 +140,16 @@ namespace TTTReborn.UI
             if (Entries.TryGetValue(entry.Id, out var panel))
             {
                 string group = "alive";
+
                 ScoreboardGroup scoreboardGroup = ScoreboardGroups[group];
                 scoreboardGroup.GroupMember--;
+
                 scoreboardGroup.UpdateLabel();
                 panel.Delete();
                 Entries.Remove(entry.Id);
             }
         }
+
         public override void Tick()
         {
             base.Tick();

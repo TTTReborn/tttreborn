@@ -19,7 +19,6 @@ namespace TTTReborn.UI
 
             Instance = this;
 
-            // s&box defaults
             RootPanel.AddChild<ChatBox>();
             RootPanel.AddChild<VoiceList>();
             RootPanel.AddChild<GameTimer>();
