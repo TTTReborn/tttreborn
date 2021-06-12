@@ -49,7 +49,12 @@ namespace TTTReborn.Player
 
         int GetNextIndex(int index, int maxIndex)
         {
-            return index + 1 >= maxIndex ? 0 : index + 1;
+            return NormalizeSlotIndex(index + 1, maxIndex);
+        }
+
+        public int NormalizeSlotIndex(int index, int maxIndex)
+        {
+            return index > maxIndex ? 0 : (index < 0 ? maxIndex : index);
         }
 
         public int GetNextWeaponSlot(WeaponType weaponType = 0)

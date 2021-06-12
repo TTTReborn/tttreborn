@@ -115,9 +115,29 @@ namespace TTTReborn.UI
 
             int selectedWeaponIndex = SlotPressInput(input);
 
+            // no button pressed, but maybe scrolled
             if (selectedWeaponIndex == 0)
             {
+                if (input.MouseWheel != 0)
+                {
+                    int nextSlot = inventory.List.IndexOf(Local.Pawn.ActiveChild) - input.MouseWheel;
+                    nextSlot = inventory.NormalizeSlotIndex(nextSlot, inventory.Count() - 1);
+
+                    input.ActiveChild = inventory.GetSlot(nextSlot);
+
+                    input.MouseWheel = 0;
+                }
+
                 return;
+            }
+
+            if (selectedWeaponIndex < 1)
+            {
+                selectedWeaponIndex = 1;
+            }
+            if (selectedWeaponIndex > (int) WeaponType.Special)
+            {
+                selectedWeaponIndex = (int) WeaponType.Special;
             }
 
             int nextWeaponSlot = inventory.GetNextWeaponSlot((WeaponType) selectedWeaponIndex);
