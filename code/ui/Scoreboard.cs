@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -138,7 +136,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            SetClass("open", Local.Client?.Input.Down(InputButton.Score) ?? false);
+            SetClass("open", Input.Down(InputButton.Score));
         }
     }
 

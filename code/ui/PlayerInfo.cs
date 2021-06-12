@@ -4,6 +4,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Weapons;
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
@@ -21,7 +22,7 @@ namespace TTTReborn.UI
         {
             public Label RoleLabel { set; get; }
 
-            private TTTPlayer.RoleType currentRole;
+            private BaseRole currentRole;
 
             public RolePanel(Panel parent)
             {
@@ -41,15 +42,18 @@ namespace TTTReborn.UI
 
                 if (currentRole != player.Role)
                 {
-                    // Remove RolePanel .class for the old role:
-                    SetClass(currentRole.ToString(), false);
+                    if (currentRole != null)
+                    {
+                        // Remove RolePanel .class for the old role:
+                        SetClass(currentRole.Name, false);
+                    }
 
                     currentRole = player.Role;
 
                     // Give RolePanel .class for the matching role:
-                    SetClass(currentRole.ToString(), true);
+                    SetClass(currentRole.Name, true);
 
-                    RoleLabel.Text = $"{player.Role.ToString()}";
+                    RoleLabel.Text = $"{player.Role.Name}";
                 }
             }
         }
