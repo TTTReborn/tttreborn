@@ -61,21 +61,28 @@ namespace TTTReborn.Player
                 int nextIndex = GetNextIndex(activeSlot, listSize - 1);
                 Weapon nextWeapon = List[nextIndex] as Weapon;
 
-                if (weaponType != 0 && nextWeapon.WeaponType != weaponType)
+                if (weaponType != 0)
                 {
-                    for (int weaponIndex = 0; weaponIndex < listSize; weaponIndex++)
+                    if (nextWeapon.WeaponType != weaponType)
                     {
-                        Weapon indexWeapon = List[weaponIndex] as Weapon;
-
-                        if (indexWeapon.WeaponType == weaponType)
+                        for (int weaponIndex = 0; weaponIndex < listSize; weaponIndex++)
                         {
-                            return weaponIndex;
+                            Weapon indexWeapon = List[weaponIndex] as Weapon;
+
+                            if (indexWeapon.WeaponType == weaponType)
+                            {
+                                return weaponIndex;
+                            }
                         }
                     }
-                }
+                    else
+                    {
+                        // if there is no weapon with same slot or no slot defined, return the next available weapon
+                        return nextIndex;
+                    }
 
-                // if there is no weapon with same slot or no slot defined, return the next available weapon
-                return nextIndex;
+                    return -1;
+                }
             }
 
             // edge case, if List does not contain the active weapon

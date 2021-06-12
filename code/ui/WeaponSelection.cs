@@ -142,15 +142,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (selectedWeaponIndex < 1)
-            {
-                selectedWeaponIndex = 1;
-            }
-            if (selectedWeaponIndex > (int) WeaponType.Special)
-            {
-                selectedWeaponIndex = (int) WeaponType.Special;
-            }
-
+            // correspondig key pressed
             int nextWeaponSlot = inventory.GetNextWeaponSlot((WeaponType) selectedWeaponIndex);
 
             if (nextWeaponSlot != -1)
