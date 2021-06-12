@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
-using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -37,6 +37,21 @@ namespace TTTReborn.Player
         public TTTPlayer()
         {
 
+        }
+
+        public static List<TTTPlayer> GetAll()
+        {
+            List<TTTPlayer> playerList = new();
+
+            foreach (Entity entity in All)
+            {
+                if (entity is TTTPlayer player)
+                {
+                    playerList.Add(player);
+                }
+            }
+
+            return playerList;
         }
 
         public void MakeSpectator(Vector3 position = default)
@@ -145,19 +160,12 @@ namespace TTTReborn.Player
                         if (Input.Down(InputButton.Use) && !playerCorpse.IsIdentified)
                         {
                             playerCorpse.IsIdentified = true;
-                            Client playerCorpseInfo = playerCorpse.Player.GetClientOwner();
 
-                            ClientDisplayIdentifiedMessage(this.Controller.Client.SteamId,
-                                this.Controller.Client.Name,
-                                playerCorpseInfo.SteamId,
-                                playerCorpseInfo.Name,
-                                playerCorpse.Player.Role.Name
-                            );
+                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
                         }
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-                        // TODO: Figure out why directly passing in just playerCorpse to "ClientOpenInspectMenu" makes playerCorpse.Player null.
                         ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
 
                         return;

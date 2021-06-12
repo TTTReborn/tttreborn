@@ -19,6 +19,23 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
+        public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName)
+        {
+            deadPlayer.Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
+
+            Client confirmClient = confirmPlayer.GetClientOwner();
+            Client deadClient = deadPlayer.GetClientOwner();
+
+            InfoFeed.Current?.AddEntry(
+                confirmClient.SteamId,
+                confirmClient.Name,
+                deadClient.SteamId,
+                $"{deadClient.Name}. Their role was {deadPlayer.Role.Name}!",
+                "found the body of"
+            );
+        }
+
+        [ClientRpc]
         public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
         {
             InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
@@ -31,13 +48,6 @@ namespace TTTReborn.Player
             {
                 InspectMenu.Instance.IsShowing = false;
             }
-        }
-
-        [ClientRpc]
-        public static void ClientDisplayIdentifiedMessage(ulong leftId, string leftName, ulong rightId, string rightName, string role)
-        {
-            // TODO: Refactor the UI element, and provide a better interface for passing in these parameters.
-            InfoFeed.Current?.AddEntry(leftId, leftName, rightId, $"{rightName}.  Their role was {role}!", "found the body of");
         }
 
         [ClientRpc]
