@@ -39,7 +39,13 @@ namespace TTTReborn.Player
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
-            return base.Add(entity, makeActive);
+            bool added = base.Add(entity, makeActive);
+
+            List.Sort(delegate(Entity wep1, Entity wep2) {
+                return (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType);
+            });
+
+            return added;
         }
 
         public bool IsCarryingType(Type t)
