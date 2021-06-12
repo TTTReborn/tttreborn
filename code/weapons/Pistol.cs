@@ -2,11 +2,10 @@
 
 namespace TTTReborn.Weapons
 {
-    [Library("ttt_pistol", Title = "Baretta")]
+    [WeaponAttribute("ttt_pistol", WeaponType = WeaponType.Pistol)]
     partial class Pistol : Weapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 10;
         public override float PrimaryRate => 15.0f;
@@ -42,5 +41,4 @@ namespace TTTReborn.Weapons
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);
         }
     }
-
 }

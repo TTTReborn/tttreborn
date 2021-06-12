@@ -31,6 +31,14 @@
 ]
 
 // 
+// TTTReborn.Weapons.Weapon : Sandbox.BaseWeapon 
+// 
+@PointClass = ttt_weapon : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
 // TTTReborn.Gamemode.Game : Sandbox.Game 
 // 
 @PointClass = tttreborn : ""

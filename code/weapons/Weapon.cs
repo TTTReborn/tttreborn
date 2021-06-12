@@ -1,16 +1,40 @@
-﻿using Sandbox;
+﻿using System;
+using System.Collections.Generic;
+using Sandbox;
 
-using TTTReborn.UI;
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Weapons
 {
-    partial class Weapon : BaseWeapon
+    public enum WeaponType
     {
+        Melee = 1,
+        Pistol,
+        Primary,
+        Heavy,
+        Special
+    }
+
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class WeaponAttribute : LibraryAttribute
+    {
+        public WeaponType WeaponType;
+
+        public WeaponAttribute(string name) : base(name)
+        {
+
+        }
+    }
+
+    [WeaponAttribute("ttt_weapon")]
+    public abstract partial class Weapon : BaseWeapon
+    {
+        public string Name { get; private set; }
+        public WeaponType WeaponType { get; private set; }
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
-        public virtual bool IsMelee => false;
         public virtual int Bucket => 1;
         public virtual int BucketWeight => 100;
         public virtual bool UnlimitedAmmo => false;
@@ -18,7 +42,6 @@ namespace TTTReborn.Weapons
         public virtual bool HasFlashlight => false;
         public virtual bool HasLaserDot => false;
         public virtual int BaseDamage => 10;
-        public virtual int HoldType => 1;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         // TODO add player role to weapon to access in UI WeaponSelection.cs . 
         // E.G. this weapon is bought in traitor shop: Role => "Traitor";  
@@ -40,6 +63,16 @@ namespace TTTReborn.Weapons
         public TimeSince TimeSinceChargeAttack { get; set; }
 
         public float ChargeAttackEndTime;
+
+        public PickupTrigger PickupTrigger { get; protected set; }
+
+        public Weapon() : base()
+        {
+            WeaponAttribute weaponAttribute = Library.GetAttribute(GetType()) as WeaponAttribute;
+
+            Name = weaponAttribute.Name;
+            WeaponType = weaponAttribute.WeaponType;
+        }
 
         public int AvailableAmmo()
         {
@@ -65,11 +98,15 @@ namespace TTTReborn.Weapons
             AmmoClip = ClipSize;
 
             SetModel("weapons/rust_pistol/rust_pistol.vmdl");
+
+            PickupTrigger = new PickupTrigger();
+            PickupTrigger.Parent = this;
+            PickupTrigger.Position = Position;
         }
 
         public override void Reload()
         {
-            if (IsMelee || IsReloading)
+            if (WeaponType == WeaponType.Melee || IsReloading)
             {
                 return;
             }
@@ -150,7 +187,10 @@ namespace TTTReborn.Weapons
             ChargeAttackEndTime = Time.Now + ChargeAttackDuration;
         }
 
-        public virtual void OnChargeAttackFinish() { }
+        public virtual void OnChargeAttackFinish()
+        {
+
+        }
 
         public virtual void OnReloadFinish()
         {
@@ -198,7 +238,7 @@ namespace TTTReborn.Weapons
         {
             Host.AssertClient();
 
-            if (!IsMelee)
+            if (WeaponType != WeaponType.Melee)
             {
                 Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
             }
@@ -276,17 +316,40 @@ namespace TTTReborn.Weapons
             {
                 return;
             }
+
+            CrosshairPanel = new Crosshair();
+            CrosshairPanel.Parent = Local.Hud;
+            CrosshairPanel.AddClass(ClassInfo.Name);
         }
 
         public bool IsUsable()
         {
-            if (IsMelee || ClipSize == 0 || AmmoClip > 0)
+            if (WeaponType == WeaponType.Melee || ClipSize == 0 || AmmoClip > 0)
             {
                 return true;
             }
 
             return AvailableAmmo() > 0;
         }
-    }
 
+        public override void OnCarryStart(Entity carrier)
+        {
+            base.OnCarryStart(carrier);
+
+            if (PickupTrigger.IsValid())
+            {
+                PickupTrigger.EnableTouch = false;
+            }
+        }
+
+        public override void OnCarryDrop(Entity dropper)
+        {
+            base.OnCarryDrop(dropper);
+
+            if (PickupTrigger.IsValid())
+            {
+                PickupTrigger.EnableTouch = true;
+            }
+        }
+    }
 }
