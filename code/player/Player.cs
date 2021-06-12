@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
@@ -25,10 +26,11 @@ namespace TTTReborn.Player
         private float _inspectCorpseDistance = 80f;
 
         private TimeSince timeSinceDropped = 0;
+        public SortedDictionary<int, List<Weapon>> WeaponSelection = new();
 
         public TTTPlayer()
         {
-
+            Inventory = new Inventory(this);
         }
 
         public void MakeSpectator(Vector3 position = default)
@@ -52,15 +54,14 @@ namespace TTTReborn.Player
             }
         }
 
+        // Important: Server-side only
         public override void Respawn()
         {
-
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
             Animator = new StandardPlayerAnimator();
             Camera = new FirstPersonCamera();
-            Inventory = new Inventory(this);
 
             EnableAllCollisions = true;
             EnableDrawing = true;
@@ -113,7 +114,7 @@ namespace TTTReborn.Player
 
                     timeSinceDropped = 0;
 
-                    WeaponSelection.OnDropWeapon(this, droppedEntity as Weapon);
+                    Event.Run("tttreborn.player.droppedweapon");
                 }
             }
 
@@ -123,6 +124,17 @@ namespace TTTReborn.Player
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
+        }
+
+
+        /// <summary>
+        /// IClientInput implementation, calls during the client input build.
+        /// You can both read and write to input, to affect what happens down the line.
+        /// </summary>
+        [Event.BuildInput]
+        public void ProcessClientInput(InputBuilder input)
+        {
+            (Inventory as Inventory).ProcessClientWeaponSelectionInput(input);
         }
 
         protected override void UseFail()
@@ -295,5 +307,4 @@ namespace TTTReborn.Player
             PlayerCorpse = corpse;
         }
     }
-
 }

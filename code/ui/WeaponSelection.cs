@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 using Sandbox;
 using Sandbox.UI;
@@ -11,8 +10,7 @@ namespace TTTReborn.UI
 {
     public class WeaponSelection : Panel
     {
-        private static readonly SortedDictionary<int, List<Weapon>> _weaponsDict = new();
-        private static readonly Dictionary<string, WeaponSlot> _weaponSlots = new();
+        private Dictionary<string, WeaponSlot> _weaponSlots = new();
 
         public WeaponSelection()
         {
@@ -33,32 +31,9 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _weaponsDict.Clear();
-
-            foreach (Weapon weapon in player.Children)
-            {
-                if (!weapon.IsValid())
-                {
-                    continue;
-                }
-
-                int weaponType = (int) weapon.WeaponType;
-
-                _weaponsDict.TryGetValue(weaponType, out List<Weapon> weaponList);
-
-                if (weaponList == null)
-                {
-                    weaponList = new();
-
-                    _weaponsDict.Add(weaponType, weaponList);
-                }
-
-                weaponList.Add(weapon);
-            }
-
             Weapon selectedWeapon = Local.Pawn.ActiveChild as Weapon;
 
-            foreach(KeyValuePair<int, List<Weapon>> keyValuePair in _weaponsDict)
+            foreach(KeyValuePair<int, List<Weapon>> keyValuePair in player.WeaponSelection)
             {
                 foreach (Weapon weapon in keyValuePair.Value)
                 {
@@ -80,108 +55,6 @@ namespace TTTReborn.UI
                         _weaponSlots.Add(weapon.Name, new WeaponSlot(this, keyValuePair.Key, weapon.Name, $"{weapon.AmmoClip}/{weapon.ClipSize}"));
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// IClientInput implementation, calls during the client input build.
-        /// You can both read and write to input, to affect what happens down the line.
-        /// </summary>
-        [Event.BuildInput]
-        public void ProcessClientInput(InputBuilder input)
-        {
-	        if (_weaponsDict.Count == 0)
-        	{
-	            return;
-        	}
-
-            int selectedWeaponIndex = SlotPressInput(input);
-
-            if (selectedWeaponIndex == 0)
-            {
-                return;
-            }
-
-            Weapon nextWeapon = GetNextWeapon(selectedWeaponIndex, Local.Pawn.ActiveChild as Weapon);
-
-            if (nextWeapon != null)
-            {
-                input.ActiveChild = nextWeapon;
-            }
-        }
-
-        // TODO: Handle mouse wheel, and additional number keys.
-        int SlotPressInput(InputBuilder input)
-        {
-            if (input.Pressed(InputButton.Slot1)) return 1;
-            if (input.Pressed(InputButton.Slot2)) return 2;
-            if (input.Pressed(InputButton.Slot3)) return 3;
-            if (input.Pressed(InputButton.Slot4)) return 4;
-            if (input.Pressed(InputButton.Slot5)) return 5;
-
-            return 0;
-        }
-
-        private static Weapon GetNextWeapon(int weaponSlot, Weapon currentWeapon)
-        {
-            _weaponsDict.TryGetValue(weaponSlot, out List<Weapon> weaponList);
-
-            if (weaponList == null)
-            {
-                return null;
-            }
-
-            int listSize = weaponList.Count();
-
-            if (listSize < 1)
-            {
-                return null;
-            }
-
-            for (int i = 0; i < listSize; i++)
-            {
-                Weapon weapon = weaponList[i];
-
-                if (weapon == currentWeapon)
-                {
-                    return weaponList[i + 1 >= listSize ? 0 : i + 1];
-                }
-            }
-
-            return weaponList[0];
-        }
-
-        public static void OnDropWeapon(TTTPlayer player, Weapon weapon)
-        {
-            Weapon nextWeapon = GetNextWeapon((int) weapon.WeaponType, weapon);
-
-            if (nextWeapon != null)
-            {
-                player.ActiveChild = nextWeapon;
-            }
-            else
-            {
-                // no weapon of same type in slot
-                foreach(KeyValuePair<int, List<Weapon>> keyValuePair in _weaponsDict)
-                {
-                    foreach (Weapon wep in keyValuePair.Value)
-                    {
-                        player.ActiveChild = wep;
-
-                        break;
-                    }
-
-                    if (player.ActiveChild != null)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            // remove dropped weapon
-            if (player.ActiveChild != null)
-            {
-                _weaponSlots.Clear(); // TODO clear / update on pickup as well
             }
         }
 
@@ -208,5 +81,4 @@ namespace TTTReborn.UI
             }
         }
     }
-
 }
