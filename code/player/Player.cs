@@ -244,17 +244,14 @@ namespace TTTReborn.Player
                 info.Damage *= 2.0f;
             }
 
-            using (Prediction.Off())
+            if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
-                if (info.Attacker is TTTPlayer attacker && attacker != this)
-                {
-                    attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
-                }
+                attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+            }
 
-                if (info.Weapon != null)
-                {
-                    TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
-                }
+            if (info.Weapon != null)
+            {
+                TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
             }
 
             // Play pain sounds
