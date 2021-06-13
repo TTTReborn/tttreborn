@@ -25,6 +25,7 @@ namespace TTTReborn.UI
             RootPanel.AddChild<Scoreboard>();
             RootPanel.AddChild<InfoFeed>();
             RootPanel.AddChild<InspectMenu>();
+            RootPanel.AddChild<QuickShop>();
         }
 
         [Event("tttreborn.player.died")]
