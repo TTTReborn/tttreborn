@@ -110,7 +110,7 @@ namespace TTTReborn.UI
 
                     currentAmmo = weapon.AmmoClip;
 
-                    AmmoBar.TextLabel.Text = $"{weapon.AmmoClip} + {player.AmmoCount(weapon.AmmoType)}";
+                    AmmoBar.TextLabel.Text = $"{weapon.AmmoClip} / {weapon.ClipSize}";
 
                     AmmoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
                     AmmoBar.Style.Dirty();
