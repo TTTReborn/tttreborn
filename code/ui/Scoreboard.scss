@@ -13,10 +13,10 @@ Scoreboard {
     transition: opacity 0.05s linear;
     display: flex;
     flex-direction: column;
-    background-color: #0009;
+    background-color: rgba(0, 0, 0, 0.7);
 
+    opacity: 1;
     &.open {
-        opacity: 1;
     }
 
     .header {

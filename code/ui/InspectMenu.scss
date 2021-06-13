@@ -1,6 +1,6 @@
 InspectMenu {
     border: 1px solid #000;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     font-family: Poppins;
     font-weight: 500;
@@ -29,11 +29,12 @@ InspectMenu {
         Header {
             margin-bottom: 5px;
 
-            Label
-            {
+            Label {
                 &.player {
                     text-align: left;
                     flex-grow: 1;
+                    font-size: 24px;
+                    font-weight: 500;
                 }
 
                 &.role {
@@ -59,7 +60,7 @@ InspectMenu {
                 text-align: center;
                 height: 64px;
                 width: 64px;
-                background-color: rgba(0, 0, 0, 0.6);
+                background-color: rgba(0, 0, 0, 0.7);
                 border: 1px solid #031421;
                 border-radius: 4px;
                 text-align: center;
