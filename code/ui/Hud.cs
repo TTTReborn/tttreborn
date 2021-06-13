@@ -1,6 +1,8 @@
 using Sandbox;
 using Sandbox.UI;
 
+using TTTReborn.Player;
+
 namespace TTTReborn.UI
 {
     public partial class Hud : HudEntity<RootPanel>
@@ -28,8 +30,13 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.died")]
-        private void OnPlayerDied()
+        private void OnPlayerDied(TTTPlayer player)
         {
+            if (player != Local.Client.Pawn)
+            {
+                return;
+            }
+
             playerInfo?.Delete();
             playerInfo = null;
 
@@ -38,9 +45,9 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.spawned")]
-        private void OnPlayerSpawned()
+        private void OnPlayerSpawned(TTTPlayer player)
         {
-            if (playerInfo != null || weaponSelection != null)
+            if (player != Local.Client.Pawn || playerInfo != null || weaponSelection != null)
             {
                 return;
             }

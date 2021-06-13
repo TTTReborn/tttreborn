@@ -21,7 +21,24 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        public bool IsAlive {
+            get {
+                return isAlive;
+            }
+            set {
+                isAlive = value;
+
+                if (IsClient)
+                {
+                    GetClientOwner()?.SetScore("alive", isAlive);
+                }
+            }
+        }
+
+        private bool isAlive = false;
+
         private DamageInfo lastDamageInfo;
+
         private float inspectCorpseDistance = 80f;
 
         private TimeSince timeSinceDropped = 0;
@@ -74,7 +91,6 @@ namespace TTTReborn.Player
         // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
         {
-
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
@@ -91,21 +107,24 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                To client = To.Single(this);
-
-                ClientSetRole(client, Role.Name);
-                ClientOnPlayerSpawned(client);
+                ClientSetRole(To.Single(this), Role.Name);
+                ClientOnPlayerSpawned(this);
             }
 
             RemovePlayerCorpse();
             Inventory.DeleteContents();
             TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
+
+            IsAlive = true;
+
             base.Respawn();
         }
 
         public override void OnKilled()
         {
             base.OnKilled();
+
+            IsAlive = false;
 
             BecomePlayerCorpseOnServer(lastDamageInfo.Force, GetHitboxBone(lastDamageInfo.HitboxIndex));
 
@@ -114,7 +133,7 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                ClientOnPlayerDied(To.Single(this));
+                ClientOnPlayerDied(To.Single(this), this);
             }
         }
 
