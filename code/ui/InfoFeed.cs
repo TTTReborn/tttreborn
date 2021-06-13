@@ -16,7 +16,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/InfoFeed.scss");
         }
 
-        public virtual Panel AddEntry(Client leftClient, Client rightClient, string method, string append = null)
+        public virtual Panel AddEntry(Client leftClient, Client rightClient, string method, string postfix = "")
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 
@@ -33,9 +33,9 @@ namespace TTTReborn.UI
             rightLabel.Style.FontColor = (rightClient.Pawn as TTTPlayer).Role.Color;
             rightLabel.SetClass("me", isRightLocal);
 
-            if (append != null)
+            if (!string.IsNullOrEmpty(postfix))
             {
-                e.AddLabel(append, "append");
+                e.AddLabel(postfix, "append");
             }
 
             return e;
