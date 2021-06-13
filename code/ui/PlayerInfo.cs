@@ -98,8 +98,10 @@ namespace TTTReborn.UI
                 }
 
                 Weapon weapon = player.ActiveChild as Weapon;
-
-                if (weapon != null)
+                bool isWeaponNull = weapon == null;
+                
+                AmmoBar.SetClass("hide", isWeaponNull || weapon.WeaponType == WeaponType.Melee);
+                if (!isWeaponNull)
                 {
                     if (currentAmmo == weapon.AmmoClip)
                     {
@@ -113,8 +115,6 @@ namespace TTTReborn.UI
                     AmmoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
                     AmmoBar.Style.Dirty();
                 }
-
-                AmmoBar.SetClass("hide", weapon == null); // TODO Add WeaponType.Melee later
             }
         }
     }
