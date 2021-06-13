@@ -17,14 +17,10 @@ WeaponSelection {
         height: 32px;
         font-size: 22px;
         color: white;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+        border-bottom: 1px solid #000e;
         background-color: rgba(0, 0, 0, 0.7);
         font-size: 22px;
-
-        &.active {
-            font-weight: normal;
-            background-color: rgba(0, 0, 0, 0.8);
-        }
+        transition: height 0.1s linear;
 
         Label {
             // font-size: 0.8em;
@@ -37,13 +33,25 @@ WeaponSelection {
                 display: inline-block;
                 width: 32px;
                 text-align: center;
-                background-color: #db8c17;
+                background-color: #ff9800;
                 font-weight: 600;
             }
 
             &.ammolabel {
                 right: 10px;
                 position: absolute;
+                font-size: 20px;
+                padding-top: 2px;
+                &.active {
+                    font-size: 22px;
+                }
+            }
+        }
+
+        &.active {
+            background-color: rgba(0, 0, 0, 0.9);
+            Label {
+                font-weight: 500;
             }
         }
 

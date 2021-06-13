@@ -59,10 +59,10 @@ PlayerInfo {
         background-color: #df2935;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
-
         Label {
             font-size: 24px;
             width: 100%;
+            font-weight: 600;
         }
 
         &.None {

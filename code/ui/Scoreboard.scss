@@ -15,8 +15,8 @@ Scoreboard {
     flex-direction: column;
     background-color: rgba(0, 0, 0, 0.7);
 
-    opacity: 1;
     &.open {
+        opacity: 1;
     }
 
     .header {
