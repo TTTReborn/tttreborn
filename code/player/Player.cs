@@ -16,22 +16,7 @@ namespace TTTReborn.Player
 
         private static int WeaponDropVelocity { get; set; } = 300;
 
-        public BaseRole Role {
-            set
-            {
-                role = value;
-
-                if (IsServer)
-                {
-                    ClientSetRole(To.Single(this), role.Name);
-                }
-            }
-            get {
-                return role;
-            }
-        }
-
-        private BaseRole role = new NoneRole();
+        public BaseRole Role { get; set; } = new NoneRole();
 
         [Net, Local]
         public int Credits { get; set; } = 0;
@@ -104,7 +89,10 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                ClientOnPlayerSpawned(To.Single(this));
+                To client = To.Single(this);
+
+                ClientSetRole(client, Role.Name);
+                ClientOnPlayerSpawned(client);
             }
 
             RemovePlayerCorpse();
@@ -242,14 +230,17 @@ namespace TTTReborn.Player
                 info.Damage *= 2.0f;
             }
 
-            if (info.Attacker is TTTPlayer attacker && attacker != this)
+            using (Prediction.Off())
             {
-                attacker.DidDamage(info.Position, info.Damage, ((float)Health).LerpInverse(100, 0));
-            }
+                if (info.Attacker is TTTPlayer attacker && attacker != this)
+                {
+                    attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+                }
 
-            if (info.Weapon != null)
-            {
-                TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+                if (info.Weapon != null)
+                {
+                    TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+                }
             }
 
             // Play pain sounds

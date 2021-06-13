@@ -128,6 +128,12 @@ namespace TTTReborn.Rounds
                 {
                     player.Role = new InnocentRole();
                 }
+
+                // send everyone their roles
+                using(Prediction.Off())
+                {
+                    player.ClientSetRole(To.Single(player), player.Role.Name);
+                }
             }
         }
     }

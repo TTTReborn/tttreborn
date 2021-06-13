@@ -34,9 +34,12 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                foreach (TTTPlayer player in TTTPlayer.GetAll())
+                using(Prediction.Off())
                 {
-                    player.ClientSetRole(player.Role.Name);
+                    foreach (TTTPlayer player in TTTPlayer.GetAll())
+                    {
+                        player.ClientSetRole(player.Role.Name);
+                    }
                 }
             }
         }
