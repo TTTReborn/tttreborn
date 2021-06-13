@@ -19,6 +19,8 @@ namespace TTTReborn.Roles
     {
         public string Name;
 
+        public virtual Color Color => Color.White;
+
         public BaseRole()
         {
             Name = RoleFunctions.GetRoleName(GetType());
