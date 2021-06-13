@@ -95,6 +95,7 @@ namespace TTTReborn.UI
 
                 RoleLabel.Text = player.Role.Name;
                 RoleLabel.Style.FontColor = player.Role.Color;
+                RoleLabel.Style.Dirty();
             }
         }
 

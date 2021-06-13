@@ -40,7 +40,7 @@ namespace TTTReborn.Player
 
         private TimeSince timeSinceDropped = 0;
 
-        private bool isInspecting = false;
+        private PlayerCorpse inspectingPlayerCorpse = null;
 
         public TTTPlayer()
         {
@@ -200,9 +200,9 @@ namespace TTTReborn.Player
 
                 if (playerCorpse != null)
                 {
-                    if (!isInspecting)
+                    if (inspectingPlayerCorpse != playerCorpse)
                     {
-                        isInspecting = true;
+                        inspectingPlayerCorpse = playerCorpse;
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
@@ -221,11 +221,11 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                if (isInspecting)
+                if (inspectingPlayerCorpse != null)
                 {
                     ClientCloseInspectMenu(client);
 
-                    isInspecting = false;
+                    inspectingPlayerCorpse = null;
                 }
             }
         }
