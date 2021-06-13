@@ -6,30 +6,46 @@ namespace TTTReborn.UI
 {
     public class GameTimer : Panel
     {
-        public Label TimeLabel { set; get; }
 
+        private GameTimerContent gameTimerContent;
         public GameTimer()
         {
             StyleSheet.Load("/ui/GameTimer.scss");
 
-            TimeLabel = Add.Label("00:00", "timelabel");
+            gameTimerContent = new GameTimerContent(this);
         }
 
-        public override void Tick()
+        private class GameTimerContent : Panel
         {
-            // TODO: Handle if Instance is null and if Round is null.
-            if (Game.Instance.Round is Rounds.WaitingRound)
-            {
-                TimeLabel.Text = $"{Game.Instance.Round.RoundName}...";
-                RemoveClass("playing");
-                AddClass("waiting");
-                return;
-            }
+            public Label TextLabel { set; get; }
+            public Label TimeLabel { set; get; }
 
-            RemoveClass("waiting");
-            TimeLabel.Text = $"{Game.Instance.Round.RoundName}: {Game.Instance.Round.TimeLeftFormatted}";
-            AddClass("playing");
+            public GameTimerContent(Panel parent)
+            {
+                Parent = parent;
+
+                TextLabel = Add.Label("asd", "textlabel");
+                TimeLabel = Add.Label("00:00", "timelabel");
+            }
+            public override void Tick()
+            {
+                // TODO: Handle if Instance is null and if Round is null.
+                if (Game.Instance.Round is Rounds.WaitingRound)
+                {
+                    TextLabel.Text = $"{Game.Instance.Round.RoundName}...";
+                    TimeLabel.Text = "";
+                    TimeLabel.AddClass("waiting");
+                } else {
+                    TimeLabel.RemoveClass("waiting");
+                }
+
+
+                // AddClass("playing");
+                TextLabel.Text = $"{Game.Instance.Round.RoundName}:";
+                TimeLabel.Text = $"{Game.Instance.Round.TimeLeftFormatted}";
+            }
         }
     }
+
 
 }
