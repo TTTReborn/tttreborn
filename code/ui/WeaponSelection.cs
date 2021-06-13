@@ -58,7 +58,7 @@ namespace TTTReborn.UI
                 // Do not update if we already rebuilding the WeaponSlots
                 if (newWeapons.Count == 0)
                 {
-                    weaponSlot.UpdateAmmo($"{weapon.AmmoClip}/{weapon.ClipSize}");
+                    weaponSlot.UpdateAmmo($"{weapon.AmmoClip} + {player.AmmoCount(weapon.AmmoType)}");
                 }
             }
 
