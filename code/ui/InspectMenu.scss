@@ -1,24 +1,101 @@
 InspectMenu {
+    border: 1px solid #000;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-family: Poppins;
+    font-weight: 500;
+    border-radius: 4px;
+    margin: auto;
+
+    bottom: 30px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
     &.hide {
         display: none;
     }
 
-    background-color: #0009;
-    border: 1px solid #000;
-    border-radius: 4px;
-    margin: auto;
-    color: white;
-    text-align: center;
+    ConfirmationPanel {
+        min-width: 600px;
+        padding: 6px 12px;
+        text-align: center;
+        flex-direction: column;
 
-    left: 50%;
-    transform: translateX(-50%);
-    position: absolute;
-    top: 75%;
-    padding: 5px 15px;
-    font-size: 22px;
-    border-radius: 0 0 4px 4px;
+        &.hide {
+            display: none;
+        }
 
-    Label {
-        font-weight: bold;
+        Header {
+            margin-bottom: 5px;
+
+            Label
+            {
+                &.player {
+                    text-align: left;
+                    flex-grow: 1;
+                }
+
+                &.role {
+                    text-align: right;
+                    font-size: 1.1em;
+                    flex-shrink: 1;
+                }
+            }
+        }
+
+        Content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            margin-top: 15px;
+
+            InspectItem {
+                flex-direction: column;
+            }
+
+            ImageWrapper {
+                text-align: center;
+                height: 64px;
+                width: 64px;
+                background-color: rgba(0, 0, 0, 0.6);
+                border: 1px solid #031421;
+                border-radius: 4px;
+                text-align: center;
+                // transition: all 0.05s linear;
+
+                &.playericon {
+                    height: 75px;
+                    width: 75px;
+                    border-radius: 50%;
+                    border: 2px solid white; /*TODO role color*/
+                }
+
+                &.playericon Image {
+                    padding: 2px;
+                    border-radius: 50%;
+                    width: 100;
+                }
+            }
+        }
+    }
+
+    ConfirmationHintPanel {
+        &.hide {
+            display: none;
+        }
+
+        padding: 5px 15px;
+    }
+
+    Footer,
+    ConfirmationHintPanel {
+        Label.inspect {
+            width: 100%;
+            color: #ffae00;
+            font-size: 0.8em;
+            text-align: center;
+        }
     }
 }
