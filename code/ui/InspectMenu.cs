@@ -113,7 +113,7 @@ namespace TTTReborn.UI
                 PlayerImage.AddClass("playericon");
 
                 InspectItem inspectWeapon = new InspectItem(this);
-                inspectWeapon.ImageWrapper.SetImageSource("");
+                inspectWeapon.ImageWrapper.Image.SetTexture("");
                 inspectWeapon.InspectItemLabel.Text = "Pistol";
 
                 inspectItems.Add(inspectWeapon);
@@ -121,7 +121,10 @@ namespace TTTReborn.UI
 
             public void SetPlayer(TTTPlayer player)
             {
-                PlayerImage.SetImageSource(""); // TODO fetch player's steam avatar
+		        PlayerImage.Image.SetTexture($"avatar:{player.GetClientOwner().SteamId}");
+
+                PlayerImage.Style.BorderColor = player.Role.Color;
+                PlayerImage.Style.Dirty();
             }
         }
 
@@ -132,11 +135,8 @@ namespace TTTReborn.UI
             public ImageWrapper(Panel parent)
             {
                 Parent = parent;
-            }
 
-            public void SetImageSource(string source)
-            {
-                Image = Add.Image(source);
+                Image = Add.Image("", "avatar");
             }
         }
 
@@ -163,7 +163,7 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                FooterLabel = Add.Label("x confirmed this body", "inspect");
+                FooterLabel = Add.Label("0 credits left", "inspect");
             }
         }
 
