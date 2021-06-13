@@ -39,11 +39,10 @@ namespace TTTReborn.Player
             Client deadClient = deadPlayer.GetClientOwner();
 
             InfoFeed.Current?.AddEntry(
-                confirmClient.SteamId,
-                confirmClient.Name,
-                deadClient.SteamId,
-                $"{deadClient.Name}. Their role was {deadPlayer.Role.Name}!",
-                "found the body of"
+                confirmClient,
+                deadClient,
+                "found the body of",
+                $". Their role was {deadPlayer.Role.Name}!"
             );
         }
 
