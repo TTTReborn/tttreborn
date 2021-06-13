@@ -98,8 +98,11 @@ namespace TTTReborn.UI
                 }
 
                 Weapon weapon = player.ActiveChild as Weapon;
+                bool isWeaponNull = weapon == null;
 
-                if (weapon != null)
+                // TODO: Should probably hide ammo if weapon is melee
+                AmmoBar.SetClass("hide", isWeaponNull || weapon.WeaponType == WeaponType.Melee);
+                if (isWeaponNull)
                 {
                     if (currentAmmo == weapon.AmmoClip)
                     {
@@ -113,8 +116,6 @@ namespace TTTReborn.UI
                     AmmoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
                     AmmoBar.Style.Dirty();
                 }
-
-                AmmoBar.SetClass("hide", weapon == null); // TODO Add WeaponType.Melee later
             }
         }
     }

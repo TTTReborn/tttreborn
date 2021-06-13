@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
@@ -93,18 +92,13 @@ namespace TTTReborn.UI
             {
                 foreach (WeaponSlot weaponSlot in weaponSlots.Values)
                 {
-                    if (weaponSlot.WeaponName == activeWeapon.Name)
-                    {
-                        weaponSlot.AddClass("active");
-                    }
-                    else
-                    {
-                        weaponSlot.RemoveClass("active");
-                    }
+                    weaponSlot.SetClass("active", weaponSlot.WeaponName == activeWeapon.Name);
                 }
 
                 oldActiveWeapon = activeWeapon;
             }
+
+            SetClass("hide", weaponSlots.Count == 0);
         }
 
         /// <summary>

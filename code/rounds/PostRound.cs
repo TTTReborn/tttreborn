@@ -7,7 +7,7 @@ namespace TTTReborn.Rounds
     public class PostRound : BaseRound
     {
         public override string RoundName => "Post";
-        public override int RoundDuration => 10;
+        public override int RoundDuration => TTTReborn.Gamemode.Game.TTTPostRoundTime;
 
         protected override void OnTimeUp()
         {

@@ -9,6 +9,10 @@ WeaponSelection {
     border-radius: 4px;
     font-family: Poppins;
 
+    &.hide {
+        display: none;
+    }
+
     WeaponSlot {
         height: 32px;
         font-size: 22px;
