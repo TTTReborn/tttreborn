@@ -16,21 +16,7 @@ namespace TTTReborn.Player
 
         private static int WeaponDropVelocity { get; set; } = 300;
 
-        public BaseRole Role {
-            set {
-                role = value;
-
-                if (IsServer)
-                {
-                    ClientSetRole(To.Single(this), role.Name);
-                }
-            }
-            get {
-                return role;
-            }
-        }
-
-        private BaseRole role = new NoneRole();
+        public BaseRole Role { get; set; } = new NoneRole();
 
         [Net, Local]
         public int Credits { get; set; } = 0;
@@ -105,7 +91,10 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                ClientOnPlayerSpawned(To.Single(this));
+                To client = To.Single(this);
+
+                ClientSetRole(client, Role.Name);
+                ClientOnPlayerSpawned(client);
             }
 
             RemovePlayerCorpse();
