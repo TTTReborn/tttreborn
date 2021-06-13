@@ -21,11 +21,14 @@ namespace TTTReborn.UI
             if (Game.Instance.Round is Rounds.WaitingRound)
             {
                 TimeLabel.Text = $"{Game.Instance.Round.RoundName}...";
-
+                RemoveClass("playing");
+                AddClass("waiting");
                 return;
             }
 
+            RemoveClass("waiting");
             TimeLabel.Text = $"{Game.Instance.Round.RoundName}: {Game.Instance.Round.TimeLeftFormatted}";
+            AddClass("playing");
         }
     }
 

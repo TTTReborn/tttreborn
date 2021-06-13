@@ -18,5 +18,14 @@ GameTimer {
 
     Label {
         font-weight: bold;
+        width: 100%;
+    }
+    display: flex;
+
+    &.waiting {
+        min-width: 150px;
+    }
+    &.playing {
+        min-width: 240px;
     }
 }
