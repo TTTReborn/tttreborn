@@ -17,8 +17,7 @@ namespace TTTReborn.Player
         private static int WeaponDropVelocity { get; set; } = 300;
 
         public BaseRole Role {
-            set
-            {
+            set {
                 role = value;
 
                 if (IsServer)
@@ -40,6 +39,8 @@ namespace TTTReborn.Player
         private float inspectCorpseDistance = 80f;
 
         private TimeSince timeSinceDropped = 0;
+
+        private bool isInspecting = false;
 
         public TTTPlayer()
         {
@@ -142,12 +143,15 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
-            TickAttemptInspectPlayerCorpse();
+
             TickPlayerDropWeapon();
 
             SimulateActiveChild(client, ActiveChild);
 
-            TickAttemptInspectPlayerCorpse();
+            if (IsServer)
+            {
+                TickAttemptInspectPlayerCorpse();
+            }
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -189,30 +193,39 @@ namespace TTTReborn.Player
 
         private void TickAttemptInspectPlayerCorpse()
         {
-            if (IsServer)
+            using (Prediction.Off())
             {
-                using (Prediction.Off())
+                To client = To.Single(this);
+                PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
+
+                if (playerCorpse != null)
                 {
-                    To client = To.Single(this);
-                    PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
-
-                    if (playerCorpse != null)
+                    if (!isInspecting)
                     {
-                        if (Input.Down(InputButton.Use) && !playerCorpse.IsIdentified)
-                        {
-                            playerCorpse.IsIdentified = true;
-
-                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
-                        }
+                        isInspecting = true;
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
                         ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
-
-                        return;
                     }
 
+                    if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
+                    {
+                        playerCorpse.IsIdentified = true;
+
+                        ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
+
+                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                    }
+
+                    return;
+                }
+
+                if (isInspecting)
+                {
                     ClientCloseInspectMenu(client);
+
+                    isInspecting = false;
                 }
             }
         }
@@ -242,14 +255,17 @@ namespace TTTReborn.Player
                 info.Damage *= 2.0f;
             }
 
-            if (info.Attacker is TTTPlayer attacker && attacker != this)
+            using (Prediction.Off())
             {
-                attacker.DidDamage(info.Position, info.Damage, ((float)Health).LerpInverse(100, 0));
-            }
+                if (info.Attacker is TTTPlayer attacker && attacker != this)
+                {
+                    attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+                }
 
-            if (info.Weapon != null)
-            {
-                TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+                if (info.Weapon != null)
+                {
+                    TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+                }
             }
 
             // Play pain sounds
