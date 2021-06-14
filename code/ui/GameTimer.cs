@@ -31,15 +31,18 @@ namespace TTTReborn.UI
             {
                 // TODO: Handle if Instance is null and if Round is null.
                 bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
+
                 if (isWaitingRound)
                 {
                     TextLabel.Text = $"{Game.Instance.Round.RoundName}...";
+                    TimeLabel.Text = "";
                 }
                 else
                 {
                     TextLabel.Text = $"{Game.Instance.Round.RoundName}:";
                     TimeLabel.Text = $"{Game.Instance.Round.TimeLeftFormatted}";
                 }
+
                 TimeLabel.SetClass("hide", isWaitingRound);
                 TimeLabel.SetClass("waiting", isWaitingRound);
             }
