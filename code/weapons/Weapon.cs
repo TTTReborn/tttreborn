@@ -43,7 +43,7 @@ namespace TTTReborn.Weapons
         public virtual bool HasLaserDot => false;
         public virtual int BaseDamage => 10;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        // TODO add player role to weapon to access in UI WeaponSelection.cs .
+        // TODO add player role to weapon to access in UI WeaponSelection.cs.
         // E.G. this weapon is bought in traitor shop: Role => "Traitor";
         // This weapon is a normal weapon: Role => "None"
 
