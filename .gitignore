@@ -10,6 +10,7 @@ code/*.csproj
 tools_thumbnail_cache.bin
 config/*
 *.fgd
+globals.json
 
 # User-specific files
 *.rsuser
