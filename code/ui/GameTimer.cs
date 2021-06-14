@@ -33,9 +33,10 @@ namespace TTTReborn.UI
                 if (Game.Instance.Round is Rounds.WaitingRound)
                 {
                     TextLabel.Text = $"{Game.Instance.Round.RoundName}...";
-                    TimeLabel.Text = "";
+                    TimeLabel.AddClass("hide");
                     TimeLabel.AddClass("waiting");
                 } else {
+                    TimeLabel.RemoveClass("hide");
                     TimeLabel.RemoveClass("waiting");
                 }
 
