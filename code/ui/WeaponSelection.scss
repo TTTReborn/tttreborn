@@ -42,6 +42,7 @@ WeaponSelection {
                 position: absolute;
                 font-size: 20px;
                 padding-top: 2px;
+
                 &.active {
                     font-size: 22px;
                 }
@@ -50,6 +51,7 @@ WeaponSelection {
 
         &.active {
             background-color: rgba(0, 0, 0, 0.9);
+
             Label {
                 font-weight: 500;
             }

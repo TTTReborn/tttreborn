@@ -20,9 +20,11 @@ GameTimer {
         display: flex;
         justify-content: space-around;
         width: 100%;
+
         .timelabel {
             margin-left: 10px;
             width: 65px;
+
             &.waiting{
                 display: none;
             }
