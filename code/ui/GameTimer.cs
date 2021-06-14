@@ -35,15 +35,17 @@ namespace TTTReborn.UI
                     TextLabel.Text = $"{Game.Instance.Round.RoundName}...";
                     TimeLabel.AddClass("hide");
                     TimeLabel.AddClass("waiting");
-                } else {
+                }
+                else
+                {
                     TimeLabel.RemoveClass("hide");
                     TimeLabel.RemoveClass("waiting");
+                    TextLabel.Text = $"{Game.Instance.Round.RoundName}:";
+                    TimeLabel.Text = $"{Game.Instance.Round.TimeLeftFormatted}";
                 }
 
 
                 // AddClass("playing");
-                TextLabel.Text = $"{Game.Instance.Round.RoundName}:";
-                TimeLabel.Text = $"{Game.Instance.Round.TimeLeftFormatted}";
             }
         }
     }
