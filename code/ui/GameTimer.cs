@@ -6,8 +6,8 @@ namespace TTTReborn.UI
 {
     public class GameTimer : Panel
     {
-
         private GameTimerContent gameTimerContent;
+
         public GameTimer()
         {
             StyleSheet.Load("/ui/GameTimer.scss");
