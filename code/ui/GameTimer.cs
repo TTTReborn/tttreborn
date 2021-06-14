@@ -25,24 +25,23 @@ namespace TTTReborn.UI
                 Parent = parent;
 
                 TextLabel = Add.Label("asd", "textlabel");
-                TimeLabel = Add.Label("00:00", "timelabel");
+                TimeLabel = Add.Label("", "timelabel");
             }
             public override void Tick()
             {
                 // TODO: Handle if Instance is null and if Round is null.
-                if (Game.Instance.Round is Rounds.WaitingRound)
+                bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
+                if (isWaitingRound)
                 {
                     TextLabel.Text = $"{Game.Instance.Round.RoundName}...";
-                    TimeLabel.AddClass("hide");
-                    TimeLabel.AddClass("waiting");
                 }
                 else
                 {
-                    TimeLabel.RemoveClass("hide");
-                    TimeLabel.RemoveClass("waiting");
                     TextLabel.Text = $"{Game.Instance.Round.RoundName}:";
                     TimeLabel.Text = $"{Game.Instance.Round.TimeLeftFormatted}";
                 }
+                TimeLabel.AddClass("hide", isWaitingRound);
+                TimeLabel.AddClass("waiting", isWaitingRound);
 
 
                 // AddClass("playing");
