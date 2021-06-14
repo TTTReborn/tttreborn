@@ -25,8 +25,10 @@ QuickShop {
         justify-content: space-between;
         align-items: baseline;
         padding: 16px 30px;
-        background-color: rgba(0, 0, 0, 0.4);
-
+        background-color: #0007;
+        border-bottom: #363636 1px solid;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
         Label {
             &.title, &.credits {
                 font-size: 20px;
@@ -42,9 +44,11 @@ QuickShop {
     Footer {
         flex-direction: row;
         justify-content: space-between;
-        background-color: rgba(0, 0, 0, 0.4);
+        background-color: #0007;
         padding: 16px 30px;
-
+        border-top: #363636 1px solid;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
         Description {
             flex-direction: column;
 
@@ -91,11 +95,11 @@ QuickShop {
 
             &.active,
             &:hover {
-                border-width: 2px;
+                // border-width: 2px; This attribute is not supported yet
                 transform: scale(1.05);
 
                 Image {
-                    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.4);
+                    box-shadow: 0px 2px 5px 1px #0007;
                     background-color: rgba(255, 255, 255, 0.6);
                 }
             }
