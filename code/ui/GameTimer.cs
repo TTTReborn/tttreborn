@@ -40,11 +40,8 @@ namespace TTTReborn.UI
                     TextLabel.Text = $"{Game.Instance.Round.RoundName}:";
                     TimeLabel.Text = $"{Game.Instance.Round.TimeLeftFormatted}";
                 }
-                TimeLabel.AddClass("hide", isWaitingRound);
-                TimeLabel.AddClass("waiting", isWaitingRound);
-
-
-                // AddClass("playing");
+                TimeLabel.SetClass("hide", isWaitingRound);
+                TimeLabel.SetClass("waiting", isWaitingRound);
             }
         }
     }
