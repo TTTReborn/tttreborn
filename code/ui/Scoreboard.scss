@@ -95,7 +95,7 @@ Scoreboard {
                 // border-image: linear-gradient(to bottom, #3f7e51, #3f7e51, #3f7e51, rgba(0, 0, 0, 0)) 1 1%;
                 border: 2px solid #3f7e51;
                 border-right-width: 0;
-                border-left-width: 1px;
+                border-left-width: 2px;
                 border-bottom-width: 0;
                 display: flex;
                 flex-direction: column;
@@ -114,6 +114,16 @@ Scoreboard {
                     background-color: #2a2a2a66;
                 }
             }
+            &.dead {
+                .scoreboardGroup__title {
+                    background-color: #af262f;
+                }
+                .scoreboardGroup__content {
+                    border: #af262f;
+                }
+            }
+            &.mia {
+            }
         }
     }
 
@@ -129,7 +139,7 @@ Scoreboard {
     }
 
     .footer {
-        margin-top:10px;
+        margin-top: 10px;
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
         border-top: #363636 1px solid;

@@ -125,7 +125,7 @@ namespace TTTReborn.UI
             // TODO: Implement logic for the player counter in the title
             public void UpdateLabel()
             {
-                groupTitleLabel.Text = $"{GroupTitle.ToUpper()} ({GroupMembers})";
+                groupTitleLabel.Text = $"{GroupTitle.ToUpper()}  -  {GroupMembers}";
             }
 
             public ScoreboardEntry AddEntry(PlayerScore.Entry entry)
