@@ -107,6 +107,7 @@ namespace TTTReborn.UI
         {
             public string GroupTitle { get; private set; }
             public Panel GroupContent;
+            public int GroupMembers = 0;
             private Label groupTitleLabel;
 
             public ScoreboardGroup(Panel parent, string groupName)
@@ -124,53 +125,112 @@ namespace TTTReborn.UI
             // TODO: Implement logic for the player counter in the title
             public void UpdateLabel()
             {
-                groupTitleLabel.Text = GroupTitle.ToUpper();
+                groupTitleLabel.Text = $"{GroupTitle.ToUpper()} ({GroupMembers})";
             }
 
             public ScoreboardEntry AddEntry(PlayerScore.Entry entry)
             {
                 ScoreboardEntry scoreboardEntry = GroupContent.AddChild<ScoreboardEntry>();
+                scoreboardEntry.ScoreboardGroupName = GroupTitle;
 
-                scoreboardEntry.UpdateFrom(entry, PlayerScore.All.Length % 2 != 0);
+                scoreboardEntry.UpdateFrom(entry);
 
                 return scoreboardEntry;
             }
         }
 
-        private void AddScoreboardGroup(string groupName)
+        private ScoreboardGroup AddScoreboardGroup(string groupName)
         {
             if (ScoreboardGroups.ContainsKey(groupName))
             {
-                return;
+                return ScoreboardGroups[groupName];
             }
 
             ScoreboardGroup scoreboardGroup = new ScoreboardGroup(mainContent, groupName);
             scoreboardGroup.UpdateLabel();
 
             ScoreboardGroups.Add(groupName, scoreboardGroup);
+
+            return scoreboardGroup;
         }
 
         private void AddPlayer(PlayerScore.Entry entry)
         {
-            // TODO: Get proper scoreboardGroup for entry
-            //bool alive = entry.Get<bool>("alive");
+            ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
+            ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry(entry);
 
-            if (ScoreboardGroups.TryGetValue("Alive", out ScoreboardGroup scoreboardGroup))
+            scoreboardGroup.GroupMembers += 1;
+
+            Entries.Add(entry.Id, scoreboardEntry);
+
+            scoreboardGroup.UpdateLabel();
+            header.UpdateServerInfo();
+        }
+
+        // TODO add MIA
+        private ScoreboardGroup GetScoreboardGroup(PlayerScore.Entry entry)
+        {
+            string group = "Alive";
+
+            if (!entry.Get<bool>("alive", true))
             {
-                Entries.Add(entry.Id, scoreboardGroup.AddEntry(entry));
-
-                scoreboardGroup.UpdateLabel();
-                header.UpdateServerInfo();
+                // TODO better spectator check, maybe with a player var
+                group = "Dead";
             }
+
+            ScoreboardGroups.TryGetValue(group, out ScoreboardGroup scoreboardGroup);
+
+            if (scoreboardGroup == null)
+            {
+                scoreboardGroup = AddScoreboardGroup(group);
+            }
+
+            return scoreboardGroup;
         }
 
         private void UpdatePlayer(PlayerScore.Entry entry)
         {
             if (Entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
             {
-                panel.UpdateFrom(entry, entry.Id % 2 == 0);
+                ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
 
-                // TODO remove label / group if empty
+                if (scoreboardGroup.GroupTitle != panel.ScoreboardGroupName)
+                {
+                    // instead of remove and add, move the panel into the right parent
+                    RemovePlayer(entry);
+                    AddPlayer(entry);
+
+                    DeleteEmptyScoreboardGroups();
+
+                    return;
+                }
+
+                panel.UpdateFrom(entry);
+            }
+            else
+            {
+                // Add to queue? Up to now, just print an error #hacky
+                Log.Error($"Tried to update the ScoreboardPanel of the player with sid: '{entry.Get<ulong>("steamid")}'");
+            }
+        }
+
+        private void DeleteEmptyScoreboardGroups()
+        {
+            List<string> removeList = new();
+
+            foreach (KeyValuePair<string, ScoreboardGroup> keyValuePair in ScoreboardGroups)
+            {
+                if (keyValuePair.Value.GroupMembers == 0)
+                {
+                    removeList.Add(keyValuePair.Key);
+                }
+            }
+
+            foreach (string key in removeList)
+            {
+                ScoreboardGroups[key].Delete();
+
+                ScoreboardGroups.Remove(key);
             }
         }
 
@@ -178,10 +238,14 @@ namespace TTTReborn.UI
         {
             if (Entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
             {
-                if (ScoreboardGroups.TryGetValue("Alive", out ScoreboardGroup scoreboardGroup))
+                ScoreboardGroups.TryGetValue(panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup);
+
+                if (scoreboardGroup != null)
                 {
-                    scoreboardGroup.UpdateLabel();
+                    scoreboardGroup.GroupMembers -= 1;
                 }
+
+                scoreboardGroup.UpdateLabel();
 
                 panel.Delete();
                 Entries.Remove(entry.Id);

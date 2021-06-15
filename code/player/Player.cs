@@ -39,11 +39,6 @@ namespace TTTReborn.Player
                 }
 
                 isAlive = value;
-
-                if (IsClient)
-                {
-                    GetClientOwner()?.SetScore("alive", isAlive);
-                }
             }
         }
 
@@ -83,12 +78,9 @@ namespace TTTReborn.Player
 
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer player)
+                if (client.Pawn is TTTPlayer player && player.IsAlive)
                 {
-                    if (Host.IsServer && player.LifeState == LifeState.Alive || Host.IsClient && player.IsAlive)
-                    {
-                        players.Add(player);
-                    }
+                    players.Add(player);
                 }
             }
 
@@ -135,6 +127,8 @@ namespace TTTReborn.Player
             Role = new NoneRole();
             Credits = 0;
 
+            GetClientOwner().SetScore("alive", true);
+
             using(Prediction.Off())
             {
                 ClientSetRole(To.Single(this), Role.Name);
@@ -146,6 +140,16 @@ namespace TTTReborn.Player
             TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
 
             base.Respawn();
+
+            // hacky
+            // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
+            // TODO spawn player as spectator instantly
+            if (Gamemode.Game.Instance.Round is Rounds.InProgressRound || Gamemode.Game.Instance.Round is Rounds.PostRound)
+            {
+                GetClientOwner().SetScore("alive", false);
+
+                return;
+            }
         }
 
         public override void OnKilled()
@@ -246,6 +250,8 @@ namespace TTTReborn.Player
                     if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
                     {
                         playerCorpse.IsIdentified = true;
+
+                        playerCorpse.Player?.GetClientOwner()?.SetScore("alive", false);
 
                         ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
 

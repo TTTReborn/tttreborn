@@ -74,6 +74,8 @@ Scoreboard {
     }
 
     .mainContent {
+        flex-direction: column;
+
         ScoreboardGroup {
             display: flex;
             flex-direction: column;

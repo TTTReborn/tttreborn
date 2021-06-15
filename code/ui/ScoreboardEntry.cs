@@ -7,7 +7,7 @@ namespace TTTReborn.UI
     public class ScoreboardEntry : Panel
     {
         public PlayerScore.Entry Entry;
-
+        public string ScoreboardGroupName;
         public Label PlayerName;
         public Label Karma;
         public Label Score;
@@ -23,7 +23,7 @@ namespace TTTReborn.UI
             Ping = Add.Label("", "ping");
         }
 
-        public virtual void UpdateFrom(PlayerScore.Entry entry, bool isOdd)
+        public virtual void UpdateFrom(PlayerScore.Entry entry)
         {
             Entry = entry;
 
@@ -33,7 +33,6 @@ namespace TTTReborn.UI
             Ping.Text = entry.Get<int>("ping", 0).ToString();
 
             SetClass("me", Local.Client != null && entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
-            SetClass(isOdd ? "odd" : "even", true);
         }
     }
 }
