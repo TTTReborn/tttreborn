@@ -47,13 +47,20 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.spawned")]
         private void OnPlayerSpawned(TTTPlayer player)
         {
-            if (player != Local.Client.Pawn || playerInfo != null || weaponSelection != null)
+            if (player != Local.Client.Pawn)
             {
                 return;
             }
 
-            playerInfo = RootPanel.AddChild<PlayerInfo>();
-            weaponSelection = RootPanel.AddChild<WeaponSelection>();
+            if (playerInfo == null)
+            {
+                playerInfo = RootPanel.AddChild<PlayerInfo>();
+            }
+
+            if (weaponSelection == null)
+            {
+                weaponSelection = RootPanel.AddChild<WeaponSelection>();
+            }
         }
     }
 }
