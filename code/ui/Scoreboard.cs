@@ -3,6 +3,8 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Player;
+
 namespace TTTReborn.UI
 {
     public class Scoreboard : Panel
@@ -60,9 +62,9 @@ namespace TTTReborn.UI
 
                 ScoreboardLogo = Add.Panel("scoreboardLogo");
                 InformationHolder = Add.Panel("informationHolder");
-                ServerName = InformationHolder.Add.Label("Here will be the servername", "serverName");
+                ServerName = InformationHolder.Add.Label("Trouble in Terry's Town", "serverName"); // Here will be the servername
                 ServerInfo = InformationHolder.Add.Label(GetServerInfoStr(), "serverInfo");
-                ServerDescription = InformationHolder.Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat", "serverDescription");
+                //ServerDescription = InformationHolder.Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat", "serverDescription");
             }
 
             public void UpdateServerInfo()
@@ -74,7 +76,7 @@ namespace TTTReborn.UI
             {
                 // TODO: Get this out of the header
                 // TODO: Fill the other variables
-                return $"{PlayerScore.All.Length}/MAXPLAYER - MAPNAME - ROUND/TIME LEFT";
+                return $"{PlayerScore.All.Length} Player(s) - Map: '{Sandbox.Global.MapName}'";
             }
         }
 
@@ -89,10 +91,15 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                PlayerAliveCountLabel = Add.Label("? Innocents left", "name");
+                PlayerAliveCountLabel = Add.Label("? players left", "name");
                 KarmaLabel = Add.Label("Karma", "karma");
                 ScoreLabel = Add.Label("Score", "score");
                 PingLabel = Add.Label("Ping", "ping");
+            }
+
+            public override void Tick()
+            {
+                PlayerAliveCountLabel.Text = $"{TTTPlayer.GetAlivePlayers().Count} players left";
             }
         }
 

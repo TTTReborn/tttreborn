@@ -23,9 +23,21 @@ namespace TTTReborn.Player
 
         public bool IsAlive {
             get {
+                if (IsServer)
+                {
+                    return this.LifeState == LifeState.Alive;
+                }
+
                 return isAlive;
             }
             set {
+                if (IsServer)
+                {
+                    Log.Error("TTTPlayer.IsAlive can't be modified on server. Use 'LifeState' instead.");
+
+                    return;
+                }
+
                 isAlive = value;
 
                 if (IsClient)
@@ -54,15 +66,33 @@ namespace TTTReborn.Player
         {
             List<TTTPlayer> playerList = new();
 
-            foreach (Entity entity in All)
+            foreach (Client client in Client.All)
             {
-                if (entity is TTTPlayer player)
+                if (client.Pawn is TTTPlayer player)
                 {
                     playerList.Add(player);
                 }
             }
 
             return playerList;
+        }
+
+        public static List<TTTPlayer> GetAlivePlayers()
+        {
+            List<TTTPlayer> players = new List<TTTPlayer>();
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer player)
+                {
+                    if (Host.IsServer && player.LifeState == LifeState.Alive || Host.IsClient && player.IsAlive)
+                    {
+                        players.Add(player);
+                    }
+                }
+            }
+
+            return players;
         }
 
         public void MakeSpectator(Vector3 position = default)
@@ -115,16 +145,12 @@ namespace TTTReborn.Player
             Inventory.DeleteContents();
             TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
 
-            IsAlive = true;
-
             base.Respawn();
         }
 
         public override void OnKilled()
         {
             base.OnKilled();
-
-            IsAlive = false;
 
             BecomePlayerCorpseOnServer(lastDamageInfo.Force, GetHitboxBone(lastDamageInfo.HitboxIndex));
 
