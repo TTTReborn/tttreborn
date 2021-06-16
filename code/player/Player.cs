@@ -57,36 +57,6 @@ namespace TTTReborn.Player
             Inventory = new Inventory(this);
         }
 
-        public static List<TTTPlayer> GetAll()
-        {
-            List<TTTPlayer> playerList = new();
-
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player)
-                {
-                    playerList.Add(player);
-                }
-            }
-
-            return playerList;
-        }
-
-        public static List<TTTPlayer> GetAlivePlayers()
-        {
-            List<TTTPlayer> players = new List<TTTPlayer>();
-
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player && player.IsAlive)
-                {
-                    players.Add(player);
-                }
-            }
-
-            return players;
-        }
-
         public void MakeSpectator(Vector3 position = default)
         {
             EnableAllCollisions = false;

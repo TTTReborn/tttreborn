@@ -45,7 +45,7 @@ namespace TTTReborn.Player
                 confirmClient,
                 deadClient,
                 "found the body of",
-                $". Their role was {deadPlayer.Role.Name}!"
+                $"({deadPlayer.Role.Name})"
             );
         }
 
