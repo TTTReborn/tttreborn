@@ -32,7 +32,7 @@ namespace TTTReborn.Player.Camera
 
             if (TargetPlayer == null || !TargetPlayer.IsValid() || Input.Pressed(InputButton.Attack1))
             {
-                List<TTTPlayer> players = GetAlivePlayers();
+                List<TTTPlayer> players = TTTReborn.Gamemode.Game.GetAlivePlayers();
 
                 if (players.Count > 0)
                 {
@@ -70,21 +70,6 @@ namespace TTTReborn.Player.Camera
                 return Vector3.Zero;
 
             return player.EyeRot.Forward * -150 + Vector3.Up * 10;
-        }
-
-        private List<TTTPlayer> GetAlivePlayers()
-        {
-            List<TTTPlayer> players = new List<TTTPlayer>();
-
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
-                {
-                    players.Add(player);
-                }
-            }
-
-            return players;
         }
     }
 
