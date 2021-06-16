@@ -21,7 +21,10 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        public bool IsConfirmed = false;
+
         private DamageInfo lastDamageInfo;
+
         private float inspectCorpseDistance = 80f;
 
         private TimeSince timeSinceDropped = 0;
@@ -59,7 +62,6 @@ namespace TTTReborn.Player
         // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
         {
-
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
@@ -74,18 +76,34 @@ namespace TTTReborn.Player
             Role = new NoneRole();
             Credits = 0;
 
+            GetClientOwner().SetScore("alive", true);
+
             using(Prediction.Off())
             {
-                To client = To.Single(this);
-
-                ClientSetRole(client, Role.Name);
-                ClientOnPlayerSpawned(client);
+                ClientSetRole(To.Single(this), Role.Name);
+                ClientOnPlayerSpawned(this);
             }
 
             RemovePlayerCorpse();
             Inventory.DeleteContents();
             TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
+
             base.Respawn();
+
+            // hacky
+            // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
+            // TODO spawn player as spectator instantly
+            if (Gamemode.Game.Instance.Round is Rounds.InProgressRound || Gamemode.Game.Instance.Round is Rounds.PostRound)
+            {
+                GetClientOwner().SetScore("alive", false);
+
+                return;
+            }
+
+            if (Gamemode.Game.Instance.Round is Rounds.PreRound)
+            {
+                IsConfirmed = false;
+            }
         }
 
         public override void OnKilled()
@@ -99,7 +117,7 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                ClientOnPlayerDied(To.Single(this));
+                ClientOnPlayerDied(To.Single(this), this);
             }
         }
 
@@ -187,9 +205,17 @@ namespace TTTReborn.Player
                     {
                         playerCorpse.IsIdentified = true;
 
-                        ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
+                        // TODO Handling if a player disconnects!
+                        if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
+                        {
+                            playerCorpse.Player.IsConfirmed = true;
 
-                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                            playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
+
+                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
+
+                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                        }
                     }
 
                     return;
