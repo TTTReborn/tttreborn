@@ -33,21 +33,6 @@ namespace TTTReborn.Player
             Inventory = new Inventory(this);
         }
 
-        public static List<TTTPlayer> GetAll()
-        {
-            List<TTTPlayer> playerList = new();
-
-            foreach (Entity entity in All)
-            {
-                if (entity is TTTPlayer player)
-                {
-                    playerList.Add(player);
-                }
-            }
-
-            return playerList;
-        }
-
         public void MakeSpectator(Vector3 position = default)
         {
             EnableAllCollisions = false;

@@ -36,7 +36,7 @@ namespace TTTReborn.Rounds
             {
                 using(Prediction.Off())
                 {
-                    foreach (TTTPlayer player in TTTPlayer.GetAll())
+                    foreach (TTTPlayer player in TTTReborn.Gamemode.Game.GetPlayers())
                     {
                         player.ClientSetRole(player.Role.Name);
                     }
