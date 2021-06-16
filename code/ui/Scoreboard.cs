@@ -30,7 +30,6 @@ namespace TTTReborn.UI
 
             mainContent = Add.Panel("mainContent");
 
-            // TODO: create playergroups & for each playergroup:
             AddScoreboardGroup("Alive");
 
             PlayerScore.OnPlayerAdded += AddPlayer;
@@ -69,7 +68,7 @@ namespace TTTReborn.UI
 
             public void UpdateServerInfo()
             {
-                this.ServerInfo.Text = this.GetServerInfoStr();
+                ServerInfo.Text = GetServerInfoStr();
             }
 
             public string GetServerInfoStr()
@@ -118,6 +117,7 @@ namespace TTTReborn.UI
                 GroupTitle = groupName;
 
                 AddClass(groupName);
+
                 groupTitleWrapper = Add.Panel("scoreboardGroup__title-wrapper");
                 groupTitleLabel = groupTitleWrapper.Add.Label("", "scoreboardGroup__title");
                 GroupContent = Add.Panel("scoreboardGroup__content");
@@ -160,7 +160,7 @@ namespace TTTReborn.UI
             ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
             ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry(entry);
 
-            scoreboardGroup.GroupMembers += 1;
+            scoreboardGroup.GroupMembers++;
 
             Entries.Add(entry.Id, scoreboardEntry);
 
@@ -243,7 +243,7 @@ namespace TTTReborn.UI
 
                 if (scoreboardGroup != null)
                 {
-                    scoreboardGroup.GroupMembers -= 1;
+                    scoreboardGroup.GroupMembers--;
                 }
 
                 scoreboardGroup.UpdateLabel();
