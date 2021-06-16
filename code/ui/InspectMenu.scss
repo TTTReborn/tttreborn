@@ -1,16 +1,16 @@
 InspectMenu {
     border: 1px solid #000;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     font-family: Poppins;
     font-weight: 500;
     border-radius: 4px;
     margin: auto;
 
-    bottom: 30px;
+    top:66%;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(-40%);
 
     &.hide {
         display: none;
@@ -27,19 +27,22 @@ InspectMenu {
         }
 
         Header {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
 
-            Label
-            {
+            Label {
                 &.player {
                     text-align: left;
                     flex-grow: 1;
+                    font-size: 24px;
+                    font-weight: 500;
                 }
 
                 &.role {
                     text-align: right;
-                    font-size: 1.1em;
+                    font-size: 18px;
                     flex-shrink: 1;
+                    font-weight: 500;
+                    padding-top: 6px;
                 }
             }
         }
@@ -47,29 +50,34 @@ InspectMenu {
         Content {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
             margin-bottom: 25px;
             margin-top: 15px;
+            justify-content: flex-start;
 
             InspectItem {
                 flex-direction: column;
+                margin-top: 5px;
+                margin-left: 30px;
+                text-align: center;
+                width: 75px;
             }
 
             ImageWrapper {
                 text-align: center;
-                height: 64px;
-                width: 64px;
-                background-color: rgba(0, 0, 0, 0.6);
+                height: 75px;
+                width: 75px;
+                background-color: rgba(0, 0, 0, 0.7);
                 border: 1px solid #031421;
                 border-radius: 4px;
                 text-align: center;
                 // transition: all 0.05s linear;
+                margin-right: 5px;
 
                 &.playericon {
-                    height: 75px;
-                    width: 75px;
+                    height: 95px;
+                    width: 95px;
                     border-radius: 50%;
-                    border: 2px solid white; /*TODO role color*/
+                    border: 2px solid white;
                 }
 
                 &.playericon Image {

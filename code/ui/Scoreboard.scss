@@ -13,7 +13,7 @@ Scoreboard {
     transition: opacity 0.05s linear;
     display: flex;
     flex-direction: column;
-    background-color: #0009;
+    background-color: rgba(0, 0, 0, 0.7);
 
     &.open {
         opacity: 1;
@@ -111,7 +111,7 @@ Scoreboard {
                 }
 
                 .even {
-                    background-color: #2a2a2a66;
+                    background-color: #4b4b4b66;
                 }
             }
             &.dead {

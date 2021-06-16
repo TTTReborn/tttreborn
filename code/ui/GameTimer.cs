@@ -6,27 +6,48 @@ namespace TTTReborn.UI
 {
     public class GameTimer : Panel
     {
-        public Label TimeLabel { set; get; }
+        private GameTimerContent gameTimerContent;
 
         public GameTimer()
         {
             StyleSheet.Load("/ui/GameTimer.scss");
 
-            TimeLabel = Add.Label("00:00", "timelabel");
+            gameTimerContent = new GameTimerContent(this);
         }
 
-        public override void Tick()
+        private class GameTimerContent : Panel
         {
-            // TODO: Handle if Instance is null and if Round is null.
-            if (Game.Instance.Round is Rounds.WaitingRound)
+            public Label TextLabel { set; get; }
+            public Label TimeLabel { set; get; }
+
+            public GameTimerContent(Panel parent)
             {
-                TimeLabel.Text = $"{Game.Instance.Round.RoundName}...";
+                Parent = parent;
 
-                return;
+                TextLabel = Add.Label("asd", "textlabel");
+                TimeLabel = Add.Label("", "timelabel");
             }
+            public override void Tick()
+            {
+                // TODO: Handle if Instance is null and if Round is null.
+                bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
 
-            TimeLabel.Text = $"{Game.Instance.Round.RoundName}: {Game.Instance.Round.TimeLeftFormatted}";
+                if (isWaitingRound)
+                {
+                    TextLabel.Text = $"{Game.Instance.Round.RoundName}...";
+                    TimeLabel.Text = "";
+                }
+                else
+                {
+                    TextLabel.Text = $"{Game.Instance.Round.RoundName}:";
+                    TimeLabel.Text = $"{Game.Instance.Round.TimeLeftFormatted}";
+                }
+
+                TimeLabel.SetClass("hide", isWaitingRound);
+                TimeLabel.SetClass("waiting", isWaitingRound);
+            }
         }
     }
+
 
 }
