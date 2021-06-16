@@ -99,7 +99,7 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
-                PlayerAliveCountLabel.Text = $"{TTTReborn.Gamemode.Game.GetAlivePlayers().Count} players left";
+                PlayerAliveCountLabel.Text = $"{TTTReborn.Gamemode.Game.GetConfirmedPlayers().Count} players left";
             }
         }
 

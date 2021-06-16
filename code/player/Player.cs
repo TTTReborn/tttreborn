@@ -21,28 +21,7 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
-        public bool IsAlive {
-            get {
-                if (IsServer)
-                {
-                    return this.LifeState == LifeState.Alive;
-                }
-
-                return isAlive;
-            }
-            set {
-                if (IsServer)
-                {
-                    Log.Error("TTTPlayer.IsAlive can't be modified on server. Use 'LifeState' instead.");
-
-                    return;
-                }
-
-                isAlive = value;
-            }
-        }
-
-        private bool isAlive = false;
+        public bool IsConfirmed = false;
 
         private DamageInfo lastDamageInfo;
 
@@ -119,6 +98,11 @@ namespace TTTReborn.Player
                 GetClientOwner().SetScore("alive", false);
 
                 return;
+            }
+
+            if (Gamemode.Game.Instance.Round is Rounds.PreRound)
+            {
+                IsConfirmed = false;
             }
         }
 
@@ -221,11 +205,17 @@ namespace TTTReborn.Player
                     {
                         playerCorpse.IsIdentified = true;
 
-                        playerCorpse.Player?.GetClientOwner()?.SetScore("alive", false);
+                        // TODO Handling if a player disconnects!
+                        if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
+                        {
+                            playerCorpse.Player.IsConfirmed = true;
 
-                        ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
+                            playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
 
-                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
+
+                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                        }
                     }
 
                     return;

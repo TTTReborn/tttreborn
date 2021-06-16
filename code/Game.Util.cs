@@ -27,7 +27,22 @@ namespace TTTReborn.Gamemode
 
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer player && player.IsAlive)
+                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+                {
+                    players.Add(player);
+                }
+            }
+
+            return players;
+        }
+
+        public static List<TTTPlayer> GetConfirmedPlayers()
+        {
+            List<TTTPlayer> players = new List<TTTPlayer>();
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer player && player.IsConfirmed)
                 {
                     players.Add(player);
                 }

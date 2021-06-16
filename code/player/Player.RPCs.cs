@@ -19,7 +19,7 @@ namespace TTTReborn.Player
         {
             Event.Run("tttreborn.player.spawned", player);
 
-            player.IsAlive = true;
+            player.IsConfirmed = true;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace TTTReborn.Player
         public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName)
         {
             deadPlayer.Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
-            deadPlayer.IsAlive = false;
+            deadPlayer.IsConfirmed = false;
 
             Client confirmClient = confirmPlayer.GetClientOwner();
             Client deadClient = deadPlayer.GetClientOwner();
