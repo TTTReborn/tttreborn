@@ -108,6 +108,7 @@ namespace TTTReborn.UI
             public string GroupTitle { get; private set; }
             public Panel GroupContent;
             public int GroupMembers = 0;
+            private Panel groupTitleWrapper;
             private Label groupTitleLabel;
 
             public ScoreboardGroup(Panel parent, string groupName)
@@ -117,8 +118,8 @@ namespace TTTReborn.UI
                 GroupTitle = groupName;
 
                 AddClass(groupName);
-
-                groupTitleLabel = Add.Label("", "scoreboardGroup__title");
+                groupTitleWrapper = Add.Panel("scoreboardGroup__title-wrapper");
+                groupTitleLabel = groupTitleWrapper.Add.Label("", "scoreboardGroup__title");
                 GroupContent = Add.Panel("scoreboardGroup__content");
             }
 

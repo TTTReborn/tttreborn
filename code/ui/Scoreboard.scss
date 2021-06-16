@@ -82,13 +82,15 @@ Scoreboard {
             width: 100%;
             margin-top: 5px;
 
-            .scoreboardGroup__title {
-                background-color: #3f7e51;
-                font-size: 14px;
-                font-weight: 300;
-                width: 100px;
-                border-top-right-radius: 4px;
-                padding: 0 10px 0 20px;
+            .scoreboardGroup__title-wrapper {
+
+                .scoreboardGroup__title {
+                    background-color: #3f7e51;
+                    font-size: 14px;
+                    font-weight: 300;
+                    border-top-right-radius: 4px;
+                    padding: 0 20px;
+                }
             }
 
             .scoreboardGroup__content {
