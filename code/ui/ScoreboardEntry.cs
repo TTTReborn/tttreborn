@@ -32,7 +32,8 @@ namespace TTTReborn.UI
             Score.Text = entry.Get<int>("score", 0).ToString();
             Ping.Text = entry.Get<int>("ping", 0).ToString();
 
-            SetClass("me", Local.Client != null && entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
+           // TOOD: Make this work on creation of the Entry
+            SetClass("me", Local.Client != null && Entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
         }
     }
 }

@@ -136,6 +136,7 @@ namespace TTTReborn.Rounds
                 using(Prediction.Off())
                 {
                     player.ClientSetRole(To.Single(player), player.Role.Name);
+                    player.GetClientOwner().SetScore("role", player.Role.Name);
                 }
             }
         }
