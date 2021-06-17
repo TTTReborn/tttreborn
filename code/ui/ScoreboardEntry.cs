@@ -68,7 +68,7 @@ namespace TTTReborn.UI
 
             currentRole = player.Role;
 
-            RoleColorLabel.Style.BackgroundColor = player.Role is Roles.NoneRole ?  player.Role.Color : player.Role.Color.WithAlpha(0.75f);
+            RoleColorLabel.Style.BackgroundColor = player.Role is Roles.NoneRole ? player.Role.Color : player.Role.Color.WithAlpha(0.75f);
             RoleColorLabel.Style.Dirty();
         }
     }
