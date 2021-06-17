@@ -28,7 +28,7 @@ namespace TTTReborn.UI
                 .Ignore(player)
                 .Run();
 
-            bool targetFound = trace.Hit && trace.Entity is TTTPlayer targetPlayer;
+            bool targetFound = trace.Hit && trace.Entity is TTTPlayer;
 
             SetClass("hide", !targetFound);
 

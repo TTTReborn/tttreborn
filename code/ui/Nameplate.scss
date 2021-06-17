@@ -4,6 +4,7 @@ Nameplate
     font-family: Poppins;
     left: 50%;
     top: 55%;
+    transform: translateX(-50%) translatey(-45%);
 
     &.hide {
         display: none;
