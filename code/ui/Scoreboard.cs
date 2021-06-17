@@ -8,6 +8,8 @@ namespace TTTReborn.UI
     public class Scoreboard : Panel
     {
         private Dictionary<int, ScoreboardEntry> Entries = new();
+        //TODO: Event on start of InProgressRound & PreRound =>
+        //Make all Entries trigger the Entry.UpdateForm()
 
         private Dictionary<string, ScoreboardGroup> ScoreboardGroups = new();
 
