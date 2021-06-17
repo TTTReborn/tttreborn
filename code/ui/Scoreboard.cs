@@ -3,8 +3,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.UI
 {
     public class Scoreboard : Panel
@@ -161,26 +159,11 @@ namespace TTTReborn.UI
             ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry(entry);
 
             scoreboardGroup.GroupMembers++;
-            UpdateEntryRoleColor(entry, scoreboardEntry);
 
             Entries.Add(entry.Id, scoreboardEntry);
 
             scoreboardGroup.UpdateLabel();
             header.UpdateServerInfo();
-        }
-
-        private void UpdateEntryRoleColor(PlayerScore.Entry entry, ScoreboardEntry panel)
-        {
-                bool isMarkedAsTraitor = false;
-                bool isEntryRoleTraitor = entry.Get<string>("role") == "Traitor";
-                if (isEntryRoleTraitor)
-                {
-                    bool isYourselfTraitor = Local.Client.Pawn is TTTPlayer player && player.Role is Roles.TraitorRole;
-                    bool isEntryDead = !entry.Get<bool>("alive");
-
-                    isMarkedAsTraitor = isYourselfTraitor || isEntryDead;
-                }
-                panel.SetClass("traitor", isMarkedAsTraitor);
         }
 
         // TODO add MIA
@@ -221,7 +204,6 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                UpdateEntryRoleColor(entry, panel);
                 panel.UpdateFrom(entry);
             }
             else

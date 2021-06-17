@@ -2,6 +2,8 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Player;
+
 namespace TTTReborn.UI
 {
     public class ScoreboardEntry : Panel
@@ -27,13 +29,29 @@ namespace TTTReborn.UI
         {
             Entry = entry;
 
+            UpdateRoleClass(entry);
+
             PlayerName.Text = entry.GetString("name");
             Karma.Text = entry.Get<int>("karma", 0).ToString();
             Score.Text = entry.Get<int>("score", 0).ToString();
             Ping.Text = entry.Get<int>("ping", 0).ToString();
 
-           // TOOD: Make this work on creation of the Entry
+            // TOOD: Make this work on creation of this Entry
             SetClass("me", Local.Client != null && Entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
+        }
+
+        public void UpdateRoleClass(PlayerScore.Entry entry)
+        {
+            bool isMarkedAsTraitor = false;
+            bool isEntryRoleTraitor = entry.Get<string>("role") == "Traitor";
+            if (isEntryRoleTraitor)
+            {
+                bool isYourselfTraitor = Local.Client.Pawn is TTTPlayer player && player.Role is Roles.TraitorRole;
+                bool isEntryDead = !entry.Get<bool>("alive");
+
+                isMarkedAsTraitor = isYourselfTraitor || isEntryDead;
+            }
+            this.SetClass("traitor", isMarkedAsTraitor);
         }
     }
 }
