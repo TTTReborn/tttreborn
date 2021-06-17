@@ -39,6 +39,7 @@ namespace TTTReborn.Rounds
                     foreach (TTTPlayer player in TTTReborn.Gamemode.Game.GetPlayers())
                     {
                         player.ClientSetRole(player.Role.Name);
+                        player.GetClientOwner().SetScore("role", player.Role.Name);
                     }
                 }
             }

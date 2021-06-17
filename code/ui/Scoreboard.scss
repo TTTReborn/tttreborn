@@ -106,11 +106,9 @@ Scoreboard {
                 ScoreboardEntry {
                     width: 100%;
                     padding-left: 20px;
+
                     &.me {
                         background-color: #f2b42d1a;
-                    }
-                    &.traitor {
-                        background-color: #df293554;
                     }
                 }
 
@@ -123,15 +121,15 @@ Scoreboard {
                 }
 
             }
+
             &.dead {
                 .scoreboardGroup__title {
                     background-color: #af262f;
                 }
+
                 .scoreboardGroup__content {
                     border: #af262f;
                 }
-            }
-            &.mia {
             }
         }
     }

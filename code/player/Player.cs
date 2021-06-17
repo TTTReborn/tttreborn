@@ -81,6 +81,8 @@ namespace TTTReborn.Player
             using(Prediction.Off())
             {
                 ClientSetRole(To.Single(this), Role.Name);
+                GetClientOwner().SetScore("role", Role.Name);
+
                 ClientOnPlayerSpawned(this);
             }
 

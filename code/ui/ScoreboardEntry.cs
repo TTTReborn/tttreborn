@@ -1,8 +1,9 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
@@ -42,16 +43,13 @@ namespace TTTReborn.UI
 
         public void UpdateRoleClass(PlayerScore.Entry entry)
         {
-            bool isMarkedAsTraitor = false;
-            bool isEntryRoleTraitor = entry.Get<string>("role") == "Traitor";
-            if (isEntryRoleTraitor)
-            {
-                bool isYourselfTraitor = Local.Client.Pawn is TTTPlayer player && player.Role is Roles.TraitorRole;
-                bool isEntryDead = !entry.Get<bool>("alive");
+            string roleName = entry.Get<string>("role");
 
-                isMarkedAsTraitor = isYourselfTraitor || isEntryDead;
+            if (roleName != null)
+            {
+                Style.BackgroundColor = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)).Color;
+                Style.Dirty();
             }
-            this.SetClass("traitor", isMarkedAsTraitor);
         }
     }
 }
