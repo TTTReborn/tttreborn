@@ -24,7 +24,6 @@ namespace TTTReborn.UI
             bool isRightLocal = rightClient == Local.Client;
 
             Label leftLabel = e.AddLabel(isLeftLocal ? "You" : leftClient.Name, "left");
-            leftLabel.Style.FontColor = (leftClient.Pawn as TTTPlayer).Role.Color;
             leftLabel.SetClass("me", isLeftLocal);
 
             e.AddLabel(method, "method");
