@@ -1,5 +1,4 @@
 using Sandbox;
-using Sandbox.UI;
 
 using TTTReborn.Roles;
 using TTTReborn.UI;
@@ -20,6 +19,7 @@ namespace TTTReborn.Player
             Event.Run("tttreborn.player.spawned", player);
 
             player.IsConfirmed = false;
+            player.Role = new NoneRole();
         }
 
         /// <summary>

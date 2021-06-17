@@ -1,8 +1,8 @@
-using System;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
@@ -15,6 +15,10 @@ namespace TTTReborn.UI
         public Label Karma;
         public Label Score;
         public Label Ping;
+        public BaseRole currentRole;
+        public ulong SteamId;
+
+        private Client client;
 
         public ScoreboardEntry()
         {
@@ -30,26 +34,40 @@ namespace TTTReborn.UI
         {
             Entry = entry;
 
-            UpdateRoleClass(entry);
-
             PlayerName.Text = entry.GetString("name");
             Karma.Text = entry.Get<int>("karma", 0).ToString();
             Score.Text = entry.Get<int>("score", 0).ToString();
             Ping.Text = entry.Get<int>("ping", 0).ToString();
 
             // TOOD: Make this work on creation of this Entry
+            // TODO add sin-based fading
             SetClass("me", Local.Client != null && Entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
         }
 
-        public void UpdateRoleClass(PlayerScore.Entry entry)
+        public override void Tick()
         {
-            string roleName = entry.Get<string>("role");
-
-            if (roleName != null)
+            if (client == null)
             {
-                Style.BackgroundColor = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)).Color;
-                Style.Dirty();
+                foreach (Client loopClient in Client.All)
+                {
+                    if (loopClient.SteamId == SteamId)
+                    {
+                        client = loopClient;
+
+                        break;
+                    }
+                }
             }
+
+            if (client == null || client.Pawn == null || !(client.Pawn is TTTPlayer player) || currentRole == player.Role)
+            {
+                return;
+            }
+
+            currentRole = player.Role;
+
+            Style.BackgroundColor = player.Role.Color;
+            Style.Dirty();
         }
     }
 }

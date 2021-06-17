@@ -115,10 +115,12 @@ namespace TTTReborn.Rounds
             Random random = new Random();
 
             int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
+
             for (int i = 0; i < traitorCount; i++)
             {
                 List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
                 int randomId = random.Next(unassignedPlayers.Count);
+
                 if (unassignedPlayers[randomId].Role is NoneRole)
                 {
                     unassignedPlayers[randomId].Role = new TraitorRole();
@@ -136,7 +138,6 @@ namespace TTTReborn.Rounds
                 using(Prediction.Off())
                 {
                     player.ClientSetRole(To.Single(player), player.Role.Name);
-                    player.GetClientOwner().SetScore("role", player.Role.Name);
                 }
             }
         }

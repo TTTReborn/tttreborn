@@ -62,20 +62,15 @@ namespace TTTReborn.UI
                 ScoreboardLogo = Add.Panel("scoreboardLogo");
                 InformationHolder = Add.Panel("informationHolder");
                 ServerName = InformationHolder.Add.Label("Trouble in Terry's Town", "serverName"); // Here will be the servername
-                ServerInfo = InformationHolder.Add.Label(GetServerInfoStr(), "serverInfo");
+                ServerInfo = InformationHolder.Add.Label("", "serverInfo");
                 //ServerDescription = InformationHolder.Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat", "serverDescription");
             }
 
             public void UpdateServerInfo()
             {
-                ServerInfo.Text = GetServerInfoStr();
-            }
-
-            public string GetServerInfoStr()
-            {
                 // TODO: Get this out of the header
                 // TODO: Fill the other variables
-                return $"{PlayerScore.All.Length} Player(s) - Map: '{Sandbox.Global.MapName}'";
+                ServerInfo.Text = $"{PlayerScore.All.Length} Player(s) - Map: '{Sandbox.Global.MapName}'";
             }
         }
 
@@ -133,6 +128,7 @@ namespace TTTReborn.UI
             {
                 ScoreboardEntry scoreboardEntry = GroupContent.AddChild<ScoreboardEntry>();
                 scoreboardEntry.ScoreboardGroupName = GroupTitle;
+                scoreboardEntry.SteamId = entry.Get<ulong>("steamid");
 
                 scoreboardEntry.UpdateFrom(entry);
 
