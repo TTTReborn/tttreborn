@@ -1,0 +1,24 @@
+Nameplate
+{
+    position: absolute;
+    font-family: Poppins;
+    left: 50%;
+    top: 55%;
+
+    &.hide {
+        display: none;
+    }
+
+    Label {
+        color: white;
+        font-size: 16px;
+        padding: 5px 20px;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 1px solid #000;
+        border-radius: 4px;
+        margin: auto;
+        color: white;
+    }
+}
