@@ -11,19 +11,21 @@ namespace TTTReborn.UI
     {
         public PlayerScore.Entry Entry;
         public string ScoreboardGroupName;
+        public Label RoleColorLabel;
         public Label PlayerName;
         public Label Karma;
         public Label Score;
         public Label Ping;
-        public BaseRole currentRole;
         public ulong SteamId;
 
         private Client client;
+        private BaseRole currentRole;
 
         public ScoreboardEntry()
         {
             AddClass("entry");
 
+            RoleColorLabel = Add.Label("", "rolecolor");
             PlayerName = Add.Label("PlayerName", "name");
             Karma = Add.Label("", "karma");
             Score = Add.Label("", "score");
@@ -66,8 +68,8 @@ namespace TTTReborn.UI
 
             currentRole = player.Role;
 
-            Style.BackgroundColor = player.Role.Color.WithAlpha(0.1f);
-            Style.Dirty();
+            RoleColorLabel.Style.BackgroundColor = player.Role.Color;
+            RoleColorLabel.Style.Dirty();
         }
     }
 }
