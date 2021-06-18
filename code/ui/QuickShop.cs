@@ -5,6 +5,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Items;
+using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -157,7 +158,7 @@ namespace TTTReborn.UI
 
                     BuyButton = Add.Button("Buy", "buyButton");
                     BuyButton.AddEvent("onclick", () => {
-                        Log.Info($"You tried to buy '{SelectedItem?.GetName()}'.");
+                        ConsoleSystem.Run($"requestitem", Item.GetName());
                     });
                 }
 

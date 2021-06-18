@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
+using TTTReborn.Items;
+
 namespace TTTReborn.Player
 {
     partial class TTTPlayer
@@ -37,6 +39,30 @@ namespace TTTReborn.Player
             }
         }
 
+        [ServerCmd(Name = "requestitem")]
+        public static void RequestItem(string itemName)
+        {
+            IBuyableItem item = null;
+
+            Library.GetAll<IBuyableItem>().ToList().ForEach(t =>
+            {
+                if (!t.IsAbstract && !t.ContainsGenericParameters)
+                {
+                    if (Library.GetAttribute(t).Name == itemName)
+                    {
+                        item = Library.Create<IBuyableItem>(t);
+                    }
+                }
+            });
+
+            if (item == null)
+            {
+                return;
+            }
+
+            (ConsoleSystem.Caller.Pawn as TTTPlayer).RequestPurchase(item);
+        }
+
         [ClientCmd(Name = "playerids", Help = "Returns a list of all players (clients) and their associated IDs")]
         public static void PlayerID()
         {
@@ -48,5 +74,4 @@ namespace TTTReborn.Player
             }
         }
     }
-
 }

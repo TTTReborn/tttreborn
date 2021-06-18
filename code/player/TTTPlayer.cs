@@ -243,12 +243,12 @@ namespace TTTReborn.Player
 
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
-                attacker.DidDamage(info.Position, info.Damage, ((float)Health).LerpInverse(100, 0));
+                attacker.ClientDidDamage(info.Position, info.Damage, ((float)Health).LerpInverse(100, 0));
             }
 
             if (info.Weapon != null)
             {
-                TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+                ClientTookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
             }
 
             // Play pain sounds
@@ -289,6 +289,18 @@ namespace TTTReborn.Player
             corpse.Player = this;
 
             PlayerCorpse = corpse;
+        }
+
+        public void RequestPurchase(IBuyableItem item)
+        {
+            if (item is TTTWeapon weapon)
+            {
+                Inventory.Add(weapon);
+
+                return;
+            }
+
+            Log.Warning($"{GetClientOwner().Name} tried to buy '{item.GetName()}'.");
         }
     }
 }

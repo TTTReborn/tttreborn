@@ -1,5 +1,4 @@
 using Sandbox;
-using Sandbox.UI;
 
 using TTTReborn.Roles;
 using TTTReborn.UI;
@@ -62,14 +61,14 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void DidDamage(Vector3 position, float amount, float inverseHealth)
+        public void ClientDidDamage(Vector3 position, float amount, float inverseHealth)
         {
             Sound.FromScreen("dm.ui_attacker")
                 .SetPitch(1 + inverseHealth * 1);
         }
 
         [ClientRpc]
-        public void TookDamage(Vector3 position)
+        public void ClientTookDamage(Vector3 position)
         {
 
         }
