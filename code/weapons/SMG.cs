@@ -12,7 +12,7 @@ namespace TTTReborn.Weapons
         public override float ReloadTime => 4.0f;
         public override bool HasFlashlight => true;
         public override bool HasLaserDot => true;
-        public override int BaseDamage => 5;
+        public override int BaseDamage => 8;
         public override int Bucket => 2;
 
         public override void Spawn()
@@ -24,6 +24,11 @@ namespace TTTReborn.Weapons
 
         public override void AttackPrimary()
         {
+            if (TimeSinceDeployed < 0.6f)
+            {
+                return;
+            }
+
             if (!TakeAmmo(1))
             {
                 PlaySound("pistol.dryfire");

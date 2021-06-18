@@ -9,7 +9,7 @@ namespace TTTReborn.Weapons
         public override float PrimaryRate => 1.0f;
         public override float SecondaryRate => 0.3f;
         public override int Bucket => 1;
-        public override int BaseDamage => 35;
+        public override int BaseDamage => 45;
         public virtual int MeleeDistance => 80;
 
         public override void Spawn()
@@ -55,11 +55,21 @@ namespace TTTReborn.Weapons
 
         public override void AttackSecondary()
         {
+            if (TimeSinceDeployed < 0.2f)
+            {
+                return;
+            }
+
             StartChargeAttack();
         }
 
         public override void AttackPrimary()
         {
+            if (TimeSinceDeployed < 0.2f)
+            {
+                return;
+            }
+
             ShootEffects();
             PlaySound("rust_boneknife.attack");
             MeleeStrike(BaseDamage, 1.5f);

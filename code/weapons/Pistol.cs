@@ -6,8 +6,8 @@ namespace TTTReborn.Weapons
     partial class Pistol : Weapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        public override bool UnlimitedAmmo => false;
-        public override int ClipSize => 10;
+        public override bool UnlimitedAmmo => true;
+        public override int ClipSize => 15;
         public override float PrimaryRate => 15.0f;
         public override float SecondaryRate => 1.0f;
         public override float ReloadTime => 3.0f;
@@ -29,6 +29,11 @@ namespace TTTReborn.Weapons
 
         public override void AttackPrimary()
         {
+            if (TimeSinceDeployed < 0.4f)
+            {
+                return;
+            }
+
             if (!TakeAmmo(1))
             {
                 PlaySound("pistol.dryfire");

@@ -27,6 +27,11 @@ namespace TTTReborn.Weapons
 
         public override void AttackPrimary()
         {
+            if (TimeSinceDeployed < 0.4f)
+            {
+                return;
+            }
+
             if (!TakeAmmo(1))
             {
                 PlaySound("pistol.dryfire");
