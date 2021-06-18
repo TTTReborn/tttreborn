@@ -19,8 +19,8 @@ QuickShop {
     pointer-events: all;
 
     &.hide {
-        // display: none;
-        // pointer-events: none;
+        display: none;
+        pointer-events: none;
     }
 
     Header {

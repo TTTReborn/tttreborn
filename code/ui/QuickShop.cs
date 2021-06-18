@@ -10,6 +10,8 @@ namespace TTTReborn.UI
 {
     public class QuickShop : Panel
     {
+        public static IBuyableItem SelectedItem;
+
         private Header header;
         private Content content;
         private Footer footer;
@@ -72,6 +74,10 @@ namespace TTTReborn.UI
                 ItemPanel itemPanel = new ItemPanel(wrapper);
                 itemPanel.SetItem(buyableItem);
 
+                itemPanel.AddEvent("onclick", () => {
+                    SelectedItem = buyableItem;
+                });
+
                 itemPanels.Add(itemPanel);
             }
 
@@ -105,6 +111,7 @@ namespace TTTReborn.UI
         {
             private Description description;
             private BuyArea buyArea;
+            private IBuyableItem currentBuyableItem;
 
             public Footer(Panel parent)
             {
@@ -118,6 +125,7 @@ namespace TTTReborn.UI
             {
                 public Label EquipmentLabel;
                 public Label DescriptionLabel;
+                public IBuyableItem Item;
 
                 public Description(Panel parent)
                 {
@@ -126,20 +134,50 @@ namespace TTTReborn.UI
                     EquipmentLabel = Add.Label("ItemName", "equipment");
                     DescriptionLabel = Add.Label("Some item description...", "description");
                 }
+
+                public void SetItem(IBuyableItem item)
+                {
+                    Item = item;
+
+                    EquipmentLabel.Text = Item.GetName();
+                }
             }
 
             private class BuyArea : Panel
             {
                 public Label PriceLabel;
                 public Button BuyButton;
+                public IBuyableItem Item;
 
                 public BuyArea(Panel parent)
                 {
                     Parent = parent;
 
                     PriceLabel = Add.Label("$ 200", "price");
+
                     BuyButton = Add.Button("Buy", "buyButton");
+                    BuyButton.AddEvent("onclick", () => {
+                        // request server buy stuff
+                    });
                 }
+
+                public void SetItem(IBuyableItem item)
+                {
+                    Item = item;
+                }
+            }
+
+            public override void Tick()
+            {
+                if (currentBuyableItem == SelectedItem)
+                {
+                    return;
+                }
+
+                currentBuyableItem = SelectedItem;
+
+                description.SetItem(currentBuyableItem);
+                buyArea.SetItem(currentBuyableItem);
             }
         }
     }
