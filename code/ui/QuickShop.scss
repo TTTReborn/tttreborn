@@ -58,12 +58,6 @@ QuickShop {
                     margin-top: 5px;
                 }
 
-                &:hover {
-                    Label.price {
-                        color: #df2935;
-                    }
-                }
-
                 Panel.image {
                     width: 80px;
                     height: 80px;
@@ -73,8 +67,14 @@ QuickShop {
                     border-radius: 4px;
                     border: 2px solid transparent;
                     transition: all 0.05s linear;
+                }
 
-                    &:hover {
+                &:hover {
+                    Label.price {
+                        color: #df2935;
+                    }
+
+                    Panel.image {
                         border: 2px solid #df2935;
                     }
                 }

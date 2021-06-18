@@ -157,7 +157,7 @@ namespace TTTReborn.UI
 
                     BuyButton = Add.Button("Buy", "buyButton");
                     BuyButton.AddEvent("onclick", () => {
-                        // request server buy stuff
+                        Log.Info($"You tried to buy '{SelectedItem?.GetName()}'.");
                     });
                 }
 
