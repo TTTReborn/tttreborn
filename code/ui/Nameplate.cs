@@ -6,21 +6,21 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-	public class Nameplate : Panel
-	{
-		public float MaxDrawDistance = 500;
+    public class Nameplate : Panel
+    {
+        public static float MaxDrawDistance = 500;
 
         private Label nameLabel;
 
-		public Nameplate()
-		{
-			StyleSheet.Load("/ui/Nameplate.scss");
+        public Nameplate()
+        {
+            StyleSheet.Load("/ui/Nameplate.scss");
 
             nameLabel = Add.Label("", "name");
-		}
+        }
 
-		public override void Tick()
-		{
+        public override void Tick()
+        {
             TTTPlayer player = Local.Pawn as TTTPlayer;
 
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MaxDrawDistance)
@@ -38,6 +38,6 @@ namespace TTTReborn.UI
             }
 
             nameLabel.Text = (trace.Entity as TTTPlayer).GetClientOwner().Name;
-		}
-	}
+        }
+    }
 }
