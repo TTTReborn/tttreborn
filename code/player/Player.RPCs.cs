@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 
 using TTTReborn.Roles;
 using TTTReborn.UI;
@@ -18,8 +19,7 @@ namespace TTTReborn.Player
         {
             Event.Run("tttreborn.player.spawned", player);
 
-            player.IsConfirmed = false;
-            player.Role = new NoneRole();
+            player.IsConfirmed = true;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace TTTReborn.Player
         public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName)
         {
             deadPlayer.Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
-            deadPlayer.IsConfirmed = true;
+            deadPlayer.IsConfirmed = false;
 
             Client confirmClient = confirmPlayer.GetClientOwner();
             Client deadClient = deadPlayer.GetClientOwner();

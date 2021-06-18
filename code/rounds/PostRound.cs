@@ -39,9 +39,6 @@ namespace TTTReborn.Rounds
                     foreach (TTTPlayer player in TTTReborn.Gamemode.Game.GetPlayers())
                     {
                         player.ClientSetRole(player.Role.Name);
-
-                        // TODO move this to a method called after OnKilled() and use LifeState instead of Health
-                        player.GetClientOwner()?.SetScore("alive", player.Health > 0);
                     }
                 }
             }

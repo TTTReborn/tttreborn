@@ -30,7 +30,7 @@ Scoreboard {
 
         .scoreboardLogo {
             background-image: url("/assets/TTT-Reborn-Logo.png");
-            background-size: cover;
+            background-size: 100%;
             width: 100px;
             height: 100px;
             margin-right: 20px;
@@ -105,19 +105,7 @@ Scoreboard {
 
                 ScoreboardEntry {
                     width: 100%;
-
-                    &.me {
-                        background-color: #f2b42d1a;
-                    }
-
-                    Label {
-                        &.rolecolor {
-                            width: 10px;
-                            height: 10px;
-                            border-radius: 100%;
-                            margin: 5px 7.5px 0px 7.5px;
-                        }
-                    }
+                    padding-left: 20px;
                 }
 
                 .odd {
@@ -127,17 +115,16 @@ Scoreboard {
                 .even {
                     background-color: #4b4b4b66;
                 }
-
             }
-
             &.dead {
                 .scoreboardGroup__title {
                     background-color: #af262f;
                 }
-
                 .scoreboardGroup__content {
                     border: #af262f;
                 }
+            }
+            &.mia {
             }
         }
     }

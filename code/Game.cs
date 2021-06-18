@@ -31,7 +31,7 @@ namespace TTTReborn.Gamemode
 
             Round?.Finish();
             Round = round;
-            Round.Start();
+            Round?.Start();
         }
 
         public override void DoPlayerNoclip(Client client)

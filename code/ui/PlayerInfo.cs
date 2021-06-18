@@ -42,14 +42,18 @@ namespace TTTReborn.UI
 
                 if (currentRole != player.Role)
                 {
+                    if (currentRole != null)
+                    {
+                        // Remove RolePanel .class for the old role:
+                        SetClass(currentRole.Name, false);
+                    }
+
                     currentRole = player.Role;
 
-                    Style.BackgroundColor = player.Role.Color;
-                    Style.Dirty();
+                    // Give RolePanel .class for the matching role:
+                    SetClass(currentRole.Name, true);
 
                     RoleLabel.Text = $"{player.Role.Name.ToUpper()}";
-
-                    SetClass("hide", player.Role is NoneRole);
                 }
             }
         }
