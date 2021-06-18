@@ -76,6 +76,7 @@ namespace TTTReborn.Rounds
                 if (RoundEndTime > 0 && Sandbox.Time.Now >= RoundEndTime)
                 {
                     RoundEndTime = 0f;
+
                     OnTimeUp();
                 }
                 else

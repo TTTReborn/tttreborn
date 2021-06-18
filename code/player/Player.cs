@@ -80,8 +80,8 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                ClientSetRole(To.Single(this), Role.Name);
                 ClientOnPlayerSpawned(this);
+                ClientSetRole(To.Single(this), Role.Name);
             }
 
             RemovePlayerCorpse();
