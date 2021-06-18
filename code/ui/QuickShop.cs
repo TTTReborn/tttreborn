@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+
+using TTTReborn.Equipment;
 
 namespace TTTReborn.UI
 {
@@ -18,6 +22,13 @@ namespace TTTReborn.UI
             footer = new Footer(this);
         }
 
+        public override void Tick()
+        {
+            base.Tick();
+
+            SetClass("hide", !Input.Down(InputButton.Menu));
+        }
+
         private class Header : Panel
         {
             public Label TitleLabel { get; set; }
@@ -34,9 +45,45 @@ namespace TTTReborn.UI
 
         private class Content : Panel
         {
+            private List<EquipmentPanel> equipmentPanels = new();
+
+            private Panel wrapper;
+
             public Content(Panel parent)
             {
                 Parent = parent;
+
+                wrapper = Add.Panel("wrapper");
+
+                for (int i = 0; i < 5; i++)
+                {
+                    AddEquipment();
+                }
+            }
+
+            public void AddEquipment()
+            {
+                EquipmentPanel equipmentPanel = new EquipmentPanel(wrapper);
+                equipmentPanel.Equipment = new TTTEquipment();
+
+                equipmentPanels.Add(equipmentPanel);
+            }
+
+            private class EquipmentPanel : Panel
+            {
+                public TTTEquipment Equipment;
+
+                public Panel ImagePanel;
+
+                public Label EquipmentLabel;
+
+                public EquipmentPanel(Panel parent)
+                {
+                    Parent = parent;
+
+                    ImagePanel = Add.Panel("image");
+                    EquipmentLabel = Add.Label("Equipment", "equipment");
+                }
             }
         }
 

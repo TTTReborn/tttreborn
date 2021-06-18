@@ -3,8 +3,9 @@ QuickShop {
     border: 1px solid #000;
     border-radius: 8px;
 
+    font-family: Poppins;
     max-width: 800px;
-    width: 100%;
+    min-width: 600px;
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
@@ -29,6 +30,7 @@ QuickShop {
         border-bottom: #363636 1px solid;
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
+
         Label {
             &.title, &.credits {
                 font-size: 20px;
@@ -38,7 +40,37 @@ QuickShop {
 
     Content {
         max-height: 400px;
-        height: 400px;
+        padding: 10px;
+        text-align: center;
+        justify-content: center;
+
+        Panel.wrapper {
+            EquipmentPanel {
+                flex-direction: column;
+                margin: 10px;
+
+                Label {
+                    font-weight: 400;
+                    font-size: 16px;
+
+                    margin-top: 5px;
+                }
+
+                Panel.image {
+                    width: 80px;
+                    height: 80px;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    border-radius: 4px;
+                    margin: auto;
+                }
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
     }
 
     Footer {
@@ -49,6 +81,7 @@ QuickShop {
         border-top: #363636 1px solid;
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
+
         Description {
             flex-direction: column;
 
