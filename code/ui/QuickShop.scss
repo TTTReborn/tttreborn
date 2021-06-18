@@ -16,9 +16,11 @@ QuickShop {
     color: white;
     font-family: Poppins;
     font-weight: 500;
+    pointer-events: all;
 
     &.hide {
-        display: none;
+        // display: none;
+        // pointer-events: none;
     }
 
     Header {
@@ -27,7 +29,7 @@ QuickShop {
         align-items: baseline;
         padding: 16px 30px;
         background-color: #0007;
-        border-bottom: #363636 1px solid;
+        border-bottom: 1px solid #363636;
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
 
@@ -56,6 +58,12 @@ QuickShop {
                     margin-top: 5px;
                 }
 
+                &:hover {
+                    Label.price {
+                        color: #df2935;
+                    }
+                }
+
                 Panel.image {
                     width: 80px;
                     height: 80px;
@@ -63,11 +71,12 @@ QuickShop {
                     justify-content: center;
                     background-color: rgba(0, 0, 0, 0.7);
                     border-radius: 4px;
-                    margin: auto;
-                }
+                    border: 2px solid transparent;
+                    transition: all 0.05s linear;
 
-                &:hover {
-                    transform: scale(1.05);
+                    &:hover {
+                        border: 2px solid #df2935;
+                    }
                 }
             }
         }
@@ -78,7 +87,7 @@ QuickShop {
         justify-content: space-between;
         background-color: #0007;
         padding: 16px 30px;
-        border-top: #363636 1px solid;
+        border-top: 1px solid #363636;
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
 
