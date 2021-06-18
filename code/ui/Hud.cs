@@ -26,6 +26,7 @@ namespace TTTReborn.UI
             RootPanel.AddChild<GameTimer>();
             RootPanel.AddChild<Scoreboard>();
             RootPanel.AddChild<InfoFeed>();
+            RootPanel.AddChild<PostRoundMenu>();
             RootPanel.AddChild<InspectMenu>();
         }
 

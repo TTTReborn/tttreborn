@@ -65,6 +65,24 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
+        public static void ClientSetPostRoundMenu(string winner)
+        {
+            PostRoundMenu.Instance.Winner = winner;
+        }
+
+        [ClientRpc]
+        public static void ClientOpenPostRoundMenu()
+        {
+            PostRoundMenu.Instance.OpenPostRoundMenu();
+        }
+
+        [ClientRpc]
+        public static void ClientClosePostRoundMenu()
+        {
+            PostRoundMenu.Instance.IsShowing = false;
+        }
+
+        [ClientRpc]
         public void DidDamage(Vector3 position, float amount, float inverseHealth)
         {
             Sound.FromScreen("dm.ui_attacker")
