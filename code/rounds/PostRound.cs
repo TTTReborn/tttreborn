@@ -45,8 +45,6 @@ namespace TTTReborn.Rounds
                         // TODO move this to a method called after OnKilled() and use LifeState instead of Health
                         player.GetClientOwner()?.SetScore("alive", player.Health > 0);
                     }
-
-                    TTTPlayer.ClientOpenPostRoundMenu();
                 }
             }
         }

@@ -3,10 +3,10 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    // TODO: Create a "PostRoundStats" object that contains all Post Round Data, pass that in instead
     public class PostRoundMenu : Panel
     {
         public static PostRoundMenu Instance;
+        // TODO: Create a "PostRoundStats" object that contains all Post Round Data, pass that in instead...
         public string Winner;
         public bool IsShowing
         {
@@ -30,6 +30,13 @@ namespace TTTReborn.UI
             header = new Header(this);
 
             IsShowing = false;
+        }
+
+        public void OpenAndSetPostRoundMenu(string winner)
+        {
+            Winner = winner;
+
+            OpenPostRoundMenu();
         }
 
         public void OpenPostRoundMenu()
