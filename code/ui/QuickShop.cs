@@ -59,14 +59,21 @@ namespace TTTReborn.UI
 
                 wrapper = Add.Panel("wrapper");
 
-                foreach (Type type in Library.GetAll<TTTWeapon>())
+                foreach (Type type in Library.GetAll<IBuyableItem>())
                 {
                     if (type.IsAbstract || type.ContainsGenericParameters)
                     {
                         continue;
                     }
 
-                    AddItem(Library.Create<TTTWeapon>(type));
+                    IBuyableItem item = Library.Create<IBuyableItem>(type);
+
+                    if (SelectedItem == null)
+                    {
+                        SelectedItem = item;
+                    }
+
+                    AddItem(item);
                 }
             }
 

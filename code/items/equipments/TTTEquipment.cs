@@ -12,7 +12,7 @@ namespace TTTReborn.Items
         }
     }
 
-    public class TTTEquipment : Networked, IBuyableItem
+    public abstract class TTTEquipment : Networked, IBuyableItem
     {
         public string Name { get; private set; }
 
