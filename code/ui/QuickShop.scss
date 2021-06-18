@@ -70,6 +70,8 @@ QuickShop {
                 }
 
                 &:hover {
+                    cursor: pointer;
+
                     Label.price {
                         color: #df2935;
                     }
@@ -123,7 +125,12 @@ QuickShop {
                     display: inline-block;
                     border-radius: 2px;
                     background-color: #df2935;
-                    opacity: 0.9;
+                    opacity: 0.8;
+
+                    &:hover {
+                        cursor: pointer;
+                        opacity: 1;
+                    }
                 }
             }
         }
