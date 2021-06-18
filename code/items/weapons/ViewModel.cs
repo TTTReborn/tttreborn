@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using System;
 
-namespace TTTReborn.Weapons
+namespace TTTReborn.Items
 {
     partial class ViewModel : BaseViewModel
     {

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Player;
 using TTTReborn.UI;
 
-namespace TTTReborn.Weapons
+namespace TTTReborn.Items
 {
     public enum WeaponType
     {
@@ -28,7 +27,7 @@ namespace TTTReborn.Weapons
     }
 
     [WeaponAttribute("ttt_weapon")]
-    public abstract partial class Weapon : BaseWeapon
+    public abstract partial class TTTWeapon : BaseWeapon, IBuyableItem
     {
         public string Name { get; private set; }
         public WeaponType WeaponType { get; private set; }
@@ -43,8 +42,8 @@ namespace TTTReborn.Weapons
         public virtual bool HasLaserDot => false;
         public virtual int BaseDamage => 10;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        // TODO add player role to weapon to access in UI WeaponSelection.cs . 
-        // E.G. this weapon is bought in traitor shop: Role => "Traitor";  
+        // TODO add player role to weapon to access in UI WeaponSelection.cs .
+        // E.G. this weapon is bought in traitor shop: Role => "Traitor";
         // This weapon is a normal weapon: Role => "None"
 
         [Net, Predicted]
@@ -66,12 +65,22 @@ namespace TTTReborn.Weapons
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        public Weapon() : base()
+        public TTTWeapon() : base()
         {
             WeaponAttribute weaponAttribute = Library.GetAttribute(GetType()) as WeaponAttribute;
 
             Name = weaponAttribute.Name;
             WeaponType = weaponAttribute.WeaponType;
+        }
+
+        public int GetPrice()
+        {
+            return 200;
+        }
+
+        public bool IsBuyable()
+        {
+            return true;
         }
 
         public int AvailableAmmo()

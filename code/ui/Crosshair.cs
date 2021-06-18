@@ -2,7 +2,7 @@
 using Sandbox.UI;
 
 using TTTReborn.Player;
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 
 namespace TTTReborn.UI
 {
@@ -113,7 +113,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Weapon weapon = player.ActiveChild as Weapon;
+            TTTWeapon weapon = player.ActiveChild as TTTWeapon;
 
             if (weapon == null)
             {

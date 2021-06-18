@@ -45,11 +45,11 @@ QuickShop {
         justify-content: center;
 
         Panel.wrapper {
-            EquipmentPanel {
+            ItemPanel {
                 flex-direction: column;
                 margin: 10px;
 
-                Label {
+                Label.price {
                     font-weight: 400;
                     font-size: 16px;
 

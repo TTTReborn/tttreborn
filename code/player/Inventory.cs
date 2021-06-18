@@ -2,7 +2,7 @@
 using System.Linq;
 using Sandbox;
 
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
@@ -22,14 +22,14 @@ namespace TTTReborn.Player
                 return false;
             }
 
-            if (entity is Weapon weapon)
+            if (entity is TTTWeapon weapon)
             {
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
             bool added = base.Add(entity, makeActive);
 
-            List.Sort((Entity wep1, Entity wep2) => (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType));
+            List.Sort((Entity wep1, Entity wep2) => (wep1 as TTTWeapon).WeaponType.CompareTo((wep2 as TTTWeapon).WeaponType));
 
             return added;
         }
@@ -67,7 +67,7 @@ namespace TTTReborn.Player
             if (activeSlot != -1)
             {
                 int nextIndex = NormalizeSlotIndex(activeSlot + 1, inventorySize - 1); // Get next slot index
-                Weapon nextWeapon = List[nextIndex] as Weapon;
+                TTTWeapon nextWeapon = List[nextIndex] as TTTWeapon;
 
                 if (weaponType != 0)
                 {
@@ -75,7 +75,7 @@ namespace TTTReborn.Player
                     {
                         for (int weaponIndex = 0; weaponIndex < inventorySize; weaponIndex++)
                         {
-                            Weapon indexWeapon = List[weaponIndex] as Weapon;
+                            TTTWeapon indexWeapon = List[weaponIndex] as TTTWeapon;
 
                             if (indexWeapon.WeaponType == weaponType)
                             {

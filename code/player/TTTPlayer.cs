@@ -6,7 +6,7 @@ using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
 using TTTReborn.UI;
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
@@ -87,7 +87,6 @@ namespace TTTReborn.Player
         // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
         {
-
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
@@ -172,7 +171,7 @@ namespace TTTReborn.Player
         {
             if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
             {
-                int weaponSlot = (int) (ActiveChild as Weapon).WeaponType;
+                int weaponSlot = (int) (ActiveChild as TTTWeapon).WeaponType;
                 Entity droppedEntity = Inventory.DropActive();
 
                 if (droppedEntity != null)

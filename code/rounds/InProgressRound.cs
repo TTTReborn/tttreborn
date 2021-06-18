@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TTTReborn.Player;
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 using TTTReborn.Roles;
 
 namespace TTTReborn.Rounds

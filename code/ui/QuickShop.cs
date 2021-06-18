@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Equipment;
+using TTTReborn.Items;
 
 namespace TTTReborn.UI
 {
@@ -45,7 +46,7 @@ namespace TTTReborn.UI
 
         private class Content : Panel
         {
-            private List<EquipmentPanel> equipmentPanels = new();
+            private List<ItemPanel> itemPanels = new();
 
             private Panel wrapper;
 
@@ -55,34 +56,46 @@ namespace TTTReborn.UI
 
                 wrapper = Add.Panel("wrapper");
 
-                for (int i = 0; i < 5; i++)
+                foreach (Type type in Library.GetAll<TTTWeapon>())
                 {
-                    AddEquipment();
+                    if (type.IsAbstract || type.ContainsGenericParameters)
+                    {
+                        continue;
+                    }
+
+                    AddItem(Library.Create<TTTWeapon>(type));
                 }
             }
 
-            public void AddEquipment()
+            public void AddItem(IBuyableItem buyableItem)
             {
-                EquipmentPanel equipmentPanel = new EquipmentPanel(wrapper);
-                equipmentPanel.Equipment = new TTTEquipment();
+                ItemPanel itemPanel = new ItemPanel(wrapper);
+                itemPanel.SetItem(buyableItem);
 
-                equipmentPanels.Add(equipmentPanel);
+                itemPanels.Add(itemPanel);
             }
 
-            private class EquipmentPanel : Panel
+            private class ItemPanel : Panel
             {
-                public TTTEquipment Equipment;
+                private IBuyableItem buyableItem;
 
                 public Panel ImagePanel;
 
-                public Label EquipmentLabel;
+                public Label PriceLabel;
 
-                public EquipmentPanel(Panel parent)
+                public ItemPanel(Panel parent)
                 {
                     Parent = parent;
 
                     ImagePanel = Add.Panel("image");
-                    EquipmentLabel = Add.Label("Equipment", "equipment");
+                    PriceLabel = Add.Label("", "price");
+                }
+
+                public void SetItem(IBuyableItem buyableItem)
+                {
+                    this.buyableItem = buyableItem;
+
+                    PriceLabel.Text = $"$ {buyableItem.GetPrice()}";
                 }
             }
         }

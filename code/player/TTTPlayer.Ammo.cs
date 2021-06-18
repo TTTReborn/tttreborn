@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {

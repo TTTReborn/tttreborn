@@ -4,7 +4,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 
 // TODO Fix animation on dropping a higher slot weapon (instead of deleting and recreating, move and delete WeaponSlots in DOM)
 
@@ -14,7 +14,7 @@ namespace TTTReborn.UI
     {
         private Dictionary<string, WeaponSlot> weaponSlots = new();
 
-        private Weapon oldActiveWeapon;
+        private TTTWeapon oldActiveWeapon;
 
         public WeaponSelection()
         {
@@ -37,12 +37,12 @@ namespace TTTReborn.UI
             // update weapon slots, check for removed weapons etc.
             Inventory inventory = player.Inventory as Inventory;
             int inventoryCount = inventory.Count();
-            List<Weapon> newWeapons = new();
+            List<TTTWeapon> newWeapons = new();
             List<WeaponSlot> tmpSlots = new();
 
             for (int i = 0; i < inventoryCount; i++)
             {
-                Weapon weapon = inventory.GetSlot(i) as Weapon;
+                TTTWeapon weapon = inventory.GetSlot(i) as TTTWeapon;
 
                 weaponSlots.TryGetValue(weapon.Name, out WeaponSlot weaponSlot);
 
@@ -72,10 +72,10 @@ namespace TTTReborn.UI
 
                 weaponSlots.Clear();
 
-                inventory.List.Sort((Entity wep1, Entity wep2) => (wep1 as Weapon).WeaponType.CompareTo((wep2 as Weapon).WeaponType));
+                inventory.List.Sort((Entity wep1, Entity wep2) => (wep1 as TTTWeapon).WeaponType.CompareTo((wep2 as TTTWeapon).WeaponType));
 
                 // rebuild weaponslots in the right order
-                foreach (Weapon weapon in inventory.List)
+                foreach (TTTWeapon weapon in inventory.List)
                 {
                     // add in order
                     weaponSlots.Add(weapon.Name, new WeaponSlot(this, weapon));
@@ -86,7 +86,7 @@ namespace TTTReborn.UI
             }
 
             // update current selection
-            Weapon activeWeapon = player.ActiveChild as Weapon;
+            TTTWeapon activeWeapon = player.ActiveChild as TTTWeapon;
 
             if (oldActiveWeapon != activeWeapon && activeWeapon != null)
             {
@@ -161,7 +161,7 @@ namespace TTTReborn.UI
             public Label WeaponLabel { set; get; }
             public Label AmmoLabel { set; get; }
 
-            public WeaponSlot(Panel parent, Weapon weapon)
+            public WeaponSlot(Panel parent, TTTWeapon weapon)
             {
                 Parent = parent;
                 WeaponName = weapon.Name;
