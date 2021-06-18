@@ -95,6 +95,7 @@ namespace TTTReborn.UI
                 {
                     this.buyableItem = buyableItem;
 
+                    ImagePanel.Add.Label(buyableItem.GetName(), "name");
                     PriceLabel.Text = $"$ {buyableItem.GetPrice()}";
                 }
             }

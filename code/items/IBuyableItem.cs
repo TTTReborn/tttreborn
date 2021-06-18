@@ -5,5 +5,7 @@ namespace TTTReborn.Items
         int GetPrice();
 
         bool IsBuyable();
+
+        string GetName();
     }
 }

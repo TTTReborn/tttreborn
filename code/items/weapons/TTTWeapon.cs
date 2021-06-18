@@ -73,15 +73,11 @@ namespace TTTReborn.Items
             WeaponType = weaponAttribute.WeaponType;
         }
 
-        public int GetPrice()
-        {
-            return 200;
-        }
+        public int GetPrice() => 200;
 
-        public bool IsBuyable()
-        {
-            return true;
-        }
+        public bool IsBuyable() => true;
+
+        public string GetName() => Name;
 
         public int AvailableAmmo()
         {
