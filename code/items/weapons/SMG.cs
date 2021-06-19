@@ -10,9 +10,10 @@ namespace TTTReborn.Items
         public override float SecondaryRate => 1.0f;
         public override int ClipSize => 30;
         public override float ReloadTime => 4.0f;
+        public override float DeployTime => 0.6f;
         public override bool HasFlashlight => true;
         public override bool HasLaserDot => true;
-        public override int BaseDamage => 5;
+        public override int BaseDamage => 8;
         public override int Bucket => 2;
 
         public override void Spawn()
