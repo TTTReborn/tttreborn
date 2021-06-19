@@ -6,6 +6,27 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
+    public enum HitboxIndex
+    {
+        Pelvis = 1,
+        Stomach = 2,
+        Rips = 3,
+        Neck = 4,
+        Head = 5,
+        LeftUpperArm = 7,
+        LeftLowerArm = 8,
+        LeftHand = 9,
+        RightUpperArm = 11,
+        RightLowerArm = 12,
+        RightHand = 13,
+        RightUpperLeg = 14,
+        RightLowerLeg = 15,
+        RightFoot = 16,
+        LeftUpperLeg = 17,
+        LeftLowerLeg = 18,
+        LeftFoot = 19,
+    }
+
     public partial class TTTPlayer : Sandbox.Player
     {
         private static int WeaponDropVelocity { get; set; } = 300;
@@ -164,8 +185,10 @@ namespace TTTReborn.Player
 
         public override void TakeDamage(DamageInfo info)
         {
+            Log.Info($"{info.HitboxIndex}");
+
             // Headshot deals x2 damage
-            if (info.HitboxIndex == 0)
+            if (info.HitboxIndex == (int) HitboxIndex.Head)
             {
                 info.Damage *= 2.0f;
             }
