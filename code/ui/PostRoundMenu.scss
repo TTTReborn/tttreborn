@@ -1,0 +1,33 @@
+PostRoundMenu {
+    background-color: #0009;
+    border: 1px solid #000;
+    border-radius: 8px;
+
+    max-width: 600px;
+    width: 100%;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    flex-direction: column;
+
+    color: white;
+    font-family: Poppins;
+    font-weight: 500;
+
+    &.hide {
+        opacity: 0;
+    }
+
+    Header {
+        text-align: center;
+        margin: 12.5px 0;
+
+        Label {
+            font-family: Poppins;
+            font-weight: bold;
+            font-size: 40px;
+            width: 100%;
+        }
+    }
+}

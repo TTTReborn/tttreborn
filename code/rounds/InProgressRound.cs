@@ -6,6 +6,7 @@ using System.Linq;
 using TTTReborn.Player;
 using TTTReborn.Items;
 using TTTReborn.Roles;
+using TTTReborn.UI;
 
 namespace TTTReborn.Rounds
 {
@@ -24,9 +25,11 @@ namespace TTTReborn.Rounds
 
             player.MakeSpectator(player.EyePos);
 
-            if (IsRoundOver())
+            BaseRole result = IsRoundOver();
+
+            if (result is not NoneRole)
             {
-                TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
+                LoadPostRound(result);
             }
         }
 
@@ -36,9 +39,11 @@ namespace TTTReborn.Rounds
 
             Spectators.Remove(player);
 
-            if (IsRoundOver())
+            BaseRole result = IsRoundOver();
+
+            if (result is not NoneRole)
             {
-                TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
+                LoadPostRound(result);
             }
         }
 
@@ -86,7 +91,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
+            LoadPostRound(new InnocentRole());
 
             base.OnTimeUp();
         }
@@ -101,12 +106,21 @@ namespace TTTReborn.Rounds
             base.OnPlayerSpawn(player);
         }
 
-        private bool IsRoundOver()
+        private BaseRole IsRoundOver()
         {
             bool innocentsAlive = Players.Exists((player) => player.Role is InnocentRole);
-            bool terroristsAlive = Players.Exists((player) => player.Role is TraitorRole);
+            bool traitorsAlive = Players.Exists((player) => player.Role is TraitorRole);
 
-            return !innocentsAlive || !terroristsAlive;
+            if (innocentsAlive && !traitorsAlive)
+            {
+                return new InnocentRole();
+            }
+            else if (!innocentsAlive && traitorsAlive)
+            {
+                return new TraitorRole();
+            }
+
+            return new NoneRole();
         }
 
         private void AssignRoles()
@@ -140,6 +154,15 @@ namespace TTTReborn.Rounds
                     player.ClientSetRole(To.Single(player), player.Role.Name);
                 }
             }
+        }
+
+        private void LoadPostRound(BaseRole winningRole)
+        {
+            TTTPlayer.ClientOpenAndSetPostRoundMenu(
+                winningRole.Name,
+                winningRole.Color
+            );
+            TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
         }
     }
 }
