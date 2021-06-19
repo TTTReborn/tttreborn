@@ -185,9 +185,11 @@ namespace TTTReborn.Player
 
         public override void TakeDamage(DamageInfo info)
         {
-            Log.Info($"{info.HitboxIndex}");
+            if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
+            {
+                return;
+            }
 
-            // Headshot deals x2 damage
             if (info.HitboxIndex == (int) HitboxIndex.Head)
             {
                 info.Damage *= 2.0f;
@@ -195,7 +197,7 @@ namespace TTTReborn.Player
 
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
-                attacker.ClientDidDamage(info.Position, info.Damage, ((float)Health).LerpInverse(100, 0));
+                attacker.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
 
             if (info.Weapon != null)
@@ -206,11 +208,11 @@ namespace TTTReborn.Player
             // Play pain sounds
             if ((info.Flags & DamageFlags.Fall) == DamageFlags.Fall)
             {
-                PlaySound("fall");
+                PlaySound("fall").SetVolume(0.5f).SetPosition(info.Position);
             }
             else if ((info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
             {
-                PlaySound("grunt" + Rand.Int(1, 4));
+                PlaySound("grunt" + Rand.Int(1, 4)).SetVolume(0.4f).SetPosition(info.Position);
             }
 
             // Register player damage with the Karma system

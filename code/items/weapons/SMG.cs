@@ -27,7 +27,7 @@ namespace TTTReborn.Items
         {
             if (!TakeAmmo(1))
             {
-                PlaySound("pistol.dryfire");
+                PlaySound("pistol.dryfire").SetPosition(Position).SetVolume(0.2f);
 
                 return;
             }
@@ -35,7 +35,7 @@ namespace TTTReborn.Items
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
             ShootEffects();
-            PlaySound("rust_smg.shoot");
+            PlaySound("rust_smg.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.1f, 1.5f, BaseDamage, 3.0f);
         }
 
