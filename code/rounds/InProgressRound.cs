@@ -65,8 +65,11 @@ namespace TTTReborn.Rounds
 
                     // TODO: Remove once we can spawn in weapons into the map, for now just give the guns to people.
                     player.Inventory.Add(new Shotgun(), true);
+                    player.GiveAmmo(AmmoType.Buckshot, 16);
+
                     player.Inventory.Add(new SMG(), false);
                     player.Inventory.Add(new Pistol(), false);
+                    player.GiveAmmo(AmmoType.Pistol, 120);
                 }
 
                 AssignRoles();
@@ -112,10 +115,12 @@ namespace TTTReborn.Rounds
             Random random = new Random();
 
             int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
+
             for (int i = 0; i < traitorCount; i++)
             {
                 List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
                 int randomId = random.Next(unassignedPlayers.Count);
+
                 if (unassignedPlayers[randomId].Role is NoneRole)
                 {
                     unassignedPlayers[randomId].Role = new TraitorRole();
@@ -127,6 +132,12 @@ namespace TTTReborn.Rounds
                 if (player.Role is NoneRole)
                 {
                     player.Role = new InnocentRole();
+                }
+
+                // send everyone their roles
+                using(Prediction.Off())
+                {
+                    player.ClientSetRole(To.Single(player), player.Role.Name);
                 }
             }
         }

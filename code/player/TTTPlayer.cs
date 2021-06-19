@@ -16,49 +16,24 @@ namespace TTTReborn.Player
 
         private static int WeaponDropVelocity { get; set; } = 300;
 
-        public BaseRole Role {
-            set
-            {
-                role = value;
-
-                if (IsServer)
-                {
-                    ClientSetRole(To.Single(this), role.Name);
-                }
-            }
-            get {
-                return role;
-            }
-        }
-
-        private BaseRole role = new NoneRole();
+        public BaseRole Role { get; set; } = new NoneRole();
 
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        public bool IsConfirmed = false;
+
         private DamageInfo lastDamageInfo;
+
         private float inspectCorpseDistance = 80f;
 
         private TimeSince timeSinceDropped = 0;
 
+        private PlayerCorpse inspectingPlayerCorpse = null;
+
         public TTTPlayer()
         {
             Inventory = new Inventory(this);
-        }
-
-        public static List<TTTPlayer> GetAll()
-        {
-            List<TTTPlayer> playerList = new();
-
-            foreach (Entity entity in All)
-            {
-                if (entity is TTTPlayer player)
-                {
-                    playerList.Add(player);
-                }
-            }
-
-            return playerList;
         }
 
         public void MakeSpectator(Vector3 position = default)
@@ -101,15 +76,34 @@ namespace TTTReborn.Player
             Role = new NoneRole();
             Credits = 0;
 
+            GetClientOwner().SetScore("alive", true);
+
             using(Prediction.Off())
             {
-                ClientOnPlayerSpawned(To.Single(this));
+                ClientOnPlayerSpawned(this);
+                ClientSetRole(To.Single(this), Role.Name);
             }
 
             RemovePlayerCorpse();
             Inventory.DeleteContents();
             TTTReborn.Gamemode.Game.Instance?.Round?.OnPlayerSpawn(this);
+
             base.Respawn();
+
+            // hacky
+            // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
+            // TODO spawn player as spectator instantly
+            if (Gamemode.Game.Instance.Round is Rounds.InProgressRound || Gamemode.Game.Instance.Round is Rounds.PostRound)
+            {
+                GetClientOwner().SetScore("alive", false);
+
+                return;
+            }
+
+            if (Gamemode.Game.Instance.Round is Rounds.PreRound)
+            {
+                IsConfirmed = false;
+            }
         }
 
         public override void OnKilled()
@@ -123,7 +117,7 @@ namespace TTTReborn.Player
 
             using(Prediction.Off())
             {
-                ClientOnPlayerDied(To.Single(this));
+                ClientOnPlayerDied(To.Single(this), this);
             }
         }
 
@@ -141,12 +135,15 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
-            TickAttemptInspectPlayerCorpse();
+
             TickPlayerDropWeapon();
 
             SimulateActiveChild(client, ActiveChild);
 
-            TickAttemptInspectPlayerCorpse();
+            if (IsServer)
+            {
+                TickAttemptInspectPlayerCorpse();
+            }
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -188,30 +185,47 @@ namespace TTTReborn.Player
 
         private void TickAttemptInspectPlayerCorpse()
         {
-            if (IsServer)
+            using (Prediction.Off())
             {
-                using (Prediction.Off())
+                To client = To.Single(this);
+                PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
+
+                if (playerCorpse != null)
                 {
-                    To client = To.Single(this);
-                    PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
-
-                    if (playerCorpse != null)
+                    if (inspectingPlayerCorpse != playerCorpse)
                     {
-                        if (Input.Down(InputButton.Use) && !playerCorpse.IsIdentified)
-                        {
-                            playerCorpse.IsIdentified = true;
-
-                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
-                        }
+                        inspectingPlayerCorpse = playerCorpse;
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
                         ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
-
-                        return;
                     }
 
+                    if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
+                    {
+                        playerCorpse.IsIdentified = true;
+
+                        // TODO Handling if a player disconnects!
+                        if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
+                        {
+                            playerCorpse.Player.IsConfirmed = true;
+
+                            playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
+
+                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
+
+                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                        }
+                    }
+
+                    return;
+                }
+
+                if (inspectingPlayerCorpse != null)
+                {
                     ClientCloseInspectMenu(client);
+
+                    inspectingPlayerCorpse = null;
                 }
             }
         }

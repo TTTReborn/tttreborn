@@ -13,13 +13,13 @@ Scoreboard {
     transition: opacity 0.05s linear;
     display: flex;
     flex-direction: column;
-    background-color: #0009;
+    background-color: rgba(0, 0, 0, 0.7);
 
     &.open {
         opacity: 1;
     }
 
-    .header {
+    Header {
         padding: 16px 30px;
         padding-bottom: 25px;
         border-bottom: #363636 1px solid;
@@ -29,26 +29,27 @@ Scoreboard {
         display: flex;
 
         .scoreboardLogo {
-            background-image: url( /assets/TTT-Reborn-Logo.png );
-            background-size: 100%;
+            background-image: url("/assets/TTT-Reborn-Logo.png");
+            background-size: cover;
             width: 100px;
             height: 100px;
             margin-right: 20px;
-            // flex-basis:100px;
         }
-        // margin-bottom: 25px;
 
         .informationHolder {
             display: flex;
             flex-direction: column;
+
             .serverName {
                 font-size: 24px;
                 font-weight: 500;
             }
+
             .serverInfo {
                 font-weight: 400;
                 font-size: 18px;
             }
+
             .serverDescription {
                 font-weight: 300;
                 font-size: 0.9em;
@@ -58,38 +59,45 @@ Scoreboard {
             }
         }
     }
-    .tableHeader {
+
+    TableHeader {
         background-color: #0007;
         display: flex;
         flex-direction: row;
         font-weight: 500;
         font-size: 20px;
         padding-bottom: 8px;
+
         .name {
             padding-left: 20px;
         }
     }
+
     .mainContent {
-        .scoreboardGroup {
+        flex-direction: column;
+
+        ScoreboardGroup {
             display: flex;
             flex-direction: column;
             width: 100%;
             margin-top: 5px;
 
-            .scoreboardGroup__title {
-                background-color: #3f7e51;
-                font-size: 14px;
-                font-weight: 300;
-                width: 100px;
-                border-top-right-radius: 4px;
-                padding: 0 10px 0 20px;
+            .scoreboardGroup__title-wrapper {
+
+                .scoreboardGroup__title {
+                    background-color: #3f7e51;
+                    font-size: 14px;
+                    font-weight: 300;
+                    border-top-right-radius: 4px;
+                    padding: 0 20px;
+                }
             }
+
             .scoreboardGroup__content {
                 // border-image: linear-gradient(to bottom, #3f7e51, #3f7e51, #3f7e51, rgba(0, 0, 0, 0)) 1 1%;
                 border: 2px solid #3f7e51;
-                // border-color: #3f7e51;
                 border-right-width: 0;
-                border-left-width: 1px;
+                border-left-width: 2px;
                 border-bottom-width: 0;
                 display: flex;
                 flex-direction: column;
@@ -97,13 +105,38 @@ Scoreboard {
 
                 ScoreboardEntry {
                     width: 100%;
-                    padding-left: 20px;
+
+                    &.me {
+                        background-color: #f2b42d1a;
+                    }
+
+                    Label {
+                        &.rolecolor {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 100%;
+                            margin: 5px 7.5px 0px 7.5px;
+                        }
+                    }
                 }
+
                 .odd {
                     background-color: #0a0a0a66;
                 }
+
                 .even {
-                    background-color: #2a2a2a66;
+                    background-color: #4b4b4b66;
+                }
+
+            }
+
+            &.dead {
+                .scoreboardGroup__title {
+                    background-color: #af262f;
+                }
+
+                .scoreboardGroup__content {
+                    border: #af262f;
                 }
             }
         }
@@ -112,6 +145,7 @@ Scoreboard {
     .name {
         flex-grow: 1;
     }
+
     .score,
     .karma,
     .ping {
@@ -120,7 +154,7 @@ Scoreboard {
     }
 
     .footer {
-        margin-top:10px;
+        margin-top: 10px;
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
         border-top: #363636 1px solid;

@@ -8,15 +8,18 @@ namespace TTTReborn.Player
     partial class TTTPlayer
     {
         [ClientRpc]
-        public void ClientOnPlayerDied()
+        public void ClientOnPlayerDied(TTTPlayer player)
         {
-            Event.Run("tttreborn.player.died");
+            Event.Run("tttreborn.player.died", player);
         }
 
         [ClientRpc]
-        public void ClientOnPlayerSpawned()
+        public void ClientOnPlayerSpawned(TTTPlayer player)
         {
-            Event.Run("tttreborn.player.spawned");
+            Event.Run("tttreborn.player.spawned", player);
+
+            player.IsConfirmed = false;
+            player.Role = new NoneRole();
         }
 
         /// <summary>
@@ -33,6 +36,7 @@ namespace TTTReborn.Player
         public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName)
         {
             deadPlayer.Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
+            deadPlayer.IsConfirmed = true;
 
             Client confirmClient = confirmPlayer.GetClientOwner();
             Client deadClient = deadPlayer.GetClientOwner();
@@ -41,7 +45,7 @@ namespace TTTReborn.Player
                 confirmClient,
                 deadClient,
                 "found the body of",
-                $". Their role was {deadPlayer.Role.Name}!"
+                $"({deadPlayer.Role.Name})"
             );
         }
 

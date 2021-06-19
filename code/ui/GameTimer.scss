@@ -1,5 +1,5 @@
 GameTimer {
-    background-color: #0009;
+    background-color: rgba(0, 0, 0, 0.7);
     border: 1px solid #000;
     border-radius: 4px;
     margin: auto;
@@ -15,6 +15,21 @@ GameTimer {
     border-radius: 0 0 4px 4px;
 
     font-family: Poppins;
+
+    GameTimerContent {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+
+        .timelabel {
+            margin-left: 10px;
+            width: 65px;
+
+            &.waiting{
+                display: none;
+            }
+        }
+    }
 
     Label {
         font-weight: bold;

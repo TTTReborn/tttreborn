@@ -19,7 +19,7 @@ namespace TTTReborn.Roles
     {
         public string Name;
 
-        public virtual Color Color => Color.White;
+        public virtual Color Color => Color.Black;
 
         public BaseRole()
         {

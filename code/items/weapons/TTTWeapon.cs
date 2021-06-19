@@ -42,7 +42,7 @@ namespace TTTReborn.Items
         public virtual bool HasLaserDot => false;
         public virtual int BaseDamage => 10;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        // TODO add player role to weapon to access in UI WeaponSelection.cs .
+        // TODO add player role to weapon to access in UI WeaponSelection.cs.
         // E.G. this weapon is bought in traitor shop: Role => "Traitor";
         // This weapon is a normal weapon: Role => "None"
 
@@ -262,7 +262,6 @@ namespace TTTReborn.Items
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);
-            CrosshairPanel?.OnEvent("fire");
         }
 
         public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
@@ -330,7 +329,15 @@ namespace TTTReborn.Items
                 return;
             }
 
-            CrosshairPanel = new Crosshair();
+            // TODO: Give users a way to change their crosshair.
+            CrosshairPanel = new Crosshair().SetupCrosshair(new Crosshair.Properties(true,
+                false,
+                false,
+                10,
+                2,
+                0,
+                0,
+                Color.Green));
             CrosshairPanel.Parent = Local.Hud;
             CrosshairPanel.AddClass(ClassInfo.Name);
         }

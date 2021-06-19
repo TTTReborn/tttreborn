@@ -1,28 +1,42 @@
+using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using System.Collections.Generic;
 
 namespace TTTReborn.UI
 {
     public class Scoreboard : Panel
     {
+        private Dictionary<int, ScoreboardEntry> Entries = new();
+        //TODO: Event on start of PreRound =>
+        //Make all Entries trigger the Entry.UpdateForm()
+
+        private Dictionary<string, ScoreboardGroup> ScoreboardGroups = new();
+
+        private Header header;
+
+        private TableHeader tableHeader;
+
+        private Panel mainContent;
+
+        private Panel footer;
+
         public Scoreboard()
         {
             StyleSheet.Load("/ui/Scoreboard.scss");
 
-            AddHeader();
-            AddTableHeader();
+            header = new Header(this);
+            tableHeader = new TableHeader(this);
 
-            Panel mainContent = Add.Panel("mainContent");
+            mainContent = Add.Panel("mainContent");
 
-            // TODO: create playergroups & for each playergroup:
-            AddScoreboardGroup(mainContent);
+            AddScoreboardGroup("Alive");
 
             PlayerScore.OnPlayerAdded += AddPlayer;
+            PlayerScore.OnPlayerUpdated += UpdatePlayer;
             PlayerScore.OnPlayerRemoved += RemovePlayer;
 
-            Add.Panel("footer");
+            footer = Add.Panel("footer");
 
             // TODO: Implement UpdatePlayer method
             // PlayerScore.OnPlayerUpdated += UpdatePlayer;
@@ -35,116 +49,201 @@ namespace TTTReborn.UI
 
         public class Header : Panel
         {
-            public void UpdateServerInfo()
-            {
-                this.ServerInfo.Text = this.GetServerInfoStr();
-            }
-
-            public string GetServerInfoStr()
-            {
-                // TODO: Get this out of the header
-                // TODO: Fill the other variables
-                return $"{PlayerScore.All.Length}/MAXPLAYER - MAPNAME - ROUND/TIME LEFT";
-            }
-
             public Panel ScoreboardLogo;
             public Panel InformationHolder;
             public Label ServerName;
             public Label ServerInfo;
             public Label ServerDescription;
-            public Panel Canvas;
+
+            public Header(Panel parent)
+            {
+                Parent = parent;
+
+                ScoreboardLogo = Add.Panel("scoreboardLogo");
+                InformationHolder = Add.Panel("informationHolder");
+                ServerName = InformationHolder.Add.Label("Trouble in Terry's Town", "serverName"); // Here will be the servername
+                ServerInfo = InformationHolder.Add.Label("", "serverInfo");
+                //ServerDescription = InformationHolder.Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat", "serverDescription");
+            }
+
+            public void UpdateServerInfo()
+            {
+                // TODO: Get this out of the header
+                // TODO: Fill the other variables
+                ServerInfo.Text = $"{PlayerScore.All.Length} Player(s) - Map: '{Sandbox.Global.MapName}'";
+            }
+        }
+
+        public class TableHeader : Panel
+        {
+            public Label PlayerAliveCountLabel;
+            public Label KarmaLabel;
+            public Label ScoreLabel;
+            public Label PingLabel;
+
+            public TableHeader(Panel parent)
+            {
+                Parent = parent;
+
+                PlayerAliveCountLabel = Add.Label("? players left", "name");
+                KarmaLabel = Add.Label("Karma", "karma");
+                ScoreLabel = Add.Label("Score", "score");
+                PingLabel = Add.Label("Ping", "ping");
+            }
+
+            public override void Tick()
+            {
+                PlayerAliveCountLabel.Text = $"{Client.All.Count - TTTReborn.Gamemode.Game.GetConfirmedPlayers().Count} players left";
+            }
         }
 
         public class ScoreboardGroup : Panel
         {
+            public string GroupTitle { get; private set; }
+            public Panel GroupContent;
+            public int GroupMembers = 0;
+            private Panel groupTitleWrapper;
+            private Label groupTitleLabel;
+
+            public ScoreboardGroup(Panel parent, string groupName)
+            {
+                Parent = parent;
+
+                GroupTitle = groupName;
+
+                AddClass(groupName);
+
+                groupTitleWrapper = Add.Panel("scoreboardGroup__title-wrapper");
+                groupTitleLabel = groupTitleWrapper.Add.Label("", "scoreboardGroup__title");
+                GroupContent = Add.Panel("scoreboardGroup__content");
+            }
+
             // TODO: Implement logic for the player counter in the title
             public void UpdateLabel()
             {
-                this.GroupTitleLabel.Text = this.GroupTitle.ToUpper() + " - " + this.GroupMember.ToString();
+                groupTitleLabel.Text = $"{GroupTitle.ToUpper()}  -  {GroupMembers}";
             }
 
-            public int GroupMember;
-            public string GroupTitle;
-            public Label GroupTitleLabel;
-            public Panel GroupContent;
-            public Panel Canvas;
-        }
-
-        public Dictionary<int, ScoreboardEntry> Entries = new();
-
-        public Dictionary<string, ScoreboardGroup> ScoreboardGroups = new();
-
-        public Header header;
-
-        protected void AddHeader()
-        {
-            header = new Header();
-            header.Canvas = Add.Panel("header");
-            header.ScoreboardLogo = header.Canvas.Add.Panel("scoreboardLogo");
-            header.InformationHolder = header.Canvas.Add.Panel("informationHolder");
-            header.ServerName = header.InformationHolder.Add.Label("Here will be the servername", "serverName");
-            header.ServerInfo = header.InformationHolder.Add.Label(header.GetServerInfoStr(), "serverInfo");
-            header.ServerDescription = header.InformationHolder.Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat", "serverDescription");
-        }
-
-        protected void AddTableHeader()
-        {
-            Panel tableHeader = Add.Panel("tableHeader");
-            tableHeader.Add.Label("3 Innocents left", "name");
-            tableHeader.Add.Label("Karma", "karma");
-            tableHeader.Add.Label("Score", "score");
-            tableHeader.Add.Label("Ping", "ping");
-        }
-
-        protected void AddScoreboardGroup(Panel Content)
-        {
-            // TODO: Set proper groups dynamicly
-            string group = "alive";
-
-            ScoreboardGroup scoreboardGroup = new ScoreboardGroup
+            public ScoreboardEntry AddEntry(PlayerScore.Entry entry)
             {
+                ScoreboardEntry scoreboardEntry = GroupContent.AddChild<ScoreboardEntry>();
+                scoreboardEntry.ScoreboardGroupName = GroupTitle;
+                scoreboardEntry.SteamId = entry.Get<ulong>("steamid");
 
-            };
+                scoreboardEntry.UpdateFrom(entry);
 
-            scoreboardGroup.GroupTitle = group;
-            scoreboardGroup.GroupMember = 0;
-            scoreboardGroup.Canvas = Content.Add.Panel("scoreboardGroup " + group);
-            scoreboardGroup.GroupTitleLabel = scoreboardGroup.Canvas.Add.Label("", "scoreboardGroup__title");
+                return scoreboardEntry;
+            }
+        }
 
+        private ScoreboardGroup AddScoreboardGroup(string groupName)
+        {
+            if (ScoreboardGroups.ContainsKey(groupName))
+            {
+                return ScoreboardGroups[groupName];
+            }
+
+            ScoreboardGroup scoreboardGroup = new ScoreboardGroup(mainContent, groupName);
             scoreboardGroup.UpdateLabel();
 
-            scoreboardGroup.GroupContent = scoreboardGroup.Canvas.Add.Panel("scoreboardGroup__content");
+            ScoreboardGroups.Add(groupName, scoreboardGroup);
 
-            ScoreboardGroups[group] = scoreboardGroup;
+            return scoreboardGroup;
         }
 
-        protected void AddPlayer(PlayerScore.Entry entry)
+        private void AddPlayer(PlayerScore.Entry entry)
         {
-            // TODO: Get proper scoreboardGroup for entry
-            string group = "alive";
+            ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
+            ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry(entry);
 
-            ScoreboardGroup scoreboardGroup = ScoreboardGroups[group];
-            scoreboardGroup.GroupMember++;
+            scoreboardGroup.GroupMembers++;
 
-            ScoreboardEntry p = scoreboardGroup.GroupContent.AddChild<ScoreboardEntry>();
-            bool isOdd = (PlayerScore.All.Length % 2) != 0;
+            Entries.Add(entry.Id, scoreboardEntry);
 
-            p.UpdateFrom(entry, isOdd);
             scoreboardGroup.UpdateLabel();
             header.UpdateServerInfo();
-
-            Entries[entry.Id] = p;
         }
-        protected void RemovePlayer(PlayerScore.Entry entry)
+
+        // TODO add MIA
+        private ScoreboardGroup GetScoreboardGroup(PlayerScore.Entry entry)
+        {
+            string group = "Alive";
+
+            if (!entry.Get<bool>("alive", true))
+            {
+                // TODO better spectator check, maybe with a player var
+                group = "Dead";
+            }
+
+            ScoreboardGroups.TryGetValue(group, out ScoreboardGroup scoreboardGroup);
+
+            if (scoreboardGroup == null)
+            {
+                scoreboardGroup = AddScoreboardGroup(group);
+            }
+
+            return scoreboardGroup;
+        }
+
+        private void UpdatePlayer(PlayerScore.Entry entry)
         {
             if (Entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
             {
-                string group = "alive";
+                ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
 
-                ScoreboardGroup scoreboardGroup = ScoreboardGroups[group];
-                scoreboardGroup.GroupMember--;
+                if (scoreboardGroup.GroupTitle != panel.ScoreboardGroupName)
+                {
+                    // instead of remove and add, move the panel into the right parent
+                    RemovePlayer(entry);
+                    AddPlayer(entry);
+
+                    DeleteEmptyScoreboardGroups();
+
+                    return;
+                }
+
+                panel.UpdateFrom(entry);
+            }
+            else
+            {
+                // Add to queue? Up to now, just print an error #hacky
+                Log.Error($"Tried to update the ScoreboardPanel of the player with sid: '{entry.Get<ulong>("steamid")}'");
+            }
+        }
+
+        private void DeleteEmptyScoreboardGroups()
+        {
+            List<string> removeList = new();
+
+            foreach (KeyValuePair<string, ScoreboardGroup> keyValuePair in ScoreboardGroups)
+            {
+                if (keyValuePair.Value.GroupMembers == 0)
+                {
+                    removeList.Add(keyValuePair.Key);
+                }
+            }
+
+            foreach (string key in removeList)
+            {
+                ScoreboardGroups[key].Delete();
+
+                ScoreboardGroups.Remove(key);
+            }
+        }
+
+        private void RemovePlayer(PlayerScore.Entry entry)
+        {
+            if (Entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
+            {
+                ScoreboardGroups.TryGetValue(panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup);
+
+                if (scoreboardGroup != null)
+                {
+                    scoreboardGroup.GroupMembers--;
+                }
 
                 scoreboardGroup.UpdateLabel();
+
                 panel.Delete();
                 Entries.Remove(entry.Id);
             }
@@ -155,39 +254,6 @@ namespace TTTReborn.UI
             base.Tick();
 
             SetClass("open", Input.Down(InputButton.Score));
-        }
-    }
-
-    public class ScoreboardEntry : Panel
-    {
-        public PlayerScore.Entry Entry;
-
-        public Label PlayerName;
-        public Label Karma;
-        public Label Score;
-        public Label Ping;
-
-        public ScoreboardEntry()
-        {
-            AddClass("entry");
-
-            PlayerName = Add.Label("PlayerName", "name");
-            Karma = Add.Label("", "karma");
-            Score = Add.Label("", "score");
-            Ping = Add.Label("", "ping");
-        }
-
-        public virtual void UpdateFrom(PlayerScore.Entry entry, bool isOdd)
-        {
-            Entry = entry;
-
-            PlayerName.Text = entry.GetString("name");
-            Karma.Text = entry.Get<int>("karma", 0).ToString();
-            Score.Text = entry.Get<int>("score", 0).ToString();
-            Ping.Text = entry.Get<int>("ping", 0).ToString();
-
-            SetClass("me", Local.Client != null && entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
-            SetClass(isOdd ? "odd" : "even", true);
         }
     }
 }

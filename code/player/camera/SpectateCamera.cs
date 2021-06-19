@@ -30,10 +30,9 @@ namespace TTTReborn.Player.Camera
                 return;
             }
 
-            // TODO: Rework spectate camera logic.
             if (TargetPlayer == null || !TargetPlayer.IsValid() || Input.Pressed(InputButton.Attack1))
             {
-                List<TTTPlayer> players = TTTReborn.Gamemode.Game.Instance.Round.Players;
+                List<TTTPlayer> players = TTTReborn.Gamemode.Game.GetAlivePlayers();
 
                 if (players.Count > 0)
                 {
@@ -44,7 +43,8 @@ namespace TTTReborn.Player.Camera
                 }
             }
 
-            _focusPoint = Vector3.Lerp(_focusPoint, GetSpectatePoint(), Time.Delta * 5.0f);
+            // TODO: Setup a spectating first person camera.
+            _focusPoint = Vector3.Lerp(_focusPoint, GetSpectatePoint(), 0.1f);
 
             Pos = _focusPoint + GetViewOffset();
             Rot = player.EyeRot;

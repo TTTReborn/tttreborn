@@ -44,15 +44,13 @@ namespace TTTReborn.UI
             {
                 TTTWeapon weapon = inventory.GetSlot(i) as TTTWeapon;
 
-                weaponSlots.TryGetValue(weapon.Name, out WeaponSlot weaponSlot);
-
-                if (weaponSlot == null)
+                if (weaponSlots.TryGetValue(weapon.Name, out WeaponSlot weaponSlot))
                 {
-                    newWeapons.Add(weapon);
+                    tmpSlots.Add(weaponSlot);
                 }
                 else
                 {
-                    tmpSlots.Add(weaponSlot);
+                    newWeapons.Add(weapon);
                 }
 
                 // Do not update if we already rebuilding the WeaponSlots
