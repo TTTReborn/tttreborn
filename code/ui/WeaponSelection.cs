@@ -54,7 +54,7 @@ namespace TTTReborn.UI
                 }
 
                 // Do not update if we already rebuilding the WeaponSlots
-                if (newWeapons.Count == 0)
+                if (newWeapons.Count == 0 && weapon.WeaponType != WeaponType.Melee)
                 {
                     weaponSlot.UpdateAmmo($"{weapon.AmmoClip} + {player.AmmoCount(weapon.AmmoType)}");
                 }
@@ -166,7 +166,11 @@ namespace TTTReborn.UI
 
                 SlotLabel = Add.Label(((int) weapon.WeaponType).ToString(), "slotlabel");
                 WeaponLabel = Add.Label(weapon.GetName(), "weaponlabel");
-                AmmoLabel = Add.Label($"{weapon.AmmoClip}/{weapon.ClipSize}", "ammolabel");
+
+                if (weapon.WeaponType != WeaponType.Melee)
+                {
+                    AmmoLabel = Add.Label($"{weapon.AmmoClip}/{weapon.ClipSize}", "ammolabel");
+                }
             }
 
             public void UpdateAmmo(string ammoText)
