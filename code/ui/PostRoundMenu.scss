@@ -6,7 +6,7 @@ PostRoundMenu {
     max-width: 600px;
     width: 100%;
     left: 50%;
-    top: 35%;
+    top: 20%;
     transform: translateX(-50%) translateY(-50%);
     position: absolute;
     flex-direction: column;
@@ -16,11 +16,12 @@ PostRoundMenu {
     font-weight: 500;
 
     &.hide {
-        display: none;
+        opacity: 0;
     }
 
     Header {
         text-align: center;
+        margin: 10px 0;
 
         Label {
             font-family: Poppins;

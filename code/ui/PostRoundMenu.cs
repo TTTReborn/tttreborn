@@ -3,38 +3,50 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
+    public class PostRoundStats
+    {
+        public string WinningRole { get; private set; }
+        public Color WinningColor { get; private set; }
+
+        public PostRoundStats(string winningRole, Color winningColor)
+        {
+            WinningRole = winningRole;
+            WinningColor = winningColor;
+        }
+    }
+
     public class PostRoundMenu : Panel
     {
         public static PostRoundMenu Instance;
-        // TODO: Create a "PostRoundStats" object that contains all Post Round Data, pass that in instead...
-        public string Winner;
+
         public bool IsShowing
         {
-            get => isShowing;
+            get => _isShowing;
             set
             {
-                isShowing = value;
+                _isShowing = value;
 
-                SetClass("hide", !isShowing);
+                SetClass("hide", !_isShowing);
             }
         }
-        private bool isShowing = false;
+        private bool _isShowing = false;
 
-        private Header header;
+        private PostRoundStats _stats;
+        private Header _header;
 
         public PostRoundMenu()
         {
             Instance = this;
 
             StyleSheet.Load("/ui/PostRoundMenu.scss");
-            header = new Header(this);
+            _header = new Header(this);
 
             IsShowing = false;
         }
 
-        public void OpenAndSetPostRoundMenu(string winner)
+        public void OpenAndSetPostRoundMenu(PostRoundStats stats)
         {
-            Winner = winner;
+            _stats = stats;
 
             OpenPostRoundMenu();
         }
@@ -43,7 +55,8 @@ namespace TTTReborn.UI
         {
             IsShowing = true;
 
-            header.WinnerLabel.Text = $"{Winner?.ToUpper()}S WIN!";
+            _header.WinnerLabel.Text = $"{_stats.WinningRole.ToUpper()}S WIN!";
+            _header.WinnerLabel.Style.FontColor = _stats.WinningColor;
         }
 
         private class Header : Panel

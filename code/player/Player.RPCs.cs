@@ -65,9 +65,12 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientOpenAndSetPostRoundMenu(string winner)
+        public static void ClientOpenAndSetPostRoundMenu(string winningRole, Color winningColor)
         {
-            PostRoundMenu.Instance.OpenAndSetPostRoundMenu(winner);
+            PostRoundMenu.Instance.OpenAndSetPostRoundMenu(new PostRoundStats(
+                winningRole: winningRole,
+                winningColor: winningColor
+            ));
         }
 
         [ClientRpc]

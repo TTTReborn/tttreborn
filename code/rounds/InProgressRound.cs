@@ -155,8 +155,10 @@ namespace TTTReborn.Rounds
 
         private void LoadPostRound(BaseRole winningRole)
         {
-            // TODO: Consider maybe moving to PostRound
-            TTTPlayer.ClientOpenAndSetPostRoundMenu(winningRole.Name);
+            TTTPlayer.ClientOpenAndSetPostRoundMenu(
+                winningRole.Name,
+                winningRole.Color
+            );
             TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
         }
     }
