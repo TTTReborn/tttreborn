@@ -1,9 +1,9 @@
 ﻿using Sandbox;
 
-namespace TTTReborn.Weapons
+namespace TTTReborn.Items
 {
     [WeaponAttribute("ttt_knife", WeaponType = WeaponType.Melee)]
-    partial class Knife : Weapon
+    partial class Knife : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override float PrimaryRate => 1.0f;

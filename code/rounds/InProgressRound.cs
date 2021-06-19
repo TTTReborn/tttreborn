@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TTTReborn.Player;
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.UI;
 
@@ -25,7 +25,8 @@ namespace TTTReborn.Rounds
 
             player.MakeSpectator(player.EyePos);
 
-            var result = IsRoundOver();
+            BaseRole result = IsRoundOver();
+
             if (result is not NoneRole)
             {
                 LoadPostRound(result);
@@ -38,7 +39,8 @@ namespace TTTReborn.Rounds
 
             Spectators.Remove(player);
 
-            var result = IsRoundOver();
+            BaseRole result = IsRoundOver();
+
             if (result is not NoneRole)
             {
                 LoadPostRound(result);
@@ -112,7 +114,8 @@ namespace TTTReborn.Rounds
             if (innocentsAlive && !traitorsAlive)
             {
                 return new InnocentRole();
-            } else if (!innocentsAlive && traitorsAlive)
+            }
+            else if (!innocentsAlive && traitorsAlive)
             {
                 return new TraitorRole();
             }

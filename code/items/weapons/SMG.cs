@@ -1,9 +1,9 @@
 ﻿using Sandbox;
 
-namespace TTTReborn.Weapons
+namespace TTTReborn.Items
 {
     [WeaponAttribute("ttt_smg", WeaponType = WeaponType.Primary)]
-    partial class SMG : Weapon
+    partial class SMG : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
         public override float PrimaryRate => 10.0f;

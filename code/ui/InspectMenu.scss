@@ -104,6 +104,10 @@ InspectMenu {
             color: #ffae00;
             font-size: 0.8em;
             text-align: center;
+
+            &.hide {
+                display: none;
+            }
         }
     }
 }

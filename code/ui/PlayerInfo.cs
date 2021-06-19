@@ -2,7 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 
@@ -93,7 +93,7 @@ namespace TTTReborn.UI
                     HealthBar.Style.Dirty();
                 }
 
-                Weapon weapon = player.ActiveChild as Weapon;
+                TTTWeapon weapon = player.ActiveChild as TTTWeapon;
                 bool isWeaponNull = weapon == null;
 
                 AmmoBar.SetClass("hide", isWeaponNull || weapon.WeaponType == WeaponType.Melee);

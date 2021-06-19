@@ -17,6 +17,23 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/InfoFeed.scss");
         }
 
+        public virtual Panel AddEntry(Client leftClient, string method)
+        {
+            InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
+
+            bool isLeftLocal = leftClient == Local.Client;
+
+            TTTPlayer leftPlayer = leftClient.Pawn as TTTPlayer;
+
+            Label leftLabel = e.AddLabel(isLeftLocal ? "You" : leftClient.Name, "left");
+            leftLabel.SetClass("me", isLeftLocal);
+            leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
+
+            e.AddLabel(method, "method");
+
+            return e;
+        }
+
         public virtual Panel AddEntry(Client leftClient, Client rightClient, string method, string postfix = "")
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();

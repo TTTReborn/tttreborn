@@ -1,9 +1,9 @@
 ﻿using Sandbox;
 
-namespace TTTReborn.Weapons
+namespace TTTReborn.Items
 {
     [WeaponAttribute("ttt_pistol", WeaponType = WeaponType.Pistol)]
-    partial class Pistol : Weapon
+    partial class Pistol : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override bool UnlimitedAmmo => true;

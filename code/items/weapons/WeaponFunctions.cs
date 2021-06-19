@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
-namespace TTTReborn.Weapons
+namespace TTTReborn.Items
 {
     public static class WeaponFunctions
     {
@@ -15,7 +15,7 @@ namespace TTTReborn.Weapons
         {
             List<Type> weaponTypes = new();
 
-            Library.GetAll<Weapon>().ToList().ForEach(t =>
+            Library.GetAll<TTTWeapon>().ToList().ForEach(t =>
             {
                 if (!t.IsAbstract && !t.ContainsGenericParameters)
                 {
@@ -49,9 +49,9 @@ namespace TTTReborn.Weapons
         /// </summary>
         /// <param name="weaponType">A `TTTReborn.Weapons.Weapon` `Type`</param>
         /// <returns>Instance of a `TTTReborn.Weapons.Weapon` object</returns>
-        public static Weapon GetWeaponByType(Type weaponType)
+        public static TTTWeapon GetWeaponByType(Type weaponType)
         {
-            return Library.Create<Weapon>(weaponType);
+            return Library.Create<TTTWeapon>(weaponType);
         }
 
         /// <summary>

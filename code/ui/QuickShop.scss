@@ -1,0 +1,184 @@
+QuickShop {
+    background-color: #0009;
+    border: 1px solid #000;
+    border-radius: 8px;
+
+    font-family: Poppins;
+    max-width: 800px;
+    min-width: 600px;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    margin: auto;
+    position: absolute;
+    flex-direction: column;
+
+    color: white;
+    font-family: Poppins;
+    font-weight: 500;
+    pointer-events: all;
+
+    &.hide {
+        display: none;
+        pointer-events: none;
+    }
+
+    Header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 16px 30px;
+        background-color: #0007;
+        border-bottom: 1px solid #363636;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+
+        Label {
+            &.title, &.credits {
+                font-size: 20px;
+            }
+        }
+    }
+
+    Content {
+        max-height: 400px;
+        padding: 10px;
+        text-align: center;
+        justify-content: center;
+
+        Panel.wrapper {
+            ItemPanel {
+                flex-direction: column;
+                margin: 10px;
+
+                Label.price {
+                    font-weight: 400;
+                    font-size: 16px;
+
+                    margin-top: 5px;
+                }
+
+                Panel.image {
+                    width: 80px;
+                    height: 80px;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    border-radius: 4px;
+                    border: 2px solid transparent;
+                    transition: all 0.05s linear;
+                }
+
+                &:hover {
+                    cursor: pointer;
+
+                    Label.price {
+                        color: #df2935;
+                    }
+
+                    Panel.image {
+                        border: 2px solid #df2935;
+                    }
+                }
+
+                &.disabled {
+                    Panel.image {
+                        opacity: 0.5;
+                    }
+
+                    Label.price {
+                        color: gray;
+                    }
+
+                    &:hover {
+                        cursor: default;
+                    }
+                }
+            }
+        }
+    }
+
+    Footer {
+        flex-direction: row;
+        justify-content: space-between;
+        background-color: #0007;
+        padding: 16px 30px;
+        border-top: 1px solid #363636;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+
+        Description {
+            flex-direction: column;
+
+            Label {
+                &.equipment {
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        BuyArea {
+            display: flex;
+            font-size: 20px;
+            font-weight: 500;;
+            margin-top: 5px;
+
+            Label {
+                &.price {
+                    margin-right: 10px;
+                    padding: 4px 10px;
+                }
+            }
+
+            Button {
+                &.buyButton {
+                    padding: 4px 50px;
+                    height: 38px;
+                    text-align: center;
+                    display: inline-block;
+                    border-radius: 2px;
+                    background-color: #df2935;
+                    opacity: 0.8;
+
+                    &:hover {
+                        cursor: pointer;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+
+    ItemPanel {
+        margin-bottom: 25px;
+
+        ImageWrapper {
+            transition: all 0.05s linear;
+            cursor: pointer;
+
+            &.active,
+            &:hover {
+                // border-width: 2px; This attribute is not supported yet
+                transform: scale(1.05);
+
+                Image {
+                    box-shadow: 0px 2px 5px 1px #0007;
+                    background-color: rgba(255, 255, 255, 0.6);
+                }
+            }
+
+            &.active {
+                cursor: default;
+            }
+        }
+
+        .price {
+            display: block;
+            text-align: center;
+            margin-top: 5px;
+            font-size: 22px;
+            font-weight: 500;
+        }
+    }
+}

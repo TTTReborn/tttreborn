@@ -2,7 +2,7 @@ using Sandbox;
 using System.Threading.Tasks;
 
 using TTTReborn.Player;
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 
 namespace TTTReborn.Rounds
 {
@@ -24,7 +24,7 @@ namespace TTTReborn.Rounds
             {
                 foreach(Entity entity in Entity.All)
                 {
-                    if (entity is Weapon weapon)
+                    if (entity is TTTWeapon weapon)
                     {
                         weapon.Delete();
                     }

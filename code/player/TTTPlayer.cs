@@ -1,19 +1,13 @@
-using System.Collections.Generic;
 using Sandbox;
-using Sandbox.UI;
 
-using TTTReborn.Gamemode;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
-using TTTReborn.UI;
-using TTTReborn.Weapons;
+using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
     public partial class TTTPlayer : Sandbox.Player
     {
-        public PlayerCorpse PlayerCorpse { get; set; }
-
         private static int WeaponDropVelocity { get; set; } = 300;
 
         public BaseRole Role { get; set; } = new NoneRole();
@@ -21,15 +15,9 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
-        public bool IsConfirmed = false;
-
         private DamageInfo lastDamageInfo;
 
-        private float inspectCorpseDistance = 80f;
-
         private TimeSince timeSinceDropped = 0;
-
-        private PlayerCorpse inspectingPlayerCorpse = null;
 
         public TTTPlayer()
         {
@@ -46,15 +34,6 @@ namespace TTTReborn.Player
                 DeathPosition = position,
                 TimeSinceDied = 0
             };
-        }
-
-        public void RemovePlayerCorpse()
-        {
-            if (PlayerCorpse != null && PlayerCorpse.IsValid())
-            {
-                PlayerCorpse.Delete();
-                PlayerCorpse = null;
-            }
         }
 
         // Important: Server-side only
@@ -74,7 +53,7 @@ namespace TTTReborn.Player
             EnableShadowInFirstPerson = true;
 
             Role = new NoneRole();
-            Credits = 0;
+            Credits = 400;
 
             GetClientOwner().SetScore("alive", true);
 
@@ -103,6 +82,7 @@ namespace TTTReborn.Player
             if (Gamemode.Game.Instance.Round is Rounds.PreRound)
             {
                 IsConfirmed = false;
+                CorpseConfirmer = null;
             }
         }
 
@@ -168,7 +148,7 @@ namespace TTTReborn.Player
         {
             if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
             {
-                int weaponSlot = (int) (ActiveChild as Weapon).WeaponType;
+                int weaponSlot = (int) (ActiveChild as TTTWeapon).WeaponType;
                 Entity droppedEntity = Inventory.DropActive();
 
                 if (droppedEntity != null)
@@ -183,70 +163,6 @@ namespace TTTReborn.Player
             }
         }
 
-        private void TickAttemptInspectPlayerCorpse()
-        {
-            using (Prediction.Off())
-            {
-                To client = To.Single(this);
-                PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
-
-                if (playerCorpse != null)
-                {
-                    if (inspectingPlayerCorpse != playerCorpse)
-                    {
-                        inspectingPlayerCorpse = playerCorpse;
-
-                        // Send the request to the player looking at the player corpse.
-                        // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
-                    }
-
-                    if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
-                    {
-                        playerCorpse.IsIdentified = true;
-
-                        // TODO Handling if a player disconnects!
-                        if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
-                        {
-                            playerCorpse.Player.IsConfirmed = true;
-
-                            playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
-
-                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
-
-                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
-                        }
-                    }
-
-                    return;
-                }
-
-                if (inspectingPlayerCorpse != null)
-                {
-                    ClientCloseInspectMenu(client);
-
-                    inspectingPlayerCorpse = null;
-                }
-            }
-        }
-
-        private PlayerCorpse IsLookingAtPlayerCorpse()
-        {
-            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * inspectCorpseDistance)
-                .HitLayer(CollisionLayer.Debris)
-                .Ignore(ActiveChild)
-                .Ignore(this)
-                .Radius(2)
-                .Run();
-
-            if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
-            {
-                return corpse;
-            }
-
-            return null;
-        }
-
         public override void TakeDamage(DamageInfo info)
         {
             // Headshot deals x2 damage
@@ -257,12 +173,12 @@ namespace TTTReborn.Player
 
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
-                attacker.DidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+                attacker.ClientDidDamage(info.Position, info.Damage, ((float)Health).LerpInverse(100, 0));
             }
 
             if (info.Weapon != null)
             {
-                TookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+                ClientTookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
             }
 
             // Play pain sounds
@@ -288,21 +204,6 @@ namespace TTTReborn.Player
             RemovePlayerCorpse();
 
             base.OnDestroy();
-        }
-
-        private void BecomePlayerCorpseOnServer(Vector3 force, int forceBone)
-        {
-            PlayerCorpse corpse = new PlayerCorpse
-            {
-                Position = Position,
-                Rotation = Rotation
-            };
-
-            corpse.CopyFrom(this);
-            corpse.ApplyForceToBone(force, forceBone);
-            corpse.Player = this;
-
-            PlayerCorpse = corpse;
         }
     }
 }
