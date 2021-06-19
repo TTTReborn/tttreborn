@@ -35,6 +35,7 @@ namespace TTTReborn.Weapons
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
+        public virtual float DeployTime => 0.5f;
         public virtual int Bucket => 1;
         public virtual int BucketWeight => 100;
         public virtual bool UnlimitedAmmo => false;
@@ -164,7 +165,7 @@ namespace TTTReborn.Weapons
 
         public override bool CanPrimaryAttack()
         {
-            if (ChargeAttackEndTime > 0f && Time.Now < ChargeAttackEndTime)
+            if (ChargeAttackEndTime > 0f && Time.Now < ChargeAttackEndTime || TimeSinceDeployed <= DeployTime)
             {
                 return false;
             }
@@ -174,7 +175,7 @@ namespace TTTReborn.Weapons
 
         public override bool CanSecondaryAttack()
         {
-            if (ChargeAttackEndTime > 0f && Time.Now < ChargeAttackEndTime)
+            if (ChargeAttackEndTime > 0f && Time.Now < ChargeAttackEndTime || TimeSinceDeployed <= DeployTime)
             {
                 return false;
             }
