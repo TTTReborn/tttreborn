@@ -24,7 +24,7 @@ namespace TTTReborn.Roles
 
         public virtual Color Color => Color.Black;
 
-        public virtual TTTTeam DefaultTeam => null;
+        public TTTTeam DefaultTeam;
 
         public TTTRole()
         {

@@ -6,7 +6,7 @@ using System.Linq;
 using TTTReborn.Player;
 using TTTReborn.Items;
 using TTTReborn.Roles;
-using TTTReborn.UI;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
@@ -25,9 +25,9 @@ namespace TTTReborn.Rounds
 
             player.MakeSpectator(player.EyePos);
 
-            TTTRole result = IsRoundOver();
+            TTTTeam result = IsRoundOver();
 
-            if (result is not NoneRole)
+            if (result != null)
             {
                 LoadPostRound(result);
             }
@@ -39,9 +39,9 @@ namespace TTTReborn.Rounds
 
             Spectators.Remove(player);
 
-            TTTRole result = IsRoundOver();
+            TTTTeam result = IsRoundOver();
 
-            if (result is not NoneRole)
+            if (result != null)
             {
                 LoadPostRound(result);
             }
@@ -91,7 +91,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            LoadPostRound(new InnocentRole());
+            LoadPostRound(TTTTeam.GetTeam("Innocents"));
 
             base.OnTimeUp();
         }
@@ -106,21 +106,21 @@ namespace TTTReborn.Rounds
             base.OnPlayerSpawn(player);
         }
 
-        private TTTRole IsRoundOver()
+        private TTTTeam IsRoundOver()
         {
             bool innocentsAlive = Players.Exists((player) => player.Role is InnocentRole);
             bool traitorsAlive = Players.Exists((player) => player.Role is TraitorRole);
 
             if (innocentsAlive && !traitorsAlive)
             {
-                return new InnocentRole();
+                return TTTTeam.GetTeam("Innocents");
             }
             else if (!innocentsAlive && traitorsAlive)
             {
-                return new TraitorRole();
+                return TTTTeam.GetTeam("Traitors");
             }
 
-            return new NoneRole();
+            return null;
         }
 
         private void AssignRoles()
@@ -156,11 +156,11 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private void LoadPostRound(TTTRole winningRole)
+        private void LoadPostRound(TTTTeam winningTeam)
         {
             TTTPlayer.ClientOpenAndSetPostRoundMenu(
-                winningRole.Name,
-                winningRole.Color
+                winningTeam.Name,
+                winningTeam.Color
             );
             TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
         }

@@ -10,11 +10,10 @@ namespace TTTReborn.Roles
     {
         public override Color Color => Color.FromBytes(223, 41, 53);
 
-        public override TTTTeam DefaultTeam => TTTTeam.GetTeam("Traitors");
-
         public TraitorRole() : base()
         {
-
+            DefaultTeam = TTTTeam.GetTeam("Traitors");
+            DefaultTeam.Color = Color;
         }
 
         public override void OnSelect(TTTPlayer player)

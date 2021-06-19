@@ -12,6 +12,8 @@ namespace TTTReborn.Teams
 
         public string Name { get; private set; }
 
+        public Color Color { get; set; } = Color.Transparent;
+
         public List<TTTPlayer> Members;
 
         public TTTTeam(string name)
