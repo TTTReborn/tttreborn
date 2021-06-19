@@ -25,7 +25,7 @@ namespace TTTReborn.Rounds
 
             player.MakeSpectator(player.EyePos);
 
-            BaseRole result = IsRoundOver();
+            TTTRole result = IsRoundOver();
 
             if (result is not NoneRole)
             {
@@ -39,7 +39,7 @@ namespace TTTReborn.Rounds
 
             Spectators.Remove(player);
 
-            BaseRole result = IsRoundOver();
+            TTTRole result = IsRoundOver();
 
             if (result is not NoneRole)
             {
@@ -106,7 +106,7 @@ namespace TTTReborn.Rounds
             base.OnPlayerSpawn(player);
         }
 
-        private BaseRole IsRoundOver()
+        private TTTRole IsRoundOver()
         {
             bool innocentsAlive = Players.Exists((player) => player.Role is InnocentRole);
             bool traitorsAlive = Players.Exists((player) => player.Role is TraitorRole);
@@ -137,7 +137,7 @@ namespace TTTReborn.Rounds
 
                 if (unassignedPlayers[randomId].Role is NoneRole)
                 {
-                    unassignedPlayers[randomId].Role = new TraitorRole();
+                    unassignedPlayers[randomId].SetRole(new TraitorRole());
                 }
             }
 
@@ -145,7 +145,7 @@ namespace TTTReborn.Rounds
             {
                 if (player.Role is NoneRole)
                 {
-                    player.Role = new InnocentRole();
+                    player.SetRole(new InnocentRole());
                 }
 
                 // send everyone their roles
@@ -156,7 +156,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private void LoadPostRound(BaseRole winningRole)
+        private void LoadPostRound(TTTRole winningRole)
         {
             TTTPlayer.ClientOpenAndSetPostRoundMenu(
                 winningRole.Name,

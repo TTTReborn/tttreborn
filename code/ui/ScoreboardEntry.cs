@@ -19,7 +19,7 @@ namespace TTTReborn.UI
         public ulong SteamId;
 
         private Client client;
-        private BaseRole currentRole;
+        private TTTRole currentRole;
 
         public ScoreboardEntry()
         {

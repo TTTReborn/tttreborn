@@ -1,7 +1,7 @@
 namespace TTTReborn.Roles
 {
     [RoleAttribute("None")]
-    public class NoneRole : BaseRole
+    public class NoneRole : TTTRole
     {
         public override Color Color => Color.Transparent;
 

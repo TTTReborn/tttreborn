@@ -1,14 +1,16 @@
 using Sandbox;
 
 using TTTReborn.Player;
-using TTTReborn.Gamemode;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
     [RoleAttribute("Traitor")]
-    public class TraitorRole : BaseRole
+    public class TraitorRole : TTTRole
     {
         public override Color Color => Color.FromBytes(223, 41, 53);
+
+        public override TTTTeam DefaultTeam => TTTTeam.GetTeam("Traitors");
 
         public TraitorRole() : base()
         {
@@ -17,15 +19,12 @@ namespace TTTReborn.Roles
 
         public override void OnSelect(TTTPlayer player)
         {
-            if (Host.IsServer)
+            if (Host.IsServer && player.Team != null)
             {
-                foreach (TTTPlayer otherPlayer in Gamemode.Game.GetPlayers())
+                foreach (TTTPlayer otherPlayer in player.Team.Members)
                 {
-                    if (otherPlayer.Role is TraitorRole)
-                    {
-                        player.ClientSetRole(To.Single(otherPlayer), player.Role.Name);
-                        otherPlayer.ClientSetRole(To.Single(player), otherPlayer.Role.Name);
-                    }
+                    player.ClientSetRole(To.Single(otherPlayer), player.Role.Name);
+                    otherPlayer.ClientSetRole(To.Single(player), otherPlayer.Role.Name);
                 }
             }
         }
