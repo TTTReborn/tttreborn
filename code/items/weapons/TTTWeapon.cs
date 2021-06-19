@@ -29,7 +29,6 @@ namespace TTTReborn.Items
     [WeaponAttribute("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, IBuyableItem
     {
-        public string Name { get; private set; }
         public WeaponType WeaponType { get; private set; }
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
@@ -66,11 +65,13 @@ namespace TTTReborn.Items
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
+        private string name { get; set; }
+
         public TTTWeapon() : base()
         {
             WeaponAttribute weaponAttribute = Library.GetAttribute(GetType()) as WeaponAttribute;
 
-            Name = weaponAttribute.Name;
+            name = weaponAttribute.Name;
             WeaponType = weaponAttribute.WeaponType;
         }
 
@@ -81,7 +82,7 @@ namespace TTTReborn.Items
             return !(player.Inventory as Inventory).IsCarryingType(GetType());
         }
 
-        public string GetName() => Name;
+        public string GetName() => name;
 
         public void Equip(TTTPlayer player)
         {

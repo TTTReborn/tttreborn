@@ -44,7 +44,7 @@ namespace TTTReborn.UI
             {
                 TTTWeapon weapon = inventory.GetSlot(i) as TTTWeapon;
 
-                if (weaponSlots.TryGetValue(weapon.Name, out WeaponSlot weaponSlot))
+                if (weaponSlots.TryGetValue(weapon.GetName(), out WeaponSlot weaponSlot))
                 {
                     tmpSlots.Add(weaponSlot);
                 }
@@ -76,7 +76,7 @@ namespace TTTReborn.UI
                 foreach (TTTWeapon weapon in inventory.List)
                 {
                     // add in order
-                    weaponSlots.Add(weapon.Name, new WeaponSlot(this, weapon));
+                    weaponSlots.Add(weapon.GetName(), new WeaponSlot(this, weapon));
                 }
 
                 // update for dropped active weapon maybe
@@ -90,7 +90,7 @@ namespace TTTReborn.UI
             {
                 foreach (WeaponSlot weaponSlot in weaponSlots.Values)
                 {
-                    weaponSlot.SetClass("active", weaponSlot.WeaponName == activeWeapon.Name);
+                    weaponSlot.SetClass("active", weaponSlot.WeaponName == activeWeapon.GetName());
                 }
 
                 oldActiveWeapon = activeWeapon;
@@ -162,10 +162,10 @@ namespace TTTReborn.UI
             public WeaponSlot(Panel parent, TTTWeapon weapon)
             {
                 Parent = parent;
-                WeaponName = weapon.Name;
+                WeaponName = weapon.GetName();
 
                 SlotLabel = Add.Label(((int) weapon.WeaponType).ToString(), "slotlabel");
-                WeaponLabel = Add.Label(weapon.Name, "weaponlabel");
+                WeaponLabel = Add.Label(weapon.GetName(), "weaponlabel");
                 AmmoLabel = Add.Label($"{weapon.AmmoClip}/{weapon.ClipSize}", "ammolabel");
             }
 

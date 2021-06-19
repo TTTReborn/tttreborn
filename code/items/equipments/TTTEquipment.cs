@@ -16,20 +16,20 @@ namespace TTTReborn.Items
 
     public abstract class TTTEquipment : Networked, IBuyableItem
     {
-        public string Name { get; private set; }
+        private string name { get; set; }
 
         public TTTEquipment()
         {
             EquipmentAttribute equipmentAttribute = Library.GetAttribute(GetType()) as EquipmentAttribute;
 
-            Name = equipmentAttribute.Name;
+            name = equipmentAttribute.Name;
         }
 
         public virtual int GetPrice() => 100;
 
         public virtual bool IsBuyable(TTTPlayer player) => true;
 
-        public string GetName() => Name;
+        public string GetName() => name;
 
         public void Equip(TTTPlayer player)
         {
