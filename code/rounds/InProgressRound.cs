@@ -108,19 +108,22 @@ namespace TTTReborn.Rounds
 
         private TTTTeam IsRoundOver()
         {
-            bool innocentsAlive = Players.Exists((player) => player.Role is InnocentRole);
-            bool traitorsAlive = Players.Exists((player) => player.Role is TraitorRole);
+            List<TTTTeam> aliveTeams = new();
 
-            if (innocentsAlive && !traitorsAlive)
+            foreach (TTTPlayer player in Players)
             {
-                return TTTTeam.GetTeam("Innocents");
-            }
-            else if (!innocentsAlive && traitorsAlive)
-            {
-                return TTTTeam.GetTeam("Traitors");
+                if (player.Team == null)
+                {
+                    continue;
+                }
+
+                if (!aliveTeams.Contains(player.Team))
+                {
+                    aliveTeams.Add(player.Team);
+                }
             }
 
-            return null;
+            return aliveTeams.Count == 1 ? aliveTeams[0] : null;
         }
 
         private void AssignRoles()
