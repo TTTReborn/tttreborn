@@ -13,6 +13,13 @@ namespace TTTReborn.Player
 
         }
 
+        public override void DeleteContents()
+        {
+            base.DeleteContents();
+
+            (Owner as TTTPlayer).Ammo.Clear();
+        }
+
         public override bool Add(Entity entity, bool makeActive = false)
         {
             TTTPlayer player = Owner as TTTPlayer;

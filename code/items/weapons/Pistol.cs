@@ -32,13 +32,13 @@ namespace TTTReborn.Items
         {
             if (!TakeAmmo(1))
             {
-                PlaySound("pistol.dryfire");
+                PlaySound("pistol.dryfire").SetPosition(Position).SetVolume(0.2f);
 
                 return;
             }
 
             ShootEffects();
-            PlaySound("rust_pistol.shoot");
+            PlaySound("rust_pistol.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);
         }
     }
