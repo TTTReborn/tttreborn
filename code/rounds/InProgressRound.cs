@@ -161,11 +161,11 @@ namespace TTTReborn.Rounds
 
         private void LoadPostRound(TTTTeam winningTeam)
         {
+            Gamemode.Game.Instance.ChangeRound(new PostRound());
             TTTPlayer.ClientOpenAndSetPostRoundMenu(
                 winningTeam.Name,
                 winningTeam.Color
             );
-            TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
         }
     }
 }
