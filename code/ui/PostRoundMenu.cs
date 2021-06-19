@@ -56,7 +56,7 @@ namespace TTTReborn.UI
             IsShowing = true;
 
             _header.WinnerLabel.Text = $"{_stats.WinningRole.ToUpper()}S WIN!";
-            _header.WinnerLabel.Style.FontColor = _stats.WinningColor;
+            _header.Style.BackgroundColor = _stats.WinningColor;
         }
 
         private class Header : Panel
