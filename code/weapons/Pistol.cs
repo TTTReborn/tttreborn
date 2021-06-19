@@ -11,6 +11,7 @@ namespace TTTReborn.Weapons
         public override float PrimaryRate => 15.0f;
         public override float SecondaryRate => 1.0f;
         public override float ReloadTime => 3.0f;
+        public override float DeployTime => 0.4f;
         public override bool HasLaserDot => true;
         public override int BaseDamage => 8;
         public override int Bucket => 1;
@@ -29,11 +30,6 @@ namespace TTTReborn.Weapons
 
         public override void AttackPrimary()
         {
-            if (TimeSinceDeployed < 0.4f)
-            {
-                return;
-            }
-
             if (!TakeAmmo(1))
             {
                 PlaySound("pistol.dryfire");
