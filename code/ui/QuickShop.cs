@@ -189,6 +189,11 @@ namespace TTTReborn.UI
                     Item = item;
 
                     EquipmentLabel.Text = Item.GetName();
+
+                    if (item is TTTWeapon weapon)
+                    {
+                        DescriptionLabel.Text = $"Slot: {(int) weapon.WeaponType}";
+                    }
                 }
             }
 
