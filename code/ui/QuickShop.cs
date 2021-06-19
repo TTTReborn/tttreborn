@@ -57,6 +57,11 @@ namespace TTTReborn.UI
                 TitleLabel = Add.Label("Shop", "title");
                 CreditsLabel = Add.Label("$ 0", "credits");
             }
+
+            public override void Tick()
+            {
+                CreditsLabel.Text = $"$ {(Local.Pawn as TTTPlayer).Credits}";
+            }
         }
 
         private class Content : Panel
@@ -144,7 +149,7 @@ namespace TTTReborn.UI
 
                 public void Update()
                 {
-                    IsDisabled = !buyableItem.IsBuyable(Local.Pawn as TTTPlayer);
+                    IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(buyableItem) != BuyError.None;
 
                     SetClass("disabled", IsDisabled);
                 }

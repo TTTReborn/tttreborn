@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -76,6 +77,7 @@ namespace TTTReborn.UI
             {
                 header.SetPlayer(player);
                 content.SetPlayer(player);
+                footer.SetPlayer(player);
             }
 
             private class Header : Panel
@@ -166,7 +168,21 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    FooterLabel = Add.Label("0 credits left", "inspect");
+                    FooterLabel = Add.Label("$ 0 credits left", "inspect");
+                }
+
+                public void SetPlayer(TTTPlayer player)
+                {
+                    if (player.CorpseConfirmer != Local.Pawn as TTTPlayer)
+                    {
+                        FooterLabel.SetClass("hide", true);
+
+                        return;
+                    }
+
+                    FooterLabel.SetClass("hide", false);
+
+                    FooterLabel.Text = $"$ {player.CorpseCredits} credits found";
                 }
             }
         }

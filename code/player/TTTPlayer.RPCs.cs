@@ -19,6 +19,7 @@ namespace TTTReborn.Player
             Event.Run("tttreborn.player.spawned", player);
 
             player.IsConfirmed = false;
+            player.CorpseConfirmer = null;
             player.Role = new NoneRole();
         }
 
@@ -37,6 +38,7 @@ namespace TTTReborn.Player
         {
             deadPlayer.Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
             deadPlayer.IsConfirmed = true;
+            deadPlayer.CorpseConfirmer = confirmPlayer;
 
             Client confirmClient = confirmPlayer.GetClientOwner();
             Client deadClient = deadPlayer.GetClientOwner();
@@ -47,6 +49,14 @@ namespace TTTReborn.Player
                 "found the body of",
                 $"({deadPlayer.Role.Name})"
             );
+
+            if (confirmPlayer == Local.Pawn as TTTPlayer)
+            {
+                InfoFeed.Current?.AddEntry(
+                    confirmClient,
+                    $"found $ {deadPlayer.CorpseCredits} credits!"
+                );
+            }
         }
 
         [ClientRpc]
