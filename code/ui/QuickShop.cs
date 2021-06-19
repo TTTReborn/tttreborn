@@ -156,6 +156,7 @@ namespace TTTReborn.UI
                     IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(buyableItem) != BuyError.None;
 
                     SetClass("disabled", IsDisabled);
+                    SetClass("active", SelectedItem == buyableItem);
                 }
             }
         }
