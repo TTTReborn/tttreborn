@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
 {
-    public abstract partial class BaseRound : NetworkComponent
+    public abstract partial class BaseRound : Networked
     {
         public virtual int RoundDuration => 0;
         public virtual string RoundName => "";
@@ -24,7 +24,8 @@ namespace TTTReborn.Rounds
             }
         }
 
-        [Net] public string TimeLeftFormatted { get; set; }
+        [Net]
+        public string TimeLeftFormatted { get; set; }
 
         public void Start()
         {
@@ -42,6 +43,7 @@ namespace TTTReborn.Rounds
             if (Host.IsServer)
             {
                 RoundEndTime = 0f;
+
                 Players.Clear();
             }
 
