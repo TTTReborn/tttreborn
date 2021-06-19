@@ -12,9 +12,14 @@ namespace TTTReborn.Gamemode
     {
         public static Game Instance { get => Current as Game; }
 
-        [Net] public BaseRound Round { get; private set; }
+        [Net]
+        public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
         public KarmaSystem Karma = new KarmaSystem();
+
+        public Task GameTimer { get; private set; }
+
+        public bool IsShuttingdown = false;
 
         public Game()
         {
@@ -28,7 +33,7 @@ namespace TTTReborn.Gamemode
         {
             Assert.NotNull(round);
 
-            Round?.Finish();
+            Round.Finish();
             Round = round;
             Round.Start();
         }
@@ -47,7 +52,7 @@ namespace TTTReborn.Gamemode
         {
             if (entity is TTTPlayer player)
             {
-                Round?.OnPlayerKilled(player);
+                Round.OnPlayerKilled(player);
             }
 
             base.OnKilled(entity);
@@ -78,14 +83,14 @@ namespace TTTReborn.Gamemode
         {
             Log.Info(client.Name + " left, checking minimum player count...");
 
-            Round?.OnPlayerLeave(client.Pawn as TTTPlayer);
+            Round.OnPlayerLeave(client.Pawn as TTTPlayer);
 
             base.ClientDisconnect(client, reason);
         }
 
         public override void PostLevelLoaded()
         {
-            _ = StartGameTimer();
+            GameTimer = StartGameTimer();
 
             base.PostLevelLoaded();
         }
@@ -94,7 +99,7 @@ namespace TTTReborn.Gamemode
         {
             ChangeRound(new WaitingRound());
 
-            while (true)
+            while (!IsShuttingdown)
             {
                 OnGameSecond();
 
@@ -104,7 +109,15 @@ namespace TTTReborn.Gamemode
 
         private void OnGameSecond()
         {
-            Round?.OnSecond();
+            Round.OnSecond();
+        }
+
+        public override void Shutdown()
+        {
+            IsShuttingdown = true;
+            GameTimer = null;
+
+            base.Shutdown();
         }
     }
 }
