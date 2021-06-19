@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
+using TTTReborn.Player;
+
 namespace TTTReborn.Roles
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
@@ -24,6 +26,16 @@ namespace TTTReborn.Roles
         public BaseRole()
         {
             Name = RoleFunctions.GetRoleName(GetType());
+        }
+
+        public virtual void OnSelect(TTTPlayer player)
+        {
+
+        }
+
+        public virtual void OnDeselect(TTTPlayer player)
+        {
+
         }
     }
 

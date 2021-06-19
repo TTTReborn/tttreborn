@@ -10,7 +10,22 @@ namespace TTTReborn.Player
     {
         private static int WeaponDropVelocity { get; set; } = 300;
 
-        public BaseRole Role { get; set; } = new NoneRole();
+        public BaseRole Role {
+            get
+            {
+                return role;
+            }
+            set
+            {
+                role?.OnDeselect(this);
+
+                role = value;
+
+                role.OnSelect(this);
+            }
+        }
+
+        private BaseRole role = new NoneRole();
 
         [Net, Local]
         public int Credits { get; set; } = 0;

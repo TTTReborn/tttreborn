@@ -1,3 +1,8 @@
+using Sandbox;
+
+using TTTReborn.Player;
+using TTTReborn.Gamemode;
+
 namespace TTTReborn.Roles
 {
     [RoleAttribute("Traitor")]
@@ -8,6 +13,21 @@ namespace TTTReborn.Roles
         public TraitorRole() : base()
         {
 
+        }
+
+        public override void OnSelect(TTTPlayer player)
+        {
+            if (Host.IsServer)
+            {
+                foreach (TTTPlayer otherPlayer in Gamemode.Game.GetPlayers())
+                {
+                    if (otherPlayer.Role is TraitorRole)
+                    {
+                        player.ClientSetRole(To.Single(otherPlayer), player.Role.Name);
+                        otherPlayer.ClientSetRole(To.Single(player), otherPlayer.Role.Name);
+                    }
+                }
+            }
         }
     }
 }

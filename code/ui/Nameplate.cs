@@ -3,6 +3,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
@@ -28,16 +29,18 @@ namespace TTTReborn.UI
                 .Ignore(player)
                 .Run();
 
-            bool targetFound = trace.Hit && trace.Entity is TTTPlayer;
+            bool validHit = false;
 
-            SetClass("hide", !targetFound);
-
-            if (!targetFound)
+            if(trace.Hit && trace.Entity is TTTPlayer target)
             {
-                return;
+                validHit = true;
+
+                nameLabel.Text = target.GetClientOwner()?.Name ?? "";
+                nameLabel.Style.BackgroundColor = target.Role.Color;
+                nameLabel.Style.Dirty();
             }
 
-            nameLabel.Text = (trace.Entity as TTTPlayer).GetClientOwner().Name;
+            SetClass("hide", !validHit);
         }
     }
 }
