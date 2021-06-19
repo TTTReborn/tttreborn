@@ -34,7 +34,7 @@ namespace TTTReborn.Player
             return added;
         }
 
-        private bool IsCarryingType(Type t)
+        public bool IsCarryingType(Type t)
         {
             return List.Any(x => x.GetType() == t);
         }

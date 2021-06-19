@@ -293,9 +293,9 @@ namespace TTTReborn.Player
 
         public void RequestPurchase(IBuyableItem item)
         {
-            if (item is TTTWeapon weapon)
+            if (item.IsBuyable(this))
             {
-                Inventory.Add(weapon);
+                item.Equip(this);
 
                 return;
             }

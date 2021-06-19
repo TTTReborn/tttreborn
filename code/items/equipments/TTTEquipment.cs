@@ -1,6 +1,8 @@
 using System;
 using Sandbox;
 
+using TTTReborn.Player;
+
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
@@ -23,10 +25,15 @@ namespace TTTReborn.Items
             Name = equipmentAttribute.Name;
         }
 
-        public int GetPrice() => 100;
+        public virtual int GetPrice() => 100;
 
-        public bool IsBuyable() => true;
+        public virtual bool IsBuyable(TTTPlayer player) => true;
 
         public string GetName() => Name;
+
+        public void Equip(TTTPlayer player)
+        {
+
+        }
     }
 }

@@ -80,6 +80,20 @@ QuickShop {
                         border: 2px solid #df2935;
                     }
                 }
+
+                &.disabled {
+                    Panel.image {
+                        opacity: 0.5;
+                    }
+
+                    Label.price {
+                        color: gray;
+                    }
+
+                    &:hover {
+                        cursor: default;
+                    }
+                }
             }
         }
     }
