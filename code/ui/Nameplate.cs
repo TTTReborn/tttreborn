@@ -27,6 +27,7 @@ namespace TTTReborn.UI
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MaxDrawDistance)
                 .Ignore(player.ActiveChild)
                 .Ignore(player)
+                .UseHitboxes()
                 .Run();
 
             bool validHit = false;
