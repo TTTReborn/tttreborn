@@ -2,6 +2,7 @@ using Sandbox;
 
 using TTTReborn.Roles;
 using TTTReborn.UI;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Player
 {
@@ -20,23 +21,26 @@ namespace TTTReborn.Player
 
             player.IsConfirmed = false;
             player.CorpseConfirmer = null;
-            player.Role = new NoneRole();
+
+            player.SetRole(new NoneRole());
         }
 
         /// <summary>
         /// Must be called on the server, updates TTTPlayer's `Role`.
         /// </summary>
-        /// <param name="roleName">Same as the `TTTReborn.Roles.BaseRole`'s `TTTReborn.Roles.RoleAttribute`'s name</param>
+        /// <param name="roleName">Same as the `TTTReborn.Roles.TTTRole`'s `TTTReborn.Roles.RoleAttribute`'s name</param>
+        /// <param name="teamName">The name of the team</param>
         [ClientRpc]
-        public void ClientSetRole(string roleName)
+        public void ClientSetRole(string roleName, string teamName = null)
         {
-            Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
+            SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
         }
 
         [ClientRpc]
-        public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName)
+        public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName, string teamName = null)
         {
-            deadPlayer.Role = RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName));
+            deadPlayer.SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
+
             deadPlayer.IsConfirmed = true;
             deadPlayer.CorpseConfirmer = confirmPlayer;
 
@@ -75,10 +79,10 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientOpenAndSetPostRoundMenu(string winningRole, Color winningColor)
+        public static void ClientOpenAndSetPostRoundMenu(string winningTeam, Color winningColor)
         {
             PostRoundMenu.Instance.OpenAndSetPostRoundMenu(new PostRoundStats(
-                winningRole: winningRole,
+                winningRole: winningTeam,
                 winningColor: winningColor
             ));
         }

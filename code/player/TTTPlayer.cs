@@ -10,8 +10,6 @@ namespace TTTReborn.Player
     {
         private static int WeaponDropVelocity { get; set; } = 300;
 
-        public BaseRole Role { get; set; } = new NoneRole();
-
         [Net, Local]
         public int Credits { get; set; } = 0;
 
@@ -52,7 +50,8 @@ namespace TTTReborn.Player
             EnableHideInFirstPerson = true;
             EnableShadowInFirstPerson = true;
 
-            Role = new NoneRole();
+            SetRole(new NoneRole());
+
             Credits = 400;
 
             GetClientOwner().SetScore("alive", true);

@@ -58,7 +58,7 @@ QuickShop {
                     margin-top: 5px;
                 }
 
-                Panel.image {
+                Panel.icon {
                     width: 80px;
                     height: 80px;
                     align-items: center;
@@ -67,6 +67,9 @@ QuickShop {
                     border-radius: 4px;
                     border: 2px solid transparent;
                     transition: all 0.05s linear;
+
+                    background-size: cover;
+                    background-image-tint: white;
                 }
 
                 &:hover {
@@ -76,13 +79,13 @@ QuickShop {
                         color: #df2935;
                     }
 
-                    Panel.image {
+                    Panel.icon {
                         border: 2px solid #df2935;
                     }
                 }
 
                 &.disabled {
-                    Panel.image {
+                    Panel.icon {
                         opacity: 0.5;
                     }
 

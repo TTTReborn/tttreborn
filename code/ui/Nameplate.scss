@@ -5,6 +5,8 @@ Nameplate
     left: 50%;
     top: 55%;
     transform: translateX(-50%) translatey(-45%);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
 
     &.hide {
         display: none;
@@ -17,9 +19,7 @@ Nameplate
         padding: 2.5px 20px;
         align-items: center;
         justify-content: center;
-        background-color: rgba(0, 0, 0, 0.7);
-        border-radius: 4px;
         margin: auto;
-        color: white;
+        border-radius: 4px;
     }
 }

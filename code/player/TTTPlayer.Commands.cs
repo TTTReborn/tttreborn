@@ -1,8 +1,10 @@
-using System.Collections.Generic;
+using System;
 using System.Linq;
+using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Items;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Player
 {
@@ -61,6 +63,31 @@ namespace TTTReborn.Player
             }
 
             (ConsoleSystem.Caller.Pawn as TTTPlayer).RequestPurchase(item);
+        }
+
+        [ServerCmd(Name = "setrole")]
+        public static void SetRole(string roleName)
+        {
+            Type type = RoleFunctions.GetRoleTypeByName(roleName);
+
+            if (type == null)
+            {
+                Log.Info($"{ConsoleSystem.Caller.Name} entered a wrong role name: '{roleName}'.");
+
+                return;
+            }
+
+            TTTRole role = RoleFunctions.GetRoleByType(type);
+
+            if (role == null)
+            {
+                return;
+            }
+
+            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+            player.SetRole(role);
+            player.ClientSetRole(To.Single(player), role.Name);
         }
 
         [ClientCmd(Name = "playerids", Help = "Returns a list of all players (clients) and their associated IDs")]

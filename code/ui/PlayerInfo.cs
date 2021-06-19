@@ -22,7 +22,7 @@ namespace TTTReborn.UI
         {
             public Label RoleLabel { set; get; }
 
-            private BaseRole currentRole;
+            private TTTRole currentRole;
 
             public RolePanel(Panel parent)
             {

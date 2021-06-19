@@ -125,7 +125,7 @@ namespace TTTReborn.UI
             {
                 private IBuyableItem buyableItem;
 
-                public Panel ImagePanel;
+                public Panel IconPanel;
 
                 public Label PriceLabel;
 
@@ -135,7 +135,7 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    ImagePanel = Add.Panel("image");
+                    IconPanel = Add.Panel("icon");
                     PriceLabel = Add.Label("", "price");
                 }
 
@@ -143,8 +143,12 @@ namespace TTTReborn.UI
                 {
                     this.buyableItem = buyableItem;
 
-                    ImagePanel.Add.Label(buyableItem.GetName(), "name");
                     PriceLabel.Text = $"$ {buyableItem.GetPrice()}";
+
+                    IconPanel.Style.Background = new PanelBackground{
+                        Texture = Texture.Load($"/ui/weapons/{buyableItem.GetName()}.png")
+                    };
+                    IconPanel.Style.Dirty();
                 }
 
                 public void Update()

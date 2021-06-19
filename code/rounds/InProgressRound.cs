@@ -6,7 +6,7 @@ using System.Linq;
 using TTTReborn.Player;
 using TTTReborn.Items;
 using TTTReborn.Roles;
-using TTTReborn.UI;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
@@ -25,9 +25,9 @@ namespace TTTReborn.Rounds
 
             player.MakeSpectator(player.EyePos);
 
-            BaseRole result = IsRoundOver();
+            TTTTeam result = IsRoundOver();
 
-            if (result is not NoneRole)
+            if (result != null)
             {
                 LoadPostRound(result);
             }
@@ -39,9 +39,9 @@ namespace TTTReborn.Rounds
 
             Spectators.Remove(player);
 
-            BaseRole result = IsRoundOver();
+            TTTTeam result = IsRoundOver();
 
-            if (result is not NoneRole)
+            if (result != null)
             {
                 LoadPostRound(result);
             }
@@ -91,7 +91,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            LoadPostRound(new InnocentRole());
+            LoadPostRound(TTTTeam.GetTeam("Innocents"));
 
             base.OnTimeUp();
         }
@@ -106,21 +106,24 @@ namespace TTTReborn.Rounds
             base.OnPlayerSpawn(player);
         }
 
-        private BaseRole IsRoundOver()
+        private TTTTeam IsRoundOver()
         {
-            bool innocentsAlive = Players.Exists((player) => player.Role is InnocentRole);
-            bool traitorsAlive = Players.Exists((player) => player.Role is TraitorRole);
+            List<TTTTeam> aliveTeams = new();
 
-            if (innocentsAlive && !traitorsAlive)
+            foreach (TTTPlayer player in Players)
             {
-                return new InnocentRole();
-            }
-            else if (!innocentsAlive && traitorsAlive)
-            {
-                return new TraitorRole();
+                if (player.Team == null)
+                {
+                    continue;
+                }
+
+                if (!aliveTeams.Contains(player.Team))
+                {
+                    aliveTeams.Add(player.Team);
+                }
             }
 
-            return new NoneRole();
+            return aliveTeams.Count == 1 ? aliveTeams[0] : null;
         }
 
         private void AssignRoles()
@@ -137,7 +140,7 @@ namespace TTTReborn.Rounds
 
                 if (unassignedPlayers[randomId].Role is NoneRole)
                 {
-                    unassignedPlayers[randomId].Role = new TraitorRole();
+                    unassignedPlayers[randomId].SetRole(new TraitorRole());
                 }
             }
 
@@ -145,7 +148,7 @@ namespace TTTReborn.Rounds
             {
                 if (player.Role is NoneRole)
                 {
-                    player.Role = new InnocentRole();
+                    player.SetRole(new InnocentRole());
                 }
 
                 // send everyone their roles
@@ -156,11 +159,11 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private void LoadPostRound(BaseRole winningRole)
+        private void LoadPostRound(TTTTeam winningTeam)
         {
             TTTPlayer.ClientOpenAndSetPostRoundMenu(
-                winningRole.Name,
-                winningRole.Color
+                winningTeam.Name,
+                winningTeam.Color
             );
             TTTReborn.Gamemode.Game.Instance.ChangeRound(new PostRound());
         }
