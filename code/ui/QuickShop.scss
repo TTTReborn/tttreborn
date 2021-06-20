@@ -71,7 +71,7 @@ QuickShop {
                         margin-right: 1px;
                     }
 
-                    .dollarsign {
+                    Label.dollarsign {
                         font-size: 13px;
                         height: 18px;
                         width: 18px;
@@ -93,11 +93,14 @@ QuickShop {
                     background-size: cover;
                     background-image-tint: white;
                 }
+
                 &:hover {
                     cursor: pointer;
+
                     Panel.icon {
                         border: 1px solid #df2935;
                     }
+
                     &.active {
                         cursor: default;
 
@@ -106,6 +109,7 @@ QuickShop {
                         }
                     }
                 }
+
                 &.active {
                     Label.price {
                         color: #df2935;
