@@ -41,6 +41,8 @@ namespace TTTReborn.Player
         public TTTPlayer()
         {
             Inventory = new Inventory(this);
+
+            lastGroundEntity = GroundEntity;
         }
 
         public void MakeSpectator(Vector3 position = default)
@@ -135,7 +137,6 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
-
             TickPlayerDropWeapon();
 
             SimulateActiveChild(client, ActiveChild);
@@ -143,6 +144,7 @@ namespace TTTReborn.Player
             if (IsServer)
             {
                 TickAttemptInspectPlayerCorpse();
+                TickPlayerFalling();
             }
 
             PawnController controller = GetActiveController();
