@@ -75,7 +75,7 @@ namespace TTTReborn.Items
             WeaponType = weaponAttribute.WeaponType;
         }
 
-        public virtual int GetPrice() => 200;
+        public virtual int GetPrice() => 100;
 
         public virtual bool IsBuyable(TTTPlayer player)
         {
