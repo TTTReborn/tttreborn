@@ -63,7 +63,11 @@ namespace TTTReborn.Items
         {
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            ShootEffects();
+            using (Prediction.Off())
+            {
+                ShootEffects();
+            }
+
             PlaySound("rust_boneknife.attack");
             MeleeStrike(BaseDamage, 1.5f);
         }
@@ -72,7 +76,11 @@ namespace TTTReborn.Items
         {
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            ShootEffects();
+            using (Prediction.Off())
+            {
+                ShootEffects();
+            }
+
             PlaySound("rust_boneknife.attack");
             MeleeStrike(BaseDamage * 3f, 1.5f);
         }

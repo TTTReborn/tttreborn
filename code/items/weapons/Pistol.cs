@@ -30,6 +30,9 @@ namespace TTTReborn.Items
 
         public override void AttackPrimary()
         {
+            TimeSincePrimaryAttack = 0;
+            TimeSinceSecondaryAttack = 0;
+
             if (!TakeAmmo(1))
             {
                 PlaySound("pistol.dryfire").SetPosition(Position).SetVolume(0.2f);
@@ -39,7 +42,11 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            ShootEffects();
+            using (Prediction.Off())
+            {
+                ShootEffects();
+            }
+
             PlaySound("rust_pistol.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);
         }

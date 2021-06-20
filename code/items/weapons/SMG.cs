@@ -34,7 +34,11 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            ShootEffects();
+            using (Prediction.Off())
+            {
+                ShootEffects();
+            }
+
             PlaySound("rust_smg.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.1f, 1.5f, BaseDamage, 3.0f);
         }
@@ -53,6 +57,7 @@ namespace TTTReborn.Items
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);
+            CrosshairPanel?.CreateEvent("fire");
         }
 
         public override void SimulateAnimator(PawnAnimator anim)

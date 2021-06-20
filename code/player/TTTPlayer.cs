@@ -3,7 +3,6 @@ using Sandbox;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
 using TTTReborn.Items;
-using TTTReborn.Gamemode;
 
 namespace TTTReborn.Player
 {
