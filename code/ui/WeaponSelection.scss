@@ -5,7 +5,7 @@ WeaponSelection {
     min-width: 300px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #000;
+    border: 1px solid #1b1b1b;
     border-radius: 4px;
     font-family: Poppins;
 
@@ -18,7 +18,7 @@ WeaponSelection {
         font-size: 22px;
         color: white;
         border-bottom: 1px solid #000e;
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: #000c;
         font-size: 22px;
         transition: height 0.1s linear;
 
