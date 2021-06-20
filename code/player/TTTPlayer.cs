@@ -3,6 +3,7 @@ using Sandbox;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
 using TTTReborn.Items;
+using TTTReborn.Gamemode;
 
 namespace TTTReborn.Player
 {
@@ -122,7 +123,11 @@ namespace TTTReborn.Player
 
             if (IsServer)
             {
-                TickAttemptInspectPlayerCorpse();
+                if (Gamemode.Game.Instance.Round is Rounds.InProgressRound || Gamemode.Game.Instance.Round is Rounds.PostRound)
+                {
+                    TickAttemptInspectPlayerCorpse();
+                }
+
                 TickPlayerFalling();
             }
 
