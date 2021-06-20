@@ -42,7 +42,7 @@ namespace TTTReborn.Rounds
         {
             await Task.Delay(1000);
 
-            if (TTTReborn.Gamemode.Game.Instance.Round is WaitingRound)
+            if (player.IsValid() && TTTReborn.Gamemode.Game.Instance.Round is WaitingRound)
             {
                 player.Respawn();
             }

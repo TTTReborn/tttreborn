@@ -51,7 +51,7 @@ namespace TTTReborn.Rounds
         {
             await Task.Delay(1000);
 
-            if (TTTReborn.Gamemode.Game.Instance.Round is PreRound)
+            if (player.IsValid() && TTTReborn.Gamemode.Game.Instance.Round is PreRound)
             {
                 player.Respawn();
             }
