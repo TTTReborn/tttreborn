@@ -9,10 +9,10 @@ namespace TTTReborn.Player.Camera
         [Net, Predicted] public TimeSince TimeSinceDied { get; set; }
         [Net, Predicted] public Vector3 DeathPosition { get; set; }
 
-        public TTTPlayer TargetPlayer { get; set; }
+        private TTTPlayer TargetPlayer { get; set; }
 
         private Vector3 _focusPoint;
-        public int _targetIdx;
+        private int _targetIdx;
 
         public override void Activated()
         {
@@ -64,7 +64,7 @@ namespace TTTReborn.Player.Camera
             return TargetPlayer.EyePos;
         }
 
-        private Vector3 GetViewOffset()
+        private static Vector3 GetViewOffset()
         {
             if (Local.Pawn is not TTTPlayer player)
                 return Vector3.Zero;

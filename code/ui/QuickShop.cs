@@ -11,34 +11,34 @@ namespace TTTReborn.UI
 {
     public class QuickShop : Panel
     {
-        public static IBuyableItem SelectedItem;
-        public static bool IsOpen = false;
+        private static IBuyableItem _selectedItem;
+        private static bool _isOpen = false;
 
-        private Header header;
-        private Content content;
-        private Footer footer;
-        private bool wasOpened = false;
+        private Header _header;
+        private Footer _footer;
+        private bool _wasOpened = false;
+        private readonly Content _content;
 
         public QuickShop()
         {
             StyleSheet.Load("/ui/QuickShop.scss");
 
-            header = new Header(this);
-            content = new Content(this);
-            footer = new Footer(this);
+            _header = new Header(this);
+            _content = new Content(this);
+            _footer = new Footer(this);
         }
 
         public void Update()
         {
-            content.Update();
+            _content.Update();
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            wasOpened = IsOpen;
-            IsOpen = !HasClass("hide");
+            _wasOpened = _isOpen;
+            _isOpen = !HasClass("hide");
 
             Update();
 
@@ -47,34 +47,34 @@ namespace TTTReborn.UI
 
         private class Header : Panel
         {
-            public Label TitleLabel { get; set; }
-            public Label CreditsLabel { get; set; }
+            private Label _titleLabel;
+            private readonly Label _creditsLabel;
 
             public Header(Panel parent)
             {
                 Parent = parent;
 
-                TitleLabel = Add.Label("Shop", "title");
-                CreditsLabel = Add.Label("$ 0", "credits");
+                _titleLabel = Add.Label("Shop", "title");
+                _creditsLabel = Add.Label("$ 0", "credits");
             }
 
             public override void Tick()
             {
-                CreditsLabel.Text = $"$ {(Local.Pawn as TTTPlayer).Credits}";
+                _creditsLabel.Text = $"$ {(Local.Pawn as TTTPlayer).Credits}";
             }
         }
 
         private class Content : Panel
         {
-            private List<ItemPanel> itemPanels = new();
+            private readonly List<ItemPanel> _itemPanels = new();
 
-            private Panel wrapper;
+            private readonly Panel _wrapper;
 
             public Content(Panel parent)
             {
                 Parent = parent;
 
-                wrapper = Add.Panel("wrapper");
+                _wrapper = Add.Panel("wrapper");
 
                 foreach (Type type in Library.GetAll<IBuyableItem>())
                 {
@@ -85,9 +85,9 @@ namespace TTTReborn.UI
 
                     IBuyableItem item = Library.Create<IBuyableItem>(type);
 
-                    if (SelectedItem == null)
+                    if (_selectedItem == null)
                     {
-                        SelectedItem = item;
+                        _selectedItem = item;
                     }
 
                     AddItem(item);
@@ -96,7 +96,7 @@ namespace TTTReborn.UI
 
             public void Update()
             {
-                foreach(ItemPanel itemPanel in itemPanels)
+                foreach(ItemPanel itemPanel in _itemPanels)
                 {
                     itemPanel.Update();
                 }
@@ -104,7 +104,7 @@ namespace TTTReborn.UI
 
             public void AddItem(IBuyableItem buyableItem)
             {
-                ItemPanel itemPanel = new ItemPanel(wrapper);
+                ItemPanel itemPanel = new ItemPanel(_wrapper);
                 itemPanel.SetItem(buyableItem);
 
                 itemPanel.AddEvent("onclick", () => {
@@ -113,21 +113,21 @@ namespace TTTReborn.UI
                         return;
                     }
 
-                    SelectedItem = buyableItem;
+                    _selectedItem = buyableItem;
 
                     Update();
                 });
 
-                itemPanels.Add(itemPanel);
+                _itemPanels.Add(itemPanel);
             }
 
             private class ItemPanel : Panel
             {
-                private IBuyableItem buyableItem;
+                private IBuyableItem _buyableItem;
 
-                public Panel IconPanel;
+                private readonly Panel _iconPanel;
 
-                public Label PriceLabel;
+                private readonly Label _priceLabel;
 
                 public bool IsDisabled = false;
 
@@ -135,28 +135,28 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    IconPanel = Add.Panel("icon");
-                    PriceLabel = Add.Label("", "price");
+                    _iconPanel = Add.Panel("icon");
+                    _priceLabel = Add.Label("", "price");
                 }
 
                 public void SetItem(IBuyableItem buyableItem)
                 {
-                    this.buyableItem = buyableItem;
+                    this._buyableItem = buyableItem;
 
-                    PriceLabel.Text = $"$ {buyableItem.GetPrice()}";
+                    _priceLabel.Text = $"$ {buyableItem.GetPrice()}";
 
-                    IconPanel.Style.Background = new PanelBackground{
+                    _iconPanel.Style.Background = new PanelBackground{
                         Texture = Texture.Load($"/ui/weapons/{buyableItem.GetName()}.png")
                     };
-                    IconPanel.Style.Dirty();
+                    _iconPanel.Style.Dirty();
                 }
 
                 public void Update()
                 {
-                    IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(buyableItem) != BuyError.None;
+                    IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(_buyableItem) != BuyError.None;
 
                     SetClass("disabled", IsDisabled);
-                    SetClass("active", SelectedItem == buyableItem);
+                    SetClass("active", _selectedItem == _buyableItem);
                 }
             }
         }
@@ -216,7 +216,7 @@ namespace TTTReborn.UI
 
                     BuyButton = Add.Button("Buy", "buyButton");
                     BuyButton.AddEvent("onclick", () => {
-                        if (SelectedItem.IsBuyable(Local.Pawn as TTTPlayer))
+                        if (_selectedItem.IsBuyable(Local.Pawn as TTTPlayer))
                         {
                             ConsoleSystem.Run($"requestitem", Item.GetName());
                         }
@@ -231,12 +231,12 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
-                if (currentBuyableItem == SelectedItem)
+                if (currentBuyableItem == _selectedItem)
                 {
                     return;
                 }
 
-                currentBuyableItem = SelectedItem;
+                currentBuyableItem = _selectedItem;
 
                 description.SetItem(currentBuyableItem);
                 buyArea.SetItem(currentBuyableItem);

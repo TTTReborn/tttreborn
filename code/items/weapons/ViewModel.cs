@@ -5,7 +5,7 @@ namespace TTTReborn.Items
 {
     partial class ViewModel : BaseViewModel
     {
-        float walkBob = 0;
+        private float _walkBob = 0;
 
         public override void PostCameraSetup(ref CameraSetup camSetup)
         {
@@ -24,11 +24,11 @@ namespace TTTReborn.Items
 
             if (Owner.GroundEntity != null)
             {
-                walkBob += Time.Delta * 25.0f * speed;
+                _walkBob += Time.Delta * 25.0f * speed;
             }
 
-            Position += up * MathF.Sin(walkBob) * speed * -1;
-            Position += left * MathF.Sin(walkBob * 0.6f) * speed * -0.5f;
+            Position += up * MathF.Sin(_walkBob) * speed * -1;
+            Position += left * MathF.Sin(_walkBob * 0.6f) * speed * -0.5f;
         }
     }
 

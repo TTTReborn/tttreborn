@@ -9,22 +9,22 @@ namespace TTTReborn.UI
 {
     public class Nameplate : Panel
     {
-        public static float MaxDrawDistance = 500;
+        private const float MAX_DRAW_DISTANCE = 500;
 
-        private Label nameLabel;
+        private readonly Label _nameLabel;
 
         public Nameplate()
         {
             StyleSheet.Load("/ui/Nameplate.scss");
 
-            nameLabel = Add.Label("", "name");
+            _nameLabel = Add.Label("", "name");
         }
 
         public override void Tick()
         {
             TTTPlayer player = Local.Pawn as TTTPlayer;
 
-            TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MaxDrawDistance)
+            TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
                 .Ignore(player.ActiveChild)
                 .Ignore(player)
                 .UseHitboxes()
@@ -36,9 +36,9 @@ namespace TTTReborn.UI
             {
                 validHit = true;
 
-                nameLabel.Text = target.GetClientOwner()?.Name ?? "";
-                nameLabel.Style.BackgroundColor = target.Role.Color;
-                nameLabel.Style.Dirty();
+                _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
+                _nameLabel.Style.BackgroundColor = target.Role.Color;
+                _nameLabel.Style.Dirty();
             }
 
             SetClass("hide", !validHit);

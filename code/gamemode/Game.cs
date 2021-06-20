@@ -19,7 +19,7 @@ namespace TTTReborn.Gamemode
 
         public Task GameTimer { get; private set; }
 
-        public bool IsShuttingdown = false;
+        private bool _isShuttingdown = false;
 
         public Game()
         {
@@ -99,7 +99,7 @@ namespace TTTReborn.Gamemode
         {
             ChangeRound(new WaitingRound());
 
-            while (!IsShuttingdown)
+            while (!_isShuttingdown)
             {
                 OnGameSecond();
 
@@ -114,7 +114,7 @@ namespace TTTReborn.Gamemode
 
         public override void Shutdown()
         {
-            IsShuttingdown = true;
+            _isShuttingdown = true;
             GameTimer = null;
 
             base.Shutdown();

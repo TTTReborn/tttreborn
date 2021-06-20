@@ -20,7 +20,7 @@ namespace TTTReborn.Roles
     [RoleAttribute("Base")]
     public abstract class TTTRole
     {
-        public string Name;
+        public readonly string Name;
 
         public virtual Color Color => Color.Black;
 
@@ -92,12 +92,7 @@ namespace TTTReborn.Roles
         /// <returns>Instance of a `TTTReborn.Roles.TTTRole` object</returns>
         public static TTTRole GetRoleByType(Type roleType)
         {
-            if (roleType == null)
-            {
-                return null;
-            }
-
-            return Library.Create<TTTRole>(roleType);
+            return roleType != null ? Library.Create<TTTRole>(roleType) : null;
         }
 
         /// <summary>
@@ -107,12 +102,7 @@ namespace TTTReborn.Roles
         /// <returns>`TTTReborn.Roles.RoleAttribute`'s `Name`</returns>
         public static string GetRoleName(Type roleType)
         {
-            if (roleType == null)
-            {
-                return null;
-            }
-
-            return Library.GetAttribute(roleType).Name;
+            return roleType != null ? Library.GetAttribute(roleType).Name : null;
         }
     }
 }

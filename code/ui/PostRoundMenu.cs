@@ -5,8 +5,8 @@ namespace TTTReborn.UI
 {
     public class PostRoundStats
     {
-        public string WinningRole { get; private set; }
-        public Color WinningColor { get; private set; }
+        public readonly string WinningRole;
+        public Color WinningColor;
 
         public PostRoundStats(string winningRole, Color winningColor)
         {
@@ -32,7 +32,7 @@ namespace TTTReborn.UI
         private bool _isShowing = false;
 
         private PostRoundStats _stats;
-        private Header _header;
+        private readonly Header _header;
 
         public PostRoundMenu()
         {
@@ -61,7 +61,7 @@ namespace TTTReborn.UI
 
         private class Header : Panel
         {
-            public Label WinnerLabel { get; set; }
+            public readonly Label WinnerLabel;
 
             public Header(Panel parent)
             {

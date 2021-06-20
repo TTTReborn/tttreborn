@@ -159,7 +159,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private void LoadPostRound(TTTTeam winningTeam)
+        private static void LoadPostRound(TTTTeam winningTeam)
         {
             Gamemode.Game.Instance.ChangeRound(new PostRound());
             TTTPlayer.ClientOpenAndSetPostRoundMenu(

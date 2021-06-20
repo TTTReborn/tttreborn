@@ -65,13 +65,13 @@ namespace TTTReborn.Items
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        private string name { get; set; }
+        private string Name { get; set; }
 
         public TTTWeapon() : base()
         {
             WeaponAttribute weaponAttribute = Library.GetAttribute(GetType()) as WeaponAttribute;
 
-            name = weaponAttribute.Name;
+            Name = weaponAttribute.Name;
             WeaponType = weaponAttribute.WeaponType;
         }
 
@@ -82,7 +82,7 @@ namespace TTTReborn.Items
             return !(player.Inventory as Inventory).IsCarryingType(GetType());
         }
 
-        public string GetName() => name;
+        public string GetName() => Name;
 
         public void Equip(TTTPlayer player)
         {

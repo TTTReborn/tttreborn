@@ -47,7 +47,7 @@ namespace TTTReborn.Rounds
             base.OnTimeUp();
         }
 
-        private async Task StartRespawnTimer(TTTPlayer player)
+        private static async Task StartRespawnTimer(TTTPlayer player)
         {
             await Task.Delay(1000);
 

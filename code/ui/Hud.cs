@@ -9,8 +9,8 @@ namespace TTTReborn.UI
     {
         public static Hud Instance { set; get; }
 
-        private PlayerInfo playerInfo;
-        private WeaponSelection weaponSelection;
+        private PlayerInfo _playerInfo;
+        private WeaponSelection _weaponSelection;
 
         public Hud()
         {
@@ -40,11 +40,11 @@ namespace TTTReborn.UI
                 return;
             }
 
-            playerInfo?.Delete();
-            playerInfo = null;
+            _playerInfo?.Delete();
+            _playerInfo = null;
 
-            weaponSelection?.Delete();
-            weaponSelection = null;
+            _weaponSelection?.Delete();
+            _weaponSelection = null;
         }
 
         [Event("tttreborn.player.spawned")]
@@ -55,15 +55,9 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (playerInfo == null)
-            {
-                playerInfo = RootPanel.AddChild<PlayerInfo>();
-            }
+            _playerInfo ??= RootPanel.AddChild<PlayerInfo>();
 
-            if (weaponSelection == null)
-            {
-                weaponSelection = RootPanel.AddChild<WeaponSelection>();
-            }
+            _weaponSelection ??= RootPanel.AddChild<WeaponSelection>();
         }
     }
 }
