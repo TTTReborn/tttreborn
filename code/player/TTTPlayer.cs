@@ -187,11 +187,6 @@ namespace TTTReborn.Player
 
         public override void TakeDamage(DamageInfo info)
         {
-            if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
-            {
-                return;
-            }
-
             if (info.HitboxIndex == (int) HitboxIndex.Head)
             {
                 info.Damage *= 2.0f;
@@ -199,6 +194,11 @@ namespace TTTReborn.Player
 
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
+                if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
+                {
+                    return;
+                }
+
                 attacker.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
 
