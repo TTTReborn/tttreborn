@@ -40,6 +40,8 @@ namespace TTTReborn.Roles
         {
 
         }
+
+        public virtual bool CanBuy() => false;
     }
 
     public static class RoleFunctions

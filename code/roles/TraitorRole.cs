@@ -27,5 +27,7 @@ namespace TTTReborn.Roles
                 }
             }
         }
+
+        public override bool CanBuy() => true;
     }
 }

@@ -42,7 +42,7 @@ namespace TTTReborn.UI
 
             Update();
 
-            SetClass("hide", !Input.Down(InputButton.Menu));
+            SetClass("hide", !Input.Down(InputButton.Menu) || !(Local.Pawn as TTTPlayer).Role.CanBuy());
         }
 
         private class Header : Panel
