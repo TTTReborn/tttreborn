@@ -26,6 +26,8 @@ namespace TTTReborn.Roles
 
         public TTTTeam DefaultTeam;
 
+        public virtual int DefaultCredits => 0;
+
         public TTTRole()
         {
             Name = RoleFunctions.GetRoleName(GetType());
@@ -33,7 +35,7 @@ namespace TTTReborn.Roles
 
         public virtual void OnSelect(TTTPlayer player)
         {
-
+            player.Credits = Math.Max(DefaultCredits, player.Credits);
         }
 
         public virtual void OnDeselect(TTTPlayer player)
