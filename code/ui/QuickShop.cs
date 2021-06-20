@@ -49,7 +49,7 @@ namespace TTTReborn.UI
         {
             public Panel PriceHolder { get; set; }
             public Label TitleLabel { get; set; }
-            public Label DollarSignLabel { get; set; }
+            public Label DollarSignLabel;
             public Label CreditsLabel { get; set; }
 
             public Header(Panel parent)
