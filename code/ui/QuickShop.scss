@@ -1,11 +1,10 @@
 QuickShop {
-    background-color: #0009;
+    background-color: #000c;
     border: 1px solid #000;
     border-radius: 8px;
 
     font-family: Poppins;
-    max-width: 800px;
-    min-width: 600px;
+    width: 600px;
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
@@ -34,32 +33,52 @@ QuickShop {
         border-top-right-radius: 7px;
 
         Label {
-            &.title, &.credits {
+            &.title,
+            &.credits {
                 font-size: 20px;
+            }
+            &.dollarsign {
+                margin-top: 4px;
             }
         }
     }
 
     Content {
+        width: 100%;
         max-height: 400px;
-        padding: 10px;
+        padding: 16px;
         text-align: center;
-        justify-content: center;
 
         Panel.wrapper {
+            width: 100%;
             flex-wrap: wrap;
-            justify-content:space-evenly;
+            justify-content: flex-start;
 
             ItemPanel {
                 flex-direction: column;
                 margin: 10px;
                 // margin-right: 50px;
-                Label.price {
-                    font-weight: 400;
-                    font-size: 16px;
+                padding-right: 13px;
 
-                    margin-top: 5px;
+                .priceholder {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 10px;
+
+                    Label.price {
+                        font-weight: 400;
+                        font-size: 16px;
+                        margin-right: 1px;
+                    }
+
+                    .dollarsign {
+                        font-size: 13px;
+                        height: 18px;
+                        width: 18px;
+                    }
+
                 }
+
 
                 Panel.icon {
                     width: 80px;
@@ -68,7 +87,7 @@ QuickShop {
                     justify-content: center;
                     background-color: rgba(0, 0, 0, 0.7);
                     border-radius: 4px;
-                    border: 2px solid transparent;
+                    border: 1px solid rgb(27, 27, 27);
                     transition: all 0.05s linear;
 
                     background-size: cover;
@@ -91,6 +110,7 @@ QuickShop {
                     Label.price {
                         color: #df2935;
                         font-weight: 600;
+                        margin-left: 0;
                     }
 
                     Panel.icon {
@@ -99,15 +119,12 @@ QuickShop {
                 }
 
                 &.disabled {
-                    Panel.icon {
-                        opacity: 0.5;
+                    Panel.icon, .priceholder {
+                        opacity: 0.6;
                     }
 
-                    Label.price {
-                        color: gray;
-                    }
-
-                    &:hover, &.active {
+                    &:hover,
+                    &.active {
                         cursor: default;
                     }
                 }
@@ -138,13 +155,17 @@ QuickShop {
         BuyArea {
             display: flex;
             font-size: 20px;
-            font-weight: 500;;
+            font-weight: 500;
             margin-top: 5px;
 
-            Label {
-                &.price {
-                    margin-right: 10px;
-                    padding: 4px 10px;
+            .priceholder {
+                .price {
+                    margin-right: 15px;
+                    padding: 4px 0;
+                }
+
+                .dollarsign {
+                    margin-top: 8px;
                 }
             }
 
@@ -190,12 +211,17 @@ QuickShop {
             }
         }
 
-        .price {
-            display: block;
+    }
+
+    .priceholder {
+        .dollarsign {
+            font-size: 16px;
+            width: 22px;
+            height: 22px;
+            background-color: #df2935;
             text-align: center;
-            margin-top: 5px;
-            font-size: 22px;
-            font-weight: 500;
+            border-radius: 50%;
+            margin-right: 7px;
         }
     }
 }
