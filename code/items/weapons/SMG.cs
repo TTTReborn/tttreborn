@@ -53,7 +53,6 @@ namespace TTTReborn.Items
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);
-            CrosshairPanel?.OnEvent("fire");
         }
 
         public override void SimulateAnimator(PawnAnimator anim)
@@ -62,5 +61,4 @@ namespace TTTReborn.Items
             anim.SetParam("aimat_weight", 1.0f);
         }
     }
-
 }

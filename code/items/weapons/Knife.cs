@@ -73,5 +73,4 @@ namespace TTTReborn.Items
             MeleeStrike(BaseDamage * 3f, 1.5f);
         }
     }
-
 }

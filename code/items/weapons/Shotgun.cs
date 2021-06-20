@@ -60,8 +60,6 @@ namespace TTTReborn.Items
             {
                 new Sandbox.ScreenShake.Perlin(1.0f, 1.5f, 2.0f);
             }
-
-            CrosshairPanel?.OnEvent("fire");
         }
 
         public override void OnReloadFinish()
@@ -110,5 +108,4 @@ namespace TTTReborn.Items
             anim.SetParam("aimat_weight", 1.0f);
         }
     }
-
 }
