@@ -47,7 +47,7 @@ namespace TTTReborn.UI
 
         private class Header : Panel
         {
-            public Panel PriceHolder;
+            public Panel PriceHolder { get; set; }
             public Label TitleLabel { get; set; }
             public Label DollarSignLabel { get; set; }
             public Label CreditsLabel { get; set; }
