@@ -109,7 +109,7 @@ namespace TTTReborn.Gamemode
 
         private void OnGameSecond()
         {
-            Round.OnSecond();
+            Round?.OnSecond();
         }
 
         public override void Shutdown()
