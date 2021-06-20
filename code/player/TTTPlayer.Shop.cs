@@ -8,7 +8,8 @@ namespace TTTReborn.Player
     {
         None,
         InventoryBlocked,
-        NotEnoughCredits
+        NotEnoughCredits,
+        RoleRestriction
     }
 
     partial class TTTPlayer
@@ -23,6 +24,11 @@ namespace TTTReborn.Player
             if (Credits < item.GetPrice())
             {
                 return BuyError.NotEnoughCredits;
+            }
+
+            if (!Role.CanBuy())
+            {
+                return BuyError.RoleRestriction;
             }
 
             return BuyError.None;

@@ -73,9 +73,9 @@ namespace TTTReborn.Player
             EnableHideInFirstPerson = true;
             EnableShadowInFirstPerson = true;
 
-            SetRole(new NoneRole());
+            Credits = 0;
 
-            Credits = 400;
+            SetRole(new NoneRole());
 
             GetClientOwner().SetScore("alive", true);
 

@@ -10,6 +10,8 @@ namespace TTTReborn.Roles
     {
         public override Color Color => Color.FromBytes(223, 41, 53);
 
+        public override int DefaultCredits => 100;
+
         public TraitorRole() : base()
         {
             DefaultTeam = TTTTeam.GetTeam("Traitors");
@@ -26,6 +28,10 @@ namespace TTTReborn.Roles
                     otherPlayer.ClientSetRole(To.Single(player), otherPlayer.Role.Name);
                 }
             }
+
+            base.OnSelect(player);
         }
+
+        public override bool CanBuy() => true;
     }
 }
