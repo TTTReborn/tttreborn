@@ -91,6 +91,8 @@ namespace TTTReborn.UI
                     }
 
                     AddItem(item);
+                    AddItem(item);
+                    AddItem(item);
                 }
             }
 

@@ -19,7 +19,7 @@ QuickShop {
     pointer-events: all;
 
     &.hide {
-        display: none;
+        // opacity: 0;
         pointer-events: none;
     }
 
@@ -47,10 +47,13 @@ QuickShop {
         justify-content: center;
 
         Panel.wrapper {
+            flex-wrap: wrap;
+            justify-content:space-evenly;
+
             ItemPanel {
                 flex-direction: column;
                 margin: 10px;
-
+                // margin-right: 50px;
                 Label.price {
                     font-weight: 400;
                     font-size: 16px;
@@ -71,12 +74,23 @@ QuickShop {
                     background-size: cover;
                     background-image-tint: white;
                 }
-
-                &:hover, &.active {
+                &:hover {
                     cursor: pointer;
+                    Panel.icon {
+                        border: 1px solid #df2935;
+                    }
+                    &.active {
+                        cursor: default;
 
+                        Panel.icon {
+                            border: 2px solid #df2935;
+                        }
+                    }
+                }
+                &.active {
                     Label.price {
                         color: #df2935;
+                        font-weight: 600;
                     }
 
                     Panel.icon {
