@@ -37,7 +37,7 @@ namespace TTTReborn.UI
                 validHit = true;
 
                 nameLabel.Text = target.GetClientOwner()?.Name ?? "";
-                nameLabel.Style.BackgroundColor = target.Role.Color;
+                nameLabel.Style.BackgroundColor = target.Role.Color.WithAlpha(0.5f);
                 nameLabel.Style.Dirty();
             }
 
