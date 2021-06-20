@@ -116,6 +116,7 @@ namespace TTTReborn.Gamemode
         {
             IsShuttingdown = true;
             GameTimer = null;
+            Round = null;
 
             base.Shutdown();
         }
