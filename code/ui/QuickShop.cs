@@ -49,7 +49,7 @@ namespace TTTReborn.UI
         {
             public Panel PriceHolder;
             public Label TitleLabel { get; set; }
-            public Label DollarSign { get; set; }
+            public Label DollarSignLabel { get; set; }
             public Label CreditsLabel { get; set; }
 
             public Header(Panel parent)
@@ -58,7 +58,7 @@ namespace TTTReborn.UI
 
                 TitleLabel = Add.Label("Shop", "title");
                 PriceHolder = Add.Panel("priceholder");
-                DollarSign = PriceHolder.Add.Label("$", "dollarsign");
+                DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
                 CreditsLabel =  PriceHolder.Add.Label("0", "credits");
             }
 
@@ -132,7 +132,7 @@ namespace TTTReborn.UI
                 public Panel IconPanel;
 
                 public Panel PriceHolder;
-                public Label DollarSign;
+                public Label DollarSignLabel;
 
                 public Label PriceLabel;
 
@@ -144,7 +144,7 @@ namespace TTTReborn.UI
 
                     IconPanel = Add.Panel("icon");
                     PriceHolder = Add.Panel("priceholder");
-                    DollarSign = PriceHolder.Add.Label("$", "dollarsign");
+                    DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
                     PriceLabel = PriceHolder.Add.Label("", "price");
                 }
 
@@ -215,7 +215,7 @@ namespace TTTReborn.UI
             private class BuyArea : Panel
             {
                 public Panel PriceHolder;
-                public Label DollarSign;
+                public Label DollarSignLabel;
                 public Label PriceLabel;
                 public Button BuyButton;
                 public IBuyableItem Item;
@@ -224,7 +224,7 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
                     PriceHolder = Add.Panel("priceholder");
-                    DollarSign = PriceHolder.Add.Label("$","dollarsign");
+                    DollarSignLabel = PriceHolder.Add.Label("$","dollarsign");
                     PriceLabel = PriceHolder.Add.Label("100", "price");
 
                     BuyButton = Add.Button("Buy", "buyButton");
