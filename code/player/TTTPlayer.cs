@@ -38,6 +38,26 @@ namespace TTTReborn.Player
         }
 
         // Important: Server-side only
+        public void InitialRespawn()
+        {
+            Respawn();
+
+            bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
+
+            // sync roles
+            using(Prediction.Off())
+            {
+                foreach (TTTPlayer player in Gamemode.Game.GetPlayers())
+                {
+                    if (isPostRound || player.IsConfirmed)
+                    {
+                        player.ClientSetRole(To.Single(this), player.Role.Name);
+                    }
+                }
+            }
+        }
+
+        // Important: Server-side only
         // TODO: Convert to a player.RPC, event based system found inside of...
         // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()

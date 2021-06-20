@@ -74,7 +74,7 @@ namespace TTTReborn.Gamemode
 
             TTTPlayer player = new TTTPlayer();
             client.Pawn = player;
-            player.Respawn();
+            player.InitialRespawn();
 
             base.ClientJoined(client);
         }
