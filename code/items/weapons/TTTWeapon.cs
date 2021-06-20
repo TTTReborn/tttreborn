@@ -33,7 +33,7 @@ namespace TTTReborn.Items
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
-        public virtual float DeployTime => 0.5f;
+        public virtual float DeployTime => 0.6f;
         public virtual int Bucket => 1;
         public virtual int BucketWeight => 100;
         public virtual bool UnlimitedAmmo => false;
@@ -104,6 +104,8 @@ namespace TTTReborn.Items
             base.ActiveStart(owner);
 
             TimeSinceDeployed = 0;
+
+            IsReloading = false;
         }
 
         public override void Spawn()
@@ -121,24 +123,16 @@ namespace TTTReborn.Items
 
         public override void Reload()
         {
-            if (WeaponType == WeaponType.Melee || IsReloading)
-            {
-                return;
-            }
-
-            if (AmmoClip >= ClipSize)
+            if (WeaponType == WeaponType.Melee || IsReloading || AmmoClip >= ClipSize)
             {
                 return;
             }
 
             TimeSinceReload = 0;
 
-            if (Owner is TTTPlayer player)
+            if (Owner is TTTPlayer player && !UnlimitedAmmo && player.AmmoCount(AmmoType) <= 0)
             {
-                if (!UnlimitedAmmo && player.AmmoCount(AmmoType) <= 0)
-                {
-                    return;
-                }
+                return;
             }
 
             IsReloading = true;
@@ -150,9 +144,14 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client owner)
         {
+            if (TimeSinceDeployed < DeployTime)
+            {
+                return;
+            }
+
             if (owner.Pawn is TTTPlayer player)
             {
-                if (owner.Pawn.LifeState == LifeState.Alive)
+                if (player.LifeState == LifeState.Alive)
                 {
                     if (ChargeAttackEndTime > 0f && Time.Now >= ChargeAttackEndTime)
                     {
@@ -211,7 +210,7 @@ namespace TTTReborn.Items
         {
             IsReloading = false;
 
-            if (!(Owner is TTTPlayer player))
+            if (Owner is not TTTPlayer player)
             {
                 return;
             }
@@ -244,7 +243,11 @@ namespace TTTReborn.Items
             TimeSincePrimaryAttack = 0;
             TimeSinceSecondaryAttack = 0;
 
-            ShootEffects();
+            using (Prediction.Off())
+            {
+                ShootEffects();
+            }
+
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);
         }
 
@@ -264,6 +267,7 @@ namespace TTTReborn.Items
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);
+            CrosshairPanel?.CreateEvent("fire");
         }
 
         public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)

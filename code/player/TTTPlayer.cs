@@ -6,29 +6,6 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
-    using Rounds;
-
-    public enum HitboxIndex
-    {
-        Pelvis = 1,
-        Stomach = 2,
-        Rips = 3,
-        Neck = 4,
-        Head = 5,
-        LeftUpperArm = 7,
-        LeftLowerArm = 8,
-        LeftHand = 9,
-        RightUpperArm = 11,
-        RightLowerArm = 12,
-        RightHand = 13,
-        RightUpperLeg = 14,
-        RightLowerLeg = 15,
-        RightFoot = 16,
-        LeftUpperLeg = 17,
-        LeftLowerLeg = 18,
-        LeftFoot = 19,
-    }
-
     public partial class TTTPlayer : Sandbox.Player
     {
         private static int WeaponDropVelocity { get; set; } = 300;
@@ -57,6 +34,26 @@ namespace TTTReborn.Player
                 DeathPosition = position,
                 TimeSinceDied = 0
             };
+        }
+
+        // Important: Server-side only
+        public void InitialRespawn()
+        {
+            Respawn();
+
+            bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
+
+            // sync roles
+            using(Prediction.Off())
+            {
+                foreach (TTTPlayer player in Gamemode.Game.GetPlayers())
+                {
+                    if (isPostRound || player.IsConfirmed)
+                    {
+                        player.ClientSetRole(To.Single(this), player.Role.Name);
+                    }
+                }
+            }
         }
 
         // Important: Server-side only
@@ -98,11 +95,11 @@ namespace TTTReborn.Player
                 // hacky
                 // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
                 // TODO spawn player as spectator instantly
-                case InProgressRound:
-                case PostRound:
+                case Rounds.InProgressRound:
+                case Rounds.PostRound:
                     GetClientOwner().SetScore("alive", false);
                     return;
-                case PreRound:
+                case Rounds.PreRound:
                     IsConfirmed = false;
                     CorpseConfirmer = null;
                     break;
@@ -144,7 +141,11 @@ namespace TTTReborn.Player
 
             if (IsServer)
             {
-                TickAttemptInspectPlayerCorpse();
+                if (Gamemode.Game.Instance.Round is Rounds.InProgressRound || Gamemode.Game.Instance.Round is Rounds.PostRound)
+                {
+                    TickAttemptInspectPlayerCorpse();
+                }
+
                 TickPlayerFalling();
             }
 
@@ -184,46 +185,6 @@ namespace TTTReborn.Player
                     _timeSinceDropped = 0;
                 }
             }
-        }
-
-        public override void TakeDamage(DamageInfo info)
-        {
-            if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
-            {
-                return;
-            }
-
-            if (info.HitboxIndex == (int) HitboxIndex.Head)
-            {
-                info.Damage *= 2.0f;
-            }
-
-            if (info.Attacker is TTTPlayer attacker && attacker != this)
-            {
-                attacker.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
-            }
-
-            if (info.Weapon != null)
-            {
-                ClientTookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
-            }
-
-            // Play pain sounds
-            if ((info.Flags & DamageFlags.Fall) == DamageFlags.Fall)
-            {
-                PlaySound("fall").SetVolume(0.5f).SetPosition(info.Position);
-            }
-            else if ((info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
-            {
-                PlaySound("grunt" + Rand.Int(1, 4)).SetVolume(0.4f).SetPosition(info.Position);
-            }
-
-            // Register player damage with the Karma system
-            TTTReborn.Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
-
-            _lastDamageInfo = info;
-
-            base.TakeDamage(info);
         }
 
         protected override void OnDestroy()

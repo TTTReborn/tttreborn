@@ -74,7 +74,7 @@ namespace TTTReborn.Gamemode
 
             TTTPlayer player = new TTTPlayer();
             client.Pawn = player;
-            player.Respawn();
+            player.InitialRespawn();
 
             base.ClientJoined(client);
         }
@@ -109,13 +109,14 @@ namespace TTTReborn.Gamemode
 
         private void OnGameSecond()
         {
-            Round.OnSecond();
+            Round?.OnSecond();
         }
 
         public override void Shutdown()
         {
             _isShuttingdown = true;
             GameTimer = null;
+            Round = null;
 
             base.Shutdown();
         }

@@ -37,7 +37,11 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            ShootEffects();
+            using (Prediction.Off())
+            {
+                ShootEffects();
+            }
+
             PlaySound("rust_pumpshotgun.shoot").SetPosition(Position).SetVolume(0.8f);
 
             for (int i = 0; i < 10; i++)
@@ -55,13 +59,12 @@ namespace TTTReborn.Items
             Particles.Create("particles/pistol_ejectbrass.vpcf", EffectEntity, "ejection_point");
 
             ViewModelEntity?.SetAnimBool("fire", true);
+            CrosshairPanel?.CreateEvent("fire");
 
             if (IsLocalPawn)
             {
                 new Sandbox.ScreenShake.Perlin(1.0f, 1.5f, 2.0f);
             }
-
-            CrosshairPanel?.OnEvent("fire");
         }
 
         public override void OnReloadFinish()
@@ -110,5 +113,4 @@ namespace TTTReborn.Items
             anim.SetParam("aimat_weight", 1.0f);
         }
     }
-
 }

@@ -61,17 +61,28 @@ namespace TTTReborn.Items
 
         public override void AttackPrimary()
         {
-            ShootEffects();
+            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+
+            using (Prediction.Off())
+            {
+                ShootEffects();
+            }
+
             PlaySound("rust_boneknife.attack");
             MeleeStrike(BaseDamage, 1.5f);
         }
 
         public override void OnChargeAttackFinish()
         {
-            ShootEffects();
+            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+
+            using (Prediction.Off())
+            {
+                ShootEffects();
+            }
+
             PlaySound("rust_boneknife.attack");
             MeleeStrike(BaseDamage * 3f, 1.5f);
         }
     }
-
 }
