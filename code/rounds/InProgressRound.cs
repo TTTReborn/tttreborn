@@ -62,6 +62,10 @@ namespace TTTReborn.Rounds
                     {
                         player.Respawn();
                     }
+                    else
+                    {
+                        player.SetHealth(player.MaxHealth);
+                    }
 
                     if (!Players.Contains(player))
                     {
