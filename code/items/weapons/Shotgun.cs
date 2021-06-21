@@ -4,10 +4,11 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [WeaponAttribute("ttt_shotgun", WeaponType = WeaponType.Primary)]
+    [Library("ttt_shotgun")]
     partial class Shotgun : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
+        public override WeaponType WeaponType => WeaponType.Primary;
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
         public override AmmoType AmmoType => AmmoType.Buckshot;
