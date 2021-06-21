@@ -6,14 +6,14 @@ Scoreboard {
     border-radius: 8px;
     width: 1200px;
     transform: translateX(-50%) translateY(-60%);
-    border: 1px solid #000;
+    border: 1px solid #1b1b1b;
     color: #fafafa;
     opacity: 0;
     z-index: 100;
     transition: opacity 0.05s linear;
     display: flex;
     flex-direction: column;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #000c;
 
     &.open {
         opacity: 1;

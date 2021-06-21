@@ -13,11 +13,11 @@ InfoFeed
 
     InfoFeedEntry
     {
-        background-color: rgba(black, 0.8);
-        border: 1px solid #000;
+        background-color: #000c;
+        border: 1px solid #1b1b1b;
         border-radius: 4px;
         margin-bottom: 5px;
-        color: white;
+        color: #fafafa;
         transition: all 0.2s ease-out;
         opacity: 1;
         flex-shrink: 0;
@@ -50,7 +50,7 @@ InfoFeed
 
             &.me
             {
-                color: white;
+                color: #fafafa;
             }
         }
     }
