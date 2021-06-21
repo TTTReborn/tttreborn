@@ -13,15 +13,15 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
-        private DamageInfo lastDamageInfo;
+        private DamageInfo _lastDamageInfo;
 
-        private TimeSince timeSinceDropped = 0;
+        private TimeSince _timeSinceDropped = 0;
 
         public TTTPlayer()
         {
             Inventory = new Inventory(this);
 
-            lastGroundEntity = GroundEntity;
+            _lastGroundEntity = GroundEntity;
         }
 
         public void MakeSpectator(Vector3 position = default)
@@ -90,20 +90,19 @@ namespace TTTReborn.Player
 
             base.Respawn();
 
-            // hacky
-            // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
-            // TODO spawn player as spectator instantly
-            if (Gamemode.Game.Instance.Round is Rounds.InProgressRound || Gamemode.Game.Instance.Round is Rounds.PostRound)
+            switch (Gamemode.Game.Instance.Round)
             {
-                GetClientOwner().SetScore("alive", false);
-
-                return;
-            }
-
-            if (Gamemode.Game.Instance.Round is Rounds.PreRound)
-            {
-                IsConfirmed = false;
-                CorpseConfirmer = null;
+                // hacky
+                // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
+                // TODO spawn player as spectator instantly
+                case Rounds.InProgressRound:
+                case Rounds.PostRound:
+                    GetClientOwner().SetScore("alive", false);
+                    return;
+                case Rounds.PreRound:
+                    IsConfirmed = false;
+                    CorpseConfirmer = null;
+                    break;
             }
         }
 
@@ -111,7 +110,7 @@ namespace TTTReborn.Player
         {
             base.OnKilled();
 
-            BecomePlayerCorpseOnServer(lastDamageInfo.Force, GetHitboxBone(lastDamageInfo.HitboxIndex));
+            BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
 
             Inventory.DropActive();
             Inventory.DeleteContents();
@@ -161,7 +160,7 @@ namespace TTTReborn.Player
 
         public override void StartTouch(Entity other)
         {
-            if (timeSinceDropped < 1)
+            if (_timeSinceDropped < 1)
             {
                 return;
             }
@@ -183,7 +182,7 @@ namespace TTTReborn.Player
                         droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * WeaponDropVelocity;
                     }
 
-                    timeSinceDropped = 0;
+                    _timeSinceDropped = 0;
                 }
             }
         }

@@ -6,35 +6,35 @@ namespace TTTReborn.UI
 {
     public class GameTimer : Panel
     {
-        private GameTimerContent gameTimerContent;
+        private GameTimerContent _gameTimerContent;
 
         public GameTimer()
         {
             StyleSheet.Load("/ui/GameTimer.scss");
 
-            gameTimerContent = new GameTimerContent(this);
+            _gameTimerContent = new GameTimerContent(this);
         }
 
         private class GameTimerContent : Panel
         {
-            public Label TextLabel { set; get; }
-            public Label TimeLabel { set; get; }
+            private readonly Label _textLabel;
+            private readonly Label _timeLabel;
 
             public GameTimerContent(Panel parent)
             {
                 Parent = parent;
 
-                TextLabel = Add.Label("asd", "textlabel");
-                TimeLabel = Add.Label("", "timelabel");
+                _textLabel = Add.Label("asd", "textlabel");
+                _timeLabel = Add.Label("", "timelabel");
             }
             public override void Tick()
             {
                 bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
 
-                TextLabel.Text = $"{Game.Instance.Round.RoundName}:";
-                TimeLabel.Text = isWaitingRound ? "" : $"{Game.Instance.Round.TimeLeftFormatted}";
+                _textLabel.Text = $"{Game.Instance.Round.RoundName}:";
+                _timeLabel.Text = isWaitingRound ? "" : $"{Game.Instance.Round.TimeLeftFormatted}";
 
-                TimeLabel.SetClass("hide", isWaitingRound);
+                _timeLabel.SetClass("hide", isWaitingRound);
             }
         }
     }

@@ -8,9 +8,9 @@ namespace TTTReborn.UI
 {
 	public partial class InfoFeedEntry : Panel
 	{
-		public List<Label> Labels { get; internal set; } = new();
+        private readonly List<Label> _labels = new();
 
-		public RealTimeSince TimeSinceBorn = 0;
+        private readonly RealTimeSince _timeSinceBorn = 0;
 
 		public InfoFeedEntry()
 		{
@@ -21,7 +21,7 @@ namespace TTTReborn.UI
         {
             Label label = Add.Label(text, classname);
 
-            Labels.Add(label);
+            _labels.Add(label);
 
             return label;
         }
@@ -30,7 +30,7 @@ namespace TTTReborn.UI
 		{
 			base.Tick();
 
-			if (TimeSinceBorn > 6)
+			if (_timeSinceBorn > 6)
 			{
 				Delete();
 			}

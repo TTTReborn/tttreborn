@@ -13,17 +13,19 @@ namespace TTTReborn.Player
 
         public TTTPlayer CorpseConfirmer = null;
 
-        private float inspectCorpseDistance = 80f;
+        private const float INSPECT_CORPSE_DISTANCE = 80f;
 
-        private PlayerCorpse inspectingPlayerCorpse = null;
+        private PlayerCorpse _inspectingPlayerCorpse = null;
 
         public void RemovePlayerCorpse()
         {
-            if (PlayerCorpse != null && PlayerCorpse.IsValid())
+            if (PlayerCorpse == null || !PlayerCorpse.IsValid())
             {
-                PlayerCorpse.Delete();
-                PlayerCorpse = null;
+                return;
             }
+
+            PlayerCorpse.Delete();
+            PlayerCorpse = null;
         }
 
         private void TickAttemptInspectPlayerCorpse()
@@ -35,9 +37,9 @@ namespace TTTReborn.Player
 
                 if (playerCorpse != null)
                 {
-                    if (inspectingPlayerCorpse != playerCorpse)
+                    if (_inspectingPlayerCorpse != playerCorpse)
                     {
-                        inspectingPlayerCorpse = playerCorpse;
+                        _inspectingPlayerCorpse = playerCorpse;
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
@@ -74,18 +76,18 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                if (inspectingPlayerCorpse != null)
+                if (_inspectingPlayerCorpse != null)
                 {
                     ClientCloseInspectMenu(client);
 
-                    inspectingPlayerCorpse = null;
+                    _inspectingPlayerCorpse = null;
                 }
             }
         }
 
         private PlayerCorpse IsLookingAtPlayerCorpse()
         {
-            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * inspectCorpseDistance)
+            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * INSPECT_CORPSE_DISTANCE)
                 .HitLayer(CollisionLayer.Debris)
                 .Ignore(ActiveChild)
                 .Ignore(this)

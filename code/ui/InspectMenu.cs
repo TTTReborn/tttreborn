@@ -10,22 +10,22 @@ namespace TTTReborn.UI
     public class InspectMenu : Panel
     {
         public static InspectMenu Instance;
+        
         public bool IsShowing
         {
-            get => isShowing;
+            get => _isShowing;
             set
             {
-                isShowing = value;
+                _isShowing = value;
 
-                SetClass("hide", !isShowing);
+                SetClass("hide", !_isShowing);
             }
         }
+        private bool _isShowing = false;
 
-        private bool isShowing = false;
+        private readonly ConfirmationPanel _confirmationPanel;
 
-        private ConfirmationPanel confirmationPanel { get; set; }
-
-        private ConfirmationHintPanel confirmationHintPanel { get; set; }
+        private readonly ConfirmationHintPanel _confirmationHintPanel;
 
         public InspectMenu()
         {
@@ -34,8 +34,8 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/InspectMenu.scss");
 
-            confirmationHintPanel = new ConfirmationHintPanel(this);
-            confirmationPanel = new ConfirmationPanel(this);
+            _confirmationHintPanel = new ConfirmationHintPanel(this);
+            _confirmationPanel = new ConfirmationPanel(this);
         }
 
         public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified)
@@ -44,98 +44,98 @@ namespace TTTReborn.UI
 
             if (isIdentified)
             {
-                confirmationHintPanel.SetClass("hide", true);
+                _confirmationHintPanel.SetClass("hide", true);
 
-                confirmationPanel.SetPlayer(deadPlayer);
-                confirmationPanel.SetClass("hide", false);
+                _confirmationPanel.SetPlayer(deadPlayer);
+                _confirmationPanel.SetClass("hide", false);
             }
             else
             {
-                confirmationPanel.SetClass("hide", true);
-                confirmationHintPanel.SetClass("hide", false);
+                _confirmationPanel.SetClass("hide", true);
+                _confirmationHintPanel.SetClass("hide", false);
             }
         }
 
         private class ConfirmationPanel : Panel
         {
-            private Header header { set; get; }
+            private readonly Header _header;
 
-            private Content content { set; get; }
+            private readonly Content _content;
 
-            private Footer footer { set; get; }
+            private readonly Footer _footer;
 
             public ConfirmationPanel(Panel parent)
             {
                 Parent = parent;
 
-                header = new Header(this);
-                content = new Content(this);
-                footer = new Footer(this);
+                _header = new Header(this);
+                _content = new Content(this);
+                _footer = new Footer(this);
             }
 
             public void SetPlayer(TTTPlayer player)
             {
-                header.SetPlayer(player);
-                content.SetPlayer(player);
-                footer.SetPlayer(player);
+                _header.SetPlayer(player);
+                _content.SetPlayer(player);
+                _footer.SetPlayer(player);
             }
 
             private class Header : Panel
             {
-                public Label PlayerLabel { get; set; }
+                private readonly Label _playerLabel;
 
-                public Label RoleLabel { get; set; }
+                private readonly Label _roleLabel;
 
                 public Header(Panel parent)
                 {
                     Parent = parent;
 
-                    PlayerLabel = Add.Label("", "player");
-                    RoleLabel = Add.Label("", "role");
+                    _playerLabel = Add.Label("", "player");
+                    _roleLabel = Add.Label("", "role");
                 }
 
                 public void SetPlayer(TTTPlayer player)
                 {
-                    PlayerLabel.Text = player.GetClientOwner().Name;
+                    _playerLabel.Text = player.GetClientOwner().Name;
 
-                    RoleLabel.Text = player.Role.Name;
-                    RoleLabel.Style.FontColor = player.Role.Color;
-                    RoleLabel.Style.Dirty();
+                    _roleLabel.Text = player.Role.Name;
+                    _roleLabel.Style.FontColor = player.Role.Color;
+                    _roleLabel.Style.Dirty();
                 }
             }
 
             private class Content : Panel
             {
-                public ImageWrapper PlayerImage { get; set; }
+                private readonly ImageWrapper _playerImage;
 
-                public List<InspectItem> inspectItems { get; set; } = new();
+                private readonly List<InspectItem> _inspectItems = new();
 
                 public Content(Panel parent)
                 {
                     Parent = parent;
 
-                    PlayerImage = new ImageWrapper(this);
-                    PlayerImage.AddClass("playericon");
+                    _playerImage = new ImageWrapper(this);
+                    _playerImage.AddClass("playericon");
 
                     InspectItem inspectWeapon = new InspectItem(this);
                     inspectWeapon.ImageWrapper.Image.SetTexture("");
                     inspectWeapon.InspectItemLabel.Text = "Pistol";
 
-                    inspectItems.Add(inspectWeapon);
+                    _inspectItems.Add(inspectWeapon);
                 }
 
                 public void SetPlayer(TTTPlayer player)
                 {
-                    PlayerImage.Image.SetTexture($"avatar:{player.GetClientOwner().SteamId}");
+                    _playerImage.Image.SetTexture($"avatar:{player.GetClientOwner().SteamId}");
 
-                    PlayerImage.Style.BorderColor = player.Role.Color;
-                    PlayerImage.Style.Dirty();
+                    _playerImage.Style.BorderColor = player.Role.Color;
+                    _playerImage.Style.Dirty();
                 }
             }
 
             private class ImageWrapper : Panel
             {
-                public Image Image { get; set; }
+                public readonly Image Image;
 
                 public ImageWrapper(Panel parent)
                 {
@@ -147,9 +147,9 @@ namespace TTTReborn.UI
 
             private class InspectItem : Panel
             {
-                public ImageWrapper ImageWrapper { get; set; }
+                public readonly ImageWrapper ImageWrapper;
 
-                public Label InspectItemLabel { get; set; }
+                public readonly Label InspectItemLabel;
 
                 public InspectItem(Panel parent)
                 {
@@ -162,40 +162,40 @@ namespace TTTReborn.UI
 
             private class Footer : Panel
             {
-                public Label FooterLabel { get; set; }
+                private readonly Label _footerLabel;
 
                 public Footer(Panel parent)
                 {
                     Parent = parent;
 
-                    FooterLabel = Add.Label("$ 0 credits left", "inspect");
+                    _footerLabel = Add.Label("$ 0 credits left", "inspect");
                 }
 
                 public void SetPlayer(TTTPlayer player)
                 {
                     if (player.CorpseConfirmer != Local.Pawn as TTTPlayer)
                     {
-                        FooterLabel.SetClass("hide", true);
+                        _footerLabel.SetClass("hide", true);
 
                         return;
                     }
 
-                    FooterLabel.SetClass("hide", false);
+                    _footerLabel.SetClass("hide", false);
 
-                    FooterLabel.Text = $"$ {player.CorpseCredits} credits found";
+                    _footerLabel.Text = $"$ {player.CorpseCredits} credits found";
                 }
             }
         }
 
         private class ConfirmationHintPanel : Panel
         {
-            public Label InspectLabel { get; set; }
+            private Label _inspectLabel;
 
             public ConfirmationHintPanel(Panel parent)
             {
                 Parent = parent;
 
-                InspectLabel = Add.Label("Press E to confirm", "inspect");
+                _inspectLabel = Add.Label("Press E to confirm", "inspect");
             }
         }
     }

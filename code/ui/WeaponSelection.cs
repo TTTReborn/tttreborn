@@ -12,9 +12,9 @@ namespace TTTReborn.UI
 {
     public class WeaponSelection : Panel
     {
-        private Dictionary<string, WeaponSlot> weaponSlots = new();
+        private readonly Dictionary<string, WeaponSlot> _weaponSlots = new();
 
-        private TTTWeapon oldActiveWeapon;
+        private TTTWeapon _oldActiveWeapon;
 
         public WeaponSelection()
         {
@@ -27,9 +27,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            var player = Local.Pawn as TTTPlayer;
-
-            if (player == null)
+            if (Local.Pawn is not TTTPlayer player)
             {
                 return;
             }
@@ -44,7 +42,7 @@ namespace TTTReborn.UI
             {
                 TTTWeapon weapon = inventory.GetSlot(i) as TTTWeapon;
 
-                if (weaponSlots.TryGetValue(weapon.GetName(), out WeaponSlot weaponSlot))
+                if (_weaponSlots.TryGetValue(weapon.GetName(), out WeaponSlot weaponSlot))
                 {
                     tmpSlots.Add(weaponSlot);
                 }
@@ -61,14 +59,14 @@ namespace TTTReborn.UI
             }
 
             // remove WeaponSlots and rebuild (to keep the right order)
-            if (newWeapons.Count != 0 || tmpSlots.Count != weaponSlots.Count)
+            if (newWeapons.Count != 0 || tmpSlots.Count != _weaponSlots.Count)
             {
-                foreach (WeaponSlot weaponSlot in weaponSlots.Values)
+                foreach (WeaponSlot weaponSlot in _weaponSlots.Values)
                 {
                     weaponSlot.Delete();
                 }
 
-                weaponSlots.Clear();
+                _weaponSlots.Clear();
 
                 inventory.List.Sort((Entity wep1, Entity wep2) => (wep1 as TTTWeapon).WeaponType.CompareTo((wep2 as TTTWeapon).WeaponType));
 
@@ -76,27 +74,27 @@ namespace TTTReborn.UI
                 foreach (TTTWeapon weapon in inventory.List)
                 {
                     // add in order
-                    weaponSlots.Add(weapon.GetName(), new WeaponSlot(this, weapon));
+                    _weaponSlots.Add(weapon.GetName(), new WeaponSlot(this, weapon));
                 }
 
                 // update for dropped active weapon maybe
-                oldActiveWeapon = null;
+                _oldActiveWeapon = null;
             }
 
             // update current selection
             TTTWeapon activeWeapon = player.ActiveChild as TTTWeapon;
 
-            if (oldActiveWeapon != activeWeapon && activeWeapon != null)
+            if (_oldActiveWeapon != activeWeapon && activeWeapon != null)
             {
-                foreach (WeaponSlot weaponSlot in weaponSlots.Values)
+                foreach (WeaponSlot weaponSlot in _weaponSlots.Values)
                 {
                     weaponSlot.SetClass("active", weaponSlot.WeaponName == activeWeapon.GetName());
                 }
 
-                oldActiveWeapon = activeWeapon;
+                _oldActiveWeapon = activeWeapon;
             }
 
-            SetClass("hide", weaponSlots.Count == 0);
+            SetClass("hide", _weaponSlots.Count == 0);
         }
 
         /// <summary>
@@ -152,30 +150,30 @@ namespace TTTReborn.UI
             return 0;
         }
 
-        public class WeaponSlot : Panel
+        private class WeaponSlot : Panel
         {
-            public string WeaponName { get; private set; }
-            public Label SlotLabel { set; get; }
-            public Label WeaponLabel { set; get; }
-            public Label AmmoLabel { set; get; }
+            public readonly string WeaponName;
+            private readonly Label _ammoLabel;
+            private Label _slotLabel;
+            private Label _weaponLabel;
 
             public WeaponSlot(Panel parent, TTTWeapon weapon)
             {
                 Parent = parent;
                 WeaponName = weapon.GetName();
 
-                SlotLabel = Add.Label(((int) weapon.WeaponType).ToString(), "slotlabel");
-                WeaponLabel = Add.Label(weapon.GetName(), "weaponlabel");
+                _slotLabel = Add.Label(((int) weapon.WeaponType).ToString(), "slotlabel");
+                _weaponLabel = Add.Label(weapon.GetName(), "weaponlabel");
 
                 if (weapon.WeaponType != WeaponType.Melee)
                 {
-                    AmmoLabel = Add.Label($"{weapon.AmmoClip}/{weapon.ClipSize}", "ammolabel");
+                    _ammoLabel = Add.Label($"{weapon.AmmoClip}/{weapon.ClipSize}", "ammolabel");
                 }
             }
 
             public void UpdateAmmo(string ammoText)
             {
-                AmmoLabel.Text = ammoText;
+                _ammoLabel.Text = ammoText;
             }
         }
     }

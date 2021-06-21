@@ -5,44 +5,46 @@ namespace TTTReborn.Player
 {
     partial class TTTPlayer
     {
-        public static float FallingObligingness = 260f;
-        private float highestZ;
-        private Entity lastGroundEntity;
+        private const float FALLING_OBLIGINGNESS = 260f;
+        private float _highestZ;
+        private Entity _lastGroundEntity;
 
         public void TickPlayerFalling()
         {
             if (GroundEntity == null)
             {
-                if (highestZ < Position.z)
+                if (_highestZ < Position.z)
                 {
-                    highestZ = Position.z;
+                    _highestZ = Position.z;
                 }
 
-                lastGroundEntity = null;
+                _lastGroundEntity = null;
 
                 return;
             }
 
-            if (lastGroundEntity == null)
+            if (_lastGroundEntity == null)
             {
-                OnPlayerHitGround(highestZ - Position.z);
+                OnPlayerHitGround(_highestZ - Position.z);
             }
 
-            highestZ = Position.z;
-            lastGroundEntity = GroundEntity;
+            _highestZ = Position.z;
+            _lastGroundEntity = GroundEntity;
         }
 
         public void OnPlayerHitGround(float fallingHeight)
         {
-            if (fallingHeight > FallingObligingness)
+            if (fallingHeight > FALLING_OBLIGINGNESS)
             {
-                DamageInfo damageInfo = new DamageInfo();
-                damageInfo.Attacker = this;
-                damageInfo.Body = PhysicsBody;
-                damageInfo.Damage = (float) Math.Round(0.15f * (fallingHeight - FallingObligingness));
-                damageInfo.Flags = DamageFlags.Fall;
-                damageInfo.HitboxIndex = (int) HitboxIndex.LeftFoot;
-                damageInfo.Position = Position;
+                DamageInfo damageInfo = new DamageInfo
+                {
+                    Attacker = this,
+                    Body = PhysicsBody,
+                    Damage = (float)Math.Round(0.15f * (fallingHeight - FALLING_OBLIGINGNESS)),
+                    Flags = DamageFlags.Fall,
+                    HitboxIndex = (int)HitboxIndex.LeftFoot,
+                    Position = Position
+                };
 
                 TakeDamage(damageInfo);
             }
