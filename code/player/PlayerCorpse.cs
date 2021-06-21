@@ -51,19 +51,21 @@ namespace TTTReborn.Player
 		{
 			PhysicsGroup.AddVelocity(force);
 
-			if (forceBone >= 0)
-			{
-				PhysicsBody corpse = GetBonePhysicsBody(forceBone);
+            if (forceBone < 0)
+            {
+                return;
+            }
 
-				if (corpse != null)
-				{
-					corpse.ApplyForce(force * 1000);
-				}
-				else
-				{
-					PhysicsGroup.AddVelocity(force);
-				}
-			}
-		}
+            PhysicsBody corpse = GetBonePhysicsBody(forceBone);
+
+            if (corpse != null)
+            {
+                corpse.ApplyForce(force * 1000);
+            }
+            else
+            {
+                PhysicsGroup.AddVelocity(force);
+            }
+        }
 	}
 }

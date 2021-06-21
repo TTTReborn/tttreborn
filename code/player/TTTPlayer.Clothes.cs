@@ -5,7 +5,7 @@ namespace TTTReborn.Player
 {
     partial class TTTPlayer
     {
-        List<ModelEntity> Clothing = new();
+        private readonly List<ModelEntity> _clothing = new();
 
         public ModelEntity AttachClothing(string modelName)
         {
@@ -16,15 +16,15 @@ namespace TTTReborn.Player
             entity.EnableShadowInFirstPerson = true;
             entity.EnableHideInFirstPerson = true;
 
-            Clothing.Add(entity);
+            _clothing.Add(entity);
 
             return entity;
         }
 
         public void RemoveClothing()
         {
-            Clothing.ForEach(entity => entity.Delete());
-            Clothing.Clear();
+            _clothing.ForEach(entity => entity.Delete());
+            _clothing.Clear();
         }
     }
 

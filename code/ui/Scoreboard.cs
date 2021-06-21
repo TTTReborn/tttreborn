@@ -7,28 +7,28 @@ namespace TTTReborn.UI
 {
     public class Scoreboard : Panel
     {
-        private Dictionary<int, ScoreboardEntry> Entries = new();
+        private readonly Dictionary<int, ScoreboardEntry> _entries = new();
         //TODO: Event on start of PreRound =>
         //Make all Entries trigger the Entry.UpdateForm()
 
-        private Dictionary<string, ScoreboardGroup> ScoreboardGroups = new();
+        private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
 
-        private Header header;
+        private readonly Header _header;
 
-        private TableHeader tableHeader;
+        private TableHeader _tableHeader;
 
-        private Panel mainContent;
+        private readonly Panel _mainContent;
 
-        private Panel footer;
+        private Panel _footer;
 
         public Scoreboard()
         {
             StyleSheet.Load("/ui/Scoreboard.scss");
 
-            header = new Header(this);
-            tableHeader = new TableHeader(this);
+            _header = new Header(this);
+            _tableHeader = new TableHeader(this);
 
-            mainContent = Add.Panel("mainContent");
+            _mainContent = Add.Panel("mainContent");
 
             AddScoreboardGroup("Alive");
 
@@ -36,7 +36,7 @@ namespace TTTReborn.UI
             PlayerScore.OnPlayerUpdated += UpdatePlayer;
             PlayerScore.OnPlayerRemoved += RemovePlayer;
 
-            footer = Add.Panel("footer");
+            _footer = Add.Panel("footer");
 
             // TODO: Implement UpdatePlayer method
             // PlayerScore.OnPlayerUpdated += UpdatePlayer;
@@ -47,22 +47,23 @@ namespace TTTReborn.UI
             }
         }
 
-        public class Header : Panel
+        private class Header : Panel
         {
-            public Panel ScoreboardLogo;
-            public Panel InformationHolder;
-            public Label ServerName;
-            public Label ServerInfo;
             public Label ServerDescription;
+            
+            private Panel _scoreboardLogo;
+            private Label _serverName;
+            private readonly Panel _informationHolder;
+            private readonly Label _serverInfo;
 
             public Header(Panel parent)
             {
                 Parent = parent;
 
-                ScoreboardLogo = Add.Panel("scoreboardLogo");
-                InformationHolder = Add.Panel("informationHolder");
-                ServerName = InformationHolder.Add.Label("Trouble in Terry's Town", "serverName"); // Here will be the servername
-                ServerInfo = InformationHolder.Add.Label("", "serverInfo");
+                _scoreboardLogo = Add.Panel("scoreboardLogo");
+                _informationHolder = Add.Panel("informationHolder");
+                _serverName = _informationHolder.Add.Label("Trouble in Terry's Town", "serverName"); // Here will be the servername
+                _serverInfo = _informationHolder.Add.Label("", "serverInfo");
                 //ServerDescription = InformationHolder.Add.Label("This is the server description: Lorem ipsum dolor sit  elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat", "serverDescription");
             }
 
@@ -70,40 +71,40 @@ namespace TTTReborn.UI
             {
                 // TODO: Get this out of the header
                 // TODO: Fill the other variables
-                ServerInfo.Text = $"{PlayerScore.All.Length} Player(s) - Map: '{Sandbox.Global.MapName}'";
+                _serverInfo.Text = $"{PlayerScore.All.Length} Player(s) - Map: '{Sandbox.Global.MapName}'";
             }
         }
 
-        public class TableHeader : Panel
+        private class TableHeader : Panel
         {
-            public Label PlayerAliveCountLabel;
-            public Label KarmaLabel;
-            public Label ScoreLabel;
-            public Label PingLabel;
+            private readonly Label _playerAliveCountLabel;
+            private Label _karmaLabel;
+            private Label _scoreLabel;
+            private Label _pingLabel;
 
             public TableHeader(Panel parent)
             {
                 Parent = parent;
 
-                PlayerAliveCountLabel = Add.Label("? players left", "name");
-                KarmaLabel = Add.Label("Karma", "karma");
-                ScoreLabel = Add.Label("Score", "score");
-                PingLabel = Add.Label("Ping", "ping");
+                _playerAliveCountLabel = Add.Label("? players left", "name");
+                _karmaLabel = Add.Label("Karma", "karma");
+                _scoreLabel = Add.Label("Score", "score");
+                _pingLabel = Add.Label("Ping", "ping");
             }
 
             public override void Tick()
             {
-                PlayerAliveCountLabel.Text = $"{Client.All.Count - TTTReborn.Gamemode.Game.GetConfirmedPlayers().Count} players left";
+                _playerAliveCountLabel.Text = $"{Client.All.Count - TTTReborn.Gamemode.Game.GetConfirmedPlayers().Count} players left";
             }
         }
 
-        public class ScoreboardGroup : Panel
+        private class ScoreboardGroup : Panel
         {
-            public string GroupTitle { get; private set; }
-            public Panel GroupContent;
+            public readonly string GroupTitle;
             public int GroupMembers = 0;
-            private Panel groupTitleWrapper;
-            private Label groupTitleLabel;
+            private readonly Panel _groupContent;
+            private readonly Panel _groupTitleWrapper;
+            private readonly Label _groupTitleLabel;
 
             public ScoreboardGroup(Panel parent, string groupName)
             {
@@ -113,20 +114,20 @@ namespace TTTReborn.UI
 
                 AddClass(groupName);
 
-                groupTitleWrapper = Add.Panel("scoreboardGroup__title-wrapper");
-                groupTitleLabel = groupTitleWrapper.Add.Label("", "scoreboardGroup__title");
-                GroupContent = Add.Panel("scoreboardGroup__content");
+                _groupTitleWrapper = Add.Panel("scoreboardGroup__title-wrapper");
+                _groupTitleLabel = _groupTitleWrapper.Add.Label("", "scoreboardGroup__title");
+                _groupContent = Add.Panel("scoreboardGroup__content");
             }
 
             // TODO: Implement logic for the player counter in the title
             public void UpdateLabel()
             {
-                groupTitleLabel.Text = $"{GroupTitle.ToUpper()}  -  {GroupMembers}";
+                _groupTitleLabel.Text = $"{GroupTitle.ToUpper()}  -  {GroupMembers}";
             }
 
             public ScoreboardEntry AddEntry(PlayerScore.Entry entry)
             {
-                ScoreboardEntry scoreboardEntry = GroupContent.AddChild<ScoreboardEntry>();
+                ScoreboardEntry scoreboardEntry = _groupContent.AddChild<ScoreboardEntry>();
                 scoreboardEntry.ScoreboardGroupName = GroupTitle;
                 scoreboardEntry.SteamId = entry.Get<ulong>("steamid");
 
@@ -138,15 +139,15 @@ namespace TTTReborn.UI
 
         private ScoreboardGroup AddScoreboardGroup(string groupName)
         {
-            if (ScoreboardGroups.ContainsKey(groupName))
+            if (_scoreboardGroups.ContainsKey(groupName))
             {
-                return ScoreboardGroups[groupName];
+                return _scoreboardGroups[groupName];
             }
 
-            ScoreboardGroup scoreboardGroup = new ScoreboardGroup(mainContent, groupName);
+            ScoreboardGroup scoreboardGroup = new ScoreboardGroup(_mainContent, groupName);
             scoreboardGroup.UpdateLabel();
 
-            ScoreboardGroups.Add(groupName, scoreboardGroup);
+            _scoreboardGroups.Add(groupName, scoreboardGroup);
 
             return scoreboardGroup;
         }
@@ -158,10 +159,10 @@ namespace TTTReborn.UI
 
             scoreboardGroup.GroupMembers++;
 
-            Entries.Add(entry.Id, scoreboardEntry);
+            _entries.Add(entry.Id, scoreboardEntry);
 
             scoreboardGroup.UpdateLabel();
-            header.UpdateServerInfo();
+            _header.UpdateServerInfo();
         }
 
         // TODO add MIA
@@ -175,7 +176,7 @@ namespace TTTReborn.UI
                 group = "Dead";
             }
 
-            ScoreboardGroups.TryGetValue(group, out ScoreboardGroup scoreboardGroup);
+            _scoreboardGroups.TryGetValue(group, out ScoreboardGroup scoreboardGroup);
 
             if (scoreboardGroup == null)
             {
@@ -187,7 +188,7 @@ namespace TTTReborn.UI
 
         private void UpdatePlayer(PlayerScore.Entry entry)
         {
-            if (Entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
+            if (_entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
             {
                 ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
 
@@ -215,27 +216,27 @@ namespace TTTReborn.UI
         {
             List<string> removeList = new();
 
-            foreach (KeyValuePair<string, ScoreboardGroup> keyValuePair in ScoreboardGroups)
+            foreach ((string key, ScoreboardGroup value) in _scoreboardGroups)
             {
-                if (keyValuePair.Value.GroupMembers == 0)
+                if (value.GroupMembers == 0)
                 {
-                    removeList.Add(keyValuePair.Key);
+                    removeList.Add(key);
                 }
             }
 
             foreach (string key in removeList)
             {
-                ScoreboardGroups[key].Delete();
+                _scoreboardGroups[key].Delete();
 
-                ScoreboardGroups.Remove(key);
+                _scoreboardGroups.Remove(key);
             }
         }
 
         private void RemovePlayer(PlayerScore.Entry entry)
         {
-            if (Entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
+            if (_entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
             {
-                ScoreboardGroups.TryGetValue(panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup);
+                _scoreboardGroups.TryGetValue(panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup);
 
                 if (scoreboardGroup != null)
                 {
@@ -245,7 +246,7 @@ namespace TTTReborn.UI
                 scoreboardGroup.UpdateLabel();
 
                 panel.Delete();
-                Entries.Remove(entry.Id);
+                _entries.Remove(entry.Id);
             }
         }
 

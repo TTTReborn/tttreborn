@@ -115,14 +115,7 @@ namespace TTTReborn.UI
 
             TTTWeapon weapon = player.ActiveChild as TTTWeapon;
 
-            if (weapon == null)
-            {
-                this.Style.Display = DisplayMode.None;
-            }
-            else
-            {
-                this.Style.Display = DisplayMode.Flex;
-            }
+            this.Style.Display = weapon == null ? DisplayMode.None : DisplayMode.Flex;
         }
     }
 }

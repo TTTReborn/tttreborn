@@ -18,60 +18,58 @@ namespace TTTReborn.UI
             new IndicatorsPanel(this);
         }
 
-        public class RolePanel : Panel
+        private class RolePanel : Panel
         {
-            public Label RoleLabel { set; get; }
+            private readonly Label _roleLabel;
 
-            private TTTRole currentRole;
+            private TTTRole _currentRole;
 
             public RolePanel(Panel parent)
             {
                 Parent = parent;
 
-                RoleLabel = Add.Label("Unknown role", "rolelabel");
+                _roleLabel = Add.Label("Unknown role", "rolelabel");
             }
 
             public override void Tick()
             {
-                TTTPlayer player = Local.Pawn as TTTPlayer;
-
-                if (player == null)
+                if (Local.Pawn is not TTTPlayer player)
                 {
                     return;
                 }
 
-                if (currentRole != player.Role)
+                if (_currentRole != player.Role)
                 {
-                    currentRole = player.Role;
+                    _currentRole = player.Role;
 
                     Style.BackgroundColor = player.Role.Color;
                     Style.Dirty();
 
-                    RoleLabel.Text = $"{player.Role.Name.ToUpper()}";
+                    _roleLabel.Text = $"{player.Role.Name.ToUpper()}";
 
                     SetClass("hide", player.Role is NoneRole);
                 }
             }
         }
 
-        public class IndicatorsPanel : Panel
+        private class IndicatorsPanel : Panel
         {
-            public BarPanel HealthBar { set; get; }
-            public BarPanel AmmoBar { set; get; }
+            private readonly BarPanel _healthBar;
+            private readonly BarPanel _ammoBar;
 
             // TODO rework event based
-            private float currentHealth;
-            private int currentAmmo;
+            private float _currentHealth;
+            private int _currentAmmo;
 
             public IndicatorsPanel(Panel parent)
             {
                 Parent = parent;
 
-                HealthBar = new BarPanel(this, "", "healthlabel");
-                HealthBar.AddClass("health");
+                _healthBar = new BarPanel(this, "", "healthlabel");
+                _healthBar.AddClass("health");
 
-                AmmoBar = new BarPanel(this, "", "ammolabel");
-                AmmoBar.AddClass("ammo");
+                _ammoBar = new BarPanel(this, "", "ammolabel");
+                _ammoBar.AddClass("ammo");
             }
 
             public override void Tick()
@@ -83,33 +81,33 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                if (currentHealth != player.Health)
+                if (_currentHealth != player.Health)
                 {
-                    currentHealth = player.Health;
+                    _currentHealth = player.Health;
 
-                    HealthBar.TextLabel.Text = $"{player.Health:n0}";
+                    _healthBar.TextLabel.Text = $"{player.Health:n0}";
 
-                    HealthBar.Style.Width = Length.Percent(player.Health);
-                    HealthBar.Style.Dirty();
+                    _healthBar.Style.Width = Length.Percent(player.Health);
+                    _healthBar.Style.Dirty();
                 }
 
                 TTTWeapon weapon = player.ActiveChild as TTTWeapon;
                 bool isWeaponNull = weapon == null;
 
-                AmmoBar.SetClass("hide", isWeaponNull || weapon.WeaponType == WeaponType.Melee);
+                _ammoBar.SetClass("hide", isWeaponNull || weapon.WeaponType == WeaponType.Melee);
                 if (!isWeaponNull)
                 {
-                    if (currentAmmo == weapon.AmmoClip)
+                    if (_currentAmmo == weapon.AmmoClip)
                     {
                         return;
                     }
 
-                    currentAmmo = weapon.AmmoClip;
+                    _currentAmmo = weapon.AmmoClip;
 
-                    AmmoBar.TextLabel.Text = $"{weapon.AmmoClip} / {weapon.ClipSize}";
+                    _ammoBar.TextLabel.Text = $"{weapon.AmmoClip} / {weapon.ClipSize}";
 
-                    AmmoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
-                    AmmoBar.Style.Dirty();
+                    _ammoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
+                    _ammoBar.Style.Dirty();
                 }
             }
         }
@@ -117,7 +115,7 @@ namespace TTTReborn.UI
 
     public class BarPanel : Panel
     {
-        public Label TextLabel { set; get; }
+        public readonly Label TextLabel;
 
         public BarPanel(Panel parent, string text, string name)
         {

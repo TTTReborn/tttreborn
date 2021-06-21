@@ -12,7 +12,7 @@ namespace TTTReborn.Rounds
         public virtual string RoundName => "";
         public virtual bool CanPlayerSuicide => true;
 
-        public List<TTTPlayer> Players = new();
+        public readonly List<TTTPlayer> Players = new();
 
         public float RoundEndTime { get; set; }
 

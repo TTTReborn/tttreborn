@@ -8,13 +8,13 @@ namespace TTTReborn.Teams
 {
     public class TTTTeam : Networked
     {
-        public static Dictionary<string, TTTTeam> Teams = new();
+        public static readonly Dictionary<string, TTTTeam> Teams = new();
 
         public string Name { get; private set; }
 
         public Color Color { get; set; } = Color.Transparent;
 
-        public List<TTTPlayer> Members;
+        public readonly List<TTTPlayer> Members;
 
         public TTTTeam(string name)
         {
