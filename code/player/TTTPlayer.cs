@@ -98,10 +98,12 @@ namespace TTTReborn.Player
                 case Rounds.InProgressRound:
                 case Rounds.PostRound:
                     GetClientOwner().SetScore("alive", false);
+
                     return;
                 case Rounds.PreRound:
                     IsConfirmed = false;
                     CorpseConfirmer = null;
+
                     break;
             }
         }

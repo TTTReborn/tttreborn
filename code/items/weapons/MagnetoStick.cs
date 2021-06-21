@@ -58,7 +58,7 @@ namespace TTTReborn.Items
         {
             TTTPlayer owner = Owner as TTTPlayer;
 
-		    if (owner == null)
+            if (owner == null)
             {
                 return;
             }
