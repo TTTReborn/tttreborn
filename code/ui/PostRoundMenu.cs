@@ -32,15 +32,22 @@ namespace TTTReborn.UI
         private bool _isShowing = false;
 
         private PostRoundStats _stats;
-        private readonly Header _header;
+        private readonly Label _headerLabel;
+        private readonly Button _closeButton;
 
         public PostRoundMenu()
         {
             Instance = this;
-
             StyleSheet.Load("/ui/PostRoundMenu.scss");
 
-            _header = new Header(this);
+            _headerLabel = Add.Label("", "headerLabel");
+
+            _closeButton = Add.Button("×", "closeButton");
+            _closeButton.AddEvent("onclick", () =>
+            {
+                PostRoundMenu.Instance.IsShowing = false;
+            });
+
             IsShowing = false;
         }
 
@@ -55,20 +62,8 @@ namespace TTTReborn.UI
         {
             IsShowing = true;
 
-            _header.WinnerLabel.Text = $"{_stats.WinningRole.ToUpper()} WIN!";
-            _header.Style.BackgroundColor = _stats.WinningColor;
-        }
-
-        private class Header : Panel
-        {
-            public readonly Label WinnerLabel;
-
-            public Header(Panel parent)
-            {
-                Parent = parent;
-
-                WinnerLabel = Add.Label("", "title");
-            }
+            _headerLabel.Text = $"{_stats.WinningRole.ToUpper()} WIN!";
+            _headerLabel.Style.BackgroundColor = _stats.WinningColor;
         }
     }
 }

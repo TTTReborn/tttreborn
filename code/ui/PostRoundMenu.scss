@@ -6,10 +6,11 @@ PostRoundMenu {
     max-width: 600px;
     width: 100%;
     left: 50%;
-    top: 20%;
+    top: 50%;
     transform: translateX(-50%) translateY(-50%);
     position: absolute;
     flex-direction: column;
+    pointer-events: all;
 
     color: white;
     font-family: Poppins;
@@ -17,17 +18,34 @@ PostRoundMenu {
 
     &.hide {
         opacity: 0;
+        pointer-events: none;
     }
 
-    Header {
-        text-align: center;
-        margin: 12.5px 0;
+    .closeButton {
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        font-size: 20px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
 
         Label {
-            font-family: Poppins;
-            font-weight: bold;
-            font-size: 40px;
-            width: 100%;
+            top: -6px;
+            left: 3px;
         }
+
+        &:hover {
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.13);
+        }
+    }
+
+    .headerLabel {
+        text-align: center;
+        margin: 20px 0 400px 0;
+        font-weight: bold;
+        font-size: 40px;
+        width: 100%;
     }
 }
