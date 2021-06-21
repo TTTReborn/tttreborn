@@ -54,7 +54,7 @@ namespace TTTReborn.Player
                 $"({deadPlayer.Role.Name})"
             );
 
-            if (confirmPlayer == Local.Pawn as TTTPlayer)
+            if (confirmPlayer == Local.Pawn as TTTPlayer && deadPlayer.CorpseCredits > 0)
             {
                 InfoFeed.Current?.AddEntry(
                     confirmClient,
