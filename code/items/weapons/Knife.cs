@@ -2,10 +2,11 @@
 
 namespace TTTReborn.Items
 {
-    [WeaponAttribute("ttt_knife", WeaponType = WeaponType.Melee)]
+    [Library("ttt_knife")]
     partial class Knife : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
+        public override WeaponType WeaponType => WeaponType.Melee;
         public override float PrimaryRate => 1.0f;
         public override float SecondaryRate => 0.3f;
         public override float DeployTime => 0.2f;
