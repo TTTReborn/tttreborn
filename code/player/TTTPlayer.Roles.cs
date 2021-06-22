@@ -5,7 +5,23 @@ namespace TTTReborn.Player
 {
     partial class TTTPlayer
     {
-        public TTTRole Role { get; private set; } = new NoneRole();
+        public TTTRole Role {
+            get
+            {
+                if (_role == null)
+                {
+                    _role = new NoneRole();
+                }
+
+                return _role;
+            }
+            private set
+            {
+                _role = value;
+            }
+        }
+
+        private TTTRole _role;
 
         public TTTTeam Team { get; private set; }
 

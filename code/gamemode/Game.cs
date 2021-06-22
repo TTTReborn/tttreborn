@@ -10,19 +10,19 @@ namespace TTTReborn.Gamemode
     [Library("tttreborn", Title = "Trouble in Terry's Town")]
     partial class Game : Sandbox.Game
     {
-        public static Game Instance { get => Current as Game; }
+        public static Game Instance { get; private set; }
 
         [Net]
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
-        public KarmaSystem Karma = new KarmaSystem();
+        public KarmaSystem Karma { get; private set; } = new KarmaSystem();
 
         public Task GameTimer { get; private set; }
 
-        private bool _isShuttingdown = false;
-
         public Game()
         {
+            Instance = this;
+
             if (IsServer)
             {
                 new Hud();
@@ -99,7 +99,7 @@ namespace TTTReborn.Gamemode
         {
             ChangeRound(new WaitingRound());
 
-            while (!_isShuttingdown)
+            while (true)
             {
                 OnGameSecond();
 
@@ -114,10 +114,6 @@ namespace TTTReborn.Gamemode
 
         public override void Shutdown()
         {
-            _isShuttingdown = true;
-            GameTimer = null;
-            Round = null;
-
             base.Shutdown();
         }
     }

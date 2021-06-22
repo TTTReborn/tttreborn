@@ -7,7 +7,7 @@ namespace TTTReborn.Player
 		public TTTPlayer Player { get; set; }
 
 		[Net]
-		public bool IsIdentified { get; set; }
+		public bool IsIdentified { get; set; } = false;
 
 		public PlayerCorpse()
 		{
