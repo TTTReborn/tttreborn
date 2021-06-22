@@ -47,6 +47,8 @@ namespace TTTReborn.UI
 
         private class Header : Panel
         {
+            public Panel PriceHolder { get; set; }
+            public Label DollarSignLabel;
             private Label _titleLabel;
             private readonly Label _creditsLabel;
 
@@ -55,12 +57,14 @@ namespace TTTReborn.UI
                 Parent = parent;
 
                 _titleLabel = Add.Label("Shop", "title");
-                _creditsLabel = Add.Label("$ 0", "credits");
+                PriceHolder = Add.Panel("priceholder");
+                DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
+                _creditsLabel =  PriceHolder.Add.Label("0", "credits");
             }
 
             public override void Tick()
             {
-                _creditsLabel.Text = $"$ {(Local.Pawn as TTTPlayer).Credits}";
+                _creditsLabel.Text = $"{(Local.Pawn as TTTPlayer).Credits}";
             }
         }
 
@@ -127,6 +131,9 @@ namespace TTTReborn.UI
 
                 private readonly Panel _iconPanel;
 
+                public Panel PriceHolder;
+                public Label DollarSignLabel;
+
                 private readonly Label _priceLabel;
 
                 public bool IsDisabled = false;
@@ -136,14 +143,16 @@ namespace TTTReborn.UI
                     Parent = parent;
 
                     _iconPanel = Add.Panel("icon");
-                    _priceLabel = Add.Label("", "price");
+                    PriceHolder = Add.Panel("priceholder");
+                    DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
+                    _priceLabel = PriceHolder.Add.Label("", "price");
                 }
 
                 public void SetItem(IBuyableItem buyableItem)
                 {
                     this._buyableItem = buyableItem;
 
-                    _priceLabel.Text = $"$ {buyableItem.GetPrice()}";
+                    _priceLabel.Text = $"{buyableItem.GetPrice()}";
 
                     _iconPanel.Style.Background = new PanelBackground{
                         Texture = Texture.Load($"/ui/weapons/{buyableItem.GetName()}.png")
@@ -154,6 +163,7 @@ namespace TTTReborn.UI
                 public void Update()
                 {
                     IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(_buyableItem) != BuyError.None;
+
 
                     SetClass("disabled", IsDisabled);
                     SetClass("active", _selectedItem == _buyableItem);
@@ -204,6 +214,8 @@ namespace TTTReborn.UI
 
             private class BuyArea : Panel
             {
+                public Panel PriceHolder;
+                public Label DollarSignLabel;
                 public Label PriceLabel;
                 public Button BuyButton;
                 public IBuyableItem Item;
@@ -211,8 +223,9 @@ namespace TTTReborn.UI
                 public BuyArea(Panel parent)
                 {
                     Parent = parent;
-
-                    PriceLabel = Add.Label("$ 200", "price");
+                    PriceHolder = Add.Panel("priceholder");
+                    DollarSignLabel = PriceHolder.Add.Label("$","dollarsign");
+                    PriceLabel = PriceHolder.Add.Label("100", "price");
 
                     BuyButton = Add.Button("Buy", "buyButton");
                     BuyButton.AddEvent("onclick", () => {
@@ -226,6 +239,7 @@ namespace TTTReborn.UI
                 public void SetItem(IBuyableItem item)
                 {
                     Item = item;
+                    PriceLabel.Text = item.GetPrice().ToString();
                 }
             }
 

@@ -15,21 +15,21 @@ namespace TTTReborn.Items
         Special
     }
 
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class WeaponAttribute : LibraryAttribute
-    {
-        public WeaponType WeaponType;
+    // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    // public class WeaponAttribute : LibraryAttribute
+    // {
+    //     public WeaponType WeaponType;
 
-        public WeaponAttribute(string name) : base(name)
-        {
+    //     public WeaponAttribute(string name) : base(name)
+    //     {
 
-        }
-    }
+    //     }
+    // }
 
-    [WeaponAttribute("ttt_weapon")]
+    [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, IBuyableItem
     {
-        public WeaponType WeaponType { get; private set; }
+        public virtual WeaponType WeaponType { get; private set; } = WeaponType.Pistol;
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
@@ -69,10 +69,9 @@ namespace TTTReborn.Items
 
         public TTTWeapon() : base()
         {
-            WeaponAttribute weaponAttribute = Library.GetAttribute(GetType()) as WeaponAttribute;
+            LibraryAttribute weaponAttribute = Library.GetAttribute(GetType());
 
             Name = weaponAttribute.Name;
-            WeaponType = weaponAttribute.WeaponType;
         }
 
         public virtual int GetPrice() => 100;

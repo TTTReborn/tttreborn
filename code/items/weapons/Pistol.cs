@@ -2,10 +2,11 @@
 
 namespace TTTReborn.Items
 {
-    [WeaponAttribute("ttt_pistol", WeaponType = WeaponType.Pistol)]
+    [Library("ttt_pistol")]
     partial class Pistol : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
+        public override WeaponType WeaponType => WeaponType.Pistol;
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 15;
         public override float PrimaryRate => 15.0f;
