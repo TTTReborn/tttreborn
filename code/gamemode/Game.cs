@@ -1,4 +1,5 @@
-﻿using Sandbox;
+﻿using System;
+using Sandbox;
 using System.Threading.Tasks;
 
 using TTTReborn.UI;
@@ -101,9 +102,16 @@ namespace TTTReborn.Gamemode
 
             while (true)
             {
-                OnGameSecond();
+                try
+                {
+                    OnGameSecond();
 
-                await Task.DelaySeconds(1);
+                    await Task.DelaySeconds(1);
+                }
+                catch(Exception e)
+                {
+                    Log.Error($"{e.Message}: {e.StackTrace}");
+                }
             }
         }
 
