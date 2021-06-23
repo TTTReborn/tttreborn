@@ -38,16 +38,6 @@ namespace TTTReborn.UI
             _confirmationPanel = new ConfirmationPanel(this);
         }
 
-        public override void Tick()
-        {
-            base.Tick();
-
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                IsShowing = false;
-            }
-        }
-
         public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified)
         {
             IsShowing = true;
