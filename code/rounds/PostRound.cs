@@ -1,5 +1,6 @@
-using Sandbox;
+using System.Collections.Generic;
 
+using Sandbox;
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
@@ -8,6 +9,8 @@ namespace TTTReborn.Rounds
     {
         public override string RoundName => "Post";
         public override int RoundDuration => TTTReborn.Gamemode.Game.TTTPostRoundTime;
+
+        private readonly List<TTTPlayer> _spectators = new();
 
         protected override void OnTimeUp()
         {
@@ -30,6 +33,14 @@ namespace TTTReborn.Rounds
             AddPlayer(player);
 
             base.OnPlayerSpawn(player);
+        }
+
+        public override void OnPlayerKilled(TTTPlayer player)
+        {
+            Players.Remove(player);
+            _spectators.Add(player);
+
+            player.MakeSpectator(player.EyePos);
         }
 
         protected override void OnStart()
