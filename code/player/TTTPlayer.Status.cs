@@ -57,7 +57,7 @@ namespace TTTReborn.Player
 
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
-                if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
+                if (Gamemode.Game.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
                 {
                     return;
                 }
