@@ -1,8 +1,6 @@
 ﻿using System;
 using Sandbox;
 
-using System.Threading.Tasks;
-
 using TTTReborn.UI;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
@@ -18,8 +16,6 @@ namespace TTTReborn.Gamemode
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
         public KarmaSystem Karma { get; private set; } = new KarmaSystem();
-
-        private bool _isShuttingdown = false;
 
         public Game()
         {
@@ -101,7 +97,7 @@ namespace TTTReborn.Gamemode
         {
             ChangeRound(new WaitingRound());
 
-            while (!_isShuttingdown)
+            while (true)
             {
                 try
                 {
@@ -114,11 +110,11 @@ namespace TTTReborn.Gamemode
                     if (e.Message.Trim() != "A task was canceled.")
                     {
                         Log.Error($"{e.Message}: {e.StackTrace}");
-
+                    }
+                    else
+                    {
                         return;
                     }
-
-                    _isShuttingdown = true;
                 }
             }
         }
@@ -126,13 +122,6 @@ namespace TTTReborn.Gamemode
         private void OnGameSecond()
         {
             Round?.OnSecond();
-        }
-
-        public override void Shutdown()
-        {
-            _isShuttingdown = true;
-
-            base.Shutdown();
         }
     }
 }
