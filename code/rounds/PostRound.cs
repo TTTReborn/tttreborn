@@ -1,11 +1,10 @@
-using Sandbox;
+using System.Collections.Generic;
 
+using Sandbox;
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
 {
-    using System.Collections.Generic;
-
     public class PostRound : BaseRound
     {
         public override string RoundName => "Post";
