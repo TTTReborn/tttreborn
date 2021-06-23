@@ -10,7 +10,7 @@ namespace TTTReborn.UI
     public class InspectMenu : Panel
     {
         public static InspectMenu Instance;
-        
+
         public bool IsShowing
         {
             get => _isShowing;
@@ -36,6 +36,16 @@ namespace TTTReborn.UI
 
             _confirmationHintPanel = new ConfirmationHintPanel(this);
             _confirmationPanel = new ConfirmationPanel(this);
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                IsShowing = false;
+            }
         }
 
         public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified)
