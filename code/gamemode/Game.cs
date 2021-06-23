@@ -107,14 +107,12 @@ namespace TTTReborn.Gamemode
                 }
                 catch(Exception e)
                 {
-                    if (e.Message.Trim() != "A task was canceled.")
-                    {
-                        Log.Error($"{e.Message}: {e.StackTrace}");
-                    }
-                    else
+                    if (e.Message.Trim() == "A task was canceled.")
                     {
                         return;
                     }
+
+                    Log.Error($"{e.Message}: {e.StackTrace}");
                 }
             }
         }
