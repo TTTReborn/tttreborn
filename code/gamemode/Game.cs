@@ -1,5 +1,6 @@
 ﻿using System;
 using Sandbox;
+
 using System.Threading.Tasks;
 
 using TTTReborn.UI;
@@ -18,7 +19,7 @@ namespace TTTReborn.Gamemode
 
         public KarmaSystem Karma { get; private set; } = new KarmaSystem();
 
-        public Task GameTimer { get; private set; }
+        private bool _isShuttingdown = false;
 
         public Game()
         {
@@ -91,26 +92,33 @@ namespace TTTReborn.Gamemode
 
         public override void PostLevelLoaded()
         {
-            GameTimer = StartGameTimer();
+            StartGameTimer();
 
             base.PostLevelLoaded();
         }
 
-        private async Task StartGameTimer()
+        private async void StartGameTimer()
         {
             ChangeRound(new WaitingRound());
 
-            while (true)
+            while (!_isShuttingdown)
             {
                 try
                 {
                     OnGameSecond();
 
-                    await Task.DelaySeconds(1);
+                    await GameTask.DelaySeconds(1);
                 }
                 catch(Exception e)
                 {
-                    Log.Error($"{e.Message}: {e.StackTrace}");
+                    if (e.Message.Trim() != "A task was canceled.")
+                    {
+                        Log.Error($"{e.Message}: {e.StackTrace}");
+
+                        return;
+                    }
+
+                    _isShuttingdown = true;
                 }
             }
         }
@@ -122,6 +130,8 @@ namespace TTTReborn.Gamemode
 
         public override void Shutdown()
         {
+            _isShuttingdown = true;
+
             base.Shutdown();
         }
     }
