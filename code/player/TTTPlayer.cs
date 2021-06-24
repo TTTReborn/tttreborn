@@ -34,6 +34,8 @@ namespace TTTReborn.Player
                 DeathPosition = position,
                 TimeSinceDied = 0
             };
+
+            Flashlight.Delete();
         }
 
         // Important: Server-side only
@@ -66,6 +68,7 @@ namespace TTTReborn.Player
             Controller = new WalkController();
             Animator = new StandardPlayerAnimator();
             Camera = new FirstPersonCamera();
+            Flashlight = new Flashlight();
 
             EnableAllCollisions = true;
             EnableDrawing = true;
@@ -78,7 +81,7 @@ namespace TTTReborn.Player
 
             GetClientOwner().SetScore("alive", true);
 
-            using(Prediction.Off())
+            using (Prediction.Off())
             {
                 ClientOnPlayerSpawned(this);
                 ClientSetRole(To.Single(this), Role.Name);
@@ -114,6 +117,8 @@ namespace TTTReborn.Player
 
             Inventory.DropActive();
             Inventory.DeleteContents();
+
+            Flashlight.Delete();
 
             using(Prediction.Off())
             {
@@ -151,6 +156,8 @@ namespace TTTReborn.Player
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
+
+            UpdateFlashlight();
         }
 
         protected override void UseFail()
