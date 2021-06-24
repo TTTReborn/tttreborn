@@ -8,7 +8,6 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override WeaponType WeaponType => WeaponType.Melee;
         public override float PrimaryRate => 1.0f;
-        public override float SecondaryRate => 0.3f;
         public override float DeployTime => 0.2f;
         public override int Bucket => 1;
         public override int BaseDamage => 45;
@@ -17,9 +16,6 @@ namespace TTTReborn.Items
         public override void Spawn()
         {
             base.Spawn();
-
-            // TODO: EnableDrawing = false does not work.
-            RenderAlpha = 0f;
 
             SetModel("weapons/rust_boneknife/rust_boneknife.vmdl");
         }
@@ -55,11 +51,6 @@ namespace TTTReborn.Items
             }
         }
 
-        public override void AttackSecondary()
-        {
-            StartChargeAttack();
-        }
-
         public override void AttackPrimary()
         {
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
@@ -71,19 +62,6 @@ namespace TTTReborn.Items
 
             PlaySound("rust_boneknife.attack");
             MeleeStrike(BaseDamage, 1.5f);
-        }
-
-        public override void OnChargeAttackFinish()
-        {
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
-
-            using (Prediction.Off())
-            {
-                ShootEffects();
-            }
-
-            PlaySound("rust_boneknife.attack");
-            MeleeStrike(BaseDamage * 3f, 1.5f);
         }
     }
 }

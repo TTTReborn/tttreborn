@@ -1,0 +1,168 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc29:version{3cec427c-1b0e-4d48-a90a-0436f33a6041} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						name = "w_b_knife_LOD0"
+						filename = "weapons/rust_boneknife/rust_boneknife.fbx"
+						import_scale = 0.5
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = "r_hold"
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"w_b_knife_LOD0",
+							]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "w_b_knife_LOD1"
+						filename = "weapons/rust_boneknife/rust_boneknife.fbx"
+						import_scale = 0.5
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = "r_hold"
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"w_b_knife_LOD1",
+							]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "w_b_knife_LOD2"
+						filename = "weapons/rust_boneknife/rust_boneknife.fbx"
+						import_scale = 0.5
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = "r_hold"
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"w_b_knife_LOD2",
+							]
+						}
+					},
+				]
+			},
+			{
+				_class = "LODGroupList"
+				children = 
+				[
+					{
+						_class = "LODGroup"
+						name = "LODGroup0"
+						switch_threshold = 0.0
+						meshes = 
+						[
+							"w_b_knife_LOD0",
+						]
+					},
+					{
+						_class = "LODGroup"
+						name = "LODGroup1"
+						switch_threshold = 50.0
+						meshes = 
+						[
+							"w_b_knife_LOD1",
+						]
+					},
+					{
+						_class = "LODGroup"
+						name = "LODGroup2"
+						switch_threshold = 100.0
+						meshes = 
+						[
+							"w_b_knife_LOD2",
+						]
+					},
+				]
+			},
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "default1.vmat"
+								to = "weapons/rust_boneknife/v_rust_boneknife.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+				]
+			},
+			{
+				_class = "Skeleton"
+				children = 
+				[
+					{
+						_class = "Bone"
+						name = "root"
+						children = 
+						[
+							{
+								_class = "Bone"
+								name = "r_hold"
+								origin = [ 0.0, 2.0, 1.0 ]
+								angles = [ 45.0, 90.0, -15.0 ]
+								do_not_discard = true
+							},
+						]
+						origin = [ 0.0, 0.0, 0.0 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						do_not_discard = true
+					},
+				]
+			},
+			{
+				_class = "PhysicsShapeList"
+				children = 
+				[
+					{
+						_class = "PhysicsShapeCapsule"
+						parent_bone = ""
+						surface_prop = "default"
+						collision_prop = "default"
+						radius = 1.0
+						point0 = [ -8.329733, 0.088324, 0.087049 ]
+						point1 = [ 4.877722, -0.01219, -0.057999 ]
+					},
+				]
+			},
+		]
+		model_archetype = "physics_prop_model"
+		primary_associated_entity = "prop_physics"
+		anim_graph_name = ""
+	}
+}
