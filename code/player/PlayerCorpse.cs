@@ -1,10 +1,13 @@
-﻿using Sandbox;
+﻿using System.Collections.Generic;
+using Sandbox;
 
 namespace TTTReborn.Player
 {
 	public partial class PlayerCorpse : ModelEntity
 	{
 		public TTTPlayer Player { get; set; }
+
+        public List<Particles> Ropes = new();
 
 		[Net]
 		public bool IsIdentified { get; set; }
@@ -66,6 +69,16 @@ namespace TTTReborn.Player
             {
                 PhysicsGroup.AddVelocity(force);
             }
+        }
+
+        protected override void OnDestroy()
+        {
+            foreach (Particles rope in Ropes)
+            {
+                rope.Destroy(true);
+            }
+
+            Ropes.Clear();
         }
 	}
 }

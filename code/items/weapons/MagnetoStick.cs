@@ -68,31 +68,39 @@ namespace TTTReborn.Items
             Rotation eyeRot = Rotation.From(new Angles(0.0f, owner.EyeRot.Angles().yaw, 0.0f));
 
             BeamActive = Input.Down(InputButton.Attack1);
+            bool attaching = Input.Down(InputButton.Attack2);
 
-            if (IsServer)
+            if (!IsServer)
             {
-                using (Prediction.Off())
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (!holdBody.IsValid())
                 {
-                    if (!holdBody.IsValid())
+                    return;
+                }
+
+                if (BeamActive)
+                {
+                    if (heldBody.IsValid())
                     {
-                        return;
+                        GrabMove(eyePos, eyeDir, eyeRot);
+                    }
+                    else
+                    {
+                        TryStartGrab(owner, eyePos, eyeRot, eyeDir);
                     }
 
-                    if (BeamActive)
+                    if (attaching)
                     {
-                        if (heldBody.IsValid())
-                        {
-                            GrabMove(eyePos, eyeDir, eyeRot);
-                        }
-                        else
-                        {
-                            TryStartGrab(owner, eyePos, eyeRot, eyeDir);
-                        }
+                        BindEntity(); // TODO just bind once per drag
                     }
-                    else if (grabbing)
-                    {
-                        GrabEnd();
-                    }
+                }
+                else if (grabbing)
+                {
+                    GrabEnd();
                 }
             }
         }
@@ -127,7 +135,7 @@ namespace TTTReborn.Items
 
         private void GrabEnd()
         {
-            if (holdJoint.IsValid())
+            if (holdJoint.IsValid)
             {
                 holdJoint.Remove();
             }
@@ -215,6 +223,56 @@ namespace TTTReborn.Items
             if (client != null)
             {
                 client.Pvs.Add(GrabbedEntity);
+            }
+        }
+
+        private void BindEntity()
+        {
+            if (!IsServer)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (!heldBody.IsValid() || heldBody.Entity is not PlayerCorpse playerCorpse)
+                {
+                    return;
+                }
+
+                TraceResult tr = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * grappingDistance)
+                    .Ignore(Owner)
+                    .Run();
+
+                if (!tr.Hit || !tr.Entity.IsValid())
+                {
+                    return;
+                }
+
+                Particles rope = Particles.Create("particles/rope.vpcf");
+                rope.SetEntity(0, heldBody.Entity, Vector3.Down * 6.5f); // Should be an attachment point
+
+                Entity attachEnt = tr.Body.IsValid() ? tr.Body.Entity : tr.Entity;
+
+                if (!attachEnt.IsWorld)
+                {
+                    return;
+                }
+
+                rope.SetPos(1, tr.Body.Transform.PointToLocal(tr.EndPos));
+                playerCorpse.Ropes.Add(rope);
+
+                PhysicsJoint.Spring
+					.From(heldBody)
+					.To(tr.Body)
+					.WithPivot(heldBody.Entity.Position + Vector3.Down * 6.5f)
+					.WithFrequency(5.0f)
+					.WithDampingRatio(0.7f)
+					.WithReferenceMass(0)
+					.WithMinRestLength(0)
+					.WithMaxRestLength(100)
+					.WithCollisionsEnabled()
+					.Create();
             }
         }
 
