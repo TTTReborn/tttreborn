@@ -161,7 +161,7 @@ namespace TTTReborn.UI
                 Parent = parent;
                 WeaponName = weapon.GetName();
 
-                _slotLabel = Add.Label(((int)weapon.WeaponType).ToString(), "slotlabel");
+                _slotLabel = Add.Label(((int) weapon.WeaponType).ToString(), "slotlabel");
                 _weaponLabel = Add.Label(weapon.GetName(), "weaponlabel");
 
                 if (weapon.WeaponType != WeaponType.Melee)
