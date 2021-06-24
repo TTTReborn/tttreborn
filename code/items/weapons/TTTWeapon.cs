@@ -1,6 +1,5 @@
-﻿using System;
 using Sandbox;
-
+using System;
 using TTTReborn.Player;
 using TTTReborn.UI;
 

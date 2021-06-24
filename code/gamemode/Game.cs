@@ -1,9 +1,8 @@
-﻿using System;
 using Sandbox;
-
-using TTTReborn.UI;
+using System;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
+using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
 {
@@ -105,7 +104,7 @@ namespace TTTReborn.Gamemode
 
                     await GameTask.DelaySeconds(1);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     if (e.Message.Trim() == "A task was canceled.")
                     {

@@ -1,5 +1,5 @@
-using System;
 using Sandbox;
+using System;
 
 namespace TTTReborn.Player
 {
@@ -40,9 +40,9 @@ namespace TTTReborn.Player
                 {
                     Attacker = this,
                     Body = PhysicsBody,
-                    Damage = (float)Math.Round(0.15f * (fallingHeight - FALLING_OBLIGINGNESS)),
+                    Damage = (float) Math.Round(0.15f * (fallingHeight - FALLING_OBLIGINGNESS)),
                     Flags = DamageFlags.Fall,
-                    HitboxIndex = (int)HitboxIndex.LeftFoot,
+                    HitboxIndex = (int) HitboxIndex.LeftFoot,
                     Position = Position
                 };
 

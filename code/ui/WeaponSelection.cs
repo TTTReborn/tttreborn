@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-
-using TTTReborn.Player;
+using System.Collections.Generic;
 using TTTReborn.Items;
+using TTTReborn.Player;
 
 // TODO Fix animation on dropping a higher slot weapon (instead of deleting and recreating, move and delete WeaponSlots in DOM)
 
@@ -162,7 +161,7 @@ namespace TTTReborn.UI
                 Parent = parent;
                 WeaponName = weapon.GetName();
 
-                _slotLabel = Add.Label(((int) weapon.WeaponType).ToString(), "slotlabel");
+                _slotLabel = Add.Label(((int)weapon.WeaponType).ToString(), "slotlabel");
                 _weaponLabel = Add.Label(weapon.GetName(), "weaponlabel");
 
                 if (weapon.WeaponType != WeaponType.Melee)

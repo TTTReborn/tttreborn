@@ -1,8 +1,7 @@
-﻿using Sandbox;
+using Sandbox;
 using Sandbox.UI;
-
-using TTTReborn.Player;
 using TTTReborn.Items;
+using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {

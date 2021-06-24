@@ -1,8 +1,7 @@
 using Sandbox;
-
+using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
-using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
@@ -44,7 +43,7 @@ namespace TTTReborn.Player
             bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
 
             // sync roles
-            using(Prediction.Off())
+            using (Prediction.Off())
             {
                 foreach (TTTPlayer player in Gamemode.Game.GetPlayers())
                 {
@@ -78,7 +77,7 @@ namespace TTTReborn.Player
 
             GetClientOwner().SetScore("alive", true);
 
-            using(Prediction.Off())
+            using (Prediction.Off())
             {
                 ClientOnPlayerSpawned(this);
                 ClientSetRole(To.Single(this), Role.Name);
@@ -115,7 +114,7 @@ namespace TTTReborn.Player
             Inventory.DropActive();
             Inventory.DeleteContents();
 
-            using(Prediction.Off())
+            using (Prediction.Off())
             {
                 ClientOnPlayerDied(To.Single(this), this);
             }

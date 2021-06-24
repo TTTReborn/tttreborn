@@ -1,4 +1,4 @@
-﻿namespace TTTReborn.Items
+namespace TTTReborn.Items
 {
     public enum AmmoType
     {

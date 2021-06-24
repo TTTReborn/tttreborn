@@ -1,6 +1,5 @@
-using System;
 using Sandbox;
-
+using System;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
