@@ -1,10 +1,9 @@
-using System;
 using Sandbox;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using TTTReborn.Player;
 using TTTReborn.Items;
+using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 
@@ -155,7 +154,7 @@ namespace TTTReborn.Rounds
                 }
 
                 // send everyone their roles
-                using(Prediction.Off())
+                using (Prediction.Off())
                 {
                     player.ClientSetRole(To.Single(player), player.Role.Name);
                 }

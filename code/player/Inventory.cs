@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
 using Sandbox;
-
+using System;
+using System.Linq;
 using TTTReborn.Items;
 
 namespace TTTReborn.Player

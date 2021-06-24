@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Sandbox;
+using System.Collections.Generic;
 using TTTReborn.Player;
 
 namespace TTTReborn.Gamemode

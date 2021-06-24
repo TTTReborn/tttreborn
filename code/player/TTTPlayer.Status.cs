@@ -1,5 +1,5 @@
-using System;
 using Sandbox;
+using System;
 
 namespace TTTReborn.Player
 {

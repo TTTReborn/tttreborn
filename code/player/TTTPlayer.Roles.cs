@@ -1,11 +1,12 @@
-﻿using TTTReborn.Roles;
+using TTTReborn.Roles;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Player
 {
     partial class TTTPlayer
     {
-        public TTTRole Role {
+        public TTTRole Role
+        {
             get
             {
                 if (_role == null)

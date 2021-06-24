@@ -12,7 +12,7 @@ namespace TTTReborn.UI
         private PlayerScore.Entry _entry;
         public string ScoreboardGroupName;
         public ulong SteamId;
-        
+
         private readonly Label _roleColorLabel;
         private readonly Label _playerName;
         private readonly Label _karma;

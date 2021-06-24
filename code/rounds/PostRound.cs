@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-
 using Sandbox;
+using System.Collections.Generic;
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
@@ -47,7 +46,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                using(Prediction.Off())
+                using (Prediction.Off())
                 {
                     foreach (TTTPlayer player in TTTReborn.Gamemode.Game.GetPlayers())
                     {

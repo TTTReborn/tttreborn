@@ -1,8 +1,7 @@
 using Sandbox;
 using System.Threading.Tasks;
-
-using TTTReborn.Player;
 using TTTReborn.Items;
+using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
 {
@@ -22,7 +21,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                foreach(Entity entity in Entity.All)
+                foreach (Entity entity in Entity.All)
                 {
                     if (entity is TTTWeapon weapon)
                     {

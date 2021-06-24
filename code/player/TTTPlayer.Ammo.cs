@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +18,7 @@ namespace TTTReborn.Player
 
         public int AmmoCount(AmmoType type)
         {
-            int iType = (int)type;
+            int iType = (int) type;
 
             if (Ammo == null || Ammo.Count <= iType)
             {
@@ -30,7 +30,7 @@ namespace TTTReborn.Player
 
         public bool SetAmmo(AmmoType type, int amount)
         {
-            int iType = (int)type;
+            int iType = (int) type;
 
             if (!Host.IsServer || Ammo == null)
             {
