@@ -86,7 +86,7 @@ namespace TTTReborn.Player
 
             RemovePlayerCorpse();
             Inventory.DeleteContents();
-            TTTReborn.Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
+            Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
 
             base.Respawn();
 

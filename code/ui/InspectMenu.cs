@@ -10,7 +10,7 @@ namespace TTTReborn.UI
     public class InspectMenu : Panel
     {
         public static InspectMenu Instance;
-        
+
         public bool IsShowing
         {
             get => _isShowing;

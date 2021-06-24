@@ -8,6 +8,7 @@ code/Properties/
 maps/
 code/*.csproj
 tools_thumbnail_cache.bin
+tools_asset_info.bin
 config/*
 *.fgd
 globals.json
