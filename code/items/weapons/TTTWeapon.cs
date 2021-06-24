@@ -29,7 +29,7 @@ namespace TTTReborn.Items
     [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, IBuyableItem
     {
-        public virtual WeaponType WeaponType { get; private set; } = WeaponType.Pistol;
+        public virtual WeaponType WeaponType => WeaponType.Pistol;
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;

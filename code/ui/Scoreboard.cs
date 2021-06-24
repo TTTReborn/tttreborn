@@ -49,8 +49,8 @@ namespace TTTReborn.UI
 
         private class Header : Panel
         {
-            public Label ServerDescription;
-            
+            //public Label ServerDescription;
+
             private Panel _scoreboardLogo;
             private Label _serverName;
             private readonly Panel _informationHolder;

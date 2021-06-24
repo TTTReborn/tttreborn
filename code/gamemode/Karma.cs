@@ -32,7 +32,7 @@ namespace TTTReborn.Gamemode
         // [Net] public Dictionary<(string, string), int> DamageRecords => new();
 
         [Net]
-        public bool IsTracking { get; set; }
+        public bool IsTracking { get; set; } = false;
 
         public void RegisterPlayer(TTTPlayer player)
         {
@@ -46,7 +46,9 @@ namespace TTTReborn.Gamemode
         public void RegisterPlayerDamage(TTTPlayer attacker, TTTPlayer victim, float damage)
         {
             if (!IsTracking)
+            {
                 return;
+            }
 
             //int updatedDamage = 0;
 

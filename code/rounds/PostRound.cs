@@ -8,7 +8,7 @@ namespace TTTReborn.Rounds
     public class PostRound : BaseRound
     {
         public override string RoundName => "Post";
-        public override int RoundDuration => TTTReborn.Gamemode.Game.TTTPostRoundTime;
+        public override int RoundDuration => Gamemode.Game.TTTPostRoundTime;
 
         private readonly List<TTTPlayer> _spectators = new();
 
@@ -16,7 +16,7 @@ namespace TTTReborn.Rounds
         {
             // TODO: Allow users to close the menu themselves using mouse cursor.
             TTTPlayer.ClientClosePostRoundMenu();
-            TTTReborn.Gamemode.Game.Instance.ChangeRound(new PreRound());
+            Gamemode.Game.Instance.ChangeRound(new PreRound());
 
             base.OnTimeUp();
         }
