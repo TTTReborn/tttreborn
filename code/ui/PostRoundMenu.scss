@@ -6,7 +6,7 @@ PostRoundMenu {
     max-width: 600px;
     width: 100%;
     left: 50%;
-    top: 50%;
+    top: 35%;
     transform: translateX(-50%) translateY(-50%);
     position: absolute;
     flex-direction: column;
@@ -43,9 +43,15 @@ PostRoundMenu {
 
     .headerLabel {
         text-align: center;
-        margin: 20px 0 400px 0;
+        margin: 20px 0 0 0;
         font-weight: bold;
         font-size: 40px;
         width: 100%;
+    }
+
+    .contentLabel {
+        text-align: center;
+        margin: 20px 20px 20px 20px;
+        font-size: 35px;
     }
 }
