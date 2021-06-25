@@ -12,7 +12,7 @@ namespace Sandbox.Hooks
     {
         public static event Action OnOpenChat;
 
-        [ClientCmd( "openchat" )]
+        [ClientCmd("openchat")]
         internal static void MessageMode()
         {
             OnOpenChat?.Invoke();
@@ -24,63 +24,63 @@ namespace Sandbox.Hooks
 namespace TTTReborn.UI
 {
     public partial class Chat : Panel
-	{
-		public static Chat Instance;
+    {
+	    public static Chat Instance;
 
         private Panel Canvas { get; set; }
         private TextEntry Input { get; set; }
 
-		public Chat()
-		{
-			Instance = this;
+	    public Chat()
+	    {
+		    Instance = this;
 
-			StyleSheet.Load("/ui/Chat.scss");
+		    StyleSheet.Load("/ui/Chat.scss");
 
-			Canvas = Add.Panel("chat_canvas");
+		    Canvas = Add.Panel("chat_canvas");
 
-			Input = Add.TextEntry("");
-			Input.AddEventListener("onsubmit", () => Submit());
-			Input.AddEventListener("onblur", () => Close());
-			Input.AcceptsFocus = true;
-			Input.AllowEmojiReplace = true;
+		    Input = Add.TextEntry("");
+		    Input.AddEventListener("onsubmit", Submit);
+		    Input.AddEventListener("onblur", Close);
+		    Input.AcceptsFocus = true;
+		    Input.AllowEmojiReplace = true;
 
-			Sandbox.Hooks.Chat.OnOpenChat += Open;
-		}
+		    Sandbox.Hooks.Chat.OnOpenChat += Open;
+	    }
 
         private void Open()
-		{
-			AddClass("open");
-			Input.Focus();
-		}
+	    {
+		    AddClass("open");
+		    Input.Focus();
+	    }
 
         private void Close()
-		{
-			RemoveClass("open");
-			Input.Blur();
-		}
+	    {
+		    RemoveClass("open");
+		    Input.Blur();
+	    }
 
         private void Submit()
-		{
-			Close();
+	    {
+		    Close();
 
             if (Local.Pawn is not TTTPlayer player)
             {
                 return;
             }
 
-			var msg = Input.Text.Trim();
-			Input.Text = "";
+		    var msg = Input.Text.Trim();
+		    Input.Text = "";
 
-			if (string.IsNullOrWhiteSpace(msg))
-				return;
+		    if (string.IsNullOrWhiteSpace(msg))
+			    return;
 
 
-			Say(msg, player.LifeState);
-		}
+		    Say(msg, player.LifeState);
+	    }
 
-		public void AddEntry(bool isAlive, string name, string message, string avatar)
-		{
-			var chatEntry = Canvas.AddChild<ChatEntry>();
+	    public void AddEntry(bool isAlive, string name, string message, string avatar)
+	    {
+		    var chatEntry = Canvas.AddChild<ChatEntry>();
             chatEntry.Message.Text = message;
 
             chatEntry.NameLabel.Text = name;
@@ -90,36 +90,36 @@ namespace TTTReborn.UI
 
             chatEntry.SetClass("noname", string.IsNullOrEmpty(name));
             chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
-		}
+	    }
 
         [ClientCmd("chat_add", CanBeCalledFromServer = true)]
-		public static void AddChatEntry(string name, string message, string avatar = null, bool isAlive = true)
-		{
+	    public static void AddChatEntry(string name, string message, string avatar = null, bool isAlive = true)
+	    {
             Instance?.AddEntry(isAlive, name, message, avatar);
 
-			// Only log clientside if we're not the listen server host
-			if (!Global.IsListenServer)
-			{
-				Log.Info($"{name}: {message}");
-			}
-		}
+		    // Only log clientside if we're not the listen server host
+		    if (!Global.IsListenServer)
+		    {
+			    Log.Info($"{name}: {message}");
+		    }
+	    }
 
-		[ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
-		public static void AddInformation(string message, string avatar = null, bool isAlive = true)
-		{
-			Instance?.AddEntry(isAlive, null, message, avatar);
-		}
+	    [ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
+	    public static void AddInformation(string message, string avatar = null, bool isAlive = true)
+	    {
+		    Instance?.AddEntry(isAlive, null, message, avatar);
+	    }
 
-		[ServerCmd("say")]
-		public static void Say(string message, LifeState lifeState)
-		{
-			Assert.NotNull(ConsoleSystem.Caller);
+	    [ServerCmd("say")]
+	    public static void Say(string message, LifeState lifeState)
+	    {
+		    Assert.NotNull(ConsoleSystem.Caller);
 
-            // TODO: Reject more messed up strings
-			if ( message.Contains('\n') || message.Contains('\r'))
-				return;
+            // TODO: Reject more messed up user inputs
+		    if ( message.Contains('\n') || message.Contains('\r'))
+			    return;
 
-			Log.Info($"{ConsoleSystem.Caller}: {message}");
+		    Log.Info($"{ConsoleSystem.Caller}: {message}");
 
             if (lifeState == LifeState.Dead)
             {
@@ -131,7 +131,6 @@ namespace TTTReborn.UI
                 AddChatEntry(To.Everyone, ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", true);
             }
         }
-
-	}
+    }
 }
 
