@@ -12,7 +12,6 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 [*.md]
-insert_final_newline = false
 trim_trailing_whitespace = false
 
 # correct eol for scripts
