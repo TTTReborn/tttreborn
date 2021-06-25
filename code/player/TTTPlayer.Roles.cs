@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System.Collections.Generic;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
