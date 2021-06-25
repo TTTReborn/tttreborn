@@ -1,5 +1,4 @@
-﻿Chat
-{
+﻿Chat {
     position: absolute;
     bottom: 200px;
     left: 100px;
@@ -9,8 +8,7 @@
     font-family: Poppins;
     font-size: 13px;
 
-    textentry
-    {
+    textentry {
         background-color: black;
         opacity: 0;
         color: white;
@@ -22,14 +20,12 @@
         width: 100%;
     }
 
-    .chat_canvas
-    {
+    .chat_canvas {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    &.open
-    {
+    &.open {
         textentry
         {
             opacity: 1;
@@ -45,8 +41,7 @@
     }
 }
 
-chatentry
-{
+chatentry {
     background-color: rgba( black, 0.8 );
     margin-bottom: 5px;
     color: white;
@@ -61,8 +56,7 @@ chatentry
     max-width: 100%;
     transform: scale( 1 );
 
-    &:intro
-    {
+    &:intro {
         max-height: 0px;
         padding-top: 0;
         padding-bottom: 0;
@@ -71,14 +65,12 @@ chatentry
         transform: scale( 0 );
     }
 
-    &:outro
-    {
+    &:outro {
         opacity: 0;
         transition: all 2s ease-out;
     }
 
-    image
-    {
+    image {
         width: 32px;
         height: 32px;
         min-height: 32px;
@@ -88,29 +80,25 @@ chatentry
         top: 6px;
     }
 
-    .name
-    {
+    .name {
         padding-right: 20px;
         font-weight: 600;
         font-size: 14px;
         flex-shrink: 0;
     }
 
-    .message
-    {
+    .message {
         color: #ccc;
         font-size: 14px;
         //	background-color: red;
         flex-grow: 1;
     }
 
-    &.noname .name
-    {
+    &.noname .name {
         display: none;
     }
 
-    &.noavatar image
-    {
+    &.noavatar image {
         display: none;
     }
 }
