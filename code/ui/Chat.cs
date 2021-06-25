@@ -26,8 +26,8 @@ namespace TTTReborn.UI
     {
         public static Chat Instance;
 
-        private Panel Canvas { get; set; }
-        private TextEntry Input { get; set; }
+        private readonly Panel _canvas;
+        private readonly TextEntry _input;
 
         public Chat()
         {
@@ -35,13 +35,13 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/Chat.scss");
 
-            Canvas = Add.Panel("chat_canvas");
+            _canvas = Add.Panel("chat_canvas");
 
-            Input = Add.TextEntry("");
-            Input.AddEventListener("onsubmit", Submit);
-            Input.AddEventListener("onblur", Close);
-            Input.AcceptsFocus = true;
-            Input.AllowEmojiReplace = true;
+            _input = Add.TextEntry("");
+            _input.AddEventListener("onsubmit", Submit);
+            _input.AddEventListener("onblur", Close);
+            _input.AcceptsFocus = true;
+            _input.AllowEmojiReplace = true;
 
             Sandbox.Hooks.Chat.OnOpenChat += Open;
         }
@@ -49,13 +49,13 @@ namespace TTTReborn.UI
         private void Open()
         {
             AddClass("open");
-            Input.Focus();
+            _input.Focus();
         }
 
         private void Close()
         {
             RemoveClass("open");
-            Input.Blur();
+            _input.Blur();
         }
 
         private void Submit()
@@ -67,8 +67,8 @@ namespace TTTReborn.UI
                 return;
             }
 
-            var msg = Input.Text.Trim();
-            Input.Text = "";
+            var msg = _input.Text.Trim();
+            _input.Text = "";
 
             if (string.IsNullOrWhiteSpace(msg))
                 return;
@@ -79,7 +79,7 @@ namespace TTTReborn.UI
 
         public void AddEntry(bool isAlive, string name, string message, string avatar)
         {
-            var chatEntry = Canvas.AddChild<ChatEntry>();
+            var chatEntry = _canvas.AddChild<ChatEntry>();
             chatEntry.Message.Text = message;
 
             chatEntry.NameLabel.Text = name;

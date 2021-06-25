@@ -7,11 +7,11 @@ namespace TTTReborn.UI
 {
     public partial class ChatEntry : Panel
     {
-        public Label NameLabel { get; internal set; }
-        public Label Message { get; internal set; }
-        public Image Avatar { get; internal set; }
+        public readonly Label NameLabel;
+        public readonly Label Message;
+        public readonly Image Avatar;
 
-        public RealTimeSince TimeSinceBorn = 0;
+        private readonly RealTimeSince _timeSinceBorn = 0;
 
         public ChatEntry()
         {
@@ -24,7 +24,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (TimeSinceBorn > 10)
+            if (_timeSinceBorn > 10)
             {
                 Delete();
             }
