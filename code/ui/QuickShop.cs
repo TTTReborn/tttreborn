@@ -110,7 +110,7 @@ namespace TTTReborn.UI
                 ItemPanel itemPanel = new ItemPanel(_wrapper);
                 itemPanel.SetItem(buyableItem);
 
-                itemPanel.AddEvent("onclick", () =>
+                itemPanel.AddEventListener("onclick", () =>
                 {
                     if (itemPanel.IsDisabled)
                     {
@@ -229,7 +229,7 @@ namespace TTTReborn.UI
                     PriceLabel = PriceHolder.Add.Label("100", "price");
 
                     BuyButton = Add.Button("Buy", "buyButton");
-                    BuyButton.AddEvent("onclick", () =>
+                    BuyButton.AddEventListener("onclick", () =>
                     {
                         if (_selectedItem.IsBuyable(Local.Pawn as TTTPlayer))
                         {
