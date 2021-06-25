@@ -97,7 +97,7 @@ namespace TTTReborn.Gamemode
                 return false;
             }
 
-            if (sourcePlayer.LifeState == LifeState.Dead)
+            if (Round is InProgressRound && sourcePlayer.LifeState == LifeState.Dead)
             {
                 if (destPlayer.LifeState == LifeState.Alive)
                 {
