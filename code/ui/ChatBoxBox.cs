@@ -22,18 +22,18 @@ namespace Sandbox.Hooks
 
 namespace TTTReborn.UI
 {
-    public partial class Chat : Panel
+    public partial class ChatBox : Panel
     {
-        public static Chat Instance;
+        public static ChatBox Instance;
 
         private readonly Panel _canvas;
         private readonly TextEntry _input;
 
-        public Chat()
+        public ChatBox()
         {
             Instance = this;
 
-            StyleSheet.Load("/ui/Chat.scss");
+            StyleSheet.Load("/ui/ChatBox.scss");
 
             _canvas = Add.Panel("chat_canvas");
 
@@ -77,13 +77,13 @@ namespace TTTReborn.UI
             Say(msg, player.LifeState);
         }
 
-        public void AddEntry(bool isAlive, string name, string message, string avatar)
+        public void AddEntry(string name, string message, string avatar, LifeState lifeState)
         {
             var chatEntry = _canvas.AddChild<ChatEntry>();
             chatEntry.Message.Text = message;
 
             chatEntry.NameLabel.Text = name;
-            chatEntry.NameLabel.AddClass(isAlive ? "alive" : "dead");
+            chatEntry.NameLabel.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
 
             chatEntry.Avatar.SetTexture(avatar);
 
@@ -92,9 +92,9 @@ namespace TTTReborn.UI
         }
 
         [ClientCmd("chat_add", CanBeCalledFromServer = true)]
-        public static void AddChatEntry(string name, string message, string avatar = null, bool isAlive = true)
+        public static void AddChatEntry(string name, string message, string avatar = null, LifeState lifeState = LifeState.Alive)
         {
-            Instance?.AddEntry(isAlive, name, message, avatar);
+            Instance?.AddEntry(name, message, avatar, lifeState);
 
             // Only log clientside if we're not the listen server host
             if (!Global.IsListenServer)
@@ -104,9 +104,9 @@ namespace TTTReborn.UI
         }
 
         [ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
-        public static void AddInformation(string message, string avatar = null, bool isAlive = true)
+        public static void AddInformation(string message, string avatar = null, LifeState lifeState = LifeState.Alive)
         {
-            Instance?.AddEntry(isAlive, null, message, avatar);
+            Instance?.AddEntry(null, message, avatar, lifeState);
         }
 
         [ServerCmd("say")]
@@ -125,11 +125,11 @@ namespace TTTReborn.UI
             if (lifeState == LifeState.Dead)
             {
                 var deadClients = Gamemode.Game.GetDeadClients();
-                AddChatEntry(To.Multiple(deadClients), ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", false);
+                AddChatEntry(To.Multiple(deadClients), ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", lifeState);
             }
             else
             {
-                AddChatEntry(To.Everyone, ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", true);
+                AddChatEntry(To.Everyone, ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", lifeState);
             }
         }
     }
