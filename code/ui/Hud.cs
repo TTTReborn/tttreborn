@@ -23,7 +23,7 @@ namespace TTTReborn.UI
 
             Instance = this;
 
-            RootPanel.AddChild<ChatBox>();
+            RootPanel.AddChild<Chat>();
             RootPanel.AddChild<VoiceList>();
             RootPanel.AddChild<GameTimer>();
             RootPanel.AddChild<Scoreboard>();
