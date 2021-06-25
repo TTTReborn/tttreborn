@@ -18,31 +18,19 @@ namespace TTTReborn.Items
         public override int Bucket => 1;
         public override int BaseDamage => 0;
 
-        protected int grappingDistance => 80;
+        private static int _grappingDistance => 80;
 
-        protected PhysicsBody holdBody;
-        protected WeldJoint holdJoint;
+        private PhysicsBody _holdBody;
+        private WeldJoint _holdJoint;
 
-        protected PhysicsBody heldBody;
-        protected Vector3 heldPos;
-        protected Rotation heldRot;
+        private PhysicsBody _heldBody;
+        private Rotation _heldRot;
 
-        protected float holdDistance;
-        protected bool grabbing;
+        private float _holdDistance = 0f;
+        private bool _isAttaching = false;
+        private bool _isGrabbing = false;
 
-        [Net]
-        public bool BeamActive { get; set; }
-
-        [Net]
         public Entity GrabbedEntity { get; set; }
-
-        [Net]
-        public int GrabbedBone { get; set; }
-
-        [Net]
-        public Vector3 GrabbedPos { get; set; }
-
-        public PhysicsBody HeldBody => heldBody;
 
         public override void Spawn()
         {
@@ -56,6 +44,11 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client client)
         {
+            if (!IsServer)
+            {
+                return;
+            }
+
             TTTPlayer owner = Owner as TTTPlayer;
 
             if (owner == null)
@@ -67,24 +60,19 @@ namespace TTTReborn.Items
             Vector3 eyeDir = owner.EyeRot.Forward;
             Rotation eyeRot = Rotation.From(new Angles(0.0f, owner.EyeRot.Angles().yaw, 0.0f));
 
-            BeamActive = Input.Down(InputButton.Attack1);
             bool attaching = Input.Down(InputButton.Attack2);
-
-            if (!IsServer)
-            {
-                return;
-            }
+            _isGrabbing = Input.Down(InputButton.Attack1);
 
             using (Prediction.Off())
             {
-                if (!holdBody.IsValid())
+                if (!_holdBody.IsValid())
                 {
                     return;
                 }
 
-                if (BeamActive)
+                if (_isGrabbing)
                 {
-                    if (heldBody.IsValid())
+                    if (_heldBody.IsValid())
                     {
                         GrabMove(eyePos, eyeDir, eyeRot);
                     }
@@ -95,10 +83,19 @@ namespace TTTReborn.Items
 
                     if (attaching)
                     {
-                        BindEntity(); // TODO just bind once per drag
+                        if (!_isAttaching)
+                        {
+                            _isAttaching = true;
+
+                            BindEntity();
+                        }
+                    }
+                    else
+                    {
+                        _isAttaching = false;
                     }
                 }
-                else if (grabbing)
+                else if (GrabbedEntity.IsValid())
                 {
                     GrabEnd();
                 }
@@ -114,35 +111,36 @@ namespace TTTReborn.Items
 
             GrabEnd();
 
-            grabbing = true;
-            heldBody = body;
-            holdDistance = Vector3.DistanceBetween(startPos, grabPos);
-            holdDistance = holdDistance.Clamp(0, grappingDistance);
-            heldPos = heldBody.Transform.PointToLocal(grabPos);
-            heldRot = rot.Inverse * heldBody.Rotation;
+            _heldBody = body;
+            _holdDistance = Vector3.DistanceBetween(startPos, grabPos);
+            _holdDistance = _holdDistance.Clamp(0, _grappingDistance);
 
-            holdBody.Position = grabPos;
-            holdBody.Rotation = heldBody.Rotation;
+            Vector3 heldPos = _heldBody.Transform.PointToLocal(grabPos);
 
-            heldBody.Wake();
-            heldBody.EnableAutoSleeping = false;
+            _heldRot = rot.Inverse * _heldBody.Rotation;
 
-            holdJoint = PhysicsJoint.Weld
-                .From(holdBody)
-                .To(heldBody, heldPos)
+            _holdBody.Position = grabPos;
+            _holdBody.Rotation = _heldBody.Rotation;
+
+            _heldBody.Wake();
+            _heldBody.EnableAutoSleeping = false;
+
+            _holdJoint = PhysicsJoint.Weld
+                .From(_holdBody)
+                .To(_heldBody, heldPos)
                 .Create();
         }
 
         private void GrabEnd()
         {
-            if (holdJoint.IsValid)
+            if (_holdJoint.IsValid)
             {
-                holdJoint.Remove();
+                _holdJoint.Remove();
             }
 
-            if (heldBody.IsValid())
+            if (_heldBody.IsValid())
             {
-                heldBody.EnableAutoSleeping = true;
+                _heldBody.EnableAutoSleeping = true;
             }
 
             Client client = GetClientOwner();
@@ -152,25 +150,24 @@ namespace TTTReborn.Items
                 client.Pvs.Remove(GrabbedEntity);
             }
 
-            heldBody = null;
+            _heldBody = null;
             GrabbedEntity = null;
-            grabbing = false;
         }
 
         private void GrabMove(Vector3 startPos, Vector3 dir, Rotation rot)
         {
-            if (!heldBody.IsValid())
+            if (!_heldBody.IsValid())
             {
                 return;
             }
 
-            holdBody.Position = startPos + dir * holdDistance;
-            holdBody.Rotation = rot * heldRot;
+            _holdBody.Position = startPos + dir * _holdDistance;
+            _holdBody.Rotation = rot * _heldRot;
         }
 
         private void TryStartGrab(TTTPlayer owner, Vector3 eyePos, Rotation eyeRot, Vector3 eyeDir)
         {
-            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * grappingDistance)
+            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * _grappingDistance)
                 .UseHitboxes()
                 .Ignore(owner)
                 .HitLayer(CollisionLayer.Debris)
@@ -185,23 +182,13 @@ namespace TTTReborn.Items
             Entity rootEnt = tr.Entity.Root;
             PhysicsBody body = tr.Body;
 
-            if (tr.Entity.Parent.IsValid())
+            if (tr.Entity.Parent.IsValid() && rootEnt.IsValid() && rootEnt.PhysicsGroup != null)
             {
-                if (rootEnt.IsValid() && rootEnt.PhysicsGroup != null)
-                {
-                    body = rootEnt.PhysicsGroup.GetBody(0);
-                }
+                body = rootEnt.PhysicsGroup.GetBody(0);
             }
 
-            if (!body.IsValid())
-            {
-                return;
-            }
-
-            //
             // Don't move keyframed
-            //
-            if (body.BodyType == PhysicsBodyType.Keyframed)
+            if (!body.IsValid() || body.BodyType == PhysicsBodyType.Keyframed)
             {
                 return;
             }
@@ -215,15 +202,8 @@ namespace TTTReborn.Items
             GrabInit(body, eyePos, tr.EndPos, eyeRot);
 
             GrabbedEntity = rootEnt;
-            GrabbedPos = body.Transform.PointToLocal(tr.EndPos);
-            GrabbedBone = tr.Entity.PhysicsGroup.GetBodyIndex(body);
 
-            Client client = GetClientOwner();
-
-            if (client != null)
-            {
-                client.Pvs.Add(GrabbedEntity);
-            }
+            GetClientOwner()?.Pvs.Add(GrabbedEntity);
         }
 
         private void BindEntity()
@@ -235,22 +215,24 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                if (!heldBody.IsValid() || heldBody.Entity is not PlayerCorpse playerCorpse)
+                if (!_heldBody.IsValid() || _heldBody.Entity is not PlayerCorpse playerCorpse)
                 {
                     return;
                 }
 
-                TraceResult tr = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * grappingDistance)
+                TraceResult tr = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * _grappingDistance)
                     .Ignore(Owner)
                     .Run();
 
                 if (!tr.Hit || !tr.Entity.IsValid())
                 {
+                    playerCorpse.ClearAttachments();
+
                     return;
                 }
 
                 Particles rope = Particles.Create("particles/rope.vpcf");
-                rope.SetEntity(0, heldBody.Entity, Vector3.Down * 6.5f); // Should be an attachment point
+                rope.SetEntity(0, _heldBody.Entity, Vector3.Down * 6.5f); // Should be an attachment point
 
                 Entity attachEnt = tr.Body.IsValid() ? tr.Body.Entity : tr.Entity;
 
@@ -262,36 +244,33 @@ namespace TTTReborn.Items
                 rope.SetPos(1, tr.Body.Transform.PointToLocal(tr.EndPos));
                 playerCorpse.Ropes.Add(rope);
 
-                PhysicsJoint.Spring
-					.From(heldBody)
-					.To(tr.Body)
-					.WithPivot(heldBody.Entity.Position + Vector3.Down * 6.5f)
-					.WithFrequency(5.0f)
-					.WithDampingRatio(0.7f)
-					.WithReferenceMass(0)
-					.WithMinRestLength(0)
-					.WithMaxRestLength(100)
-					.WithCollisionsEnabled()
-					.Create();
+                playerCorpse.Welds.Add(
+                    PhysicsJoint.Conical
+                        .From(_heldBody)
+                        .To(tr.Body)
+                        .WithPivot(_heldBody.Entity.Position + Vector3.Down * 6.5f)
+                        .WithCollisionsEnabled()
+                        .Create()
+                );
             }
         }
 
         public override void AttackPrimary()
         {
+            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+        }
 
+        public override void AttackSecondary()
+        {
+            (Owner as AnimEntity).SetAnimBool("b_attack", true);
         }
 
         private void Activate()
         {
-            if (!IsServer)
+            if (IsServer && !_holdBody.IsValid())
             {
-                return;
-            }
-
-            if (!holdBody.IsValid())
-            {
-                holdBody = PhysicsWorld.AddBody();
-                holdBody.BodyType = PhysicsBodyType.Keyframed;
+                _holdBody = PhysicsWorld.AddBody();
+                _holdBody.BodyType = PhysicsBodyType.Keyframed;
             }
         }
 
@@ -301,8 +280,8 @@ namespace TTTReborn.Items
             {
                 GrabEnd();
 
-                holdBody?.Remove();
-                holdBody = null;
+                _holdBody?.Remove();
+                _holdBody = null;
             }
         }
 

@@ -8,6 +8,7 @@ namespace TTTReborn.Player
 		public TTTPlayer Player { get; set; }
 
         public List<Particles> Ropes = new();
+        public List<PhysicsJoint> Welds = new();
 
 		[Net]
 		public bool IsIdentified { get; set; }
@@ -71,7 +72,7 @@ namespace TTTReborn.Player
             }
         }
 
-        protected override void OnDestroy()
+        public void ClearAttachments()
         {
             foreach (Particles rope in Ropes)
             {
@@ -79,6 +80,18 @@ namespace TTTReborn.Player
             }
 
             Ropes.Clear();
+
+            foreach (PhysicsJoint weld in Welds)
+            {
+                weld.Remove();
+            }
+
+            Welds.Clear();
+        }
+
+        protected override void OnDestroy()
+        {
+            ClearAttachments();
         }
 	}
 }
