@@ -1,3 +1,5 @@
+﻿using Sandbox;
+using System.Collections.Generic;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 
@@ -42,6 +44,28 @@ namespace TTTReborn.Player
             }
 
             Role.OnSelect(this);
+        }
+
+        public void SyncMIA(TTTPlayer player = null)
+        {
+            if (player == null)
+            {
+                List<Client> traitors = new();
+
+                foreach (Client client in Client.All)
+                {
+                    if ((client.Pawn as TTTPlayer).Team.Name == "Traitors")
+                    {
+                        traitors.Add(client);
+                    }
+                }
+
+                ClientAddMissingInAction(To.Multiple(traitors), this);
+            }
+            else
+            {
+                ClientAddMissingInAction(To.Single(player), this);
+            }
         }
     }
 }

@@ -20,12 +20,20 @@ namespace TTTReborn.Roles
 
         public override void OnSelect(TTTPlayer player)
         {
-            if (Host.IsServer && player.Team != null)
+            if (Host.IsServer && player.Team.Name == DefaultTeam.Name)
             {
                 foreach (TTTPlayer otherPlayer in player.Team.Members)
                 {
                     player.ClientSetRole(To.Single(otherPlayer), player.Role.Name);
                     otherPlayer.ClientSetRole(To.Single(player), otherPlayer.Role.Name);
+                }
+
+                foreach (TTTPlayer otherPlayer in Gamemode.Game.GetPlayers())
+                {
+                    if (otherPlayer.IsMissingInAction)
+                    {
+                        otherPlayer.SyncMIA(player);
+                    }
                 }
             }
 

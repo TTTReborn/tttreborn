@@ -1,5 +1,4 @@
 using Sandbox;
-using System.Collections.Generic;
 using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
@@ -111,25 +110,12 @@ namespace TTTReborn.Player
             Inventory.DropActive();
             Inventory.DeleteContents();
 
+            IsMissingInAction = true;
+
             using (Prediction.Off())
             {
-                IsMissingInAction = true;
-
-                List<Client> traitors = new();
-
-                foreach (Client client in Client.All)
-                {
-                    TTTPlayer player = client.Pawn as TTTPlayer;
-
-                    if (player.Team.Name == "Traitors")
-                    {
-                        traitors.Add(client);
-                    }
-                }
-
-                ClientAddMissingInAction(To.Multiple(traitors), this);
-
                 ClientOnPlayerDied(To.Single(this), this);
+                SyncMIA();
             }
         }
 
