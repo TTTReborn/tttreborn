@@ -28,7 +28,6 @@ namespace TTTReborn.Items
 
         private float _holdDistance = 0f;
         private bool _isAttaching = false;
-        private bool _isGrabbing = false;
 
         public Entity GrabbedEntity { get; set; }
 
@@ -60,9 +59,6 @@ namespace TTTReborn.Items
             Vector3 eyeDir = owner.EyeRot.Forward;
             Rotation eyeRot = Rotation.From(new Angles(0.0f, owner.EyeRot.Angles().yaw, 0.0f));
 
-            bool attaching = Input.Down(InputButton.Attack2);
-            _isGrabbing = Input.Down(InputButton.Attack1);
-
             using (Prediction.Off())
             {
                 if (!_holdBody.IsValid())
@@ -70,10 +66,23 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                if (_isGrabbing)
+                if (Input.Down(InputButton.Attack1))
                 {
                     if (_heldBody.IsValid())
                     {
+                        if (_heldBody.Entity is PlayerCorpse playerCorpse && playerCorpse.Welds.Count > 0)
+                        {
+                            foreach (PhysicsJoint weld in playerCorpse.Welds)
+                            {
+                                if (Vector3.DistanceBetween(weld.Body1.Position, weld.Anchor2) > _grappingDistance)
+                                {
+                                    GrabEnd();
+
+                                    return;
+                                }
+                            }
+                        }
+
                         GrabMove(eyePos, eyeDir, eyeRot);
                     }
                     else
@@ -81,7 +90,7 @@ namespace TTTReborn.Items
                         TryStartGrab(owner, eyePos, eyeRot, eyeDir);
                     }
 
-                    if (attaching)
+                    if (Input.Down(InputButton.Attack2))
                     {
                         if (!_isAttaching)
                         {
@@ -208,18 +217,13 @@ namespace TTTReborn.Items
 
         private void BindEntity()
         {
-            if (!IsServer)
+            if (!IsServer || !_heldBody.IsValid() || _heldBody.Entity is not PlayerCorpse playerCorpse)
             {
                 return;
             }
 
             using (Prediction.Off())
             {
-                if (!_heldBody.IsValid() || _heldBody.Entity is not PlayerCorpse playerCorpse)
-                {
-                    return;
-                }
-
                 TraceResult tr = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * _grappingDistance)
                     .Ignore(Owner)
                     .Run();
