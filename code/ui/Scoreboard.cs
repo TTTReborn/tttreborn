@@ -38,9 +38,6 @@ namespace TTTReborn.UI
 
             _footer = Add.Panel("footer");
 
-            // TODO: Implement UpdatePlayer method
-            // PlayerScore.OnPlayerUpdated += UpdatePlayer;
-
             foreach (PlayerScore.Entry player in PlayerScore.All)
             {
                 AddPlayer(player);
