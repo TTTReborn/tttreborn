@@ -33,6 +33,8 @@ namespace TTTReborn.Player
             player.CorpseConfirmer = null;
 
             player.SetRole(new NoneRole());
+
+            Hud.Instance.Scoreboard.UpdatePlayer(player.GetClientOwner());
         }
 
         /// <summary>

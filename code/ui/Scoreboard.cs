@@ -241,6 +241,14 @@ namespace TTTReborn.UI
             }
         }
 
+        public void Update()
+        {
+            foreach (PlayerScore.Entry entry in PlayerScore.All)
+            {
+                UpdatePlayer(entry);
+            }
+        }
+
         private void DeleteEmptyScoreboardGroups()
         {
             List<string> removeList = new();
