@@ -41,25 +41,28 @@ namespace TTTReborn.UI
             _karma.Text = entry.Get<int>("karma", 0).ToString();
             _score.Text = entry.Get<int>("score", 0).ToString();
             _ping.Text = entry.Get<int>("ping", 0).ToString();
+        }
 
-            // TOOD: Make this work on creation of this Entry
-            // TODO add sin-based fading
-            SetClass("me", Local.Client != null && _entry.Get<ulong>("steamid", 0) == Local.Client.SteamId);
+        private void Initialize()
+        {
+            foreach (Client loopClient in Client.All)
+            {
+                if (loopClient.SteamId == SteamId)
+                {
+                    _client = loopClient;
+
+                    break;
+                }
+            }
+
+            SetClass("me", SteamId == Local.Client?.SteamId);
         }
 
         public override void Tick()
         {
             if (_client == null)
             {
-                foreach (Client loopClient in Client.All)
-                {
-                    if (loopClient.SteamId == SteamId)
-                    {
-                        _client = loopClient;
-
-                        break;
-                    }
-                }
+                Initialize();
             }
 
             if (_client?.Pawn is not TTTPlayer player || _currentRole == player.Role)
