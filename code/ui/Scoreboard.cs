@@ -183,7 +183,7 @@ namespace TTTReborn.UI
                     {
                         if (client.Pawn.IsValid() && client.SteamId == steamId)
                         {
-                            if((client.Pawn as TTTPlayer).IsMissingInAction)
+                            if ((client.Pawn as TTTPlayer).IsMissingInAction)
                             {
                                 group = "MIA";
                             }
