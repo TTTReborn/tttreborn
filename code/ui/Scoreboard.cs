@@ -3,6 +3,8 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System.Collections.Generic;
 
+using TTTReborn.Player;
+
 namespace TTTReborn.UI
 {
     public class Scoreboard : Panel
@@ -162,7 +164,6 @@ namespace TTTReborn.UI
             _header.UpdateServerInfo();
         }
 
-        // TODO add MIA
         private ScoreboardGroup GetScoreboardGroup(PlayerScore.Entry entry)
         {
             string group = "Alive";
@@ -171,6 +172,26 @@ namespace TTTReborn.UI
             {
                 // TODO better spectator check, maybe with a player var
                 group = "Dead";
+            }
+            else
+            {
+                ulong steamId = entry.Get<ulong>("steamid", 0);
+
+                if (steamId != 0)
+                {
+                    foreach (Client client in Client.All)
+                    {
+                        if (client.Pawn.IsValid() && client.SteamId == steamId)
+                        {
+                            if((client.Pawn as TTTPlayer).IsMissingInAction)
+                            {
+                                group = "MIA";
+                            }
+
+                            break;
+                        }
+                    }
+                }
             }
 
             _scoreboardGroups.TryGetValue(group, out ScoreboardGroup scoreboardGroup);
@@ -206,6 +227,17 @@ namespace TTTReborn.UI
             {
                 // Add to queue? Up to now, just print an error #hacky
                 Log.Error($"Tried to update the ScoreboardPanel of the player with sid: '{entry.Get<ulong>("steamid")}'");
+            }
+        }
+
+        public void UpdatePlayer(Client client)
+        {
+            foreach (PlayerScore.Entry entry in PlayerScore.All)
+            {
+                if (entry.Get<ulong>("steamid", 0) == client.SteamId)
+                {
+                    UpdatePlayer(entry);
+                }
             }
         }
 

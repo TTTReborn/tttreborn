@@ -139,6 +139,16 @@ Scoreboard {
                     border: #af262f;
                 }
             }
+
+            &.mia {
+                .scoreboardGroup__title {
+                    background-color: rgb(133, 133, 15);
+                }
+
+                .scoreboardGroup__content {
+                    border: rgb(133, 133, 15);
+                }
+            }
         }
     }
 
