@@ -123,7 +123,7 @@ Scoreboard {
                         background-color: #4b4b4b15;
                     }
 
-                    &.me {
+                    &.me:nth-child(1) {
                         background-color: #f2b42d1a;
                     }
                 }
@@ -137,6 +137,16 @@ Scoreboard {
 
                 .scoreboardGroup__content {
                     border: #af262f;
+                }
+            }
+
+            &.mia {
+                .scoreboardGroup__title {
+                    background-color: rgb(133, 133, 15);
+                }
+
+                .scoreboardGroup__content {
+                    border: rgb(133, 133, 15);
                 }
             }
         }
