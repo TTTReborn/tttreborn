@@ -1,4 +1,6 @@
-# ![TTTReborn logo](https://github.com/TTTReborn/graphics/raw/main/github_social/social.png) Contributing to TTTReborn
+<h1 align="center"><img src="assets/TTT-Reborn-Logo.png" alt="TTTReborn logo" height="200"/></h1>
+
+## Contributing to TTTReborn
 
 ## Table of contents
 
