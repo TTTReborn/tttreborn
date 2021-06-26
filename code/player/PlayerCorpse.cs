@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTTReborn.Player
@@ -8,10 +8,11 @@ namespace TTTReborn.Player
         public TTTPlayer Player { get; set; }
 
         public List<Particles> Ropes = new();
+
         public List<PhysicsJoint> Welds = new();
 
         [Net]
-        public bool IsIdentified { get; set; }
+        public bool IsIdentified { get; set; } = false;
 
         public PlayerCorpse()
         {

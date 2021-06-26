@@ -1,5 +1,6 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+
 using TTTReborn.Gamemode;
 
 namespace TTTReborn.UI
@@ -29,6 +30,11 @@ namespace TTTReborn.UI
             }
             public override void Tick()
             {
+                if (Game.Instance.Round == null)
+                {
+                    return;
+                }
+
                 bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
 
                 _textLabel.Text = $"{Game.Instance.Round.RoundName}:";

@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 
 namespace TTTReborn.Player
 {
@@ -10,6 +10,8 @@ namespace TTTReborn.Player
         public int CorpseCredits { get; set; } = 0;
 
         public bool IsConfirmed = false;
+
+        public bool IsMissingInAction = false;
 
         public TTTPlayer CorpseConfirmer = null;
 

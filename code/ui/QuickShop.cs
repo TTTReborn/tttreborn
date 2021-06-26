@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -59,7 +60,7 @@ namespace TTTReborn.UI
                 _titleLabel = Add.Label("Shop", "title");
                 PriceHolder = Add.Panel("priceholder");
                 DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
-                _creditsLabel =  PriceHolder.Add.Label("0", "credits");
+                _creditsLabel = PriceHolder.Add.Label("0", "credits");
             }
 
             public override void Tick()
@@ -100,7 +101,7 @@ namespace TTTReborn.UI
 
             public void Update()
             {
-                foreach(ItemPanel itemPanel in _itemPanels)
+                foreach (ItemPanel itemPanel in _itemPanels)
                 {
                     itemPanel.Update();
                 }
@@ -111,7 +112,8 @@ namespace TTTReborn.UI
                 ItemPanel itemPanel = new ItemPanel(_wrapper);
                 itemPanel.SetItem(buyableItem);
 
-                itemPanel.AddEvent("onclick", () => {
+                itemPanel.AddEventListener("onclick", () =>
+                {
                     if (itemPanel.IsDisabled)
                     {
                         return;
@@ -154,7 +156,8 @@ namespace TTTReborn.UI
 
                     _priceLabel.Text = $"{buyableItem.GetPrice()}";
 
-                    _iconPanel.Style.Background = new PanelBackground{
+                    _iconPanel.Style.Background = new PanelBackground
+                    {
                         Texture = Texture.Load($"/ui/weapons/{buyableItem.GetName()}.png")
                     };
                     _iconPanel.Style.Dirty();
@@ -224,11 +227,12 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
                     PriceHolder = Add.Panel("priceholder");
-                    DollarSignLabel = PriceHolder.Add.Label("$","dollarsign");
+                    DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
                     PriceLabel = PriceHolder.Add.Label("100", "price");
 
                     BuyButton = Add.Button("Buy", "buyButton");
-                    BuyButton.AddEvent("onclick", () => {
+                    BuyButton.AddEventListener("onclick", () =>
+                    {
                         if (_selectedItem.IsBuyable(Local.Pawn as TTTPlayer))
                         {
                             ConsoleSystem.Run($"requestitem", Item.GetName());

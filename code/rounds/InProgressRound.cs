@@ -1,10 +1,11 @@
 using System;
-using Sandbox;
 using System.Collections.Generic;
 using System.Linq;
 
-using TTTReborn.Player;
+using Sandbox;
+
 using TTTReborn.Items;
+using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 
@@ -14,14 +15,13 @@ namespace TTTReborn.Rounds
     {
         public override string RoundName => "In Progress";
         public override int RoundDuration => TTTReborn.Gamemode.Game.TTTRoundTime;
-        public override bool CanPlayerSuicide => true;
 
-        public List<TTTPlayer> Spectators = new();
+        private readonly List<TTTPlayer> _spectators = new();
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
             Players.Remove(player);
-            Spectators.Add(player);
+            _spectators.Add(player);
 
             player.MakeSpectator(player.EyePos);
 
@@ -37,7 +37,7 @@ namespace TTTReborn.Rounds
         {
             base.OnPlayerLeave(player);
 
-            Spectators.Remove(player);
+            _spectators.Remove(player);
 
             TTTTeam result = IsRoundOver();
 
@@ -91,7 +91,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                Spectators.Clear();
+                _spectators.Clear();
             }
         }
 
@@ -106,7 +106,7 @@ namespace TTTReborn.Rounds
         {
             player.MakeSpectator();
 
-            Spectators.Add(player);
+            _spectators.Add(player);
             Players.Remove(player);
 
             base.OnPlayerSpawn(player);
@@ -158,7 +158,7 @@ namespace TTTReborn.Rounds
                 }
 
                 // send everyone their roles
-                using(Prediction.Off())
+                using (Prediction.Off())
                 {
                     player.ClientSetRole(To.Single(player), player.Role.Name);
                 }

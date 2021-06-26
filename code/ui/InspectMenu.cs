@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -10,7 +11,7 @@ namespace TTTReborn.UI
     public class InspectMenu : Panel
     {
         public static InspectMenu Instance;
-        
+
         public bool IsShowing
         {
             get => _isShowing;

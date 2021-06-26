@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
 using TTTReborn.Items;
+using TTTReborn.Player;
 
 // TODO Fix animation on dropping a higher slot weapon (instead of deleting and recreating, move and delete WeaponSlots in DOM)
 

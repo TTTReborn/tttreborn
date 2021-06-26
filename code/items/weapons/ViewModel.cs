@@ -1,5 +1,6 @@
-﻿using Sandbox;
 using System;
+
+using Sandbox;
 
 namespace TTTReborn.Items
 {

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Linq;
+
 using Sandbox;
 
 using TTTReborn.Items;
