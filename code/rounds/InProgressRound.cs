@@ -73,7 +73,9 @@ namespace TTTReborn.Rounds
                     }
 
                     // TODO: Remove once we can spawn in weapons into the map, for now just give the guns to people.
-                    player.Inventory.Add(new Shotgun(), true);
+                    player.Inventory.Add(new MagnetoStick(), true);
+
+                    player.Inventory.Add(new Shotgun(), false);
                     player.GiveAmmo(AmmoType.Buckshot, 16);
 
                     player.Inventory.Add(new SMG(), false);

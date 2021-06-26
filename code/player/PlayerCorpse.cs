@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 
 namespace TTTReborn.Player
@@ -5,6 +7,10 @@ namespace TTTReborn.Player
     public partial class PlayerCorpse : ModelEntity
     {
         public TTTPlayer Player { get; set; }
+
+        public List<Particles> Ropes = new();
+
+        public List<PhysicsJoint> Welds = new();
 
         [Net]
         public bool IsIdentified { get; set; } = false;
@@ -66,6 +72,28 @@ namespace TTTReborn.Player
             {
                 PhysicsGroup.AddVelocity(force);
             }
+        }
+
+        public void ClearAttachments()
+        {
+            foreach (Particles rope in Ropes)
+            {
+                rope.Destroy(true);
+            }
+
+            Ropes.Clear();
+
+            foreach (PhysicsJoint weld in Welds)
+            {
+                weld.Remove();
+            }
+
+            Welds.Clear();
+        }
+
+        protected override void OnDestroy()
+        {
+            ClearAttachments();
         }
     }
 }

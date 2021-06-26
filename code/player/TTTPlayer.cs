@@ -100,6 +100,7 @@ namespace TTTReborn.Player
                 case Rounds.PreRound:
                     IsConfirmed = false;
                     CorpseConfirmer = null;
+
                     break;
             }
         }
@@ -173,7 +174,6 @@ namespace TTTReborn.Player
         {
             if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
             {
-                int weaponSlot = (int) (ActiveChild as TTTWeapon).WeaponType;
                 Entity droppedEntity = Inventory.DropActive();
 
                 if (droppedEntity != null)
