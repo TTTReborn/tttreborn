@@ -77,6 +77,8 @@ namespace TTTReborn.Player
 
             GetClientOwner().SetScore("alive", true);
 
+            IsMissingInAction = false;
+
             using (Prediction.Off())
             {
                 ClientOnPlayerSpawned(this);
