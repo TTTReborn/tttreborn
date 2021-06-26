@@ -9,6 +9,8 @@ namespace TTTReborn.UI
     {
         public static Hud Instance { set; get; }
 
+        public Scoreboard Scoreboard;
+
         private PlayerInfo _playerInfo;
         private WeaponSelection _weaponSelection;
         private InspectMenu _inspectMenu;
@@ -26,10 +28,11 @@ namespace TTTReborn.UI
             RootPanel.AddChild<ChatBox>();
             RootPanel.AddChild<VoiceList>();
             RootPanel.AddChild<GameTimer>();
-            RootPanel.AddChild<Scoreboard>();
             RootPanel.AddChild<InfoFeed>();
             RootPanel.AddChild<PostRoundMenu>();
             RootPanel.AddChild<QuickShop>();
+
+            Scoreboard = RootPanel.AddChild<Scoreboard>();
         }
 
         [Event("tttreborn.player.died")]

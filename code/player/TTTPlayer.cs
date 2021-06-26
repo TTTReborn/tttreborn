@@ -77,6 +77,8 @@ namespace TTTReborn.Player
 
             GetClientOwner().SetScore("alive", true);
 
+            IsMissingInAction = false;
+
             using (Prediction.Off())
             {
                 ClientOnPlayerSpawned(this);
@@ -94,10 +96,6 @@ namespace TTTReborn.Player
                 // hacky
                 // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
                 // TODO spawn player as spectator instantly
-                case Rounds.InProgressRound:
-                case Rounds.PostRound:
-                    GetClientOwner().SetScore("alive", false);
-                    return;
                 case Rounds.PreRound:
                     IsConfirmed = false;
                     CorpseConfirmer = null;
@@ -114,9 +112,12 @@ namespace TTTReborn.Player
             Inventory.DropActive();
             Inventory.DeleteContents();
 
+            IsMissingInAction = true;
+
             using (Prediction.Off())
             {
                 ClientOnPlayerDied(To.Single(this), this);
+                SyncMIA();
             }
         }
 

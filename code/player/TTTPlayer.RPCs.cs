@@ -10,18 +10,31 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientOnPlayerDied(TTTPlayer player)
         {
+            if (!player.IsValid())
+            {
+                return;
+            }
+
             Event.Run("tttreborn.player.died", player);
         }
 
         [ClientRpc]
         public void ClientOnPlayerSpawned(TTTPlayer player)
         {
+            if (!player.IsValid())
+            {
+                return;
+            }
+
             Event.Run("tttreborn.player.spawned", player);
 
+            player.IsMissingInAction = false;
             player.IsConfirmed = false;
             player.CorpseConfirmer = null;
 
             player.SetRole(new NoneRole());
+
+            Hud.Instance.Scoreboard.UpdatePlayer(player.GetClientOwner());
         }
 
         /// <summary>
@@ -38,6 +51,11 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName, string teamName = null)
         {
+            if (!confirmPlayer.IsValid() || !deadPlayer.IsValid())
+            {
+                return;
+            }
+
             deadPlayer.SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
 
             deadPlayer.IsConfirmed = true;
@@ -63,8 +81,26 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
+        public void ClientAddMissingInAction(TTTPlayer missingInActionPlayer)
+        {
+            if (!missingInActionPlayer.IsValid())
+            {
+                return;
+            }
+
+            missingInActionPlayer.IsMissingInAction = true;
+
+            Hud.Instance.Scoreboard.UpdatePlayer(missingInActionPlayer.GetClientOwner());
+        }
+
+        [ClientRpc]
         public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
         {
+            if (!deadPlayer.IsValid())
+            {
+                return;
+            }
+
             InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
         }
 

@@ -11,6 +11,8 @@ namespace TTTReborn.Player
 
         public bool IsConfirmed = false;
 
+        public bool IsMissingInAction = false;
+
         public TTTPlayer CorpseConfirmer = null;
 
         private const float INSPECT_CORPSE_DISTANCE = 80f;
