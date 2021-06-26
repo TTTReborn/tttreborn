@@ -2,6 +2,7 @@
 	"name": "Trouble in Terry's Town",
 	"version": "1.0",
 	"sharedassets": "*.*",
+    "ident": "neox.tttreborn",
 
 	"depends": [
 		"base",
