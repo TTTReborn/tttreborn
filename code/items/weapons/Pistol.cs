@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Library("ttt_pistol")]
-    partial class Pistol : TTTWeapon
+    partial class Pistol : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override WeaponType WeaponType => WeaponType.Pistol;
@@ -16,6 +16,8 @@ namespace TTTReborn.Items
         public override bool HasLaserDot => true;
         public override int BaseDamage => 8;
         public override int Bucket => 1;
+
+        public virtual int GetPrice() => 100;
 
         public override void Spawn()
         {

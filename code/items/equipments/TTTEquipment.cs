@@ -15,7 +15,7 @@ namespace TTTReborn.Items
         }
     }
 
-    public abstract class TTTEquipment : Networked, IBuyableItem
+    public abstract class TTTEquipment : BaseCarriable, IItem
     {
         private string Name { get; set; }
 
@@ -26,15 +26,13 @@ namespace TTTReborn.Items
             Name = equipmentAttribute.Name;
         }
 
-        public virtual int GetPrice() => 100;
-
-        public virtual bool IsBuyable(TTTPlayer player) => true;
-
         public string GetName() => Name;
 
         public void Equip(TTTPlayer player)
         {
 
         }
+
+        public virtual bool CanDrop() => true;
     }
 }

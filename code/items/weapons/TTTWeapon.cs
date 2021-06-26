@@ -28,7 +28,7 @@ namespace TTTReborn.Items
     // }
 
     [Library("ttt_weapon")]
-    public abstract partial class TTTWeapon : BaseWeapon, IBuyableItem
+    public abstract partial class TTTWeapon : BaseWeapon, IItem
     {
         public virtual WeaponType WeaponType => WeaponType.Pistol;
         public virtual AmmoType AmmoType => AmmoType.Pistol;
@@ -74,8 +74,6 @@ namespace TTTReborn.Items
 
             Name = weaponAttribute.Name;
         }
-
-        public virtual int GetPrice() => 100;
 
         public virtual bool IsBuyable(TTTPlayer player)
         {

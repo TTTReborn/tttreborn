@@ -8,15 +8,9 @@ using TTTReborn.Player;
 namespace TTTReborn.Items
 {
     [Library("ttt_magnetostick")]
-    partial class MagnetoStick : TTTWeapon // TODO Equipment
+    partial class MagnetoStick : TTTEquipment
     {
         public override string ViewModelPath => "";
-        public override WeaponType WeaponType => WeaponType.Melee;
-        public override float PrimaryRate => 0.1f;
-        public override float SecondaryRate => 0.1f;
-        public override float DeployTime => 0.2f;
-        public override int Bucket => 1;
-        public override int BaseDamage => 0;
 
         private static int _grappingDistance => 80;
 
@@ -257,16 +251,6 @@ namespace TTTReborn.Items
                         .Create()
                 );
             }
-        }
-
-        public override void AttackPrimary()
-        {
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
-        }
-
-        public override void AttackSecondary()
-        {
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
         }
 
         private void Activate()

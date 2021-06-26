@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Library("ttt_knife")]
-    partial class Knife : TTTWeapon
+    partial class Knife : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override WeaponType WeaponType => WeaponType.Melee;
@@ -12,6 +12,8 @@ namespace TTTReborn.Items
         public override int Bucket => 1;
         public override int BaseDamage => 45;
         public virtual int MeleeDistance => 80;
+
+        public virtual int GetPrice() => 100;
 
         public override void Spawn()
         {
