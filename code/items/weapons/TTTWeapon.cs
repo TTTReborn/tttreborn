@@ -376,5 +376,7 @@ namespace TTTReborn.Items
                 PickupTrigger.EnableTouch = true;
             }
         }
+
+        public virtual bool CanDrop() => true;
     }
 }

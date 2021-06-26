@@ -103,5 +103,15 @@ namespace TTTReborn.Player
             // edge case, if List does not contain the active weapon
             return 0;
         }
+
+        public override bool Drop(Entity ent)
+		{
+			if (!Host.IsServer || !Contains(ent) || ent is TTTWeapon weapon && !weapon.CanDrop())
+            {
+				return false;
+            }
+
+			return base.Drop(ent);
+		}
     }
 }

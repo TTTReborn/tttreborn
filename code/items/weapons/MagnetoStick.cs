@@ -309,5 +309,7 @@ namespace TTTReborn.Items
 
             Deactivate();
         }
+
+        public override bool CanDrop() => false;
     }
 }
