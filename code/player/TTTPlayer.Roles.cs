@@ -28,7 +28,23 @@ namespace TTTReborn.Player
 
         private TTTRole _role;
 
-        public TTTTeam Team { get; private set; }
+        public TTTTeam Team {
+            get
+            {
+                if (_team == null)
+                {
+                    _team = TTTTeam.GetTeam("Nones");
+                }
+
+                return _team;
+            }
+            private set
+            {
+                _team = value;
+            }
+        }
+
+        private TTTTeam _team;
 
         public void SetRole(TTTRole role, TTTTeam team = null)
         {
@@ -50,6 +66,11 @@ namespace TTTReborn.Player
 
         public void SyncMIA(TTTPlayer player = null)
         {
+            if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
+            {
+                return;
+            }
+
             if (player == null)
             {
                 List<Client> traitors = new();
