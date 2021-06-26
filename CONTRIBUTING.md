@@ -1,6 +1,4 @@
-![TTTReborn logo](https://github.com/TTTReborn/graphics/raw/main/github_social/social.png)
-
-# Contributing to TTTReborn
+# ![TTTReborn logo](https://github.com/TTTReborn/graphics/raw/main/github_social/social.png) Contributing to TTTReborn
 
 ## Table of contents
 
