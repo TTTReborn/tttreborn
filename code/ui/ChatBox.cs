@@ -16,7 +16,6 @@ namespace Sandbox.Hooks
         {
             OnOpenChat?.Invoke();
         }
-
     }
 }
 
@@ -71,8 +70,9 @@ namespace TTTReborn.UI
             _input.Text = "";
 
             if (string.IsNullOrWhiteSpace(msg))
+            {
                 return;
-
+            }
 
             Say(msg, player.LifeState);
         }
@@ -114,18 +114,17 @@ namespace TTTReborn.UI
         {
             Assert.NotNull(ConsoleSystem.Caller);
 
-            // TODO: Reject more messed up user inputs
+            // TODO: Consider REGEX to remove any messed up user chat messages.
             if (message.Contains('\n') || message.Contains('\r'))
             {
-
+                return;
             }
 
             Log.Info($"{ConsoleSystem.Caller}: {message}");
 
             if (Gamemode.Game.Instance?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead)
             {
-                var deadClients = Gamemode.Game.GetDeadClients();
-                AddChatEntry(To.Multiple(deadClients), ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", lifeState);
+                AddChatEntry(To.Multiple(Gamemode.Game.GetDeadClients()), ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", lifeState);
             }
             else
             {

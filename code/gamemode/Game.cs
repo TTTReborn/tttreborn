@@ -89,10 +89,7 @@ namespace TTTReborn.Gamemode
         {
             Host.AssertServer();
 
-            var sp = source.Pawn;
-            var dp = dest.Pawn;
-
-            if (sp is not TTTPlayer sourcePlayer || dp is not TTTPlayer destPlayer)
+            if (source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer)
             {
                 return false;
             }
