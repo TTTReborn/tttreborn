@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using Sandbox.Joints;
 
 using TTTReborn.Player;

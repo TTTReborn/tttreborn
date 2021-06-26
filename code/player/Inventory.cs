@@ -106,13 +106,13 @@ namespace TTTReborn.Player
         }
 
         public override bool Drop(Entity ent)
-		{
-			if (!Host.IsServer || !Contains(ent) || ent is TTTWeapon weapon && !weapon.CanDrop())
+        {
+            if (!Host.IsServer || !Contains(ent) || ent is TTTWeapon weapon && !weapon.CanDrop())
             {
-				return false;
+                return false;
             }
 
-			return base.Drop(ent);
-		}
+            return base.Drop(ent);
+        }
     }
 }

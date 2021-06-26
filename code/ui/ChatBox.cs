@@ -1,7 +1,9 @@
+using System;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using System;
+
 using TTTReborn.Player;
 
 // Chat needs to hook into s&box in order to function.
