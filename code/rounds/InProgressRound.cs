@@ -173,5 +173,25 @@ namespace TTTReborn.Rounds
                 winningTeam.Color
             );
         }
+
+        private bool CheckMinimumPlayers()
+        {
+            return Client.All.Count >= TTTReborn.Gamemode.Game.TTTMinPlayers;
+        }
+
+        public override void OnSecond()
+        {
+            if (Host.IsServer)
+            {
+                if (CheckMinimumPlayers())
+                {
+                    base.OnSecond();
+                }
+                else if (IsRoundOver() == null)
+                {
+                    Gamemode.Game.Instance.ChangeRound(new WaitingRound());
+                }
+            }
+        }
     }
 }
