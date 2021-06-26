@@ -10,7 +10,7 @@ namespace TTTReborn.Items
     [Library("ttt_magnetostick")]
     partial class MagnetoStick : TTTWeapon // TODO Equipment
     {
-        public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
+        public override string ViewModelPath => "";
         public override WeaponType WeaponType => WeaponType.Melee;
         public override float PrimaryRate => 0.1f;
         public override float SecondaryRate => 0.1f;
@@ -35,10 +35,7 @@ namespace TTTReborn.Items
         {
             base.Spawn();
 
-            // TODO: EnableDrawing = false does not work.
             RenderAlpha = 0f;
-
-            SetModel("weapons/rust_boneknife/rust_boneknife.vmdl");
         }
 
         public override void Simulate(Client client)
@@ -137,6 +134,8 @@ namespace TTTReborn.Items
             _holdJoint = PhysicsJoint.Weld
                 .From(_holdBody)
                 .To(_heldBody, heldPos)
+                .WithLinearSpring(20f, 1f, 0.0f)
+                .WithAngularSpring(0.0f, 0.0f, 0.0f)
                 .Create();
         }
 
@@ -249,11 +248,12 @@ namespace TTTReborn.Items
                 playerCorpse.Ropes.Add(rope);
 
                 playerCorpse.Welds.Add(
-                    PhysicsJoint.Conical
+                    PhysicsJoint.Weld
                         .From(_heldBody)
                         .To(tr.Body)
                         .WithPivot(_heldBody.Entity.Position + Vector3.Down * 6.5f)
-                        .WithCollisionsEnabled()
+                        .WithLinearSpring(20f, 1f, 0.0f)
+                        .WithAngularSpring(0.0f, 0.0f, 0.0f)
                         .Create()
                 );
             }
