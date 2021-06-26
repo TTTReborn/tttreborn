@@ -85,6 +85,26 @@ namespace TTTReborn.Gamemode
             base.ClientDisconnect(client, reason);
         }
 
+        public override bool CanHearPlayerVoice(Client source, Client dest)
+        {
+            Host.AssertServer();
+
+            if (source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer)
+            {
+                return false;
+            }
+
+            if (Round is InProgressRound && sourcePlayer.LifeState == LifeState.Dead)
+            {
+                if (destPlayer.LifeState == LifeState.Alive)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public override void PostLevelLoaded()
         {
             StartGameTimer();

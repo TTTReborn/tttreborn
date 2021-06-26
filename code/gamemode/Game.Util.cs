@@ -36,6 +36,21 @@ namespace TTTReborn.Gamemode
             return players;
         }
 
+        public static List<Client> GetDeadClients()
+        {
+            List<Client> clients = new List<Client>();
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Dead)
+                {
+                    clients.Add(client);
+                }
+            }
+
+            return clients;
+        }
+
         public static List<TTTPlayer> GetConfirmedPlayers()
         {
             List<TTTPlayer> players = new List<TTTPlayer>();
