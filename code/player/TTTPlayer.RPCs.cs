@@ -121,15 +121,6 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientCloseNameplate()
-        {
-            if (Nameplate.Instance?.IsShowing ?? false)
-            {
-                Nameplate.Instance.IsShowing = false;
-            }
-        }
-
-        [ClientRpc]
         public static void ClientOpenAndSetPostRoundMenu(string winningTeam, Color winningColor)
         {
             PostRoundMenu.Instance.OpenAndSetPostRoundMenu(new PostRoundStats(
