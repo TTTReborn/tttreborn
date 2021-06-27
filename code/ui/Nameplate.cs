@@ -9,6 +9,21 @@ namespace TTTReborn.UI
 {
     public class Nameplate : Panel
     {
+        public static Nameplate Instance;
+
+        public bool IsShowing
+        {
+            get => _isShowing;
+            set
+            {
+                _isShowing = value;
+
+                SetClass("hide", !_isShowing);
+            }
+        }
+
+        private bool _isShowing = false;
+
         private const float MAX_DRAW_DISTANCE = 500;
 
         private readonly Panel _labelHolder;
@@ -17,8 +32,15 @@ namespace TTTReborn.UI
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 
+        private string _playerName;
+        private float _playerHp;
+        private TTTRole _playerRole;
+
         public Nameplate()
         {
+            Instance = this;
+            IsShowing = false;
+
             StyleSheet.Load("/ui/Nameplate.scss");
 
             _labelHolder = Add.Panel("labelHolder");
@@ -49,6 +71,11 @@ namespace TTTReborn.UI
                 : near_death;
         }
 
+        public void SetHealth(float health)
+        {
+            _playerHp = health;
+        }
+
         public override void Tick()
         {
             TTTPlayer player = Local.Pawn as TTTPlayer;
@@ -66,8 +93,8 @@ namespace TTTReborn.UI
                 validHit = true;
 
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
-                _damageIndicatorLabel.Text = GetHealthGroup(target.Health);
-                _damageIndicatorLabel.Style.FontColor = GetHealthColor(target.Health);
+                _damageIndicatorLabel.Text = GetHealthGroup(_playerHp);
+                _damageIndicatorLabel.Style.FontColor = GetHealthColor(_playerHp);
 
                 _roleColorDotLabel.Style.BackgroundColor = target.Role.Color.WithAlpha(0.9f);
 

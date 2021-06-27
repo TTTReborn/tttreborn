@@ -147,6 +147,7 @@ namespace TTTReborn.Player
                 {
                     TickAttemptInspectPlayerCorpse();
                 }
+                TickAttemptLookup();
 
                 TickPlayerFalling();
             }
