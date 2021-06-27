@@ -15,7 +15,6 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            TTTPlayer.ClientClosePostRoundMenu();
             Gamemode.Game.Instance.ChangeRound(new PreRound());
 
             base.OnTimeUp();
