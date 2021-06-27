@@ -5,6 +5,9 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public partial class Hud : HudEntity<RootPanel>
     {
         public static Hud Current { set; get; }
@@ -80,38 +83,36 @@ namespace TTTReborn.UI
 
         public class AliveHud : Panel
         {
-            private PlayerInfo _playerInfo;
-            private WeaponSelection _weaponSelection;
-            private InspectMenu _inspectMenu;
-            private Nameplate _nameplate;
-            private QuickShop _quickShop;
+            private List<Panel> _panels;
 
             public AliveHud(Panel parent)
             {
                 Parent = parent;
+                _panels = new List<Panel>();
             }
 
             public void CreateHud()
             {
-                _playerInfo ??= Parent.AddChild<PlayerInfo>();
-                _weaponSelection ??= Parent.AddChild<WeaponSelection>();
-                _inspectMenu ??= Parent.AddChild<InspectMenu>();
-                _nameplate ??= Parent.AddChild<Nameplate>();
-                _quickShop ??= Parent.AddChild<QuickShop>();
+                if (_panels.Count == 0)
+                {
+                    _panels = new List<Panel>()
+                    {
+                        Parent.AddChild<PlayerInfo>(),
+                        Parent.AddChild<WeaponSelection>(),
+                        Parent.AddChild<InspectMenu>(),
+                        Parent.AddChild<Nameplate>(),
+                        Parent.AddChild<QuickShop>()
+                    };
+                }
             }
 
             public void DeleteHud()
             {
-                _playerInfo?.Delete();
-                _playerInfo = null;
-                _weaponSelection?.Delete();
-                _weaponSelection = null;
-                _inspectMenu?.Delete();
-                _inspectMenu = null;
-                _nameplate?.Delete();
-                _nameplate = null;
-                _quickShop?.Delete();
-                _quickShop = null;
+                foreach (Panel child in _panels)
+                {
+                    child.Delete();
+                }
+                _panels.Clear();
             }
         }
     }
