@@ -44,6 +44,9 @@ WeaponSelection {
                 font-size: 20px;
                 padding-top: 2px;
             }
+            &.weaponlabel {
+                margin-top: 1px;
+            }
         }
 
         &.active {
