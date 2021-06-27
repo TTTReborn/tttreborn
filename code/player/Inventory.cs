@@ -93,7 +93,7 @@ namespace TTTReborn.Player
                     }
                     else
                     {
-                        // if there is no weapon with same slot or no slot defined, return the next available weapon
+                        // if there is no carriable entity with same slot or no slot defined, return the next available carriable entity
                         return nextIndex;
                     }
 
@@ -101,7 +101,7 @@ namespace TTTReborn.Player
                 }
             }
 
-            // edge case, if List does not contain the active weapon
+            // edge case, if List does not contain the active carriable entity
             return 0;
         }
 

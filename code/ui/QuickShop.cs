@@ -208,9 +208,9 @@ namespace TTTReborn.UI
 
                     EquipmentLabel.Text = Item.Name;
 
-                    if (item is TTTWeapon weapon)
+                    if (item is ICarriableItem carriable)
                     {
-                        DescriptionLabel.Text = $"Slot: {(int) weapon.HoldType}";
+                        DescriptionLabel.Text = $"Slot: {(int) carriable.HoldType}";
                     }
                 }
             }

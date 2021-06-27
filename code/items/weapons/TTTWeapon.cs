@@ -34,7 +34,7 @@ namespace TTTReborn.Items
         public virtual bool HasLaserDot => false;
         public virtual int BaseDamage => 10;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        // TODO add player role to weapon to access in UI WeaponSelection.cs.
+        // TODO add player role to weapon to access in UI InventorySelection.cs.
         // E.G. this weapon is bought in traitor shop: Role => "Traitor";
         // This weapon is a normal weapon: Role => "None"
 
@@ -61,9 +61,9 @@ namespace TTTReborn.Items
 
         public TTTWeapon() : base()
         {
-            LibraryAttribute weaponAttribute = Library.GetAttribute(GetType());
+            LibraryAttribute attribute = Library.GetAttribute(GetType());
 
-            Name = weaponAttribute.Name;
+            Name = attribute.Name;
         }
 
         public virtual bool IsBuyable(TTTPlayer player)

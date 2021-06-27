@@ -12,7 +12,7 @@ namespace TTTReborn.UI
         public Scoreboard Scoreboard;
 
         private PlayerInfo _playerInfo;
-        private WeaponSelection _weaponSelection;
+        private InventorySelection _inventorySelection;
         private InspectMenu _inspectMenu;
         private Nameplate _nameplate;
 
@@ -46,8 +46,8 @@ namespace TTTReborn.UI
             _playerInfo?.Delete();
             _playerInfo = null;
 
-            _weaponSelection?.Delete();
-            _weaponSelection = null;
+            _inventorySelection?.Delete();
+            _inventorySelection = null;
 
             _inspectMenu?.Delete();
             _inspectMenu = null;
@@ -66,7 +66,7 @@ namespace TTTReborn.UI
 
             _playerInfo ??= RootPanel.AddChild<PlayerInfo>();
 
-            _weaponSelection ??= RootPanel.AddChild<WeaponSelection>();
+            _inventorySelection ??= RootPanel.AddChild<InventorySelection>();
 
             _inspectMenu ??= RootPanel.AddChild<InspectMenu>();
 
