@@ -28,7 +28,8 @@ namespace TTTReborn.Player
 
         private TTTRole _role;
 
-        public TTTTeam Team {
+        public TTTTeam Team
+        {
             get
             {
                 if (_team == null)
