@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     partial class Shotgun : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
-        public override WeaponType WeaponType => WeaponType.Primary;
+        public override HoldType HoldType => Items.HoldType.Primary;
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
         public override AmmoType AmmoType => AmmoType.Buckshot;
@@ -20,7 +20,7 @@ namespace TTTReborn.Items
         public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
         public override int Bucket => 3;
 
-        public virtual int GetPrice() => 100;
+        public virtual int Price => 100;
 
         public override void Spawn()
         {

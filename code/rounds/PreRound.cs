@@ -25,9 +25,9 @@ namespace TTTReborn.Rounds
             {
                 foreach (Entity entity in Entity.All)
                 {
-                    if (entity is TTTWeapon weapon)
+                    if (entity is BaseCarriable carr)
                     {
-                        weapon.Delete();
+                        carr.Delete();
                     }
                 }
 

@@ -154,11 +154,11 @@ namespace TTTReborn.UI
                 {
                     this._buyableItem = buyableItem;
 
-                    _priceLabel.Text = $"{buyableItem.GetPrice()}";
+                    _priceLabel.Text = $"{buyableItem.Price}";
 
                     _iconPanel.Style.Background = new PanelBackground
                     {
-                        Texture = Texture.Load($"/ui/weapons/{buyableItem.GetName()}.png")
+                        Texture = Texture.Load($"/ui/weapons/{buyableItem.Name}.png")
                     };
                     _iconPanel.Style.Dirty();
                 }
@@ -206,11 +206,11 @@ namespace TTTReborn.UI
                 {
                     Item = item;
 
-                    EquipmentLabel.Text = Item.GetName();
+                    EquipmentLabel.Text = Item.Name;
 
                     if (item is TTTWeapon weapon)
                     {
-                        DescriptionLabel.Text = $"Slot: {(int) weapon.WeaponType}";
+                        DescriptionLabel.Text = $"Slot: {(int) weapon.HoldType}";
                     }
                 }
             }
@@ -235,7 +235,7 @@ namespace TTTReborn.UI
                     {
                         if (_selectedItem.IsBuyable(Local.Pawn as TTTPlayer))
                         {
-                            ConsoleSystem.Run($"requestitem", Item.GetName());
+                            ConsoleSystem.Run($"requestitem", Item.Name);
                         }
                     });
                 }
@@ -243,7 +243,7 @@ namespace TTTReborn.UI
                 public void SetItem(IBuyableItem item)
                 {
                     Item = item;
-                    PriceLabel.Text = item.GetPrice().ToString();
+                    PriceLabel.Text = item.Price.ToString();
                 }
             }
 

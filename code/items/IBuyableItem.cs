@@ -4,7 +4,7 @@ namespace TTTReborn.Items
 {
     public interface IBuyableItem : IItem
     {
-        int GetPrice();
+        int Price { get; }
 
         bool IsBuyable(TTTPlayer player);
     }

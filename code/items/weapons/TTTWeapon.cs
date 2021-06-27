@@ -7,15 +7,6 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    public enum WeaponType
-    {
-        Melee = 1,
-        Pistol,
-        Primary,
-        Heavy,
-        Special
-    }
-
     // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     // public class WeaponAttribute : LibraryAttribute
     // {
@@ -28,9 +19,9 @@ namespace TTTReborn.Items
     // }
 
     [Library("ttt_weapon")]
-    public abstract partial class TTTWeapon : BaseWeapon, IItem
+    public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
-        public virtual WeaponType WeaponType => WeaponType.Pistol;
+        public virtual HoldType HoldType => Items.HoldType.Pistol;
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
@@ -66,7 +57,7 @@ namespace TTTReborn.Items
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        private string Name { get; set; }
+        public string Name { get; }
 
         public TTTWeapon() : base()
         {
@@ -79,8 +70,6 @@ namespace TTTReborn.Items
         {
             return !(player.Inventory as Inventory).IsCarryingType(GetType());
         }
-
-        public string GetName() => Name;
 
         public void Equip(TTTPlayer player)
         {
@@ -121,7 +110,7 @@ namespace TTTReborn.Items
 
         public override void Reload()
         {
-            if (WeaponType == WeaponType.Melee || IsReloading || AmmoClip >= ClipSize)
+            if (HoldType == Items.HoldType.Melee || IsReloading || AmmoClip >= ClipSize)
             {
                 return;
             }
@@ -254,7 +243,7 @@ namespace TTTReborn.Items
         {
             Host.AssertClient();
 
-            if (WeaponType != WeaponType.Melee)
+            if (HoldType != Items.HoldType.Melee)
             {
                 Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
             }
@@ -348,7 +337,7 @@ namespace TTTReborn.Items
 
         public bool IsUsable()
         {
-            if (WeaponType == WeaponType.Melee || ClipSize == 0 || AmmoClip > 0)
+            if (HoldType == Items.HoldType.Melee || ClipSize == 0 || AmmoClip > 0)
             {
                 return true;
             }

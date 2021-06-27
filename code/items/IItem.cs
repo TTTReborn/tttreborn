@@ -4,10 +4,8 @@ namespace TTTReborn.Items
 {
     public interface IItem
     {
-        string GetName();
+        string Name { get; }
 
         void Equip(TTTPlayer player);
-
-        bool CanDrop();
     }
 }

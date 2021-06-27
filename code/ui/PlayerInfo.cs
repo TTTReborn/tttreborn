@@ -94,7 +94,7 @@ namespace TTTReborn.UI
                 TTTWeapon weapon = player.ActiveChild as TTTWeapon;
                 bool isWeaponNull = weapon == null;
 
-                _ammoBar.SetClass("hide", isWeaponNull || weapon.WeaponType == WeaponType.Melee);
+                _ammoBar.SetClass("hide", isWeaponNull || weapon.HoldType == HoldType.Melee);
                 if (!isWeaponNull)
                 {
                     if (_currentAmmo == weapon.AmmoClip)

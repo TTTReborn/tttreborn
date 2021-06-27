@@ -6,7 +6,7 @@ namespace TTTReborn.Items
     partial class Pistol : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        public override WeaponType WeaponType => WeaponType.Pistol;
+        public override HoldType HoldType => Items.HoldType.Pistol;
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 15;
         public override float PrimaryRate => 15.0f;
@@ -17,7 +17,7 @@ namespace TTTReborn.Items
         public override int BaseDamage => 8;
         public override int Bucket => 1;
 
-        public virtual int GetPrice() => 100;
+        public virtual int Price => 100;
 
         public override void Spawn()
         {

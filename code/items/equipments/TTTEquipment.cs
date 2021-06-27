@@ -15,9 +15,11 @@ namespace TTTReborn.Items
         }
     }
 
-    public abstract class TTTEquipment : BaseCarriable, IItem
+    public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
-        private string Name { get; set; }
+        public virtual HoldType HoldType => Items.HoldType.Melee;
+
+        public string Name { get; }
 
         protected TTTEquipment()
         {
