@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+
 using Sandbox;
 
 using TTTReborn.Player;
@@ -376,5 +377,7 @@ namespace TTTReborn.Items
                 PickupTrigger.EnableTouch = true;
             }
         }
+
+        public virtual bool CanDrop() => true;
     }
 }

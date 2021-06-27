@@ -1,9 +1,10 @@
-﻿using System;
+using System;
+
 using Sandbox;
 
-using TTTReborn.UI;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
+using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
 {
@@ -86,6 +87,26 @@ namespace TTTReborn.Gamemode
             base.ClientDisconnect(client, reason);
         }
 
+        public override bool CanHearPlayerVoice(Client source, Client dest)
+        {
+            Host.AssertServer();
+
+            if (source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer)
+            {
+                return false;
+            }
+
+            if (Round is InProgressRound && sourcePlayer.LifeState == LifeState.Dead)
+            {
+                if (destPlayer.LifeState == LifeState.Alive)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public override void PostLevelLoaded()
         {
             StartGameTimer();
@@ -105,7 +126,7 @@ namespace TTTReborn.Gamemode
 
                     await GameTask.DelaySeconds(1);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     if (e.Message.Trim() == "A task was canceled.")
                     {

@@ -1,10 +1,11 @@
 using System;
-using Sandbox;
 using System.Collections.Generic;
 using System.Linq;
 
-using TTTReborn.Player;
+using Sandbox;
+
 using TTTReborn.Items;
+using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 
@@ -72,7 +73,9 @@ namespace TTTReborn.Rounds
                     }
 
                     // TODO: Remove once we can spawn in weapons into the map, for now just give the guns to people.
-                    player.Inventory.Add(new Shotgun(), true);
+                    player.Inventory.Add(new MagnetoStick(), true);
+
+                    player.Inventory.Add(new Shotgun(), false);
                     player.GiveAmmo(AmmoType.Buckshot, 16);
 
                     player.Inventory.Add(new SMG(), false);
@@ -155,7 +158,7 @@ namespace TTTReborn.Rounds
                 }
 
                 // send everyone their roles
-                using(Prediction.Off())
+                using (Prediction.Off())
                 {
                     player.ClientSetRole(To.Single(player), player.Role.Name);
                 }

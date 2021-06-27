@@ -12,7 +12,6 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 [*.md]
-insert_final_newline = false
 trim_trailing_whitespace = false
 
 # correct eol for scripts
@@ -21,12 +20,15 @@ end_of_line = lf
 [*.{cmd,bat}]
 end_of_line = crlf
 
+[*.yml]
+indent_size = 2
+
 [*.cs]
 #### .NET Coding Conventions ####
 
 # Organize usings
-dotnet_separate_import_directive_groups = false
-dotnet_sort_system_directives_first = false
+dotnet_separate_import_directive_groups = true
+dotnet_sort_system_directives_first = true
 file_header_template = unset
 
 # this. and Me. preferences
@@ -143,7 +145,7 @@ csharp_indent_labels = one_less_than_current
 csharp_indent_switch_labels = true
 
 # Space preferences
-csharp_space_after_cast = false
+csharp_space_after_cast = true
 csharp_space_after_colon_in_inheritance_clause = true
 csharp_space_after_comma = true
 csharp_space_after_dot = false
