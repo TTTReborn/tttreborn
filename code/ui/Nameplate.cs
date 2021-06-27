@@ -11,13 +11,25 @@ namespace TTTReborn.UI
     {
         private const float MAX_DRAW_DISTANCE = 500;
 
+        private Panel _labelHolder;
         private readonly Label _nameLabel;
+        private Label _damageIndicatorLabel;
 
         public Nameplate()
         {
             StyleSheet.Load("/ui/Nameplate.scss");
 
-            _nameLabel = Add.Label("", "name");
+            _labelHolder = Add.Panel("labelHolder");
+            _nameLabel = _labelHolder.Add.Label("", "name");
+            _damageIndicatorLabel = _labelHolder.Add.Label("","damageIndicator");
+
+        }
+
+        private string GetHealthGroup(float health)
+        {
+            return health > 70 ? "Healthy"
+                : health > 20 ? "Injured"
+                :  "Near death";
         }
 
         public override void Tick()
@@ -37,8 +49,9 @@ namespace TTTReborn.UI
                 validHit = true;
 
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
-                _nameLabel.Style.BackgroundColor = target.Role.Color.WithAlpha(0.5f);
-                _nameLabel.Style.Dirty();
+                _damageIndicatorLabel.Text = GetHealthGroup(target.Health);
+                _labelHolder.Style.BackgroundColor = target.Role.Color.WithAlpha(0.5f);
+                _labelHolder.Style.Dirty();
             }
 
             SetClass("hide", !validHit);

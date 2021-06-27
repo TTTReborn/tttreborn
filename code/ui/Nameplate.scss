@@ -1,5 +1,4 @@
-Nameplate
-{
+Nameplate {
     position: absolute;
     font-family: Poppins;
     left: 50%;
@@ -12,14 +11,22 @@ Nameplate
         display: none;
     }
 
-    Label {
+    .labelHolder {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        padding: 2px 20px;
         color: #fafafa;
         font-weight: 400;
-        font-size: 16px;
-        padding: 2.5px 20px;
-        align-items: center;
-        justify-content: center;
-        margin: auto;
         border-radius: 4px;
+
+        .name {
+            font-size: 16px;
+
+        }
+        .damageIndicator {
+            font-size: 14px;
+
+        }
     }
 }
