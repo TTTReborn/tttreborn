@@ -5,16 +5,15 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public partial class Hud : HudEntity<RootPanel>
     {
-        public static Hud Instance { set; get; }
+        public static Hud Current { set; get; }
 
-        public Scoreboard Scoreboard;
-
-        private PlayerInfo _playerInfo;
-        private WeaponSelection _weaponSelection;
-        private InspectMenu _inspectMenu;
-        private Nameplate _nameplate;
+        public GeneralHud GeneralHudPanel;
+        public AliveHud AliveHudPanel;
 
         public Hud()
         {
@@ -23,37 +22,24 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Instance = this;
+            Current = this;
 
-            RootPanel.AddChild<ChatBox>();
-            RootPanel.AddChild<VoiceList>();
-            RootPanel.AddChild<GameTimer>();
-            RootPanel.AddChild<InfoFeed>();
-            RootPanel.AddChild<PostRoundMenu>();
-            RootPanel.AddChild<QuickShop>();
-
-            Scoreboard = RootPanel.AddChild<Scoreboard>();
+            GeneralHudPanel = new GeneralHud(RootPanel);
+            AliveHudPanel = new AliveHud(RootPanel);
         }
 
-        [Event("tttreborn.player.died")]
-        private void OnPlayerDied(TTTPlayer player)
+        [Event.Hotload]
+        public static void OnHotReloaded()
         {
-            if (player != Local.Client.Pawn)
+            if (Host.IsClient)
             {
-                return;
+                Local.Hud?.Delete();
+                Hud hud = new Hud();
+                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+                {
+                    hud.AliveHudPanel.CreateHud();
+                }
             }
-
-            _playerInfo?.Delete();
-            _playerInfo = null;
-
-            _weaponSelection?.Delete();
-            _weaponSelection = null;
-
-            _inspectMenu?.Delete();
-            _inspectMenu = null;
-
-            _nameplate?.Delete();
-            _nameplate = null;
         }
 
         [Event("tttreborn.player.spawned")]
@@ -64,13 +50,70 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _playerInfo ??= RootPanel.AddChild<PlayerInfo>();
+            Current?.AliveHudPanel.CreateHud();
+        }
 
-            _weaponSelection ??= RootPanel.AddChild<WeaponSelection>();
+        [Event("tttreborn.player.died")]
+        private void OnPlayerDied(TTTPlayer player)
+        {
+            if (player != Local.Client.Pawn)
+            {
+                return;
+            }
 
-            _inspectMenu ??= RootPanel.AddChild<InspectMenu>();
+            Current?.AliveHudPanel.DeleteHud();
+        }
 
-            _nameplate ??= RootPanel.AddChild<Nameplate>();
+        public class GeneralHud : Panel
+        {
+            public Scoreboard Scoreboard;
+
+            public GeneralHud(Panel parent)
+            {
+                Parent = parent;
+
+                Parent.AddChild<ChatBox>();
+                Parent.AddChild<VoiceList>();
+                Parent.AddChild<GameTimer>();
+                Parent.AddChild<InfoFeed>();
+                Parent.AddChild<PostRoundMenu>();
+                Scoreboard = Parent.AddChild<Scoreboard>();
+            }
+        }
+
+        public class AliveHud : Panel
+        {
+            private List<Panel> _panels;
+
+            public AliveHud(Panel parent)
+            {
+                Parent = parent;
+                _panels = new List<Panel>();
+            }
+
+            public void CreateHud()
+            {
+                if (_panels.Count == 0)
+                {
+                    _panels = new List<Panel>()
+                    {
+                        Parent.AddChild<PlayerInfo>(),
+                        Parent.AddChild<WeaponSelection>(),
+                        Parent.AddChild<InspectMenu>(),
+                        Parent.AddChild<Nameplate>(),
+                        Parent.AddChild<QuickShop>()
+                    };
+                }
+            }
+
+            public void DeleteHud()
+            {
+                foreach (Panel child in _panels)
+                {
+                    child.Delete();
+                }
+                _panels.Clear();
+            }
         }
     }
 }
