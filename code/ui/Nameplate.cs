@@ -94,6 +94,7 @@ namespace TTTReborn.UI
 
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
                 _damageIndicatorLabel.Text = GetHealthGroup(_playerHp);
+                // Seems to be are bug... this the FontColor doesn't get changed on each tick
                 _damageIndicatorLabel.Style.FontColor = GetHealthColor(_playerHp);
 
                 _roleColorDotLabel.Style.BackgroundColor = target.Role.Color.WithAlpha(0.9f);
