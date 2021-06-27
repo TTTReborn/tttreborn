@@ -69,7 +69,6 @@ namespace TTTReborn.UI
                 _damageIndicatorLabel.Text = GetHealthGroup(target.Health);
                 _damageIndicatorLabel.Style.FontColor = GetHealthColor(target.Health);
 
-                Log.Info((target.Health).ToString());
                 _roleColorDotLabel.Style.BackgroundColor = target.Role.Color.WithAlpha(0.9f);
 
                 bool hideRoleDot = false;
