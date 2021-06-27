@@ -32,9 +32,7 @@ namespace TTTReborn.UI
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 
-        private string _playerName;
         private float _playerHp;
-        private TTTRole _playerRole;
 
         public Nameplate()
         {
