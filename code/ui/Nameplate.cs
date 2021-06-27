@@ -12,6 +12,8 @@ namespace TTTReborn.UI
         private const float MAX_DRAW_DISTANCE = 500;
 
         private readonly Panel _labelHolder;
+        private readonly Panel _nameHolder;
+        private readonly Label _roleColorDotLabel;
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 
@@ -20,7 +22,11 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/Nameplate.scss");
 
             _labelHolder = Add.Panel("labelHolder");
-            _nameLabel = _labelHolder.Add.Label("", "name");
+
+            _nameHolder = _labelHolder.Add.Panel("nameHolder");
+            _roleColorDotLabel = _nameHolder.Add.Label("", "roleColorDot");
+            _nameLabel = _nameHolder.Add.Label("", "name");
+
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damageIndicator");
 
         }
@@ -30,6 +36,17 @@ namespace TTTReborn.UI
             return health > 70 ? "Healthy"
                 : health > 20 ? "Injured"
                 : "Near death";
+        }
+
+        private static Color GetHealthColor(float health)
+        {
+            Color healthy = Color.FromBytes(44, 233, 44);
+            Color injured = Color.FromBytes(233, 135, 44);
+            Color near_death = Color.FromBytes(252, 42, 42);
+
+            return health > 70 ? healthy
+                : health > 20 ? injured
+                : near_death;
         }
 
         public override void Tick()
@@ -50,8 +67,21 @@ namespace TTTReborn.UI
 
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
                 _damageIndicatorLabel.Text = GetHealthGroup(target.Health);
-                // _labelHolder.Style.BackgroundColor = target.Role.Color.WithAlpha(0.5f);
-                _labelHolder.Style.Dirty();
+                _damageIndicatorLabel.Style.FontColor = GetHealthColor(target.Health);
+
+                Log.Info((target.Health).ToString());
+                _roleColorDotLabel.Style.BackgroundColor = target.Role.Color.WithAlpha(0.9f);
+
+                bool hideRoleDot = false;
+
+                if (target.Role is TTTReborn.Roles.NoneRole)
+                {
+                    hideRoleDot = true;
+                }
+
+                _roleColorDotLabel.SetClass("hide", hideRoleDot);
+
+                _roleColorDotLabel.Style.Dirty();
             }
 
             SetClass("hide", !validHit);

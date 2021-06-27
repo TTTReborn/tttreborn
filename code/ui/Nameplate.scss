@@ -4,7 +4,7 @@ Nameplate {
     left: 50%;
     top: 55%;
     transform: translateX(-50%) translatey(-45%);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #000c;
     border-radius: 4px;
 
     &.hide {
@@ -15,18 +15,32 @@ Nameplate {
         display: flex;
         flex-direction: column;
         text-align: center;
-        padding: 2px 20px;
+        padding: 2px 30px;
         color: #fafafa;
-        font-weight: 400;
+        font-weight: 600;
         border-radius: 4px;
 
-        .name {
-            font-size: 16px;
+        .nameHolder {
+            justify-content: center;
+            width: 100%;
 
+            .roleColorDot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                margin-top: 8px;
+                margin-right: 5px;
+
+                &.hide {
+                    display: none;
+                }
+            }
+            .name {
+                font-size: 16px;
+            }
         }
         .damageIndicator {
             font-size: 14px;
-
         }
     }
 }
