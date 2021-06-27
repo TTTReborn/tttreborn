@@ -52,8 +52,6 @@ namespace TTTReborn.Gamemode
         /// <param name="round"> The round to change to.</param>
         public void ForceRoundChange(BaseRound round)
         {
-            Assert.NotNull(round);
-
             Round.Finish();
             Round = round;
             Round.Start();
