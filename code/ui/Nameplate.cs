@@ -21,7 +21,7 @@ namespace TTTReborn.UI
 
             _labelHolder = Add.Panel("labelHolder");
             _nameLabel = _labelHolder.Add.Label("", "name");
-            _damageIndicatorLabel = _labelHolder.Add.Label("","damageIndicator");
+            _damageIndicatorLabel = _labelHolder.Add.Label("", "damageIndicator");
 
         }
 
@@ -29,7 +29,7 @@ namespace TTTReborn.UI
         {
             return health > 70 ? "Healthy"
                 : health > 20 ? "Injured"
-                :  "Near death";
+                : "Near death";
         }
 
         public override void Tick()
