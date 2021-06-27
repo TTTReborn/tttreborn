@@ -11,9 +11,9 @@ namespace TTTReborn.UI
     {
         private const float MAX_DRAW_DISTANCE = 500;
 
-        private Panel _labelHolder;
+        private readonly Panel _labelHolder;
         private readonly Label _nameLabel;
-        private Label _damageIndicatorLabel;
+        private readonly Label _damageIndicatorLabel;
 
         public Nameplate()
         {
@@ -50,7 +50,7 @@ namespace TTTReborn.UI
 
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
                 _damageIndicatorLabel.Text = GetHealthGroup(target.Health);
-                _labelHolder.Style.BackgroundColor = target.Role.Color.WithAlpha(0.5f);
+                // _labelHolder.Style.BackgroundColor = target.Role.Color.WithAlpha(0.5f);
                 _labelHolder.Style.Dirty();
             }
 
