@@ -1,8 +1,8 @@
 using Sandbox;
 
+using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
-using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
@@ -46,7 +46,7 @@ namespace TTTReborn.Player
             bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
 
             // sync roles
-            using(Prediction.Off())
+            using (Prediction.Off())
             {
                 foreach (TTTPlayer player in Gamemode.Game.GetPlayers())
                 {
@@ -80,6 +80,8 @@ namespace TTTReborn.Player
 
             GetClientOwner().SetScore("alive", true);
 
+            IsMissingInAction = false;
+
             using (Prediction.Off())
             {
                 ClientOnPlayerSpawned(this);
@@ -88,7 +90,7 @@ namespace TTTReborn.Player
 
             RemovePlayerCorpse();
             Inventory.DeleteContents();
-            TTTReborn.Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
+            Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
 
             base.Respawn();
 
@@ -97,13 +99,10 @@ namespace TTTReborn.Player
                 // hacky
                 // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
                 // TODO spawn player as spectator instantly
-                case Rounds.InProgressRound:
-                case Rounds.PostRound:
-                    GetClientOwner().SetScore("alive", false);
-                    return;
                 case Rounds.PreRound:
                     IsConfirmed = false;
                     CorpseConfirmer = null;
+
                     break;
             }
         }
@@ -119,9 +118,12 @@ namespace TTTReborn.Player
 
             ShowFlashlight(false, false);
 
-            using(Prediction.Off())
+            IsMissingInAction = true;
+
+            using (Prediction.Off())
             {
                 ClientOnPlayerDied(To.Single(this), this);
+                SyncMIA();
             }
         }
 
@@ -178,7 +180,6 @@ namespace TTTReborn.Player
         {
             if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
             {
-                int weaponSlot = (int) (ActiveChild as TTTWeapon).WeaponType;
                 Entity droppedEntity = Inventory.DropActive();
 
                 if (droppedEntity != null)

@@ -1,0 +1,37 @@
+name: CI-dotnet
+
+on:
+  pull_request:
+    paths:
+      - "**.cs"
+      - "**.csproj"
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'The reason for running the workflow'
+        required: true
+        default: 'Force run CI'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Code analysis
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+
+      - name: Dotnet format annotations
+        uses: xt0rted/dotnet-format-problem-matcher@v1
+
+      - name: Setup dotnet-format tool
+        run: dotnet tool install -g dotnet-format --version 5.0.\*
+
+      - name: Run dotnet format
+        run: dotnet format --check -f .

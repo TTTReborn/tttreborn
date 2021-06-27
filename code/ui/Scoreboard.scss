@@ -106,10 +106,6 @@ Scoreboard {
                 ScoreboardEntry {
                     width: 100%;
 
-                    &.me {
-                        background-color: #f2b42d1a;
-                    }
-
                     Label {
                         &.rolecolor {
                             width: 10px;
@@ -118,14 +114,18 @@ Scoreboard {
                             margin: 5px 7.5px 0px 7.5px;
                         }
                     }
-                }
 
-                .odd {
-                    background-color: #0a0a0a66;
-                }
+                    &:nth-child( odd ) {
+                        background-color: #0a0a0a66;
+                    }
 
-                .even {
-                    background-color: #4b4b4b66;
+                    &:nth-child( even ) {
+                        background-color: #4b4b4b15;
+                    }
+
+                    &.me:nth-child(1) {
+                        background-color: #f2b42d1a;
+                    }
                 }
 
             }
@@ -137,6 +137,16 @@ Scoreboard {
 
                 .scoreboardGroup__content {
                     border: #af262f;
+                }
+            }
+
+            &.mia {
+                .scoreboardGroup__title {
+                    background-color: rgb(133, 133, 15);
+                }
+
+                .scoreboardGroup__content {
+                    border: rgb(133, 133, 15);
                 }
             }
         }

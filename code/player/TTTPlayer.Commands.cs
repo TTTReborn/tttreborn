@@ -1,6 +1,7 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+
 using Sandbox;
 
 using TTTReborn.Items;
@@ -13,7 +14,19 @@ namespace TTTReborn.Player
         [ServerCmd(Name = "respawn", Help = "Respawns the current player")]
         public static void RespawnPlayer()
         {
-            (ConsoleSystem.Caller.Pawn as TTTPlayer).Respawn();
+            if (!ConsoleSystem.Caller.HasPermission("respawn"))
+            {
+                return;
+            }
+
+            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+            if (!player.IsValid())
+            {
+                return;
+            }
+
+            player.Respawn();
 
             Log.Info($"You respawned yourself.");
 
@@ -23,6 +36,11 @@ namespace TTTReborn.Player
         [ServerCmd(Name = "respawnid", Help = "Respawns the player with the associated ID")]
         public static void RespawnPlayer(int id)
         {
+            if (!ConsoleSystem.Caller.HasPermission("respawn"))
+            {
+                return;
+            }
+
             List<Client> playerList = Client.All.ToList();
 
             for (int i = 0; i < playerList.ToList().Count; i++)
@@ -31,9 +49,16 @@ namespace TTTReborn.Player
                 {
                     if (playerList[i].Pawn is TTTPlayer player)
                     {
-                        player.Respawn();
+                        if (player.IsValid())
+                        {
+                            player.Respawn();
 
-                        Log.Info($"You've respawned the client '{playerList[i].Name}'.");
+                            Log.Info($"You've respawned the client '{playerList[i].Name}'.");
+                        }
+                        else
+                        {
+                            Log.Info($"'{playerList[i].Name}' does not have a valid client's pawn.");
+                        }
                     }
 
                     return;
@@ -57,17 +82,31 @@ namespace TTTReborn.Player
                 }
             });
 
-            if (item == null)
+            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+            if (item == null || !player.IsValid())
             {
                 return;
             }
 
-            (ConsoleSystem.Caller.Pawn as TTTPlayer).RequestPurchase(item);
+            player.RequestPurchase(item);
         }
 
         [ServerCmd(Name = "setrole")]
         public static void SetRole(string roleName)
         {
+            if (!ConsoleSystem.Caller.HasPermission("role"))
+            {
+                return;
+            }
+
+            if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
+            {
+                Log.Info($"{ConsoleSystem.Caller.Name} tried to change his/her role when the game hadn't started.");
+
+                return;
+            }
+
             Type type = RoleFunctions.GetRoleTypeByName(roleName);
 
             if (type == null)
@@ -85,6 +124,11 @@ namespace TTTReborn.Player
             }
 
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+            if (!player.IsValid())
+            {
+                return;
+            }
 
             player.SetRole(role);
             player.ClientSetRole(To.Single(player), role.Name);

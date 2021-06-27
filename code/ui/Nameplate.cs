@@ -32,7 +32,7 @@ namespace TTTReborn.UI
 
             bool validHit = false;
 
-            if(trace.Hit && trace.Entity is TTTPlayer target)
+            if (trace.Hit && trace.Entity is TTTPlayer target)
             {
                 validHit = true;
 

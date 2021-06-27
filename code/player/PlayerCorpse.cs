@@ -1,55 +1,61 @@
-﻿using Sandbox;
+using System.Collections.Generic;
+
+using Sandbox;
 
 namespace TTTReborn.Player
 {
-	public partial class PlayerCorpse : ModelEntity
-	{
-		public TTTPlayer Player { get; set; }
+    public partial class PlayerCorpse : ModelEntity
+    {
+        public TTTPlayer Player { get; set; }
 
-		[Net]
-		public bool IsIdentified { get; set; }
+        public List<Particles> Ropes = new();
 
-		public PlayerCorpse()
-		{
-			MoveType = MoveType.Physics;
-			UsePhysicsCollision = true;
+        public List<PhysicsJoint> Welds = new();
 
-			SetInteractsAs(CollisionLayer.Debris);
-			SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
-			SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
+        [Net]
+        public bool IsIdentified { get; set; } = false;
 
-			IsIdentified = false;
-		}
+        public PlayerCorpse()
+        {
+            MoveType = MoveType.Physics;
+            UsePhysicsCollision = true;
 
-		public void CopyFrom(TTTPlayer player)
-		{
-			SetModel(player.GetModelName());
-			TakeDecalsFrom(player);
+            SetInteractsAs(CollisionLayer.Debris);
+            SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
+            SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
 
-			this.CopyBonesFrom(player);
-			this.SetRagdollVelocityFrom(player);
+            IsIdentified = false;
+        }
 
-			foreach (Entity child in player.Children)
-			{
-				if (child is ModelEntity e)
-				{
-					string model = e.GetModelName();
+        public void CopyFrom(TTTPlayer player)
+        {
+            SetModel(player.GetModelName());
+            TakeDecalsFrom(player);
 
-					if (model != null && !model.Contains("clothes"))
-					{
-						continue;
-					}
+            this.CopyBonesFrom(player);
+            this.SetRagdollVelocityFrom(player);
 
-					ModelEntity clothing = new ModelEntity();
-					clothing.SetModel(model);
-					clothing.SetParent(this, true);
-				}
-			}
-		}
+            foreach (Entity child in player.Children)
+            {
+                if (child is ModelEntity e)
+                {
+                    string model = e.GetModelName();
 
-		public void ApplyForceToBone(Vector3 force, int forceBone)
-		{
-			PhysicsGroup.AddVelocity(force);
+                    if (model != null && !model.Contains("clothes"))
+                    {
+                        continue;
+                    }
+
+                    ModelEntity clothing = new ModelEntity();
+                    clothing.SetModel(model);
+                    clothing.SetParent(this, true);
+                }
+            }
+        }
+
+        public void ApplyForceToBone(Vector3 force, int forceBone)
+        {
+            PhysicsGroup.AddVelocity(force);
 
             if (forceBone < 0)
             {
@@ -67,5 +73,27 @@ namespace TTTReborn.Player
                 PhysicsGroup.AddVelocity(force);
             }
         }
-	}
+
+        public void ClearAttachments()
+        {
+            foreach (Particles rope in Ropes)
+            {
+                rope.Destroy(true);
+            }
+
+            Ropes.Clear();
+
+            foreach (PhysicsJoint weld in Welds)
+            {
+                weld.Remove();
+            }
+
+            Welds.Clear();
+        }
+
+        protected override void OnDestroy()
+        {
+            ClearAttachments();
+        }
+    }
 }

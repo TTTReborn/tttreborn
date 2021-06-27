@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Sandbox;
 
 using TTTReborn.Player;
@@ -24,7 +25,7 @@ namespace TTTReborn.Roles
 
         public virtual Color Color => Color.Black;
 
-        public TTTTeam DefaultTeam;
+        public TTTTeam DefaultTeam { get; protected set; }
 
         public virtual int DefaultCredits => 0;
 

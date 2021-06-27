@@ -1,28 +1,27 @@
-﻿using Sandbox;
-using System.Threading.Tasks;
+using System;
 
-using TTTReborn.UI;
+using Sandbox;
+
 using TTTReborn.Player;
 using TTTReborn.Rounds;
+using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
 {
     [Library("tttreborn", Title = "Trouble in Terry's Town")]
     partial class Game : Sandbox.Game
     {
-        public static Game Instance { get => Current as Game; }
+        public static Game Instance { get; private set; }
 
         [Net]
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
-        public KarmaSystem Karma = new KarmaSystem();
-
-        public Task GameTimer { get; private set; }
-
-        private bool _isShuttingdown = false;
+        public KarmaSystem Karma { get; private set; } = new KarmaSystem();
 
         public Game()
         {
+            Instance = this;
+
             if (IsServer)
             {
                 new Hud();
@@ -88,37 +87,60 @@ namespace TTTReborn.Gamemode
             base.ClientDisconnect(client, reason);
         }
 
+        public override bool CanHearPlayerVoice(Client source, Client dest)
+        {
+            Host.AssertServer();
+
+            if (source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer)
+            {
+                return false;
+            }
+
+            if (Round is InProgressRound && sourcePlayer.LifeState == LifeState.Dead)
+            {
+                if (destPlayer.LifeState == LifeState.Alive)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public override void PostLevelLoaded()
         {
-            GameTimer = StartGameTimer();
+            StartGameTimer();
 
             base.PostLevelLoaded();
         }
 
-        private async Task StartGameTimer()
+        private async void StartGameTimer()
         {
             ChangeRound(new WaitingRound());
 
-            while (!_isShuttingdown)
+            while (true)
             {
-                OnGameSecond();
+                try
+                {
+                    OnGameSecond();
 
-                await Task.DelaySeconds(1);
+                    await GameTask.DelaySeconds(1);
+                }
+                catch (Exception e)
+                {
+                    if (e.Message.Trim() == "A task was canceled.")
+                    {
+                        return;
+                    }
+
+                    Log.Error($"{e.Message}: {e.StackTrace}");
+                }
             }
         }
 
         private void OnGameSecond()
         {
             Round?.OnSecond();
-        }
-
-        public override void Shutdown()
-        {
-            _isShuttingdown = true;
-            GameTimer = null;
-            Round = null;
-
-            base.Shutdown();
         }
     }
 }
