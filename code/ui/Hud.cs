@@ -16,7 +16,10 @@ namespace TTTReborn.UI
         private InspectMenu _inspectMenu;
         private Nameplate _nameplate;
 
-        public Hud()
+        public Hud() => BuildHud();
+
+        [Event("hotloaded")]
+        private void BuildHud()
         {
             if (!IsClient)
             {
@@ -24,6 +27,8 @@ namespace TTTReborn.UI
             }
 
             Instance = this;
+
+            RootPanel.DeleteChildren(true);
 
             RootPanel.AddChild<ChatBox>();
             RootPanel.AddChild<VoiceList>();
@@ -33,6 +38,20 @@ namespace TTTReborn.UI
             RootPanel.AddChild<QuickShop>();
 
             Scoreboard = RootPanel.AddChild<Scoreboard>();
+
+            if (!Local.Client.IsValid() || !Local.Client.Pawn.IsValid())
+            {
+                return;
+            }
+
+            TTTPlayer player = Local.Client.Pawn as TTTPlayer;
+
+            OnPlayerDied(player);
+
+            if (player.LifeState == LifeState.Alive)
+            {
+                OnPlayerSpawned(player as TTTPlayer);
+            }
         }
 
         [Event("tttreborn.player.died")]
