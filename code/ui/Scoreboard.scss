@@ -85,7 +85,7 @@ Scoreboard {
             .scoreboardGroup__title-wrapper {
 
                 .scoreboardGroup__title {
-                    background-color: #3f7e51;
+                    background-color: #4B9560;
                     font-size: 14px;
                     font-weight: 300;
                     border-top-right-radius: 4px;
@@ -95,7 +95,7 @@ Scoreboard {
 
             .scoreboardGroup__content {
                 // border-image: linear-gradient(to bottom, #3f7e51, #3f7e51, #3f7e51, rgba(0, 0, 0, 0)) 1 1%;
-                border: 2px solid #3f7e51;
+                border: 2px solid #4B9560;
                 border-right-width: 0;
                 border-left-width: 2px;
                 border-bottom-width: 0;
@@ -132,21 +132,21 @@ Scoreboard {
 
             &.dead {
                 .scoreboardGroup__title {
-                    background-color: #af262f;
+                    background-color: #c51d2b;
                 }
 
                 .scoreboardGroup__content {
-                    border: #af262f;
+                    border: #c51d2b;
                 }
             }
 
             &.mia {
                 .scoreboardGroup__title {
-                    background-color: rgb(133, 133, 15);
+                    background-color: #D47121;
                 }
 
                 .scoreboardGroup__content {
-                    border: rgb(133, 133, 15);
+                    border: #D47121;
                 }
             }
         }
