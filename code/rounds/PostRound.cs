@@ -15,11 +15,12 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
+            base.OnTimeUp();
+
             // TODO: Allow users to close the menu themselves using mouse cursor.
             TTTPlayer.ClientClosePostRoundMenu();
-            Gamemode.Game.Instance.ChangeRound(new PreRound());
 
-            base.OnTimeUp();
+            Gamemode.Game.Instance.ChangeRound(new PreRound());
         }
 
         public override void OnPlayerSpawn(TTTPlayer player)
