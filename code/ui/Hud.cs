@@ -7,14 +7,10 @@ namespace TTTReborn.UI
 {
     public partial class Hud : HudEntity<RootPanel>
     {
-        public static Hud Instance { set; get; }
+        public static Hud Current { set; get; }
 
-        public Scoreboard Scoreboard;
-
-        private PlayerInfo _playerInfo;
-        private WeaponSelection _weaponSelection;
-        private InspectMenu _inspectMenu;
-        private Nameplate _nameplate;
+        public GeneralHud GeneralHudPanel;
+        public AliveHud AliveHudPanel;
 
         public Hud()
         {
@@ -23,37 +19,24 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Instance = this;
+            Current = this;
 
-            RootPanel.AddChild<ChatBox>();
-            RootPanel.AddChild<VoiceList>();
-            RootPanel.AddChild<GameTimer>();
-            RootPanel.AddChild<InfoFeed>();
-            RootPanel.AddChild<PostRoundMenu>();
-            RootPanel.AddChild<QuickShop>();
-
-            Scoreboard = RootPanel.AddChild<Scoreboard>();
+            GeneralHudPanel = new GeneralHud(RootPanel);
+            AliveHudPanel = new AliveHud(RootPanel);
         }
 
-        [Event("tttreborn.player.died")]
-        private void OnPlayerDied(TTTPlayer player)
+        [Event.Hotload]
+        public static void OnHotReloaded()
         {
-            if (player != Local.Client.Pawn)
+            if (Host.IsClient)
             {
-                return;
+                Local.Hud?.Delete();
+                Hud hud = new Hud();
+                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+                {
+                    hud.AliveHudPanel.CreateHud();
+                }
             }
-
-            _playerInfo?.Delete();
-            _playerInfo = null;
-
-            _weaponSelection?.Delete();
-            _weaponSelection = null;
-
-            _inspectMenu?.Delete();
-            _inspectMenu = null;
-
-            _nameplate?.Delete();
-            _nameplate = null;
         }
 
         [Event("tttreborn.player.spawned")]
@@ -64,13 +47,72 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _playerInfo ??= RootPanel.AddChild<PlayerInfo>();
+            Current?.AliveHudPanel.CreateHud();
+        }
 
-            _weaponSelection ??= RootPanel.AddChild<WeaponSelection>();
+        [Event("tttreborn.player.died")]
+        private void OnPlayerDied(TTTPlayer player)
+        {
+            if (player != Local.Client.Pawn)
+            {
+                return;
+            }
 
-            _inspectMenu ??= RootPanel.AddChild<InspectMenu>();
+            Current?.AliveHudPanel.DeleteHud();
+        }
 
-            _nameplate ??= RootPanel.AddChild<Nameplate>();
+        public class GeneralHud : Panel
+        {
+            public Scoreboard Scoreboard;
+
+            public GeneralHud(Panel parent)
+            {
+                Parent = parent;
+
+                Parent.AddChild<ChatBox>();
+                Parent.AddChild<VoiceList>();
+                Parent.AddChild<GameTimer>();
+                Parent.AddChild<InfoFeed>();
+                Parent.AddChild<PostRoundMenu>();
+                Scoreboard = Parent.AddChild<Scoreboard>();
+            }
+        }
+
+        public class AliveHud : Panel
+        {
+            private PlayerInfo _playerInfo;
+            private WeaponSelection _weaponSelection;
+            private InspectMenu _inspectMenu;
+            private Nameplate _nameplate;
+            private QuickShop _quickShop;
+
+            public AliveHud(Panel parent)
+            {
+                Parent = parent;
+            }
+
+            public void CreateHud()
+            {
+                _playerInfo ??= Parent.AddChild<PlayerInfo>();
+                _weaponSelection ??= Parent.AddChild<WeaponSelection>();
+                _inspectMenu ??= Parent.AddChild<InspectMenu>();
+                _nameplate ??= Parent.AddChild<Nameplate>();
+                _quickShop ??= Parent.AddChild<QuickShop>();
+            }
+
+            public void DeleteHud()
+            {
+                _playerInfo?.Delete();
+                _playerInfo = null;
+                _weaponSelection?.Delete();
+                _weaponSelection = null;
+                _inspectMenu?.Delete();
+                _inspectMenu = null;
+                _nameplate?.Delete();
+                _nameplate = null;
+                _quickShop?.Delete();
+                _quickShop = null;
+            }
         }
     }
 }
