@@ -43,12 +43,9 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            if (CheckMinimumPlayers())
-            {
-                TTTReborn.Gamemode.Game.Instance.ChangeRound(new InProgressRound());
-            }
-
             base.OnTimeUp();
+
+            TTTReborn.Gamemode.Game.Instance.ChangeRound(new InProgressRound());
         }
 
         private static async Task StartRespawnTimer(TTTPlayer player)
@@ -71,18 +68,6 @@ namespace TTTReborn.Rounds
             AddPlayer(player);
 
             base.OnPlayerSpawn(player);
-        }
-
-        private bool CheckMinimumPlayers()
-        {
-            if (Client.All.Count < TTTReborn.Gamemode.Game.TTTMinPlayers)
-            {
-                TTTReborn.Gamemode.Game.Instance.ChangeRound(new WaitingRound());
-
-                return false;
-            }
-
-            return true;
         }
     }
 }

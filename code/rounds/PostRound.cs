@@ -15,15 +15,12 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
+            base.OnTimeUp();
+
             // TODO: Allow users to close the menu themselves using mouse cursor.
             TTTPlayer.ClientClosePostRoundMenu();
 
-            if (CheckMinimumPlayers())
-            {
-                Gamemode.Game.Instance.ChangeRound(new PreRound());
-            }
-
-            base.OnTimeUp();
+            Gamemode.Game.Instance.ChangeRound(new PreRound());
         }
 
         public override void OnPlayerSpawn(TTTPlayer player)
@@ -63,18 +60,6 @@ namespace TTTReborn.Rounds
                     }
                 }
             }
-        }
-
-        private bool CheckMinimumPlayers()
-        {
-            if (Client.All.Count < TTTReborn.Gamemode.Game.TTTMinPlayers)
-            {
-                TTTReborn.Gamemode.Game.Instance.ChangeRound(new WaitingRound());
-
-                return false;
-            }
-
-            return true;
         }
     }
 }

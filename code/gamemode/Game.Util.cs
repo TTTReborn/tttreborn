@@ -67,5 +67,10 @@ namespace TTTReborn.Gamemode
 
             return players;
         }
+
+        public static bool HasMinimumPlayers()
+        {
+            return Client.All.Count >= TTTReborn.Gamemode.Game.TTTMinPlayers;
+        }
     }
 }
