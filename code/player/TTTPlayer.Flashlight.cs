@@ -137,19 +137,16 @@ namespace TTTReborn.Player
                 }
             }
 
-            if (IsFlashlightOn)
+            using (Prediction.Off())
             {
-                using (Prediction.Off())
+                if (IsClient)
                 {
-                    if (IsClient)
-                    {
-                        _ = _flashlightHolder.KeyframeTo(new Transform(EyePos + EyeRot.Forward * 15f, EyeRot), 0f);
-                    }
-                    else
-                    {
-                        _worldFlashlight.Rotation = EyeRot;
-                        _worldFlashlight.Position = EyePos + EyeRot.Forward * 15f;
-                    }
+                    _ = _flashlightHolder.KeyframeTo(new Transform(EyePos + EyeRot.Forward * 15f, EyeRot), 0f);
+                }
+                else if(IsFlashlightOn)
+                {
+                    _worldFlashlight.Rotation = EyeRot;
+                    _worldFlashlight.Position = EyePos + EyeRot.Forward * 15f;
                 }
             }
         }
@@ -163,14 +160,14 @@ namespace TTTReborn.Player
             Transmit = TransmitType.Always;
             Enabled = true;
             DynamicShadows = true;
-            Range = 1024;
-            Falloff = 2.0f;
+            Range = 512f;
+            Falloff = 4f;
             LinearAttenuation = 0f;
-            QuadraticAttenuation = 1.0f;
+            QuadraticAttenuation = 1f;
             Brightness = 1f;
             Color = Color.White;
-            InnerConeAngle = 10;
-            OuterConeAngle = 30;
+            InnerConeAngle = 10f;
+            OuterConeAngle = 30f;
             FogStength = 1.0f;
         }
     }
