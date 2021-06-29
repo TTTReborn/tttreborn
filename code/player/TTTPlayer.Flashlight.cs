@@ -91,10 +91,6 @@ namespace TTTReborn.Player
                         _viewFlashlight.Position = EyePos + EyeRot.Forward * 15f;
                         _viewFlashlight.Rotation = EyeRot;
                         _viewFlashlight.SetParent(_flashlightHolder);
-
-                        // exclude
-                        // follow
-                        // moveTo
                     }
                 }
                 else
@@ -168,10 +164,10 @@ namespace TTTReborn.Player
             Enabled = true;
             DynamicShadows = true;
             Range = 1024;
-            Falloff = 1.0f;
-            LinearAttenuation = 0.0f;
+            Falloff = 2.0f;
+            LinearAttenuation = 0f;
             QuadraticAttenuation = 1.0f;
-            Brightness = 1;
+            Brightness = 1f;
             Color = Color.White;
             InnerConeAngle = 10;
             OuterConeAngle = 30;
