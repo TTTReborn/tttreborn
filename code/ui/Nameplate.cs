@@ -93,7 +93,7 @@ namespace TTTReborn.UI
                 _damageIndicatorLabel.Text = GetHealthGroup(_playerHp);
                 _damageIndicatorLabel.Style.Dirty();
 
-                Style.BorderColor = target.Role is not TTTReborn.Roles.NoneRole ? target.Role.Color : Color.FromBytes(0,0,0,204);
+                Style.BorderColor = target.Role is not TTTReborn.Roles.NoneRole ? target.Role.Color : Color.FromBytes(0, 0, 0, 204);
 
                 Style.Dirty();
             }
