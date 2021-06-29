@@ -28,7 +28,7 @@ namespace TTTReborn.UI
 
         private readonly Panel _labelHolder;
         private readonly Panel _nameHolder;
-        private readonly Label _roleColorDotLabel;
+        // private readonly Label _roleColorDotLabel;
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 
@@ -44,7 +44,6 @@ namespace TTTReborn.UI
             _labelHolder = Add.Panel("labelHolder");
 
             _nameHolder = _labelHolder.Add.Panel("nameHolder");
-            _roleColorDotLabel = _nameHolder.Add.Label("", "roleColorDot");
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damageIndicator");
@@ -89,21 +88,12 @@ namespace TTTReborn.UI
             if (trace.Hit && trace.Entity is TTTPlayer target)
             {
                 validHit = true;
-
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
                 _damageIndicatorLabel.Style.FontColor = GetHealthColor(_playerHp);
                 _damageIndicatorLabel.Text = GetHealthGroup(_playerHp);
                 _damageIndicatorLabel.Style.Dirty();
-                _roleColorDotLabel.Style.BackgroundColor = target.Role.Color.WithAlpha(0.9f);
 
-                bool hideRoleDot = false;
-
-                if (target.Role is TTTReborn.Roles.NoneRole)
-                {
-                    hideRoleDot = true;
-                }
-
-                _roleColorDotLabel.SetClass("hide", hideRoleDot);
+                Style.BorderColor = target.Role is not TTTReborn.Roles.NoneRole ? target.Role.Color : Color.FromBytes(0,0,0,204);
 
                 Style.Dirty();
             }
