@@ -143,12 +143,9 @@ namespace TTTReborn.Player
 
             if (IsServer)
             {
-                if (Gamemode.Game.Instance.Round is Rounds.InProgressRound || Gamemode.Game.Instance.Round is Rounds.PostRound)
-                {
-                    TickAttemptInspectPlayerCorpse();
-                }
+                // We might want to redo this...
                 TickAttemptLookup();
-
+                TickAttemptInspectPlayerCorpse();
                 TickPlayerFalling();
             }
 

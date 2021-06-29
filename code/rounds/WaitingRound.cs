@@ -14,7 +14,10 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                CheckMinimumPlayers();
+                if (TTTReborn.Gamemode.Game.HasMinimumPlayers())
+                {
+                    TTTReborn.Gamemode.Game.Instance.ForceRoundChange(new PreRound());
+                }
             }
         }
 
@@ -46,14 +49,6 @@ namespace TTTReborn.Rounds
             if (player.IsValid() && TTTReborn.Gamemode.Game.Instance.Round is WaitingRound)
             {
                 player.Respawn();
-            }
-        }
-
-        private void CheckMinimumPlayers()
-        {
-            if (Client.All.Count >= TTTReborn.Gamemode.Game.TTTMinPlayers)
-            {
-                TTTReborn.Gamemode.Game.Instance.ChangeRound(new PreRound());
             }
         }
     }
