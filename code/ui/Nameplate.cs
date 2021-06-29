@@ -28,7 +28,7 @@ namespace TTTReborn.UI
 
         private readonly Panel _labelHolder;
         private readonly Panel _nameHolder;
-        // private readonly Label _roleColorDotLabel;
+
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 
