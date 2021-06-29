@@ -141,7 +141,7 @@ namespace TTTReborn.Player
                 {
                     _flashlightHolder?.TryKeyframeTo(new Transform(EyePos + EyeRot.Forward * 20f, EyeRot));
                 }
-                else if(IsFlashlightOn)
+                else if (IsFlashlightOn)
                 {
                     _worldFlashlight.Rotation = EyeRot;
                     _worldFlashlight.Position = EyePos + EyeRot.Forward * 15f;
