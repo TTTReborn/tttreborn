@@ -1,5 +1,7 @@
 using Sandbox;
 
+// TODO Fix flickering on close-range walls (with fast rotation)
+// TODO Add physics (avoid collision with walls or the playermodel)
 namespace TTTReborn.Player
 {
     partial class TTTPlayer
@@ -7,8 +9,6 @@ namespace TTTReborn.Player
         private Flashlight _worldFlashlight;
         private Flashlight _viewFlashlight;
         private KeyframeEntity _flashlightHolder;
-
-        private Transform _lastTransform;
 
         public bool HasFlashlightEntity
         {
@@ -82,7 +82,7 @@ namespace TTTReborn.Player
                         _flashlightHolder = new KeyframeEntity();
                         _flashlightHolder.Position = EyePos + EyeRot.Forward * 20f;
                         _flashlightHolder.Rotation = EyeRot;
-                        _flashlightHolder.SetParent(this);
+                        //_flashlightHolder.SetParent(this);
 
                         _viewFlashlight = new Flashlight();
                         _viewFlashlight.EnableViewmodelRendering = false;
