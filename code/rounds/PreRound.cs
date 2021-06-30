@@ -43,9 +43,9 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            TTTReborn.Gamemode.Game.Instance.ChangeRound(new InProgressRound());
-
             base.OnTimeUp();
+
+            TTTReborn.Gamemode.Game.Instance.ChangeRound(new InProgressRound());
         }
 
         private static async Task StartRespawnTimer(TTTPlayer player)

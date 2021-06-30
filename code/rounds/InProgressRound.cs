@@ -11,6 +11,8 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
+    using Gamemode;
+
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
@@ -167,11 +169,32 @@ namespace TTTReborn.Rounds
 
         private static void LoadPostRound(TTTTeam winningTeam)
         {
-            Gamemode.Game.Instance.ChangeRound(new PostRound());
+            Gamemode.Game.Instance.ForceRoundChange(new PostRound());
             TTTPlayer.ClientOpenAndSetPostRoundMenu(
                 winningTeam.Name,
                 winningTeam.Color
             );
+        }
+
+        private bool CheckMinimumPlayers()
+        {
+            return Client.All.Count >= TTTReborn.Gamemode.Game.TTTMinPlayers;
+        }
+
+        public override void OnSecond()
+        {
+            if (Host.IsServer)
+            {
+                base.OnSecond();
+
+                if (!Game.HasMinimumPlayers())
+                {
+                    if (IsRoundOver() == null)
+                    {
+                        Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());
+                    }
+                }
+            }
         }
     }
 }

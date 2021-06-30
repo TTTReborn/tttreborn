@@ -238,7 +238,7 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                rope.SetPos(1, tr.Body.Transform.PointToLocal(tr.EndPos));
+                rope.SetPosition(1, tr.Body.Transform.PointToLocal(tr.EndPos));
                 playerCorpse.Ropes.Add(rope);
 
                 playerCorpse.Welds.Add(
