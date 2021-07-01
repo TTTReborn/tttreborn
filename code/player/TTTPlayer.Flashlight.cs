@@ -10,6 +10,8 @@ namespace TTTReborn.Player
         private Flashlight _viewFlashlight;
         private KeyframeEntity _flashlightHolder;
 
+        private const float FLASHLIGHT_DISTANCE = 40f;
+
         public bool HasFlashlightEntity
         {
             get
@@ -74,19 +76,19 @@ namespace TTTReborn.Player
                         _worldFlashlight = new Flashlight();
                         _worldFlashlight.EnableHideInFirstPerson = true;
                         _worldFlashlight.Rotation = EyeRot;
-                        _worldFlashlight.Position = EyePos + EyeRot.Forward * 40f;
+                        _worldFlashlight.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
                         _worldFlashlight.SetParent(this);
                     }
                     else
                     {
                         _flashlightHolder = new KeyframeEntity();
-                        _flashlightHolder.Position = EyePos + EyeRot.Forward * 40f;
+                        _flashlightHolder.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
                         _flashlightHolder.Rotation = EyeRot;
                         //_flashlightHolder.SetParent(this);
 
                         _viewFlashlight = new Flashlight();
                         _viewFlashlight.EnableViewmodelRendering = false;
-                        _viewFlashlight.Position = EyePos + EyeRot.Forward * 40f;
+                        _viewFlashlight.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
                         _viewFlashlight.Rotation = EyeRot;
                         _viewFlashlight.SetParent(_flashlightHolder);
                     }
@@ -95,10 +97,9 @@ namespace TTTReborn.Player
                 {
                     if (IsServer)
                     {
-                        // TODO: This is a weird hack to make sure the rotation is right.
                         _worldFlashlight.SetParent(null);
                         _worldFlashlight.Rotation = EyeRot;
-                        _worldFlashlight.Position = EyePos + EyeRot.Forward * 40f;
+                        _worldFlashlight.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
                         _worldFlashlight.SetParent(this);
                         _worldFlashlight.TurnOn();
                     }
@@ -139,12 +140,12 @@ namespace TTTReborn.Player
             {
                 if (IsClient)
                 {
-                    _flashlightHolder?.TryKeyframeTo(new Transform(EyePos + EyeRot.Forward * 40f, EyeRot));
+                    _flashlightHolder?.TryKeyframeTo(new Transform(EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE, EyeRot));
                 }
                 else if (IsFlashlightOn)
                 {
                     _worldFlashlight.Rotation = EyeRot;
-                    _worldFlashlight.Position = EyePos + EyeRot.Forward * 40f;
+                    _worldFlashlight.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
                 }
             }
         }
