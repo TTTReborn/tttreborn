@@ -11,6 +11,8 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
+    using Gamemode;
+
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
@@ -72,7 +74,7 @@ namespace TTTReborn.Rounds
                         AddPlayer(player);
                     }
 
-                    // TODO: Remove once we can spawn in weapons into the map, for now just give the guns to people.
+                    // TODO: Remove once we can spawn in carriable entities into the map, for now just give the guns to people.
                     player.Inventory.Add(new MagnetoStick(), true);
 
                     player.Inventory.Add(new Shotgun(), false);
@@ -167,11 +169,32 @@ namespace TTTReborn.Rounds
 
         private static void LoadPostRound(TTTTeam winningTeam)
         {
-            Gamemode.Game.Instance.ChangeRound(new PostRound());
+            Gamemode.Game.Instance.ForceRoundChange(new PostRound());
             TTTPlayer.ClientOpenAndSetPostRoundMenu(
                 winningTeam.Name,
                 winningTeam.Color
             );
+        }
+
+        private bool CheckMinimumPlayers()
+        {
+            return Client.All.Count >= TTTReborn.Gamemode.Game.TTTMinPlayers;
+        }
+
+        public override void OnSecond()
+        {
+            if (Host.IsServer)
+            {
+                base.OnSecond();
+
+                if (!Game.HasMinimumPlayers())
+                {
+                    if (IsRoundOver() == null)
+                    {
+                        Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());
+                    }
+                }
+            }
         }
     }
 }

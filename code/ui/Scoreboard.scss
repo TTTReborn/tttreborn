@@ -132,21 +132,21 @@ Scoreboard {
 
             &.dead {
                 .scoreboardGroup__title {
-                    background-color: #af262f;
+                    background-color: #e12c3b;
                 }
 
                 .scoreboardGroup__content {
-                    border: #af262f;
+                    border: #e12c3b;
                 }
             }
 
             &.mia {
                 .scoreboardGroup__title {
-                    background-color: rgb(133, 133, 15);
+                    background-color: #c6793a;
                 }
 
                 .scoreboardGroup__content {
-                    border: rgb(133, 133, 15);
+                    border: #c6793a;
                 }
             }
         }

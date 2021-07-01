@@ -41,7 +41,7 @@ namespace TTTReborn.Player
                 {
                     string model = e.GetModelName();
 
-                    if (model != null && !model.Contains("clothes"))
+                    if (model == null || !model.Contains("clothes"))
                     {
                         continue;
                     }

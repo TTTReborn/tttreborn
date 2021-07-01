@@ -28,10 +28,30 @@ namespace TTTReborn.Gamemode
             }
         }
 
+        /// <summary>
+        /// Changes the round if minimum players is met. Otherwise, force changes to "WaitingRound"
+        /// </summary>
+        /// <param name="round"> The round to change to if minimum players is met.</param>
         public void ChangeRound(BaseRound round)
         {
             Assert.NotNull(round);
 
+            if (Game.HasMinimumPlayers())
+            {
+                ForceRoundChange(round);
+            }
+            else
+            {
+                ForceRoundChange(new WaitingRound());
+            }
+        }
+
+        /// <summary>
+        /// Force changes a round regardless of player count.
+        /// </summary>
+        /// <param name="round"> The round to change to.</param>
+        public void ForceRoundChange(BaseRound round)
+        {
             Round.Finish();
             Round = round;
             Round.Start();
@@ -116,7 +136,7 @@ namespace TTTReborn.Gamemode
 
         private async void StartGameTimer()
         {
-            ChangeRound(new WaitingRound());
+            ForceRoundChange(new WaitingRound());
 
             while (true)
             {
