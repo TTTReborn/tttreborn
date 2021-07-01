@@ -98,7 +98,7 @@ namespace TTTReborn.UI
                     _panels = new List<Panel>()
                     {
                         Parent.AddChild<PlayerInfo>(),
-                        Parent.AddChild<WeaponSelection>(),
+                        Parent.AddChild<InventorySelection>(),
                         Parent.AddChild<InspectMenu>(),
                         Parent.AddChild<Nameplate>(),
                         Parent.AddChild<QuickShop>()

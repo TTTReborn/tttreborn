@@ -8,7 +8,7 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer : Sandbox.Player
     {
-        private static int WeaponDropVelocity { get; set; } = 300;
+        private static int CarriableDropVelocity { get; set; } = 300;
 
         [Net, Local]
         public int Credits { get; set; } = 0;
@@ -125,7 +125,7 @@ namespace TTTReborn.Player
 
         public override void Simulate(Client client)
         {
-            // Input requested a weapon switch
+            // Input requested a carriable entity switch
             if (Input.ActiveChild != null)
             {
                 ActiveChild = Input.ActiveChild;
@@ -137,7 +137,7 @@ namespace TTTReborn.Player
             }
 
             TickPlayerUse();
-            TickPlayerDropWeapon();
+            TickPlayerDropCarriable();
 
             SimulateActiveChild(client, ActiveChild);
 
@@ -166,7 +166,7 @@ namespace TTTReborn.Player
             base.StartTouch(other);
         }
 
-        private void TickPlayerDropWeapon()
+        private void TickPlayerDropCarriable()
         {
             if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
             {
@@ -176,7 +176,7 @@ namespace TTTReborn.Player
                 {
                     if (droppedEntity.PhysicsGroup != null)
                     {
-                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * WeaponDropVelocity;
+                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * CarriableDropVelocity;
                     }
 
                     _timeSinceDropped = 0;
