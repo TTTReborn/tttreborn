@@ -26,7 +26,6 @@ namespace TTTReborn.Player
                     }
 
                     SetNameplateHealth(client, player.Health);
-                    return;
                 }
             }
         }
