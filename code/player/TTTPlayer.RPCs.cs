@@ -115,7 +115,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void SetNameplateHealth(float health)
+        public static void ClientSetNameplateHealth(float health)
         {
             Nameplate.Instance.SetHealth(health);
         }

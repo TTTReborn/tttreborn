@@ -21,7 +21,6 @@ namespace TTTReborn.Player
                     // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
 
                     SetNameplateHealth(client, player.Health);
-                    return;
                 }
             }
         }
