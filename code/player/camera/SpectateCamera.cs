@@ -1,77 +1,75 @@
-using System.Collections.Generic;
-using System.Linq;
-
+using System;
 using Sandbox;
 
 namespace TTTReborn.Player.Camera
 {
-    public partial class SpectateCamera : Sandbox.Camera
+    public class SpectateCamera : Sandbox.Camera
     {
-        [Net, Predicted] public TimeSince TimeSinceDied { get; set; }
-        [Net, Predicted] public Vector3 DeathPosition { get; set; }
+        private Angles _lookAngles;
+        private Vector3 _moveInput;
 
-        private TTTPlayer TargetPlayer { get; set; }
+        private Vector3 _targetPos;
+        private Rotation _targetRot;
 
-        private Vector3 _focusPoint;
-        private int _targetIdx;
+        private float _moveSpeed;
+        private float _fovOverride;
+
+        private const float LERP_MODE = 0;
 
         public override void Activated()
         {
             base.Activated();
 
-            _focusPoint = CurrentView.Position - GetViewOffset();
+            _targetPos = CurrentView.Position;
+            _targetRot = CurrentView.Rotation;
 
-            FieldOfView = 70;
+            Pos = _targetPos;
+            Rot = _targetRot;
+            _lookAngles = Rot.Angles();
+            _fovOverride = 80;
+
+            DoFPoint = 0.0f;
+            DoFBlurSize = 0.0f;
         }
 
         public override void Update()
         {
-            if (Local.Pawn is not TTTPlayer player)
+            var player = Local.Client;
+            if (player == null)
             {
                 return;
             }
 
-            if (TargetPlayer == null || !TargetPlayer.IsValid() || Input.Pressed(InputButton.Attack1))
+            FieldOfView = _fovOverride;
+
+            var mv = _moveInput.Normal * 300 * RealTime.Delta * Rot * _moveSpeed;
+
+            _targetRot = Rotation.From(_lookAngles);
+            _targetPos += mv;
+
+            Pos = Vector3.Lerp(Pos, _targetPos, 10 * RealTime.Delta * (1 - LERP_MODE));
+            Rot = Rotation.Slerp(Rot, _targetRot, 10 * RealTime.Delta * (1 - LERP_MODE));
+        }
+
+        public override void BuildInput(InputBuilder input)
+        {
+            _moveInput = input.AnalogMove;
+
+            _moveSpeed = 1;
+            if (input.Down(InputButton.Run))
             {
-                List<TTTPlayer> players = TTTReborn.Gamemode.Game.GetAlivePlayers();
-
-                if (players.Count > 0)
-                {
-                    if (++_targetIdx >= players.Count)
-                        _targetIdx = 0;
-
-                    TargetPlayer = players[_targetIdx];
-                }
+                _moveSpeed = 5;
             }
 
-            // TODO: Setup a spectating first person camera.
-            _focusPoint = Vector3.Lerp(_focusPoint, GetSpectatePoint(), 0.1f);
+            if (input.Down(InputButton.Duck))
+            {
+                _moveSpeed = 0.2f;
+            }
 
-            Pos = _focusPoint + GetViewOffset();
-            Rot = player.EyeRot;
+            _lookAngles += input.AnalogLook * (_fovOverride / 80.0f);
+            _lookAngles.roll = 0;
 
-            FieldOfView = FieldOfView.LerpTo(50, Time.Delta * 3.0f);
-            Viewer = null;
-        }
-
-        private Vector3 GetSpectatePoint()
-        {
-            if (Local.Pawn is not TTTPlayer)
-                return DeathPosition;
-
-            if (TargetPlayer == null || !TargetPlayer.IsValid() || TimeSinceDied < 3)
-                return DeathPosition;
-
-            return TargetPlayer.EyePos;
-        }
-
-        private static Vector3 GetViewOffset()
-        {
-            if (Local.Pawn is not TTTPlayer player)
-                return Vector3.Zero;
-
-            return player.EyeRot.Forward * -150 + Vector3.Up * 10;
+            base.BuildInput(input);
         }
     }
-
 }

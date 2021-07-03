@@ -24,16 +24,12 @@ namespace TTTReborn.Player
             _lastGroundEntity = GroundEntity;
         }
 
-        public void MakeSpectator(Vector3 position = default)
+        public void MakeSpectator()
         {
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = new SpectateCamera
-            {
-                DeathPosition = position,
-                TimeSinceDied = 0
-            };
+            Camera = new SpectateCamera();
         }
 
         // Important: Server-side only

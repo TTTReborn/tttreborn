@@ -42,7 +42,7 @@ namespace TTTReborn.Rounds
             Players.Remove(player);
             _spectators.Add(player);
 
-            player.MakeSpectator(player.EyePos);
+            player.MakeSpectator();
         }
 
         protected override void OnStart()

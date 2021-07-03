@@ -292,6 +292,11 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
+            if (Input.Down(InputButton.Score))
+            {
+                Log.Info("Hello");
+            }
+
             SetClass("open", Input.Down(InputButton.Score));
         }
     }

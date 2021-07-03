@@ -25,7 +25,7 @@ namespace TTTReborn.Rounds
             Players.Remove(player);
             _spectators.Add(player);
 
-            player.MakeSpectator(player.EyePos);
+            player.MakeSpectator();
 
             TTTTeam result = IsRoundOver();
 
