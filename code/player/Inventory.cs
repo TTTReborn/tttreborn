@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 using Sandbox;
 
@@ -9,6 +10,10 @@ namespace TTTReborn.Player
 {
     partial class Inventory : BaseInventory
     {
+        public readonly List<TTTPerk> Perks = new();
+
+        public readonly Ammo Ammo = new Ammo();
+
         public Inventory(TTTPlayer player) : base(player)
         {
 
@@ -18,7 +23,15 @@ namespace TTTReborn.Player
         {
             base.DeleteContents();
 
-            (Owner as TTTPlayer).Ammo.Clear();
+            TTTPlayer player = Owner as TTTPlayer;
+
+            foreach (TTTPerk perk in Perks)
+            {
+                perk.Remove(player);
+            }
+
+            Perks.Clear();
+            Ammo.Clear();
         }
 
         public override bool Add(Entity entity, bool makeActive = false)
@@ -40,6 +53,32 @@ namespace TTTReborn.Player
             List.Sort((Entity carr1, Entity carr2) => (carr1 as ICarriableItem).HoldType.CompareTo((carr2 as ICarriableItem).HoldType));
 
             return added;
+        }
+
+        public bool Add(TTTPerk perk)
+        {
+            if (Perks.Contains(perk))
+            {
+                return false;
+            }
+
+            Perks.Add(perk);
+
+            return true;
+        }
+
+        public bool Add(IItem item)
+        {
+            if (item is Entity ent)
+            {
+                return Add(ent);
+            }
+            else if (item is TTTPerk perk)
+            {
+                return Add(perk);
+            }
+
+            return false;
         }
 
         public bool IsCarryingType(Type t)
@@ -113,6 +152,89 @@ namespace TTTReborn.Player
             }
 
             return base.Drop(ent);
+        }
+    }
+
+    public partial class Ammo
+    {
+        private List<int> AmmoList { get; set; } = new();
+
+        public Ammo()
+        {
+
+        }
+
+        public int Count(AmmoType type)
+        {
+            int iType = (int) type;
+
+            if (AmmoList == null || AmmoList.Count <= iType)
+            {
+                return 0;
+            }
+
+            return AmmoList[iType];
+        }
+
+        public bool Set(AmmoType type, int amount)
+        {
+            int iType = (int) type;
+
+            if (!Host.IsServer || AmmoList == null)
+            {
+                return false;
+            }
+
+            while (AmmoList.Count <= iType)
+            {
+                AmmoList.Add(0);
+            }
+
+            AmmoList[iType] = amount;
+
+            return true;
+        }
+
+        public bool Give(AmmoType type, int amount)
+        {
+            if (!Host.IsServer || AmmoList == null)
+            {
+                return false;
+            }
+
+            Set(type, Count(type) + amount);
+
+            return true;
+        }
+
+        public int Take(AmmoType type, int amount)
+        {
+            if (AmmoList == null)
+            {
+                return 0;
+            }
+
+            int available = Count(type);
+            amount = Math.Min(available, amount);
+
+            Set(type, available - amount);
+
+            return amount;
+        }
+
+        public int Get(int index)
+        {
+            return AmmoList.IndexOf(index);
+        }
+
+        public void Add(int ammo)
+        {
+            AmmoList.Add(ammo);
+        }
+
+        public void Clear()
+        {
+            AmmoList.Clear();
         }
     }
 }

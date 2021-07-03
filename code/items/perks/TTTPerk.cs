@@ -7,22 +7,20 @@ using TTTReborn.Player;
 namespace TTTReborn.Items
 {
     // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    // public class EquipmentAttribute : LibraryAttribute
+    // public class PerkAttribute : LibraryAttribute
     // {
-    //     public EquipmentAttribute(string name) : base(name)
+    //     public PerkAttribute(string name) : base(name)
     //     {
 
     //     }
     // }
 
-    [Library("ttt_equipment")]
-    public abstract class TTTEquipment : BaseCarriable, ICarriableItem
+    [Library("ttt_perk")]
+    public abstract class TTTPerk : IItem
     {
-        public virtual HoldType HoldType => Items.HoldType.Melee;
-
         public string Name { get; }
 
-        protected TTTEquipment()
+        protected TTTPerk()
         {
             LibraryAttribute attribute = Library.GetAttribute(GetType());
 
@@ -48,7 +46,5 @@ namespace TTTReborn.Items
         {
 
         }
-
-        public virtual bool CanDrop() => true;
     }
 }

@@ -73,7 +73,22 @@ namespace TTTReborn.Items
 
         public void Equip(TTTPlayer player)
         {
-            player.Inventory.Add(this);
+            OnEquip(player);
+        }
+
+        public virtual void OnEquip(TTTPlayer player)
+        {
+
+        }
+
+        public void Remove(TTTPlayer player)
+        {
+            OnRemove(player);
+        }
+
+        public virtual void OnRemove(TTTPlayer player)
+        {
+
         }
 
         public int AvailableAmmo()
@@ -83,7 +98,7 @@ namespace TTTReborn.Items
                 return 0;
             }
 
-            return owner.AmmoCount(AmmoType);
+            return (owner.Inventory as Inventory).Ammo.Count(AmmoType);
         }
 
         public override void ActiveStart(Entity owner)
@@ -117,7 +132,7 @@ namespace TTTReborn.Items
 
             TimeSinceReload = 0;
 
-            if (Owner is TTTPlayer player && !UnlimitedAmmo && player.AmmoCount(AmmoType) <= 0)
+            if (Owner is TTTPlayer player && !UnlimitedAmmo && (player.Inventory as Inventory).Ammo.Count(AmmoType) <= 0)
             {
                 return;
             }
@@ -204,7 +219,7 @@ namespace TTTReborn.Items
 
             if (!UnlimitedAmmo)
             {
-                int ammo = player.TakeAmmo(AmmoType, ClipSize - AmmoClip);
+                int ammo = (player.Inventory as Inventory).Ammo.Take(AmmoType, ClipSize - AmmoClip);
 
                 if (ammo == 0)
                 {

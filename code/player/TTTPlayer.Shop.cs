@@ -40,7 +40,7 @@ namespace TTTReborn.Player
             {
                 Credits -= item.Price;
 
-                item.Equip(this);
+                item.OnPurchase(this);
 
                 return;
             }
