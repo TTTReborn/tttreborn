@@ -6,10 +6,18 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         [ClientRpc]
-        public void ClientOnPlayerDied(TTTPlayer player)
+        private void ClientShowFlashlightLocal(bool shouldShow)
+        {
+            ShowFlashlight(shouldShow);
+        }
+
+        // global RPCs
+
+        [ClientRpc]
+        public static void ClientOnPlayerDied(TTTPlayer player)
         {
             if (!player.IsValid())
             {
@@ -20,7 +28,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientOnPlayerSpawned(TTTPlayer player)
+        public static void ClientOnPlayerSpawned(TTTPlayer player)
         {
             if (!player.IsValid())
             {
@@ -41,16 +49,22 @@ namespace TTTReborn.Player
         /// <summary>
         /// Must be called on the server, updates TTTPlayer's `Role`.
         /// </summary>
+        /// <param name="player">The player whose `Role` is to be updated</param>
         /// <param name="roleName">Same as the `TTTReborn.Roles.TTTRole`'s `TTTReborn.Roles.RoleAttribute`'s name</param>
         /// <param name="teamName">The name of the team</param>
         [ClientRpc]
-        public void ClientSetRole(string roleName, string teamName = null)
+        public static void ClientSetRole(TTTPlayer player, string roleName, string teamName = null)
         {
-            SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
+            if (!player.IsValid())
+            {
+                return;
+            }
+
+            player.SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
         }
 
         [ClientRpc]
-        public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName, string teamName = null)
+        public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName, string teamName = null)
         {
             if (!confirmPlayer.IsValid() || !deadPlayer.IsValid())
             {
@@ -82,7 +96,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientAddMissingInAction(TTTPlayer missingInActionPlayer)
+        public static void ClientAddMissingInAction(TTTPlayer missingInActionPlayer)
         {
             if (!missingInActionPlayer.IsValid())
             {
@@ -130,14 +144,14 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientDidDamage(Vector3 position, float amount, float inverseHealth)
+        public static void ClientDidDamage(Vector3 position, float amount, float inverseHealth)
         {
             Sound.FromScreen("dm.ui_attacker")
                 .SetPitch(1 + inverseHealth * 1);
         }
 
         [ClientRpc]
-        public void ClientTookDamage(Vector3 position)
+        public static void ClientTookDamage(Vector3 position)
         {
 
         }

@@ -9,7 +9,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         [ServerCmd(Name = "respawn", Help = "Respawns the current player")]
         public static void RespawnPlayer()
@@ -131,7 +131,7 @@ namespace TTTReborn.Player
             }
 
             player.SetRole(role);
-            player.ClientSetRole(To.Single(player), role.Name);
+            ClientSetRole(To.Single(player), player, role.Name);
         }
 
         [ClientCmd(Name = "playerids", Help = "Returns a list of all players (clients) and their associated IDs")]

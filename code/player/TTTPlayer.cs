@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
 
@@ -52,7 +51,7 @@ namespace TTTReborn.Player
                 {
                     if (isPostRound || player.IsConfirmed)
                     {
-                        player.ClientSetRole(To.Single(this), player.Role.Name);
+                        ClientSetRole(To.Single(this), player, player.Role.Name);
                     }
                 }
             }
@@ -85,7 +84,7 @@ namespace TTTReborn.Player
             using (Prediction.Off())
             {
                 ClientOnPlayerSpawned(this);
-                ClientSetRole(To.Single(this), Role.Name);
+                ClientSetRole(To.Single(this), this, Role.Name);
             }
 
             RemovePlayerCorpse();

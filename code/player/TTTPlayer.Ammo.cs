@@ -7,7 +7,7 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         [Net]
         public List<int> Ammo { get; set; } = new();
