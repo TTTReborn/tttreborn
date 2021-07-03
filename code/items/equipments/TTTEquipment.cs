@@ -1,5 +1,3 @@
-using System;
-
 using Sandbox;
 
 using TTTReborn.Player;
