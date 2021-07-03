@@ -84,7 +84,7 @@ namespace TTTReborn.Player
                         _flashlightHolder = new KeyframeEntity();
                         _flashlightHolder.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
                         _flashlightHolder.Rotation = EyeRot;
-                        //_flashlightHolder.SetParent(this);
+                        //_flashlightHolder.SetParent(this); // this would offer the best lag-free animation, but doesn't support eye-pos synced rotation currently
 
                         _viewFlashlight = new Flashlight();
                         _viewFlashlight.EnableViewmodelRendering = false;
