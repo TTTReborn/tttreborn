@@ -7,14 +7,12 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
-
-
-    public partial class Ammo
+    public partial class AmmoInventory
     {
         private List<int> AmmoList { get; set; } = new();
         private Inventory Inventory;
 
-        public Ammo(Inventory inventory) : base()
+        public AmmoInventory(Inventory inventory) : base()
         {
             Inventory = inventory;
         }

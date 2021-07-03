@@ -12,11 +12,11 @@ namespace TTTReborn.Player
     {
         public readonly List<TTTPerk> Perks = new();
 
-        public readonly Ammo Ammo;
+        public readonly AmmoInventory Ammo;
 
         public Inventory(TTTPlayer player) : base(player)
         {
-            Ammo = new Ammo(this);
+            Ammo = new AmmoInventory(this);
         }
 
         public override void DeleteContents()
