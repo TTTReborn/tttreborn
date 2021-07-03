@@ -115,12 +115,6 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientSetNameplateHealth(float health)
-        {
-            Nameplate.Instance.SetHealth(health);
-        }
-
-        [ClientRpc]
         public static void ClientOpenAndSetPostRoundMenu(string winningTeam, Color winningColor)
         {
             PostRoundMenu.Instance.OpenAndSetPostRoundMenu(new PostRoundStats(

@@ -147,8 +147,6 @@ namespace TTTReborn.Player
 
             if (IsServer)
             {
-                // We might want to redo this...
-                TickAttemptLookup();
                 TickAttemptInspectPlayerCorpse();
                 TickPlayerFalling();
             }

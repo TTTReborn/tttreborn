@@ -42,6 +42,7 @@ namespace TTTReborn.Player
 
     public partial class TTTPlayer
     {
+        [Net]
         public float MaxHealth { get; set; } = 100f;
 
         public void SetHealth(float health)

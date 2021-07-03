@@ -31,7 +31,6 @@ namespace TTTReborn.UI
         private readonly Label _damageIndicatorLabel;
 
         private bool _isShowing = false;
-        private float _playerHp;
 
         private struct HealthGroup
         {
@@ -83,11 +82,6 @@ namespace TTTReborn.UI
             return HealthGroupList[HealthGroupList.Length - 1];
         }
 
-        public void SetHealth(float health)
-        {
-            _playerHp = health;
-        }
-
         public override void Tick()
         {
             TTTPlayer player = Local.Pawn as TTTPlayer;
@@ -104,13 +98,14 @@ namespace TTTReborn.UI
             {
                 validHit = true;
 
-                if (_playerHp == 0 && target.LifeState == LifeState.Alive) // network-sync workaround
+                if (target.Health == 0 && target.LifeState == LifeState.Alive) // network-sync workaround
                 {
                     _damageIndicatorLabel.Text = "";
                 }
                 else
                 {
-                    HealthGroup healthGroup = GetHealthGroup(_playerHp);
+                    float health = target.Health / target.MaxHealth * 100;
+                    HealthGroup healthGroup = GetHealthGroup(health);
 
                     _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
                     _damageIndicatorLabel.Text = healthGroup.Title;

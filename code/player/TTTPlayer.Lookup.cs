@@ -8,23 +8,6 @@ namespace TTTReborn.Player
 
         private const float MAX_DRAW_DISTANCE = 500;
 
-        private void TickAttemptLookup()
-        {
-            using (Prediction.Off())
-            {
-                To client = To.Single(this);
-                TTTPlayer player = IsLookingAtPlayer();
-
-                if (player.IsValid())
-                {
-                    // Send the request to the player looking at the player corpse.
-                    // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-
-                    ClientSetNameplateHealth(client, player.Health);
-                }
-            }
-        }
-
         private TTTPlayer IsLookingAtPlayer()
         {
             TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * MAX_DRAW_DISTANCE)
