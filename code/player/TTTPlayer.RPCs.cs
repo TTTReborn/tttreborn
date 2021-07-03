@@ -1,9 +1,9 @@
 using Sandbox;
 
+using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 using TTTReborn.UI;
-using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 using Sandbox.UI;
 
@@ -5,9 +7,6 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     public partial class Hud : HudEntity<RootPanel>
     {
         public static Hud Current { set; get; }
