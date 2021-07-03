@@ -11,12 +11,10 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
-    using Gamemode;
-
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
-        public override int RoundDuration => TTTReborn.Gamemode.Game.TTTRoundTime;
+        public override int RoundDuration => Gamemode.Game.TTTRoundTime;
 
         private readonly List<TTTPlayer> _spectators = new();
 
@@ -180,7 +178,7 @@ namespace TTTReborn.Rounds
 
         private bool CheckMinimumPlayers()
         {
-            return Client.All.Count >= TTTReborn.Gamemode.Game.TTTMinPlayers;
+            return Client.All.Count >= Gamemode.Game.TTTMinPlayers;
         }
 
         public override void OnSecond()
@@ -189,7 +187,7 @@ namespace TTTReborn.Rounds
             {
                 base.OnSecond();
 
-                if (!Game.HasMinimumPlayers())
+                if (!Utils.HasMinimumPlayers())
                 {
                     if (IsRoundOver() == null)
                     {

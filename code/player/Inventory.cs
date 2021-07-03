@@ -10,13 +10,14 @@ namespace TTTReborn.Player
 {
     public partial class Inventory : BaseInventory
     {
-        public readonly List<TTTPerk> Perks = new();
+        public readonly PerksInventory Perks;
 
         public readonly AmmoInventory Ammo;
 
         public Inventory(TTTPlayer player) : base(player)
         {
             Ammo = new AmmoInventory(this);
+            Perks = new PerksInventory(this);
         }
 
         public override void DeleteContents()
@@ -24,11 +25,6 @@ namespace TTTReborn.Player
             base.DeleteContents();
 
             TTTPlayer player = Owner as TTTPlayer;
-
-            foreach (TTTPerk perk in Perks)
-            {
-                perk.Remove(player);
-            }
 
             Perks.Clear();
             Ammo.Clear();
@@ -43,8 +39,10 @@ namespace TTTReborn.Player
                 return false;
             }
 
-            if (entity is ICarriableItem)
+            if (entity is ICarriableItem carriable)
             {
+                carriable.Equip(player);
+
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
@@ -57,14 +55,7 @@ namespace TTTReborn.Player
 
         public bool Add(TTTPerk perk)
         {
-            if (Perks.Contains(perk))
-            {
-                return false;
-            }
-
-            Perks.Add(perk);
-
-            return true;
+            return Perks.Give(perk);
         }
 
         public bool Add(IItem item)

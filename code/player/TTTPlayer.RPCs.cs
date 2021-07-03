@@ -47,7 +47,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientSetRole(string roleName, string teamName = null)
         {
-            SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
+            SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TTTTeam.GetTeam(teamName));
         }
 
         [ClientRpc]
@@ -58,7 +58,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            deadPlayer.SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
+            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TTTTeam.GetTeam(teamName));
 
             deadPlayer.IsConfirmed = true;
             deadPlayer.CorpseConfirmer = confirmPlayer;
@@ -153,6 +153,38 @@ namespace TTTReborn.Player
         public void ClientClearAmmo()
         {
             (Inventory as Inventory).Ammo.Clear();
+        }
+
+        [ClientRpc]
+        public void ClientAddPerk(string perkName)
+        {
+            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByName<TTTPerk>(perkName));
+
+            if (perk == null)
+            {
+                return;
+            }
+
+            (Inventory as Inventory).Perks.Give(perk);
+        }
+
+        [ClientRpc]
+        public void ClientRemovePerk(string perkName)
+        {
+            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByName<TTTPerk>(perkName));
+
+            if (perk == null)
+            {
+                return;
+            }
+
+            (Inventory as Inventory).Perks.Take(perk);
+        }
+
+        [ClientRpc]
+        public void ClientClearPerks()
+        {
+            (Inventory as Inventory).Perks.Clear();
         }
     }
 }
