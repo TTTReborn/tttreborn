@@ -34,6 +34,8 @@ namespace TTTReborn.Player
                 DeathPosition = position,
                 TimeSinceDied = 0
             };
+
+            ShowFlashlight(false, false);
         }
 
         // Important: Server-side only
@@ -114,6 +116,8 @@ namespace TTTReborn.Player
             Inventory.DropActive();
             Inventory.DeleteContents();
 
+            ShowFlashlight(false, false);
+
             IsMissingInAction = true;
 
             using (Prediction.Off())
@@ -149,6 +153,8 @@ namespace TTTReborn.Player
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
+
+            TickPlayerFlashlight();
         }
 
         protected override void UseFail()
