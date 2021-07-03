@@ -22,17 +22,41 @@ namespace TTTReborn.UI
             }
         }
 
-        private bool _isShowing = false;
-
         private const float MAX_DRAW_DISTANCE = 500;
+        private readonly Color BORDER_COLOR_NONE = Color.FromBytes(0, 0, 0, 204);
 
         private readonly Panel _labelHolder;
         private readonly Panel _nameHolder;
-
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 
+        private bool _isShowing = false;
         private float _playerHp;
+
+        private struct HealthGroup
+        {
+            public string Title;
+            public Color Color;
+
+            public HealthGroup(string title, Color color)
+            {
+                Title = title;
+                Color = color;
+            }
+        }
+
+        private HealthGroup[] HealthGroupList = new HealthGroup[]{
+            new HealthGroup("Healthy", Color.FromBytes(44, 233, 44)),
+            new HealthGroup("Injured", Color.FromBytes(233, 135, 44)),
+            new HealthGroup("Near death", Color.FromBytes(252, 42, 42))
+        };
+
+        private enum HealthGroups
+        {
+            Healthy,
+            Injured,
+            NearDeath
+        }
 
         public Nameplate()
         {
@@ -50,22 +74,11 @@ namespace TTTReborn.UI
 
         }
 
-        private string GetHealthGroup(float health)
+        private HealthGroup GetHealthGroup(float health)
         {
-            return health > 70 ? "Healthy"
-                : health > 20 ? "Injured"
-                : "Near death";
-        }
-
-        private static Color GetHealthColor(float health)
-        {
-            Color healthy = Color.FromBytes(44, 233, 44);
-            Color injured = Color.FromBytes(233, 135, 44);
-            Color near_death = Color.FromBytes(252, 42, 42);
-
-            return health > 70 ? healthy
-                : health > 20 ? injured
-                : near_death;
+            return health > 70 ? HealthGroupList[(int) HealthGroups.Healthy]
+                : health > 20 ? HealthGroupList[(int) HealthGroups.Injured]
+                : HealthGroupList[(int) HealthGroups.NearDeath];
         }
 
         public void SetHealth(float health)
@@ -87,13 +100,16 @@ namespace TTTReborn.UI
 
             if (trace.Hit && trace.Entity is TTTPlayer target)
             {
+                HealthGroup healthGroup = GetHealthGroup(_playerHp);
+
                 validHit = true;
+
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
-                _damageIndicatorLabel.Style.FontColor = GetHealthColor(_playerHp);
-                _damageIndicatorLabel.Text = GetHealthGroup(_playerHp);
+                _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
+                _damageIndicatorLabel.Text = healthGroup.Title;
                 _damageIndicatorLabel.Style.Dirty();
 
-                Style.BorderColor = target.Role is not TTTReborn.Roles.NoneRole ? target.Role.Color : Color.FromBytes(0, 0, 0, 204);
+                Style.BorderColor = target.Role is not TTTReborn.Roles.NoneRole ? target.Role.Color : BORDER_COLOR_NONE;
 
                 Style.Dirty();
             }

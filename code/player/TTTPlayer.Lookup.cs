@@ -15,12 +15,12 @@ namespace TTTReborn.Player
                 To client = To.Single(this);
                 TTTPlayer player = IsLookingAtPlayer();
 
-                if (player != null && player.IsValid())
+                if (player.IsValid())
                 {
                     // Send the request to the player looking at the player corpse.
                     // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
 
-                    SetNameplateHealth(client, player.Health);
+                    ClientSetNameplateHealth(client, player.Health);
                 }
             }
         }
