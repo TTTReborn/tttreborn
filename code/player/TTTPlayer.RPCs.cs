@@ -3,6 +3,7 @@ using Sandbox;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 using TTTReborn.UI;
+using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
@@ -140,6 +141,18 @@ namespace TTTReborn.Player
         public void ClientTookDamage(Vector3 position)
         {
 
+        }
+
+        [ClientRpc]
+        public void ClientSetAmmo(AmmoType ammoType, int amount)
+        {
+            (Inventory as Inventory).Ammo.Set(ammoType, amount);
+        }
+
+        [ClientRpc]
+        public void ClientClearAmmo()
+        {
+            (Inventory as Inventory).Ammo.Clear();
         }
     }
 }
