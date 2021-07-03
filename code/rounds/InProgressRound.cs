@@ -74,7 +74,7 @@ namespace TTTReborn.Rounds
                         AddPlayer(player);
                     }
 
-                    // TODO: Remove once we can spawn in weapons into the map, for now just give the guns to people.
+                    // TODO: Remove once we can spawn in carriable entities into the map, for now just give the guns to people.
                     player.Inventory.Add(new MagnetoStick(), true);
 
                     player.Inventory.Add(new Shotgun(), false);

@@ -3,10 +3,10 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Library("ttt_smg")]
-    partial class SMG : TTTWeapon
+    partial class SMG : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
-        public override WeaponType WeaponType => WeaponType.Primary;
+        public override HoldType HoldType => Items.HoldType.Primary;
         public override float PrimaryRate => 10.0f;
         public override float SecondaryRate => 1.0f;
         public override int ClipSize => 30;
@@ -16,6 +16,8 @@ namespace TTTReborn.Items
         public override bool HasLaserDot => true;
         public override int BaseDamage => 8;
         public override int Bucket => 2;
+
+        public virtual int Price => 100;
 
         public override void Spawn()
         {
