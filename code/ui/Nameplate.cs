@@ -92,11 +92,9 @@ namespace TTTReborn.UI
                 .UseHitboxes()
                 .Run();
 
-            bool validHit = false;
-
             if (trace.Hit && trace.Entity is TTTPlayer target)
             {
-                validHit = true;
+                IsShowing = true;
 
                 if (target.Health == 0 && target.LifeState == LifeState.Alive) // network-sync workaround
                 {
@@ -118,8 +116,10 @@ namespace TTTReborn.UI
 
                 Style.Dirty();
             }
-
-            SetClass("hide", !validHit);
+            else
+            {
+                IsShowing = false;
+            }
         }
     }
 }
