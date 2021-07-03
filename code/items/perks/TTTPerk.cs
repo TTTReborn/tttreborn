@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
@@ -32,7 +33,10 @@ namespace TTTReborn.Items
 
         public virtual void OnEquip(TTTPlayer player)
         {
-
+            if (Host.IsClient)
+            {
+                Hud.Current.AliveHudPanel.Effects.AddEffect(this);
+            }
         }
 
         public void Remove(TTTPlayer player)
@@ -42,7 +46,15 @@ namespace TTTReborn.Items
 
         public virtual void OnRemove(TTTPlayer player)
         {
+            if (Host.IsClient)
+            {
+                Hud.Current.AliveHudPanel.Effects.RemoveEffect(this);
+            }
+        }
 
+        public virtual bool IsBuyable(TTTPlayer player)
+        {
+            return !(player.Inventory as Inventory).Perks.Has(this);
         }
     }
 }

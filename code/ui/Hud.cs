@@ -33,10 +33,14 @@ namespace TTTReborn.UI
             if (Host.IsClient)
             {
                 Local.Hud?.Delete();
+
                 Hud hud = new Hud();
+
                 if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
                 {
                     hud.AliveHudPanel.CreateHud();
+
+                    hud.AliveHudPanel.Effects.OnHotReloaded();
                 }
             }
         }
@@ -84,6 +88,8 @@ namespace TTTReborn.UI
         {
             private List<Panel> _panels;
 
+            public Effects Effects;
+
             public AliveHud(Panel parent)
             {
                 Parent = parent;
@@ -94,13 +100,16 @@ namespace TTTReborn.UI
             {
                 if (_panels.Count == 0)
                 {
+                    Effects = Parent.AddChild<Effects>();
+
                     _panels = new List<Panel>()
                     {
                         Parent.AddChild<PlayerInfo>(),
                         Parent.AddChild<InventorySelection>(),
                         Parent.AddChild<InspectMenu>(),
                         Parent.AddChild<Nameplate>(),
-                        Parent.AddChild<QuickShop>()
+                        Parent.AddChild<QuickShop>(),
+                        Effects
                     };
                 }
             }
@@ -111,7 +120,10 @@ namespace TTTReborn.UI
                 {
                     child.Delete();
                 }
+
                 _panels.Clear();
+
+                Effects = null;
             }
         }
     }
