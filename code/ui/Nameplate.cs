@@ -37,26 +37,22 @@ namespace TTTReborn.UI
         {
             public string Title;
             public Color Color;
+            public int MinHealth;
 
-            public HealthGroup(string title, Color color)
+            public HealthGroup(string title, Color color, int minHealth)
             {
                 Title = title;
                 Color = color;
+                MinHealth = minHealth;
             }
         }
 
+        // Pay attention when adding new values! The highest health-based entry has to be the first item, etc.
         private HealthGroup[] HealthGroupList = new HealthGroup[]{
-            new HealthGroup("Healthy", Color.FromBytes(44, 233, 44)),
-            new HealthGroup("Injured", Color.FromBytes(233, 135, 44)),
-            new HealthGroup("Near death", Color.FromBytes(252, 42, 42))
+            new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 70),
+            new HealthGroup("Injured", Color.FromBytes(233, 135, 44), 20),
+            new HealthGroup("Near death", Color.FromBytes(252, 42, 42), 0)
         };
-
-        private enum HealthGroups
-        {
-            Healthy,
-            Injured,
-            NearDeath
-        }
 
         public Nameplate()
         {
@@ -76,9 +72,15 @@ namespace TTTReborn.UI
 
         private HealthGroup GetHealthGroup(float health)
         {
-            return health > 70 ? HealthGroupList[(int) HealthGroups.Healthy]
-                : health > 20 ? HealthGroupList[(int) HealthGroups.Injured]
-                : HealthGroupList[(int) HealthGroups.NearDeath];
+            foreach (HealthGroup healthGroup in HealthGroupList)
+            {
+                if (health >= healthGroup.MinHealth)
+                {
+                    return healthGroup;
+                }
+            }
+
+            return HealthGroupList[HealthGroupList.Length - 1];
         }
 
         public void SetHealth(float health)
@@ -100,14 +102,22 @@ namespace TTTReborn.UI
 
             if (trace.Hit && trace.Entity is TTTPlayer target)
             {
-                HealthGroup healthGroup = GetHealthGroup(_playerHp);
-
                 validHit = true;
 
+                if (_playerHp == 0 && target.LifeState == LifeState.Alive) // network-sync workaround
+                {
+                    _damageIndicatorLabel.Text = "";
+                }
+                else
+                {
+                    HealthGroup healthGroup = GetHealthGroup(_playerHp);
+
+                    _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
+                    _damageIndicatorLabel.Text = healthGroup.Title;
+                    _damageIndicatorLabel.Style.Dirty();
+                }
+
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
-                _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
-                _damageIndicatorLabel.Text = healthGroup.Title;
-                _damageIndicatorLabel.Style.Dirty();
 
                 Style.BorderColor = target.Role is not TTTReborn.Roles.NoneRole ? target.Role.Color : BORDER_COLOR_NONE;
 
