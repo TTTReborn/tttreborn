@@ -33,7 +33,6 @@ namespace TTTReborn.UI
 
         private PostRoundStats _stats;
         private readonly Label _headerLabel;
-        private readonly Button _closeButton;
         private readonly Label _contentLabel;
 
         public PostRoundMenu()
@@ -44,12 +43,6 @@ namespace TTTReborn.UI
             _headerLabel = Add.Label("", "headerLabel");
 
             _contentLabel = Add.Label("Thanks for playing TTT Reborn, more updates and stats to come!", "contentLabel");
-
-            _closeButton = Add.Button("×", "closeButton");
-            _closeButton.AddEvent("onclick", () =>
-            {
-                PostRoundMenu.Instance.IsShowing = false;
-            });
 
             IsShowing = false;
         }

@@ -10,7 +10,6 @@ PostRoundMenu {
     transform: translateX(-50%) translateY(-50%);
     position: absolute;
     flex-direction: column;
-    pointer-events: all;
 
     color: #fafafa;
     font-family: Poppins;
@@ -19,26 +18,6 @@ PostRoundMenu {
     &.hide {
         opacity: 0;
         pointer-events: none;
-    }
-
-    .closeButton {
-        position: absolute;
-        right: 2px;
-        top: 2px;
-        font-size: 20px;
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-
-        Label {
-            top: -6px;
-            left: 3px;
-        }
-
-        &:hover {
-            cursor: pointer;
-            background-color: rgba(255, 255, 255, 0.13);
-        }
     }
 
     .headerLabel {

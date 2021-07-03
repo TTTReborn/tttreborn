@@ -1,4 +1,4 @@
-WeaponSelection {
+InventorySelection {
     position: absolute;
     bottom: 30px;
     right: 30px;
@@ -13,13 +13,13 @@ WeaponSelection {
         display: none;
     }
 
-    WeaponSlot {
+    InventorySlot {
         height: 32px;
         font-size: 22px;
         color: #fafafa;
         border-bottom: 1px solid #000e;
         background-color: #000c;
-        font-size: 22px;
+        font-size: 20px;
         transition: height 0.1s linear;
 
         Label {
@@ -29,12 +29,13 @@ WeaponSelection {
             font-weight: 400;
 
             &.slotlabel {
+                font-size: 22px;
                 margin-right: 14px;
                 display: inline-block;
                 width: 32px;
                 text-align: center;
-                background-color: #ff9800;
-                font-weight: 600;
+                background-color: #ff7700;
+                font-weight: 500;
             }
 
             &.ammolabel {
@@ -42,10 +43,9 @@ WeaponSelection {
                 position: absolute;
                 font-size: 20px;
                 padding-top: 2px;
-
-                &.active {
-                    font-size: 22px;
-                }
+            }
+            &.weaponlabel {
+                margin-top: 1px;
             }
         }
 
@@ -54,6 +54,9 @@ WeaponSelection {
 
             Label {
                 font-weight: 500;
+            }
+            .slotlabel {
+                font-weight: 600;
             }
         }
 
@@ -69,20 +72,20 @@ WeaponSelection {
         }
 
         &:first-child {
+            border-radius: 5px 5px 0px 0px;
+
             Label.slotlabel {
                 border-top-left-radius: 4px;
             }
-
-            border-radius: 5px 5px 0px 0px;
         }
 
         &:last-child {
+            border-bottom: 0;
+            border-radius: 0px 0px 5px 5px;
+
             Label.slotlabel {
                 border-bottom-left-radius: 4px;
             }
-
-            border-bottom: 0;
-            border-radius: 0px 0px 5px 5px;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace TTTReborn.Player
 
             player.SetRole(new NoneRole());
 
-            Hud.Instance.Scoreboard.UpdatePlayer(player.GetClientOwner());
+            Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(player.GetClientOwner());
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace TTTReborn.Player
 
             missingInActionPlayer.IsMissingInAction = true;
 
-            Hud.Instance.Scoreboard.UpdatePlayer(missingInActionPlayer.GetClientOwner());
+            Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(missingInActionPlayer.GetClientOwner());
         }
 
         [ClientRpc]
@@ -121,6 +121,12 @@ namespace TTTReborn.Player
                 winningRole: winningTeam,
                 winningColor: winningColor
             ));
+        }
+
+        [ClientRpc]
+        public static void ClientClosePostRoundMenu()
+        {
+            PostRoundMenu.Instance.IsShowing = false;
         }
 
         [ClientRpc]
