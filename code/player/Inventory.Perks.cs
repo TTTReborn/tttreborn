@@ -61,7 +61,15 @@ namespace TTTReborn.Player
 
         public bool Has(TTTPerk perk)
         {
-            return PerkList.Contains(perk);
+            foreach (TTTPerk loopPerk in PerkList)
+            {
+                if (perk.Name == loopPerk.Name)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void Clear()
@@ -80,6 +88,16 @@ namespace TTTReborn.Player
             {
                 player.ClientClearPerks(To.Single(player));
             }
+        }
+
+        public int Count()
+        {
+            return PerkList.Count;
+        }
+
+        public TTTPerk Get(int index)
+        {
+            return PerkList[index];
         }
     }
 }

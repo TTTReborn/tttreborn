@@ -105,6 +105,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
+            base.Tick();
+
             TTTPlayer player = Local.Pawn as TTTPlayer;
 
             if (player == null)

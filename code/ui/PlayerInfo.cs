@@ -33,6 +33,8 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
+                base.Tick();
+
                 if (Local.Pawn is not TTTPlayer player)
                 {
                     return;
@@ -74,6 +76,8 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
+                base.Tick();
+
                 TTTPlayer player = Local.Pawn as TTTPlayer;
 
                 if (player == null)
