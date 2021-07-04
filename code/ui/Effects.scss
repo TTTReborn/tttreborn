@@ -1,0 +1,26 @@
+Effects {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    width: 64px;
+    font-size: 12px;
+    font-family: Poppins;
+
+    Effect {
+        border: 1px solid #031421;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 4px;
+        width: 64px;
+        height: 64px;
+
+        margin-top: 10px;
+
+        Label {
+            color: white;
+            width: 100%;
+            text-align: center;
+        }
+    }
+}

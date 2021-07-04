@@ -249,6 +249,8 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
+                base.Tick();
+
                 if (currentBuyableItem == _selectedItem)
                 {
                     return;
