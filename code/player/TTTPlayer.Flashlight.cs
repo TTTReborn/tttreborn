@@ -124,31 +124,32 @@ namespace TTTReborn.Player
                 }
             }
 
-            using (Prediction.Off())
+            if (IsServer)
             {
-                if (IsFlashlightOn)
+                using (Prediction.Off())
                 {
-                    if (IsClient)
+                    if (IsFlashlightOn)
                     {
-                        if (Camera is FirstPersonCamera camera)
-                        {
-                            _viewFlashlight.Rotation = camera.Rot;
-                            _viewFlashlight.Position = camera.Pos + camera.Rot.Forward * FLASHLIGHT_DISTANCE;
-                        }
-                        else
-                        {
-                            _viewFlashlight.Rotation = Input.Rotation;
-                            _viewFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
-                        }
-
-                        return;
+                        _worldFlashlight.Rotation = Input.Rotation;
+                        _worldFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
                     }
-
-                    _worldFlashlight.Rotation = Input.Rotation;
-                    _worldFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
                 }
             }
         }
+
+		public override void PostCameraSetup(ref CameraSetup camSetup)
+		{
+            base.PostCameraSetup(ref camSetup);
+
+			using (Prediction.Off())
+            {
+                if (IsFlashlightOn)
+                {
+                    _viewFlashlight.Rotation = Input.Rotation;
+                    _viewFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
+                }
+            }
+		}
     }
 
     [Library("ttt_flashlight")]
