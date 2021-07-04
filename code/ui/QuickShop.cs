@@ -81,14 +81,9 @@ namespace TTTReborn.UI
 
                 _wrapper = Add.Panel("wrapper");
 
-                foreach (Type type in Library.GetAll<IBuyableItem>())
+                foreach (Type type in Utils.GetTypes<IBuyableItem>())
                 {
-                    if (type.IsAbstract || type.ContainsGenericParameters)
-                    {
-                        continue;
-                    }
-
-                    IBuyableItem item = Library.Create<IBuyableItem>(type);
+                    IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(type);
 
                     if (_selectedItem == null)
                     {
@@ -111,6 +106,13 @@ namespace TTTReborn.UI
             {
                 ItemPanel itemPanel = new ItemPanel(_wrapper);
                 itemPanel.SetItem(buyableItem);
+
+                // TODO if WeaponAttributes are fixed, this should get the Attribute's data instead of creating an item's object (weapon spawn bug)
+                // This is a workaround to avoid issues
+                if (buyableItem is TTTWeapon weapon)
+                {
+                    weapon.EnableDrawing = false;
+                }
 
                 itemPanel.AddEventListener("onclick", () =>
                 {
