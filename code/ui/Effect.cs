@@ -8,12 +8,13 @@ namespace TTTReborn.UI
 {
     public class Effect : Panel
     {
-        private Label _nameLabel;
-        public IItem item;
+        public IItem Item { get; private set; }
+        private readonly Label _nameLabel;
 
-        public Effect(Panel parent)
+        public Effect(Panel parent, IItem effect)
         {
             Parent = parent;
+            Item = effect;
 
             _nameLabel = Add.Label("", "textlabel");
         }
@@ -22,12 +23,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (item == null)
-            {
-                return;
-            }
-
-            _nameLabel.Text = item.Name;
+            _nameLabel.Text = Item.Name;
         }
     }
 }

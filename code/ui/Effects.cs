@@ -32,12 +32,12 @@ namespace TTTReborn.UI
 
         public void AddEffect(TTTPerk perk)
         {
-            _effectList.Add(new Effect(this) {item = perk});
+            _effectList.Add(new Effect(this, perk));
         }
 
         public void RemoveEffect(TTTPerk perk)
         {
-            foreach (Effect effect in _effectList.Where(effect => effect.item.Name == perk.Name))
+            foreach (Effect effect in _effectList.Where(effect => effect.Item.Name == perk.Name))
             {
                 _effectList.Remove(effect);
                 effect.Delete();
