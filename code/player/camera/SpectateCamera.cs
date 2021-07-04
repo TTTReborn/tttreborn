@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 namespace TTTReborn.Player.Camera
 {
     public partial class SpectateCamera : Sandbox.Camera
@@ -33,7 +33,7 @@ namespace TTTReborn.Player.Camera
 
             if (TargetPlayer == null || !TargetPlayer.IsValid() || Input.Pressed(InputButton.Attack1))
             {
-                List<TTTPlayer> players = TTTReborn.Gamemode.Game.GetAlivePlayers();
+                List<TTTPlayer> players = Utils.GetAlivePlayers();
 
                 if (players.Count > 0)
                 {

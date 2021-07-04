@@ -7,18 +7,26 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
-    partial class Inventory : BaseInventory
+    public partial class Inventory : BaseInventory
     {
+        public readonly PerksInventory Perks;
+
+        public readonly AmmoInventory Ammo;
+
         public Inventory(TTTPlayer player) : base(player)
         {
-
+            Ammo = new AmmoInventory(this);
+            Perks = new PerksInventory(this);
         }
 
         public override void DeleteContents()
         {
             base.DeleteContents();
 
-            (Owner as TTTPlayer).Ammo.Clear();
+            TTTPlayer player = Owner as TTTPlayer;
+
+            Perks.Clear();
+            Ammo.Clear();
         }
 
         public override bool Add(Entity entity, bool makeActive = false)
@@ -30,16 +38,37 @@ namespace TTTReborn.Player
                 return false;
             }
 
-            if (entity is TTTWeapon weapon)
+            if (entity is ICarriableItem carriable)
             {
+                carriable.Equip(player);
+
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
             bool added = base.Add(entity, makeActive);
 
-            List.Sort((Entity wep1, Entity wep2) => (wep1 as TTTWeapon).WeaponType.CompareTo((wep2 as TTTWeapon).WeaponType));
+            List.Sort((Entity carr1, Entity carr2) => (carr1 as ICarriableItem).HoldType.CompareTo((carr2 as ICarriableItem).HoldType));
 
             return added;
+        }
+
+        public bool Add(TTTPerk perk)
+        {
+            return Perks.Give(perk);
+        }
+
+        public bool Add(IItem item)
+        {
+            if (item is Entity ent)
+            {
+                return Add(ent);
+            }
+            else if (item is TTTPerk perk)
+            {
+                return Add(perk);
+            }
+
+            return false;
         }
 
         public bool IsCarryingType(Type t)
@@ -53,15 +82,15 @@ namespace TTTReborn.Player
         }
 
         /// <summary>
-        /// Returns the next weapon slot. If a `WeaponType` is given and the corresponding key was pressed, the index of a different weapon with
+        /// Returns the next inventory slot. If a `HoldType` is given and the corresponding key was pressed, the index of a different carriable entity with
         /// the same slot will be returned.
         /// </summary>
-        /// <param name="weaponType">Optional. If not set, the next weapon in the list will be returned (no matter the slot)</param>
+        /// <param name="holdType">Optional. If not set, the next carriable entity in the list will be returned (no matter the slot)</param>
         /// <returns>
-        /// -1: No selection / weapon switch should proceed,
-        /// >0: The index of the weapon in the inventory list that should get selected
+        /// -1: No selection / carriable entity switch should proceed,
+        /// >0: The index of the carriable entity in the inventory list that should get selected
         /// </returns>
-        public int GetNextWeaponSlot(WeaponType weaponType = 0)
+        public int GetNextSlot(HoldType holdType = 0)
         {
             int inventorySize = Count();
 
@@ -75,25 +104,25 @@ namespace TTTReborn.Player
             if (activeSlot != -1)
             {
                 int nextIndex = NormalizeSlotIndex(activeSlot + 1, inventorySize - 1); // Get next slot index
-                TTTWeapon nextWeapon = List[nextIndex] as TTTWeapon;
+                ICarriableItem nextCarr = List[nextIndex] as ICarriableItem;
 
-                if (weaponType != 0)
+                if (holdType != 0)
                 {
-                    if (nextWeapon.WeaponType != weaponType)
+                    if (nextCarr.HoldType != holdType)
                     {
-                        for (int weaponIndex = 0; weaponIndex < inventorySize; weaponIndex++)
+                        for (int carrIndex = 0; carrIndex < inventorySize; carrIndex++)
                         {
-                            TTTWeapon indexWeapon = List[weaponIndex] as TTTWeapon;
+                            ICarriableItem indexCarr = List[carrIndex] as ICarriableItem;
 
-                            if (indexWeapon.WeaponType == weaponType)
+                            if (indexCarr.HoldType == holdType)
                             {
-                                return weaponIndex;
+                                return carrIndex;
                             }
                         }
                     }
                     else
                     {
-                        // if there is no weapon with same slot or no slot defined, return the next available weapon
+                        // if there is no carriable entity with same slot or no slot defined, return the next available carriable entity
                         return nextIndex;
                     }
 
@@ -101,13 +130,13 @@ namespace TTTReborn.Player
                 }
             }
 
-            // edge case, if List does not contain the active weapon
+            // edge case, if List does not contain the active carriable entity
             return 0;
         }
 
         public override bool Drop(Entity ent)
         {
-            if (!Host.IsServer || !Contains(ent) || ent is TTTWeapon weapon && !weapon.CanDrop())
+            if (!Host.IsServer || !Contains(ent) || ent is ICarriableItem item && !item.CanDrop())
             {
                 return false;
             }

@@ -2,6 +2,8 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.Player
 {
     public enum HitboxIndex
@@ -42,6 +44,7 @@ namespace TTTReborn.Player
 
     public partial class TTTPlayer
     {
+        [Net]
         public float MaxHealth { get; set; } = 100f;
 
         public void SetHealth(float health)
@@ -63,12 +66,12 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                attacker.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+                RPCs.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
 
             if (info.Weapon != null)
             {
-                ClientTookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+                RPCs.ClientTookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
             }
 
             // Play pain sounds
@@ -82,7 +85,7 @@ namespace TTTReborn.Player
             }
 
             // Register player damage with the Karma system
-            TTTReborn.Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
+            Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
 
             _lastDamageInfo = info;
 

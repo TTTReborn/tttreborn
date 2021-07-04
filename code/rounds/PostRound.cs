@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
@@ -18,7 +19,7 @@ namespace TTTReborn.Rounds
             base.OnTimeUp();
 
             // TODO: Allow users to close the menu themselves using mouse cursor.
-            TTTPlayer.ClientClosePostRoundMenu();
+            RPCs.ClientClosePostRoundMenu();
 
             Gamemode.Game.Instance.ChangeRound(new PreRound());
         }
@@ -51,9 +52,9 @@ namespace TTTReborn.Rounds
             {
                 using (Prediction.Off())
                 {
-                    foreach (TTTPlayer player in TTTReborn.Gamemode.Game.GetPlayers())
+                    foreach (TTTPlayer player in Utils.GetPlayers())
                     {
-                        player.ClientSetRole(player.Role.Name);
+                        RPCs.ClientSetRole(player, player.Role.Name);
 
                         // TODO move this to a method called after OnKilled() and use LifeState instead of Health
                         player.GetClientOwner()?.SetScore("alive", player.Health > 0);

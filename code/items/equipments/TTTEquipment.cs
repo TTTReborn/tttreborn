@@ -1,40 +1,57 @@
-using System;
-
 using Sandbox;
 
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class EquipmentAttribute : LibraryAttribute
-    {
-        public EquipmentAttribute(string name) : base(name)
-        {
+    // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    // public class EquipmentAttribute : LibraryAttribute
+    // {
+    //     public EquipmentAttribute(string name) : base(name)
+    //     {
 
-        }
-    }
+    //     }
+    // }
 
-    public abstract class TTTEquipment : Networked, IBuyableItem
+    [Library("ttt_equipment")]
+    public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
-        private string Name { get; set; }
+        public virtual HoldType HoldType => Items.HoldType.Melee;
+
+        public string Name { get; }
 
         protected TTTEquipment()
         {
-            EquipmentAttribute equipmentAttribute = Library.GetAttribute(GetType()) as EquipmentAttribute;
+            LibraryAttribute attribute = Library.GetAttribute(GetType());
 
-            Name = equipmentAttribute.Name;
+            Name = attribute.Name;
         }
-
-        public virtual int GetPrice() => 100;
-
-        public virtual bool IsBuyable(TTTPlayer player) => true;
-
-        public string GetName() => Name;
 
         public void Equip(TTTPlayer player)
         {
+            OnEquip(player);
+        }
 
+        public virtual void OnEquip(TTTPlayer player)
+        {
+
+        }
+
+        public void Remove(TTTPlayer player)
+        {
+            OnRemove(player);
+        }
+
+        public virtual void OnRemove(TTTPlayer player)
+        {
+
+        }
+
+        public virtual bool CanDrop() => true;
+
+        public virtual bool IsBuyable(TTTPlayer player)
+        {
+            return !(player.Inventory as Inventory).IsCarryingType(GetType());
         }
     }
 }

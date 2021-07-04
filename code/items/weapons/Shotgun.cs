@@ -5,10 +5,10 @@ using TTTReborn.Player;
 namespace TTTReborn.Items
 {
     [Library("ttt_shotgun")]
-    partial class Shotgun : TTTWeapon
+    partial class Shotgun : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
-        public override WeaponType WeaponType => WeaponType.Primary;
+        public override HoldType HoldType => Items.HoldType.Primary;
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
         public override AmmoType AmmoType => AmmoType.Buckshot;
@@ -19,6 +19,8 @@ namespace TTTReborn.Items
         public override bool HasFlashlight => true;
         public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
         public override int Bucket => 3;
+
+        public virtual int Price => 100;
 
         public override void Spawn()
         {
@@ -82,7 +84,7 @@ namespace TTTReborn.Items
 
             if (Owner is TTTPlayer player)
             {
-                int ammo = player.TakeAmmo(AmmoType, 1);
+                int ammo = (player.Inventory as Inventory).Ammo.Take(AmmoType, 1);
 
                 if (ammo == 0)
                 {

@@ -60,6 +60,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
+            base.Tick();
+
             if (_client == null)
             {
                 Initialize();

@@ -25,11 +25,13 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                _textLabel = Add.Label("asd", "textlabel");
+                _textLabel = Add.Label("", "textlabel");
                 _timeLabel = Add.Label("", "timelabel");
             }
             public override void Tick()
             {
+                base.Tick();
+
                 if (Game.Instance.Round == null)
                 {
                     return;

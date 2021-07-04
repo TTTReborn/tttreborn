@@ -33,6 +33,8 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
+                base.Tick();
+
                 if (Local.Pawn is not TTTPlayer player)
                 {
                     return;
@@ -58,8 +60,8 @@ namespace TTTReborn.UI
             private readonly BarPanel _ammoBar;
 
             // TODO rework event based
-            private float _currentHealth;
-            private int _currentAmmo;
+            private float _currentHealth = -1;
+            private int _currentAmmo = -1;
 
             public IndicatorsPanel(Panel parent)
             {
@@ -74,6 +76,8 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
+                base.Tick();
+
                 TTTPlayer player = Local.Pawn as TTTPlayer;
 
                 if (player == null)
@@ -91,12 +95,16 @@ namespace TTTReborn.UI
                     _healthBar.Style.Dirty();
                 }
 
-                TTTWeapon weapon = player.ActiveChild as TTTWeapon;
-                bool isWeaponNull = weapon == null;
+                ICarriableItem carriable = player.ActiveChild as ICarriableItem;
 
-                _ammoBar.SetClass("hide", isWeaponNull || weapon.WeaponType == WeaponType.Melee);
+                bool isWeaponNull = carriable == null || carriable is not TTTWeapon;
+
+                _ammoBar.SetClass("hide", isWeaponNull || carriable.HoldType == HoldType.Melee);
+
                 if (!isWeaponNull)
                 {
+                    TTTWeapon weapon = carriable as TTTWeapon;
+
                     if (_currentAmmo == weapon.AmmoClip)
                     {
                         return;
@@ -108,6 +116,10 @@ namespace TTTReborn.UI
 
                     _ammoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
                     _ammoBar.Style.Dirty();
+                }
+                else
+                {
+                    _currentAmmo = -1;
                 }
             }
         }

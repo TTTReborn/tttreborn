@@ -2,14 +2,17 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    public interface IBuyableItem
+    public interface IBuyableItem : IItem
     {
-        int GetPrice();
+        int Price { get; }
 
         bool IsBuyable(TTTPlayer player);
 
-        string GetName();
+        void OnPurchase(TTTPlayer player)
+        {
+            (player.Inventory as Inventory).Add(this);
 
-        void Equip(TTTPlayer player);
+            Equip(player);
+        }
     }
 }
