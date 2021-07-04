@@ -17,6 +17,7 @@ namespace TTTReborn.Items
     public abstract class TTTPerk : IItem
     {
         public string Name { get; }
+        public Entity Owner { get; set; }
 
         protected TTTPerk()
         {
@@ -27,20 +28,27 @@ namespace TTTReborn.Items
 
         public void Equip(TTTPlayer player)
         {
-            OnEquip(player);
+            Owner = player;
+
+            OnEquip();
         }
 
-        public virtual void OnEquip(TTTPlayer player)
+        public virtual void OnEquip()
         {
 
         }
 
-        public void Remove(TTTPlayer player)
+        public void Remove()
         {
-            OnRemove(player);
+            OnRemove();
         }
 
-        public virtual void OnRemove(TTTPlayer player)
+        public virtual void OnRemove()
+        {
+
+        }
+
+        public void Delete()
         {
 
         }

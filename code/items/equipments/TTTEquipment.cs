@@ -29,20 +29,20 @@ namespace TTTReborn.Items
 
         public void Equip(TTTPlayer player)
         {
-            OnEquip(player);
+            OnEquip();
         }
 
-        public virtual void OnEquip(TTTPlayer player)
+        public virtual void OnEquip()
         {
 
         }
 
-        public void Remove(TTTPlayer player)
+        public void Remove()
         {
-            OnRemove(player);
+            OnRemove();
         }
 
-        public virtual void OnRemove(TTTPlayer player)
+        public virtual void OnRemove()
         {
 
         }

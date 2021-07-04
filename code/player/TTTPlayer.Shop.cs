@@ -36,16 +36,20 @@ namespace TTTReborn.Player
 
         public void RequestPurchase(IBuyableItem item)
         {
-            if (CanBuy(item) == BuyError.None)
-            {
-                Credits -= item.Price;
+            BuyError buyError = CanBuy(item);
 
-                item.OnPurchase(this);
+            if (buyError != BuyError.None)
+            {
+                Log.Warning($"{GetClientOwner().Name} tried to buy '{item.Name}'. (Error: {buyError})");
+
+                item.Delete();
 
                 return;
             }
 
-            Log.Warning($"{GetClientOwner().Name} tried to buy '{item.Name}'.");
+            Credits -= item.Price;
+
+            item.OnPurchase(this);
         }
     }
 }
