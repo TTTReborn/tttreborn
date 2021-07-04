@@ -228,17 +228,19 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                Particles rope = Particles.Create("particles/rope.vpcf");
-                rope.SetEntity(0, _heldBody.Entity, Vector3.Down * 6.5f); // Should be an attachment point
-
                 Entity attachEnt = tr.Body.IsValid() ? tr.Body.Entity : tr.Entity;
 
                 if (!attachEnt.IsWorld)
                 {
+                    playerCorpse.ClearAttachments();
+
                     return;
                 }
 
+                Particles rope = Particles.Create("particles/rope.vpcf");
+                rope.SetEntity(0, _heldBody.Entity, Vector3.Down * 6.5f); // Should be an attachment point
                 rope.SetPosition(1, tr.Body.Transform.PointToLocal(tr.EndPos));
+
                 playerCorpse.Ropes.Add(rope);
 
                 playerCorpse.Welds.Add(
