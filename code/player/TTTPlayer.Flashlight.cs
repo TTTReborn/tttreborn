@@ -137,11 +137,11 @@ namespace TTTReborn.Player
             }
         }
 
-		public override void PostCameraSetup(ref CameraSetup camSetup)
-		{
+        public override void PostCameraSetup(ref CameraSetup camSetup)
+        {
             base.PostCameraSetup(ref camSetup);
 
-			using (Prediction.Off())
+            using (Prediction.Off())
             {
                 if (IsFlashlightOn)
                 {
@@ -149,7 +149,7 @@ namespace TTTReborn.Player
                     _viewFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
                 }
             }
-		}
+        }
     }
 
     [Library("ttt_flashlight")]
