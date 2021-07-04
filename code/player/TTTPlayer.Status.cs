@@ -63,7 +63,7 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                attacker.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+                ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
 
             if (info.Weapon != null)
