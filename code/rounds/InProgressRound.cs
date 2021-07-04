@@ -162,7 +162,7 @@ namespace TTTReborn.Rounds
                 // send everyone their roles
                 using (Prediction.Off())
                 {
-                    player.ClientSetRole(To.Single(player), player.Role.Name);
+                    TTTPlayer.ClientSetRole(To.Single(player), player, player.Role.Name);
                 }
             }
         }

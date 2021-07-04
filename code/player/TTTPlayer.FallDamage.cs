@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         private const float FALLING_OBLIGINGNESS = 260f;
         private float _highestZ;

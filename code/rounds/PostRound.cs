@@ -53,7 +53,7 @@ namespace TTTReborn.Rounds
                 {
                     foreach (TTTPlayer player in Utils.GetPlayers())
                     {
-                        player.ClientSetRole(player.Role.Name);
+                        TTTPlayer.ClientSetRole(player, player.Role.Name);
 
                         // TODO move this to a method called after OnKilled() and use LifeState instead of Health
                         player.GetClientOwner()?.SetScore("alive", player.Health > 0);

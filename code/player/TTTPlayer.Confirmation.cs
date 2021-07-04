@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         public PlayerCorpse PlayerCorpse { get; set; }
 

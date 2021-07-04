@@ -42,6 +42,7 @@ namespace TTTReborn.Player
 
     public partial class TTTPlayer
     {
+        [Net]
         public float MaxHealth { get; set; } = 100f;
 
         public void SetHealth(float health)
@@ -63,7 +64,7 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                attacker.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+                ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
 
             if (info.Weapon != null)

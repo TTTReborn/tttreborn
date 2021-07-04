@@ -7,7 +7,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         public TTTRole Role
         {

@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         private readonly List<ModelEntity> _clothing = new();
 
