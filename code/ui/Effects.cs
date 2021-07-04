@@ -8,45 +8,40 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
+    using System.Linq;
+
     public class Effects : Panel
     {
-        private List<Effect> EffectList = new();
+        private readonly List<Effect> _effectList = new();
 
         public Effects()
         {
             StyleSheet.Load("/ui/Effects.scss");
+
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            PerksInventory perks = (player.Inventory as Inventory).Perks;
+            for (int i = 0; i < perks.Count(); i++)
+            {
+                AddEffect(perks.Get(i));
+            }
         }
 
         public void AddEffect(TTTPerk perk)
         {
-            Effect effect = new Effect(this);
-            effect.item = perk;
-
-            EffectList.Add(effect);
+            _effectList.Add(new Effect(this) {item = perk});
         }
 
         public void RemoveEffect(TTTPerk perk)
         {
-            foreach (Effect effect in EffectList)
+            foreach (Effect effect in _effectList.Where(effect => effect.item.Name == perk.Name))
             {
-                if (effect.item.Name == perk.Name)
-                {
-                    EffectList.Remove(effect);
-
-                    effect.Delete();
-
-                    return;
-                }
-            }
-        }
-
-        public void OnHotReloaded()
-        {
-            PerksInventory perks = ((Local.Pawn as TTTPlayer).Inventory as Inventory).Perks;
-
-            for (int i = 0; i < perks.Count(); i++)
-            {
-                AddEffect(perks.Get(i));
+                _effectList.Remove(effect);
+                effect.Delete();
+                return;
             }
         }
     }
