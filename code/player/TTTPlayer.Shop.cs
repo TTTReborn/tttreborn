@@ -12,7 +12,7 @@ namespace TTTReborn.Player
         RoleRestriction
     }
 
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         public BuyError CanBuy(IBuyableItem item)
         {

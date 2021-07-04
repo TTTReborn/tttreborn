@@ -4,7 +4,7 @@ using Sandbox;
 // TODO Add physics (avoid collision with walls or the playermodel)
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         private Flashlight _worldFlashlight;
         private Flashlight _viewFlashlight;
@@ -118,12 +118,6 @@ namespace TTTReborn.Player
             {
                 PlaySound("flashlight-off");
             }
-        }
-
-        [ClientRpc]
-        private void ClientShowFlashlightLocal(bool shouldShow)
-        {
-            ShowFlashlight(shouldShow);
         }
 
         private void TickPlayerFlashlight()
