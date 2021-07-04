@@ -8,7 +8,6 @@ namespace TTTReborn.Player
     {
         private Flashlight _worldFlashlight;
         private Flashlight _viewFlashlight;
-        private KeyframeEntity _flashlightHolder;
 
         private const float FLASHLIGHT_DISTANCE = 40f;
 
@@ -81,16 +80,11 @@ namespace TTTReborn.Player
                     }
                     else
                     {
-                        _flashlightHolder = new KeyframeEntity();
-                        _flashlightHolder.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
-                        _flashlightHolder.Rotation = EyeRot;
-                        //_flashlightHolder.SetParent(this); // this would offer the best lag-free animation, but doesn't support eye-pos synced rotation currently
-
                         _viewFlashlight = new Flashlight();
                         _viewFlashlight.EnableViewmodelRendering = false;
                         _viewFlashlight.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
                         _viewFlashlight.Rotation = EyeRot;
-                        _viewFlashlight.SetParent(_flashlightHolder);
+                        _viewFlashlight.SetParent(this);
                     }
                 }
                 else
@@ -132,14 +126,26 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                if (IsClient)
+                if (IsFlashlightOn)
                 {
-                    _flashlightHolder?.TryKeyframeTo(new Transform(EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE, EyeRot));
-                }
-                else if (IsFlashlightOn)
-                {
-                    _worldFlashlight.Rotation = EyeRot;
-                    _worldFlashlight.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
+                    if (IsClient)
+                    {
+                        if (Camera is FirstPersonCamera camera)
+                        {
+                            _viewFlashlight.Rotation = camera.Rot;
+                            _viewFlashlight.Position = camera.Pos + camera.Rot.Forward * FLASHLIGHT_DISTANCE;
+                        }
+                        else
+                        {
+                            _viewFlashlight.Rotation = Input.Rotation;
+                            _viewFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
+                        }
+
+                        return;
+                    }
+
+                    _worldFlashlight.Rotation = Input.Rotation;
+                    _worldFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
                 }
             }
         }
