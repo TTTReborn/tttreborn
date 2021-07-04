@@ -2,6 +2,8 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.Player
 {
     public enum HitboxIndex
@@ -64,12 +66,12 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+                RPCs.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
             }
 
             if (info.Weapon != null)
             {
-                ClientTookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
+                RPCs.ClientTookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
             }
 
             // Play pain sounds

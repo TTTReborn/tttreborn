@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Teams;
 
@@ -24,8 +25,8 @@ namespace TTTReborn.Roles
             {
                 foreach (TTTPlayer otherPlayer in player.Team.Members)
                 {
-                    TTTPlayer.ClientSetRole(To.Single(otherPlayer), player, player.Role.Name);
-                    TTTPlayer.ClientSetRole(To.Single(player), otherPlayer, otherPlayer.Role.Name);
+                    RPCs.ClientSetRole(To.Single(otherPlayer), player, player.Role.Name);
+                    RPCs.ClientSetRole(To.Single(player), otherPlayer, otherPlayer.Role.Name);
                 }
 
                 foreach (TTTPlayer otherPlayer in Utils.GetPlayers())

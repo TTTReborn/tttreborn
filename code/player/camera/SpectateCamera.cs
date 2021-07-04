@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 namespace TTTReborn.Player.Camera
 {
     public partial class SpectateCamera : Sandbox.Camera

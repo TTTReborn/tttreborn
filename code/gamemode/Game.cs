@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.UI;

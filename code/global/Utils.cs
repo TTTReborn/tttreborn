@@ -6,7 +6,7 @@ using Sandbox;
 
 using TTTReborn.Player;
 
-namespace TTTReborn
+namespace TTTReborn.Globals
 {
     public static partial class Utils
     {
