@@ -65,6 +65,8 @@ namespace TTTReborn.Player
             SetModel("models/citizen/citizen.vmdl");
 
             Controller = new WalkController();
+            (Controller as WalkController).GroundFriction = 8f;
+
             Animator = new StandardPlayerAnimator();
             Camera = new FirstPersonCamera();
 
