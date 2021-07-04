@@ -4,6 +4,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
@@ -162,7 +163,7 @@ namespace TTTReborn.Rounds
                 // send everyone their roles
                 using (Prediction.Off())
                 {
-                    TTTPlayer.ClientSetRole(To.Single(player), player, player.Role.Name);
+                    RPCs.ClientSetRole(To.Single(player), player, player.Role.Name);
                 }
             }
         }
@@ -170,7 +171,7 @@ namespace TTTReborn.Rounds
         private static void LoadPostRound(TTTTeam winningTeam)
         {
             Gamemode.Game.Instance.ForceRoundChange(new PostRound());
-            TTTPlayer.ClientOpenAndSetPostRoundMenu(
+            RPCs.ClientOpenAndSetPostRoundMenu(
                 winningTeam.Name,
                 winningTeam.Color
             );
