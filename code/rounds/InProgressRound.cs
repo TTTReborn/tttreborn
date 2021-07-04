@@ -11,12 +11,10 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
-    using Gamemode;
-
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
-        public override int RoundDuration => TTTReborn.Gamemode.Game.TTTRoundTime;
+        public override int RoundDuration => Gamemode.Game.TTTRoundTime;
 
         private readonly List<TTTPlayer> _spectators = new();
 
@@ -74,15 +72,17 @@ namespace TTTReborn.Rounds
                         AddPlayer(player);
                     }
 
+                    Inventory inventory = player.Inventory as Inventory;
+
                     // TODO: Remove once we can spawn in carriable entities into the map, for now just give the guns to people.
-                    player.Inventory.Add(new MagnetoStick(), true);
+                    inventory.Add(new MagnetoStick(), true);
 
-                    player.Inventory.Add(new Shotgun(), false);
-                    player.GiveAmmo(AmmoType.Buckshot, 16);
+                    inventory.Add(new Shotgun(), false);
+                    inventory.Ammo.Give(AmmoType.Buckshot, 16);
 
-                    player.Inventory.Add(new SMG(), false);
-                    player.Inventory.Add(new Pistol(), false);
-                    player.GiveAmmo(AmmoType.Pistol, 120);
+                    inventory.Add(new SMG(), false);
+                    inventory.Add(new Pistol(), false);
+                    inventory.Ammo.Give(AmmoType.Pistol, 120);
                 }
 
                 AssignRoles();
@@ -178,7 +178,7 @@ namespace TTTReborn.Rounds
 
         private bool CheckMinimumPlayers()
         {
-            return Client.All.Count >= TTTReborn.Gamemode.Game.TTTMinPlayers;
+            return Client.All.Count >= Gamemode.Game.TTTMinPlayers;
         }
 
         public override void OnSecond()
@@ -187,7 +187,7 @@ namespace TTTReborn.Rounds
             {
                 base.OnSecond();
 
-                if (!Game.HasMinimumPlayers())
+                if (!Utils.HasMinimumPlayers())
                 {
                     if (IsRoundOver() == null)
                     {

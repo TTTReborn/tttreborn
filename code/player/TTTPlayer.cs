@@ -47,7 +47,7 @@ namespace TTTReborn.Player
             // sync roles
             using (Prediction.Off())
             {
-                foreach (TTTPlayer player in Gamemode.Game.GetPlayers())
+                foreach (TTTPlayer player in Utils.GetPlayers())
                 {
                     if (isPostRound || player.IsConfirmed)
                     {

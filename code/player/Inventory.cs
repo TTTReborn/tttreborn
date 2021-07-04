@@ -7,18 +7,26 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
-    partial class Inventory : BaseInventory
+    public partial class Inventory : BaseInventory
     {
+        public readonly PerksInventory Perks;
+
+        public readonly AmmoInventory Ammo;
+
         public Inventory(TTTPlayer player) : base(player)
         {
-
+            Ammo = new AmmoInventory(this);
+            Perks = new PerksInventory(this);
         }
 
         public override void DeleteContents()
         {
             base.DeleteContents();
 
-            (Owner as TTTPlayer).Ammo.Clear();
+            TTTPlayer player = Owner as TTTPlayer;
+
+            Perks.Clear();
+            Ammo.Clear();
         }
 
         public override bool Add(Entity entity, bool makeActive = false)
@@ -30,8 +38,10 @@ namespace TTTReborn.Player
                 return false;
             }
 
-            if (entity is ICarriableItem)
+            if (entity is ICarriableItem carriable)
             {
+                carriable.Equip(player);
+
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
@@ -40,6 +50,25 @@ namespace TTTReborn.Player
             List.Sort((Entity carr1, Entity carr2) => (carr1 as ICarriableItem).HoldType.CompareTo((carr2 as ICarriableItem).HoldType));
 
             return added;
+        }
+
+        public bool Add(TTTPerk perk)
+        {
+            return Perks.Give(perk);
+        }
+
+        public bool Add(IItem item)
+        {
+            if (item is Entity ent)
+            {
+                return Add(ent);
+            }
+            else if (item is TTTPerk perk)
+            {
+                return Add(perk);
+            }
+
+            return false;
         }
 
         public bool IsCarryingType(Type t)

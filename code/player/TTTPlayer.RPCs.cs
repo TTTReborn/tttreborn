@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 using TTTReborn.UI;
@@ -60,7 +61,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            player.SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
+            player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TTTTeam.GetTeam(teamName));
         }
 
         [ClientRpc]
@@ -71,7 +72,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            deadPlayer.SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
+            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TTTTeam.GetTeam(teamName));
 
             deadPlayer.IsConfirmed = true;
             deadPlayer.CorpseConfirmer = confirmPlayer;
@@ -154,6 +155,50 @@ namespace TTTReborn.Player
         public static void ClientTookDamage(Vector3 position)
         {
 
+        }
+
+        [ClientRpc]
+        public void ClientSetAmmo(AmmoType ammoType, int amount)
+        {
+            (Inventory as Inventory).Ammo.Set(ammoType, amount);
+        }
+
+        [ClientRpc]
+        public void ClientClearAmmo()
+        {
+            (Inventory as Inventory).Ammo.Clear();
+        }
+
+        [ClientRpc]
+        public void ClientAddPerk(string perkName)
+        {
+            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByName<TTTPerk>(perkName));
+
+            if (perk == null)
+            {
+                return;
+            }
+
+            (Inventory as Inventory).Perks.Give(perk);
+        }
+
+        [ClientRpc]
+        public void ClientRemovePerk(string perkName)
+        {
+            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByName<TTTPerk>(perkName));
+
+            if (perk == null)
+            {
+                return;
+            }
+
+            (Inventory as Inventory).Perks.Take(perk);
+        }
+
+        [ClientRpc]
+        public void ClientClearPerks()
+        {
+            (Inventory as Inventory).Perks.Clear();
         }
     }
 }

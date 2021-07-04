@@ -55,7 +55,7 @@ namespace TTTReborn.UI
                 // Do not update if we already rebuilding the InventorySlots
                 if (newCarriables.Count == 0 && carriable.HoldType != HoldType.Melee && carriable is TTTWeapon weapon)
                 {
-                    inventorySlot.UpdateAmmo($"{weapon.AmmoClip} + {player.AmmoCount(weapon.AmmoType)}");
+                    inventorySlot.UpdateAmmo($"{weapon.AmmoClip} + {(player.Inventory as Inventory).Ammo.Count(weapon.AmmoType)}");
                 }
             }
 

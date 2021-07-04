@@ -84,7 +84,7 @@ namespace TTTReborn.Items
 
             if (Owner is TTTPlayer player)
             {
-                int ammo = player.TakeAmmo(AmmoType, 1);
+                int ammo = (player.Inventory as Inventory).Ammo.Take(AmmoType, 1);
 
                 if (ammo == 0)
                 {

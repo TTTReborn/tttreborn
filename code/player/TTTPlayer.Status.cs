@@ -83,7 +83,7 @@ namespace TTTReborn.Player
             }
 
             // Register player damage with the Karma system
-            TTTReborn.Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
+            Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
 
             _lastDamageInfo = info;
 

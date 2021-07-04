@@ -28,7 +28,7 @@ namespace TTTReborn.Roles
                     TTTPlayer.ClientSetRole(To.Single(player), otherPlayer, otherPlayer.Role.Name);
                 }
 
-                foreach (TTTPlayer otherPlayer in Gamemode.Game.GetPlayers())
+                foreach (TTTPlayer otherPlayer in Utils.GetPlayers())
                 {
                     if (otherPlayer.IsMissingInAction)
                     {

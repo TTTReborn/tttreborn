@@ -36,7 +36,7 @@ namespace TTTReborn.Gamemode
         {
             Assert.NotNull(round);
 
-            if (Game.HasMinimumPlayers())
+            if (Utils.HasMinimumPlayers())
             {
                 ForceRoundChange(round);
             }
