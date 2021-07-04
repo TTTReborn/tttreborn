@@ -29,9 +29,11 @@ namespace TTTReborn.UI
         {
             foreach (Effect effect in EffectList)
             {
-                if (effect.item == perk)
+                if (effect.item.Name == perk.Name)
                 {
                     EffectList.Remove(effect);
+
+                    effect.Delete();
 
                     return;
                 }
