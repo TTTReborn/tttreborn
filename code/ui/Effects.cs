@@ -8,8 +8,6 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    using System.Linq;
-
     public class Effects : Panel
     {
         private readonly List<Effect> _effectList = new();
@@ -24,6 +22,7 @@ namespace TTTReborn.UI
             }
 
             PerksInventory perks = (player.Inventory as Inventory).Perks;
+
             for (int i = 0; i < perks.Count(); i++)
             {
                 AddEffect(perks.Get(i));
@@ -37,11 +36,15 @@ namespace TTTReborn.UI
 
         public void RemoveEffect(TTTPerk perk)
         {
-            foreach (Effect effect in _effectList.Where(effect => effect.Item.Name == perk.Name))
+            foreach (Effect effect in _effectList)
             {
-                _effectList.Remove(effect);
-                effect.Delete();
-                return;
+                if (effect.Item.Name == perk.Name)
+                {
+                    _effectList.Remove(effect);
+                    effect.Delete();
+
+                    return;
+                }
             }
         }
     }
