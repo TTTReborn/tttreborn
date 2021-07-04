@@ -7,7 +7,8 @@ namespace TTTReborn.UI
 {
     public class Effect : Panel
     {
-        public IItem Item {
+        public IItem Item
+        {
             get
             {
                 return _item;
