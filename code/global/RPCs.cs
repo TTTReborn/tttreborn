@@ -4,11 +4,10 @@ using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 using TTTReborn.UI;
+using TTTReborn.Items;
 
 namespace TTTReborn.Globals
 {
-    using Items;
-
     public partial class RPCs
     {
         [ClientRpc]

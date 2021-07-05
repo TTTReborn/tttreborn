@@ -62,16 +62,14 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (_inventorySlots.TryGetValue(carriable.Name, out InventorySlot slot))
+            if (!_inventorySlots.ContainsKey(carriable.Name))
             {
-                Log.Error($"{player.GetClientOwner().Name} attempted to pickup carriable already registered in _inventorySlots.");
-            }
-            else
-            {
-                _inventorySlots.Add(carriable.Name, new InventorySlot(this, carriable));
+                return;
             }
 
-            SortChildren<InventorySlot>( ( x ) => (int) x.Carriable.HoldType );
+            _inventorySlots.Add(carriable.Name, new InventorySlot(this, carriable));
+
+            SortChildren<InventorySlot>((inventorySlot) => (int) inventorySlot.Carriable.HoldType);
         }
 
         [Event("tttreborn.player.carriableitem.drop")]
@@ -82,15 +80,13 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (_inventorySlots.TryGetValue(carriable.Name, out InventorySlot slot))
+            if (!_inventorySlots.TryGetValue(carriable.Name, out InventorySlot slot))
             {
-                slot.Delete();
-                _inventorySlots.Remove(carriable.Name);
+                return;
             }
-            else
-            {
-                Log.Error($"{player.GetClientOwner().Name} attempted to drop weapon that wasn't registered in _inventorySlots.");
-            }
+
+            slot.Delete();
+            _inventorySlots.Remove(carriable.Name);
         }
 
         /// <summary>
