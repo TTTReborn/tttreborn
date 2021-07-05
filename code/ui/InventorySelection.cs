@@ -43,12 +43,15 @@ namespace TTTReborn.UI
                 return;
             }
 
+            ICarriableItem activeItem = player.ActiveChild as ICarriableItem;
             foreach ((_, InventorySlot value) in _inventorySlots)
             {
                 if (value.Carriable is TTTWeapon weapon && weapon.HoldType != HoldType.Melee)
                 {
                     value.UpdateAmmo(FormatAmmo(weapon, player.Inventory as Inventory));
                 }
+
+                value.SetClass("active", value.Carriable.Name == activeItem?.Name);
             }
 
             SetClass("hide", _inventorySlots.Count == 0);
@@ -62,7 +65,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (!_inventorySlots.ContainsKey(carriable.Name))
+            if (_inventorySlots.ContainsKey(carriable.Name))
             {
                 return;
             }
@@ -97,6 +100,8 @@ namespace TTTReborn.UI
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
             Inventory inventory = Local.Pawn.Inventory as Inventory;
+            // TODO: See if we can remove this sort operation, we already do one at the end of ItemPickup.
+            inventory.List.Sort((Entity carr1, Entity carr2) => (carr1 as ICarriableItem).HoldType.CompareTo((carr2 as ICarriableItem).HoldType));
 
             if (inventory.Count() == 0)
             {
