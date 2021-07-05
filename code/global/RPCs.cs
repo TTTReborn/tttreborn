@@ -7,6 +7,8 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Globals
 {
+    using Items;
+
     public partial class RPCs
     {
         [ClientRpc]
@@ -37,6 +39,28 @@ namespace TTTReborn.Globals
             player.SetRole(new NoneRole());
 
             Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(player.GetClientOwner());
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerCarriableItemPickup(TTTPlayer player, Entity carriable)
+        {
+            if (!player.IsValid())
+            {
+                return;
+            }
+
+            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerCarriableItemDrop(TTTPlayer player, Entity carriable)
+        {
+            if (!player.IsValid())
+            {
+                return;
+            }
+
+            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
         }
 
         /// <summary>

@@ -42,6 +42,8 @@ namespace TTTReborn.Player
             {
                 carriable.Equip(player);
 
+                TTTReborn.Globals.RPCs.ClientOnPlayerCarriableItemPickup(To.Single(player), player, entity);
+
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
@@ -134,14 +136,20 @@ namespace TTTReborn.Player
             return 0;
         }
 
-        public override bool Drop(Entity ent)
+        public override bool Drop(Entity entity)
         {
-            if (!Host.IsServer || !Contains(ent) || ent is ICarriableItem item && !item.CanDrop())
+            if (!Host.IsServer || !Contains(entity) || entity is ICarriableItem item && !item.CanDrop())
             {
                 return false;
             }
 
-            return base.Drop(ent);
+            using (Prediction.Off())
+            {
+                TTTPlayer player = Owner as TTTPlayer;
+                TTTReborn.Globals.RPCs.ClientOnPlayerCarriableItemDrop(To.Single(player), player, entity);
+            }
+
+            return base.Drop(entity);
         }
     }
 }

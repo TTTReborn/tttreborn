@@ -7,23 +7,33 @@ using Sandbox.UI.Construct;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
-// TODO Fix animation on dropping a higher slot carriable entity (instead of deleting and recreating, move and delete InventorySlots in DOM)
-
 namespace TTTReborn.UI
 {
     public class InventorySelection : Panel
     {
-        private readonly Dictionary<string, InventorySlot> _inventorySlots = new();
-
-        private ICarriableItem _oldActiveInventory;
+        private readonly Dictionary<string, InventorySlot> _inventorySlots;
 
         public InventorySelection()
         {
+            _inventorySlots = new Dictionary<string, InventorySlot>();
             StyleSheet.Load("/ui/InventorySelection.scss");
+
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            Inventory inventory = player.Inventory as Inventory;
+
+            foreach (Entity entity in inventory.List)
+            {
+                if (entity is ICarriableItem carriableItem)
+                {
+                    OnCarriableItemPickup(carriableItem);
+                }
+            }
         }
 
-        // TODO: This method could be made to be event based. Whenever a user pickups a carriable entity, and whenever a user fires.
-        // Consider checking out DM98 or Hidden inventory HUD.
         public override void Tick()
         {
             base.Tick();
@@ -33,69 +43,54 @@ namespace TTTReborn.UI
                 return;
             }
 
-            // update inventory slots, check for removed inventory etc.
-            Inventory inventory = player.Inventory as Inventory;
-            int inventoryCount = inventory.Count();
-            List<ICarriableItem> newCarriables = new();
-            List<InventorySlot> tmpSlots = new();
-
-            for (int i = 0; i < inventoryCount; i++)
+            foreach ((_, InventorySlot value) in _inventorySlots)
             {
-                ICarriableItem carriable = inventory.GetSlot(i) as ICarriableItem;
-
-                if (_inventorySlots.TryGetValue(carriable.Name, out InventorySlot inventorySlot))
+                if (value.Carriable is TTTWeapon weapon && weapon.HoldType != HoldType.Melee)
                 {
-                    tmpSlots.Add(inventorySlot);
+                    value.UpdateAmmo(FormatAmmo(weapon, player.Inventory as Inventory));
                 }
-                else
-                {
-                    newCarriables.Add(carriable);
-                }
-
-                // Do not update if we already rebuilding the InventorySlots
-                if (newCarriables.Count == 0 && carriable.HoldType != HoldType.Melee && carriable is TTTWeapon weapon)
-                {
-                    inventorySlot.UpdateAmmo($"{weapon.AmmoClip} + {(player.Inventory as Inventory).Ammo.Count(weapon.AmmoType)}");
-                }
-            }
-
-            // remove InventorySlots and rebuild (to keep the right order)
-            if (newCarriables.Count != 0 || tmpSlots.Count != _inventorySlots.Count)
-            {
-                foreach (InventorySlot inventorySlot in _inventorySlots.Values)
-                {
-                    inventorySlot.Delete();
-                }
-
-                _inventorySlots.Clear();
-
-                inventory.List.Sort((Entity carr1, Entity carr2) => (carr1 as ICarriableItem).HoldType.CompareTo((carr2 as ICarriableItem).HoldType));
-
-                // rebuild InventorySlots in the right order
-                foreach (ICarriableItem carriable in inventory.List)
-                {
-                    // add in order
-                    _inventorySlots.Add(carriable.Name, new InventorySlot(this, carriable));
-                }
-
-                // update for dropped active carriable entity maybe
-                _oldActiveInventory = null;
-            }
-
-            // update current selection
-            ICarriableItem activeInventory = player.ActiveChild as ICarriableItem;
-
-            if (_oldActiveInventory != activeInventory && activeInventory != null)
-            {
-                foreach (InventorySlot inventorySlot in _inventorySlots.Values)
-                {
-                    inventorySlot.SetClass("active", inventorySlot.CarriableName == activeInventory.Name);
-                }
-
-                _oldActiveInventory = activeInventory;
             }
 
             SetClass("hide", _inventorySlots.Count == 0);
+        }
+
+        [Event("tttreborn.player.carriableitem.pickup")]
+        private void OnCarriableItemPickup(ICarriableItem carriable)
+        {
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            if (_inventorySlots.TryGetValue(carriable.Name, out InventorySlot slot))
+            {
+                Log.Error($"{player.GetClientOwner().Name} attempted to pickup carriable already registered in _inventorySlots.");
+            }
+            else
+            {
+                _inventorySlots.Add(carriable.Name, new InventorySlot(this, carriable));
+            }
+
+            SortChildren<InventorySlot>( ( x ) => (int) x.Carriable.HoldType );
+        }
+
+        [Event("tttreborn.player.carriableitem.drop")]
+        private void OnCarriableItemDrop(ICarriableItem carriable)
+        {
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            if (_inventorySlots.TryGetValue(carriable.Name, out InventorySlot slot))
+            {
+                slot.Delete();
+                _inventorySlots.Remove(carriable.Name);
+            }
+            else
+            {
+                Log.Error($"{player.GetClientOwner().Name} attempted to drop weapon that wasn't registered in _inventorySlots.");
+            }
         }
 
         /// <summary>
@@ -153,7 +148,7 @@ namespace TTTReborn.UI
 
         private class InventorySlot : Panel
         {
-            public readonly string CarriableName;
+            public ICarriableItem Carriable { get; private set; }
             private readonly Label _ammoLabel;
             private Label _slotLabel;
             private Label _carriableLabel;
@@ -161,14 +156,14 @@ namespace TTTReborn.UI
             public InventorySlot(Panel parent, ICarriableItem carriable)
             {
                 Parent = parent;
-                CarriableName = carriable.Name;
+                Carriable = carriable;
 
                 _slotLabel = Add.Label(((int) carriable.HoldType).ToString(), "slotlabel");
                 _carriableLabel = Add.Label(carriable.Name, "carriablelabel");
 
                 if (carriable.HoldType != HoldType.Melee && carriable is TTTWeapon weapon)
                 {
-                    _ammoLabel = Add.Label($"{weapon.AmmoClip}/{weapon.ClipSize}", "ammolabel");
+                    _ammoLabel = Add.Label(FormatAmmo(weapon, (Local.Pawn as TTTPlayer).Inventory as Inventory), "ammolabel");
                 }
             }
 
@@ -176,6 +171,11 @@ namespace TTTReborn.UI
             {
                 _ammoLabel.Text = ammoText;
             }
+        }
+
+        private static string FormatAmmo(TTTWeapon weapon, Inventory inventory)
+        {
+            return $"{weapon.AmmoClip} + {(inventory.Ammo.Count(weapon.AmmoType))}";
         }
     }
 }
