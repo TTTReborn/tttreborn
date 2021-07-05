@@ -1,12 +1,16 @@
-using TTTReborn.Player;
-using TTTReborn.Roles;
-using TTTReborn.Teams;
-using TTTReborn.UI;
-using TTTReborn.Items;
 using Sandbox;
+
+using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Globals
 {
+    using Items;
+
+    using Roles;
+
+    using Teams;
+
     public partial class RPCs
     {
         [ClientRpc]
