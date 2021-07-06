@@ -36,8 +36,6 @@ namespace TTTReborn.Globals
             player.CorpseConfirmer = null;
 
             player.SetRole(new NoneRole());
-
-            Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(player.GetClientOwner());
         }
 
         [ClientRpc]
