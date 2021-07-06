@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,8 +11,6 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    using System;
-
     public class InventorySelection : Panel
     {
         public InventorySelection()
@@ -77,7 +76,9 @@ namespace TTTReborn.UI
             {
                 InventorySlot s1 = p1 as InventorySlot;
                 InventorySlot s2 = p2 as InventorySlot;
-                return TTTReborn.Player.Inventory.SortCarriables(s1.Carriable, s2.Carriable);
+
+                int result = s1.Carriable.HoldType.CompareTo(s2.Carriable.HoldType);
+                return result != 0 ? result : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
             });
         }
 

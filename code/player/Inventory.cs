@@ -146,16 +146,5 @@ namespace TTTReborn.Player
 
             return base.Drop(entity);
         }
-
-        public static int SortCarriables(ICarriableItem item1, ICarriableItem item2)
-        {
-            if (item1 == null || item2 == null)
-            {
-                return 0;
-            }
-            // Sort by hold type, then by name.
-            int result = item1.HoldType.CompareTo(item2.HoldType);
-            return result != 0 ? result : String.Compare(item1.Name, item2.Name, StringComparison.Ordinal);
-        }
     }
 }
