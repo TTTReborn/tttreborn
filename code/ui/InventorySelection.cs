@@ -160,7 +160,7 @@ namespace TTTReborn.UI
             return NormalizeSlotIndex(index, count - 1);
         }
 
-        public int NormalizeSlotIndex(int index, int maxIndex)
+        private int NormalizeSlotIndex(int index, int maxIndex)
         {
             return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
         }
