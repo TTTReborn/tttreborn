@@ -21,6 +21,14 @@ namespace TTTReborn.Player
 
         public override void DeleteContents()
         {
+            foreach (Entity entity in List)
+            {
+                if (entity is IItem item)
+                {
+                    item.Remove();
+                }
+            }
+
             base.DeleteContents();
 
             TTTPlayer player = Owner as TTTPlayer;
@@ -57,11 +65,11 @@ namespace TTTReborn.Player
             return Perks.Give(perk);
         }
 
-        public bool Add(IItem item)
+        public bool Add(IItem item, bool makeActive = false)
         {
             if (item is Entity ent)
             {
-                return Add(ent);
+                return Add(ent, makeActive);
             }
             else if (item is TTTPerk perk)
             {
@@ -69,6 +77,24 @@ namespace TTTReborn.Player
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Tries to add an `TTTReborn.Items.IItem` to the inventory. If it fails, the given item is deleted
+        /// </summary>
+        /// <param name="item">`TTTReborn.Items.IItem` that will be added to the inventory or get removed on fail</param>
+        /// <param name="makeActive"></param>
+        /// <returns></returns>
+        public bool TryAdd(IItem item, bool makeActive = false)
+        {
+            if (!Add(item, makeActive))
+            {
+                item.Delete();
+
+                return false;
+            }
+
+            return true;
         }
 
         public bool IsCarryingType(Type t)

@@ -1,3 +1,5 @@
+using Sandbox;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -6,12 +8,16 @@ namespace TTTReborn.Items
     {
         string Name { get; }
 
+        Entity Owner { get; }
+
         void Equip(TTTPlayer player);
 
-        void OnEquip(TTTPlayer player);
+        void OnEquip();
 
-        void Remove(TTTPlayer player);
+        void Remove();
 
-        void OnRemove(TTTPlayer player);
+        void OnRemove();
+
+        void Delete();
     }
 }

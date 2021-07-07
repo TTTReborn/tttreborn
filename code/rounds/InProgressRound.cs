@@ -76,14 +76,22 @@ namespace TTTReborn.Rounds
                     Inventory inventory = player.Inventory as Inventory;
 
                     // TODO: Remove once we can spawn in carriable entities into the map, for now just give the guns to people.
-                    inventory.Add(new MagnetoStick(), true);
+                    inventory.TryAdd(new MagnetoStick(), true);
 
-                    inventory.Add(new Shotgun(), false);
-                    inventory.Ammo.Give(AmmoType.Buckshot, 16);
+                    if (inventory.TryAdd(new Shotgun(), false))
+                    {
+                        inventory.Ammo.Give(AmmoType.Buckshot, 8);
+                    }
 
-                    inventory.Add(new SMG(), false);
-                    inventory.Add(new Pistol(), false);
-                    inventory.Ammo.Give(AmmoType.Pistol, 120);
+                    if (inventory.TryAdd(new SMG(), false))
+                    {
+                        inventory.Ammo.Give(AmmoType.Buckshot, 8);
+                    }
+
+                    if (inventory.TryAdd(new Pistol(), false))
+                    {
+                        inventory.Ammo.Give(AmmoType.Pistol, 120);
+                    }
                 }
 
                 AssignRoles();
