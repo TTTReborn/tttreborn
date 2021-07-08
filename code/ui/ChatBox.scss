@@ -57,11 +57,9 @@ chatentry {
     color: white;
     transition: all 0.1s ease-out;
     opacity: 1;
-    // max-height: 200px;
     flex-shrink: 0;
     flex-grow: 0;
     padding: 6px 12px ;
-    // min-height: 47px;
     max-width: 100%;
     transform: scale(1);
     display: flex;
@@ -88,11 +86,7 @@ chatentry {
         image {
             width: 25px;
             height: 25px;
-            // min-height: 32px;
             border-radius: 100px;
-            // position: absolute;
-            // left: 6px;
-            // top: 6px;
             margin-right: 10px;
         }
 
@@ -112,6 +106,9 @@ chatentry {
         .head {
             display: flex;
         }
+        .message {
+            margin-top: 2px;
+        }
     }
 
     .message {
@@ -119,6 +116,17 @@ chatentry {
         font-size: 14px;
         //	background-color: red;
         flex-grow: 1;
+    }
+
+    &.noname {
+        flex-direction: row;
+        padding: 6px 12px;
+        .head {
+            margin-bottom: 0;
+        }
+        .message {
+
+        }
     }
 
     &.noname .name {

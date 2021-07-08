@@ -55,7 +55,7 @@ namespace TTTReborn.UI
         public override void Tick()
         {
             base.Tick();
-            SetClass("dead",Local.Pawn.LifeState == LifeState.Dead);
+            SetClass("dead", Local.Pawn.LifeState == LifeState.Dead);
         }
         private void Open()
         {
@@ -101,7 +101,7 @@ namespace TTTReborn.UI
             chatEntry.SetClass("noname", string.IsNullOrEmpty(name));
             chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
 
-            bool showHead = Messages.Count == 0 || Messages[Messages.Count - 1].Name != name;
+            bool showHead = Messages.Count == 0 || name == null || Messages[Messages.Count - 1].Name != name;
 
             if (showHead)
             {
@@ -134,6 +134,8 @@ namespace TTTReborn.UI
         [ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
         public static void AddInformation(string message, string avatar = null, LifeState lifeState = LifeState.Alive)
         {
+            Log.Info("kahba");
+
             Instance?.AddEntry(null, message, avatar, lifeState);
         }
 

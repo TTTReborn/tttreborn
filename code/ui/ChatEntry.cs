@@ -35,10 +35,7 @@ namespace TTTReborn.UI
             if (_timeSinceBorn > 10)
             {
                 Delete();
-                Log.Info(ChatBox.Instance.Messages.Count);
-                Log.Info(Index);
                 ChatBox.Instance.Messages.RemoveAt(0);
-
             }
         }
     }
