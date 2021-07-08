@@ -18,7 +18,7 @@ namespace TTTReborn.Player
 
         public bool Give(TTTPerk perk)
         {
-            if (Has(perk))
+            if (Has(perk.Name))
             {
                 return false;
             }
@@ -39,7 +39,7 @@ namespace TTTReborn.Player
 
         public bool Take(TTTPerk perk)
         {
-            if (!Has(perk))
+            if (!Has(perk.Name))
             {
                 return false;
             }
@@ -59,17 +59,22 @@ namespace TTTReborn.Player
             return true;
         }
 
-        public bool Has(TTTPerk perk)
+        public TTTPerk Find(string perkName)
         {
             foreach (TTTPerk loopPerk in PerkList)
             {
-                if (perk.Name == loopPerk.Name)
+                if (perkName == loopPerk.Name)
                 {
-                    return true;
+                    return loopPerk;
                 }
             }
 
-            return false;
+            return null;
+        }
+
+        public bool Has(string perkName)
+        {
+            return Find(perkName) != null;
         }
 
         public void Clear()
