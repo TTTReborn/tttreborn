@@ -12,6 +12,12 @@ namespace TTTReborn.Items
     {
         private static List<RadarPoint> _cachedPoints = new();
 
+        private static TimeSince _lastUpdate;
+
+        private const float RADAR_UPDATE_DELAY = 20f;
+
+        public int Price => 0;
+
         public Radar() : base()
         {
 
@@ -21,31 +27,53 @@ namespace TTTReborn.Items
         {
             base.OnEquip();
 
-            UpdatePositions();
+            if (Host.IsServer)
+            {
+                UpdatePositions();
+            }
+        }
+
+        public override void OnRemove()
+        {
+            base.OnRemove();
+
+            ClearRadarPoints();
         }
 
         private void UpdatePositions()
         {
-            if (Host.IsClient)
-            {
-                return;
-            }
-
             List<Vector3> positions = new();
 
             foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
             {
-                positions.Add(player.Position);
+                if (player != Owner)
+                {
+                    positions.Add(player.Position);
+                }
             }
 
-            ClientSendRadarPositions(positions.ToArray());
+            Log.Error($"Send data to {Owner.GetClientOwner().Name}, Server?: {Host.IsServer}");
+
+            Radar.ClientSendRadarPositions(To.Single(Owner.GetClientOwner()), positions.ToArray());
         }
 
-        public int Price => 0;
+        public override void Simulate(Client owner)
+        {
+            base.Simulate(owner);
+
+            if (Host.IsServer && _lastUpdate >= RADAR_UPDATE_DELAY)
+            {
+                _lastUpdate = 0f;
+
+                UpdatePositions();
+            }
+        }
 
         [ClientRpc]
         public static void ClientSendRadarPositions(Vector3[] positions)
         {
+            Log.Error("Received data");
+
             if (Local.Pawn is not TTTPlayer player)
             {
                 return;

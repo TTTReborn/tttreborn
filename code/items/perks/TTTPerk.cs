@@ -64,5 +64,10 @@ namespace TTTReborn.Items
         {
             return !(player.Inventory as Inventory).Perks.Has(this.Name);
         }
+
+        public virtual void Simulate(Client owner)
+        {
+
+        }
     }
 }

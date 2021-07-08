@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
 
@@ -140,6 +141,7 @@ namespace TTTReborn.Player
                 return;
             }
 
+            TickItemSimulate();
             TickPlayerUse();
             TickPlayerDropCarriable();
 
@@ -187,6 +189,23 @@ namespace TTTReborn.Player
 
                     _timeSinceDropped = 0;
                 }
+            }
+        }
+
+        private void TickItemSimulate()
+        {
+            Client client = GetClientOwner();
+
+            if (client == null)
+            {
+                return;
+            }
+
+            PerksInventory perks = (Inventory as Inventory).Perks;
+
+            for (int i = 0; i < perks.Count(); i++)
+            {
+                perks.Get(i).Simulate(client);
             }
         }
 

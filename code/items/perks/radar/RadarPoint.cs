@@ -22,8 +22,6 @@ namespace TTTReborn.UI
             Hud.Current.RootPanel.AddChild(this);
 
             DistanceLabel = Add.Label((Local.Pawn as TTTPlayer)?.Position.Distance(Position).ToString(), "distance");
-
-            Log.Warning($"{Position.ToString()}");
         }
 
         public override void Tick()
