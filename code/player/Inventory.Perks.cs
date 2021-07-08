@@ -48,7 +48,8 @@ namespace TTTReborn.Player
 
             TTTPlayer player = Inventory.Owner as TTTPlayer;
 
-            perk.Remove(player);
+            perk.Remove();
+            perk.Delete();
 
             if (Host.IsServer)
             {
@@ -77,7 +78,8 @@ namespace TTTReborn.Player
 
             foreach (TTTPerk perk in PerkList)
             {
-                perk.Remove(player);
+                perk.Remove();
+                perk.Delete();
             }
 
             PerkList.Clear();
