@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -10,11 +11,11 @@ namespace TTTReborn.Items
     [Library("ttt_radar")]
     public partial class Radar : TTTPerk, IBuyableItem
     {
-        private static List<RadarPoint> _cachedPoints = new();
-
-        private static TimeSince _lastUpdate;
-
         private const float RADAR_UPDATE_DELAY = 20f;
+
+        private List<RadarPoint> _cachedPoints = new();
+
+        private TimeSince _lastUpdate;
 
         public int Price => 0;
 
@@ -23,21 +24,14 @@ namespace TTTReborn.Items
 
         }
 
-        public override void OnEquip()
-        {
-            base.OnEquip();
-
-            if (Host.IsServer)
-            {
-                UpdatePositions();
-            }
-        }
-
         public override void OnRemove()
         {
             base.OnRemove();
 
-            ClearRadarPoints();
+            if (Host.IsClient)
+            {
+                ClearRadarPoints();
+            }
         }
 
         private void UpdatePositions()
@@ -52,9 +46,7 @@ namespace TTTReborn.Items
                 }
             }
 
-            Log.Error($"Send data to {Owner.GetClientOwner().Name}, Server?: {Host.IsServer}");
-
-            Radar.ClientSendRadarPositions(To.Single(Owner.GetClientOwner()), positions.ToArray());
+            ClientSendRadarPositions(To.Single(Owner.GetClientOwner()), Owner as TTTPlayer, positions.ToArray());
         }
 
         public override void Simulate(Client owner)
@@ -65,29 +57,14 @@ namespace TTTReborn.Items
             {
                 _lastUpdate = 0f;
 
-                UpdatePositions();
+                using (Prediction.Off())
+                {
+                    UpdatePositions();
+                }
             }
         }
 
-        [ClientRpc]
-        public static void ClientSendRadarPositions(Vector3[] positions)
-        {
-            Log.Error("Received data");
-
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                return;
-            }
-
-            ClearRadarPoints();
-
-            foreach (Vector3 vector3 in positions)
-            {
-                _cachedPoints.Add(new RadarPoint(vector3));
-            }
-        }
-
-        public static void ClearRadarPoints()
+        private void ClearRadarPoints()
         {
             foreach (RadarPoint radarPoint in _cachedPoints)
             {
@@ -95,6 +72,29 @@ namespace TTTReborn.Items
             }
 
             _cachedPoints.Clear();
+        }
+
+        [ClientRpc]
+        public static void ClientSendRadarPositions(TTTPlayer player, Vector3[] positions)
+        {
+            if (!player.IsValid() || player != Local.Pawn)
+            {
+                return;
+            }
+
+            TTTPerk perk = (player.Inventory as Inventory).Perks.Find("ttt_radar");
+
+            if (perk is not Radar radar)
+            {
+                return;
+            }
+
+            radar.ClearRadarPoints();
+
+            foreach (Vector3 vector3 in positions)
+            {
+                radar._cachedPoints.Add(new RadarPoint(vector3));
+            }
         }
     }
 }
