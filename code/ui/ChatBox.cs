@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
@@ -28,6 +29,7 @@ namespace TTTReborn.UI
     {
         public static ChatBox Instance;
 
+        public List<ChatEntry> Messages;
         private readonly Panel _canvas;
         private readonly TextEntry _input;
 
@@ -39,6 +41,8 @@ namespace TTTReborn.UI
 
             _canvas = Add.Panel("chat_canvas");
 
+            Messages = new List<ChatEntry>();
+
             _input = Add.TextEntry("");
             _input.AddEventListener("onsubmit", Submit);
             _input.AddEventListener("onblur", Close);
@@ -48,6 +52,11 @@ namespace TTTReborn.UI
             Sandbox.Hooks.Chat.OnOpenChat += Open;
         }
 
+        public override void Tick()
+        {
+            base.Tick();
+            SetClass("dead",Local.Pawn.LifeState == LifeState.Dead);
+        }
         private void Open()
         {
             AddClass("open");
@@ -83,15 +92,31 @@ namespace TTTReborn.UI
         public void AddEntry(string name, string message, string avatar, LifeState lifeState)
         {
             var chatEntry = _canvas.AddChild<ChatEntry>();
+
+            chatEntry.Name = name;
+            chatEntry.Text = message;
+
             chatEntry.Message.Text = message;
-
-            chatEntry.NameLabel.Text = name;
-            chatEntry.NameLabel.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
-
-            chatEntry.Avatar.SetTexture(avatar);
 
             chatEntry.SetClass("noname", string.IsNullOrEmpty(name));
             chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
+
+            bool showHead = Messages.Count == 0 || Messages[Messages.Count - 1].Name != name;
+
+            if (showHead)
+            {
+                chatEntry.NameLabel.Text = name;
+                chatEntry.NameLabel.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
+
+                chatEntry.Avatar.SetTexture(avatar);
+            }
+
+            chatEntry.SetClass("showHead", showHead);
+
+            chatEntry.Index = Messages.Count;
+            Messages.Add(chatEntry);
+
+            chatEntry.OnDeleted();
         }
 
         [ClientCmd("chat_add", CanBeCalledFromServer = true)]

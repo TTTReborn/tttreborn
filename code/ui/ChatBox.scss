@@ -1,23 +1,34 @@
-﻿ChatBox {
+﻿$alive : #c0fb2e;
+$dead : #ffcc03;
+
+ChatBox {
     position: absolute;
     bottom: 200px;
-    left: 100px;
+    left: 30px;
     z-index: 100;
     flex-direction: column;
-    width: 500px;
+    width: 325px;
     font-family: Poppins;
     font-size: 13px;
+    border-radius: 10px;
 
     textentry {
-        background-color: black;
         opacity: 0;
         color: white;
-        padding: 15px;
-        background-color: rgba( black, 0.8 );
+        padding: 10px 10px 5px;
+        border-bottom: 2px solid $alive;
+        background-color: rgba(0, 0, 0, 0.7);
         font-size: 14px;
         flex-shrink: 0;
         flex-grow: 0;
         width: 100%;
+        margin-top: 5px;
+    }
+
+    &.dead {
+        textentry {
+            border-color: $dead;
+        }
     }
 
     .chat_canvas {
@@ -26,35 +37,36 @@
     }
 
     &.open {
-        textentry
-        {
+        textentry {
             opacity: 1;
         }
     }
 
     .alive {
-        color: #c0fb2e;
+        color: $alive;
     }
 
     .dead {
-        color: #ffcc03;
+        color: $dead;
     }
 }
 
 chatentry {
-    background-color: rgba( black, 0.8 );
-    margin-bottom: 5px;
+    background-color: rgba(black, 0.8);
+    margin-top: 1px;
     color: white;
     transition: all 0.1s ease-out;
     opacity: 1;
-    max-height: 200px;
+    // max-height: 200px;
     flex-shrink: 0;
     flex-grow: 0;
-    padding: 12px;
-    padding-left: 45px;
-    min-height: 47px;
+    padding: 6px 12px ;
+    // min-height: 47px;
     max-width: 100%;
-    transform: scale( 1 );
+    transform: scale(1);
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
 
     &:intro {
         max-height: 0px;
@@ -62,7 +74,7 @@ chatentry {
         padding-bottom: 0;
         margin-bottom: 0;
         opacity: 0;
-        transform: scale( 0 );
+        transform: scale(0);
     }
 
     &:outro {
@@ -70,21 +82,36 @@ chatentry {
         transition: all 2s ease-out;
     }
 
-    image {
-        width: 32px;
-        height: 32px;
-        min-height: 32px;
-        border-radius: 100px;
-        position: absolute;
-        left: 6px;
-        top: 6px;
+    .head {
+        display: none;
+        margin-bottom: 5px;
+        image {
+            width: 25px;
+            height: 25px;
+            // min-height: 32px;
+            border-radius: 100px;
+            // position: absolute;
+            // left: 6px;
+            // top: 6px;
+            margin-right: 10px;
+        }
+
+        .name {
+            padding-right: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
     }
 
-    .name {
-        padding-right: 20px;
-        font-weight: 600;
-        font-size: 14px;
-        flex-shrink: 0;
+    &.showHead {
+        margin-top: 5px;
+        padding: 9px 12px 6px;
+
+        .head {
+            display: flex;
+        }
     }
 
     .message {

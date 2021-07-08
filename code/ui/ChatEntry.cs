@@ -7,6 +7,13 @@ namespace TTTReborn.UI
     public partial class ChatEntry : Panel
     {
         public readonly Label NameLabel;
+
+        public string Name;
+
+        public string Text;
+
+        public int Index;
+        public readonly Panel HeadHolder;
         public readonly Label Message;
         public readonly Image Avatar;
 
@@ -14,9 +21,11 @@ namespace TTTReborn.UI
 
         public ChatEntry()
         {
-            Avatar = Add.Image();
-            NameLabel = Add.Label("Name", "name");
+            HeadHolder = Add.Panel("head");
+            Avatar = HeadHolder.Add.Image();
+            NameLabel = HeadHolder.Add.Label("", "name");
             Message = Add.Label("Message", "message");
+
         }
 
         public override void Tick()
@@ -26,6 +35,10 @@ namespace TTTReborn.UI
             if (_timeSinceBorn > 10)
             {
                 Delete();
+                Log.Info(ChatBox.Instance.Messages.Count);
+                Log.Info(Index);
+                ChatBox.Instance.Messages.RemoveAt(0);
+
             }
         }
     }
