@@ -1,5 +1,4 @@
-﻿using System;
-using Sandbox;
+﻿using Sandbox;
 
 namespace TTTReborn.Player.Camera
 {
