@@ -81,9 +81,9 @@ namespace TTTReborn.UI
 
                 _wrapper = Add.Panel("wrapper");
 
-                foreach (Type type in Utils.GetTypes<IBuyableItem>())
+                foreach (Type type in Globals.Utils.GetTypes<IBuyableItem>())
                 {
-                    IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(type);
+                    IBuyableItem item = Globals.Utils.GetObjectByType<IBuyableItem>(type);
 
                     if (_selectedItem == null)
                     {
