@@ -24,16 +24,12 @@ namespace TTTReborn.Player
             _lastGroundEntity = GroundEntity;
         }
 
-        public void MakeSpectator(Vector3 position = default)
+        public void MakeSpectator()
         {
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = new SpectateCamera
-            {
-                DeathPosition = position,
-                TimeSinceDied = 0
-            };
+            Camera = new SpectateRagdollCamera();
 
             ShowFlashlight(false, false);
         }
@@ -137,13 +133,15 @@ namespace TTTReborn.Player
 
             if (LifeState != LifeState.Alive)
             {
+                TickPlayerChangeSpectateCamera();
                 return;
             }
 
+            SimulateActiveChild(client, ActiveChild);
+
             TickPlayerUse();
             TickPlayerDropCarriable();
-
-            SimulateActiveChild(client, ActiveChild);
+            TickPlayerFlashlight();
 
             if (IsServer)
             {
@@ -153,8 +151,6 @@ namespace TTTReborn.Player
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
-
-            TickPlayerFlashlight();
         }
 
         protected override void UseFail()
@@ -187,6 +183,30 @@ namespace TTTReborn.Player
 
                     _timeSinceDropped = 0;
                 }
+            }
+        }
+
+        private void TickPlayerChangeSpectateCamera()
+        {
+            if (!Input.Pressed(InputButton.Jump))
+            {
+                return;
+            }
+
+            if (!IsServer)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                Camera = Camera switch
+                {
+                    SpectateRagdollCamera => new FreeSpectateCamera(),
+                    FreeSpectateCamera => new ThirdPersonSpectateCamera(),
+                    ThirdPersonSpectateCamera => new FreeSpectateCamera(),
+                    _ => Camera
+                };
             }
         }
 

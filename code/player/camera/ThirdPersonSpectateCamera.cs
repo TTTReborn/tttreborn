@@ -5,10 +5,9 @@ using Sandbox;
 using TTTReborn.Globals;
 namespace TTTReborn.Player.Camera
 {
-    public partial class SpectateCamera : Sandbox.Camera
+    public partial class ThirdPersonSpectateCamera : Sandbox.Camera
     {
-        [Net, Predicted] public TimeSince TimeSinceDied { get; set; }
-        [Net, Predicted] public Vector3 DeathPosition { get; set; }
+        private Vector3 DefaultPosition { get; set; }
 
         private TTTPlayer TargetPlayer { get; set; }
 
@@ -44,7 +43,6 @@ namespace TTTReborn.Player.Camera
                 }
             }
 
-            // TODO: Setup a spectating first person camera.
             _focusPoint = Vector3.Lerp(_focusPoint, GetSpectatePoint(), 0.1f);
 
             Pos = _focusPoint + GetViewOffset();
@@ -57,10 +55,14 @@ namespace TTTReborn.Player.Camera
         private Vector3 GetSpectatePoint()
         {
             if (Local.Pawn is not TTTPlayer)
-                return DeathPosition;
+            {
+                return DefaultPosition;
+            }
 
-            if (TargetPlayer == null || !TargetPlayer.IsValid() || TimeSinceDied < 3)
-                return DeathPosition;
+            if (TargetPlayer == null || !TargetPlayer.IsValid())
+            {
+                return DefaultPosition;
+            }
 
             return TargetPlayer.EyePos;
         }
