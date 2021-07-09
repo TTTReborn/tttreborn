@@ -13,6 +13,9 @@ namespace TTTReborn.Player
         [Net, Predicted]
         public float Stamina { get; set; } = 100f;
 
+        [Net]
+        public float MaxStamina { get; set; } = 100f;
+
         [Net, Local]
         public int Credits { get; set; } = 0;
 
@@ -79,7 +82,7 @@ namespace TTTReborn.Player
             EnableShadowInFirstPerson = true;
 
             Credits = 0;
-            Stamina = 100f;
+            Stamina = MaxStamina;
 
             SetRole(new NoneRole());
 

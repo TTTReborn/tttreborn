@@ -30,10 +30,10 @@ namespace TTTReborn.Player
             }
             else
             {
-                player.Stamina = MathF.Min(player.Stamina + StaminaGainPerSecond * Time.Delta, 100f);
+                player.Stamina = MathF.Min(player.Stamina + StaminaGainPerSecond * Time.Delta, player.MaxStamina);
             }
 
-            SprintSpeed = WalkSpeed + ((MaxSprintSpeed - WalkSpeed) / 100f * player.Stamina) + 40f;
+            SprintSpeed = (MaxSprintSpeed - DefaultSpeed) / player.MaxStamina * player.Stamina + DefaultSpeed;
 
             base.Simulate();
         }
