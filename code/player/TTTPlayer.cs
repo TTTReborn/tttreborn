@@ -10,6 +10,9 @@ namespace TTTReborn.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;
 
+        [Net, Predicted]
+        public float Stamina { get; set; } = 100f;
+
         [Net, Local]
         public int Credits { get; set; } = 0;
 
@@ -65,8 +68,7 @@ namespace TTTReborn.Player
         {
             SetModel("models/citizen/citizen.vmdl");
 
-            Controller = new WalkController();
-            (Controller as WalkController).GroundFriction = 8f;
+            Controller = new DefaultWalkController();
 
             Animator = new StandardPlayerAnimator();
             Camera = new FirstPersonCamera();
@@ -77,6 +79,7 @@ namespace TTTReborn.Player
             EnableShadowInFirstPerson = true;
 
             Credits = 0;
+            Stamina = 100f;
 
             SetRole(new NoneRole());
 
