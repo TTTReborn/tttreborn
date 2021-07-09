@@ -1,5 +1,7 @@
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.Player
 {
     public partial class TTTPlayer
@@ -45,7 +47,7 @@ namespace TTTReborn.Player
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                        RPCs.ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
                     }
 
                     if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
@@ -69,9 +71,9 @@ namespace TTTReborn.Player
 
                             playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
 
-                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
+                            RPCs.ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
 
-                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                            RPCs.ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
                         }
                     }
 
@@ -80,7 +82,7 @@ namespace TTTReborn.Player
 
                 if (_inspectingPlayerCorpse != null)
                 {
-                    ClientCloseInspectMenu(client);
+                    RPCs.ClientCloseInspectMenu(client);
 
                     _inspectingPlayerCorpse = null;
                 }

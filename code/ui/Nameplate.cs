@@ -83,6 +83,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
+            base.Tick();
+
             TTTPlayer player = Local.Pawn as TTTPlayer;
 
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)

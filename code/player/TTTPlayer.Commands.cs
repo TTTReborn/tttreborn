@@ -4,6 +4,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Roles;
 
@@ -69,6 +70,13 @@ namespace TTTReborn.Player
         [ServerCmd(Name = "requestitem")]
         public static void RequestItem(string itemName)
         {
+            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+            if (!player.IsValid())
+            {
+                return;
+            }
+
             IBuyableItem item = null;
 
             Library.GetAll<IBuyableItem>().ToList().ForEach(t =>
@@ -82,9 +90,7 @@ namespace TTTReborn.Player
                 }
             });
 
-            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
-            if (item == null || !player.IsValid())
+            if (item == null)
             {
                 return;
             }
@@ -131,7 +137,7 @@ namespace TTTReborn.Player
             }
 
             player.SetRole(role);
-            ClientSetRole(To.Single(player), player, role.Name);
+            RPCs.ClientSetRole(To.Single(player), player, role.Name);
         }
 
         [ClientCmd(Name = "playerids", Help = "Returns a list of all players (clients) and their associated IDs")]

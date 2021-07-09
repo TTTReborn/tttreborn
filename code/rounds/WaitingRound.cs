@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds

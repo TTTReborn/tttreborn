@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
@@ -17,6 +18,7 @@ namespace TTTReborn.Items
     public abstract class TTTPerk : IItem
     {
         public string Name { get; }
+        public Entity Owner { get; set; }
 
         protected TTTPerk()
         {
@@ -27,22 +29,40 @@ namespace TTTReborn.Items
 
         public void Equip(TTTPlayer player)
         {
-            OnEquip(player);
+            Owner = player;
+
+            OnEquip();
         }
 
-        public virtual void OnEquip(TTTPlayer player)
+        public virtual void OnEquip()
+        {
+            if (Host.IsClient)
+            {
+                Hud.Current.AliveHudPanel.Effects.AddEffect(this);
+            }
+        }
+
+        public void Remove()
+        {
+            OnRemove();
+        }
+
+        public virtual void OnRemove()
         {
 
         }
 
-        public void Remove(TTTPlayer player)
+        public void Delete()
         {
-            OnRemove(player);
+            if (Host.IsClient)
+            {
+                Hud.Current.AliveHudPanel.Effects.RemoveEffect(this);
+            }
         }
 
-        public virtual void OnRemove(TTTPlayer player)
+        public virtual bool IsBuyable(TTTPlayer player)
         {
-
+            return !(player.Inventory as Inventory).Perks.Has(this);
         }
     }
 }
