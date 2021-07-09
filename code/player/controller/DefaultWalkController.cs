@@ -24,7 +24,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            if (Input.Down(InputButton.Run) && Velocity.Length >= SprintSpeed * 0.8f)
+            if (Input.Down(InputButton.Run) && Velocity.Length >= SprintSpeed * 0.8f && player.GroundEntity.IsValid())
             {
                 player.Stamina = MathF.Max(player.Stamina - StaminaLossPerSecond * Time.Delta, 0f);
             }
