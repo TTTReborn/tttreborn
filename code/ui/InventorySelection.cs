@@ -44,11 +44,13 @@ namespace TTTReborn.UI
 
             Inventory inventory = player.Inventory as Inventory;
             ICarriableItem activeItem = player.ActiveChild as ICarriableItem;
+
             foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
                 {
                     slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
+
                     if (slot.Carriable is TTTWeapon weapon && weapon.HoldType != HoldType.Melee)
                     {
                         slot.UpdateAmmo(FormatAmmo(weapon, inventory));
@@ -66,11 +68,6 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.carriableitem.pickup")]
         private void OnCarriableItemPickup(ICarriableItem carriable)
         {
-            if (Local.Pawn is not TTTPlayer player && carriable != null)
-            {
-                return;
-            }
-
             AddChild(new InventorySlot(this, carriable));
             SortChildren((p1, p2) =>
             {
@@ -85,11 +82,6 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.carriableitem.drop")]
         private void OnCarriableItemDrop(ICarriableItem carriable)
         {
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                return;
-            }
-
             foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
@@ -109,7 +101,7 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
-            if (_children == null || _children.Count == 0)
+            if (Children == null || !Children.Any())
             {
                 return;
             }
@@ -145,10 +137,10 @@ namespace TTTReborn.UI
             int mouseWheelIndex = Input.MouseWheel;
             if (mouseWheelIndex != 0)
             {
-                int activeCarriableIndex = _children.FindIndex((p) =>
+                int activeCarriableIndex = childrenList.FindIndex((p) =>
                     p is InventorySlot slot && slot.Carriable.Name == activeCarriable?.Name);
 
-                input.ActiveChild = (_children[NormalizeSlotIndex(mouseWheelIndex + activeCarriableIndex, _children.Count - 1)]
+                input.ActiveChild = (childrenList[NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1)]
                     as InventorySlot)?.Carriable as Entity;
             }
         }
@@ -156,8 +148,7 @@ namespace TTTReborn.UI
         // Keyboard selection can only increment the index by 1.
         private int GetNextWeaponIndex(int index, int count)
         {
-            index += 1;
-            return NormalizeSlotIndex(index, count - 1);
+            return NormalizeSlotIndex(index + 1, count - 1);
         }
 
         private int NormalizeSlotIndex(int index, int maxIndex)

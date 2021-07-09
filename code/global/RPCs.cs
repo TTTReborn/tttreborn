@@ -38,28 +38,6 @@ namespace TTTReborn.Globals
             player.SetRole(new NoneRole());
         }
 
-        [ClientRpc]
-        public static void ClientOnPlayerCarriableItemPickup(TTTPlayer player, Entity carriable)
-        {
-            if (!player.IsValid())
-            {
-                return;
-            }
-
-            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerCarriableItemDrop(TTTPlayer player, Entity carriable)
-        {
-            if (!player.IsValid())
-            {
-                return;
-            }
-
-            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
-        }
-
         /// <summary>
         /// Must be called on the server, updates TTTPlayer's `Role`.
         /// </summary>

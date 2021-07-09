@@ -14,6 +14,18 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
+        public static void ClientOnPlayerCarriableItemPickup(TTTPlayer player, Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerCarriableItemDrop(TTTPlayer player, Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
         public void ClientSetAmmo(AmmoType ammoType, int amount)
         {
             (Inventory as Inventory).Ammo.Set(ammoType, amount);
