@@ -115,7 +115,7 @@ namespace TTTReborn.UI
             {
                 List<ICarriableItem> weaponsOfHoldTypeSelected = new();
                 bool isActiveCarriableOfHoldTypeSelected = false;
-                int activeCarriableIndex = -1;
+                int activeCarriableOfHoldTypeIndex = -1;
 
                 for (int i = 0; i < childrenList.Count; ++i)
                 {
@@ -133,7 +133,7 @@ namespace TTTReborn.UI
                                 // If the current active carriable has the same hold type as
                                 // the keyboard index the user pressed
                                 isActiveCarriableOfHoldTypeSelected = true;
-                                activeCarriableIndex = i;
+                                activeCarriableOfHoldTypeIndex = weaponsOfHoldTypeSelected.Count - 1;
                             }
                         }
                     }
@@ -147,13 +147,9 @@ namespace TTTReborn.UI
                 }
                 else
                 {
-                    // activeCarriableIndex is found using the entire length of "childrenList",
-                    // We need the index of the active carriable inside of "weaponsOfHoldTypeSelected".s
-                    int weaponsOfHoldTypeIndex = activeCarriableIndex - childrenList.Count;
-
                     // The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
-                    // Increment the index and "GetNextWeaponIndex"
-                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(weaponsOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as Entity;
+                    // Find the next possible weapon within the hold types.
+                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(activeCarriableOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as Entity;
                 }
             }
 
