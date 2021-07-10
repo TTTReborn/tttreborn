@@ -114,8 +114,7 @@ namespace TTTReborn.UI
             if (keyboardIndexPressed != 0)
             {
                 List<ICarriableItem> weaponsOfHoldTypeSelected = new();
-                bool isActiveCarriableOfHoldTypeSelected = false;
-                int activeCarriableIndex = -1;
+                int activeCarriableOfHoldTypeIndex = -1;
 
                 for (int i = 0; i < childrenList.Count; ++i)
                 {
@@ -132,14 +131,13 @@ namespace TTTReborn.UI
                             {
                                 // If the current active carriable has the same hold type as
                                 // the keyboard index the user pressed
-                                isActiveCarriableOfHoldTypeSelected = true;
-                                activeCarriableIndex = i;
+                                activeCarriableOfHoldTypeIndex = weaponsOfHoldTypeSelected.Count - 1;
                             }
                         }
                     }
                 }
 
-                if (activeCarriable == null || !isActiveCarriableOfHoldTypeSelected)
+                if (activeCarriable == null || activeCarriableOfHoldTypeIndex == -1)
                 {
                     // The user isn't holding an active carriable, or is holding a weapon that has a different
                     // hold type than the one selected using the keyboard. We can just select the first weapon.
@@ -147,13 +145,9 @@ namespace TTTReborn.UI
                 }
                 else
                 {
-                    // activeCarriableIndex is found using the entire length of "childrenList",
-                    // We need the index of the active carriable inside of "weaponsOfHoldTypeSelected".s
-                    int weaponsOfHoldTypeIndex = activeCarriableIndex - childrenList.Count;
-
                     // The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
-                    // Increment the index and "GetNextWeaponIndex"
-                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(weaponsOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as Entity;
+                    // Find the next possible weapon within the hold types.
+                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(activeCarriableOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as Entity;
                 }
             }
 
