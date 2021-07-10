@@ -59,34 +59,31 @@ namespace TTTReborn.Player
             return true;
         }
 
-        public TTTPerk Find(string perkName)
-        {
-            foreach (TTTPerk loopPerk in PerkList)
-            {
-                if (perkName == loopPerk.Name)
-                {
-                    return loopPerk;
-                }
-            }
-
-            return null;
-        }
-
         public T Find<T>(string perkName = null) where T : TTTPerk
         {
             foreach (TTTPerk loopPerk in PerkList)
             {
+                if (loopPerk is not T t || t.Equals(default(T)))
+                {
+                    continue;
+                }
+
                 if (perkName == loopPerk.Name)
                 {
                     return (T) loopPerk;
                 }
-                else if (perkName == null && loopPerk is T t && !t.Equals(default(T)))
+                else if (perkName == null)
                 {
                     return t;
                 }
             }
 
             return default(T);
+        }
+
+        public TTTPerk Find(string perkName)
+        {
+            return Find<TTTPerk>(perkName);
         }
 
         public bool Has(string perkName = null)
