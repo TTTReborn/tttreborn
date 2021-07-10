@@ -169,7 +169,7 @@ namespace TTTReborn.Items
 
             _holdBody.Position = startPos + dir * _holdDistance;
             _holdBody.Rotation = rot * _heldRot;
-            
+
             if (Vector3.DistanceBetween(_previousPosition, _heldBody.Position) > _maxPropSpeed)
             {
                 GrabEnd();
