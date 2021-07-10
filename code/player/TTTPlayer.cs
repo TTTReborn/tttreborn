@@ -85,7 +85,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerSpawned(To.Single(this), this);
+                RPCs.ClientOnPlayerSpawned(this);
                 RPCs.ClientSetRole(To.Single(this), this, Role.Name);
             }
 
