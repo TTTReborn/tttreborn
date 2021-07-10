@@ -106,31 +106,54 @@ namespace TTTReborn.UI
                 return;
             }
 
+            List<Panel> childrenList = Children.ToList();
+
             ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
 
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
             if (keyboardIndexPressed != 0)
             {
-                // Find all weapons of hold type that equals the number the user pressed on their keyboard.
-                List<InventorySlot> weaponsOfHoldType = _children.ConvertAll(p => p as InventorySlot).Where(
-                    (slot) => (int) slot.Carriable.HoldType == keyboardIndexPressed).ToList();
+                List<ICarriableItem> weaponsOfHoldTypeSelected = new();
+                bool isActiveCarriableOfHoldTypeSelected = false;
+                int activeCarriableIndex = -1;
 
-                // Check to see if a user is currently holding a weapon which is of the same hold type.
-                bool isActiveCarriableOfWeaponType = weaponsOfHoldType.Any((slot) =>
-                    slot.Carriable.Name == activeCarriable?.Name);
-
-                if (activeCarriable == null || !isActiveCarriableOfWeaponType)
+                for (int i = 0; i < childrenList.Count; ++i)
                 {
-                    // The user isn't holding a weapon, or is holding a weapon of a different hold type.
-                    // We can just select the first weapon.
-                    input.ActiveChild = weaponsOfHoldType.FirstOrDefault()?.Carriable as Entity;
+                    if (childrenList[i] is InventorySlot slot)
+                    {
+                        if ((int) slot.Carriable.HoldType == keyboardIndexPressed)
+                        {
+                            // Using the keyboard index the user pressed, find all carriables that
+                            // have the same hold type as the index.
+                            // Ex. "3" pressed, find all carriables with hold type "3".
+                            weaponsOfHoldTypeSelected.Add(slot.Carriable);
+
+                            if (slot.Carriable.Name == activeCarriable?.Name)
+                            {
+                                // If the current active carriable has the same hold type as
+                                // the keyboard index the user pressed
+                                isActiveCarriableOfHoldTypeSelected = true;
+                                activeCarriableIndex = i;
+                            }
+                        }
+                    }
+                }
+
+                if (activeCarriable == null || !isActiveCarriableOfHoldTypeSelected)
+                {
+                    // The user isn't holding an active carriable, or is holding a weapon that has a different
+                    // hold type than the one selected using the keyboard. We can just select the first weapon.
+                    input.ActiveChild = weaponsOfHoldTypeSelected.FirstOrDefault() as Entity;
                 }
                 else
                 {
-                    // The user is holding a weapon of the currently selected hold type.
-                    // Increment the index using GetNextWeaponIndex.
-                    int activeCarriableIndex = weaponsOfHoldType.FindIndex((slot) => slot.Carriable.Name == activeCarriable?.Name);
-                    input.ActiveChild = weaponsOfHoldType[GetNextWeaponIndex(activeCarriableIndex, weaponsOfHoldType.Count)].Carriable as Entity;
+                    // activeCarriableIndex is found using the entire length of "childrenList",
+                    // We need the index of the active carriable inside of "weaponsOfHoldTypeSelected".s
+                    int weaponsOfHoldTypeIndex = activeCarriableIndex - childrenList.Count;
+
+                    // The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
+                    // Increment the index and "GetNextWeaponIndex"
+                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(weaponsOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as  Entity;
                 }
             }
 
