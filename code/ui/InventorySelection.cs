@@ -114,7 +114,6 @@ namespace TTTReborn.UI
             if (keyboardIndexPressed != 0)
             {
                 List<ICarriableItem> weaponsOfHoldTypeSelected = new();
-                bool isActiveCarriableOfHoldTypeSelected = false;
                 int activeCarriableOfHoldTypeIndex = -1;
 
                 for (int i = 0; i < childrenList.Count; ++i)
@@ -132,14 +131,13 @@ namespace TTTReborn.UI
                             {
                                 // If the current active carriable has the same hold type as
                                 // the keyboard index the user pressed
-                                isActiveCarriableOfHoldTypeSelected = true;
                                 activeCarriableOfHoldTypeIndex = weaponsOfHoldTypeSelected.Count - 1;
                             }
                         }
                     }
                 }
 
-                if (activeCarriable == null || !isActiveCarriableOfHoldTypeSelected)
+                if (activeCarriable == null || activeCarriableOfHoldTypeIndex == -1)
                 {
                     // The user isn't holding an active carriable, or is holding a weapon that has a different
                     // hold type than the one selected using the keyboard. We can just select the first weapon.
