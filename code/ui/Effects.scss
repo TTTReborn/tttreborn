@@ -1,10 +1,8 @@
 Effects {
     position: absolute;
-    left: 30px;
-    top: 50%;
+    right: 30px;
+    bottom: 140px;
     transform: translateY(-50%);
-    flex-direction: column;
-    width: 64px;
     font-size: 12px;
     font-family: Poppins;
 
@@ -12,9 +10,9 @@ Effects {
         border: 1px solid #031421;
         background-color: rgba(0, 0, 0, 0.7);
         border-radius: 4px;
-        width: 64px;
-        height: 64px;
-
+        width: 62px;
+        height: 62px;
+        margin-left: 10px;
         margin-top: 10px;
 
         Label {
