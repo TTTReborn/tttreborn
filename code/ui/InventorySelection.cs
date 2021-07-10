@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Sandbox;
 using Sandbox.UI;
@@ -7,23 +9,30 @@ using Sandbox.UI.Construct;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
-// TODO Fix animation on dropping a higher slot carriable entity (instead of deleting and recreating, move and delete InventorySlots in DOM)
-
 namespace TTTReborn.UI
 {
     public class InventorySelection : Panel
     {
-        private readonly Dictionary<string, InventorySlot> _inventorySlots = new();
-
-        private ICarriableItem _oldActiveInventory;
-
         public InventorySelection()
         {
             StyleSheet.Load("/ui/InventorySelection.scss");
+
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            Inventory inventory = player.Inventory as Inventory;
+
+            foreach (Entity entity in inventory.List)
+            {
+                if (entity is ICarriableItem carriableItem)
+                {
+                    OnCarriableItemPickup(carriableItem);
+                }
+            }
         }
 
-        // TODO: This method could be made to be event based. Whenever a user pickups a carriable entity, and whenever a user fires.
-        // Consider checking out DM98 or Hidden inventory HUD.
         public override void Tick()
         {
             base.Tick();
@@ -33,69 +42,56 @@ namespace TTTReborn.UI
                 return;
             }
 
-            // update inventory slots, check for removed inventory etc.
             Inventory inventory = player.Inventory as Inventory;
-            int inventoryCount = inventory.Count();
-            List<ICarriableItem> newCarriables = new();
-            List<InventorySlot> tmpSlots = new();
+            ICarriableItem activeItem = player.ActiveChild as ICarriableItem;
 
-            for (int i = 0; i < inventoryCount; i++)
+            foreach (Panel child in Children)
             {
-                ICarriableItem carriable = inventory.GetSlot(i) as ICarriableItem;
+                if (child is InventorySlot slot)
+                {
+                    slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
 
-                if (_inventorySlots.TryGetValue(carriable.Name, out InventorySlot inventorySlot))
-                {
-                    tmpSlots.Add(inventorySlot);
-                }
-                else
-                {
-                    newCarriables.Add(carriable);
-                }
-
-                // Do not update if we already rebuilding the InventorySlots
-                if (newCarriables.Count == 0 && carriable.HoldType != HoldType.Melee && carriable is TTTWeapon weapon)
-                {
-                    inventorySlot.UpdateAmmo($"{weapon.AmmoClip} + {(player.Inventory as Inventory).Ammo.Count(weapon.AmmoType)}");
+                    if (slot.Carriable is TTTWeapon weapon && weapon.HoldType != HoldType.Melee)
+                    {
+                        slot.UpdateAmmo(FormatAmmo(weapon, inventory));
+                    }
                 }
             }
+        }
 
-            // remove InventorySlots and rebuild (to keep the right order)
-            if (newCarriables.Count != 0 || tmpSlots.Count != _inventorySlots.Count)
+        [Event("tttreborn.player.spawned")]
+        private void OnPlayerSpawned(TTTPlayer player)
+        {
+            DeleteChildren();
+        }
+
+        [Event("tttreborn.player.carriableitem.pickup")]
+        private void OnCarriableItemPickup(ICarriableItem carriable)
+        {
+            AddChild(new InventorySlot(this, carriable));
+            SortChildren((p1, p2) =>
             {
-                foreach (InventorySlot inventorySlot in _inventorySlots.Values)
-                {
-                    inventorySlot.Delete();
-                }
+                InventorySlot s1 = p1 as InventorySlot;
+                InventorySlot s2 = p2 as InventorySlot;
 
-                _inventorySlots.Clear();
+                int result = s1.Carriable.HoldType.CompareTo(s2.Carriable.HoldType);
+                return result != 0 ? result : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
+            });
+        }
 
-                inventory.List.Sort((Entity carr1, Entity carr2) => (carr1 as ICarriableItem).HoldType.CompareTo((carr2 as ICarriableItem).HoldType));
-
-                // rebuild InventorySlots in the right order
-                foreach (ICarriableItem carriable in inventory.List)
-                {
-                    // add in order
-                    _inventorySlots.Add(carriable.Name, new InventorySlot(this, carriable));
-                }
-
-                // update for dropped active carriable entity maybe
-                _oldActiveInventory = null;
-            }
-
-            // update current selection
-            ICarriableItem activeInventory = player.ActiveChild as ICarriableItem;
-
-            if (_oldActiveInventory != activeInventory && activeInventory != null)
+        [Event("tttreborn.player.carriableitem.drop")]
+        private void OnCarriableItemDrop(ICarriableItem carriable)
+        {
+            foreach (Panel child in Children)
             {
-                foreach (InventorySlot inventorySlot in _inventorySlots.Values)
+                if (child is InventorySlot slot)
                 {
-                    inventorySlot.SetClass("active", inventorySlot.CarriableName == activeInventory.Name);
+                    if (slot.Carriable.Name == carriable.Name)
+                    {
+                        child.Delete();
+                    }
                 }
-
-                _oldActiveInventory = activeInventory;
             }
-
-            SetClass("hide", _inventorySlots.Count == 0);
         }
 
         /// <summary>
@@ -105,42 +101,79 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
-            Inventory inventory = Local.Pawn.Inventory as Inventory;
-
-            if (inventory.Count() == 0)
+            if (Children == null || !Children.Any())
             {
                 return;
             }
 
-            int selectedInventoryIndex = SlotPressInput(input);
+            List<Panel> childrenList = Children.ToList();
 
-            // no button pressed, but maybe scrolled
-            if (selectedInventoryIndex == 0)
+            ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
+
+            int keyboardIndexPressed = GetKeyboardNumberPressed(input);
+            if (keyboardIndexPressed != 0)
             {
-                if (input.MouseWheel != 0)
+                List<ICarriableItem> weaponsOfHoldTypeSelected = new();
+                int activeCarriableOfHoldTypeIndex = -1;
+
+                for (int i = 0; i < childrenList.Count; ++i)
                 {
-                    int nextSlot = inventory.List.IndexOf(Local.Pawn.ActiveChild) - input.MouseWheel;
-                    nextSlot = inventory.NormalizeSlotIndex(nextSlot, inventory.Count() - 1);
+                    if (childrenList[i] is InventorySlot slot)
+                    {
+                        if ((int) slot.Carriable.HoldType == keyboardIndexPressed)
+                        {
+                            // Using the keyboard index the user pressed, find all carriables that
+                            // have the same hold type as the index.
+                            // Ex. "3" pressed, find all carriables with hold type "3".
+                            weaponsOfHoldTypeSelected.Add(slot.Carriable);
 
-                    input.ActiveChild = inventory.GetSlot(nextSlot);
-
-                    input.MouseWheel = 0;
+                            if (slot.Carriable.Name == activeCarriable?.Name)
+                            {
+                                // If the current active carriable has the same hold type as
+                                // the keyboard index the user pressed
+                                activeCarriableOfHoldTypeIndex = weaponsOfHoldTypeSelected.Count - 1;
+                            }
+                        }
+                    }
                 }
 
-                return;
+                if (activeCarriable == null || activeCarriableOfHoldTypeIndex == -1)
+                {
+                    // The user isn't holding an active carriable, or is holding a weapon that has a different
+                    // hold type than the one selected using the keyboard. We can just select the first weapon.
+                    input.ActiveChild = weaponsOfHoldTypeSelected.FirstOrDefault() as Entity;
+                }
+                else
+                {
+                    // The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
+                    // Find the next possible weapon within the hold types.
+                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(activeCarriableOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as Entity;
+                }
             }
 
-            // corresponding key pressed
-            int nextInventorySlot = inventory.GetNextSlot((HoldType) selectedInventoryIndex);
-
-            if (nextInventorySlot != -1)
+            int mouseWheelIndex = Input.MouseWheel;
+            if (mouseWheelIndex != 0)
             {
-                input.ActiveChild = inventory.GetSlot(nextInventorySlot);
+                int activeCarriableIndex = childrenList.FindIndex((p) =>
+                    p is InventorySlot slot && slot.Carriable.Name == activeCarriable?.Name);
+
+                int newSelectedIndex = NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1);
+                input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
             }
         }
 
-        // TODO: Handle mouse wheel, and additional number keys.
-        private int SlotPressInput(InputBuilder input)
+        // Keyboard selection can only increment the index by 1.
+        private int GetNextWeaponIndex(int index, int count)
+        {
+            return NormalizeSlotIndex(index + 1, count - 1);
+        }
+
+        private int NormalizeSlotIndex(int index, int maxIndex)
+        {
+            return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
+        }
+
+        private int GetKeyboardNumberPressed(InputBuilder input)
         {
             if (input.Pressed(InputButton.Slot1)) return 1;
             if (input.Pressed(InputButton.Slot2)) return 2;
@@ -151,9 +184,14 @@ namespace TTTReborn.UI
             return 0;
         }
 
+        private static string FormatAmmo(TTTWeapon weapon, Inventory inventory)
+        {
+            return $"{weapon.AmmoClip} + {(inventory.Ammo.Count(weapon.AmmoType))}";
+        }
+
         private class InventorySlot : Panel
         {
-            public readonly string CarriableName;
+            public ICarriableItem Carriable { get; private set; }
             private readonly Label _ammoLabel;
             private Label _slotLabel;
             private Label _carriableLabel;
@@ -161,14 +199,14 @@ namespace TTTReborn.UI
             public InventorySlot(Panel parent, ICarriableItem carriable)
             {
                 Parent = parent;
-                CarriableName = carriable.Name;
+                Carriable = carriable;
 
                 _slotLabel = Add.Label(((int) carriable.HoldType).ToString(), "slotlabel");
                 _carriableLabel = Add.Label(carriable.Name, "carriablelabel");
 
                 if (carriable.HoldType != HoldType.Melee && carriable is TTTWeapon weapon)
                 {
-                    _ammoLabel = Add.Label($"{weapon.AmmoClip}/{weapon.ClipSize}", "ammolabel");
+                    _ammoLabel = Add.Label(FormatAmmo(weapon, (Local.Pawn as TTTPlayer).Inventory as Inventory), "ammolabel");
                 }
             }
 

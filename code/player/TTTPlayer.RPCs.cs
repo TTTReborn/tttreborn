@@ -14,6 +14,18 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
+        public void ClientOnPlayerCarriableItemPickup(Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public void ClientOnPlayerCarriableItemDrop(Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
         public void ClientSetAmmo(AmmoType ammoType, int amount)
         {
             (Inventory as Inventory).Ammo.Set(ammoType, amount);
@@ -35,7 +47,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            (Inventory as Inventory).Perks.Give(perk);
+            (Inventory as Inventory).TryAdd(perk);
         }
 
         [ClientRpc]
