@@ -12,7 +12,8 @@ namespace TTTReborn.Items
     {
         public override string ViewModelPath => "";
 
-        private static int _grappingDistance => 80;
+        private static int _grabbingDistance => 80;
+        private static float _maxPropSpeed => 10f;
 
         private PhysicsBody _holdBody;
         private WeldJoint _holdJoint;
@@ -22,6 +23,8 @@ namespace TTTReborn.Items
 
         private float _holdDistance = 0f;
         private bool _isAttaching = false;
+
+        private Vector3 _previousPosition;
 
         public Entity GrabbedEntity { get; set; }
 
@@ -61,11 +64,11 @@ namespace TTTReborn.Items
                 {
                     if (_heldBody.IsValid())
                     {
-                        if (_heldBody.Entity is PlayerCorpse playerCorpse && playerCorpse.Welds.Count > 0)
+                        if (_heldBody.Entity is PlayerCorpse playerCorpse && playerCorpse.RopeSprings.Count > 0)
                         {
-                            foreach (PhysicsJoint weld in playerCorpse.Welds)
+                            foreach (PhysicsJoint spring in playerCorpse.RopeSprings)
                             {
-                                if (Vector3.DistanceBetween(weld.Body1.Position, weld.Anchor2) > _grappingDistance)
+                                if (Vector3.DistanceBetween(spring.Body1.Position, spring.Anchor2) > _grabbingDistance)
                                 {
                                     GrabEnd();
 
@@ -113,7 +116,7 @@ namespace TTTReborn.Items
 
             _heldBody = body;
             _holdDistance = Vector3.DistanceBetween(startPos, grabPos);
-            _holdDistance = _holdDistance.Clamp(0, _grappingDistance);
+            _holdDistance = _holdDistance.Clamp(0, _grabbingDistance);
 
             Vector3 heldPos = _heldBody.Transform.PointToLocal(grabPos);
 
@@ -121,6 +124,7 @@ namespace TTTReborn.Items
 
             _holdBody.Position = grabPos;
             _holdBody.Rotation = _heldBody.Rotation;
+            _previousPosition = _heldBody.Position;
 
             _heldBody.Wake();
             _heldBody.EnableAutoSleeping = false;
@@ -165,11 +169,19 @@ namespace TTTReborn.Items
 
             _holdBody.Position = startPos + dir * _holdDistance;
             _holdBody.Rotation = rot * _heldRot;
+            
+            if (Vector3.DistanceBetween(_previousPosition, _heldBody.Position) > _maxPropSpeed)
+            {
+                GrabEnd();
+                return;
+            }
+
+            _previousPosition = _heldBody.Position;
         }
 
         private void TryStartGrab(TTTPlayer owner, Vector3 eyePos, Rotation eyeRot, Vector3 eyeDir)
         {
-            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * _grappingDistance)
+            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * _grabbingDistance)
                 .UseHitboxes()
                 .Ignore(owner)
                 .HitLayer(CollisionLayer.Debris)
@@ -217,7 +229,7 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                TraceResult tr = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * _grappingDistance)
+                TraceResult tr = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * _grabbingDistance)
                     .Ignore(Owner)
                     .Run();
 
@@ -238,18 +250,17 @@ namespace TTTReborn.Items
                 }
 
                 Particles rope = Particles.Create("particles/rope.vpcf");
-                rope.SetEntity(0, _heldBody.Entity, Vector3.Down * 6.5f); // Should be an attachment point
+                rope.SetEntity(0, _heldBody.Entity);
                 rope.SetPosition(1, tr.Body.Transform.PointToLocal(tr.EndPos));
 
                 playerCorpse.Ropes.Add(rope);
-
-                playerCorpse.Welds.Add(
-                    PhysicsJoint.Weld
+                playerCorpse.RopeSprings.Add(
+                    PhysicsJoint.Spring
                         .From(_heldBody)
                         .To(tr.Body)
-                        .WithPivot(_heldBody.Entity.Position + Vector3.Down * 6.5f)
-                        .WithLinearSpring(20f, 1f, 0.0f)
-                        .WithAngularSpring(0.0f, 0.0f, 0.0f)
+                        .WithPivot(tr.EndPos)
+                        .WithDampingRatio(5f)
+                        .WithFrequency(8f)
                         .Create()
                 );
             }
