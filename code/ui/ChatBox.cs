@@ -134,8 +134,6 @@ namespace TTTReborn.UI
         [ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
         public static void AddInformation(string message, string avatar = null, LifeState lifeState = LifeState.Alive)
         {
-            Log.Info("kahba");
-
             Instance?.AddEntry(null, message, avatar, lifeState);
         }
 
