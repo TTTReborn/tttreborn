@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -27,12 +28,12 @@ namespace TTTReborn.Player
 
             TTTPlayer player = Inventory.Owner as TTTPlayer;
 
-            perk.Equip(player);
-
             if (Host.IsServer)
             {
                 player.ClientAddPerk(To.Single(player), perk.Name);
             }
+
+            perk.Equip(player);
 
             return true;
         }
@@ -46,13 +47,13 @@ namespace TTTReborn.Player
 
             PerkList.Remove(perk);
 
-            TTTPlayer player = Inventory.Owner as TTTPlayer;
-
             perk.Remove();
             perk.Delete();
 
             if (Host.IsServer)
             {
+                TTTPlayer player = Inventory.Owner as TTTPlayer;
+
                 player.ClientRemovePerk(To.Single(player), perk.Name);
             }
 
@@ -72,9 +73,31 @@ namespace TTTReborn.Player
             return null;
         }
 
-        public bool Has(string perkName)
+        public T Find<T>(string perkName = null) where T : TTTPerk
+        {
+            foreach (TTTPerk loopPerk in PerkList)
+            {
+                if (perkName == loopPerk.Name)
+                {
+                    return (T) loopPerk;
+                }
+                else if (perkName == null && loopPerk is T t && !t.Equals(default(T)))
+                {
+                    return t;
+                }
+            }
+
+            return default(T);
+        }
+
+        public bool Has(string perkName = null)
         {
             return Find(perkName) != null;
+        }
+
+        public bool Has<T>(string perkName = null) where T : TTTPerk
+        {
+            return Find<T>(perkName) != null;
         }
 
         public void Clear()

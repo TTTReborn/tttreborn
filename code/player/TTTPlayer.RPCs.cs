@@ -35,7 +35,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            (Inventory as Inventory).Perks.Give(perk);
+            (Inventory as Inventory).TryAdd(perk);
         }
 
         [ClientRpc]

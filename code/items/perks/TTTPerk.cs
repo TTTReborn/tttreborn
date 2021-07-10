@@ -49,7 +49,7 @@ namespace TTTReborn.Items
 
         public virtual void OnRemove()
         {
-
+            Owner = null;
         }
 
         public void Delete()

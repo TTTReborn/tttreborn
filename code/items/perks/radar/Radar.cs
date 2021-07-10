@@ -9,13 +9,13 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Library("ttt_radar")]
-    public partial class Radar : TTTPerk, IBuyableItem
+    public partial class Radar : TTTCountdownPerk, IBuyableItem
     {
-        private const float RADAR_UPDATE_DELAY = 20f;
+        public override float Countdown { get; } = 20f;
+
+        private Vector3[] _lastPositions;
 
         private List<RadarPoint> _cachedPoints = new();
-
-        private TimeSince _lastUpdate;
 
         public int Price => 0;
 
@@ -26,41 +26,56 @@ namespace TTTReborn.Items
 
         public override void OnRemove()
         {
-            base.OnRemove();
-
             if (Host.IsClient)
             {
                 ClearRadarPoints();
             }
+
+            base.OnRemove();
         }
 
         private void UpdatePositions()
         {
-            List<Vector3> positions = new();
-
-            foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
+            if (Host.IsServer)
             {
-                if (player != Owner)
+                List<Vector3> positions = new();
+
+                foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
                 {
-                    positions.Add(player.Position);
+                    if (player != Owner)
+                    {
+                        positions.Add(player.Position);
+                    }
+                }
+
+                ClientSendRadarPositions(To.Single(Owner), Owner as TTTPlayer, positions.ToArray());
+            }
+            else
+            {
+                ClearRadarPoints();
+
+                foreach (Vector3 vector3 in _lastPositions)
+                {
+                    _cachedPoints.Add(new RadarPoint(vector3));
                 }
             }
-
-            ClientSendRadarPositions(To.Single(Owner.GetClientOwner()), Owner as TTTPlayer, positions.ToArray());
         }
 
-        public override void Simulate(Client owner)
+        public override void OnEquip()
         {
-            base.Simulate(owner);
+            base.OnEquip();
 
-            if (Host.IsServer && _lastUpdate >= RADAR_UPDATE_DELAY)
+            if (Host.IsServer)
             {
-                _lastUpdate = 0f;
+                UpdatePositions();
+            }
+        }
 
-                using (Prediction.Off())
-                {
-                    UpdatePositions();
-                }
+        public override void OnCountdown()
+        {
+            if (Host.IsServer)
+            {
+                UpdatePositions();
             }
         }
 
@@ -82,19 +97,16 @@ namespace TTTReborn.Items
                 return;
             }
 
-            TTTPerk perk = (player.Inventory as Inventory).Perks.Find("ttt_radar");
+            Radar radar = (player.Inventory as Inventory).Perks.Find<Radar>();
 
-            if (perk is not Radar radar)
+            if (radar == null)
             {
                 return;
             }
 
-            radar.ClearRadarPoints();
+            radar._lastPositions = positions;
 
-            foreach (Vector3 vector3 in positions)
-            {
-                radar._cachedPoints.Add(new RadarPoint(vector3));
-            }
+            radar.UpdatePositions();
         }
     }
 }

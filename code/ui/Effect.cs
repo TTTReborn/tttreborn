@@ -18,11 +18,17 @@ namespace TTTReborn.UI
                 _item = value;
 
                 _nameLabel.Text = _item?.Name ?? "";
+
+                if (_item is TTTCountdownPerk countdownPerk)
+                {
+                    ActivateCountdown();
+                }
             }
         }
 
         private IItem _item;
         private readonly Label _nameLabel;
+        private Label Countdown;
 
         public Effect(Panel parent, IItem effect)
         {
@@ -31,6 +37,19 @@ namespace TTTReborn.UI
             _nameLabel = Add.Label("", "textlabel");
 
             Item = effect;
+        }
+
+        private void ActivateCountdown()
+        {
+            Countdown = Add.Label("", "countdown");
+        }
+
+        public override void Tick()
+        {
+            if (Countdown != null && Item != null && Item is TTTCountdownPerk countdownPerk)
+            {
+                Countdown.Text = $"{(countdownPerk.Countdown - countdownPerk.LastCountdown):n1}";
+            }
         }
     }
 }
