@@ -15,10 +15,34 @@ Effects {
         margin-left: 10px;
         margin-top: 10px;
 
+        align-items: center;
+        justify-content: center;
+
         Label {
             color: white;
-            width: 100%;
             text-align: center;
+
+            &:not(.countdown) {
+                width: 100%;
+            }
+
+            &.countdown {
+                position: absolute;
+                right: -15px;
+                bottom: -10px;
+                border: 1px solid #031421;
+                background-color: rgba(0, 0, 0, 1);
+                border-radius: 4px;
+                width: inherit;
+                min-width: 30px;
+            }
+        }
+
+        Image {
+            color: white;
+            text-align: center;
+            width: 100%;
+            height: 100%;
         }
     }
 }

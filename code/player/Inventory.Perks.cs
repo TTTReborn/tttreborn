@@ -18,7 +18,7 @@ namespace TTTReborn.Player
 
         public bool Give(TTTPerk perk)
         {
-            if (Has(perk))
+            if (Has(perk.Name))
             {
                 return false;
             }
@@ -27,49 +27,73 @@ namespace TTTReborn.Player
 
             TTTPlayer player = Inventory.Owner as TTTPlayer;
 
-            perk.Equip(player);
-
             if (Host.IsServer)
             {
                 player.ClientAddPerk(To.Single(player), perk.Name);
             }
+
+            perk.Equip(player);
 
             return true;
         }
 
         public bool Take(TTTPerk perk)
         {
-            if (!Has(perk))
+            if (!Has(perk.Name))
             {
                 return false;
             }
 
             PerkList.Remove(perk);
 
-            TTTPlayer player = Inventory.Owner as TTTPlayer;
-
             perk.Remove();
             perk.Delete();
 
             if (Host.IsServer)
             {
+                TTTPlayer player = Inventory.Owner as TTTPlayer;
+
                 player.ClientRemovePerk(To.Single(player), perk.Name);
             }
 
             return true;
         }
 
-        public bool Has(TTTPerk perk)
+        public T Find<T>(string perkName = null) where T : TTTPerk
         {
             foreach (TTTPerk loopPerk in PerkList)
             {
-                if (perk.Name == loopPerk.Name)
+                if (loopPerk is not T t || t.Equals(default(T)))
                 {
-                    return true;
+                    continue;
+                }
+
+                if (perkName == loopPerk.Name)
+                {
+                    return (T) loopPerk;
+                }
+                else if (perkName == null)
+                {
+                    return t;
                 }
             }
 
-            return false;
+            return default(T);
+        }
+
+        public TTTPerk Find(string perkName)
+        {
+            return Find<TTTPerk>(perkName);
+        }
+
+        public bool Has(string perkName = null)
+        {
+            return Find(perkName) != null;
+        }
+
+        public bool Has<T>(string perkName = null) where T : TTTPerk
+        {
+            return Find<T>(perkName) != null;
         }
 
         public void Clear()

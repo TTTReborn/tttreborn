@@ -10,10 +10,7 @@ namespace TTTReborn.Items
 
         void OnPurchase(TTTPlayer player)
         {
-            if ((player.Inventory as Inventory).TryAdd(this))
-            {
-                Equip(player);
-            }
+            (player.Inventory as Inventory).TryAdd(this);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
@@ -35,8 +36,6 @@ namespace TTTReborn.Globals
             player.CorpseConfirmer = null;
 
             player.SetRole(new NoneRole());
-
-            Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(player.GetClientOwner());
         }
 
         /// <summary>
