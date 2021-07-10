@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -18,6 +19,18 @@ namespace TTTReborn.UI
                 _item = value;
 
                 _nameLabel.Text = _item?.Name ?? "";
+                _effectImage.Texture = _item != null ? Texture.Load($"/ui/weapons/{_item.Name}.png") : null;
+
+                if (_effectImage.Texture == null)
+                {
+                    _effectImage.Style.Display = DisplayMode.None;
+                    _nameLabel.Style.Display = DisplayMode.Flex;
+                }
+                else
+                {
+                    _effectImage.Style.Display = DisplayMode.Flex;
+                    _nameLabel.Style.Display = DisplayMode.None;
+                }
 
                 if (_item is TTTCountdownPerk countdownPerk)
                 {
@@ -33,6 +46,7 @@ namespace TTTReborn.UI
 
         private IItem _item;
         private readonly Label _nameLabel;
+        private readonly Image _effectImage;
         private Label Countdown;
 
         public Effect(Panel parent, IItem effect)
@@ -40,6 +54,7 @@ namespace TTTReborn.UI
             Parent = parent;
 
             _nameLabel = Add.Label("", "textlabel");
+            _effectImage = Add.Image("", "effectimage");
 
             Item = effect;
         }
