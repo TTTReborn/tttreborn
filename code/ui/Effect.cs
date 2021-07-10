@@ -23,6 +23,11 @@ namespace TTTReborn.UI
                 {
                     ActivateCountdown();
                 }
+                else
+                {
+                    Countdown?.Delete();
+                    Countdown ??= null;
+                }
             }
         }
 
@@ -46,7 +51,7 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            if (Countdown != null && Item != null && Item is TTTCountdownPerk countdownPerk)
+            if (Countdown != null && Item is TTTCountdownPerk countdownPerk)
             {
                 Countdown.Text = $"{(countdownPerk.Countdown - countdownPerk.LastCountdown):n1}";
             }
