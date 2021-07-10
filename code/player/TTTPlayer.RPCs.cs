@@ -5,6 +5,8 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
+    using System;
+
     public partial class TTTPlayer
     {
         [ClientRpc]
@@ -14,13 +16,13 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientOnPlayerCarriableItemPickup(TTTPlayer player, Entity carriable)
+        public void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
             Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
         }
 
         [ClientRpc]
-        public static void ClientOnPlayerCarriableItemDrop(TTTPlayer player, Entity carriable)
+        public void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
             Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
         }

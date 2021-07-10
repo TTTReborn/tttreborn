@@ -40,7 +40,7 @@ namespace TTTReborn.Player
 
             if (entity is ICarriableItem carriable)
             {
-                TTTPlayer.ClientOnPlayerCarriableItemPickup(To.Single(player), player, entity);
+                player.ClientOnPlayerCarriableItemPickup(To.Single(player), entity);
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
@@ -83,7 +83,7 @@ namespace TTTReborn.Player
             using (Prediction.Off())
             {
                 TTTPlayer player = Owner as TTTPlayer;
-                TTTPlayer.ClientOnPlayerCarriableItemDrop(To.Single(player), player, entity);
+                player.ClientOnPlayerCarriableItemDrop(To.Single(player), entity);
             }
 
             return base.Drop(entity);
