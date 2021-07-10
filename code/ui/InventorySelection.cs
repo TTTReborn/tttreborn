@@ -163,8 +163,8 @@ namespace TTTReborn.UI
                 int activeCarriableIndex = childrenList.FindIndex((p) =>
                     p is InventorySlot slot && slot.Carriable.Name == activeCarriable?.Name);
 
-                input.ActiveChild = (childrenList[NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1)]
-                    as InventorySlot)?.Carriable as Entity;
+                int newSelectedIndex = NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1);
+                input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
             }
         }
 
