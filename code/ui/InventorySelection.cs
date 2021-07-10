@@ -153,7 +153,7 @@ namespace TTTReborn.UI
 
                     // The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
                     // Increment the index and "GetNextWeaponIndex"
-                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(weaponsOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as  Entity;
+                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(weaponsOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as Entity;
                 }
             }
 
