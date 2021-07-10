@@ -40,7 +40,6 @@ namespace TTTReborn.UI
 
             SetClass("hide", !visible);
 
-            // visible
             if (visible)
             {
                 Style.Left = Length.Fraction(screenPos.x);
