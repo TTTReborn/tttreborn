@@ -19,5 +19,7 @@ namespace TTTReborn.Items
         void OnRemove();
 
         void Delete();
+
+        void Simulate(Client owner);
     }
 }
