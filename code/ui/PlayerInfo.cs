@@ -95,21 +95,28 @@ namespace TTTReborn.UI
                     _healthBar.Style.Dirty();
                 }
 
-                ICarriableItem carriable = player.ActiveChild as ICarriableItem;
-
-                _staminaBar.SetClass("hide", player.LifeState != LifeState.Alive);
-
-                if (_currentStamina == player.Stamina)
+                if (player.Controller is DefaultWalkController && DefaultWalkController.IsSprintEnabled)
                 {
-                    return;
+                    _staminaBar.Style.Display = DisplayMode.Flex;
+
+                    _staminaBar.SetClass("hide", player.LifeState != LifeState.Alive);
+
+                    if (_currentStamina == player.Stamina)
+                    {
+                        return;
+                    }
+
+                    _currentStamina = player.Stamina;
+
+                    _staminaBar.TextLabel.Text = $"{player.Stamina:n0}";
+
+                    _staminaBar.Style.Width = Length.Percent(player.Stamina);
+                    _staminaBar.Style.Dirty();
                 }
-
-                _currentStamina = player.Stamina;
-
-                _staminaBar.TextLabel.Text = $"{player.Stamina:n0}";
-
-                _staminaBar.Style.Width = Length.Percent(player.Stamina);
-                _staminaBar.Style.Dirty();
+                else
+                {
+                    _staminaBar.Style.Display = DisplayMode.None;
+                }
             }
         }
     }
