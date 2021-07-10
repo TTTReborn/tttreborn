@@ -49,7 +49,7 @@ namespace TTTReborn.Items
 
         public virtual void OnRemove()
         {
-
+            Owner = null;
         }
 
         public void Delete()
@@ -62,7 +62,12 @@ namespace TTTReborn.Items
 
         public virtual bool IsBuyable(TTTPlayer player)
         {
-            return !(player.Inventory as Inventory).Perks.Has(this);
+            return !(player.Inventory as Inventory).Perks.Has(this.Name);
+        }
+
+        public virtual void Simulate(Client owner)
+        {
+
         }
     }
 }
