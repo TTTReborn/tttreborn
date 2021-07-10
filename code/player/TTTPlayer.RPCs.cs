@@ -5,8 +5,6 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
-    using System;
-
     public partial class TTTPlayer
     {
         [ClientRpc]
