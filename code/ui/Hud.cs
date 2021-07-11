@@ -91,6 +91,7 @@ namespace TTTReborn.UI
             public InspectMenu InspectMenu;
             public Nameplate Nameplate;
             public QuickShop QuickShop;
+            public DrowningIndicator DrowningIndicator;
 
             public AliveHud(Panel parent)
             {
@@ -106,6 +107,7 @@ namespace TTTReborn.UI
                 InspectMenu ??= Parent.AddChild<InspectMenu>();
                 Nameplate ??= Parent.AddChild<Nameplate>();
                 QuickShop ??= Parent.AddChild<QuickShop>();
+                DrowningIndicator ??= Parent.AddChild<DrowningIndicator>();
             }
 
             public void DeleteHud()
@@ -130,6 +132,9 @@ namespace TTTReborn.UI
 
                 QuickShop?.Delete();
                 QuickShop = null;
+
+                DrowningIndicator?.Delete();
+                DrowningIndicator = null;
             }
         }
     }

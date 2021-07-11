@@ -91,7 +91,7 @@ namespace TTTReborn.UI
 
                     _healthBar.TextLabel.Text = $"{player.Health:n0}";
 
-                    _healthBar.Style.Width = Length.Percent(player.Health);
+                    _healthBar.Style.Width = Length.Percent(player.Health / player.MaxHealth * 100f);
                     _healthBar.Style.Dirty();
                 }
 
@@ -110,7 +110,7 @@ namespace TTTReborn.UI
 
                     _staminaBar.TextLabel.Text = $"{player.Stamina:n0}";
 
-                    _staminaBar.Style.Width = Length.Percent(player.Stamina);
+                    _staminaBar.Style.Width = Length.Percent(player.Stamina / player.MaxStamina * 100f);
                     _staminaBar.Style.Dirty();
                 }
                 else
@@ -118,18 +118,6 @@ namespace TTTReborn.UI
                     _staminaBar.Style.Display = DisplayMode.None;
                 }
             }
-        }
-    }
-
-    public class BarPanel : Panel
-    {
-        public readonly Label TextLabel;
-
-        public BarPanel(Panel parent, string text, string name)
-        {
-            Parent = parent;
-
-            TextLabel = Add.Label(text, name);
         }
     }
 }
