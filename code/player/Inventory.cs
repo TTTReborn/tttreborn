@@ -21,6 +21,14 @@ namespace TTTReborn.Player
 
         public override void DeleteContents()
         {
+            foreach (Entity entity in List)
+            {
+                if (entity is IItem item)
+                {
+                    item.Remove();
+                }
+            }
+
             TTTPlayer player = Owner as TTTPlayer;
             player.ClientClearInventory(To.Single(player));
 
