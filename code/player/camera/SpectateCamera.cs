@@ -10,7 +10,7 @@ namespace TTTReborn.Player.Camera
         [Net, Predicted] public TimeSince TimeSinceDied { get; set; }
         [Net, Predicted] public Vector3 DeathPosition { get; set; }
 
-        private TTTPlayer TargetPlayer { get; set; }
+        public TTTPlayer TargetPlayer { get; set; }
 
         private Vector3 _focusPoint;
         private int _targetIdx;

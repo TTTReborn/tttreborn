@@ -3,58 +3,91 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
+using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
     public class SpectatedPlayerInfo : Panel
     {
+        private TTTPlayer _currentPlayer;
+        private NamePanel _namePanel;
+        private IndicatorsPanel _indicatorsPanel;
+
         public SpectatedPlayerInfo()
         {
             StyleSheet.Load("/ui/deadhud/SpectatedPlayerInfo.scss");
 
-            new NamePanel(this);
-            new IndicatorsPanel(this);
+            _namePanel = new NamePanel(this);
+            _indicatorsPanel = new IndicatorsPanel(this);
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            if (Local.Pawn is not TTTPlayer player || player.Camera is not SpectateCamera spectateCamera)
+            {
+                SetClass("hide", true);
+
+                return;
+            }
+
+            SetClass("hide", spectateCamera.TargetPlayer == null);
+
+            if (_currentPlayer != spectateCamera.TargetPlayer)
+            {
+                _currentPlayer = spectateCamera.TargetPlayer;
+
+                _namePanel.SetTargetPlayer(_currentPlayer);
+                _indicatorsPanel.SetTargetPlayer(_currentPlayer);
+            }
         }
 
         private class NamePanel : Panel
         {
-            private readonly Label _roleLabel;
-
-            private TTTRole _currentRole;
+            private TTTPlayer _currentPlayer;
+            private readonly Label _nameLabel;
 
             public NamePanel(Panel parent)
             {
                 Parent = parent;
 
-                _roleLabel = Add.Label("Unknown player", "namelabel");
+                _nameLabel = Add.Label("Unknown player", "namelabel");
+            }
+
+            public void SetTargetPlayer(TTTPlayer player)
+            {
+                _currentPlayer = player;
             }
 
             public override void Tick()
             {
                 base.Tick();
 
-                if (Local.Pawn is not TTTPlayer player)
+                if (_currentPlayer == null)
                 {
                     return;
                 }
 
-                // if (_currentRole != player.Role)
-                // {
-                //     _currentRole = player.Role;
+                if (_currentPlayer.Role is NoneRole)
+                {
+                    Style.BackgroundColor = Color.Black;
+                }
+                else
+                {
+                    Style.BackgroundColor = _currentPlayer.Role.Color;
+                }
 
-                //     Style.BackgroundColor = player.Role.Color;
-                //     Style.Dirty();
+                Style.Dirty();
 
-                //     _roleLabel.Text = $"{player.Role.Name.ToUpper()}";
-
-                //     SetClass("hide", player.Role is NoneRole);
-                // }
+                _nameLabel.Text = $"{_currentPlayer.GetClientOwner()?.Name}";
             }
         }
 
         private class IndicatorsPanel : Panel
         {
+            private TTTPlayer _currentPlayer;
             private readonly BarPanel _healthBar;
 
             // TODO rework event based
@@ -68,26 +101,29 @@ namespace TTTReborn.UI
                 _healthBar.AddClass("health");
             }
 
+            public void SetTargetPlayer(TTTPlayer player)
+            {
+                _currentPlayer = player;
+            }
+
             public override void Tick()
             {
                 base.Tick();
 
-                TTTPlayer player = Local.Pawn as TTTPlayer;
-
-                if (player == null)
+                if (_currentPlayer == null)
                 {
                     return;
                 }
 
-                // if (_currentHealth != player.Health)
-                // {
-                //     _currentHealth = player.Health;
+                if (_currentHealth != _currentPlayer.Health)
+                {
+                    _currentHealth = _currentPlayer.Health;
 
-                //     _healthBar.TextLabel.Text = $"{player.Health:n0}";
+                    _healthBar.TextLabel.Text = $"{_currentPlayer.Health:n0}";
 
-                //     _healthBar.Style.Width = Length.Percent(player.Health / player.MaxHealth * 100f);
-                //     _healthBar.Style.Dirty();
-                // }
+                    _healthBar.Style.Width = Length.Percent(_currentPlayer.Health / _currentPlayer.MaxHealth * 100f);
+                    _healthBar.Style.Dirty();
+                }
             }
         }
     }
