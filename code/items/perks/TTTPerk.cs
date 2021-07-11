@@ -60,11 +60,6 @@ namespace TTTReborn.Items
             }
         }
 
-        public virtual bool IsBuyable(TTTPlayer player)
-        {
-            return !(player.Inventory as Inventory).Perks.Has(this.Name);
-        }
-
         public virtual void Simulate(Client owner)
         {
 

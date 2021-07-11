@@ -29,12 +29,13 @@ namespace TTTReborn.Player
                 }
             }
 
-            base.DeleteContents();
-
             TTTPlayer player = Owner as TTTPlayer;
+            player.ClientClearInventory(To.Single(player));
 
             Perks.Clear();
             Ammo.Clear();
+
+            base.DeleteContents();
         }
 
         public override bool Add(Entity entity, bool makeActive = false)

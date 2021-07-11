@@ -57,21 +57,21 @@ namespace TTTReborn.UI
         private class IndicatorsPanel : Panel
         {
             private readonly BarPanel _healthBar;
-            private readonly BarPanel _ammoBar;
+            private readonly BarPanel _staminaBar;
 
             // TODO rework event based
             private float _currentHealth = -1;
-            private int _currentAmmo = -1;
+            private float _currentStamina = -1;
 
             public IndicatorsPanel(Panel parent)
             {
                 Parent = parent;
 
-                _healthBar = new BarPanel(this, "", "healthlabel");
+                _healthBar = new BarPanel(this, "", "healthbar");
                 _healthBar.AddClass("health");
 
-                _ammoBar = new BarPanel(this, "", "ammolabel");
-                _ammoBar.AddClass("ammo");
+                _staminaBar = new BarPanel(this, "", "staminabar");
+                _staminaBar.AddClass("stamina");
             }
 
             public override void Tick()
@@ -95,31 +95,27 @@ namespace TTTReborn.UI
                     _healthBar.Style.Dirty();
                 }
 
-                ICarriableItem carriable = player.ActiveChild as ICarriableItem;
-
-                bool isWeaponNull = carriable == null || carriable is not TTTWeapon;
-
-                _ammoBar.SetClass("hide", isWeaponNull || carriable.HoldType == HoldType.Melee);
-
-                if (!isWeaponNull)
+                if (player.Controller is DefaultWalkController && DefaultWalkController.IsSprintEnabled)
                 {
-                    TTTWeapon weapon = carriable as TTTWeapon;
+                    _staminaBar.Style.Display = DisplayMode.Flex;
 
-                    if (_currentAmmo == weapon.AmmoClip)
+                    _staminaBar.SetClass("hide", player.LifeState != LifeState.Alive);
+
+                    if (_currentStamina == player.Stamina)
                     {
                         return;
                     }
 
-                    _currentAmmo = weapon.AmmoClip;
+                    _currentStamina = player.Stamina;
 
-                    _ammoBar.TextLabel.Text = $"{weapon.AmmoClip} / {weapon.ClipSize}";
+                    _staminaBar.TextLabel.Text = $"{player.Stamina:n0}";
 
-                    _ammoBar.Style.Width = Length.Percent(weapon.AmmoClip / (float) weapon.ClipSize * 100f);
-                    _ammoBar.Style.Dirty();
+                    _staminaBar.Style.Width = Length.Percent(player.Stamina);
+                    _staminaBar.Style.Dirty();
                 }
                 else
                 {
-                    _currentAmmo = -1;
+                    _staminaBar.Style.Display = DisplayMode.None;
                 }
             }
         }

@@ -64,11 +64,6 @@ namespace TTTReborn.Items
             Name = attribute.Name;
         }
 
-        public virtual bool IsBuyable(TTTPlayer player)
-        {
-            return !(player.Inventory as Inventory).IsCarryingType(GetType());
-        }
-
         public void Equip(TTTPlayer player)
         {
             OnEquip();
