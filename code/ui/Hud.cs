@@ -13,6 +13,7 @@ namespace TTTReborn.UI
 
         public GeneralHud GeneralHudPanel;
         public AliveHud AliveHudPanel;
+        public DeadHud DeadHudPanel;
 
         public Hud()
         {
@@ -25,6 +26,7 @@ namespace TTTReborn.UI
 
             GeneralHudPanel = new GeneralHud(RootPanel);
             AliveHudPanel = new AliveHud(RootPanel);
+            DeadHudPanel = new DeadHud(RootPanel);
         }
 
         [Event.Hotload]
@@ -36,9 +38,16 @@ namespace TTTReborn.UI
 
                 Hud hud = new Hud();
 
-                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+                if (Local.Client.Pawn is TTTPlayer player)
                 {
-                    hud.AliveHudPanel.CreateHud();
+                    if (player.LifeState == LifeState.Alive)
+                    {
+                        hud.AliveHudPanel.CreateHud();
+                    }
+                    else
+                    {
+                        hud.DeadHudPanel.CreateHud();
+                    }
                 }
             }
         }
@@ -51,6 +60,7 @@ namespace TTTReborn.UI
                 return;
             }
 
+            Current?.DeadHudPanel.DeleteHud();
             Current?.AliveHudPanel.CreateHud();
         }
 
@@ -63,6 +73,7 @@ namespace TTTReborn.UI
             }
 
             Current?.AliveHudPanel.DeleteHud();
+            Current?.DeadHudPanel.CreateHud();
         }
 
         public class GeneralHud : Panel
@@ -135,6 +146,27 @@ namespace TTTReborn.UI
 
                 DrowningIndicator?.Delete();
                 DrowningIndicator = null;
+            }
+        }
+
+        public class DeadHud : Panel
+        {
+            public SpactatedPlayerInfo SpectatedPlayerInfo;
+
+            public DeadHud(Panel parent)
+            {
+                Parent = parent;
+            }
+
+            public void CreateHud()
+            {
+                SpectatedPlayerInfo ??= Parent.AddChild<SpectatedPlayerInfo>();
+            }
+
+            public void DeleteHud()
+            {
+                SpectatedPlayerInfo?.Delete();
+                SpectatedPlayerInfo = null;
             }
         }
     }
