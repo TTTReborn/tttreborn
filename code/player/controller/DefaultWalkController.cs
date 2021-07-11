@@ -12,6 +12,10 @@ namespace TTTReborn.Player
         public float MaxSprintSpeed = 300f;
         public float StaminaLossPerSecond = 30f;
         public float StaminaGainPerSecond = 25f;
+        public float FallDamageVelocity = 550f;
+        public float FallDamageScale = 0.25f;
+
+        private float _fallVelocity;
 
         public DefaultWalkController() : base()
         {
@@ -43,7 +47,52 @@ namespace TTTReborn.Player
                 SprintSpeed = (MaxSprintSpeed - DefaultSpeed) / player.MaxStamina * player.Stamina + DefaultSpeed;
             }
 
+            OnPreTickMove();
+
             base.Simulate();
+        }
+
+        public void OnPreTickMove()
+        {
+            _fallVelocity = Velocity.z;
+        }
+
+        public override void CategorizePosition(bool stayOnGround)
+        {
+            base.CategorizePosition(stayOnGround);
+
+            Vector3 point = Position - Vector3.Up * 2;
+
+            if (GroundEntity != null || stayOnGround)
+            {
+                point.z -= StepSize;
+            }
+
+            TraceResult pm = TraceBBox(Position, point, 4.0f);
+
+            OnPostCategorizePosition(stayOnGround, pm);
+        }
+
+        public virtual void OnPostCategorizePosition(bool stayOnGround, TraceResult trace)
+        {
+            if (Host.IsServer && trace.Hit && _fallVelocity < -FallDamageVelocity)
+            {
+                using (Prediction.Off())
+                {
+                    DamageInfo damageInfo = new DamageInfo
+                    {
+                        Attacker = Pawn,
+                        Flags = DamageFlags.Fall,
+                        HitboxIndex = (int) HitboxIndex.LeftFoot,
+                        Position = Position,
+                        Damage = (MathF.Abs(_fallVelocity) - FallDamageVelocity) * FallDamageScale
+                    }
+                    .WithAttacker(Pawn)
+                    .WithFlag(DamageFlags.Fall);
+
+                    Pawn.TakeDamage(damageInfo);
+                }
+            }
         }
 
         [ServerCmd(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
