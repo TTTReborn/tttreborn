@@ -13,8 +13,6 @@ namespace TTTReborn.Player
         public float StaminaLossPerSecond = 30f;
         public float StaminaGainPerSecond = 25f;
 
-        private bool _jumped = false;
-
         public DefaultWalkController() : base()
         {
             GroundFriction = 8f;
