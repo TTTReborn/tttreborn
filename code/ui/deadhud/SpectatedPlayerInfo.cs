@@ -7,11 +7,11 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    public class SpecatedPlayerInfo : Panel
+    public class SpectatedPlayerInfo : Panel
     {
-        public SpecatedPlayerInfo()
+        public SpectatedPlayerInfo()
         {
-            StyleSheet.Load("/ui/deadhud/SpecatedPlayerInfo.scss");
+            StyleSheet.Load("/ui/deadhud/SpectatedPlayerInfo.scss");
 
             new NamePanel(this);
             new IndicatorsPanel(this);

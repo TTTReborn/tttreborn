@@ -151,7 +151,7 @@ namespace TTTReborn.UI
 
         public class DeadHud : Panel
         {
-            public SpactatedPlayerInfo SpectatedPlayerInfo;
+            public SpectatedPlayerInfo SpectatedPlayerInfo;
 
             public DeadHud(Panel parent)
             {
