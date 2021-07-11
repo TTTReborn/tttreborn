@@ -12,7 +12,7 @@ namespace TTTReborn.UI
     {
         public PlayerInfo()
         {
-            StyleSheet.Load("/ui/PlayerInfo.scss");
+            StyleSheet.Load("/ui/alivehud/PlayerInfo.scss");
 
             new RolePanel(this);
             new IndicatorsPanel(this);

@@ -13,7 +13,7 @@ namespace TTTReborn.UI
 
         public DrowningIndicator()
         {
-            StyleSheet.Load("/ui/DrowningIndicator.scss");
+            StyleSheet.Load("/ui/alivehud/DrowningIndicator.scss");
 
             _drowningBar = new BarPanel(this, "100", "drowningbar");
 
