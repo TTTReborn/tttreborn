@@ -101,26 +101,6 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
-        {
-            if (!deadPlayer.IsValid())
-            {
-                return;
-            }
-
-            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
-        }
-
-        [ClientRpc]
-        public static void ClientCloseInspectMenu()
-        {
-            if (InspectMenu.Instance?.IsShowing ?? false)
-            {
-                InspectMenu.Instance.IsShowing = false;
-            }
-        }
-
-        [ClientRpc]
         public static void ClientOpenAndSetPostRoundMenu(string winningTeam, Color winningColor)
         {
             PostRoundMenu.Instance.OpenAndSetPostRoundMenu(new PostRoundStats(
@@ -133,19 +113,6 @@ namespace TTTReborn.Globals
         public static void ClientClosePostRoundMenu()
         {
             PostRoundMenu.Instance.IsShowing = false;
-        }
-
-        [ClientRpc]
-        public static void ClientDidDamage(Vector3 position, float amount, float inverseHealth)
-        {
-            Sound.FromScreen("dm.ui_attacker")
-                .SetPitch(1 + inverseHealth * 1);
-        }
-
-        [ClientRpc]
-        public static void ClientTookDamage(Vector3 position)
-        {
-
         }
     }
 }
