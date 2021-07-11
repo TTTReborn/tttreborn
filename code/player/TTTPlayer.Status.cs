@@ -71,7 +71,7 @@ namespace TTTReborn.Player
                 ClientAnotherPlayerDidDamage(client, info.Position, ((float) Health).LerpInverse(100, 0));
             }
 
-            ClientTookDamage(client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position, info.Damage);
+            ClientTookDamage(client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage);
 
             Event.Run("tttreborn.player.takedamage", this, info.Damage);
 
