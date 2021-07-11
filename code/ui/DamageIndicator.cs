@@ -11,7 +11,7 @@ namespace TTTReborn.UI
     {
         private float _maxDamageIndicatorTime = 10f;
         private float _currentRemainingDamageIndicatorTime = 0f;
-        private TimeSince _timeSinceLastDamage = 100f;
+        private TimeSince _timeSinceLastDamage = 0f;
         private float _lastDamage = 0f;
         private float _additionalDamageIndicatorTime = 0f;
 
@@ -50,7 +50,7 @@ namespace TTTReborn.UI
                 remainingDamageIndicatorTime += _additionalDamageIndicatorTime;
             }
 
-            if (_timeSinceLastDamage < remainingDamageIndicatorTime)
+            if (_lastDamage > 0f && _timeSinceLastDamage < remainingDamageIndicatorTime)
             {
                 _currentRemainingDamageIndicatorTime = remainingDamageIndicatorTime - _timeSinceLastDamage;
 
