@@ -21,20 +21,13 @@ namespace TTTReborn.Player
 
         public override void DeleteContents()
         {
-            foreach (Entity entity in List)
-            {
-                if (entity is IItem item)
-                {
-                    item.Remove();
-                }
-            }
-
-            base.DeleteContents();
-
             TTTPlayer player = Owner as TTTPlayer;
+            player.ClientClearInventory(To.Single(player));
 
             Perks.Clear();
             Ammo.Clear();
+
+            base.DeleteContents();
         }
 
         public override bool Add(Entity entity, bool makeActive = false)
