@@ -48,10 +48,5 @@ namespace TTTReborn.Items
         }
 
         public virtual bool CanDrop() => true;
-
-        public virtual bool IsBuyable(TTTPlayer player)
-        {
-            return !(player.Inventory as Inventory).IsCarryingType(GetType());
-        }
     }
 }
