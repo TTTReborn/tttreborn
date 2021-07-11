@@ -59,8 +59,8 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event("tttreborn.player.spawned")]
-        private void OnPlayerSpawned(TTTPlayer player)
+        [Event("tttreborn.player.inventory.clear")]
+        private void OnCarriableItemClear()
         {
             DeleteChildren();
         }

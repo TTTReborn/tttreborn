@@ -26,6 +26,12 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
+        public void ClientClearInventory()
+        {
+            Event.Run("tttreborn.player.inventory.clear");
+        }
+
+        [ClientRpc]
         public void ClientSetAmmo(AmmoType ammoType, int amount)
         {
             (Inventory as Inventory).Ammo.Set(ammoType, amount);

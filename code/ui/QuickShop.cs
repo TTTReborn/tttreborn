@@ -12,7 +12,7 @@ namespace TTTReborn.UI
 {
     public class QuickShop : Panel
     {
-        private static IBuyableItem _selectedItem;
+        private static ShopItemData? _selectedItemData;
         private static bool _isOpen = false;
 
         private Header _header;
@@ -84,13 +84,16 @@ namespace TTTReborn.UI
                 foreach (Type type in Globals.Utils.GetTypes<IBuyableItem>())
                 {
                     IBuyableItem item = Globals.Utils.GetObjectByType<IBuyableItem>(type);
+                    ShopItemData itemData = item.CreateItemData();
 
-                    if (_selectedItem == null)
+                    item.Delete();
+
+                    if (_selectedItemData == null)
                     {
-                        _selectedItem = item;
+                        _selectedItemData = itemData;
                     }
 
-                    AddItem(item);
+                    AddItem(itemData);
                 }
             }
 
@@ -102,17 +105,10 @@ namespace TTTReborn.UI
                 }
             }
 
-            public void AddItem(IBuyableItem buyableItem)
+            public void AddItem(ShopItemData itemData)
             {
                 ItemPanel itemPanel = new ItemPanel(_wrapper);
-                itemPanel.SetItem(buyableItem);
-
-                // TODO if WeaponAttributes are fixed, this should get the Attribute's data instead of creating an item's object (weapon spawn bug)
-                // This is a workaround to avoid issues
-                if (buyableItem is TTTWeapon weapon)
-                {
-                    weapon.EnableDrawing = false;
-                }
+                itemPanel.SetItem(itemData);
 
                 itemPanel.AddEventListener("onclick", () =>
                 {
@@ -121,7 +117,7 @@ namespace TTTReborn.UI
                         return;
                     }
 
-                    _selectedItem = buyableItem;
+                    _selectedItemData = itemData;
 
                     Update();
                 });
@@ -131,7 +127,7 @@ namespace TTTReborn.UI
 
             private class ItemPanel : Panel
             {
-                private IBuyableItem _buyableItem;
+                private ShopItemData? _buyableItemData;
 
                 private readonly Panel _iconPanel;
 
@@ -152,49 +148,48 @@ namespace TTTReborn.UI
                     _priceLabel = PriceHolder.Add.Label("", "price");
                 }
 
-                public void SetItem(IBuyableItem buyableItem)
+                public void SetItem(ShopItemData buyableItemData)
                 {
-                    this._buyableItem = buyableItem;
+                    _buyableItemData = buyableItemData;
 
-                    _priceLabel.Text = $"{buyableItem.Price}";
+                    _priceLabel.Text = $"{buyableItemData.Price}";
 
                     _iconPanel.Style.Background = new PanelBackground
                     {
-                        Texture = Texture.Load($"/ui/weapons/{buyableItem.Name}.png")
+                        Texture = Texture.Load($"/ui/weapons/{buyableItemData.Name}.png")
                     };
                     _iconPanel.Style.Dirty();
                 }
 
                 public void Update()
                 {
-                    IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(_buyableItem) != BuyError.None;
-
+                    IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(_buyableItemData) != BuyError.None;
 
                     SetClass("disabled", IsDisabled);
-                    SetClass("active", _selectedItem == _buyableItem);
+                    SetClass("active", _selectedItemData?.Name == _buyableItemData?.Name);
                 }
             }
         }
 
         private class Footer : Panel
         {
-            private Description description;
-            private BuyArea buyArea;
-            private IBuyableItem currentBuyableItem;
+            private Description _description;
+            private BuyArea _buyArea;
+            private ShopItemData? _currentItemData;
 
             public Footer(Panel parent)
             {
                 Parent = parent;
 
-                description = new Description(this);
-                buyArea = new BuyArea(this);
+                _description = new Description(this);
+                _buyArea = new BuyArea(this);
             }
 
             private class Description : Panel
             {
                 public Label EquipmentLabel;
                 public Label DescriptionLabel;
-                public IBuyableItem Item;
+                public ShopItemData? ItemData;
 
                 public Description(Panel parent)
                 {
@@ -204,16 +199,12 @@ namespace TTTReborn.UI
                     DescriptionLabel = Add.Label("Some item description...", "description");
                 }
 
-                public void SetItem(IBuyableItem item)
+                public void SetItem(ShopItemData? itemData)
                 {
-                    Item = item;
+                    ItemData = itemData;
 
-                    EquipmentLabel.Text = Item.Name;
-
-                    if (item is ICarriableItem carriable)
-                    {
-                        DescriptionLabel.Text = $"Slot: {(int) carriable.HoldType}";
-                    }
+                    EquipmentLabel.Text = itemData?.Name;
+                    DescriptionLabel.Text = itemData?.Description ?? "";
                 }
             }
 
@@ -223,7 +214,7 @@ namespace TTTReborn.UI
                 public Label DollarSignLabel;
                 public Label PriceLabel;
                 public Button BuyButton;
-                public IBuyableItem Item;
+                public ShopItemData? ItemData;
 
                 public BuyArea(Panel parent)
                 {
@@ -235,17 +226,17 @@ namespace TTTReborn.UI
                     BuyButton = Add.Button("Buy", "buyButton");
                     BuyButton.AddEventListener("onclick", () =>
                     {
-                        if (_selectedItem.IsBuyable(Local.Pawn as TTTPlayer))
+                        if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
                         {
-                            ConsoleSystem.Run($"requestitem", Item.Name);
+                            ConsoleSystem.Run($"requestitem", ItemData?.Name);
                         }
                     });
                 }
 
-                public void SetItem(IBuyableItem item)
+                public void SetItem(ShopItemData? itemData)
                 {
-                    Item = item;
-                    PriceLabel.Text = item.Price.ToString();
+                    ItemData = itemData;
+                    PriceLabel.Text = itemData?.Price.ToString();
                 }
             }
 
@@ -253,15 +244,15 @@ namespace TTTReborn.UI
             {
                 base.Tick();
 
-                if (currentBuyableItem == _selectedItem)
+                if (_currentItemData?.Name == _selectedItemData?.Name)
                 {
                     return;
                 }
 
-                currentBuyableItem = _selectedItem;
+                _currentItemData = _selectedItemData;
 
-                description.SetItem(currentBuyableItem);
-                buyArea.SetItem(currentBuyableItem);
+                _description.SetItem(_currentItemData);
+                _buyArea.SetItem(_currentItemData);
             }
         }
     }
