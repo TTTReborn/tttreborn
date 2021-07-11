@@ -4,9 +4,9 @@ using Sandbox;
 
 namespace TTTReborn.Player
 {
-    public class DefaultWalkController : WalkController
+    public partial class DefaultWalkController : WalkController
     {
-        [ServerVar, Net]
+        [ServerVar]
         public static bool IsSprintEnabled { get; set; } = false;
 
         public float MaxSprintSpeed = 300f;
@@ -22,14 +22,16 @@ namespace TTTReborn.Player
 
         public override void Simulate()
         {
-            if (!IsSprintEnabled || Pawn is not TTTPlayer player)
+            if (Pawn is not TTTPlayer player)
             {
                 base.Simulate();
 
                 return;
             }
 
-            if (player.GroundEntity.IsValid())
+            SprintSpeed = DefaultSpeed;
+
+            if (IsSprintEnabled && player.GroundEntity.IsValid())
             {
                 if (Input.Down(InputButton.Run) && Velocity.Length >= SprintSpeed * 0.8f)
                 {
@@ -39,11 +41,36 @@ namespace TTTReborn.Player
                 {
                     player.Stamina = MathF.Min(player.Stamina + StaminaGainPerSecond * Time.Delta, player.MaxStamina);
                 }
+
+                SprintSpeed = (MaxSprintSpeed - DefaultSpeed) / player.MaxStamina * player.Stamina + DefaultSpeed;
             }
 
-            SprintSpeed = (MaxSprintSpeed - DefaultSpeed) / player.MaxStamina * player.Stamina + DefaultSpeed;
-
             base.Simulate();
+        }
+
+        [ServerCmd(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
+        public static void ToggleSprinting()
+        {
+            if (!ConsoleSystem.Caller.HasPermission("ttt_toggle_sprint"))
+            {
+                return;
+            }
+
+            IsSprintEnabled = !IsSprintEnabled;
+
+            ClientSendToggleSprint(IsSprintEnabled);
+
+            string text = IsSprintEnabled ? "enabled" : "disabled";
+
+            Log.Info($"You {text} sprinting.");
+
+            return;
+        }
+
+        [ClientRpc]
+        public static void ClientSendToggleSprint(bool toggle)
+        {
+            IsSprintEnabled = toggle;
         }
     }
 }
