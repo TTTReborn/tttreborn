@@ -14,10 +14,10 @@ namespace TTTReborn.Player
         public float StaminaGainPerSecond = 25f;
         public float FallDamageVelocity = 550f;
         public float FallDamageScale = 0.25f;
-        public bool IsDiving = false;
-        public float DrownDamageTime = 15f;
+        public bool IsUnderwater = false;
+        public float DurationUnderwaterUntilDamage = 15f;
         public float DrownDamagePerSecond = 10f;
-        public TimeSince TimeSinceDivingStarted = 0f;
+        public TimeSince TimeSinceUnderwater = 0f;
 
         private float _fallVelocity;
 
@@ -52,13 +52,13 @@ namespace TTTReborn.Player
                 SprintSpeed = (MaxSprintSpeed - DefaultSpeed) / player.MaxStamina * player.Stamina + DefaultSpeed;
             }
 
-            IsDiving = Pawn.WaterLevel.Fraction == 1f;
+            IsUnderwater = Pawn.WaterLevel.Fraction == 1f;
 
-            if (!IsDiving)
+            if (!IsUnderwater)
             {
-                TimeSinceDivingStarted = 0f;
+                TimeSinceUnderwater = 0f;
             }
-            else if (Host.IsServer && TimeSinceDivingStarted > DrownDamageTime)
+            else if (Host.IsServer && TimeSinceUnderwater > DurationUnderwaterUntilDamage)
             {
                 using (Prediction.Off())
                 {
