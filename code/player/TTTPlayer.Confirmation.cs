@@ -47,7 +47,7 @@ namespace TTTReborn.Player
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-                        RPCs.ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
                     }
 
                     if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
@@ -73,7 +73,7 @@ namespace TTTReborn.Player
 
                             RPCs.ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
 
-                            RPCs.ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
                         }
                     }
 
@@ -82,7 +82,7 @@ namespace TTTReborn.Player
 
                 if (_inspectingPlayerCorpse != null)
                 {
-                    RPCs.ClientCloseInspectMenu(client);
+                    ClientCloseInspectMenu(client);
 
                     _inspectingPlayerCorpse = null;
                 }

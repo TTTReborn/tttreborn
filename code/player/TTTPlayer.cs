@@ -27,8 +27,6 @@ namespace TTTReborn.Player
         public TTTPlayer()
         {
             Inventory = new Inventory(this);
-
-            _lastGroundEntity = GroundEntity;
         }
 
         public void MakeSpectator(Vector3 position = default)
@@ -158,7 +156,6 @@ namespace TTTReborn.Player
             if (IsServer)
             {
                 TickAttemptInspectPlayerCorpse();
-                TickPlayerFalling();
             }
 
             PawnController controller = GetActiveController();
