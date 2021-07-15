@@ -2,6 +2,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
+using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -73,6 +74,40 @@ namespace TTTReborn.Player
         public void ClientClearPerks()
         {
             (Inventory as Inventory).Perks.Clear();
+        }
+
+        [ClientRpc]
+        public void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
+        {
+            if (!deadPlayer.IsValid())
+            {
+                return;
+            }
+
+            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
+        }
+
+        [ClientRpc]
+        public void ClientCloseInspectMenu()
+        {
+            if (InspectMenu.Instance?.IsShowing ?? false)
+            {
+                InspectMenu.Instance.IsShowing = false;
+            }
+        }
+
+        [ClientRpc]
+        public void ClientAnotherPlayerDidDamage(Vector3 position, float inverseHealth)
+        {
+            Sound.FromScreen("dm.ui_attacker")
+                .SetPitch(1 + inverseHealth * 1)
+                .SetPosition(position);
+        }
+
+        [ClientRpc]
+        public void ClientTookDamage(Vector3 position, float damage)
+        {
+            Event.Run("tttreborn.player.takedamage", this, damage);
         }
     }
 }

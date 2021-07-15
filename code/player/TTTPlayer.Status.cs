@@ -59,6 +59,8 @@ namespace TTTReborn.Player
                 info.Damage *= 2.0f;
             }
 
+            To client = To.Single(this);
+
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
                 if (Gamemode.Game.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
@@ -66,13 +68,12 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                RPCs.ClientDidDamage(info.Position, info.Damage, ((float) Health).LerpInverse(100, 0));
+                ClientAnotherPlayerDidDamage(client, info.Position, ((float) Health).LerpInverse(100, 0));
             }
 
-            if (info.Weapon != null)
-            {
-                RPCs.ClientTookDamage(info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position);
-            }
+            ClientTookDamage(client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage);
+
+            Event.Run("tttreborn.player.takedamage", this, info.Damage);
 
             // Play pain sounds
             if ((info.Flags & DamageFlags.Fall) == DamageFlags.Fall)

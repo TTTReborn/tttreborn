@@ -14,7 +14,7 @@ namespace TTTReborn.UI
         {
             Current = this;
 
-            StyleSheet.Load("/ui/InfoFeed.scss");
+            StyleSheet.Load("/ui/generalhud/InfoFeed.scss");
         }
 
         public virtual Panel AddEntry(Client leftClient, string method)

@@ -38,7 +38,7 @@ namespace TTTReborn.UI
         {
             Instance = this;
 
-            StyleSheet.Load("/ui/PostRoundMenu.scss");
+            StyleSheet.Load("/ui/generalhud/PostRoundMenu.scss");
 
             _header = new Header(this);
             IsShowing = false;
