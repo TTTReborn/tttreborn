@@ -11,7 +11,7 @@ namespace TTTReborn.UI
 
         public GameTimer()
         {
-            StyleSheet.Load("/ui/GameTimer.scss");
+            StyleSheet.Load("/ui/generalhud/GameTimer.scss");
 
             _gameTimerContent = new GameTimerContent(this);
         }
