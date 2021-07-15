@@ -9,11 +9,11 @@ namespace TTTReborn.UI
 {
     public partial class DamageIndicator : Panel
     {
-        private float _maxDamageIndicatorTime = 10f;
-        private float _currentRemainingDamageIndicatorTime = 0f;
+        private float _maxDamageIndicatorDuration = 10f;
+        private float _currentRemainingDamageIndicatorDuration = 0f;
         private TimeSince _timeSinceLastDamage = 0f;
         private float _lastDamage = 0f;
-        private float _additionalDamageIndicatorTime = 0f;
+        private float _additionalDamageIndicatorDuration = 0f;
 
         public DamageIndicator()
         {
@@ -32,8 +32,8 @@ namespace TTTReborn.UI
 
             _lastDamage = damage;
             _timeSinceLastDamage = 0f;
-            _additionalDamageIndicatorTime += _currentRemainingDamageIndicatorTime;
-            _currentRemainingDamageIndicatorTime = 0f;
+            _additionalDamageIndicatorDuration += _currentRemainingDamageIndicatorDuration;
+            _currentRemainingDamageIndicatorDuration = 0f;
         }
 
         public override void Tick()
@@ -43,24 +43,25 @@ namespace TTTReborn.UI
                 return;
             }
 
-            float remainingDamageIndicatorTime = _maxDamageIndicatorTime * (_lastDamage / player.MaxHealth);
+            float remainingDamageIndicatorTime = _maxDamageIndicatorDuration * (_lastDamage / player.MaxHealth);
 
-            if (_additionalDamageIndicatorTime != 0f)
+            if (_additionalDamageIndicatorDuration != 0f)
             {
-                remainingDamageIndicatorTime += _additionalDamageIndicatorTime;
+                remainingDamageIndicatorTime += _additionalDamageIndicatorDuration;
+                _additionalDamageIndicatorDuration = 0f;
             }
 
             if (_lastDamage > 0f && _timeSinceLastDamage < remainingDamageIndicatorTime)
             {
-                _currentRemainingDamageIndicatorTime = remainingDamageIndicatorTime - _timeSinceLastDamage;
+                _currentRemainingDamageIndicatorDuration = remainingDamageIndicatorTime - _timeSinceLastDamage;
 
                 Style.Display = DisplayMode.Flex;
-                Style.Opacity = Math.Clamp((_currentRemainingDamageIndicatorTime / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / _maxDamageIndicatorTime), 0f, 1f);
+                Style.Opacity = Math.Clamp((_currentRemainingDamageIndicatorDuration / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / _maxDamageIndicatorDuration), 0f, 1f);
                 Style.Dirty();
             }
             else
             {
-                _currentRemainingDamageIndicatorTime = 0f;
+                _currentRemainingDamageIndicatorDuration = 0f;
 
                 Style.Display = DisplayMode.None;
             }
