@@ -2,7 +2,6 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Player;
-using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
@@ -13,10 +12,11 @@ namespace TTTReborn.Roles
 
         public override int DefaultCredits => 100;
 
+        public override string DefaultTeamName => "Traitors";
+
         public TraitorRole() : base()
         {
-            DefaultTeam = TTTTeam.GetTeam("Traitors");
-            DefaultTeam.Color = Color;
+
         }
 
         public override void OnSelect(TTTPlayer player)

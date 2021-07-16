@@ -5,6 +5,8 @@ namespace TTTReborn.Roles
     {
         public override Color Color => Color.Transparent;
 
+        public override string DefaultTeamName => "Nones";
+
         public NoneRole() : base()
         {
 

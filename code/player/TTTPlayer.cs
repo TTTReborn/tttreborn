@@ -142,7 +142,10 @@ namespace TTTReborn.Player
                 ActiveChild = Input.ActiveChild;
             }
 
-            TickPlayerVoiceChat();
+            if (IsClient)
+            {
+                TickPlayerVoiceChat();
+            }
 
             if (LifeState != LifeState.Alive)
             {

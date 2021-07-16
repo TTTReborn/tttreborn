@@ -26,16 +26,26 @@ namespace TTTReborn.Roles
 
         public TTTTeam DefaultTeam { get; protected set; }
 
+        public abstract string DefaultTeamName { get; }
+
         public virtual int DefaultCredits => 0;
 
         public TTTRole()
         {
             Name = Utils.GetTypeName(GetType());
+
+            DefaultTeam = TTTTeam.GetTeam(DefaultTeamName);
+            DefaultTeam.Color = Color;
         }
 
         public virtual void OnSelect(TTTPlayer player)
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
+
+            if (player.IsTeamVoiceChatEnabled)
+            {
+                player.ClientToggleTeamVoiceChat(To.Single(player), false);
+            }
         }
 
         public virtual void OnDeselect(TTTPlayer player)

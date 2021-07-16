@@ -125,6 +125,11 @@ namespace TTTReborn.Gamemode
                 }
             }
 
+            if (sourcePlayer.IsTeamVoiceChatEnabled && destPlayer.Team != sourcePlayer.Team)
+            {
+                return false;
+            }
+
             return true;
         }
 
