@@ -133,14 +133,14 @@ namespace TTTReborn.Gamemode
             return true;
         }
 
-		/// <summary>
-		/// Someone is speaking via voice chat. This might be someone in your game,
-		/// or in your party, or in your lobby.
-		/// </summary>
-		public override void OnVoicePlayed(ulong steamId, float level)
-		{
-			VoiceList.Current?.OnVoicePlayed(steamId, level);
-		}
+        /// <summary>
+        /// Someone is speaking via voice chat. This might be someone in your game,
+        /// or in your party, or in your lobby.
+        /// </summary>
+        public override void OnVoicePlayed(ulong steamId, float level)
+        {
+            VoiceList.Current?.OnVoicePlayed(steamId, level);
+        }
 
         public override void PostLevelLoaded()
         {
