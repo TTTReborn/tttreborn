@@ -150,6 +150,7 @@ namespace TTTReborn.Player
             TickItemSimulate();
             TickPlayerUse();
             TickPlayerDropCarriable();
+            TickPlayerVoiceChat();
 
             SimulateActiveChild(client, ActiveChild);
 
