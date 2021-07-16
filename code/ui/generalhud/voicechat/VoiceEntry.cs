@@ -6,6 +6,9 @@ using Sandbox.UI.Construct;
 
 using Steamworks;
 
+using TTTReborn.Player;
+using TTTReborn.Roles;
+
 namespace TTTReborn.UI
 {
     public class VoiceEntry : Panel
@@ -14,9 +17,11 @@ namespace TTTReborn.UI
 
         readonly Label Name;
         readonly Image Avatar;
+        readonly Client client;
 
         private float _voiceLevel = 0.5f;
         private float _targetVoiceLevel = 0;
+        private Color _deadColor = Color.FromBytes(255, 204, 3);
 
         RealTimeSince timeSincePlayed;
 
@@ -30,6 +35,16 @@ namespace TTTReborn.UI
             Avatar.SetTexture($"avatar:{steamId}");
 
             Name = Add.Label(Friend.Name, "name");
+
+            foreach (Client loopClient in Client.All)
+            {
+                if (loopClient.SteamId == steamId)
+                {
+                    client = loopClient;
+
+                    break;
+                }
+            }
         }
 
         public void Update(float level)
@@ -63,6 +78,23 @@ namespace TTTReborn.UI
             _voiceLevel = _voiceLevel.LerpTo(_targetVoiceLevel, Time.Delta * 40.0f);
 
             Style.Left = _voiceLevel * -32.0f * timeoutInv;
+
+            if (client != null && client.IsValid() && client.Pawn is TTTPlayer player)
+            {
+                if (player.LifeState == LifeState.Dead)
+                {
+                    Style.BackgroundColor = _deadColor;
+                }
+                else if (player.Role is not NoneRole)
+                {
+                    Style.BackgroundColor = player.Role.Color;
+                }
+            }
+            else
+            {
+                Style.BackgroundColor = null;
+            }
+
             Style.Dirty();
         }
     }

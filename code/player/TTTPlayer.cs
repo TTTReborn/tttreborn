@@ -142,6 +142,8 @@ namespace TTTReborn.Player
                 ActiveChild = Input.ActiveChild;
             }
 
+            TickPlayerVoiceChat();
+
             if (LifeState != LifeState.Alive)
             {
                 return;
@@ -150,7 +152,6 @@ namespace TTTReborn.Player
             TickItemSimulate();
             TickPlayerUse();
             TickPlayerDropCarriable();
-            TickPlayerVoiceChat();
 
             SimulateActiveChild(client, ActiveChild);
 
