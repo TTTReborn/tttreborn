@@ -1,54 +1,54 @@
 VoiceList
 {
-	position: absolute;
-	top: 30px;
-	left: 60px;
-	flex-direction: column;
-	width: 240px;
-	padding: 5px;
-	padding-bottom: 0px;
-	font-family: Poppins;
+    position: absolute;
+    top: 30px;
+    left: 60px;
+    flex-direction: column;
+    width: 240px;
+    padding: 5px;
+    padding-bottom: 0px;
+    font-family: Poppins;
 
-	VoiceEntry
-	{
-		background-color: rgba(black, 0.8);
-		flex-direction: row;
-		padding: 6px;
-		margin-bottom: 5px;
-		align-items: center;
-		align-content: center;
-		border-radius: 4px;
-		overflow: hidden;
-		transition: all 0.1s ease-out;
-		left: 0px;
+    VoiceEntry
+    {
+        background-color: rgba(black, 0.8);
+        flex-direction: row;
+        padding: 6px;
+        margin-bottom: 5px;
+        align-items: center;
+        align-content: center;
+        border-radius: 4px;
+        overflow: hidden;
+        transition: all 0.1s ease-out;
+        left: 0px;
 
-		&:intro
-		{
-			opacity: 0;
-			margin-left: 20px;
-		}
+        &:intro
+        {
+            opacity: 0;
+            margin-left: 20px;
+        }
 
-		&:outro
-		{
-			opacity: 0;
-			margin-left: 20px;
-			transition: all 0.1s ease-out;
-		}
+        &:outro
+        {
+            opacity: 0;
+            margin-left: 20px;
+            transition: all 0.1s ease-out;
+        }
 
-		.avatar
-		{
-			width: 30px;
-			height: 30px;
-			border-radius: 50%;
-		}
+        .avatar
+        {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
 
-		.name
-		{
-			font-size: 16px;
-			font-weight: 500;
-			margin-left: 10px;
-			flex-grow: 1;
-			color: #ffffff;
-		}
-	}
+        .name
+        {
+            font-size: 16px;
+            font-weight: 500;
+            margin-left: 10px;
+            flex-grow: 1;
+            color: #ffffff;
+        }
+    }
 }
