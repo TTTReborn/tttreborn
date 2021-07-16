@@ -139,7 +139,7 @@ namespace TTTReborn.Gamemode
         /// </summary>
         public override void OnVoicePlayed(ulong steamId, float level)
         {
-            VoiceList.Current?.OnVoicePlayed(steamId, level);
+            UI.VoiceList.Current?.OnVoicePlayed(steamId, level);
         }
 
         public override void PostLevelLoaded()
