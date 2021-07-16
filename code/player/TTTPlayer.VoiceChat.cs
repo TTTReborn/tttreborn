@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Roles;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Player
@@ -31,12 +30,7 @@ namespace TTTReborn.Player
         {
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
 
-            if (!player.IsValid())
-            {
-                return;
-            }
-
-            if (toogle && !CanUseTeamVoiceChat(player))
+            if (!player.IsValid() || toogle && !CanUseTeamVoiceChat(player))
             {
                 return;
             }
@@ -48,12 +42,7 @@ namespace TTTReborn.Player
 
         public static bool CanUseTeamVoiceChat(TTTPlayer player)
         {
-            if (player.Team == TTTTeam.GetTeam("Traitors"))
-            {
-                return true;
-            }
-
-            return false;
+            return player.Team == TTTTeam.GetTeam("Traitors");
         }
 
         [ClientRpc]
@@ -61,9 +50,8 @@ namespace TTTReborn.Player
         {
             IsTeamVoiceChatEnabled = toggle;
 
-            // Activate voice chat
+            // De-/Activate voice chat
             ConsoleSystem.Run(toggle ? "+" : "-" + "iv_voice");
-            ConsoleSystem.Run(toggle ? "+" : "-" + "iv_voice"); // workaround to get ivs reset triggered
         }
     }
 }
