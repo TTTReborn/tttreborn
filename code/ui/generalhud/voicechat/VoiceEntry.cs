@@ -48,7 +48,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            float speakTimeout = 2.0f;
+            float speakTimeout = 0.5f;
 
             float timeoutInv = 1 - (timeSincePlayed / speakTimeout);
             timeoutInv = MathF.Min(timeoutInv * 2.0f, 1.0f);
