@@ -15,7 +15,7 @@ namespace TTTReborn.UI
     {
         public InventorySelection()
         {
-            StyleSheet.Load("/ui/alivehud/InventorySelection.scss");
+            StyleSheet.Load("/ui/alivehud/inventoryselection/InventorySelection.scss");
 
             if (Local.Pawn is not TTTPlayer player)
             {
