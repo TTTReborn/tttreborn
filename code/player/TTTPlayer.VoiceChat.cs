@@ -89,7 +89,7 @@ namespace TTTReborn.Player
             }
             else
             {
-                // player did not talked before
+                // Player has not talked before
                 if (!_oldReceiveClients.ContainsKey(player))
                 {
                     return;
