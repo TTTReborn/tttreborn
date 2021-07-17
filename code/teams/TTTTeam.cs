@@ -42,9 +42,14 @@ namespace TTTReborn.Teams
     {
         public static TTTTeam GetTeam(string teamname)
         {
-            if (teamname == null || !TTTTeam.Teams.TryGetValue(teamname, out TTTTeam team))
+            if (teamname == null)
             {
                 return null;
+            }
+
+            if (!TTTTeam.Teams.TryGetValue(teamname, out TTTTeam team))
+            {
+                team = Utils.GetObjectByType<TTTTeam>(Utils.GetTypeByName<TTTTeam>(teamname));
             }
 
             return team;
