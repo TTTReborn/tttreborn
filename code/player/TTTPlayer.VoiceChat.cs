@@ -143,16 +143,25 @@ namespace TTTReborn.Player
 
             Client playerClient = player.GetClientOwner();
 
-            // sync already talking other players to the current player as well
+            // sync already talking other players with the current player
             foreach (Client client in Client.All)
             {
                 if (client.Pawn is TTTPlayer pawnPlayer)
                 {
-                    if (player != pawnPlayer && player.Team == pawnPlayer.Team && pawnPlayer.IsTeamVoiceChatEnabled)
+                    if (player != pawnPlayer && pawnPlayer.IsTeamVoiceChatEnabled)
                     {
-                        _oldReceiveClients[player].Add(playerClient);
+                        bool activateTalking = player.Team == pawnPlayer.Team;
 
-                        pawnPlayer.ClientToggleTeamVoiceChat(To.Single(player), true);
+                        if (activateTalking)
+                        {
+                            _oldReceiveClients[pawnPlayer].Add(playerClient);
+                        }
+                        else
+                        {
+                            _oldReceiveClients[pawnPlayer].Remove(playerClient);
+                        }
+
+                        pawnPlayer.ClientToggleTeamVoiceChat(To.Single(player), activateTalking);
                     }
                 }
             }
