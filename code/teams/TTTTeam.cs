@@ -23,7 +23,7 @@ namespace TTTReborn.Teams
 
         public abstract Color Color { get; }
 
-        public readonly List<TTTPlayer> Members;
+        public readonly List<TTTPlayer> Members = new();
 
         public static TTTTeam Instance;
 
