@@ -94,7 +94,6 @@ namespace TTTReborn.UI
         public class AliveHud : Panel
         {
             public DamageIndicator DamageIndicator;
-            public Effects Effects;
             public InventoryWrapper InventoryWrapper;
             public PlayerInfo PlayerInfo;
             public InspectMenu InspectMenu;
@@ -111,7 +110,6 @@ namespace TTTReborn.UI
             {
                 InventoryWrapper ??= Parent.AddChild<InventoryWrapper>();
                 DamageIndicator ??= Parent.AddChild<DamageIndicator>();
-                Effects ??= Parent.AddChild<Effects>();
                 PlayerInfo ??= Parent.AddChild<PlayerInfo>();
                 InspectMenu ??= Parent.AddChild<InspectMenu>();
                 Nameplate ??= Parent.AddChild<Nameplate>();
@@ -123,9 +121,6 @@ namespace TTTReborn.UI
             {
                 DamageIndicator?.Delete();
                 DamageIndicator = null;
-
-                Effects?.Delete();
-                Effects = null;
 
                 InventoryWrapper?.Delete();
                 InventoryWrapper = null;
