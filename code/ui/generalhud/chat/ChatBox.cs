@@ -11,9 +11,16 @@ namespace TTTReborn.UI
 {
     public partial class ChatBox : Panel
     {
-        public static ChatBox Instance;
+        public static ChatBox Instance { get; private set; }
 
-        public List<ChatEntry> Messages;
+        public readonly List<ChatEntry> Messages = new();
+
+        public const int MAX_MESSAGES_COUNT = 200;
+        public const float MAX_DISPLAY_TIME = 8f;
+
+        public bool IsOpened { get; private set; } = false;
+
+        private TimeSince _lastChatFocus = 0f;
 
         private readonly Panel _canvas;
         private readonly TextEntry _input;
@@ -25,8 +32,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/chat/ChatBox.scss");
 
             _canvas = Add.Panel("chat_canvas");
-
-            Messages = new List<ChatEntry>();
+            _canvas.PreferScrollToBottom = true;
 
             _input = Add.TextEntry("");
             _input.AddEventListener("onsubmit", Submit);
@@ -42,18 +48,29 @@ namespace TTTReborn.UI
             base.Tick();
 
             SetClass("dead", Local.Pawn.LifeState == LifeState.Dead);
+
+            if (IsOpened)
+            {
+                _lastChatFocus = 0f;
+            }
+
+            _canvas.SetClass("hide", _lastChatFocus > MAX_DISPLAY_TIME);
         }
 
         private void Open()
         {
-            AddClass("open");
+            IsOpened = true;
+
+            SetClass("open", true);
 
             _input.Focus();
         }
 
         private void Close()
         {
-            RemoveClass("open");
+            IsOpened = false;
+
+            SetClass("open", false);
 
             _input.Blur();
         }
@@ -67,7 +84,8 @@ namespace TTTReborn.UI
                 return;
             }
 
-            var msg = _input.Text.Trim();
+            string msg = _input.Text.Trim();
+
             _input.Text = "";
 
             if (string.IsNullOrWhiteSpace(msg))
@@ -80,8 +98,18 @@ namespace TTTReborn.UI
 
         public void AddEntry(string name, string message, string avatar, LifeState lifeState)
         {
-            var chatEntry = _canvas.AddChild<ChatEntry>();
+            _lastChatFocus = 0f;
 
+            if (Messages.Count > MAX_MESSAGES_COUNT)
+            {
+                ChatEntry entry = Messages[0];
+
+                Messages.RemoveAt(0);
+
+                entry.Delete();
+            }
+
+            ChatEntry chatEntry = _canvas.AddChild<ChatEntry>();
             chatEntry.Name = name;
             chatEntry.Text = message;
 
@@ -103,9 +131,8 @@ namespace TTTReborn.UI
             chatEntry.SetClass("showHead", showHead);
 
             chatEntry.Index = Messages.Count;
-            Messages.Add(chatEntry);
 
-            chatEntry.OnDeleted();
+            Messages.Add(chatEntry);
         }
 
         [ClientCmd("chat_add", CanBeCalledFromServer = true)]
