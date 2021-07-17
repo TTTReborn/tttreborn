@@ -41,6 +41,8 @@ namespace TTTReborn.Roles
         public virtual void OnSelect(TTTPlayer player)
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
+
+            Event.Run("tttreborn.player.role.onselect", player);
         }
 
         public virtual void OnDeselect(TTTPlayer player)
