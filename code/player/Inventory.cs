@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
-
 using Sandbox;
-
 using TTTReborn.Items;
 
 namespace TTTReborn.Player
@@ -10,8 +8,8 @@ namespace TTTReborn.Player
     public partial class Inventory : BaseInventory
     {
         public readonly PerksInventory Perks;
-
         public readonly AmmoInventory Ammo;
+        public int[] SlotCapacity => new int[] {1,1,1,3,3};
 
         public Inventory(TTTPlayer player) : base(player)
         {
@@ -42,13 +40,13 @@ namespace TTTReborn.Player
         {
             TTTPlayer player = Owner as TTTPlayer;
 
-            if (IsCarryingType(entity.GetType()))
-            {
-                return false;
-            }
-
             if (entity is ICarriableItem carriable)
             {
+                if (!HasEmptySlot(carriable.SlotType))
+                {
+                    return false;
+                }
+
                 player.ClientOnPlayerCarriableItemPickup(To.Single(player), entity);
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
@@ -93,6 +91,13 @@ namespace TTTReborn.Player
             }
 
             return true;
+        }
+
+        public bool HasEmptySlot(SlotType slotType)
+        {
+            int itemsInSlot = List.Count(x => ((ICarriableItem) x).SlotType == slotType);
+
+            return SlotCapacity[(int)slotType] - itemsInSlot > 0;
         }
 
         public bool IsCarryingType(Type t)

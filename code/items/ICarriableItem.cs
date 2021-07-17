@@ -9,9 +9,19 @@ namespace TTTReborn.Items
         Special
     }
 
+    public enum SlotType
+    {
+        Primary = 1,
+        Secondary,
+        Melee,
+        Equipment,
+        Grenade
+    }
+
     public interface ICarriableItem : IItem
     {
         HoldType HoldType { get; }
+        SlotType SlotType { get; }
 
         bool CanDrop();
     }

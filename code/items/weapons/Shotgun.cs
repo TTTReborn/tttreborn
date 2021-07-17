@@ -8,17 +8,15 @@ namespace TTTReborn.Items
     partial class Shotgun : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
-        public override HoldType HoldType => Items.HoldType.Primary;
+        public override HoldType HoldType => HoldType.Primary;
+        public override SlotType SlotType => SlotType.Primary;
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
         public override AmmoType AmmoType => AmmoType.Buckshot;
         public override int ClipSize => 8;
         public override float ReloadTime => 0.5f;
         public override float DeployTime => 0.6f;
-        public override bool HasLaserDot => true;
-        public override bool HasFlashlight => true;
         public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
-        public override int Bucket => 3;
 
         public virtual int Price => 100;
 
@@ -112,7 +110,7 @@ namespace TTTReborn.Items
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetParam("holdtype", 2);
+            anim.SetParam("holdtype", (int)HoldType);
             anim.SetParam("aimat_weight", 1.0f);
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using Sandbox;
 
 using TTTReborn.Player;
 
@@ -9,21 +10,20 @@ namespace TTTReborn.Items
         public string Name;
         public string Description;
         public int Price;
+        public SlotType SlotType;
         public Type Type;
 
         public bool IsBuyable(TTTPlayer player)
         {
-            if (Type.IsSubclassOf(typeof(TTTEquipment)))
+            Inventory inventory = player.Inventory as Inventory;
+
+            if (Type.IsSubclassOf(typeof(TTTPerk)))
             {
-                return !(player.Inventory as Inventory).IsCarryingType(Type);
+                return !inventory.Perks.Has(Name);
             }
-            else if (Type.IsSubclassOf(typeof(TTTPerk)))
+            else if (Type.IsSubclassOf(typeof(TTTEquipment)) || Type.IsSubclassOf(typeof(TTTWeapon)))
             {
-                return !(player.Inventory as Inventory).Perks.Has(Name);
-            }
-            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
-            {
-                return !(player.Inventory as Inventory).IsCarryingType(Type);
+                return !inventory.IsCarryingType(Type) && inventory.HasEmptySlot(SlotType);
             }
 
             return false;
@@ -45,7 +45,8 @@ namespace TTTReborn.Items
 
             if (this is ICarriableItem carriableItem)
             {
-                itemData.Description = $"Slot: {(int) carriableItem.HoldType}";
+                itemData.Description = $"Slot: { carriableItem.SlotType }";
+                itemData.SlotType = carriableItem.SlotType;
             }
 
             return itemData;

@@ -19,17 +19,14 @@ namespace TTTReborn.Items
     [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
-        public virtual HoldType HoldType => Items.HoldType.Pistol;
+        public virtual HoldType HoldType => HoldType.Pistol;
+        public virtual SlotType SlotType => SlotType.Primary;
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
         public virtual float DeployTime => 0.6f;
-        public virtual int Bucket => 1;
-        public virtual int BucketWeight => 100;
         public virtual bool UnlimitedAmmo => false;
         public virtual float ChargeAttackDuration => 2;
-        public virtual bool HasFlashlight => false;
-        public virtual bool HasLaserDot => false;
         public virtual int BaseDamage => 10;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         // TODO add player role to weapon to access in UI InventorySelection.cs.
@@ -118,7 +115,7 @@ namespace TTTReborn.Items
 
         public override void Reload()
         {
-            if (HoldType == Items.HoldType.Melee || IsReloading || AmmoClip >= ClipSize)
+            if (SlotType == SlotType.Melee || IsReloading || AmmoClip >= ClipSize)
             {
                 return;
             }
