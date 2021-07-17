@@ -55,7 +55,7 @@ namespace TTTReborn.Player
             Role?.OnDeselect(this);
 
             Role = role;
-            Team = team ?? Role.DefaultTeam;
+            Team = team ?? TeamFunctions.GetTeamByType(Role.DefaultTeamType);
 
             if (oldTeam != Team)
             {

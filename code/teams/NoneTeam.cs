@@ -1,9 +1,8 @@
 namespace TTTReborn.Teams
 {
+    [TeamAttribute("Nones")]
     public class NoneTeam : TTTTeam
     {
-        public override string Name => "Nones";
-
         public override Color Color => Color.Transparent;
 
         public NoneTeam() : base()

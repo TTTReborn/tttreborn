@@ -56,7 +56,7 @@ namespace TTTReborn.Globals
 
             if (teamName != null)
             {
-                team = (TTTTeam) Utils.GetTypeByName<TTTTeam>(teamName).GetProperty("Instance").GetValue(null);
+                team = TeamFunctions.GetTeam(teamName);
             }
 
             player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), team);
@@ -74,7 +74,7 @@ namespace TTTReborn.Globals
 
             if (teamName != null)
             {
-                team = (TTTTeam) Utils.GetTypeByName<TTTTeam>(teamName).GetProperty("Instance").GetValue(null);
+                team = TeamFunctions.GetTeam(teamName);
             }
 
             deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), team);
