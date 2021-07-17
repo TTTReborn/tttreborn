@@ -110,8 +110,6 @@ namespace TTTReborn.UI
             public void CreateHud()
             {
                 InventoryWrapper ??= Parent.AddChild<InventoryWrapper>();
-                // Effects ??= InventoryWrapper.AddChild<Effects>();
-                // InventorySelection ??= Parent.AddChild<InventorySelection>();
                 DamageIndicator ??= Parent.AddChild<DamageIndicator>();
                 Effects ??= Parent.AddChild<Effects>();
                 PlayerInfo ??= Parent.AddChild<PlayerInfo>();
@@ -132,14 +130,8 @@ namespace TTTReborn.UI
                 InventoryWrapper?.Delete();
                 InventoryWrapper = null;
 
-                // Effects?.Delete();
-                // Effects = null;
-
                 PlayerInfo?.Delete();
                 PlayerInfo = null;
-
-                // InventorySelection?.Delete();
-                // InventorySelection = null;
 
                 InspectMenu?.Delete();
                 InspectMenu = null;

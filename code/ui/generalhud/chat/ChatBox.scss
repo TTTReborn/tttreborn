@@ -1,5 +1,5 @@
-﻿$alive : #c0fb2e;
-$dead : #ffcc03;
+﻿$alive: #c0fb2e;
+$dead: #ffcc03;
 
 ChatBox {
     position: absolute;
@@ -12,7 +12,7 @@ ChatBox {
     font-size: 13px;
     border-radius: 10px;
 
-    textentry {
+    TextEntry {
         opacity: 0;
         color: white;
         padding: 10px 10px 5px;
@@ -28,7 +28,7 @@ ChatBox {
     }
 
     &.dead {
-        textentry {
+        TextEntry {
             border-color: $dead;
         }
     }
@@ -39,7 +39,7 @@ ChatBox {
     }
 
     &.open {
-        textentry {
+        TextEntry {
             opacity: 1;
         }
     }
@@ -53,7 +53,7 @@ ChatBox {
     }
 }
 
-chatentry {
+ChatEntry {
     background-color: rgba(black, 0.8);
     margin-top: 1px;
     color: white;
@@ -85,13 +85,13 @@ chatentry {
     .head {
         display: none;
         margin-bottom: 5px;
+
         image {
             width: 25px;
             height: 25px;
             border-radius: 100px;
             margin-right: 10px;
         }
-
         .name {
             padding-right: 10px;
             font-weight: 600;
@@ -116,18 +116,15 @@ chatentry {
     .message {
         color: #ccc;
         font-size: 14px;
-        //	background-color: red;
         flex-grow: 1;
     }
 
     &.noname {
         flex-direction: row;
         padding: 6px 12px;
+
         .head {
             margin-bottom: 0;
-        }
-        .message {
-
         }
     }
 

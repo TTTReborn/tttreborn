@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -8,21 +7,6 @@ using Sandbox.UI.Construct;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 
-// Chat needs to hook into s&box in order to function.
-namespace Sandbox.Hooks
-{
-    public static partial class Chat
-    {
-        public static event Action OnOpenChat;
-
-        [ClientCmd("openchat")]
-        internal static void MessageMode()
-        {
-            OnOpenChat?.Invoke();
-        }
-    }
-}
-
 namespace TTTReborn.UI
 {
     public partial class ChatBox : Panel
@@ -30,6 +14,7 @@ namespace TTTReborn.UI
         public static ChatBox Instance;
 
         public List<ChatEntry> Messages;
+
         private readonly Panel _canvas;
         private readonly TextEntry _input;
 
@@ -55,17 +40,21 @@ namespace TTTReborn.UI
         public override void Tick()
         {
             base.Tick();
+
             SetClass("dead", Local.Pawn.LifeState == LifeState.Dead);
         }
+
         private void Open()
         {
             AddClass("open");
+
             _input.Focus();
         }
 
         private void Close()
         {
             RemoveClass("open");
+
             _input.Blur();
         }
 
@@ -142,7 +131,7 @@ namespace TTTReborn.UI
         {
             Assert.NotNull(ConsoleSystem.Caller);
 
-            // TODO: Consider REGEX to remove any messed up user chat messages.
+            // TODO: Consider RegEx to remove any messed up user chat messages.
             if (message.Contains('\n') || message.Contains('\r'))
             {
                 return;

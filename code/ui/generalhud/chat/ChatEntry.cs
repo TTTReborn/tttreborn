@@ -25,14 +25,13 @@ namespace TTTReborn.UI
             Avatar = HeadHolder.Add.Image();
             NameLabel = HeadHolder.Add.Label("", "name");
             Message = Add.Label("Message", "message");
-
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            if (_timeSinceBorn > 10)
+            if (_timeSinceBorn > 10f)
             {
                 Delete();
                 ChatBox.Instance.Messages.RemoveAt(0);

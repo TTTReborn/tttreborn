@@ -1,6 +1,4 @@
-using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
@@ -8,13 +6,13 @@ namespace TTTReborn.UI
     {
         public Effects Effects;
         public InventorySelection InventorySelection;
+
         public InventoryWrapper()
         {
-            StyleSheet.Load("/ui/InventoryWrapper.scss");
+            StyleSheet.Load("/ui/alivehud/inventorywrapper/InventoryWrapper.scss");
 
             Effects = AddChild<Effects>();
             InventorySelection = AddChild<InventorySelection>();
         }
-
     }
 }
