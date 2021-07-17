@@ -26,7 +26,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player || player.Camera is not SpectateCamera spectateCamera)
+            if (Local.Pawn is not TTTPlayer player || player.Camera is not ThirdPersonSpectateCamera spectateCamera)
             {
                 SetClass("hide", true);
 
