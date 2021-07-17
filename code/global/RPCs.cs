@@ -52,7 +52,14 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TTTTeam.GetTeam(teamName));
+            TTTTeam team = null;
+
+            if (teamName != null)
+            {
+                team = (TTTTeam) Utils.GetTypeByName<TTTTeam>(teamName).GetProperty("Instance").GetValue(null);
+            }
+
+            player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), team);
         }
 
         [ClientRpc]
@@ -63,7 +70,14 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TTTTeam.GetTeam(teamName));
+            TTTTeam team = null;
+
+            if (teamName != null)
+            {
+                team = (TTTTeam) Utils.GetTypeByName<TTTTeam>(teamName).GetProperty("Instance").GetValue(null);
+            }
+
+            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), team);
 
             deadPlayer.IsConfirmed = true;
             deadPlayer.CorpseConfirmer = confirmPlayer;

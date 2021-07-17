@@ -35,7 +35,7 @@ namespace TTTReborn.Player
             {
                 if (_team == null)
                 {
-                    _team = TTTTeam.GetTeam("Nones");
+                    _team = NoneTeam.Instance;
                 }
 
                 return _team;

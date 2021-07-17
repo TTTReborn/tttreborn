@@ -15,8 +15,7 @@ namespace TTTReborn.Roles
 
         public TraitorRole() : base()
         {
-            DefaultTeam = TTTTeam.GetTeam("Traitors");
-            DefaultTeam.Color = Color;
+            DefaultTeam = TraitorTeam.Instance;
         }
 
         public override void OnSelect(TTTPlayer player)

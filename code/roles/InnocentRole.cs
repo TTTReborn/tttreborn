@@ -9,8 +9,7 @@ namespace TTTReborn.Roles
 
         public InnocentRole() : base()
         {
-            DefaultTeam = TTTTeam.GetTeam("Innocents");
-            DefaultTeam.Color = Color;
+            DefaultTeam = InnocentTeam.Instance;
         }
     }
 }
