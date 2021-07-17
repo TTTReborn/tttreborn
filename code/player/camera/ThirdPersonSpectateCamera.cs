@@ -9,7 +9,7 @@ namespace TTTReborn.Player.Camera
     {
         private Vector3 DefaultPosition { get; set; }
 
-        private TTTPlayer TargetPlayer { get; set; }
+        public TTTPlayer TargetPlayer { get; set; }
 
         private const float LERP_MODE = 0;
         private const int FIELD_OF_VIEW_OVERRIDE = 70;
