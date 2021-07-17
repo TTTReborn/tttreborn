@@ -21,36 +21,39 @@ namespace TTTReborn.Player
 
         public void TickPlayerVoiceChat()
         {
-            IsSpeaking = false;
+            using (Prediction.Off())
+            {
+                IsSpeaking = false;
 
-            if (Input.Down(InputButton.Voice) || IsTeamVoiceChatEnabled)
-            {
-                IsSpeaking = true;
+                if (Input.Down(InputButton.Voice) || IsTeamVoiceChatEnabled)
+                {
+                    IsSpeaking = true;
 
-                UI.VoiceList.Current?.OnVoicePlayed(GetClientOwner(), 1f);
-            }
+                    UI.VoiceList.Current?.OnVoicePlayed(GetClientOwner(), 1f);
+                }
 
-            if (Local.Pawn != this)
-            {
-                return;
-            }
+                if (Local.Pawn != this)
+                {
+                    return;
+                }
 
-            if (Input.Pressed(InputButton.Run) && CanUseTeamVoiceChat(this))
-            {
-                ConsoleSystem.Run("requestteamchat", true);
-            }
-            else if (Input.Released(InputButton.Run) && IsTeamVoiceChatEnabled)
-            {
-                ConsoleSystem.Run("requestteamchat", false);
-            }
+                if (Input.Pressed(InputButton.Run) && CanUseTeamVoiceChat(this))
+                {
+                    ConsoleSystem.Run("requestteamchat", true);
+                }
+                else if (Input.Released(InputButton.Run) && IsTeamVoiceChatEnabled)
+                {
+                    ConsoleSystem.Run("requestteamchat", false);
+                }
 
-            if (Input.Down(InputButton.Run))
-            {
-                _teamChatButtonPressPending = 0f;
-            }
-            else if (IsTeamVoiceChatEnabled && _teamChatButtonPressPending > _pressDelayFix)
-            {
-                ConsoleSystem.Run("requestteamchat", false);
+                if (Input.Down(InputButton.Run))
+                {
+                    _teamChatButtonPressPending = 0f;
+                }
+                else if (IsTeamVoiceChatEnabled && _teamChatButtonPressPending > _pressDelayFix)
+                {
+                    ConsoleSystem.Run("requestteamchat", false);
+                }
             }
         }
 
