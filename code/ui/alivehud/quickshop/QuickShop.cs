@@ -228,7 +228,7 @@ namespace TTTReborn.UI
                     {
                         if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
                         {
-                            ConsoleSystem.Run($"requestitem", ItemData?.Name);
+                            ConsoleSystem.Run("requestitem", ItemData?.Name);
                         }
                     });
                 }

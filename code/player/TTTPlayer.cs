@@ -132,9 +132,15 @@ namespace TTTReborn.Player
 
         public override void Simulate(Client client)
         {
+            if (IsClient)
+            {
+                TickPlayerVoiceChat();
+            }
+
             if (LifeState != LifeState.Alive)
             {
                 TickPlayerChangeSpectateCamera();
+
                 return;
             }
 
