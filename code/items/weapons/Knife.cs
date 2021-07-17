@@ -6,7 +6,6 @@ namespace TTTReborn.Items
     partial class Knife : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
-        public override HoldType HoldType => HoldType.Melee;
         public override SlotType SlotType => SlotType.Melee;
         public override float PrimaryRate => 1.0f;
         public override float DeployTime => 0.2f;

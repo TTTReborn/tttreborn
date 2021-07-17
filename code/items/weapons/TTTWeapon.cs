@@ -19,7 +19,6 @@ namespace TTTReborn.Items
     [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
-        public virtual HoldType HoldType => HoldType.Pistol;
         public virtual SlotType SlotType => SlotType.Primary;
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
@@ -248,7 +247,7 @@ namespace TTTReborn.Items
         {
             Host.AssertClient();
 
-            if (HoldType != Items.HoldType.Melee)
+            if (SlotType != SlotType.Melee)
             {
                 Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
             }
@@ -342,7 +341,7 @@ namespace TTTReborn.Items
 
         public bool IsUsable()
         {
-            if (HoldType == Items.HoldType.Melee || ClipSize == 0 || AmmoClip > 0)
+            if (SlotType == SlotType.Melee || ClipSize == 0 || AmmoClip > 0)
             {
                 return true;
             }

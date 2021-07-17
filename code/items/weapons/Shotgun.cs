@@ -8,7 +8,6 @@ namespace TTTReborn.Items
     partial class Shotgun : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
-        public override HoldType HoldType => HoldType.Primary;
         public override SlotType SlotType => SlotType.Primary;
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
@@ -110,7 +109,7 @@ namespace TTTReborn.Items
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetParam("holdtype", (int) HoldType);
+            anim.SetParam("holdtype", 1);
             anim.SetParam("aimat_weight", 1.0f);
         }
     }
