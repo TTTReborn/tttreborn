@@ -37,7 +37,7 @@ namespace TTTReborn.UI
         {
             Instance = this;
 
-            StyleSheet.Load("/ui/ChatBox.scss");
+            StyleSheet.Load("/ui/generalhud/chat/ChatBox.scss");
 
             _canvas = Add.Panel("chat_canvas");
 

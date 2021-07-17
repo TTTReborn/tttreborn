@@ -33,7 +33,7 @@ namespace TTTReborn.UI
             Instance = this;
             IsShowing = false;
 
-            StyleSheet.Load("/ui/InspectMenu.scss");
+            StyleSheet.Load("/ui/alivehud/inspectmenu/InspectMenu.scss");
 
             _confirmationHintPanel = new ConfirmationHintPanel(this);
             _confirmationPanel = new ConfirmationPanel(this);

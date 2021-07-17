@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 
@@ -13,6 +11,7 @@ namespace TTTReborn.UI
 
         public GeneralHud GeneralHudPanel;
         public AliveHud AliveHudPanel;
+        public DeadHud DeadHudPanel;
 
         public Hud()
         {
@@ -25,6 +24,7 @@ namespace TTTReborn.UI
 
             GeneralHudPanel = new GeneralHud(RootPanel);
             AliveHudPanel = new AliveHud(RootPanel);
+            DeadHudPanel = new DeadHud(RootPanel);
         }
 
         [Event.Hotload]
@@ -36,9 +36,16 @@ namespace TTTReborn.UI
 
                 Hud hud = new Hud();
 
-                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+                if (Local.Client.Pawn is TTTPlayer player)
                 {
-                    hud.AliveHudPanel.CreateHud();
+                    if (player.LifeState == LifeState.Alive)
+                    {
+                        hud.AliveHudPanel.CreateHud();
+                    }
+                    else
+                    {
+                        hud.DeadHudPanel.CreateHud();
+                    }
                 }
             }
         }
@@ -51,6 +58,7 @@ namespace TTTReborn.UI
                 return;
             }
 
+            Current?.DeadHudPanel.DeleteHud();
             Current?.AliveHudPanel.CreateHud();
         }
 
@@ -63,6 +71,7 @@ namespace TTTReborn.UI
             }
 
             Current?.AliveHudPanel.DeleteHud();
+            Current?.DeadHudPanel.CreateHud();
         }
 
         public class GeneralHud : Panel
@@ -84,11 +93,14 @@ namespace TTTReborn.UI
 
         public class AliveHud : Panel
         {
+            public DamageIndicator DamageIndicator;
+            public Effects Effects;
             public InventoryWrapper InventoryWrapper;
             public PlayerInfo PlayerInfo;
             public InspectMenu InspectMenu;
             public Nameplate Nameplate;
             public QuickShop QuickShop;
+            public DrowningIndicator DrowningIndicator;
 
             public AliveHud(Panel parent)
             {
@@ -100,14 +112,22 @@ namespace TTTReborn.UI
                 InventoryWrapper ??= Parent.AddChild<InventoryWrapper>();
                 // Effects ??= InventoryWrapper.AddChild<Effects>();
                 // InventorySelection ??= Parent.AddChild<InventorySelection>();
+                DamageIndicator ??= Parent.AddChild<DamageIndicator>();
+                Effects ??= Parent.AddChild<Effects>();
                 PlayerInfo ??= Parent.AddChild<PlayerInfo>();
                 InspectMenu ??= Parent.AddChild<InspectMenu>();
                 Nameplate ??= Parent.AddChild<Nameplate>();
                 QuickShop ??= Parent.AddChild<QuickShop>();
+                DrowningIndicator ??= Parent.AddChild<DrowningIndicator>();
             }
 
             public void DeleteHud()
             {
+                DamageIndicator?.Delete();
+                DamageIndicator = null;
+
+                Effects?.Delete();
+                Effects = null;
 
                 InventoryWrapper?.Delete();
                 InventoryWrapper = null;
@@ -129,6 +149,30 @@ namespace TTTReborn.UI
 
                 QuickShop?.Delete();
                 QuickShop = null;
+
+                DrowningIndicator?.Delete();
+                DrowningIndicator = null;
+            }
+        }
+
+        public class DeadHud : Panel
+        {
+            public SpectatedPlayerInfo SpectatedPlayerInfo;
+
+            public DeadHud(Panel parent)
+            {
+                Parent = parent;
+            }
+
+            public void CreateHud()
+            {
+                SpectatedPlayerInfo ??= Parent.AddChild<SpectatedPlayerInfo>();
+            }
+
+            public void DeleteHud()
+            {
+                SpectatedPlayerInfo?.Delete();
+                SpectatedPlayerInfo = null;
             }
         }
     }
