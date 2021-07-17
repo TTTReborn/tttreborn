@@ -22,7 +22,7 @@ namespace TTTReborn.UI
 
         public QuickShop()
         {
-            StyleSheet.Load("/ui/alivehud/QuickShop.scss");
+            StyleSheet.Load("/ui/alivehud/quickshop/QuickShop.scss");
 
             _header = new Header(this);
             _content = new Content(this);
@@ -228,7 +228,7 @@ namespace TTTReborn.UI
                     {
                         if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
                         {
-                            ConsoleSystem.Run($"requestitem", ItemData?.Name);
+                            ConsoleSystem.Run("requestitem", ItemData?.Name);
                         }
                     });
                 }

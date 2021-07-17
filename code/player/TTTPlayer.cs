@@ -34,11 +34,7 @@ namespace TTTReborn.Player
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = new SpectateCamera
-            {
-                DeathPosition = position,
-                TimeSinceDied = 0
-            };
+            Camera = new SpectateRagdollCamera();
 
             ShowFlashlight(false, false);
         }
@@ -136,22 +132,30 @@ namespace TTTReborn.Player
 
         public override void Simulate(Client client)
         {
+            if (IsClient)
+            {
+                TickPlayerVoiceChat();
+            }
+
+            if (LifeState != LifeState.Alive)
+            {
+                TickPlayerChangeSpectateCamera();
+
+                return;
+            }
+
             // Input requested a carriable entity switch
             if (Input.ActiveChild != null)
             {
                 ActiveChild = Input.ActiveChild;
             }
 
-            if (LifeState != LifeState.Alive)
-            {
-                return;
-            }
+            SimulateActiveChild(client, ActiveChild);
 
             TickItemSimulate();
             TickPlayerUse();
             TickPlayerDropCarriable();
-
-            SimulateActiveChild(client, ActiveChild);
+            TickPlayerFlashlight();
 
             if (IsServer)
             {
@@ -160,8 +164,6 @@ namespace TTTReborn.Player
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
-
-            TickPlayerFlashlight();
         }
 
         protected override void UseFail()
@@ -194,6 +196,25 @@ namespace TTTReborn.Player
 
                     _timeSinceDropped = 0;
                 }
+            }
+        }
+
+        private void TickPlayerChangeSpectateCamera()
+        {
+            if (!Input.Pressed(InputButton.Jump) || !IsServer)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                Camera = Camera switch
+                {
+                    SpectateRagdollCamera => new FreeSpectateCamera(),
+                    FreeSpectateCamera => new ThirdPersonSpectateCamera(),
+                    ThirdPersonSpectateCamera => new FreeSpectateCamera(),
+                    _ => Camera
+                };
             }
         }
 

@@ -108,7 +108,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            LoadPostRound(TTTTeam.GetTeam("Innocents"));
+            LoadPostRound(InnocentTeam.Instance);
 
             base.OnTimeUp();
         }

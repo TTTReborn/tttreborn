@@ -24,18 +24,25 @@ namespace TTTReborn.Roles
 
         public virtual Color Color => Color.Black;
 
-        public TTTTeam DefaultTeam { get; protected set; }
+        public abstract Type DefaultTeamType { get; }
 
         public virtual int DefaultCredits => 0;
 
         public TTTRole()
         {
             Name = Utils.GetTypeName(GetType());
+
+            if (TeamFunctions.GetTeamByType(DefaultTeamType) == null)
+            {
+                Utils.GetObjectByType<TTTTeam>(DefaultTeamType);
+            }
         }
 
         public virtual void OnSelect(TTTPlayer player)
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
+
+            Event.Run("tttreborn.player.role.onselect", player);
         }
 
         public virtual void OnDeselect(TTTPlayer player)
