@@ -19,8 +19,6 @@ namespace TTTReborn.Player
 
         private const float _pressDelayFix = 0.5f;
 
-        private TimeSince _testCounter = 0f;
-
         public void TickPlayerVoiceChat()
         {
             using (Prediction.Off())
@@ -37,19 +35,16 @@ namespace TTTReborn.Player
                 if (Input.Pressed(InputButton.Run) && CanUseTeamVoiceChat(this))
                 {
                     ConsoleSystem.Run("requestteamchat", true);
-
-                    _testCounter = 0f;
                 }
                 else if (Input.Released(InputButton.Run) && IsTeamVoiceChatEnabled)
                 {
                     ConsoleSystem.Run("requestteamchat", false);
                 }
 
+                // Edge-case fix (if `requestteamchat false` was sent, but IsTeamVoiceChatEnabled was not already set)
                 if (Input.Down(InputButton.Run))
                 {
                     _teamChatButtonPressPending = 0f;
-
-                    Log.Error($"You're pressing InputButton.Run since {_testCounter}");
                 }
                 else if (IsTeamVoiceChatEnabled && _teamChatButtonPressPending > _pressDelayFix)
                 {
