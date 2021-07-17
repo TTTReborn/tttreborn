@@ -13,7 +13,8 @@ namespace TTTReborn.Player.Camera
         private float _moveSpeed;
 
         private const float LERP_MODE = 0;
-        private const int FIELD_OF_VIEW_OVERRIDE = 70;
+        private const float FIELD_OF_VIEW_OVERRIDE = 70.0f;
+        private const float DEFAULT_FIELD_OF_VIEW = 80.0f;
 
         public override void Activated()
         {
@@ -51,6 +52,7 @@ namespace TTTReborn.Player.Camera
             _moveInput = input.AnalogMove;
 
             _moveSpeed = 1;
+
             if (input.Down(InputButton.Run))
             {
                 _moveSpeed = 5;
@@ -61,7 +63,7 @@ namespace TTTReborn.Player.Camera
                 _moveSpeed = 0.2f;
             }
 
-            _lookAngles += input.AnalogLook * (FIELD_OF_VIEW_OVERRIDE / 80.0f);
+            _lookAngles += input.AnalogLook * (FIELD_OF_VIEW_OVERRIDE / DEFAULT_FIELD_OF_VIEW);
             _lookAngles.roll = 0;
 
             base.BuildInput(input);

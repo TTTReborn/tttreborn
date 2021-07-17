@@ -195,12 +195,7 @@ namespace TTTReborn.Player
 
         private void TickPlayerChangeSpectateCamera()
         {
-            if (!Input.Pressed(InputButton.Jump))
-            {
-                return;
-            }
-
-            if (!IsServer)
+            if (!Input.Pressed(InputButton.Jump) || !IsServer)
             {
                 return;
             }
