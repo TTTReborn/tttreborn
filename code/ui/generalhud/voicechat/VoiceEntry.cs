@@ -17,7 +17,7 @@ namespace TTTReborn.UI
 
         readonly Label Name;
         readonly Image Avatar;
-        readonly Client client;
+        readonly Client Client;
 
         private float _voiceLevel = 0.5f;
         private float _targetVoiceLevel = 0;
@@ -25,26 +25,17 @@ namespace TTTReborn.UI
 
         RealTimeSince timeSincePlayed;
 
-        public VoiceEntry(Panel parent, ulong steamId)
+        public VoiceEntry(Panel parent, Client client)
         {
             Parent = parent;
 
-            Friend = new Friend(steamId);
+            Client = client;
+            Friend = new Friend(client.SteamId);
 
             Avatar = Add.Image("", "avatar");
-            Avatar.SetTexture($"avatar:{steamId}");
+            Avatar.SetTexture($"avatar:{client.SteamId}");
 
             Name = Add.Label(Friend.Name, "name");
-
-            foreach (Client loopClient in Client.All)
-            {
-                if (loopClient.SteamId == steamId)
-                {
-                    client = loopClient;
-
-                    break;
-                }
-            }
         }
 
         public void Update(float level)
@@ -78,21 +69,23 @@ namespace TTTReborn.UI
             _voiceLevel = _voiceLevel.LerpTo(_targetVoiceLevel, Time.Delta * 40.0f);
 
             Style.Left = _voiceLevel * -32.0f * timeoutInv;
+            Style.BackgroundColor = null;
 
-            if (client != null && client.IsValid() && client.Pawn is TTTPlayer player)
+            if (Client != null && Client.IsValid() && Client.Pawn is TTTPlayer player)
             {
+                if (player.IsSpeaking)
+                {
+                    Style.BackgroundColor = Color.Black;
+                }
+
                 if (player.LifeState == LifeState.Dead)
                 {
                     Style.BackgroundColor = _deadColor;
                 }
-                else if (player.Role is not NoneRole)
+                else if (player.IsTeamVoiceChatEnabled && player.Role is not NoneRole)
                 {
                     Style.BackgroundColor = player.Role.Color;
                 }
-            }
-            else
-            {
-                Style.BackgroundColor = null;
             }
 
             Style.Dirty();

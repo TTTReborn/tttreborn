@@ -139,7 +139,29 @@ namespace TTTReborn.Gamemode
         /// </summary>
         public override void OnVoicePlayed(ulong steamId, float level)
         {
-            UI.VoiceList.Current?.OnVoicePlayed(steamId, level);
+            Client client = null;
+
+            foreach (Client loopClient in Client.All)
+            {
+                if (loopClient.SteamId == steamId)
+                {
+                    client = loopClient;
+
+                    break;
+                }
+            }
+
+            if (client == null || !client.IsValid())
+            {
+                return;
+            }
+
+            if (client.Pawn is TTTPlayer player)
+            {
+                player.IsSpeaking = true;
+            }
+
+            UI.VoiceList.Current?.OnVoicePlayed(client, level);
         }
 
         public override void PostLevelLoaded()

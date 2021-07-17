@@ -42,10 +42,7 @@ namespace TTTReborn.Roles
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
 
-            if (player.IsTeamVoiceChatEnabled)
-            {
-                player.ClientToggleTeamVoiceChat(To.Single(player), false);
-            }
+            Event.Run("tttreborn.player.role.onselect", player);
         }
 
         public virtual void OnDeselect(TTTPlayer player)

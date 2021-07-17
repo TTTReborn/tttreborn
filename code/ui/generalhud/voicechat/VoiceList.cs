@@ -1,5 +1,6 @@
 using System.Linq;
 
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTTReborn.UI
@@ -15,9 +16,9 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/voicechat/VoiceList.scss");
         }
 
-        public void OnVoicePlayed(ulong steamId, float level)
+        public void OnVoicePlayed(Client client, float level)
         {
-            VoiceEntry entry = ChildrenOfType<VoiceEntry>().FirstOrDefault(x => x.Friend.Id == steamId) ?? new VoiceEntry(this, steamId);
+            VoiceEntry entry = ChildrenOfType<VoiceEntry>().FirstOrDefault(x => x.Friend.Id == client.SteamId) ?? new VoiceEntry(this, client);
 
             entry.Update(level);
         }
