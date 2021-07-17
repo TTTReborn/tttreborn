@@ -54,7 +54,7 @@ namespace TTTReborn.Player.Camera
             _targetRot = Rotation.From(_lookAngles);
             Rot = Rotation.Slerp(Rot, _targetRot, 10 * RealTime.Delta * (1 - LERP_MODE));
 
-            _targetPos = GetSpectatePoint() + Rot.Forward * - CAMERA_DISTANCE;
+            _targetPos = GetSpectatePoint() + Rot.Forward * -CAMERA_DISTANCE;
             Pos = _targetPos;
         }
 
