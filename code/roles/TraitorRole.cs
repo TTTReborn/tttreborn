@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 using TTTReborn.Globals;
@@ -13,15 +15,16 @@ namespace TTTReborn.Roles
 
         public override int DefaultCredits => 100;
 
+        public override Type DefaultTeamType => typeof(TraitorTeam);
+
         public TraitorRole() : base()
         {
-            DefaultTeam = TTTTeam.GetTeam("Traitors");
-            DefaultTeam.Color = Color;
+
         }
 
         public override void OnSelect(TTTPlayer player)
         {
-            if (Host.IsServer && player.Team.Name == DefaultTeam.Name)
+            if (Host.IsServer && player.Team.GetType() == DefaultTeamType)
             {
                 foreach (TTTPlayer otherPlayer in player.Team.Members)
                 {

@@ -238,10 +238,7 @@ namespace TTTReborn.Items
             TimeSincePrimaryAttack = 0;
             TimeSinceSecondaryAttack = 0;
 
-            using (Prediction.Off())
-            {
-                ShootEffects();
-            }
+            ShootEffects();
 
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);
         }

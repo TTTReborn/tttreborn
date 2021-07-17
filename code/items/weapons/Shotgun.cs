@@ -40,10 +40,7 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            using (Prediction.Off())
-            {
-                ShootEffects();
-            }
+            ShootEffects();
 
             PlaySound("rust_pumpshotgun.shoot").SetPosition(Position).SetVolume(0.8f);
 

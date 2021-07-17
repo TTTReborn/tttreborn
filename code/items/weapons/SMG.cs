@@ -37,10 +37,7 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            using (Prediction.Off())
-            {
-                ShootEffects();
-            }
+            ShootEffects();
 
             PlaySound("rust_smg.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.1f, 1.5f, BaseDamage, 3.0f);
