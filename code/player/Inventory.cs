@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+
 using Sandbox;
+
 using TTTReborn.Items;
 
 namespace TTTReborn.Player
@@ -9,7 +11,7 @@ namespace TTTReborn.Player
     {
         public readonly PerksInventory Perks;
         public readonly AmmoInventory Ammo;
-        public int[] SlotCapacity => new int[] {1,1,1,3,3};
+        public int[] SlotCapacity => new int[] { 1, 1, 1, 3, 3 };
 
         public Inventory(TTTPlayer player) : base(player)
         {
@@ -97,7 +99,7 @@ namespace TTTReborn.Player
         {
             int itemsInSlot = List.Count(x => ((ICarriableItem) x).SlotType == slotType);
 
-            return SlotCapacity[(int)slotType] - itemsInSlot > 0;
+            return SlotCapacity[(int) slotType] - itemsInSlot > 0;
         }
 
         public bool IsCarryingType(Type t)

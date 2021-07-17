@@ -75,7 +75,7 @@ namespace TTTReborn.Rounds
 
                     #region Inventory Creation
                     Inventory inventory = player.Inventory as Inventory;
-                    
+
                     inventory.TryAdd(new MagnetoStick(), true);
 
                     // Randomize between SMG and shotgun
