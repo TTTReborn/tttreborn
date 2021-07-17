@@ -24,9 +24,7 @@ namespace TTTReborn.Roles
 
         public virtual Color Color => Color.Black;
 
-        public TTTTeam DefaultTeam { get; protected set; }
-
-        public abstract string DefaultTeamName { get; }
+        public abstract Type DefaultTeamType { get; }
 
         public virtual int DefaultCredits => 0;
 
@@ -34,8 +32,10 @@ namespace TTTReborn.Roles
         {
             Name = Utils.GetTypeName(GetType());
 
-            DefaultTeam = TTTTeam.GetTeam(DefaultTeamName);
-            DefaultTeam.Color = Color;
+            if (TeamFunctions.GetTeamByType(DefaultTeamType) == null)
+            {
+                Utils.GetObjectByType<TTTTeam>(DefaultTeamType);
+            }
         }
 
         public virtual void OnSelect(TTTPlayer player)

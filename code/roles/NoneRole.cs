@@ -1,3 +1,7 @@
+using System;
+
+using TTTReborn.Teams;
+
 namespace TTTReborn.Roles
 {
     [RoleAttribute("None")]
@@ -5,7 +9,7 @@ namespace TTTReborn.Roles
     {
         public override Color Color => Color.Transparent;
 
-        public override string DefaultTeamName => "Nones";
+        public override Type DefaultTeamType => typeof(NoneTeam);
 
         public NoneRole() : base()
         {

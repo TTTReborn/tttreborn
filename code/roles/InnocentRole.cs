@@ -1,3 +1,7 @@
+using System;
+
+using TTTReborn.Teams;
+
 namespace TTTReborn.Roles
 {
     [RoleAttribute("Innocent")]
@@ -5,7 +9,7 @@ namespace TTTReborn.Roles
     {
         public override Color Color => Color.FromBytes(27, 197, 78);
 
-        public override string DefaultTeamName => "Innocents";
+        public override Type DefaultTeamType => typeof(InnocentTeam);
 
         public InnocentRole() : base()
         {
