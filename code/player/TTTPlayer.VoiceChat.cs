@@ -51,7 +51,7 @@ namespace TTTReborn.Player
             IsTeamVoiceChatEnabled = toggle;
 
             // De-/Activate voice chat
-            ConsoleSystem.Run(toggle ? "+" : "-" + "iv_voice");
+            ConsoleSystem.Run((toggle ? "+" : "-") + "iv_voice");
         }
     }
 }
