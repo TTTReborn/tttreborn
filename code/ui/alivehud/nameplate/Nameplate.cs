@@ -57,7 +57,7 @@ namespace TTTReborn.UI
             Instance = this;
             IsShowing = false;
 
-            StyleSheet.Load("/ui/alivehud/Nameplate.scss");
+            StyleSheet.Load("/ui/alivehud/nameplate/Nameplate.scss");
 
             _labelHolder = Add.Panel("labelHolder");
 
