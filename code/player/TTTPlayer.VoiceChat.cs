@@ -75,12 +75,10 @@ namespace TTTReborn.Player
         {
             player.IsTeamVoiceChatEnabled = toggle;
 
-            List<Client> clients;
+            List<Client> clients = new();
 
             if (toggle)
             {
-                clients = new();
-
                 foreach (Client client in Client.All)
                 {
                     if (client.Pawn is TTTPlayer pawnPlayer)
@@ -102,10 +100,19 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                clients = _oldReceiveClients[player];
+                // cleanup disconnected clients
+                foreach (Client client in _oldReceiveClients[player])
+                {
+                    if (client.IsValid())
+                    {
+                        clients.Add(client);
+                    }
+                }
+
+                _oldReceiveClients[player] = clients;
             }
 
-            player.ClientToggleTeamVoiceChat(To.Multiple(clients), toggle);
+            ClientToggleTeamVoiceChat(To.Multiple(clients), player, toggle);
         }
 
         public static bool CanUseTeamVoiceChat(TTTPlayer player)
@@ -114,11 +121,16 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        private void ClientToggleTeamVoiceChat(bool toggle)
+        public static void ClientToggleTeamVoiceChat(TTTPlayer player, bool toggle)
         {
-            IsTeamVoiceChatEnabled = toggle;
+            if (!player.IsValid())
+            {
+                return;
+            }
 
-            if (Local.Pawn is TTTPlayer localPlayer && localPlayer != this)
+            player.IsTeamVoiceChatEnabled = toggle;
+
+            if (Local.Pawn is TTTPlayer localPlayer && localPlayer != player)
             {
                 return;
             }
@@ -161,7 +173,7 @@ namespace TTTReborn.Player
                             _oldReceiveClients[pawnPlayer].Remove(playerClient);
                         }
 
-                        pawnPlayer.ClientToggleTeamVoiceChat(To.Single(player), activateTalking);
+                        ClientToggleTeamVoiceChat(To.Single(player), pawnPlayer, activateTalking);
                     }
                 }
             }
