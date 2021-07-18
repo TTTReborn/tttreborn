@@ -49,8 +49,8 @@ namespace TTTReborn.UI
                 _confirmationHintPanel.SetClass("hide", true);
 
                 _confirmationPanel.SetPlayer(deadPlayer);
-                _confirmationPanel.SetConfirmationData(confirmationData);
                 _confirmationPanel.SetKillerWeapon(killerWeapon);
+                _confirmationPanel.SetConfirmationData(confirmationData);
                 _confirmationPanel.SetPerks(perks);
                 _confirmationPanel.SetClass("hide", false);
             }
@@ -167,7 +167,7 @@ namespace TTTReborn.UI
                     if (confirmationData.Headshot)
                     {
                         _headshot = new InspectItem(this);
-                        _headshot.ImageWrapper.Image.SetTexture("");
+                        _headshot.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/headshot.png");
                         _headshot.InspectItemLabel.Text = "Headshot";
                     }
 
