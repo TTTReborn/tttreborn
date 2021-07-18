@@ -50,12 +50,7 @@ namespace TTTReborn.UI
 
                 _confirmationPanel.SetPlayer(deadPlayer);
                 _confirmationPanel.SetConfirmationData(confirmationData);
-
-                if (killerWeapon != null)
-                {
-                    _confirmationPanel.SetKillerWeapon(killerWeapon);
-                }
-
+                _confirmationPanel.SetKillerWeapon(killerWeapon);
                 _confirmationPanel.SetClass("hide", false);
             }
             else
@@ -172,9 +167,12 @@ namespace TTTReborn.UI
                 {
                     _killerWeapon?.Delete(true);
 
-                    _killerWeapon = new InspectItem(this);
-                    _killerWeapon.ImageWrapper.Image.SetTexture($"/ui/weapons/{killerWeapon}.png");
-                    _killerWeapon.InspectItemLabel.Text = killerWeapon;
+                    if (killerWeapon != null)
+                    {
+                        _killerWeapon = new InspectItem(this);
+                        _killerWeapon.ImageWrapper.Image.SetTexture($"/ui/weapons/{killerWeapon}.png");
+                        _killerWeapon.InspectItemLabel.Text = killerWeapon;
+                    }
                 }
 
                 public override void Tick()
@@ -196,7 +194,7 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    Image = Add.Image("", "avatar");
+                    Image = Add.Image("", "image");
                 }
             }
 
