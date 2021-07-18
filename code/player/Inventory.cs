@@ -11,7 +11,7 @@ namespace TTTReborn.Player
     {
         public readonly PerksInventory Perks;
         public readonly AmmoInventory Ammo;
-        public readonly int[] SlotCapacity => new int[] { 1, 1, 1, 3, 3 };
+        public readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3 };
 
         public Inventory(TTTPlayer player) : base(player)
         {
