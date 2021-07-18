@@ -1,8 +1,7 @@
 using System;
-
 using Sandbox;
-
 using TTTReborn.Items;
+using TTTReborn.Globals;
 
 namespace TTTReborn.Player
 {
@@ -73,7 +72,7 @@ namespace TTTReborn.Player
 
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
-                LastDistanceToAttacker = (float) Math.Round(Position.Distance(attacker.Position));
+                LastDistanceToAttacker = Utils.SourceUnitsToMeters(Position.Distance(attacker.Position));
 
                 if (Gamemode.Game.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
                 {
