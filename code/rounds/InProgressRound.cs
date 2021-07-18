@@ -24,7 +24,7 @@ namespace TTTReborn.Rounds
             Players.Remove(player);
             _spectators.Add(player);
 
-            player.MakeSpectator(player.EyePos);
+            player.MakeSpectator();
 
             TTTTeam result = IsRoundOver();
 
@@ -73,25 +73,32 @@ namespace TTTReborn.Rounds
                         AddPlayer(player);
                     }
 
+                    #region Inventory Creation
                     Inventory inventory = player.Inventory as Inventory;
 
-                    // TODO: Remove once we can spawn in carriable entities into the map, for now just give the guns to people.
                     inventory.TryAdd(new MagnetoStick(), true);
 
-                    if (inventory.TryAdd(new Shotgun(), false))
+                    // Randomize between SMG and shotgun
+                    if (new Random().Next() % 2 == 0)
                     {
-                        inventory.Ammo.Give(AmmoType.Buckshot, 8);
+                        if (inventory.TryAdd(new Shotgun(), false))
+                        {
+                            inventory.Ammo.Give(AmmoType.Buckshot, 16);
+                        }
                     }
-
-                    if (inventory.TryAdd(new SMG(), false))
+                    else
                     {
-                        inventory.Ammo.Give(AmmoType.Buckshot, 8);
+                        if (inventory.TryAdd(new SMG(), false))
+                        {
+                            inventory.Ammo.Give(AmmoType.SMG, 60);
+                        }
                     }
 
                     if (inventory.TryAdd(new Pistol(), false))
                     {
-                        inventory.Ammo.Give(AmmoType.Pistol, 120);
+                        inventory.Ammo.Give(AmmoType.Pistol, 30);
                     }
+                    #endregion
                 }
 
                 AssignRoles();
@@ -115,7 +122,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            player.MakeSpectator();
+            player.MakeSpectator(false);
 
             _spectators.Add(player);
             Players.Remove(player);

@@ -68,23 +68,23 @@ namespace TTTReborn.UI
 
             _voiceLevel = _voiceLevel.LerpTo(_targetVoiceLevel, Time.Delta * 40.0f);
 
-            Style.Left = _voiceLevel * -32.0f * timeoutInv;
+            Style.Left = 30f + _voiceLevel * -30.0f * timeoutInv;
             Style.BackgroundColor = null;
 
             if (Client != null && Client.IsValid() && Client.Pawn is TTTPlayer player)
             {
                 if (player.IsSpeaking)
                 {
-                    Style.BackgroundColor = Color.Black;
+                    Style.BackgroundColor = Color.Black.WithAlpha(0.9f);
                 }
 
                 if (player.LifeState == LifeState.Dead)
                 {
-                    Style.BackgroundColor = _deadColor;
+                    Style.BackgroundColor = _deadColor.WithAlpha(0.9f);
                 }
                 else if (player.IsTeamVoiceChatEnabled && player.Role is not NoneRole)
                 {
-                    Style.BackgroundColor = player.Role.Color;
+                    Style.BackgroundColor = player.Role.Color.WithAlpha(0.9f);
                 }
             }
 

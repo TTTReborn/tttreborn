@@ -32,7 +32,8 @@ namespace TTTReborn.UI
         private bool _isShowing = false;
 
         private PostRoundStats _stats;
-        private readonly Header _header;
+        private readonly Label _headerLabel;
+        private readonly Label _contentLabel;
 
         public PostRoundMenu()
         {
@@ -40,7 +41,10 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/postroundmenu/PostRoundMenu.scss");
 
-            _header = new Header(this);
+            _headerLabel = Add.Label("", "headerLabel");
+
+            _contentLabel = Add.Label("Thanks for playing TTT Reborn, more updates and stats to come!", "contentLabel");
+
             IsShowing = false;
         }
 
@@ -55,20 +59,8 @@ namespace TTTReborn.UI
         {
             IsShowing = true;
 
-            _header.WinnerLabel.Text = $"{_stats.WinningRole.ToUpper()} WIN!";
-            _header.Style.BackgroundColor = _stats.WinningColor;
-        }
-
-        private class Header : Panel
-        {
-            public readonly Label WinnerLabel;
-
-            public Header(Panel parent)
-            {
-                Parent = parent;
-
-                WinnerLabel = Add.Label("", "title");
-            }
+            _headerLabel.Text = $"{_stats.WinningRole.ToUpper()} WIN!";
+            _headerLabel.Style.BackgroundColor = _stats.WinningColor;
         }
     }
 }
