@@ -13,6 +13,8 @@ namespace TTTReborn.Player
         public List<PhysicsJoint> RopeSprings = new();
         public TTTWeapon KillerWeapon { get; set; }
         public bool WasHeadshot { get; set; } = false;
+        public bool Suicide { get; set; } = false;
+        public float Distance { get; set; } = 0f;
         public float KilledTime { get; private set; }
 
         [Net]

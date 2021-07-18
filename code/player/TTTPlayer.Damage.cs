@@ -51,6 +51,8 @@ namespace TTTReborn.Player
 
         public bool LastDamageWasHeadshot { get; private set; } = false;
 
+        public float LastDistanceToAttacker { get; private set; } = 0f;
+
         public void SetHealth(float health)
         {
             Health = Math.Min(health, MaxHealth);
@@ -71,12 +73,18 @@ namespace TTTReborn.Player
 
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
+                LastDistanceToAttacker = (float) Math.Round(Position.Distance(attacker.Position));
+
                 if (Gamemode.Game.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
                 {
                     return;
                 }
 
                 ClientAnotherPlayerDidDamage(client, info.Position, ((float) Health).LerpInverse(100, 0));
+            }
+            else
+            {
+                LastDistanceToAttacker = 0f;
             }
 
             ClientTookDamage(client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage);

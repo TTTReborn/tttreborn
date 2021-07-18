@@ -7,7 +7,9 @@ namespace TTTReborn.Player
     public struct ConfirmationData
     {
         public bool Headshot;
+        public bool Suicide;
         public float Time;
+        public float Distance;
         // TODO damage type
     }
 
@@ -101,7 +103,9 @@ namespace TTTReborn.Player
             return new ConfirmationData
             {
                 Headshot = playerCorpse.WasHeadshot,
-                Time = playerCorpse.KilledTime
+                Time = playerCorpse.KilledTime,
+                Distance = playerCorpse.Distance,
+                Suicide = playerCorpse.Suicide
             };
         }
 
@@ -132,6 +136,8 @@ namespace TTTReborn.Player
 
             corpse.KillerWeapon = LastDamageWeapon;
             corpse.WasHeadshot = LastDamageWasHeadshot;
+            corpse.Distance = LastDistanceToAttacker;
+            corpse.Suicide = LastAttacker == this;
 
             corpse.CopyFrom(this);
             corpse.ApplyForceToBone(force, forceBone);

@@ -123,6 +123,8 @@ namespace TTTReborn.UI
                 private InspectItem _timeSinceDeath;
                 private InspectItem _killerWeapon;
                 private InspectItem _headshot;
+                private InspectItem _distance;
+                private InspectItem _suicide;
                 private ConfirmationData _confirmationData;
 
                 private readonly ImageWrapper _playerImage;
@@ -153,13 +155,29 @@ namespace TTTReborn.UI
                     _timeSinceDeath.ImageWrapper.Image.SetTexture("");
                     _timeSinceDeath.InspectItemLabel.Text = "";
 
+                    _headshot?.Delete(true);
+
                     if (confirmationData.Headshot)
                     {
-                        _headshot?.Delete(true);
-
                         _headshot = new InspectItem(this);
                         _headshot.ImageWrapper.Image.SetTexture("");
                         _headshot.InspectItemLabel.Text = "Headshot";
+                    }
+
+                    _distance?.Delete(true);
+                    _suicide?.Delete(true);
+
+                    if (!confirmationData.Suicide)
+                    {
+                        _distance = new InspectItem(this);
+                        _distance.ImageWrapper.Image.SetTexture("");
+                        _distance.InspectItemLabel.Text = $"Distance: {confirmationData.Distance:n0}";
+                    }
+                    else
+                    {
+                        _suicide = new InspectItem(this);
+                        _suicide.ImageWrapper.Image.SetTexture("");
+                        _suicide.InspectItemLabel.Text = $"Committed suicide";
                     }
                 }
 
