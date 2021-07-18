@@ -11,24 +11,24 @@ namespace TTTReborn.Player.Camera
         public TTTPlayer TargetPlayer { get; set; }
 
         private int _targetIdx;
-		private Vector3 _lastPos;
+        private Vector3 _lastPos;
         private Rotation _lastRot;
 
-		public override void Activated()
-		{
-			if (TargetPlayer == null)
+        public override void Activated()
+        {
+            if (TargetPlayer == null)
             {
                 return;
             }
 
-			Pos = TargetPlayer.EyePos;
-			Rot = TargetPlayer.EyeRot;
+            Pos = TargetPlayer.EyePos;
+            Rot = TargetPlayer.EyeRot;
 
-			_lastPos = Pos;
+            _lastPos = Pos;
             _lastRot = Rot;
 
             TargetPlayer.RenderAlpha = 0f;
-		}
+        }
 
         public override void Deactivated()
         {
@@ -40,11 +40,11 @@ namespace TTTReborn.Player.Camera
             TargetPlayer.RenderAlpha = 1f;
         }
 
-		public override void Update()
-		{
+        public override void Update()
+        {
             bool invalidTarget = TargetPlayer == null || !TargetPlayer.IsValid();
 
-			if (invalidTarget || Input.Pressed(InputButton.Attack1))
+            if (invalidTarget || Input.Pressed(InputButton.Attack1))
             {
                 if (!invalidTarget)
                 {
@@ -81,6 +81,6 @@ namespace TTTReborn.Player.Camera
                 _lastPos = Pos;
                 _lastRot = Rot;
             }
-		}
+        }
     }
 }
