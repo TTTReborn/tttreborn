@@ -40,7 +40,7 @@ namespace TTTReborn.UI
             _confirmationPanel = new ConfirmationPanel(this);
         }
 
-        public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified, ConfirmationData confirmationData, string killerWeapon)
+        public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified, ConfirmationData confirmationData, string killerWeapon = null, string[] perks = null)
         {
             IsShowing = true;
 
@@ -51,6 +51,7 @@ namespace TTTReborn.UI
                 _confirmationPanel.SetPlayer(deadPlayer);
                 _confirmationPanel.SetConfirmationData(confirmationData);
                 _confirmationPanel.SetKillerWeapon(killerWeapon);
+                _confirmationPanel.SetPerks(perks);
                 _confirmationPanel.SetClass("hide", false);
             }
             else
@@ -94,6 +95,11 @@ namespace TTTReborn.UI
                 _content.SetKillerWeapon(killerWeapon);
             }
 
+            public void SetPerks(string[] perks)
+            {
+                _content.SetPerks(perks);
+            }
+
             private class Header : Panel
             {
                 private readonly Label _playerLabel;
@@ -125,6 +131,7 @@ namespace TTTReborn.UI
                 private InspectItem _headshot;
                 private InspectItem _distance;
                 private InspectItem _suicide;
+                private List<InspectItem> _perksList = new();
                 private ConfirmationData _confirmationData;
 
                 private readonly ImageWrapper _playerImage;
@@ -190,6 +197,30 @@ namespace TTTReborn.UI
                         _killerWeapon = new InspectItem(this);
                         _killerWeapon.ImageWrapper.Image.SetTexture($"/ui/weapons/{killerWeapon}.png");
                         _killerWeapon.InspectItemLabel.Text = killerWeapon;
+                    }
+                }
+
+                public void SetPerks(string[] perks)
+                {
+                    foreach (InspectItem loopItem in _perksList)
+                    {
+                        loopItem.Delete(true);
+                    }
+
+                    _perksList.Clear();
+
+                    if (perks == null)
+                    {
+                        return;
+                    }
+
+                    foreach (string perkName in perks)
+                    {
+                        InspectItem inspectItem = new InspectItem(this);
+                        inspectItem.ImageWrapper.Image.SetTexture($"/ui/weapons/{perkName}.png");
+                        inspectItem.InspectItemLabel.Text = perkName;
+
+                        _perksList.Add(inspectItem);
                     }
                 }
 

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 
 using TTTReborn.Globals;
@@ -56,7 +58,7 @@ namespace TTTReborn.Player
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified, GetConfirmationData(playerCorpse), playerCorpse.KillerWeapon?.Name);
+                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified, GetConfirmationData(playerCorpse), playerCorpse.KillerWeapon, playerCorpse.Perks);
                     }
 
                     if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
@@ -82,7 +84,7 @@ namespace TTTReborn.Player
 
                             RPCs.ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
 
-                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified, GetConfirmationData(playerCorpse), playerCorpse.KillerWeapon?.Name);
+                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified, GetConfirmationData(playerCorpse), playerCorpse.KillerWeapon, playerCorpse.Perks);
                         }
                     }
 
@@ -134,10 +136,20 @@ namespace TTTReborn.Player
                 Rotation = Rotation
             };
 
-            corpse.KillerWeapon = LastDamageWeapon;
+            corpse.KillerWeapon = LastDamageWeapon?.Name;
             corpse.WasHeadshot = LastDamageWasHeadshot;
             corpse.Distance = LastDistanceToAttacker;
             corpse.Suicide = LastAttacker == this;
+
+            List<string> perks = new();
+            PerksInventory perksInventory = (Inventory as Inventory).Perks;
+
+            for (int i = 0; i < perksInventory.Count(); i++)
+            {
+                perks.Add(perksInventory.Get(i).Name);
+            }
+
+            corpse.Perks = perks.ToArray();
 
             corpse.CopyFrom(this);
             corpse.ApplyForceToBone(force, forceBone);
