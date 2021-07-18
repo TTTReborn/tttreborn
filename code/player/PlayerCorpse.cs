@@ -2,15 +2,18 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Items;
+
 namespace TTTReborn.Player
 {
     public partial class PlayerCorpse : ModelEntity
     {
         public TTTPlayer Player { get; set; }
-
         public List<Particles> Ropes = new();
-
         public List<PhysicsJoint> RopeSprings = new();
+        public TTTWeapon KillerWeapon { get; set; }
+        public bool WasHeadshot { get; set; } = false;
+        public float KilledTime { get; private set; }
 
         [Net]
         public bool IsIdentified { get; set; } = false;
@@ -23,6 +26,8 @@ namespace TTTReborn.Player
             SetInteractsAs(CollisionLayer.Debris);
             SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
             SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
+
+            KilledTime = Time.Now;
 
             IsIdentified = false;
         }

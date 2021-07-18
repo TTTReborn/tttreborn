@@ -77,14 +77,14 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
+        public void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified, ConfirmationData confirmationData, string killerWeapon = null)
         {
             if (!deadPlayer.IsValid())
             {
                 return;
             }
 
-            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
+            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified, confirmationData, killerWeapon);
         }
 
         [ClientRpc]

@@ -4,6 +4,13 @@ using TTTReborn.Globals;
 
 namespace TTTReborn.Player
 {
+    public struct ConfirmationData
+    {
+        public bool Headshot;
+        public float Time;
+        // TODO damage type
+    }
+
     public partial class TTTPlayer
     {
         public PlayerCorpse PlayerCorpse { get; set; }
@@ -47,7 +54,7 @@ namespace TTTReborn.Player
 
                         // Send the request to the player looking at the player corpse.
                         // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified, GetConfirmationData(playerCorpse), playerCorpse.KillerWeapon?.Name);
                     }
 
                     if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
@@ -73,7 +80,7 @@ namespace TTTReborn.Player
 
                             RPCs.ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
 
-                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
+                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified, GetConfirmationData(playerCorpse), playerCorpse.KillerWeapon?.Name);
                         }
                     }
 
@@ -87,6 +94,15 @@ namespace TTTReborn.Player
                     _inspectingPlayerCorpse = null;
                 }
             }
+        }
+
+        private ConfirmationData GetConfirmationData(PlayerCorpse playerCorpse)
+        {
+            return new ConfirmationData
+            {
+                Headshot = playerCorpse.WasHeadshot,
+                Time = playerCorpse.KilledTime
+            };
         }
 
         private PlayerCorpse IsLookingAtPlayerCorpse()
@@ -113,6 +129,9 @@ namespace TTTReborn.Player
                 Position = Position,
                 Rotation = Rotation
             };
+
+            corpse.KillerWeapon = LastDamageWeapon;
+            corpse.WasHeadshot = LastDamageWasHeadshot;
 
             corpse.CopyFrom(this);
             corpse.ApplyForceToBone(force, forceBone);

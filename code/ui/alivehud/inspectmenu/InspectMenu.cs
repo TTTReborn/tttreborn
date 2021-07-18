@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -39,7 +40,7 @@ namespace TTTReborn.UI
             _confirmationPanel = new ConfirmationPanel(this);
         }
 
-        public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified)
+        public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified, ConfirmationData confirmationData, string killerWeapon)
         {
             IsShowing = true;
 
@@ -48,6 +49,13 @@ namespace TTTReborn.UI
                 _confirmationHintPanel.SetClass("hide", true);
 
                 _confirmationPanel.SetPlayer(deadPlayer);
+                _confirmationPanel.SetConfirmationData(confirmationData);
+
+                if (killerWeapon != null)
+                {
+                    _confirmationPanel.SetKillerWeapon(killerWeapon);
+                }
+
                 _confirmationPanel.SetClass("hide", false);
             }
             else
@@ -81,6 +89,16 @@ namespace TTTReborn.UI
                 _footer.SetPlayer(player);
             }
 
+            public void SetConfirmationData(ConfirmationData confirmationData)
+            {
+                _content.SetConfirmationData(confirmationData);
+            }
+
+            public void SetKillerWeapon(string killerWeapon)
+            {
+                _content.SetKillerWeapon(killerWeapon);
+            }
+
             private class Header : Panel
             {
                 private readonly Label _playerLabel;
@@ -107,9 +125,12 @@ namespace TTTReborn.UI
 
             private class Content : Panel
             {
-                private readonly ImageWrapper _playerImage;
+                private InspectItem _timeSinceDeath;
+                private InspectItem _killerWeapon;
+                private InspectItem _headshot;
+                private ConfirmationData _confirmationData;
 
-                private readonly List<InspectItem> _inspectItems = new();
+                private readonly ImageWrapper _playerImage;
 
                 public Content(Panel parent)
                 {
@@ -117,12 +138,6 @@ namespace TTTReborn.UI
 
                     _playerImage = new ImageWrapper(this);
                     _playerImage.AddClass("playericon");
-
-                    InspectItem inspectWeapon = new InspectItem(this);
-                    inspectWeapon.ImageWrapper.Image.SetTexture("");
-                    inspectWeapon.InspectItemLabel.Text = "Pistol";
-
-                    _inspectItems.Add(inspectWeapon);
                 }
 
                 public void SetPlayer(TTTPlayer player)
@@ -131,6 +146,45 @@ namespace TTTReborn.UI
 
                     _playerImage.Style.BorderColor = player.Role.Color;
                     _playerImage.Style.Dirty();
+                }
+
+                public void SetConfirmationData(ConfirmationData confirmationData)
+                {
+                    _confirmationData = confirmationData;
+
+                    _timeSinceDeath?.Delete(true);
+
+                    _timeSinceDeath = new InspectItem(this);
+                    _timeSinceDeath.ImageWrapper.Image.SetTexture("");
+                    _timeSinceDeath.InspectItemLabel.Text = "";
+
+                    if (confirmationData.Headshot)
+                    {
+                        _headshot?.Delete(true);
+
+                        _headshot = new InspectItem(this);
+                        _headshot.ImageWrapper.Image.SetTexture("");
+                        _headshot.InspectItemLabel.Text = "Headshot";
+                    }
+                }
+
+                public void SetKillerWeapon(string killerWeapon)
+                {
+                    _killerWeapon?.Delete(true);
+
+                    _killerWeapon = new InspectItem(this);
+                    _killerWeapon.ImageWrapper.Image.SetTexture($"/ui/weapons/{killerWeapon}.png");
+                    _killerWeapon.InspectItemLabel.Text = killerWeapon;
+                }
+
+                public override void Tick()
+                {
+                    if (_timeSinceDeath != null && _timeSinceDeath.IsVisible)
+                    {
+                        string[] timeSplits = TimeSpan.FromSeconds(Math.Round(Time.Now - _confirmationData.Time)).ToString().Split(':');
+
+                        _timeSinceDeath.InspectItemLabel.Text = $"Died {timeSplits[1]}:{timeSplits[2]} ago.";
+                    }
                 }
             }
 
