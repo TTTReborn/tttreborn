@@ -49,8 +49,8 @@ namespace TTTReborn.UI
                 _confirmationHintPanel.SetClass("hide", true);
 
                 _confirmationPanel.SetPlayer(deadPlayer);
-                _confirmationPanel.SetKillerWeapon(killerWeapon);
                 _confirmationPanel.SetConfirmationData(confirmationData);
+                _confirmationPanel.SetKillerWeapon(killerWeapon);
                 _confirmationPanel.SetPerks(perks);
                 _confirmationPanel.SetClass("hide", false);
             }
@@ -159,7 +159,7 @@ namespace TTTReborn.UI
                     _timeSinceDeath?.Delete(true);
 
                     _timeSinceDeath = new InspectItem(this);
-                    _timeSinceDeath.ImageWrapper.Image.SetTexture("");
+                    _timeSinceDeath.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/time.png");
                     _timeSinceDeath.InspectItemLabel.Text = "";
 
                     _headshot?.Delete(true);
@@ -168,7 +168,7 @@ namespace TTTReborn.UI
                     {
                         _headshot = new InspectItem(this);
                         _headshot.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/headshot.png");
-                        _headshot.InspectItemLabel.Text = "Headshot";
+                        _headshot.InspectItemLabel.Text = "By a headshot";
                     }
 
                     _distance?.Delete(true);
@@ -177,8 +177,8 @@ namespace TTTReborn.UI
                     if (!confirmationData.Suicide)
                     {
                         _distance = new InspectItem(this);
-                        _distance.ImageWrapper.Image.SetTexture("");
-                        _distance.InspectItemLabel.Text = $"Distance: {confirmationData.Distance:n0}";
+                        _distance.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/distance.png");
+                        _distance.InspectItemLabel.Text = $"From {confirmationData.Distance:n0}m away";
                     }
                     else
                     {
@@ -196,7 +196,7 @@ namespace TTTReborn.UI
                     {
                         _killerWeapon = new InspectItem(this);
                         _killerWeapon.ImageWrapper.Image.SetTexture($"/ui/weapons/{killerWeapon}.png");
-                        _killerWeapon.InspectItemLabel.Text = killerWeapon;
+                        _killerWeapon.InspectItemLabel.Text = $"With a {killerWeapon}";
                     }
                 }
 
@@ -230,7 +230,7 @@ namespace TTTReborn.UI
                     {
                         string[] timeSplits = TimeSpan.FromSeconds(Math.Round(Time.Now - _confirmationData.Time)).ToString().Split(':');
 
-                        _timeSinceDeath.InspectItemLabel.Text = $"Died {timeSplits[1]}:{timeSplits[2]} ago.";
+                        _timeSinceDeath.InspectItemLabel.Text = $"Died {timeSplits[1]}:{timeSplits[2]} ago";
                     }
                 }
             }
