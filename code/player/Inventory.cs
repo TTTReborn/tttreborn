@@ -44,7 +44,7 @@ namespace TTTReborn.Player
 
             if (entity is ICarriableItem carriable)
             {
-                if (!HasEmptySlot(carriable.SlotType))
+                if (IsCarryingType(entity.GetType()) || !HasEmptySlot(carriable.SlotType))
                 {
                     return false;
                 }
