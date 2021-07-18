@@ -6,6 +6,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.Teams;
 
 namespace TTTReborn.UI
 {
@@ -19,6 +20,7 @@ namespace TTTReborn.UI
         public const float MAX_DISPLAY_TIME = 8f;
 
         public bool IsOpened { get; private set; } = false;
+        public bool IsTeamChatting { get; private set; } = false;
 
         private TimeSince _lastChatFocus = 0f;
 
@@ -66,8 +68,16 @@ namespace TTTReborn.UI
             _input.Focus();
         }
 
+        private void OpenTeamChat()
+        {
+            IsTeamChatting = true;
+
+            Open();
+        }
+
         private void Close()
         {
+            IsTeamChatting = false;
             IsOpened = false;
 
             SetClass("open", false);
@@ -77,6 +87,8 @@ namespace TTTReborn.UI
 
         private void Submit()
         {
+            bool wasTeamChatting = IsTeamChatting;
+
             Close();
 
             if (Local.Pawn is not TTTPlayer player)
@@ -93,10 +105,17 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Say(msg, player.LifeState);
+            if (wasTeamChatting)
+            {
+                SayTeam(msg);
+            }
+            else
+            {
+                Say(msg);
+            }
         }
 
-        public void AddEntry(string name, string message, string avatar, LifeState lifeState)
+        public void AddEntry(string name, string message, string avatar, LifeState lifeState, string team = null)
         {
             _lastChatFocus = 0f;
 
@@ -130,13 +149,24 @@ namespace TTTReborn.UI
 
             chatEntry.SetClass("showHead", showHead);
 
+            if (!string.IsNullOrEmpty(team))
+            {
+                chatEntry.Style.BorderLeftWidth = Length.Pixels(4f);
+                chatEntry.Style.BorderLeftColor = TeamFunctions.GetTeam(team).Color;
+                chatEntry.Style.Dirty();
+            }
+
             Messages.Add(chatEntry);
+        }
+        public static bool CanUseTeamChat(TTTPlayer player)
+        {
+            return player.LifeState == LifeState.Alive && player.Team.GetType() == typeof(TraitorTeam);
         }
 
         [ClientCmd("chat_add", CanBeCalledFromServer = true)]
-        public static void AddChatEntry(string name, string message, string avatar = null, LifeState lifeState = LifeState.Alive)
+        public static void AddChatEntry(string name, string message, string avatar = null, LifeState lifeState = LifeState.Alive, string team = null)
         {
-            Instance?.AddEntry(name, message, avatar, lifeState);
+            Instance?.AddEntry(name, message, avatar, lifeState, team);
 
             // Only log clientside if we're not the listen server host
             if (!Global.IsListenServer)
@@ -151,8 +181,17 @@ namespace TTTReborn.UI
             Instance?.AddEntry(null, message, avatar, lifeState);
         }
 
+        [ClientCmd("open_teamchat")]
+        public static void OpenTeamChatInput()
+        {
+            if (Local.Pawn is TTTPlayer player && CanUseTeamChat(player))
+            {
+                Instance?.OpenTeamChat();
+            }
+        }
+
         [ServerCmd("say")]
-        public static void Say(string message, LifeState lifeState)
+        public static void Say(string message)
         {
             Assert.NotNull(ConsoleSystem.Caller);
 
@@ -164,6 +203,8 @@ namespace TTTReborn.UI
 
             Log.Info($"{ConsoleSystem.Caller}: {message}");
 
+            LifeState lifeState = ConsoleSystem.Caller.Pawn.LifeState;
+
             if (Gamemode.Game.Instance?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead)
             {
                 AddChatEntry(To.Multiple(Utils.GetDeadClients()), ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", lifeState);
@@ -172,6 +213,26 @@ namespace TTTReborn.UI
             {
                 AddChatEntry(To.Everyone, ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", lifeState);
             }
+        }
+
+        [ServerCmd("sayteam")]
+        public static void SayTeam(string message)
+        {
+            Assert.NotNull(ConsoleSystem.Caller);
+
+            // TODO: Consider RegEx to remove any messed up user chat messages.
+            if (ConsoleSystem.Caller.Pawn is not TTTPlayer player || !CanUseTeamChat(player) || message.Contains('\n') || message.Contains('\r'))
+            {
+                return;
+            }
+
+            Log.Info($"{ConsoleSystem.Caller}: {message}");
+
+            List<Client> clients = new();
+
+            player.Team.Members.ForEach(member => clients.Add(member.GetClientOwner()));
+
+            AddChatEntry(To.Multiple(clients), ConsoleSystem.Caller.Name, message, $"avatar:{ConsoleSystem.Caller.SteamId}", player.LifeState, player.Team.Name);
         }
     }
 }
