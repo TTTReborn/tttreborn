@@ -18,6 +18,7 @@ InspectMenu {
 
     ConfirmationPanel {
         min-width: 600px;
+        max-width: 75%;
         padding: 6px 12px;
         text-align: center;
         flex-direction: column;
@@ -78,11 +79,11 @@ InspectMenu {
                     width: 95px;
                     border-radius: 50%;
                     border: 2px solid white;
-                }
 
-                &.playericon Image {
-                    padding: 2px;
-                    border-radius: 50%;
+                    Image {
+                        padding: 2px;
+                        border-radius: 50%;
+                    }
                 }
 
                 Image {
