@@ -24,7 +24,7 @@ namespace TTTReborn.Rounds
             Players.Remove(player);
             _spectators.Add(player);
 
-            player.MakeSpectator(player.EyePos);
+            player.MakeSpectator();
 
             TTTTeam result = IsRoundOver();
 
@@ -122,7 +122,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            player.MakeSpectator();
+            player.MakeSpectator(false);
 
             _spectators.Add(player);
             Players.Remove(player);

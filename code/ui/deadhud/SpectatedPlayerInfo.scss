@@ -19,6 +19,10 @@ SpectatedPlayerInfo {
         font-weight: bold;
     }
 
+    &.hide {
+        display: none;
+    }
+
     IndicatorsPanel {
         display: flex;
         flex-direction: column;
@@ -39,10 +43,6 @@ SpectatedPlayerInfo {
                 background-color: #3caf07;
                 margin-bottom: 5px;
             }
-
-            &.hide {
-                opacity: 0;
-            }
         }
     }
 
@@ -54,10 +54,6 @@ SpectatedPlayerInfo {
         background-color: black;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
-
-        &.hide {
-            display: none;
-        }
 
         Label {
             font-size: 24px;

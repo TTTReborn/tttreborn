@@ -15,6 +15,8 @@ namespace TTTReborn.Rounds
         {
             _ = StartRespawnTimer(player);
 
+            player.MakeSpectator();
+
             base.OnPlayerKilled(player);
         }
 
