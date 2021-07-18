@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globals;
+
 namespace TTTReborn.Player.Camera
 {
-    public partial class ThirdPersonSpectateCamera : Sandbox.Camera
+    public partial class ThirdPersonSpectateCamera : Sandbox.Camera, IObservableCamera
     {
         private Vector3 DefaultPosition { get; set; }
 

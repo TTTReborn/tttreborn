@@ -212,7 +212,8 @@ namespace TTTReborn.Player
                 {
                     SpectateRagdollCamera => new FreeSpectateCamera(),
                     FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-                    ThirdPersonSpectateCamera => new FreeSpectateCamera(),
+                    ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
+                    FirstPersonSpectatorCamera => new FreeSpectateCamera(),
                     _ => Camera
                 };
             }
