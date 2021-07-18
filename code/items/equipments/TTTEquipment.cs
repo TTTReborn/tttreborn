@@ -1,5 +1,3 @@
-using System;
-
 using Sandbox;
 
 using TTTReborn.Player;
@@ -18,7 +16,7 @@ namespace TTTReborn.Items
     [Library("ttt_equipment")]
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
-        public virtual HoldType HoldType => Items.HoldType.Melee;
+        public virtual SlotType SlotType => SlotType.Equipment;
 
         public string Name { get; }
 
@@ -29,9 +27,22 @@ namespace TTTReborn.Items
             Name = attribute.Name;
         }
 
-        public string GetName() => Name;
-
         public void Equip(TTTPlayer player)
+        {
+            OnEquip();
+        }
+
+        public virtual void OnEquip()
+        {
+
+        }
+
+        public void Remove()
+        {
+            OnRemove();
+        }
+
+        public virtual void OnRemove()
         {
 
         }

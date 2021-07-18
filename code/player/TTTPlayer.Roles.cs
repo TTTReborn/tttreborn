@@ -2,12 +2,13 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         public TTTRole Role
         {
@@ -34,7 +35,7 @@ namespace TTTReborn.Player
             {
                 if (_team == null)
                 {
-                    _team = TTTTeam.GetTeam("Nones");
+                    _team = NoneTeam.Instance;
                 }
 
                 return _team;
@@ -54,7 +55,7 @@ namespace TTTReborn.Player
             Role?.OnDeselect(this);
 
             Role = role;
-            Team = team ?? Role.DefaultTeam;
+            Team = team ?? TeamFunctions.GetTeamByType(Role.DefaultTeamType);
 
             if (oldTeam != Team)
             {
@@ -84,11 +85,11 @@ namespace TTTReborn.Player
                     }
                 }
 
-                ClientAddMissingInAction(To.Multiple(traitors), this);
+                RPCs.ClientAddMissingInAction(To.Multiple(traitors), this);
             }
             else
             {
-                ClientAddMissingInAction(To.Single(player), this);
+                RPCs.ClientAddMissingInAction(To.Single(player), this);
             }
         }
     }

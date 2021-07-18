@@ -4,6 +4,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
@@ -11,12 +12,10 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
-    using Gamemode;
-
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
-        public override int RoundDuration => TTTReborn.Gamemode.Game.TTTRoundTime;
+        public override int RoundDuration => Gamemode.Game.TTTRoundTime;
 
         private readonly List<TTTPlayer> _spectators = new();
 
@@ -25,7 +24,7 @@ namespace TTTReborn.Rounds
             Players.Remove(player);
             _spectators.Add(player);
 
-            player.MakeSpectator(player.EyePos);
+            player.MakeSpectator();
 
             TTTTeam result = IsRoundOver();
 
@@ -74,15 +73,32 @@ namespace TTTReborn.Rounds
                         AddPlayer(player);
                     }
 
-                    // TODO: Remove once we can spawn in carriable entities into the map, for now just give the guns to people.
-                    player.Inventory.Add(new MagnetoStick(), true);
+                    #region Inventory Creation
+                    Inventory inventory = player.Inventory as Inventory;
 
-                    player.Inventory.Add(new Shotgun(), false);
-                    player.GiveAmmo(AmmoType.Buckshot, 16);
+                    inventory.TryAdd(new MagnetoStick(), true);
 
-                    player.Inventory.Add(new SMG(), false);
-                    player.Inventory.Add(new Pistol(), false);
-                    player.GiveAmmo(AmmoType.Pistol, 120);
+                    // Randomize between SMG and shotgun
+                    if (new Random().Next() % 2 == 0)
+                    {
+                        if (inventory.TryAdd(new Shotgun(), false))
+                        {
+                            inventory.Ammo.Give(AmmoType.Buckshot, 16);
+                        }
+                    }
+                    else
+                    {
+                        if (inventory.TryAdd(new SMG(), false))
+                        {
+                            inventory.Ammo.Give(AmmoType.SMG, 60);
+                        }
+                    }
+
+                    if (inventory.TryAdd(new Pistol(), false))
+                    {
+                        inventory.Ammo.Give(AmmoType.Pistol, 30);
+                    }
+                    #endregion
                 }
 
                 AssignRoles();
@@ -99,14 +115,14 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            LoadPostRound(TTTTeam.GetTeam("Innocents"));
+            LoadPostRound(InnocentTeam.Instance);
 
             base.OnTimeUp();
         }
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            player.MakeSpectator();
+            player.MakeSpectator(false);
 
             _spectators.Add(player);
             Players.Remove(player);
@@ -162,7 +178,7 @@ namespace TTTReborn.Rounds
                 // send everyone their roles
                 using (Prediction.Off())
                 {
-                    player.ClientSetRole(To.Single(player), player.Role.Name);
+                    RPCs.ClientSetRole(To.Single(player), player, player.Role.Name);
                 }
             }
         }
@@ -170,7 +186,7 @@ namespace TTTReborn.Rounds
         private static void LoadPostRound(TTTTeam winningTeam)
         {
             Gamemode.Game.Instance.ForceRoundChange(new PostRound());
-            TTTPlayer.ClientOpenAndSetPostRoundMenu(
+            RPCs.ClientOpenAndSetPostRoundMenu(
                 winningTeam.Name,
                 winningTeam.Color
             );
@@ -178,7 +194,7 @@ namespace TTTReborn.Rounds
 
         private bool CheckMinimumPlayers()
         {
-            return Client.All.Count >= TTTReborn.Gamemode.Game.TTTMinPlayers;
+            return Client.All.Count >= Gamemode.Game.TTTMinPlayers;
         }
 
         public override void OnSecond()
@@ -187,7 +203,7 @@ namespace TTTReborn.Rounds
             {
                 base.OnSecond();
 
-                if (!Game.HasMinimumPlayers())
+                if (!Utils.HasMinimumPlayers())
                 {
                     if (IsRoundOver() == null)
                     {

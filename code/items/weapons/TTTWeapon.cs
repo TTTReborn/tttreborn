@@ -1,5 +1,3 @@
-using System;
-
 using Sandbox;
 
 using TTTReborn.Player;
@@ -21,17 +19,13 @@ namespace TTTReborn.Items
     [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
-        public virtual HoldType HoldType => Items.HoldType.Pistol;
+        public virtual SlotType SlotType => SlotType.Primary;
         public virtual AmmoType AmmoType => AmmoType.Pistol;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
         public virtual float DeployTime => 0.6f;
-        public virtual int Bucket => 1;
-        public virtual int BucketWeight => 100;
         public virtual bool UnlimitedAmmo => false;
         public virtual float ChargeAttackDuration => 2;
-        public virtual bool HasFlashlight => false;
-        public virtual bool HasLaserDot => false;
         public virtual int BaseDamage => 10;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         // TODO add player role to weapon to access in UI InventorySelection.cs.
@@ -66,14 +60,24 @@ namespace TTTReborn.Items
             Name = attribute.Name;
         }
 
-        public virtual bool IsBuyable(TTTPlayer player)
-        {
-            return !(player.Inventory as Inventory).IsCarryingType(GetType());
-        }
-
         public void Equip(TTTPlayer player)
         {
-            player.Inventory.Add(this);
+            OnEquip();
+        }
+
+        public virtual void OnEquip()
+        {
+
+        }
+
+        public void Remove()
+        {
+            OnRemove();
+        }
+
+        public virtual void OnRemove()
+        {
+
         }
 
         public int AvailableAmmo()
@@ -83,7 +87,7 @@ namespace TTTReborn.Items
                 return 0;
             }
 
-            return owner.AmmoCount(AmmoType);
+            return (owner.Inventory as Inventory).Ammo.Count(AmmoType);
         }
 
         public override void ActiveStart(Entity owner)
@@ -110,14 +114,14 @@ namespace TTTReborn.Items
 
         public override void Reload()
         {
-            if (HoldType == Items.HoldType.Melee || IsReloading || AmmoClip >= ClipSize)
+            if (SlotType == SlotType.Melee || IsReloading || AmmoClip >= ClipSize)
             {
                 return;
             }
 
             TimeSinceReload = 0;
 
-            if (Owner is TTTPlayer player && !UnlimitedAmmo && player.AmmoCount(AmmoType) <= 0)
+            if (Owner is TTTPlayer player && !UnlimitedAmmo && (player.Inventory as Inventory).Ammo.Count(AmmoType) <= 0)
             {
                 return;
             }
@@ -204,7 +208,7 @@ namespace TTTReborn.Items
 
             if (!UnlimitedAmmo)
             {
-                int ammo = player.TakeAmmo(AmmoType, ClipSize - AmmoClip);
+                int ammo = (player.Inventory as Inventory).Ammo.Take(AmmoType, ClipSize - AmmoClip);
 
                 if (ammo == 0)
                 {
@@ -230,10 +234,7 @@ namespace TTTReborn.Items
             TimeSincePrimaryAttack = 0;
             TimeSinceSecondaryAttack = 0;
 
-            using (Prediction.Off())
-            {
-                ShootEffects();
-            }
+            ShootEffects();
 
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);
         }
@@ -243,7 +244,7 @@ namespace TTTReborn.Items
         {
             Host.AssertClient();
 
-            if (HoldType != Items.HoldType.Melee)
+            if (SlotType != SlotType.Melee)
             {
                 Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
             }
@@ -337,7 +338,7 @@ namespace TTTReborn.Items
 
         public bool IsUsable()
         {
-            if (HoldType == Items.HoldType.Melee || ClipSize == 0 || AmmoClip > 0)
+            if (SlotType == SlotType.Melee || ClipSize == 0 || AmmoClip > 0)
             {
                 return true;
             }

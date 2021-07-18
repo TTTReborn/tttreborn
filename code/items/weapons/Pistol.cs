@@ -6,16 +6,14 @@ namespace TTTReborn.Items
     partial class Pistol : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        public override HoldType HoldType => Items.HoldType.Pistol;
+        public override SlotType SlotType => SlotType.Secondary;
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 15;
         public override float PrimaryRate => 15.0f;
         public override float SecondaryRate => 1.0f;
-        public override float ReloadTime => 3.0f;
+        public override float ReloadTime => 2.3f;
         public override float DeployTime => 0.4f;
-        public override bool HasLaserDot => true;
         public override int BaseDamage => 8;
-        public override int Bucket => 1;
 
         public virtual int Price => 100;
 
@@ -45,10 +43,7 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            using (Prediction.Off())
-            {
-                ShootEffects();
-            }
+            ShootEffects();
 
             PlaySound("rust_pistol.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);

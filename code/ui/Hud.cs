@@ -5,15 +5,13 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     public partial class Hud : HudEntity<RootPanel>
     {
         public static Hud Current { set; get; }
 
         public GeneralHud GeneralHudPanel;
         public AliveHud AliveHudPanel;
+        public DeadHud DeadHudPanel;
 
         public Hud()
         {
@@ -26,6 +24,7 @@ namespace TTTReborn.UI
 
             GeneralHudPanel = new GeneralHud(RootPanel);
             AliveHudPanel = new AliveHud(RootPanel);
+            DeadHudPanel = new DeadHud(RootPanel);
         }
 
         [Event.Hotload]
@@ -34,10 +33,19 @@ namespace TTTReborn.UI
             if (Host.IsClient)
             {
                 Local.Hud?.Delete();
+
                 Hud hud = new Hud();
-                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+
+                if (Local.Client.Pawn is TTTPlayer player)
                 {
-                    hud.AliveHudPanel.CreateHud();
+                    if (player.LifeState == LifeState.Alive)
+                    {
+                        hud.AliveHudPanel.CreateHud();
+                    }
+                    else
+                    {
+                        hud.DeadHudPanel.CreateHud();
+                    }
                 }
             }
         }
@@ -50,6 +58,7 @@ namespace TTTReborn.UI
                 return;
             }
 
+            Current?.DeadHudPanel.DeleteHud();
             Current?.AliveHudPanel.CreateHud();
         }
 
@@ -62,6 +71,7 @@ namespace TTTReborn.UI
             }
 
             Current?.AliveHudPanel.DeleteHud();
+            Current?.DeadHudPanel.CreateHud();
         }
 
         public class GeneralHud : Panel
@@ -83,36 +93,73 @@ namespace TTTReborn.UI
 
         public class AliveHud : Panel
         {
-            private List<Panel> _panels;
+            public DamageIndicator DamageIndicator;
+            public InventoryWrapper InventoryWrapper;
+            public PlayerInfo PlayerInfo;
+            public InspectMenu InspectMenu;
+            public Nameplate Nameplate;
+            public QuickShop QuickShop;
+            public DrowningIndicator DrowningIndicator;
 
             public AliveHud(Panel parent)
             {
                 Parent = parent;
-                _panels = new List<Panel>();
             }
 
             public void CreateHud()
             {
-                if (_panels.Count == 0)
-                {
-                    _panels = new List<Panel>()
-                    {
-                        Parent.AddChild<PlayerInfo>(),
-                        Parent.AddChild<InventorySelection>(),
-                        Parent.AddChild<InspectMenu>(),
-                        Parent.AddChild<Nameplate>(),
-                        Parent.AddChild<QuickShop>()
-                    };
-                }
+                InventoryWrapper ??= Parent.AddChild<InventoryWrapper>();
+                DamageIndicator ??= Parent.AddChild<DamageIndicator>();
+                PlayerInfo ??= Parent.AddChild<PlayerInfo>();
+                InspectMenu ??= Parent.AddChild<InspectMenu>();
+                Nameplate ??= Parent.AddChild<Nameplate>();
+                QuickShop ??= Parent.AddChild<QuickShop>();
+                DrowningIndicator ??= Parent.AddChild<DrowningIndicator>();
             }
 
             public void DeleteHud()
             {
-                foreach (Panel child in _panels)
-                {
-                    child.Delete();
-                }
-                _panels.Clear();
+                DamageIndicator?.Delete();
+                DamageIndicator = null;
+
+                InventoryWrapper?.Delete();
+                InventoryWrapper = null;
+
+                PlayerInfo?.Delete();
+                PlayerInfo = null;
+
+                InspectMenu?.Delete();
+                InspectMenu = null;
+
+                Nameplate?.Delete();
+                Nameplate = null;
+
+                QuickShop?.Delete();
+                QuickShop = null;
+
+                DrowningIndicator?.Delete();
+                DrowningIndicator = null;
+            }
+        }
+
+        public class DeadHud : Panel
+        {
+            public SpectatedPlayerInfo SpectatedPlayerInfo;
+
+            public DeadHud(Panel parent)
+            {
+                Parent = parent;
+            }
+
+            public void CreateHud()
+            {
+                SpectatedPlayerInfo ??= Parent.AddChild<SpectatedPlayerInfo>();
+            }
+
+            public void DeleteHud()
+            {
+                SpectatedPlayerInfo?.Delete();
+                SpectatedPlayerInfo = null;
             }
         }
     }

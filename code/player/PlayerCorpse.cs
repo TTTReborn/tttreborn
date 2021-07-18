@@ -10,7 +10,7 @@ namespace TTTReborn.Player
 
         public List<Particles> Ropes = new();
 
-        public List<PhysicsJoint> Welds = new();
+        public List<PhysicsJoint> RopeSprings = new();
 
         [Net]
         public bool IsIdentified { get; set; } = false;
@@ -81,14 +81,13 @@ namespace TTTReborn.Player
                 rope.Destroy(true);
             }
 
-            Ropes.Clear();
-
-            foreach (PhysicsJoint weld in Welds)
+            foreach (PhysicsJoint spring in RopeSprings)
             {
-                weld.Remove();
+                spring.Remove();
             }
 
-            Welds.Clear();
+            Ropes.Clear();
+            RopeSprings.Clear();
         }
 
         protected override void OnDestroy()

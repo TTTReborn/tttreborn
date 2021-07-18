@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.UI;
@@ -36,7 +37,7 @@ namespace TTTReborn.Gamemode
         {
             Assert.NotNull(round);
 
-            if (Game.HasMinimumPlayers())
+            if (Utils.HasMinimumPlayers())
             {
                 ForceRoundChange(round);
             }
@@ -124,7 +125,43 @@ namespace TTTReborn.Gamemode
                 }
             }
 
+            if (sourcePlayer.IsTeamVoiceChatEnabled && destPlayer.Team != sourcePlayer.Team)
+            {
+                return false;
+            }
+
             return true;
+        }
+
+        /// <summary>
+        /// Someone is speaking via voice chat. This might be someone in your game,
+        /// or in your party, or in your lobby.
+        /// </summary>
+        public override void OnVoicePlayed(ulong steamId, float level)
+        {
+            Client client = null;
+
+            foreach (Client loopClient in Client.All)
+            {
+                if (loopClient.SteamId == steamId)
+                {
+                    client = loopClient;
+
+                    break;
+                }
+            }
+
+            if (client == null || !client.IsValid())
+            {
+                return;
+            }
+
+            if (client.Pawn is TTTPlayer player)
+            {
+                player.IsSpeaking = true;
+            }
+
+            UI.VoiceList.Current?.OnVoicePlayed(client, level);
         }
 
         public override void PostLevelLoaded()

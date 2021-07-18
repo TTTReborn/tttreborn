@@ -1,8 +1,10 @@
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         public PlayerCorpse PlayerCorpse { get; set; }
 
@@ -69,7 +71,7 @@ namespace TTTReborn.Player
 
                             playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
 
-                            ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
+                            RPCs.ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
 
                             ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified);
                         }

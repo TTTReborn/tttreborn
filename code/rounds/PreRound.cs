@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTTReborn.Items;
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
@@ -10,11 +9,13 @@ namespace TTTReborn.Rounds
     public class PreRound : BaseRound
     {
         public override string RoundName => "Preparing";
-        public override int RoundDuration => TTTReborn.Gamemode.Game.TTTPreRoundTime;
+        public override int RoundDuration => Gamemode.Game.TTTPreRoundTime;
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
             _ = StartRespawnTimer(player);
+
+            player.MakeSpectator();
 
             base.OnPlayerKilled(player);
         }
@@ -45,14 +46,14 @@ namespace TTTReborn.Rounds
         {
             base.OnTimeUp();
 
-            TTTReborn.Gamemode.Game.Instance.ChangeRound(new InProgressRound());
+            Gamemode.Game.Instance.ChangeRound(new InProgressRound());
         }
 
         private static async Task StartRespawnTimer(TTTPlayer player)
         {
             await Task.Delay(1000);
 
-            if (player.IsValid() && TTTReborn.Gamemode.Game.Instance.Round is PreRound)
+            if (player.IsValid() && Gamemode.Game.Instance.Round is PreRound)
             {
                 player.Respawn();
             }

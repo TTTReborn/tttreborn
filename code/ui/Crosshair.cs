@@ -1,7 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Items;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -106,6 +105,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
+            base.Tick();
+
             TTTPlayer player = Local.Pawn as TTTPlayer;
 
             if (player == null)

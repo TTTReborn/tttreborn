@@ -1,101 +1,83 @@
 using Sandbox;
 
-using TTTReborn.Roles;
-using TTTReborn.Teams;
+using TTTReborn.Globals;
+using TTTReborn.Items;
 using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         [ClientRpc]
-        public void ClientOnPlayerDied(TTTPlayer player)
+        private void ClientShowFlashlightLocal(bool shouldShow)
         {
-            if (!player.IsValid())
+            ShowFlashlight(shouldShow);
+        }
+
+        [ClientRpc]
+        public void ClientOnPlayerCarriableItemPickup(Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public void ClientOnPlayerCarriableItemDrop(Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public void ClientClearInventory()
+        {
+            Event.Run("tttreborn.player.inventory.clear");
+        }
+
+        [ClientRpc]
+        public void ClientSetAmmo(AmmoType ammoType, int amount)
+        {
+            (Inventory as Inventory).Ammo.Set(ammoType, amount);
+        }
+
+        [ClientRpc]
+        public void ClientClearAmmo()
+        {
+            (Inventory as Inventory).Ammo.Clear();
+        }
+
+        [ClientRpc]
+        public void ClientAddPerk(string perkName)
+        {
+            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByName<TTTPerk>(perkName));
+
+            if (perk == null)
             {
                 return;
             }
 
-            Event.Run("tttreborn.player.died", player);
+            (Inventory as Inventory).TryAdd(perk);
         }
 
         [ClientRpc]
-        public void ClientOnPlayerSpawned(TTTPlayer player)
+        public void ClientRemovePerk(string perkName)
         {
-            if (!player.IsValid())
+            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByName<TTTPerk>(perkName));
+
+            if (perk == null)
             {
                 return;
             }
 
-            Event.Run("tttreborn.player.spawned", player);
-
-            player.IsMissingInAction = false;
-            player.IsConfirmed = false;
-            player.CorpseConfirmer = null;
-
-            player.SetRole(new NoneRole());
-
-            Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(player.GetClientOwner());
+            (Inventory as Inventory).Perks.Take(perk);
         }
 
-        /// <summary>
-        /// Must be called on the server, updates TTTPlayer's `Role`.
-        /// </summary>
-        /// <param name="roleName">Same as the `TTTReborn.Roles.TTTRole`'s `TTTReborn.Roles.RoleAttribute`'s name</param>
-        /// <param name="teamName">The name of the team</param>
         [ClientRpc]
-        public void ClientSetRole(string roleName, string teamName = null)
+        public void ClientClearPerks()
         {
-            SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
+            (Inventory as Inventory).Perks.Clear();
         }
 
         [ClientRpc]
-        public void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName, string teamName = null)
-        {
-            if (!confirmPlayer.IsValid() || !deadPlayer.IsValid())
-            {
-                return;
-            }
-
-            deadPlayer.SetRole(RoleFunctions.GetRoleByType(RoleFunctions.GetRoleTypeByName(roleName)), TTTTeam.GetTeam(teamName));
-
-            deadPlayer.IsConfirmed = true;
-            deadPlayer.CorpseConfirmer = confirmPlayer;
-
-            Client confirmClient = confirmPlayer.GetClientOwner();
-            Client deadClient = deadPlayer.GetClientOwner();
-
-            InfoFeed.Current?.AddEntry(
-                confirmClient,
-                deadClient,
-                "found the body of",
-                $"({deadPlayer.Role.Name})"
-            );
-
-            if (confirmPlayer == Local.Pawn as TTTPlayer && deadPlayer.CorpseCredits > 0)
-            {
-                InfoFeed.Current?.AddEntry(
-                    confirmClient,
-                    $"found $ {deadPlayer.CorpseCredits} credits!"
-                );
-            }
-        }
-
-        [ClientRpc]
-        public void ClientAddMissingInAction(TTTPlayer missingInActionPlayer)
-        {
-            if (!missingInActionPlayer.IsValid())
-            {
-                return;
-            }
-
-            missingInActionPlayer.IsMissingInAction = true;
-
-            Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(missingInActionPlayer.GetClientOwner());
-        }
-
-        [ClientRpc]
-        public static void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
+        public void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
         {
             if (!deadPlayer.IsValid())
             {
@@ -106,7 +88,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientCloseInspectMenu()
+        public void ClientCloseInspectMenu()
         {
             if (InspectMenu.Instance?.IsShowing ?? false)
             {
@@ -115,31 +97,17 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientOpenAndSetPostRoundMenu(string winningTeam, Color winningColor)
-        {
-            PostRoundMenu.Instance.OpenAndSetPostRoundMenu(new PostRoundStats(
-                winningRole: winningTeam,
-                winningColor: winningColor
-            ));
-        }
-
-        [ClientRpc]
-        public static void ClientClosePostRoundMenu()
-        {
-            PostRoundMenu.Instance.IsShowing = false;
-        }
-
-        [ClientRpc]
-        public void ClientDidDamage(Vector3 position, float amount, float inverseHealth)
+        public void ClientAnotherPlayerDidDamage(Vector3 position, float inverseHealth)
         {
             Sound.FromScreen("dm.ui_attacker")
-                .SetPitch(1 + inverseHealth * 1);
+                .SetPitch(1 + inverseHealth * 1)
+                .SetPosition(position);
         }
 
         [ClientRpc]
-        public void ClientTookDamage(Vector3 position)
+        public void ClientTookDamage(Vector3 position, float damage)
         {
-
+            Event.Run("tttreborn.player.takedamage", this, damage);
         }
     }
 }

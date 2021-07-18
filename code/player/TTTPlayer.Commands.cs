@@ -4,12 +4,13 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Roles;
 
 namespace TTTReborn.Player
 {
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
         [ServerCmd(Name = "respawn", Help = "Respawns the current player")]
         public static void RespawnPlayer()
@@ -69,6 +70,13 @@ namespace TTTReborn.Player
         [ServerCmd(Name = "requestitem")]
         public static void RequestItem(string itemName)
         {
+            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+            if (!player.IsValid())
+            {
+                return;
+            }
+
             IBuyableItem item = null;
 
             Library.GetAll<IBuyableItem>().ToList().ForEach(t =>
@@ -82,9 +90,7 @@ namespace TTTReborn.Player
                 }
             });
 
-            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
-            if (item == null || !player.IsValid())
+            if (item == null)
             {
                 return;
             }
@@ -107,7 +113,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Type type = RoleFunctions.GetRoleTypeByName(roleName);
+            Type type = Utils.GetTypeByName<TTTRole>(roleName);
 
             if (type == null)
             {
@@ -116,7 +122,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            TTTRole role = RoleFunctions.GetRoleByType(type);
+            TTTRole role = Utils.GetObjectByType<TTTRole>(type);
 
             if (role == null)
             {
@@ -131,7 +137,7 @@ namespace TTTReborn.Player
             }
 
             player.SetRole(role);
-            player.ClientSetRole(To.Single(player), role.Name);
+            RPCs.ClientSetRole(To.Single(player), player, role.Name);
         }
 
         [ClientCmd(Name = "playerids", Help = "Returns a list of all players (clients) and their associated IDs")]

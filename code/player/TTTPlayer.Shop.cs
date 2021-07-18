@@ -12,16 +12,16 @@ namespace TTTReborn.Player
         RoleRestriction
     }
 
-    partial class TTTPlayer
+    public partial class TTTPlayer
     {
-        public BuyError CanBuy(IBuyableItem item)
+        public BuyError CanBuy(ShopItemData? itemData)
         {
-            if (!item.IsBuyable(this))
+            if (!itemData?.IsBuyable(this) ?? false)
             {
                 return BuyError.InventoryBlocked;
             }
 
-            if (Credits < item.Price)
+            if (Credits < itemData?.Price)
             {
                 return BuyError.NotEnoughCredits;
             }
@@ -34,18 +34,22 @@ namespace TTTReborn.Player
             return BuyError.None;
         }
 
-        public void RequestPurchase(IBuyableItem item)
+        public void RequestPurchase(IBuyableItem buyableItem)
         {
-            if (CanBuy(item) == BuyError.None)
-            {
-                Credits -= item.Price;
+            ShopItemData itemData = buyableItem.CreateItemData();
 
-                item.Equip(this);
+            BuyError buyError = CanBuy(itemData);
+
+            if (buyError != BuyError.None)
+            {
+                Log.Warning($"{GetClientOwner().Name} tried to buy '{itemData.Name}'. (Error: {buyError})");
 
                 return;
             }
 
-            Log.Warning($"{GetClientOwner().Name} tried to buy '{item.Name}'.");
+            Credits -= itemData.Price;
+
+            buyableItem.OnPurchase(this);
         }
     }
 }

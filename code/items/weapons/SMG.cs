@@ -6,16 +6,14 @@ namespace TTTReborn.Items
     partial class SMG : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
-        public override HoldType HoldType => Items.HoldType.Primary;
+        public override SlotType SlotType => SlotType.Primary;
         public override float PrimaryRate => 10.0f;
         public override float SecondaryRate => 1.0f;
         public override int ClipSize => 30;
-        public override float ReloadTime => 4.0f;
+        public override float ReloadTime => 2.8f;
         public override float DeployTime => 0.6f;
-        public override bool HasFlashlight => true;
-        public override bool HasLaserDot => true;
         public override int BaseDamage => 8;
-        public override int Bucket => 2;
+        public override AmmoType AmmoType => AmmoType.SMG;
 
         public virtual int Price => 100;
 
@@ -37,10 +35,7 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimBool("b_attack", true);
 
-            using (Prediction.Off())
-            {
-                ShootEffects();
-            }
+            ShootEffects();
 
             PlaySound("rust_smg.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.1f, 1.5f, BaseDamage, 3.0f);
@@ -65,7 +60,7 @@ namespace TTTReborn.Items
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetParam("holdtype", 2);
+            anim.SetParam("holdtype", 1);
             anim.SetParam("aimat_weight", 1.0f);
         }
     }

@@ -1,51 +1,71 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
-using TTTReborn.Roles;
 
 namespace TTTReborn.Teams
 {
-    public class TTTTeam : Networked
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    public class TeamAttribute : LibraryAttribute
     {
-        public static readonly Dictionary<string, TTTTeam> Teams = new();
-
-        public string Name { get; private set; }
-
-        public Color Color { get; set; } = Color.Transparent;
-
-        public readonly List<TTTPlayer> Members;
-
-        public TTTTeam(string name)
+        public TeamAttribute(string name) : base(name)
         {
-            Members = new();
 
-            Name = name;
         }
+    }
 
-        public static TTTTeam AddTeam(string name)
+    public abstract class TTTTeam
+    {
+        public readonly string Name;
+
+        public abstract Color Color { get; }
+
+        public readonly List<TTTPlayer> Members = new();
+
+        public static TTTTeam Instance;
+
+        public static Dictionary<string, TTTTeam> Teams = new();
+
+        public TTTTeam()
         {
-            TTTTeam team = new TTTTeam(name);
+            Name = Utils.GetTypeName(GetType());
 
-            Teams.Add(name, team);
-
-            return team;
+            Instance = this;
+            Teams[Name] = this;
         }
+    }
 
-        public static TTTTeam GetTeam(string name)
+    public static class TeamFunctions
+    {
+        public static TTTTeam GetTeam(string teamname)
         {
-            if (string.IsNullOrEmpty(name))
+            if (teamname == null)
             {
                 return null;
             }
 
-            if (!Teams.TryGetValue(name, out TTTTeam team))
+            if (!TTTTeam.Teams.TryGetValue(teamname, out TTTTeam team))
             {
-                team = AddTeam(name);
+                team = Utils.GetObjectByType<TTTTeam>(Utils.GetTypeByName<TTTTeam>(teamname));
             }
 
             return team;
+        }
+
+        public static TTTTeam GetTeamByType(Type teamType)
+        {
+            foreach (TTTTeam team in TTTTeam.Teams.Values)
+            {
+                if (team.GetType() == teamType)
+                {
+                    return team;
+                }
+            }
+
+            return null;
         }
     }
 }

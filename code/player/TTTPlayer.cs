@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
@@ -9,6 +10,12 @@ namespace TTTReborn.Player
     public partial class TTTPlayer : Sandbox.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;
+
+        [Net, Predicted]
+        public float Stamina { get; set; } = 100f;
+
+        [Net]
+        public float MaxStamina { get; set; } = 100f;
 
         [Net, Local]
         public int Credits { get; set; } = 0;
@@ -20,20 +27,16 @@ namespace TTTReborn.Player
         public TTTPlayer()
         {
             Inventory = new Inventory(this);
-
-            _lastGroundEntity = GroundEntity;
         }
 
-        public void MakeSpectator(Vector3 position = default)
+        public void MakeSpectator(bool useRagdollCamera = true)
         {
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = new SpectateCamera
-            {
-                DeathPosition = position,
-                TimeSinceDied = 0
-            };
+            Camera = useRagdollCamera ? new SpectateRagdollCamera() : new FreeSpectateCamera();
+
+            ShowFlashlight(false, false);
         }
 
         // Important: Server-side only
@@ -46,11 +49,11 @@ namespace TTTReborn.Player
             // sync roles
             using (Prediction.Off())
             {
-                foreach (TTTPlayer player in Gamemode.Game.GetPlayers())
+                foreach (TTTPlayer player in Utils.GetPlayers())
                 {
                     if (isPostRound || player.IsConfirmed)
                     {
-                        player.ClientSetRole(To.Single(this), player.Role.Name);
+                        RPCs.ClientSetRole(To.Single(this), player, player.Role.Name);
                     }
                 }
             }
@@ -63,7 +66,8 @@ namespace TTTReborn.Player
         {
             SetModel("models/citizen/citizen.vmdl");
 
-            Controller = new WalkController();
+            Controller = new DefaultWalkController();
+
             Animator = new StandardPlayerAnimator();
             Camera = new FirstPersonCamera();
 
@@ -73,6 +77,7 @@ namespace TTTReborn.Player
             EnableShadowInFirstPerson = true;
 
             Credits = 0;
+            Stamina = MaxStamina;
 
             SetRole(new NoneRole());
 
@@ -82,8 +87,8 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                ClientOnPlayerSpawned(this);
-                ClientSetRole(To.Single(this), Role.Name);
+                RPCs.ClientOnPlayerSpawned(this);
+                RPCs.ClientSetRole(To.Single(this), this, Role.Name);
             }
 
             RemovePlayerCorpse();
@@ -114,37 +119,47 @@ namespace TTTReborn.Player
             Inventory.DropActive();
             Inventory.DeleteContents();
 
+            ShowFlashlight(false, false);
+
             IsMissingInAction = true;
 
             using (Prediction.Off())
             {
-                ClientOnPlayerDied(To.Single(this), this);
+                RPCs.ClientOnPlayerDied(To.Single(this), this);
                 SyncMIA();
             }
         }
 
         public override void Simulate(Client client)
         {
+            if (IsClient)
+            {
+                TickPlayerVoiceChat();
+            }
+
+            if (LifeState != LifeState.Alive)
+            {
+                TickPlayerChangeSpectateCamera();
+
+                return;
+            }
+
             // Input requested a carriable entity switch
             if (Input.ActiveChild != null)
             {
                 ActiveChild = Input.ActiveChild;
             }
 
-            if (LifeState != LifeState.Alive)
-            {
-                return;
-            }
+            SimulateActiveChild(client, ActiveChild);
 
+            TickItemSimulate();
             TickPlayerUse();
             TickPlayerDropCarriable();
-
-            SimulateActiveChild(client, ActiveChild);
+            TickPlayerFlashlight();
 
             if (IsServer)
             {
                 TickAttemptInspectPlayerCorpse();
-                TickPlayerFalling();
             }
 
             PawnController controller = GetActiveController();
@@ -181,6 +196,42 @@ namespace TTTReborn.Player
 
                     _timeSinceDropped = 0;
                 }
+            }
+        }
+
+        private void TickPlayerChangeSpectateCamera()
+        {
+            if (!Input.Pressed(InputButton.Jump) || !IsServer)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                Camera = Camera switch
+                {
+                    SpectateRagdollCamera => new FreeSpectateCamera(),
+                    FreeSpectateCamera => new ThirdPersonSpectateCamera(),
+                    ThirdPersonSpectateCamera => new FreeSpectateCamera(),
+                    _ => Camera
+                };
+            }
+        }
+
+        private void TickItemSimulate()
+        {
+            Client client = GetClientOwner();
+
+            if (client == null)
+            {
+                return;
+            }
+
+            PerksInventory perks = (Inventory as Inventory).Perks;
+
+            for (int i = 0; i < perks.Count(); i++)
+            {
+                perks.Get(i).Simulate(client);
             }
         }
 
