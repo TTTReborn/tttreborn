@@ -65,6 +65,17 @@ namespace TTTReborn.UI
 
             SetClass("open", true);
 
+            if (IsTeamChatting && Local.Pawn is TTTPlayer player)
+            {
+                _input.Style.BorderBottomColor = player.Team.Color;
+            }
+            else
+            {
+                _input.Style.BorderBottomColor = null;
+            }
+
+            _input.Style.Dirty();
+
             _input.Focus();
         }
 
