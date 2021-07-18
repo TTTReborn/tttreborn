@@ -8,7 +8,6 @@ namespace TTTReborn.UI
     {
         public string Name;
         public string Text;
-        public int Index;
 
         public readonly Panel HeadHolder;
         public readonly Image Avatar;

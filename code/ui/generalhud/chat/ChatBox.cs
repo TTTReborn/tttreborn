@@ -130,8 +130,6 @@ namespace TTTReborn.UI
 
             chatEntry.SetClass("showHead", showHead);
 
-            chatEntry.Index = Messages.Count;
-
             Messages.Add(chatEntry);
         }
 
