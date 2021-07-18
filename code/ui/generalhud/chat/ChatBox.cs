@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
@@ -7,26 +7,20 @@ using Sandbox.UI.Construct;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 
-// Chat needs to hook into s&box in order to function.
-namespace Sandbox.Hooks
-{
-    public static partial class Chat
-    {
-        public static event Action OnOpenChat;
-
-        [ClientCmd("openchat")]
-        internal static void MessageMode()
-        {
-            OnOpenChat?.Invoke();
-        }
-    }
-}
-
 namespace TTTReborn.UI
 {
     public partial class ChatBox : Panel
     {
-        public static ChatBox Instance;
+        public static ChatBox Instance { get; private set; }
+
+        public readonly List<ChatEntry> Messages = new();
+
+        public const int MAX_MESSAGES_COUNT = 200;
+        public const float MAX_DISPLAY_TIME = 8f;
+
+        public bool IsOpened { get; private set; } = false;
+
+        private TimeSince _lastChatFocus = 0f;
 
         private readonly Panel _canvas;
         private readonly TextEntry _input;
@@ -38,6 +32,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/chat/ChatBox.scss");
 
             _canvas = Add.Panel("chat_canvas");
+            _canvas.PreferScrollToBottom = true;
 
             _input = Add.TextEntry("");
             _input.AddEventListener("onsubmit", Submit);
@@ -48,15 +43,35 @@ namespace TTTReborn.UI
             Sandbox.Hooks.Chat.OnOpenChat += Open;
         }
 
+        public override void Tick()
+        {
+            base.Tick();
+
+            SetClass("dead", Local.Pawn.LifeState == LifeState.Dead);
+
+            if (IsOpened)
+            {
+                _lastChatFocus = 0f;
+            }
+
+            _canvas.SetClass("hide", _lastChatFocus > MAX_DISPLAY_TIME);
+        }
+
         private void Open()
         {
-            AddClass("open");
+            IsOpened = true;
+
+            SetClass("open", true);
+
             _input.Focus();
         }
 
         private void Close()
         {
-            RemoveClass("open");
+            IsOpened = false;
+
+            SetClass("open", false);
+
             _input.Blur();
         }
 
@@ -69,7 +84,8 @@ namespace TTTReborn.UI
                 return;
             }
 
-            var msg = _input.Text.Trim();
+            string msg = _input.Text.Trim();
+
             _input.Text = "";
 
             if (string.IsNullOrWhiteSpace(msg))
@@ -82,16 +98,39 @@ namespace TTTReborn.UI
 
         public void AddEntry(string name, string message, string avatar, LifeState lifeState)
         {
-            var chatEntry = _canvas.AddChild<ChatEntry>();
+            _lastChatFocus = 0f;
+
+            if (Messages.Count > MAX_MESSAGES_COUNT)
+            {
+                ChatEntry entry = Messages[0];
+
+                Messages.RemoveAt(0);
+
+                entry.Delete();
+            }
+
+            ChatEntry chatEntry = _canvas.AddChild<ChatEntry>();
+            chatEntry.Name = name;
+            chatEntry.Text = message;
+
             chatEntry.Message.Text = message;
-
-            chatEntry.NameLabel.Text = name;
-            chatEntry.NameLabel.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
-
-            chatEntry.Avatar.SetTexture(avatar);
 
             chatEntry.SetClass("noname", string.IsNullOrEmpty(name));
             chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
+
+            bool showHead = Messages.Count == 0 || name == null || Messages[Messages.Count - 1].Name != name;
+
+            if (showHead)
+            {
+                chatEntry.NameLabel.Text = name;
+                chatEntry.NameLabel.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
+
+                chatEntry.Avatar.SetTexture(avatar);
+            }
+
+            chatEntry.SetClass("showHead", showHead);
+
+            Messages.Add(chatEntry);
         }
 
         [ClientCmd("chat_add", CanBeCalledFromServer = true)]
@@ -117,7 +156,7 @@ namespace TTTReborn.UI
         {
             Assert.NotNull(ConsoleSystem.Caller);
 
-            // TODO: Consider REGEX to remove any messed up user chat messages.
+            // TODO: Consider RegEx to remove any messed up user chat messages.
             if (message.Contains('\n') || message.Contains('\r'))
             {
                 return;

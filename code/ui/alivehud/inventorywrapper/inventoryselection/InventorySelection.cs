@@ -15,7 +15,7 @@ namespace TTTReborn.UI
     {
         public InventorySelection()
         {
-            StyleSheet.Load("/ui/alivehud/inventoryselection/InventorySelection.scss");
+            StyleSheet.Load("/ui/alivehud/inventorywrapper/inventoryselection/InventorySelection.scss");
 
             if (Local.Pawn is not TTTPlayer player)
             {
@@ -51,7 +51,7 @@ namespace TTTReborn.UI
                 {
                     slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
 
-                    if (slot.Carriable is TTTWeapon weapon && weapon.HoldType != HoldType.Melee)
+                    if (slot.Carriable is TTTWeapon weapon && weapon.SlotType != SlotType.Melee)
                     {
                         slot.UpdateAmmo(FormatAmmo(weapon, inventory));
                     }
@@ -74,7 +74,7 @@ namespace TTTReborn.UI
                 InventorySlot s1 = p1 as InventorySlot;
                 InventorySlot s2 = p2 as InventorySlot;
 
-                int result = s1.Carriable.HoldType.CompareTo(s2.Carriable.HoldType);
+                int result = s1.Carriable.SlotType.CompareTo(s2.Carriable.SlotType);
                 return result != 0 ? result : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
             });
         }
@@ -113,41 +113,41 @@ namespace TTTReborn.UI
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
             if (keyboardIndexPressed != 0)
             {
-                List<ICarriableItem> weaponsOfHoldTypeSelected = new();
-                int activeCarriableOfHoldTypeIndex = -1;
+                List<ICarriableItem> weaponsOfSlotTypeSelected = new();
+                int activeCarriableOfSlotTypeIndex = -1;
 
                 for (int i = 0; i < childrenList.Count; ++i)
                 {
                     if (childrenList[i] is InventorySlot slot)
                     {
-                        if ((int) slot.Carriable.HoldType == keyboardIndexPressed)
+                        if ((int) slot.Carriable.SlotType == keyboardIndexPressed)
                         {
                             // Using the keyboard index the user pressed, find all carriables that
-                            // have the same hold type as the index.
-                            // Ex. "3" pressed, find all carriables with hold type "3".
-                            weaponsOfHoldTypeSelected.Add(slot.Carriable);
+                            // have the same slot type as the index.
+                            // Ex. "3" pressed, find all carriables with slot type "3".
+                            weaponsOfSlotTypeSelected.Add(slot.Carriable);
 
                             if (slot.Carriable.Name == activeCarriable?.Name)
                             {
-                                // If the current active carriable has the same hold type as
+                                // If the current active carriable has the same slot type as
                                 // the keyboard index the user pressed
-                                activeCarriableOfHoldTypeIndex = weaponsOfHoldTypeSelected.Count - 1;
+                                activeCarriableOfSlotTypeIndex = weaponsOfSlotTypeSelected.Count - 1;
                             }
                         }
                     }
                 }
 
-                if (activeCarriable == null || activeCarriableOfHoldTypeIndex == -1)
+                if (activeCarriable == null || activeCarriableOfSlotTypeIndex == -1)
                 {
                     // The user isn't holding an active carriable, or is holding a weapon that has a different
                     // hold type than the one selected using the keyboard. We can just select the first weapon.
-                    input.ActiveChild = weaponsOfHoldTypeSelected.FirstOrDefault() as Entity;
+                    input.ActiveChild = weaponsOfSlotTypeSelected.FirstOrDefault() as Entity;
                 }
                 else
                 {
                     // The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
                     // Find the next possible weapon within the hold types.
-                    input.ActiveChild = weaponsOfHoldTypeSelected[GetNextWeaponIndex(activeCarriableOfHoldTypeIndex, weaponsOfHoldTypeSelected.Count)] as Entity;
+                    input.ActiveChild = weaponsOfSlotTypeSelected[GetNextWeaponIndex(activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count)] as Entity;
                 }
             }
 
@@ -186,6 +186,11 @@ namespace TTTReborn.UI
 
         private static string FormatAmmo(TTTWeapon weapon, Inventory inventory)
         {
+            if (weapon.UnlimitedAmmo)
+            {
+                return $"{weapon.AmmoClip}";
+            }
+
             return $"{weapon.AmmoClip} + {(inventory.Ammo.Count(weapon.AmmoType))}";
         }
 
@@ -201,10 +206,10 @@ namespace TTTReborn.UI
                 Parent = parent;
                 Carriable = carriable;
 
-                _slotLabel = Add.Label(((int) carriable.HoldType).ToString(), "slotlabel");
+                _slotLabel = Add.Label(((int) carriable.SlotType).ToString(), "slotlabel");
                 _carriableLabel = Add.Label(carriable.Name, "carriablelabel");
 
-                if (carriable.HoldType != HoldType.Melee && carriable is TTTWeapon weapon)
+                if (carriable.SlotType != SlotType.Melee && carriable is TTTWeapon weapon)
                 {
                     _ammoLabel = Add.Label(FormatAmmo(weapon, (Local.Pawn as TTTPlayer).Inventory as Inventory), "ammolabel");
                 }

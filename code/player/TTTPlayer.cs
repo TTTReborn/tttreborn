@@ -29,12 +29,12 @@ namespace TTTReborn.Player
             Inventory = new Inventory(this);
         }
 
-        public void MakeSpectator(Vector3 position = default)
+        public void MakeSpectator(bool useRagdollCamera = true)
         {
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = new SpectateRagdollCamera();
+            Camera = useRagdollCamera ? new SpectateRagdollCamera() : new FreeSpectateCamera();
 
             ShowFlashlight(false, false);
         }
