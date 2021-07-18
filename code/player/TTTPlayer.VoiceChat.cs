@@ -112,7 +112,7 @@ namespace TTTReborn.Player
 
         public static bool CanUseTeamVoiceChat(TTTPlayer player)
         {
-            return player.Team.GetType() == typeof(TraitorTeam);
+            return player.LifeState == LifeState.Alive && player.Team.GetType() == typeof(TraitorTeam);
         }
 
         [ClientRpc]
