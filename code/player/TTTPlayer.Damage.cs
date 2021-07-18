@@ -1,7 +1,9 @@
 using System;
+
 using Sandbox;
-using TTTReborn.Items;
+
 using TTTReborn.Globals;
+using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
