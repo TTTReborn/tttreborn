@@ -38,7 +38,7 @@ namespace TTTReborn.Items
         {
             if (Host.IsClient)
             {
-                Hud.Current.GeneralHudPanel.InventoryWrapper.Effects.AddEffect(this);
+                InventoryWrapper.Instance.Effects.AddEffect(this);
             }
         }
 
@@ -56,7 +56,7 @@ namespace TTTReborn.Items
         {
             if (Host.IsClient)
             {
-                Hud.Current.GeneralHudPanel.InventoryWrapper.Effects.RemoveEffect(this);
+                InventoryWrapper.Instance.Effects.RemoveEffect(this);
             }
         }
 

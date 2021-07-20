@@ -83,29 +83,26 @@ namespace TTTReborn.UI
 
         public class GeneralHud : Panel
         {
-            public Scoreboard Scoreboard;
-            public InventoryWrapper InventoryWrapper;
-
             public GeneralHud(Panel parent)
             {
                 Parent = parent;
 
                 Parent.AddChild<PlayerInfo>();
-                InventoryWrapper = Parent.AddChild<InventoryWrapper>();
+                Parent.AddChild<InventoryWrapper>();
                 Parent.AddChild<ChatBox>();
                 Parent.AddChild<VoiceList>();
                 Parent.AddChild<Nameplate>();
                 Parent.AddChild<GameTimer>();
                 Parent.AddChild<InfoFeed>();
+                Parent.AddChild<InspectMenu>();
                 Parent.AddChild<PostRoundMenu>();
-                Scoreboard = Parent.AddChild<Scoreboard>();
+                Parent.AddChild<Scoreboard>();
             }
         }
 
         public class AliveHud : Panel
         {
             public DamageIndicator DamageIndicator;
-            public InspectMenu InspectMenu;
             public QuickShop QuickShop;
             public DrowningIndicator DrowningIndicator;
 
@@ -117,7 +114,6 @@ namespace TTTReborn.UI
             public void CreateHud()
             {
                 DamageIndicator ??= Parent.AddChild<DamageIndicator>();
-                InspectMenu ??= Parent.AddChild<InspectMenu>();
                 QuickShop ??= Parent.AddChild<QuickShop>();
                 DrowningIndicator ??= Parent.AddChild<DrowningIndicator>();
             }
@@ -126,9 +122,6 @@ namespace TTTReborn.UI
             {
                 DamageIndicator?.Delete();
                 DamageIndicator = null;
-
-                InspectMenu?.Delete();
-                InspectMenu = null;
 
                 QuickShop?.Delete();
                 QuickShop = null;

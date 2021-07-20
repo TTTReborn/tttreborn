@@ -59,26 +59,6 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
-        {
-            if (!deadPlayer.IsValid())
-            {
-                return;
-            }
-
-            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
-        }
-
-        [ClientRpc]
-        public void ClientCloseInspectMenu()
-        {
-            if (InspectMenu.Instance?.IsShowing ?? false)
-            {
-                InspectMenu.Instance.IsShowing = false;
-            }
-        }
-
-        [ClientRpc]
         public void ClientAnotherPlayerDidDamage(Vector3 position, float inverseHealth)
         {
             Sound.FromScreen("dm.ui_attacker")

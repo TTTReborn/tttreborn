@@ -56,17 +56,27 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName, string teamName = null)
+        public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string roleName, string teamName = null)
         {
             if (!confirmPlayer.IsValid() || !deadPlayer.IsValid())
             {
                 return;
             }
 
+            if (playerCorpse.IsValid())
+            {
+                playerCorpse.Player = deadPlayer;
+            }
+
             deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
 
             deadPlayer.IsConfirmed = true;
             deadPlayer.CorpseConfirmer = confirmPlayer;
+
+            if (InspectMenu.Instance?.IsShowing ?? false)
+            {
+                InspectMenu.Instance?.InspectCorpse(deadPlayer);
+            }
 
             Client confirmClient = confirmPlayer.GetClientOwner();
             Client deadClient = deadPlayer.GetClientOwner();
@@ -97,7 +107,7 @@ namespace TTTReborn.Globals
 
             missingInActionPlayer.IsMissingInAction = true;
 
-            Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(missingInActionPlayer.GetClientOwner());
+            Scoreboard.Instance.UpdatePlayer(missingInActionPlayer.GetClientOwner());
         }
 
         [ClientRpc]
