@@ -9,7 +9,7 @@ namespace TTTReborn.UI
 
         public InventoryWrapper()
         {
-            StyleSheet.Load("/ui/alivehud/inventorywrapper/InventoryWrapper.scss");
+            StyleSheet.Load("/ui/generalhud/inventorywrapper/InventoryWrapper.scss");
 
             Effects = AddChild<Effects>();
             InventorySelection = AddChild<InventorySelection>();

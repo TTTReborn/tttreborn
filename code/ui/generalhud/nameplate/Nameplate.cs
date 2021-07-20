@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class Nameplate : Panel
+    public class Nameplate : ObservablePanel
     {
         public static Nameplate Instance;
 
@@ -52,12 +52,12 @@ namespace TTTReborn.UI
             new HealthGroup("Near death", Color.FromBytes(252, 42, 42), 0)
         };
 
-        public Nameplate()
+        public Nameplate() : base()
         {
             Instance = this;
             IsShowing = false;
 
-            StyleSheet.Load("/ui/alivehud/nameplate/Nameplate.scss");
+            StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
 
             _labelHolder = Add.Panel("labelHolder");
 
@@ -65,7 +65,6 @@ namespace TTTReborn.UI
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damageIndicator");
-
         }
 
         private HealthGroup GetHealthGroup(float health)
@@ -90,6 +89,7 @@ namespace TTTReborn.UI
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
                 .Ignore(player.ActiveChild)
                 .Ignore(player)
+                // Ignore ObservedPlayer
                 .UseHitboxes()
                 .Run();
 

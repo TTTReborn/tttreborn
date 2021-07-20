@@ -11,39 +11,55 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class InventorySelection : Panel
+    public class InventorySelection : ObservablePanel
     {
-        public InventorySelection()
+        public InventorySelection() : base()
         {
-            StyleSheet.Load("/ui/alivehud/inventorywrapper/inventoryselection/InventorySelection.scss");
+            StyleSheet.Load("/ui/generalhud/inventorywrapper/inventoryselection/InventorySelection.scss");
 
-            if (Local.Pawn is not TTTPlayer player)
+            AutoHideWithoutObservablePlayer = true;
+
+            UpdateInventory();
+        }
+
+        private void UpdateInventory()
+        {
+            if (ObservedPlayer == null)
             {
                 return;
             }
 
-            Inventory inventory = player.Inventory as Inventory;
+            OnCarriableItemClear(ObservedPlayer);
+
+            Inventory inventory = ObservedPlayer.Inventory as Inventory;
 
             foreach (Entity entity in inventory.List)
             {
                 if (entity is ICarriableItem carriableItem)
                 {
-                    OnCarriableItemPickup(carriableItem);
+                    OnCarriableItemPickup(ObservedPlayer, carriableItem);
                 }
             }
+        }
+
+        public override void OnUpdatedObservedPlayer(TTTPlayer oldPlayer)
+        {
+            base.OnUpdatedObservedPlayer(oldPlayer);
+
+            UpdateInventory();
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (ObservedPlayer == null)
             {
                 return;
             }
 
-            Inventory inventory = player.Inventory as Inventory;
-            ICarriableItem activeItem = player.ActiveChild as ICarriableItem;
+            Inventory inventory = ObservedPlayer.Inventory as Inventory;
+            ICarriableItem activeItem = ObservedPlayer.ActiveChild as ICarriableItem;
 
             foreach (Panel child in Children)
             {
@@ -60,14 +76,24 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.inventory.clear")]
-        private void OnCarriableItemClear()
+        private void OnCarriableItemClear(TTTPlayer player)
         {
-            DeleteChildren();
+            if (player != ObservedPlayer)
+            {
+                return;
+            }
+
+            DeleteChildren(true);
         }
 
         [Event("tttreborn.player.carriableitem.pickup")]
-        private void OnCarriableItemPickup(ICarriableItem carriable)
+        private void OnCarriableItemPickup(TTTPlayer player, ICarriableItem carriable)
         {
+            if (player != ObservedPlayer)
+            {
+                return;
+            }
+
             AddChild(new InventorySlot(this, carriable));
             SortChildren((p1, p2) =>
             {
@@ -80,8 +106,13 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.carriableitem.drop")]
-        private void OnCarriableItemDrop(ICarriableItem carriable)
+        private void OnCarriableItemDrop(TTTPlayer player, ICarriableItem carriable)
         {
+            if (player != ObservedPlayer)
+            {
+                return;
+            }
+
             foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
@@ -101,14 +132,14 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
-            if (Children == null || !Children.Any())
+            if (Children == null || !Children.Any() || IsObserving)
             {
                 return;
             }
 
             List<Panel> childrenList = Children.ToList();
 
-            ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
+            ICarriableItem activeCarriable = ObservedPlayer.ActiveChild as ICarriableItem;
 
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
             if (keyboardIndexPressed != 0)
@@ -154,8 +185,7 @@ namespace TTTReborn.UI
             int mouseWheelIndex = Input.MouseWheel;
             if (mouseWheelIndex != 0)
             {
-                int activeCarriableIndex = childrenList.FindIndex((p) =>
-                    p is InventorySlot slot && slot.Carriable.Name == activeCarriable?.Name);
+                int activeCarriableIndex = childrenList.FindIndex((p) => p is InventorySlot slot && slot.Carriable.Name == activeCarriable?.Name);
 
                 int newSelectedIndex = NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1);
                 input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
@@ -211,7 +241,9 @@ namespace TTTReborn.UI
 
                 if (carriable.SlotType != SlotType.Melee && carriable is TTTWeapon weapon)
                 {
-                    _ammoLabel = Add.Label(FormatAmmo(weapon, (Local.Pawn as TTTPlayer).Inventory as Inventory), "ammolabel");
+                    TTTPlayer observedPlayer = GetObservedPlayer(Local.Pawn);
+
+                    _ammoLabel = Add.Label(observedPlayer != null ? FormatAmmo(weapon, observedPlayer.Inventory as Inventory) : "-", "ammolabel");
                 }
             }
 

@@ -114,5 +114,23 @@ namespace TTTReborn.Globals
         {
             PostRoundMenu.Instance.IsShowing = false;
         }
+
+        [ClientRpc]
+        public static void ClientOnPlayerCarriableItemPickup(TTTPlayer player, Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.pickup", player, carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerCarriableItemDrop(TTTPlayer player, Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.drop", player, carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public static void ClientClearInventory(TTTPlayer player)
+        {
+            Event.Run("tttreborn.player.inventory.clear", player);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace TTTReborn.UI
 
         public Effects()
         {
-            StyleSheet.Load("/ui/alivehud/inventorywrapper/effects/Effects.scss");
+            StyleSheet.Load("/ui/generalhud/inventorywrapper/effects/Effects.scss");
 
             if (Local.Pawn is not TTTPlayer player)
             {

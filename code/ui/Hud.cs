@@ -84,14 +84,17 @@ namespace TTTReborn.UI
         public class GeneralHud : Panel
         {
             public Scoreboard Scoreboard;
+            public InventoryWrapper InventoryWrapper;
 
             public GeneralHud(Panel parent)
             {
                 Parent = parent;
 
                 Parent.AddChild<PlayerInfo>();
+                InventoryWrapper = Parent.AddChild<InventoryWrapper>();
                 Parent.AddChild<ChatBox>();
                 Parent.AddChild<VoiceList>();
+                Parent.AddChild<Nameplate>();
                 Parent.AddChild<GameTimer>();
                 Parent.AddChild<InfoFeed>();
                 Parent.AddChild<PostRoundMenu>();
@@ -102,9 +105,7 @@ namespace TTTReborn.UI
         public class AliveHud : Panel
         {
             public DamageIndicator DamageIndicator;
-            public InventoryWrapper InventoryWrapper;
             public InspectMenu InspectMenu;
-            public Nameplate Nameplate;
             public QuickShop QuickShop;
             public DrowningIndicator DrowningIndicator;
 
@@ -115,10 +116,8 @@ namespace TTTReborn.UI
 
             public void CreateHud()
             {
-                InventoryWrapper ??= Parent.AddChild<InventoryWrapper>();
                 DamageIndicator ??= Parent.AddChild<DamageIndicator>();
                 InspectMenu ??= Parent.AddChild<InspectMenu>();
-                Nameplate ??= Parent.AddChild<Nameplate>();
                 QuickShop ??= Parent.AddChild<QuickShop>();
                 DrowningIndicator ??= Parent.AddChild<DrowningIndicator>();
             }
@@ -128,14 +127,8 @@ namespace TTTReborn.UI
                 DamageIndicator?.Delete();
                 DamageIndicator = null;
 
-                InventoryWrapper?.Delete();
-                InventoryWrapper = null;
-
                 InspectMenu?.Delete();
                 InspectMenu = null;
-
-                Nameplate?.Delete();
-                Nameplate = null;
 
                 QuickShop?.Delete();
                 QuickShop = null;
