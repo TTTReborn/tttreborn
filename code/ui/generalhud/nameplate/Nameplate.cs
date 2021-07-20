@@ -84,12 +84,16 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
+            if (ObservedPlayer == null)
+            {
+                return;
+            }
+
             TTTPlayer player = Local.Pawn as TTTPlayer;
 
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
-                .Ignore(player.ActiveChild)
                 .Ignore(player)
-                // Ignore ObservedPlayer
+                .Ignore(ObservedPlayer)
                 .UseHitboxes()
                 .Run();
 
