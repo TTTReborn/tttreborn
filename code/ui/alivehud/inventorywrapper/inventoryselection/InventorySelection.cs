@@ -13,6 +13,19 @@ namespace TTTReborn.UI
 {
     public class InventorySelection : Panel
     {
+        private readonly InputButton[] _slotInputButtons = new[] {
+            InputButton.Slot0,
+            InputButton.Slot1,
+            InputButton.Slot2,
+            InputButton.Slot3,
+            InputButton.Slot4,
+            InputButton.Slot5,
+            InputButton.Slot6,
+            InputButton.Slot7,
+            InputButton.Slot8,
+            InputButton.Slot9
+        };
+
         public InventorySelection()
         {
             StyleSheet.Load("/ui/alivehud/inventorywrapper/inventoryselection/InventorySelection.scss");
@@ -175,22 +188,9 @@ namespace TTTReborn.UI
 
         private int GetKeyboardNumberPressed(InputBuilder input)
         {
-            InputButton[] pressedButton = new[] {
-                InputButton.Slot0,
-                InputButton.Slot1,
-                InputButton.Slot2,
-                InputButton.Slot3,
-                InputButton.Slot4,
-                InputButton.Slot5,
-                InputButton.Slot6,
-                InputButton.Slot7,
-                InputButton.Slot8,
-                InputButton.Slot9
-            };
-
-            for (int i = 0; i < pressedButton.Length; i++)
+            for (int i = 0; i < _slotInputButtons.Length; i++)
             {
-                if (input.Pressed(pressedButton[i]))
+                if (input.Pressed(_slotInputButtons[i]))
                 {
                     return i;
                 }
