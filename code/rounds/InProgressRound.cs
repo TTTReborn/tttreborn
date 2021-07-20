@@ -86,12 +86,9 @@ namespace TTTReborn.Rounds
                             inventory.Ammo.Give(AmmoType.Buckshot, 16);
                         }
                     }
-                    else
+                    else if (inventory.TryAdd(new SMG(), false))
                     {
-                        if (inventory.TryAdd(new SMG(), false))
-                        {
-                            inventory.Ammo.Give(AmmoType.SMG, 60);
-                        }
+                        inventory.Ammo.Give(AmmoType.SMG, 60);
                     }
 
                     if (inventory.TryAdd(new Pistol(), false))
@@ -136,12 +133,7 @@ namespace TTTReborn.Rounds
 
             foreach (TTTPlayer player in Players)
             {
-                if (player.Team == null)
-                {
-                    continue;
-                }
-
-                if (!aliveTeams.Contains(player.Team))
+                if (player.Team != null && !aliveTeams.Contains(player.Team))
                 {
                     aliveTeams.Add(player.Team);
                 }
@@ -153,7 +145,7 @@ namespace TTTReborn.Rounds
         private void AssignRoles()
         {
             // TODO: There should be a neater way to handle this logic.
-            Random random = new Random();
+            Random random = new();
 
             int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
 
@@ -203,12 +195,9 @@ namespace TTTReborn.Rounds
             {
                 base.OnSecond();
 
-                if (!Utils.HasMinimumPlayers())
+                if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {
-                    if (IsRoundOver() == null)
-                    {
-                        Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());
-                    }
+                    Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());
                 }
             }
         }

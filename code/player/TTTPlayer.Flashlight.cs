@@ -72,7 +72,7 @@ namespace TTTReborn.Player
                 {
                     if (IsServer)
                     {
-                        _worldFlashlight = new Flashlight();
+                        _worldFlashlight = new();
                         _worldFlashlight.EnableHideInFirstPerson = true;
                         _worldFlashlight.Rotation = EyeRot;
                         _worldFlashlight.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
@@ -80,7 +80,7 @@ namespace TTTReborn.Player
                     }
                     else
                     {
-                        _viewFlashlight = new Flashlight();
+                        _viewFlashlight = new();
                         _viewFlashlight.EnableViewmodelRendering = false;
                         _viewFlashlight.Position = EyePos + EyeRot.Forward * FLASHLIGHT_DISTANCE;
                         _viewFlashlight.Rotation = EyeRot;

@@ -67,10 +67,10 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                _healthBar = new BarPanel(this, "", "healthbar");
+                _healthBar = new(this, "", "healthbar");
                 _healthBar.AddClass("health");
 
-                _staminaBar = new BarPanel(this, "", "staminabar");
+                _staminaBar = new(this, "", "staminabar");
                 _staminaBar.AddClass("stamina");
             }
 

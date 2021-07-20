@@ -1,7 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Items
 {
     [Library("ttt_test1")]

@@ -19,18 +19,18 @@ namespace TTTReborn.UI
 
         private readonly Header _header;
 
-        private TableHeader _tableHeader;
+        private readonly TableHeader _tableHeader;
 
         private readonly Panel _mainContent;
 
-        private Panel _footer;
+        private readonly Panel _footer;
 
         public Scoreboard()
         {
             StyleSheet.Load("/ui/generalhud/scoreboard/Scoreboard.scss");
 
-            _header = new Header(this);
-            _tableHeader = new TableHeader(this);
+            _header = new(this);
+            _tableHeader = new(this);
 
             _mainContent = Add.Panel("mainContent");
 
@@ -156,7 +156,7 @@ namespace TTTReborn.UI
                 return _scoreboardGroups[groupName];
             }
 
-            ScoreboardGroup scoreboardGroup = new ScoreboardGroup(_mainContent, groupName);
+            ScoreboardGroup scoreboardGroup = new(_mainContent, groupName);
             scoreboardGroup.UpdateLabel();
 
             _scoreboardGroups.Add(groupName, scoreboardGroup);

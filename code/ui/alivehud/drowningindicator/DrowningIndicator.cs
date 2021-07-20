@@ -15,7 +15,7 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/alivehud/drowningindicator/DrowningIndicator.scss");
 
-            _drowningBar = new BarPanel(this, "100", "drowningbar");
+            _drowningBar = new(this, "100", "drowningbar");
 
             SetClass("hide", true);
         }

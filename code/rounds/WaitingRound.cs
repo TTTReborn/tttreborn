@@ -13,12 +13,9 @@ namespace TTTReborn.Rounds
 
         public override void OnSecond()
         {
-            if (Host.IsServer)
+            if (Host.IsServer && Utils.HasMinimumPlayers())
             {
-                if (Utils.HasMinimumPlayers())
-                {
-                    Gamemode.Game.Instance.ForceRoundChange(new PreRound());
-                }
+                Gamemode.Game.Instance.ForceRoundChange(new PreRound());
             }
         }
 

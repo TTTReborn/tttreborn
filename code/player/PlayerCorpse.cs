@@ -46,7 +46,7 @@ namespace TTTReborn.Player
                         continue;
                     }
 
-                    ModelEntity clothing = new ModelEntity();
+                    ModelEntity clothing = new();
                     clothing.SetModel(model);
                     clothing.SetParent(this, true);
                 }

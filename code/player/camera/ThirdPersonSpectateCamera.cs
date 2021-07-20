@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globals;
+
 namespace TTTReborn.Player.Camera
 {
     public partial class ThirdPersonSpectateCamera : Sandbox.Camera
@@ -64,8 +65,7 @@ namespace TTTReborn.Player.Camera
             {
                 return DefaultPosition;
             }
-
-            if (TargetPlayer == null || !TargetPlayer.IsValid())
+            else if (TargetPlayer == null || !TargetPlayer.IsValid())
             {
                 return DefaultPosition;
             }

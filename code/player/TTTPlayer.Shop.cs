@@ -20,13 +20,11 @@ namespace TTTReborn.Player
             {
                 return BuyError.InventoryBlocked;
             }
-
-            if (Credits < itemData?.Price)
+            else if (Credits < itemData?.Price)
             {
                 return BuyError.NotEnoughCredits;
             }
-
-            if (!Role.CanBuy())
+            else if (!Role.CanBuy())
             {
                 return BuyError.RoleRestriction;
             }

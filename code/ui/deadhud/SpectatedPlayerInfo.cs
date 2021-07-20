@@ -18,8 +18,8 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/deadhud/SpectatedPlayerInfo.scss");
 
-            _namePanel = new NamePanel(this);
-            _indicatorsPanel = new IndicatorsPanel(this);
+            _namePanel = new(this);
+            _indicatorsPanel = new(this);
         }
 
         public override void Tick()
@@ -29,6 +29,7 @@ namespace TTTReborn.UI
             if (Local.Pawn is not TTTPlayer player || player.Camera is not ThirdPersonSpectateCamera spectateCamera)
             {
                 SetClass("hide", true);
+
                 return;
             }
 
@@ -96,7 +97,7 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                _healthBar = new BarPanel(this, "", "healthbar");
+                _healthBar = new(this, "", "healthbar");
                 _healthBar.AddClass("health");
             }
 

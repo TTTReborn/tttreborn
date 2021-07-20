@@ -15,8 +15,8 @@ namespace TTTReborn.Player
 
         public Inventory(TTTPlayer player) : base(player)
         {
-            Ammo = new AmmoInventory(this);
-            Perks = new PerksInventory(this);
+            Ammo = new(this);
+            Perks = new(this);
         }
 
         public override void DeleteContents()
@@ -117,6 +117,7 @@ namespace TTTReborn.Player
             using (Prediction.Off())
             {
                 TTTPlayer player = Owner as TTTPlayer;
+
                 player.ClientOnPlayerCarriableItemDrop(To.Single(player), entity);
             }
 

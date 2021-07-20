@@ -24,9 +24,9 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/alivehud/quickshop/QuickShop.scss");
 
-            _header = new Header(this);
-            _content = new Content(this);
-            _footer = new Footer(this);
+            _header = new(this);
+            _content = new(this);
+            _footer = new(this);
         }
 
         public void Update()
@@ -107,7 +107,7 @@ namespace TTTReborn.UI
 
             public void AddItem(ShopItemData itemData)
             {
-                ItemPanel itemPanel = new ItemPanel(_wrapper);
+                ItemPanel itemPanel = new(_wrapper);
                 itemPanel.SetItem(itemData);
 
                 itemPanel.AddEventListener("onclick", () =>
@@ -181,8 +181,8 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                _description = new Description(this);
-                _buyArea = new BuyArea(this);
+                _description = new(this);
+                _buyArea = new(this);
             }
 
             private class Description : Panel

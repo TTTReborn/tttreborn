@@ -35,8 +35,8 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/alivehud/inspectmenu/InspectMenu.scss");
 
-            _confirmationHintPanel = new ConfirmationHintPanel(this);
-            _confirmationPanel = new ConfirmationPanel(this);
+            _confirmationHintPanel = new(this);
+            _confirmationPanel = new(this);
         }
 
         public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified)
@@ -69,9 +69,9 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                _header = new Header(this);
-                _content = new Content(this);
-                _footer = new Footer(this);
+                _header = new(this);
+                _content = new(this);
+                _footer = new(this);
             }
 
             public void SetPlayer(TTTPlayer player)
@@ -115,10 +115,10 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    _playerImage = new ImageWrapper(this);
+                    _playerImage = new(this);
                     _playerImage.AddClass("playericon");
 
-                    InspectItem inspectWeapon = new InspectItem(this);
+                    InspectItem inspectWeapon = new(this);
                     inspectWeapon.ImageWrapper.Image.SetTexture("");
                     inspectWeapon.InspectItemLabel.Text = "Pistol";
 
@@ -156,7 +156,7 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    ImageWrapper = new ImageWrapper(this);
+                    ImageWrapper = new(this);
                     InspectItemLabel = Add.Label("", "inspectItemName");
                 }
             }

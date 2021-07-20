@@ -76,12 +76,9 @@ namespace TTTReborn.Player
             {
                 foreach (Client client in Client.All)
                 {
-                    if (client.Pawn is TTTPlayer pawnPlayer)
+                    if (client.Pawn is TTTPlayer pawnPlayer && player.Team == pawnPlayer.Team)
                     {
-                        if (player.Team == pawnPlayer.Team)
-                        {
-                            clients.Add(client);
-                        }
+                        clients.Add(client);
                     }
                 }
 
@@ -153,23 +150,20 @@ namespace TTTReborn.Player
             // sync already talking other players with the current player
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer pawnPlayer)
+                if (client.Pawn is TTTPlayer pawnPlayer && player != pawnPlayer && pawnPlayer.IsTeamVoiceChatEnabled)
                 {
-                    if (player != pawnPlayer && pawnPlayer.IsTeamVoiceChatEnabled)
+                    bool activateTalking = player.Team == pawnPlayer.Team;
+
+                    if (activateTalking)
                     {
-                        bool activateTalking = player.Team == pawnPlayer.Team;
-
-                        if (activateTalking)
-                        {
-                            _oldReceiveClients[pawnPlayer].Add(playerClient);
-                        }
-                        else
-                        {
-                            _oldReceiveClients[pawnPlayer].Remove(playerClient);
-                        }
-
-                        ClientToggleTeamVoiceChat(To.Single(player), pawnPlayer, activateTalking);
+                        _oldReceiveClients[pawnPlayer].Add(playerClient);
                     }
+                    else
+                    {
+                        _oldReceiveClients[pawnPlayer].Remove(playerClient);
+                    }
+
+                    ClientToggleTeamVoiceChat(To.Single(player), pawnPlayer, activateTalking);
                 }
             }
         }

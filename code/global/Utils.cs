@@ -12,7 +12,7 @@ namespace TTTReborn.Globals
     {
         public static List<TTTPlayer> GetPlayers()
         {
-            List<TTTPlayer> players = new List<TTTPlayer>();
+            List<TTTPlayer> players = new();
 
             foreach (Client client in Client.All)
             {
@@ -27,7 +27,7 @@ namespace TTTReborn.Globals
 
         public static List<TTTPlayer> GetAlivePlayers()
         {
-            List<TTTPlayer> players = new List<TTTPlayer>();
+            List<TTTPlayer> players = new();
 
             foreach (Client client in Client.All)
             {
@@ -42,7 +42,7 @@ namespace TTTReborn.Globals
 
         public static List<Client> GetDeadClients()
         {
-            List<Client> clients = new List<Client>();
+            List<Client> clients = new();
 
             foreach (Client client in Client.All)
             {
@@ -57,7 +57,7 @@ namespace TTTReborn.Globals
 
         public static List<TTTPlayer> GetConfirmedPlayers()
         {
-            List<TTTPlayer> players = new List<TTTPlayer>();
+            List<TTTPlayer> players = new();
 
             foreach (Client client in Client.All)
             {

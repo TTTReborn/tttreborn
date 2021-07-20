@@ -22,9 +22,9 @@ namespace TTTReborn.UI
 
             Current = this;
 
-            GeneralHudPanel = new GeneralHud(RootPanel);
-            AliveHudPanel = new AliveHud(RootPanel);
-            DeadHudPanel = new DeadHud(RootPanel);
+            GeneralHudPanel = new(RootPanel);
+            AliveHudPanel = new(RootPanel);
+            DeadHudPanel = new(RootPanel);
         }
 
         [Event.Hotload]
@@ -34,7 +34,7 @@ namespace TTTReborn.UI
             {
                 Local.Hud?.Delete();
 
-                Hud hud = new Hud();
+                Hud hud = new();
 
                 if (Local.Client.Pawn is TTTPlayer player)
                 {
