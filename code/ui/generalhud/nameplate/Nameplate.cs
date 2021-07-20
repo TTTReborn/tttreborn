@@ -3,6 +3,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
+using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
@@ -90,6 +91,11 @@ namespace TTTReborn.UI
             }
 
             TTTPlayer player = Local.Pawn as TTTPlayer;
+
+            if (IsObserving && player.Camera is ThirdPersonSpectateCamera)
+            {
+                return;
+            }
 
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
                 .Ignore(player)
