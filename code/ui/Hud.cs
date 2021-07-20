@@ -11,7 +11,8 @@ namespace TTTReborn.UI
 
         public GeneralHud GeneralHudPanel;
         public AliveHud AliveHudPanel;
-        public DeadHud DeadHudPanel;
+
+        private TTTPlayer _currentObservedPlayer;
 
         public Hud()
         {
@@ -24,7 +25,22 @@ namespace TTTReborn.UI
 
             GeneralHudPanel = new GeneralHud(RootPanel);
             AliveHudPanel = new AliveHud(RootPanel);
-            DeadHudPanel = new DeadHud(RootPanel);
+        }
+
+        [Event.Tick]
+        public void Tick()
+        {
+            TTTPlayer observedPlayer = ObservablePanel.GetObservedPlayer(Local.Pawn);
+
+            if (observedPlayer != _currentObservedPlayer)
+            {
+                _currentObservedPlayer = observedPlayer;
+
+                foreach (ObservablePanel panel in ObservablePanel.List)
+                {
+                    panel.ObservedPlayer = observedPlayer;
+                }
+            }
         }
 
         [Event.Hotload]
@@ -36,16 +52,9 @@ namespace TTTReborn.UI
 
                 Hud hud = new Hud();
 
-                if (Local.Client.Pawn is TTTPlayer player)
+                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
                 {
-                    if (player.LifeState == LifeState.Alive)
-                    {
-                        hud.AliveHudPanel.CreateHud();
-                    }
-                    else
-                    {
-                        hud.DeadHudPanel.CreateHud();
-                    }
+                    hud.AliveHudPanel.CreateHud();
                 }
             }
         }
@@ -58,7 +67,6 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Current?.DeadHudPanel.DeleteHud();
             Current?.AliveHudPanel.CreateHud();
         }
 
@@ -71,7 +79,6 @@ namespace TTTReborn.UI
             }
 
             Current?.AliveHudPanel.DeleteHud();
-            Current?.DeadHudPanel.CreateHud();
         }
 
         public class GeneralHud : Panel
@@ -82,6 +89,7 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
+                Parent.AddChild<PlayerInfo>();
                 Parent.AddChild<ChatBox>();
                 Parent.AddChild<VoiceList>();
                 Parent.AddChild<GameTimer>();
@@ -95,7 +103,6 @@ namespace TTTReborn.UI
         {
             public DamageIndicator DamageIndicator;
             public InventoryWrapper InventoryWrapper;
-            public PlayerInfo PlayerInfo;
             public InspectMenu InspectMenu;
             public Nameplate Nameplate;
             public QuickShop QuickShop;
@@ -110,7 +117,6 @@ namespace TTTReborn.UI
             {
                 InventoryWrapper ??= Parent.AddChild<InventoryWrapper>();
                 DamageIndicator ??= Parent.AddChild<DamageIndicator>();
-                PlayerInfo ??= Parent.AddChild<PlayerInfo>();
                 InspectMenu ??= Parent.AddChild<InspectMenu>();
                 Nameplate ??= Parent.AddChild<Nameplate>();
                 QuickShop ??= Parent.AddChild<QuickShop>();
@@ -125,9 +131,6 @@ namespace TTTReborn.UI
                 InventoryWrapper?.Delete();
                 InventoryWrapper = null;
 
-                PlayerInfo?.Delete();
-                PlayerInfo = null;
-
                 InspectMenu?.Delete();
                 InspectMenu = null;
 
@@ -139,27 +142,6 @@ namespace TTTReborn.UI
 
                 DrowningIndicator?.Delete();
                 DrowningIndicator = null;
-            }
-        }
-
-        public class DeadHud : Panel
-        {
-            public SpectatedPlayerInfo SpectatedPlayerInfo;
-
-            public DeadHud(Panel parent)
-            {
-                Parent = parent;
-            }
-
-            public void CreateHud()
-            {
-                SpectatedPlayerInfo ??= Parent.AddChild<SpectatedPlayerInfo>();
-            }
-
-            public void DeleteHud()
-            {
-                SpectatedPlayerInfo?.Delete();
-                SpectatedPlayerInfo = null;
             }
         }
     }
