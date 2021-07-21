@@ -21,6 +21,8 @@ InspectMenu {
         padding: 6px 12px;
         text-align: center;
         flex-direction: column;
+        border: 8px solid #031421;
+        border-radius: 4px;
 
         &.hide {
             display: none;

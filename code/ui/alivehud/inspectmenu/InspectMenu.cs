@@ -53,6 +53,7 @@ namespace TTTReborn.UI
                 _confirmationPanel.SetKillerWeapon(killerWeapon);
                 _confirmationPanel.SetPerks(perks);
                 _confirmationPanel.SetClass("hide", false);
+                _confirmationPanel.Style.BorderColor = deadPlayer.Role.Color;
             }
             else
             {
