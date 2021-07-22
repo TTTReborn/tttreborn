@@ -20,6 +20,13 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        private TTTPlayer _spectatingPlayer;
+        public TTTPlayer ObservablePlayer
+        {
+            get => _spectatingPlayer ?? this;
+            set => _spectatingPlayer = value;
+        }
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
@@ -27,6 +34,11 @@ namespace TTTReborn.Player
         public TTTPlayer()
         {
             Inventory = new Inventory(this);
+        }
+
+        public void SetSpectatingPlayer(TTTPlayer player)
+        {
+            _spectatingPlayer = player;
         }
 
         public void MakeSpectator(bool useRagdollCamera = true)
