@@ -90,7 +90,7 @@ namespace TTTReborn.UI
             }
 
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
-                .Ignore(player)
+                .Ignore(player.CurrentPlayer)
                 .UseHitboxes()
                 .Run();
 
