@@ -90,18 +90,9 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Trace trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
-                .Ignore(player)
-                .UseHitboxes();
+            TTTPlayer target = player.IsLookingAtType<TTTPlayer>(MAX_DRAW_DISTANCE);
 
-            if (player.IsSpectatingPlayer)
-            {
-                trace.Ignore(player.CurrentPlayer);
-            }
-
-            TraceResult tr = trace.Run();
-
-            if (tr.Hit && tr.Entity is TTTPlayer target)
+            if (target != null)
             {
                 IsShowing = true;
 

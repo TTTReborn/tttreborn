@@ -38,7 +38,7 @@ namespace TTTReborn.Player
         {
             using (Prediction.Off())
             {
-                PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>();
+                PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>(INSPECT_CORPSE_DISTANCE);
 
                 if (playerCorpse != null)
                 {

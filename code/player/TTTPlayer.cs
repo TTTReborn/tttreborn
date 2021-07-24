@@ -255,39 +255,6 @@ namespace TTTReborn.Player
             }
         }
 
-        public T IsLookingAtType<T>()
-        {
-            TraceResult tr;
-
-            if (Camera is FreeSpectateCamera camera)
-            {
-                tr = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * INSPECT_CORPSE_DISTANCE)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(this)
-                    .Run();
-            }
-            else
-            {
-                Trace trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * INSPECT_CORPSE_DISTANCE)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(this);
-
-                if (IsSpectatingPlayer)
-                {
-                    trace.Ignore(CurrentPlayer);
-                }
-
-                tr = trace.Run();
-            }
-
-            if (tr.Hit && tr.Entity is T type)
-            {
-                return type;
-            }
-
-            return default(T);
-        }
-
         protected override void OnDestroy()
         {
             RemovePlayerCorpse();

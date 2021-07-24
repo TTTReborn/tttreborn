@@ -1,5 +1,7 @@
 using Sandbox;
 
+using TTTReborn.Player.Camera;
+
 namespace TTTReborn.Player
 {
     partial class TTTPlayer
@@ -8,20 +10,42 @@ namespace TTTReborn.Player
 
         private const float MAX_DRAW_DISTANCE = 500;
 
-        private TTTPlayer IsLookingAtPlayer()
+        public T IsLookingAtType<T>(float distance)
         {
-            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * MAX_DRAW_DISTANCE)
-                .Ignore(ActiveChild)
-                .Ignore(this)
-                .UseHitboxes()
-                .Run();
+            TraceResult tr;
 
-            if (trace.Hit && trace.Entity is TTTPlayer target)
+            if (Camera is FreeSpectateCamera camera)
             {
-                return target;
+                tr = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * distance)
+                    .HitLayer(CollisionLayer.Debris)
+                    .Ignore(this)
+                    .Run();
+            }
+            else
+            {
+                Trace trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * distance)
+                    .HitLayer(CollisionLayer.Debris)
+                    .Ignore(this);
+
+                if (IsSpectatingPlayer)
+                {
+                    trace.Ignore(CurrentPlayer);
+                }
+
+                tr = trace.Run();
             }
 
-            return null;
+            if (tr.Hit && tr.Entity is T type)
+            {
+                return type;
+            }
+
+            return default(T);
+        }
+
+        private TTTPlayer IsLookingAtPlayer()
+        {
+            return IsLookingAtType<TTTPlayer>(MAX_DRAW_DISTANCE);
         }
     }
 }

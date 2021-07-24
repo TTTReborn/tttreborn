@@ -37,6 +37,8 @@ namespace TTTReborn.Player.Camera
 
             if (!player.IsSpectatingPlayer || Input.Pressed(InputButton.Attack1))
             {
+                player.CurrentPlayer = null;
+
                 List<TTTPlayer> players = Utils.GetAlivePlayers();
 
                 if (players.Count > 0)
