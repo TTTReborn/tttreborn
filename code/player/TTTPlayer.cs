@@ -30,7 +30,7 @@ namespace TTTReborn.Player
                 Event.Run("tttreborn.player.spectating.change", this);
             }
         }
-        public bool IsObservingPlayer
+        public bool IsSpectatingPlayer
         {
             get => CurrentPlayer != null && CurrentPlayer != this;
         }

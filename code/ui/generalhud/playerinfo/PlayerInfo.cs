@@ -53,7 +53,7 @@ namespace TTTReborn.UI
 
                 Style.Dirty();
 
-                if (player.IsObservingPlayer)
+                if (player.IsSpectatingPlayer)
                 {
                     _roleLabel.Text = $"{player.CurrentPlayer.GetClientOwner()?.Name}";
 

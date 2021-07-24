@@ -104,7 +104,6 @@ namespace TTTReborn.UI
             {
                 if (entity is ICarriableItem carriableItem)
                 {
-                    Log.Info(carriableItem.Name);
                     OnCarriableItemPickup(carriableItem);
                 }
             }
@@ -117,6 +116,11 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
+            if (Local.Pawn is not TTTPlayer player || player.IsSpectatingPlayer)
+            {
+                return;
+            }
+
             if (Children == null || !Children.Any())
             {
                 return;

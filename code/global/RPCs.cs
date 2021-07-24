@@ -126,21 +126,21 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientOnPlayerCarriableItemPickup(TTTPlayer player, Entity carriable)
+        public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.pickup", player, carriable as ICarriableItem);
+            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
         }
 
         [ClientRpc]
-        public static void ClientOnPlayerCarriableItemDrop(TTTPlayer player, Entity carriable)
+        public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.drop", player, carriable as ICarriableItem);
+            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
         }
 
         [ClientRpc]
-        public static void ClientClearInventory(TTTPlayer player)
+        public static void ClientClearInventory()
         {
-            Event.Run("tttreborn.player.inventory.clear", player);
+            Event.Run("tttreborn.player.inventory.clear");
         }
     }
 }
