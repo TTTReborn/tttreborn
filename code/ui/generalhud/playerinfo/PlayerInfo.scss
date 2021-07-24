@@ -19,6 +19,10 @@ PlayerInfo {
         font-weight: bold;
     }
 
+    &.hide {
+        display: none;
+    }
+
     IndicatorsPanel {
         display: flex;
         flex-direction: column;

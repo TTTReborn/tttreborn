@@ -8,6 +8,8 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
+    using Player = Sandbox.Player;
+
     public class PlayerInfo : Panel
     {
         public PlayerInfo()
@@ -16,6 +18,13 @@ namespace TTTReborn.UI
 
             new RolePanel(this);
             new IndicatorsPanel(this);
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            SetClass("hide", Local.Pawn is not TTTPlayer player || (player.IsSpectator && !player.IsSpectatingPlayer));
         }
 
         private class RolePanel : Panel

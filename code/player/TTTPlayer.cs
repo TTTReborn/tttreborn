@@ -37,6 +37,12 @@ namespace TTTReborn.Player
             get => _spectatingPlayer != null;
         }
 
+        public bool IsSpectator
+        {
+            // TODO: Change to be spectator class once FirstPersonSpectateCamera is added as well.
+            get => (Camera is not FirstPersonCamera);
+        }
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
