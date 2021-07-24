@@ -41,12 +41,7 @@ namespace TTTReborn.UI
             {
                 base.Tick();
 
-                if (Local.Pawn is not TTTPlayer player)
-                {
-                    return;
-                }
-
-                if (_currentRole == player.CurrentPlayer.Role)
+                if (Local.Pawn is not TTTPlayer player || _currentRole == player.CurrentPlayer.Role)
                 {
                     return;
                 }
