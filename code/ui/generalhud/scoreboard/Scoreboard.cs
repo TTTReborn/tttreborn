@@ -1,10 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -34,7 +33,10 @@ namespace TTTReborn.UI
 
             _mainContent = Add.Panel("mainContent");
 
-            AddScoreboardGroup("Alive");
+            foreach (DefaultScoreboardGroup defaultScoreboardGroup in Enum.GetValues(typeof(DefaultScoreboardGroup)))
+            {
+                AddScoreboardGroup(defaultScoreboardGroup.ToString());
+            }
 
             PlayerScore.OnPlayerAdded += AddPlayer;
             PlayerScore.OnPlayerUpdated += UpdatePlayer;
@@ -74,28 +76,25 @@ namespace TTTReborn.UI
 
         private void UpdatePlayer(PlayerScore.Entry entry)
         {
-            if (_entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
+            if (!_entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
             {
-                ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
-
-                if (scoreboardGroup.GroupTitle != panel.ScoreboardGroupName)
-                {
-                    // instead of remove and add, move the panel into the right parent
-                    RemovePlayer(entry);
-                    AddPlayer(entry);
-
-                    DeleteEmptyScoreboardGroups();
-
-                    return;
-                }
-
-                panel.UpdateFrom(entry);
+                return;
             }
-            else
+
+            ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
+
+            if (scoreboardGroup.GroupTitle != panel.ScoreboardGroupName)
             {
-                // Add to queue? Up to now, just print an error #hacky
-                Log.Error($"Tried to update the ScoreboardPanel of the player with sid: '{entry.Get<ulong>("steamid")}'");
+                // instead of remove and add, move the panel into the right parent
+                RemovePlayer(entry);
+                AddPlayer(entry);
+
+                UpdateScoreboardGroups();
+
+                return;
             }
+
+            panel.UpdateFrom(entry);
         }
 
         public void UpdatePlayer(Client client)
@@ -119,20 +118,22 @@ namespace TTTReborn.UI
 
         private void RemovePlayer(PlayerScore.Entry entry)
         {
-            if (_entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
+            if (!_entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
             {
-                _scoreboardGroups.TryGetValue(panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup);
-
-                if (scoreboardGroup != null)
-                {
-                    scoreboardGroup.GroupMembers--;
-                }
-
-                scoreboardGroup.UpdateLabel();
-
-                panel.Delete();
-                _entries.Remove(entry.Id);
+                return;
             }
+
+            _scoreboardGroups.TryGetValue(panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup);
+
+            if (scoreboardGroup != null)
+            {
+                scoreboardGroup.GroupMembers--;
+            }
+
+            scoreboardGroup.UpdateLabel();
+
+            panel.Delete();
+            _entries.Remove(entry.Id);
         }
 
         public override void Tick()

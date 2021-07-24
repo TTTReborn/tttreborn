@@ -10,6 +10,13 @@ namespace TTTReborn.UI
 {
     public partial class Scoreboard
     {
+        public enum DefaultScoreboardGroup
+        {
+            Alive,
+            MIA,
+            Dead
+        }
+
         private class ScoreboardGroup : Panel
         {
             public readonly string GroupTitle;
@@ -66,30 +73,30 @@ namespace TTTReborn.UI
 
         private ScoreboardGroup GetScoreboardGroup(PlayerScore.Entry entry)
         {
-            string group = "Alive";
+            string group = DefaultScoreboardGroup.Alive.ToString();
+            ulong steamId = entry.Get<ulong>("steamid", 0);
 
-            if (!entry.Get<bool>("alive", true))
+            if (steamId != 0)
             {
-                // TODO better spectator check, maybe with a player var
-                group = "Dead";
-            }
-            else
-            {
-                ulong steamId = entry.Get<ulong>("steamid", 0);
-
-                if (steamId != 0)
+                foreach (Client client in Client.All)
                 {
-                    foreach (Client client in Client.All)
+                    if (client.SteamId == steamId && client.Pawn != null)
                     {
-                        if (client.Pawn.IsValid() && client.SteamId == steamId)
+                        if (client.Pawn is not TTTPlayer player)
                         {
-                            if ((client.Pawn as TTTPlayer).IsMissingInAction)
-                            {
-                                group = "MIA";
-                            }
-
                             break;
                         }
+
+                        if (player.IsMissingInAction)
+                        {
+                            group = DefaultScoreboardGroup.MIA.ToString();
+                        }
+                        else if (player.IsConfirmed)
+                        {
+                            group = DefaultScoreboardGroup.Dead.ToString();
+                        }
+
+                        break;
                     }
                 }
             }
@@ -104,23 +111,12 @@ namespace TTTReborn.UI
             return scoreboardGroup;
         }
 
-        private void DeleteEmptyScoreboardGroups()
+        private void UpdateScoreboardGroups()
         {
-            List<string> removeList = new();
-
-            foreach ((string key, ScoreboardGroup value) in _scoreboardGroups)
+            foreach (ScoreboardGroup value in _scoreboardGroups.Values)
             {
-                if (value.GroupMembers == 0)
-                {
-                    removeList.Add(key);
-                }
-            }
-
-            foreach (string key in removeList)
-            {
-                _scoreboardGroups[key].Delete();
-
-                _scoreboardGroups.Remove(key);
+                value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
+                value.Style.Dirty();
             }
         }
     }
