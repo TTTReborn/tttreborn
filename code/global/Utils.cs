@@ -70,6 +70,21 @@ namespace TTTReborn.Globals
             return players;
         }
 
+        public static List<Client> GetClientsSpectatingPlayerAndPlayer(TTTPlayer player)
+        {
+            List<Client> clients = new List<Client>{player.GetClientOwner()};
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer p && p.IsObservingPlayer && p.ObservingPlayer == player)
+                {
+                    clients.Add(client);
+                }
+            }
+
+            return clients;
+        }
+
         public static bool HasMinimumPlayers()
         {
             return Client.All.Count >= Gamemode.Game.TTTMinPlayers;

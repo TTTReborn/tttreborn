@@ -28,7 +28,7 @@ namespace TTTReborn.UI
             {
                 if (entity is ICarriableItem carriableItem)
                 {
-                    OnCarriableItemPickup(player.ObservingPlayer, carriableItem);
+                    OnCarriableItemPickup(carriableItem);
                 }
             }
         }
@@ -60,13 +60,13 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.inventory.clear")]
-        private void OnCarriableItemClear(TTTPlayer player)
+        private void OnCarriableItemClear()
         {
             DeleteChildren();
         }
 
         [Event("tttreborn.player.carriableitem.pickup")]
-        private void OnCarriableItemPickup(TTTPlayer player, ICarriableItem carriable)
+        private void OnCarriableItemPickup(ICarriableItem carriable)
         {
             AddChild(new InventorySlot(this, carriable));
             SortChildren((p1, p2) =>
@@ -80,7 +80,7 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.carriableitem.drop")]
-        private void OnCarriableItemDrop(TTTPlayer player, ICarriableItem carriable)
+        private void OnCarriableItemDrop(ICarriableItem carriable)
         {
             foreach (Panel child in Children)
             {
@@ -101,14 +101,14 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
-            if (Children == null || !Children.Any())
+            if (Children == null || !Children.Any() || Local.Pawn is not TTTPlayer player || player.IsObservingPlayer)
             {
                 return;
             }
 
             List<Panel> childrenList = Children.ToList();
 
-            ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
+            ICarriableItem activeCarriable = player.ActiveChild as ICarriableItem;
 
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
             if (keyboardIndexPressed != 0)

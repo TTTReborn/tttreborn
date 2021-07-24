@@ -24,7 +24,11 @@ namespace TTTReborn.Player
         public TTTPlayer ObservingPlayer
         {
             get => _spectatingPlayer ?? this;
-            set => _spectatingPlayer = value;
+            set
+            {
+                _spectatingPlayer = value;
+                Event.Run("tttreborn.player.spectating.change", this);
+            }
         }
         public bool IsObservingPlayer
         {
