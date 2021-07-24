@@ -12,6 +12,8 @@ namespace TTTReborn.Player.Camera
         private Vector3 _lastPos;
         private Rotation _lastRot;
 
+        private const float SMOOTH_SPEED = 25f;
+
         public override void Deactivated()
         {
             if (Local.Pawn is not TTTPlayer player)
@@ -60,8 +62,8 @@ namespace TTTReborn.Player.Camera
             }
             else
             {
-                Pos = Vector3.Lerp(_lastPos, player.CurrentPlayer.EyePos, 20.0f * Time.Delta);
-                Rot = Rotation.Lerp(_lastRot, player.CurrentPlayer.EyeRot, 20.0f * Time.Delta);
+                Pos = Vector3.Lerp(_lastPos, player.CurrentPlayer.EyePos, SMOOTH_SPEED * Time.Delta);
+                Rot = Rotation.Slerp(_lastRot, player.CurrentPlayer.EyeRot, SMOOTH_SPEED * Time.Delta);
             }
 
             _lastPos = Pos;
