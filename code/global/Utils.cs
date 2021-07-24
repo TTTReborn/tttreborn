@@ -72,7 +72,7 @@ namespace TTTReborn.Globals
 
         public static IEnumerable<Client> GetClientsSpectatingPlayer(TTTPlayer player)
         {
-            List<Client> clients = new ();
+            List<Client> clients = new();
 
             foreach (Client client in Client.All)
             {
