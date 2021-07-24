@@ -70,7 +70,7 @@ namespace TTTReborn.Globals
             return players;
         }
 
-        public static List<Client> GetClientsSpectatingPlayerAndPlayer(TTTPlayer player)
+        public static IEnumerable<Client> GetClientsSpectatingPlayerAndPlayer(TTTPlayer player)
         {
             List<Client> clients = new List<Client>{player.GetClientOwner()};
 

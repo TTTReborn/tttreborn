@@ -62,7 +62,7 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.inventory.clear")]
         private void OnCarriableItemClear()
         {
-            DeleteChildren();
+            DeleteChildren(true);
         }
 
         [Event("tttreborn.player.carriableitem.pickup")]
@@ -94,6 +94,22 @@ namespace TTTReborn.UI
             }
         }
 
+        [Event("tttreborn.player.spectating.change")]
+        private void OnSpectatingChange(TTTPlayer player)
+        {
+            OnCarriableItemClear();
+
+            Inventory inventory = player.ObservingPlayer.Inventory as Inventory;
+            foreach (Entity entity in inventory.List)
+            {
+                if (entity is ICarriableItem carriableItem)
+                {
+                    Log.Info(carriableItem.Name);
+                    OnCarriableItemPickup(carriableItem);
+                }
+            }
+        }
+
         /// <summary>
         /// IClientInput implementation, calls during the client input build.
         /// You can both read and write to input, to affect what happens down the line.
@@ -101,14 +117,14 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
-            if (Children == null || !Children.Any() || Local.Pawn is not TTTPlayer player || player.IsObservingPlayer)
+            if (Children == null || !Children.Any())
             {
                 return;
             }
 
             List<Panel> childrenList = Children.ToList();
 
-            ICarriableItem activeCarriable = player.ActiveChild as ICarriableItem;
+            ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
 
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
             if (keyboardIndexPressed != 0)
