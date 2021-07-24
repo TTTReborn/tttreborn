@@ -3,11 +3,10 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
-using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
-    public class Nameplate : ObservablePanel
+    public class Nameplate : Panel
     {
         public static Nameplate Instance;
 
@@ -53,7 +52,7 @@ namespace TTTReborn.UI
             new HealthGroup("Near death", Color.FromBytes(252, 42, 42), 0)
         };
 
-        public Nameplate() : base()
+        public Nameplate()
         {
             Instance = this;
             IsShowing = false;
@@ -66,6 +65,7 @@ namespace TTTReborn.UI
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damageIndicator");
+
         }
 
         private HealthGroup GetHealthGroup(float health)
@@ -85,21 +85,19 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (ObservedPlayer == null)
+            if (Local.Pawn is not TTTPlayer player)
             {
                 return;
             }
 
-            TTTPlayer player = Local.Pawn as TTTPlayer;
-
-            if (IsObserving && player.Camera is ThirdPersonSpectateCamera)
+            if (player.Camera is ThirdPersonCamera)
             {
                 return;
             }
 
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
+                .Ignore(player.ActiveChild)
                 .Ignore(player)
-                .Ignore(ObservedPlayer)
                 .UseHitboxes()
                 .Run();
 

@@ -20,6 +20,21 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        private TTTPlayer _spectatingPlayer;
+        public TTTPlayer CurrentPlayer
+        {
+            get => _spectatingPlayer ?? this;
+            set
+            {
+                _spectatingPlayer = value;
+                Event.Run("tttreborn.player.spectating.change", this);
+            }
+        }
+        public bool IsObservingPlayer
+        {
+            get => CurrentPlayer != null && CurrentPlayer != this;
+        }
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
@@ -137,8 +152,6 @@ namespace TTTReborn.Player
                 TickPlayerVoiceChat();
             }
 
-            TickAttemptInspectPlayerCorpse();
-
             if (LifeState != LifeState.Alive)
             {
                 TickPlayerChangeSpectateCamera();
@@ -158,6 +171,7 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
+            TickAttemptInspectPlayerCorpse();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
