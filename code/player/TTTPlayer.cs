@@ -20,6 +20,29 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        private TTTPlayer _spectatingPlayer;
+        public TTTPlayer CurrentPlayer
+        {
+            get => _spectatingPlayer ?? this;
+            set
+            {
+                _spectatingPlayer = value == this ? null : value;
+
+                Event.Run("tttreborn.player.spectating.change", this);
+            }
+        }
+
+        public bool IsSpectatingPlayer
+        {
+            get => _spectatingPlayer != null;
+        }
+
+        public bool IsSpectator
+        {
+            // TODO: Change to be spectator class once FirstPersonSpectateCamera is added as well.
+            get => (Camera is not FirstPersonCamera);
+        }
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;

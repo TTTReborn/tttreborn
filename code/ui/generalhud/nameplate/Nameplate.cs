@@ -7,7 +7,7 @@ using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
-    public class Nameplate : ObservablePanel
+    public class Nameplate : Panel
     {
         public static Nameplate Instance;
 
@@ -53,7 +53,7 @@ namespace TTTReborn.UI
             new HealthGroup("Near death", Color.FromBytes(252, 42, 42), 0)
         };
 
-        public Nameplate() : base()
+        public Nameplate()
         {
             Instance = this;
             IsShowing = false;
@@ -85,25 +85,23 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (ObservedPlayer == null)
+            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
             {
                 return;
             }
 
-            TTTPlayer player = Local.Pawn as TTTPlayer;
-
-            if (IsObserving && player.Camera is ThirdPersonSpectateCamera)
-            {
-                return;
-            }
-
-            TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
+            Trace trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
                 .Ignore(player)
-                .Ignore(ObservedPlayer)
-                .UseHitboxes()
-                .Run();
+                .UseHitboxes();
 
-            if (trace.Hit && trace.Entity is TTTPlayer target)
+            if (player.IsSpectatingPlayer)
+            {
+                trace.Ignore(player.CurrentPlayer);
+            }
+
+            TraceResult tr = trace.Run();
+
+            if (tr.Hit && tr.Entity is TTTPlayer target)
             {
                 IsShowing = true;
 

@@ -11,55 +11,39 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class InventorySelection : ObservablePanel
+    public class InventorySelection : Panel
     {
-        public InventorySelection() : base()
+        public InventorySelection()
         {
             StyleSheet.Load("/ui/generalhud/inventorywrapper/inventoryselection/InventorySelection.scss");
 
-            AutoHideWithoutObservablePlayer = true;
-
-            UpdateInventory();
-        }
-
-        private void UpdateInventory()
-        {
-            if (ObservedPlayer == null)
+            if (Local.Pawn is not TTTPlayer player)
             {
                 return;
             }
 
-            OnCarriableItemClear(ObservedPlayer);
-
-            Inventory inventory = ObservedPlayer.Inventory as Inventory;
+            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
 
             foreach (Entity entity in inventory.List)
             {
                 if (entity is ICarriableItem carriableItem)
                 {
-                    OnCarriableItemPickup(ObservedPlayer, carriableItem);
+                    OnCarriableItemPickup(carriableItem);
                 }
             }
-        }
-
-        public override void OnUpdatedObservedPlayer(TTTPlayer oldPlayer)
-        {
-            base.OnUpdatedObservedPlayer(oldPlayer);
-
-            UpdateInventory();
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            if (ObservedPlayer == null)
+            if (Local.Pawn is not TTTPlayer player)
             {
                 return;
             }
 
-            Inventory inventory = ObservedPlayer.Inventory as Inventory;
-            ICarriableItem activeItem = ObservedPlayer.ActiveChild as ICarriableItem;
+            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
+            ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
 
             foreach (Panel child in Children)
             {
@@ -76,24 +60,14 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.inventory.clear")]
-        private void OnCarriableItemClear(TTTPlayer player)
+        private void OnCarriableItemClear()
         {
-            if (player != ObservedPlayer)
-            {
-                return;
-            }
-
             DeleteChildren(true);
         }
 
         [Event("tttreborn.player.carriableitem.pickup")]
-        private void OnCarriableItemPickup(TTTPlayer player, ICarriableItem carriable)
+        private void OnCarriableItemPickup(ICarriableItem carriable)
         {
-            if (player != ObservedPlayer)
-            {
-                return;
-            }
-
             AddChild(new InventorySlot(this, carriable));
             SortChildren((p1, p2) =>
             {
@@ -106,13 +80,8 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.carriableitem.drop")]
-        private void OnCarriableItemDrop(TTTPlayer player, ICarriableItem carriable)
+        private void OnCarriableItemDrop(ICarriableItem carriable)
         {
-            if (player != ObservedPlayer)
-            {
-                return;
-            }
-
             foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
@@ -125,6 +94,21 @@ namespace TTTReborn.UI
             }
         }
 
+        [Event("tttreborn.player.spectating.change")]
+        private void OnSpectatingChange(TTTPlayer player)
+        {
+            OnCarriableItemClear();
+
+            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
+            foreach (Entity entity in inventory.List)
+            {
+                if (entity is ICarriableItem carriableItem)
+                {
+                    OnCarriableItemPickup(carriableItem);
+                }
+            }
+        }
+
         /// <summary>
         /// IClientInput implementation, calls during the client input build.
         /// You can both read and write to input, to affect what happens down the line.
@@ -132,14 +116,19 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
-            if (Children == null || !Children.Any() || IsObserving)
+            if (Local.Pawn is not TTTPlayer player || player.IsSpectatingPlayer)
+            {
+                return;
+            }
+
+            if (Children == null || !Children.Any())
             {
                 return;
             }
 
             List<Panel> childrenList = Children.ToList();
 
-            ICarriableItem activeCarriable = ObservedPlayer.ActiveChild as ICarriableItem;
+            ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
 
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
             if (keyboardIndexPressed != 0)
@@ -185,7 +174,8 @@ namespace TTTReborn.UI
             int mouseWheelIndex = Input.MouseWheel;
             if (mouseWheelIndex != 0)
             {
-                int activeCarriableIndex = childrenList.FindIndex((p) => p is InventorySlot slot && slot.Carriable.Name == activeCarriable?.Name);
+                int activeCarriableIndex = childrenList.FindIndex((p) =>
+                    p is InventorySlot slot && slot.Carriable.Name == activeCarriable?.Name);
 
                 int newSelectedIndex = NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1);
                 input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
@@ -241,9 +231,7 @@ namespace TTTReborn.UI
 
                 if (carriable.SlotType != SlotType.Melee && carriable is TTTWeapon weapon)
                 {
-                    TTTPlayer observedPlayer = GetObservedPlayer(Local.Pawn);
-
-                    _ammoLabel = Add.Label(observedPlayer != null ? FormatAmmo(weapon, observedPlayer.Inventory as Inventory) : "-", "ammolabel");
+                    _ammoLabel = Add.Label(FormatAmmo(weapon, (Local.Pawn as TTTPlayer).Inventory as Inventory), "ammolabel");
                 }
             }
 

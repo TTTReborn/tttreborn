@@ -27,22 +27,6 @@ namespace TTTReborn.UI
             AliveHudPanel = new AliveHud(RootPanel);
         }
 
-        [Event.Tick]
-        public void Tick()
-        {
-            TTTPlayer observedPlayer = ObservablePanel.GetObservedPlayer(Local.Pawn);
-
-            if (observedPlayer != _currentObservedPlayer)
-            {
-                _currentObservedPlayer = observedPlayer;
-
-                foreach (ObservablePanel panel in ObservablePanel.List)
-                {
-                    panel.ObservedPlayer = observedPlayer;
-                }
-            }
-        }
-
         [Event.Hotload]
         public static void OnHotReloaded()
         {

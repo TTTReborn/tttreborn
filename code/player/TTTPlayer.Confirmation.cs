@@ -107,9 +107,9 @@ namespace TTTReborn.Player
                     .HitLayer(CollisionLayer.Debris)
                     .Ignore(this);
 
-                if (Camera is ThirdPersonSpectateCamera specCam && specCam.TargetPlayer != null)
+                if (IsSpectatingPlayer)
                 {
-                    tr.Ignore(specCam.TargetPlayer);
+                    tr.Ignore(CurrentPlayer);
                 }
 
                 trace = tr.Run();
