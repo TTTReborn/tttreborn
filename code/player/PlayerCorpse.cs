@@ -23,12 +23,12 @@ namespace TTTReborn.Player
             SetInteractsAs(CollisionLayer.Debris);
             SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
             SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
-
-            IsIdentified = false;
         }
 
         public void CopyFrom(TTTPlayer player)
         {
+            Player = player;
+
             SetModel(player.GetModelName());
             TakeDecalsFrom(player);
 

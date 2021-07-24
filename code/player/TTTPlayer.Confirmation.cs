@@ -1,7 +1,6 @@
 using Sandbox;
 
 using TTTReborn.Globals;
-using TTTReborn.Player.Camera;
 using TTTReborn.UI;
 
 namespace TTTReborn.Player
@@ -42,7 +41,7 @@ namespace TTTReborn.Player
 
                 if (playerCorpse != null)
                 {
-                    if (IsServer && !playerCorpse.IsIdentified && Input.Down(InputButton.Use) && LifeState == LifeState.Alive)
+                    if (IsServer && !playerCorpse.IsIdentified && Input.Pressed(InputButton.Use) && LifeState == LifeState.Alive)
                     {
                         playerCorpse.IsIdentified = true;
 
@@ -99,7 +98,6 @@ namespace TTTReborn.Player
 
             corpse.CopyFrom(this);
             corpse.ApplyForceToBone(force, forceBone);
-            corpse.Player = this;
 
             PlayerCorpse = corpse;
         }
