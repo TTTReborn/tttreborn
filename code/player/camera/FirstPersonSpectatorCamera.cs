@@ -9,6 +9,8 @@ namespace TTTReborn.Player.Camera
     public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCamera
     {
         private int _targetIdx;
+        private Vector3 _lastPos;
+        private Rotation _lastRot;
 
         public override void Deactivated()
         {
@@ -16,6 +18,9 @@ namespace TTTReborn.Player.Camera
             {
                 return;
             }
+
+            _lastPos = Pos;
+            _lastRot = Rot;
 
             player.CurrentPlayer.RenderAlpha = 1f;
             player.CurrentPlayer = null;
@@ -49,10 +54,18 @@ namespace TTTReborn.Player.Camera
                     player.CurrentPlayer = players[_targetIdx];
                     player.CurrentPlayer.RenderAlpha = 0f;
                 }
+
+                Pos = player.CurrentPlayer.EyePos;
+                Rot = player.CurrentPlayer.EyeRot;
+            }
+            else
+            {
+                Pos = Vector3.Lerp(_lastPos, player.CurrentPlayer.EyePos, 20.0f * Time.Delta);
+                Rot = Rotation.Lerp(_lastRot, player.CurrentPlayer.EyeRot, 20.0f * Time.Delta);
             }
 
-            Pos = player.CurrentPlayer.EyePos;
-            Rot = player.CurrentPlayer.EyeRot;
+            _lastPos = Pos;
+            _lastRot = Rot;
 
             FieldOfView = 80;
         }
