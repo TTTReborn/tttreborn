@@ -37,19 +37,7 @@ namespace TTTReborn.Player.Camera
 
             if (!player.IsSpectatingPlayer || Input.Pressed(InputButton.Attack1))
             {
-                player.CurrentPlayer = null;
-
-                List<TTTPlayer> players = Utils.GetAlivePlayers();
-
-                if (players.Count > 0)
-                {
-                    if (++_targetIdx >= players.Count)
-                    {
-                        _targetIdx = 0;
-                    }
-
-                    player.CurrentPlayer = players[_targetIdx];
-                }
+                player.UpdateObservatedPlayer();
             }
 
             _targetRot = Rotation.From(_lookAngles);

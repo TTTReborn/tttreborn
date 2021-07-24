@@ -147,7 +147,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerDied(To.Single(this), this);
+                RPCs.ClientOnPlayerDied(this);
                 SyncMIA();
             }
         }
