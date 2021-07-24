@@ -48,6 +48,8 @@ namespace TTTReborn.UI
             {
                 AddPlayer(player);
             }
+
+            UpdateScoreboardGroups();
         }
 
         [Event("tttreborn.player.spawned")]

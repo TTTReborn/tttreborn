@@ -87,13 +87,13 @@ namespace TTTReborn.UI
                             break;
                         }
 
-                        if (player.IsMissingInAction)
-                        {
-                            group = DefaultScoreboardGroup.MIA.ToString();
-                        }
-                        else if (player.IsConfirmed)
+                        if (player.IsConfirmed)
                         {
                             group = DefaultScoreboardGroup.Dead.ToString();
+                        }
+                        else if (player.IsMissingInAction)
+                        {
+                            group = DefaultScoreboardGroup.MIA.ToString();
                         }
 
                         break;
