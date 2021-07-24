@@ -12,6 +12,8 @@ namespace TTTReborn.UI
     {
         public static InspectMenu Instance;
 
+        public TTTPlayer deadPlayer;
+
         public bool IsShowing
         {
             get => _isShowing;
@@ -33,17 +35,17 @@ namespace TTTReborn.UI
             Instance = this;
             IsShowing = false;
 
-            StyleSheet.Load("/ui/alivehud/inspectmenu/InspectMenu.scss");
+            StyleSheet.Load("/ui/generalhud/inspectmenu/InspectMenu.scss");
 
             _confirmationHintPanel = new ConfirmationHintPanel(this);
             _confirmationPanel = new ConfirmationPanel(this);
         }
 
-        public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified)
+        public void InspectCorpse(TTTPlayer deadPlayer)
         {
             IsShowing = true;
 
-            if (isIdentified)
+            if (deadPlayer?.IsConfirmed ?? false)
             {
                 _confirmationHintPanel.SetClass("hide", true);
 

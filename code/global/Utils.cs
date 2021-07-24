@@ -70,6 +70,21 @@ namespace TTTReborn.Globals
             return players;
         }
 
+        public static IEnumerable<Client> GetClientsSpectatingPlayer(TTTPlayer player)
+        {
+            List<Client> clients = new();
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer p && p.CurrentPlayer == player)
+                {
+                    clients.Add(client);
+                }
+            }
+
+            return clients;
+        }
+
         public static bool HasMinimumPlayers()
         {
             return Client.All.Count >= Gamemode.Game.TTTMinPlayers;
