@@ -26,13 +26,15 @@ namespace TTTReborn.Player
             get => _spectatingPlayer ?? this;
             set
             {
-                _spectatingPlayer = value;
+                _spectatingPlayer = value == this ? null : value;
+
                 Event.Run("tttreborn.player.spectating.change", this);
             }
         }
+
         public bool IsSpectatingPlayer
         {
-            get => CurrentPlayer != null && CurrentPlayer != this;
+            get => _spectatingPlayer != null;
         }
 
         private DamageInfo _lastDamageInfo;

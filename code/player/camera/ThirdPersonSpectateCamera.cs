@@ -58,12 +58,7 @@ namespace TTTReborn.Player.Camera
 
         private Vector3 GetSpectatePoint()
         {
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                return DefaultPosition;
-            }
-
-            if (!player.IsSpectatingPlayer)
+            if (Local.Pawn is not TTTPlayer player || !player.IsSpectatingPlayer)
             {
                 return DefaultPosition;
             }

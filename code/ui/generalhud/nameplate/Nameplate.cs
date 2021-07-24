@@ -65,7 +65,6 @@ namespace TTTReborn.UI
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damageIndicator");
-
         }
 
         private HealthGroup GetHealthGroup(float health)
@@ -85,18 +84,12 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                return;
-            }
-
-            if (player.Camera is ThirdPersonCamera)
+            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonCamera)
             {
                 return;
             }
 
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
-                .Ignore(player.ActiveChild)
                 .Ignore(player)
                 .UseHitboxes()
                 .Run();
