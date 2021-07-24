@@ -1,7 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player.Camera;
-
 namespace TTTReborn.Player
 {
     partial class TTTPlayer
@@ -12,28 +10,18 @@ namespace TTTReborn.Player
 
         public T IsLookingAtType<T>(float distance)
         {
-            TraceResult tr;
+            Sandbox.Camera camera = Camera as Sandbox.Camera;
 
-            if (Camera is FreeSpectateCamera camera)
+            Trace trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * distance)
+                .HitLayer(CollisionLayer.Debris)
+                .Ignore(this);
+
+            if (IsSpectatingPlayer)
             {
-                tr = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * distance)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(this)
-                    .Run();
+                trace.Ignore(CurrentPlayer);
             }
-            else
-            {
-                Trace trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * distance)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(this);
 
-                if (IsSpectatingPlayer)
-                {
-                    trace.Ignore(CurrentPlayer);
-                }
-
-                tr = trace.Run();
-            }
+            TraceResult tr = trace.Run();
 
             if (tr.Hit && tr.Entity is T type)
             {
