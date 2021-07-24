@@ -6,7 +6,7 @@ using TTTReborn.Globals;
 
 namespace TTTReborn.Player.Camera
 {
-    public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservableCamera
+    public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCamera
     {
         private int _targetIdx;
 

@@ -39,7 +39,7 @@ namespace TTTReborn.Player
 
         public bool IsSpectator
         {
-            get => (Camera is IObservableCamera);
+            get => (Camera is IObservationCamera);
         }
 
         private DamageInfo _lastDamageInfo;
@@ -56,7 +56,7 @@ namespace TTTReborn.Player
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = useRagdollCamera ? new SpectateRagdollCamera() : new FreeSpectateCamera();
+            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 
             ShowFlashlight(false, false);
         }
