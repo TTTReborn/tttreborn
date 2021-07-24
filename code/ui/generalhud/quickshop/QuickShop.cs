@@ -22,7 +22,7 @@ namespace TTTReborn.UI
 
         public QuickShop()
         {
-            StyleSheet.Load("/ui/alivehud/quickshop/QuickShop.scss");
+            StyleSheet.Load("/ui/generalhud/quickshop/QuickShop.scss");
 
             _header = new Header(this);
             _content = new Content(this);

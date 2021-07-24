@@ -15,20 +15,20 @@ namespace TTTReborn.UI
     {
         public InventorySelection()
         {
-            StyleSheet.Load("/ui/alivehud/inventorywrapper/inventoryselection/InventorySelection.scss");
+            StyleSheet.Load("/ui/generalhud/inventorywrapper/inventoryselection/InventorySelection.scss");
 
             if (Local.Pawn is not TTTPlayer player)
             {
                 return;
             }
 
-            Inventory inventory = player.Inventory as Inventory;
+            Inventory inventory = player.ObservingPlayer.Inventory as Inventory;
 
             foreach (Entity entity in inventory.List)
             {
                 if (entity is ICarriableItem carriableItem)
                 {
-                    OnCarriableItemPickup(carriableItem);
+                    OnCarriableItemPickup(player.ObservingPlayer, carriableItem);
                 }
             }
         }
@@ -42,8 +42,8 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Inventory inventory = player.Inventory as Inventory;
-            ICarriableItem activeItem = player.ActiveChild as ICarriableItem;
+            Inventory inventory = player.ObservingPlayer.Inventory as Inventory;
+            ICarriableItem activeItem = player.ObservingPlayer.ActiveChild as ICarriableItem;
 
             foreach (Panel child in Children)
             {
@@ -60,13 +60,13 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.inventory.clear")]
-        private void OnCarriableItemClear()
+        private void OnCarriableItemClear(TTTPlayer player)
         {
             DeleteChildren();
         }
 
         [Event("tttreborn.player.carriableitem.pickup")]
-        private void OnCarriableItemPickup(ICarriableItem carriable)
+        private void OnCarriableItemPickup(TTTPlayer player, ICarriableItem carriable)
         {
             AddChild(new InventorySlot(this, carriable));
             SortChildren((p1, p2) =>
@@ -80,7 +80,7 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.player.carriableitem.drop")]
-        private void OnCarriableItemDrop(ICarriableItem carriable)
+        private void OnCarriableItemDrop(TTTPlayer player, ICarriableItem carriable)
         {
             foreach (Panel child in Children)
             {

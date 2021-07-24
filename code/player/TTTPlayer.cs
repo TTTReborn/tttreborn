@@ -20,6 +20,17 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        private TTTPlayer _spectatingPlayer;
+        public TTTPlayer ObservingPlayer
+        {
+            get => _spectatingPlayer ?? this;
+            set => _spectatingPlayer = value;
+        }
+        public bool IsObservingPlayer
+        {
+            get => ObservingPlayer != null && ObservingPlayer != this;
+        }
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
@@ -156,11 +167,7 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
-
-            if (IsServer)
-            {
-                TickAttemptInspectPlayerCorpse();
-            }
+            TickAttemptInspectPlayerCorpse();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());

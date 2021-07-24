@@ -12,7 +12,7 @@ namespace TTTReborn.UI
     {
         public PlayerInfo()
         {
-            StyleSheet.Load("/ui/alivehud/playerinfo/PlayerInfo.scss");
+            StyleSheet.Load("/ui/generalhud/playerinfo/PlayerInfo.scss");
 
             new RolePanel(this);
             new IndicatorsPanel(this);
@@ -40,13 +40,27 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                if (_currentRole != player.Role)
+                if (_currentRole == player.ObservingPlayer.Role)
                 {
-                    _currentRole = player.Role;
+                    return;
+                }
 
-                    Style.BackgroundColor = player.Role.Color;
-                    Style.Dirty();
+                _currentRole = player.ObservingPlayer.Role;
 
+                Style.BackgroundColor = player.ObservingPlayer.Role is NoneRole
+                    ? Color.Black
+                    : player.ObservingPlayer.Role.Color;
+
+                Style.Dirty();
+
+                if (player.IsObservingPlayer)
+                {
+                    _roleLabel.Text = $"{player.ObservingPlayer.GetClientOwner()?.Name}";
+
+                    SetClass("hide", false);
+                }
+                else
+                {
                     _roleLabel.Text = $"{player.Role.Name.ToUpper()}";
 
                     SetClass("hide", player.Role is NoneRole);
@@ -78,39 +92,37 @@ namespace TTTReborn.UI
             {
                 base.Tick();
 
-                TTTPlayer player = Local.Pawn as TTTPlayer;
-
-                if (player == null)
+                if (Local.Pawn is not TTTPlayer player)
                 {
                     return;
                 }
 
-                if (_currentHealth != player.Health)
+                if (_currentHealth != player.ObservingPlayer.Health)
                 {
-                    _currentHealth = player.Health;
+                    _currentHealth = player.ObservingPlayer.Health;
 
-                    _healthBar.TextLabel.Text = $"{player.Health:n0}";
+                    _healthBar.TextLabel.Text = $"{player.ObservingPlayer.Health:n0}";
 
-                    _healthBar.Style.Width = Length.Percent(player.Health / player.MaxHealth * 100f);
+                    _healthBar.Style.Width = Length.Percent(player.ObservingPlayer.Health / player.ObservingPlayer.MaxHealth * 100f);
                     _healthBar.Style.Dirty();
                 }
 
-                if (player.Controller is DefaultWalkController && DefaultWalkController.IsSprintEnabled)
+                if (player.ObservingPlayer.Controller is DefaultWalkController && DefaultWalkController.IsSprintEnabled)
                 {
                     _staminaBar.Style.Display = DisplayMode.Flex;
 
-                    _staminaBar.SetClass("hide", player.LifeState != LifeState.Alive);
+                    _staminaBar.SetClass("hide", player.ObservingPlayer.LifeState != LifeState.Alive);
 
-                    if (_currentStamina == player.Stamina)
+                    if (_currentStamina == player.ObservingPlayer.Stamina)
                     {
                         return;
                     }
 
-                    _currentStamina = player.Stamina;
+                    _currentStamina = player.ObservingPlayer.Stamina;
 
-                    _staminaBar.TextLabel.Text = $"{player.Stamina:n0}";
+                    _staminaBar.TextLabel.Text = $"{player.ObservingPlayer.Stamina:n0}";
 
-                    _staminaBar.Style.Width = Length.Percent(player.Stamina / player.MaxStamina * 100f);
+                    _staminaBar.Style.Width = Length.Percent(player.ObservingPlayer.Stamina / player.ObservingPlayer.MaxStamina * 100f);
                     _staminaBar.Style.Dirty();
                 }
                 else

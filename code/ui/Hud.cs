@@ -144,7 +144,7 @@ namespace TTTReborn.UI
 
         public class DeadHud : Panel
         {
-            public SpectatedPlayerInfo SpectatedPlayerInfo;
+            public PlayerInfo SpectatedPlayerInfo;
 
             public DeadHud(Panel parent)
             {
@@ -153,7 +153,7 @@ namespace TTTReborn.UI
 
             public void CreateHud()
             {
-                SpectatedPlayerInfo ??= Parent.AddChild<SpectatedPlayerInfo>();
+                SpectatedPlayerInfo ??= Parent.AddChild<PlayerInfo>();
             }
 
             public void DeleteHud()

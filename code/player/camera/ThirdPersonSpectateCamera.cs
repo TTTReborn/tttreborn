@@ -9,8 +9,6 @@ namespace TTTReborn.Player.Camera
     {
         private Vector3 DefaultPosition { get; set; }
 
-        public TTTPlayer TargetPlayer { get; set; }
-
         private const float LERP_MODE = 0;
         private const int FIELD_OF_VIEW_OVERRIDE = 70;
         private const int CAMERA_DISTANCE = 120;
@@ -36,7 +34,7 @@ namespace TTTReborn.Player.Camera
                 return;
             }
 
-            if (TargetPlayer == null || !TargetPlayer.IsValid() || Input.Pressed(InputButton.Attack1))
+            if (!player.IsObservingPlayer || Input.Pressed(InputButton.Attack1))
             {
                 List<TTTPlayer> players = Utils.GetAlivePlayers();
 
@@ -47,7 +45,7 @@ namespace TTTReborn.Player.Camera
                         _targetIdx = 0;
                     }
 
-                    TargetPlayer = players[_targetIdx];
+                    player.ObservingPlayer = players[_targetIdx];
                 }
             }
 
@@ -60,17 +58,17 @@ namespace TTTReborn.Player.Camera
 
         private Vector3 GetSpectatePoint()
         {
-            if (Local.Pawn is not TTTPlayer)
+            if (Local.Pawn is not TTTPlayer player)
             {
                 return DefaultPosition;
             }
 
-            if (TargetPlayer == null || !TargetPlayer.IsValid())
+            if (!player.IsObservingPlayer)
             {
                 return DefaultPosition;
             }
 
-            return TargetPlayer.EyePos;
+            return player.ObservingPlayer.EyePos;
         }
 
         public override void BuildInput(InputBuilder input)
@@ -79,6 +77,16 @@ namespace TTTReborn.Player.Camera
             _lookAngles.roll = 0;
 
             base.BuildInput(input);
+        }
+
+        public override void Deactivated()
+        {
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            player.ObservingPlayer = null;
         }
     }
 }

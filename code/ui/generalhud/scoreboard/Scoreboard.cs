@@ -11,6 +11,8 @@ namespace TTTReborn.UI
 {
     public class Scoreboard : Panel
     {
+        public static Scoreboard Instance;
+
         private readonly Dictionary<int, ScoreboardEntry> _entries = new();
         //TODO: Event on start of PreRound =>
         //Make all Entries trigger the Entry.UpdateForm()
@@ -27,6 +29,8 @@ namespace TTTReborn.UI
 
         public Scoreboard()
         {
+            Instance = this;
+
             StyleSheet.Load("/ui/generalhud/scoreboard/Scoreboard.scss");
 
             _header = new Header(this);

@@ -57,7 +57,7 @@ namespace TTTReborn.UI
             Instance = this;
             IsShowing = false;
 
-            StyleSheet.Load("/ui/alivehud/nameplate/Nameplate.scss");
+            StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
 
             _labelHolder = Add.Panel("labelHolder");
 
@@ -85,7 +85,15 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            TTTPlayer player = Local.Pawn as TTTPlayer;
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            if (player.Camera is ThirdPersonCamera)
+            {
+                return;
+            }
 
             TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
                 .Ignore(player.ActiveChild)
