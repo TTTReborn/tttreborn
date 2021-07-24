@@ -8,8 +8,17 @@ namespace TTTReborn.Player.Camera
     {
         private const float SMOOTH_SPEED = 25f;
 
+        public override void Activated()
+        {
+            base.Activated();
+
+            FieldOfView = 80;
+        }
+
         public override void Deactivated()
         {
+            base.Deactivated();
+
             if (Local.Pawn is not TTTPlayer player)
             {
                 return;
@@ -38,8 +47,6 @@ namespace TTTReborn.Player.Camera
                 Pos = Vector3.Lerp(Pos, player.CurrentPlayer.EyePos, SMOOTH_SPEED * Time.Delta);
                 Rot = Rotation.Slerp(Rot, player.CurrentPlayer.EyeRot, SMOOTH_SPEED * Time.Delta);
             }
-
-            FieldOfView = 80;
         }
 
         public void OnUpdateObservatedPlayer(TTTPlayer oldObservatedPlayer, TTTPlayer newObservatedPlayer)
