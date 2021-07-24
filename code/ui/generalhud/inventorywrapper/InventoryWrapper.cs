@@ -4,12 +4,16 @@ namespace TTTReborn.UI
 {
     public class InventoryWrapper : Panel
     {
+        public static InventoryWrapper Instance;
+
         public Effects Effects;
         public InventorySelection InventorySelection;
 
         public InventoryWrapper()
         {
-            StyleSheet.Load("/ui/alivehud/inventorywrapper/InventoryWrapper.scss");
+            Instance = this;
+
+            StyleSheet.Load("/ui/generalhud/inventorywrapper/InventoryWrapper.scss");
 
             Effects = AddChild<Effects>();
             InventorySelection = AddChild<InventorySelection>();

@@ -20,6 +20,28 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        private TTTPlayer _spectatingPlayer;
+        public TTTPlayer CurrentPlayer
+        {
+            get => _spectatingPlayer ?? this;
+            set
+            {
+                _spectatingPlayer = value == this ? null : value;
+
+                Event.Run("tttreborn.player.spectating.change", this);
+            }
+        }
+
+        public bool IsSpectatingPlayer
+        {
+            get => _spectatingPlayer != null;
+        }
+
+        public bool IsSpectator
+        {
+            get => (Camera is IObservableCamera);
+        }
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
@@ -137,6 +159,8 @@ namespace TTTReborn.Player
                 TickPlayerVoiceChat();
             }
 
+            TickAttemptInspectPlayerCorpse();
+
             if (LifeState != LifeState.Alive)
             {
                 TickPlayerChangeSpectateCamera();
@@ -156,11 +180,6 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
-
-            if (IsServer)
-            {
-                TickAttemptInspectPlayerCorpse();
-            }
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -234,6 +253,39 @@ namespace TTTReborn.Player
             {
                 perks.Get(i).Simulate(client);
             }
+        }
+
+        public T IsLookingAtType<T>()
+        {
+            TraceResult tr;
+
+            if (Camera is FreeSpectateCamera camera)
+            {
+                tr = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * INSPECT_CORPSE_DISTANCE)
+                    .HitLayer(CollisionLayer.Debris)
+                    .Ignore(this)
+                    .Run();
+            }
+            else
+            {
+                Trace trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * INSPECT_CORPSE_DISTANCE)
+                    .HitLayer(CollisionLayer.Debris)
+                    .Ignore(this);
+
+                if (IsSpectatingPlayer)
+                {
+                    trace.Ignore(CurrentPlayer);
+                }
+
+                tr = trace.Run();
+            }
+
+            if (tr.Hit && tr.Entity is T type)
+            {
+                return type;
+            }
+
+            return default(T);
         }
 
         protected override void OnDestroy()

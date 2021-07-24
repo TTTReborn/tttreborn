@@ -32,8 +32,7 @@ namespace TTTReborn.Player.Camera
 
         public override void Update()
         {
-            Client player = Local.Client;
-            if (player == null)
+            if (Local.Client == null)
             {
                 return;
             }

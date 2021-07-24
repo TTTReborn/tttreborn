@@ -8,48 +8,34 @@ namespace TTTReborn.Player.Camera
 {
     public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservableCamera
     {
-        public TTTPlayer TargetPlayer { get; set; }
-
         private int _targetIdx;
-        private Vector3 _lastPos;
-        private Rotation _lastRot;
-
-        public override void Activated()
-        {
-            if (TargetPlayer == null)
-            {
-                return;
-            }
-
-            Pos = TargetPlayer.EyePos;
-            Rot = TargetPlayer.EyeRot;
-
-            _lastPos = Pos;
-            _lastRot = Rot;
-
-            TargetPlayer.RenderAlpha = 0f;
-        }
 
         public override void Deactivated()
         {
-            if (TargetPlayer == null || !TargetPlayer.IsValid())
+            if (Local.Pawn is not TTTPlayer player)
             {
                 return;
             }
 
-            TargetPlayer.RenderAlpha = 1f;
+            player.CurrentPlayer.RenderAlpha = 1f;
+            player.CurrentPlayer = null;
         }
 
         public override void Update()
         {
-            bool invalidTarget = TargetPlayer == null || !TargetPlayer.IsValid();
-
-            if (invalidTarget || Input.Pressed(InputButton.Attack1))
+            if (Local.Pawn is not TTTPlayer player)
             {
-                if (!invalidTarget)
+                return;
+            }
+
+            if (!player.IsSpectatingPlayer || Input.Pressed(InputButton.Attack1))
+            {
+                if (player.IsSpectatingPlayer)
                 {
-                    TargetPlayer.RenderAlpha = 1f;
+                    player.CurrentPlayer.RenderAlpha = 1f;
                 }
+
+                player.CurrentPlayer = null;
 
                 List<TTTPlayer> players = Utils.GetAlivePlayers();
 
@@ -60,27 +46,15 @@ namespace TTTReborn.Player.Camera
                         _targetIdx = 0;
                     }
 
-                    TargetPlayer = players[_targetIdx];
+                    player.CurrentPlayer = players[_targetIdx];
+                    player.CurrentPlayer.RenderAlpha = 0f;
                 }
-
-                TargetPlayer.RenderAlpha = 0f;
-
-                return;
             }
 
-            using (Prediction.Off())
-            {
-                Vector3 eyePos = TargetPlayer.EyePos;
-                Rotation eyeRot = TargetPlayer.EyeRot;
+            Pos = player.CurrentPlayer.EyePos;
+            Rot = player.CurrentPlayer.EyeRot;
 
-                Pos = Vector3.Lerp(_lastPos, eyePos, 20.0f * Time.Delta);
-                Rot = Rotation.Lerp(_lastRot, eyeRot, 20.0f * Time.Delta);
-
-                FieldOfView = 80;
-
-                _lastPos = Pos;
-                _lastRot = Rot;
-            }
+            FieldOfView = 80;
         }
     }
 }
