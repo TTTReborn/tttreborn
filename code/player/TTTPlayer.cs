@@ -152,6 +152,8 @@ namespace TTTReborn.Player
                 TickPlayerVoiceChat();
             }
 
+            TickAttemptInspectPlayerCorpse();
+
             if (LifeState != LifeState.Alive)
             {
                 TickPlayerChangeSpectateCamera();
@@ -171,7 +173,6 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
-            TickAttemptInspectPlayerCorpse();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
