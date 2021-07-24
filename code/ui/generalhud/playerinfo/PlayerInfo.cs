@@ -30,6 +30,8 @@ namespace TTTReborn.UI
 
             private TTTRole _currentRole;
 
+            private TTTPlayer _currentPlayer;
+
             public RolePanel(Panel parent)
             {
                 Parent = parent;
@@ -41,22 +43,23 @@ namespace TTTReborn.UI
             {
                 base.Tick();
 
-                if (Local.Pawn is not TTTPlayer player || _currentRole == player.CurrentPlayer.Role)
+                if (Local.Pawn is not TTTPlayer player || _currentPlayer == player.CurrentPlayer && _currentRole == player.CurrentPlayer.Role)
                 {
                     return;
                 }
 
-                _currentRole = player.CurrentPlayer.Role;
+                _currentPlayer = player.CurrentPlayer;
+                _currentRole = _currentPlayer.Role;
 
-                Style.BackgroundColor = player.CurrentPlayer.Role is NoneRole
+                Style.BackgroundColor = _currentPlayer.Role is NoneRole
                     ? Color.Black
-                    : player.CurrentPlayer.Role.Color;
+                    : _currentPlayer.Role.Color;
 
                 Style.Dirty();
 
                 if (player.IsSpectatingPlayer)
                 {
-                    _roleLabel.Text = $"{player.CurrentPlayer.GetClientOwner()?.Name}";
+                    _roleLabel.Text = $"{_currentPlayer.GetClientOwner()?.Name}";
 
                     SetClass("hide", false);
                 }
