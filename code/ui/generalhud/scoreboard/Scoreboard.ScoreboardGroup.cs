@@ -103,12 +103,7 @@ namespace TTTReborn.UI
 
             _scoreboardGroups.TryGetValue(group, out ScoreboardGroup scoreboardGroup);
 
-            if (scoreboardGroup == null)
-            {
-                scoreboardGroup = AddScoreboardGroup(group);
-            }
-
-            return scoreboardGroup;
+            return scoreboardGroup ?? AddScoreboardGroup(group);
         }
 
         private void UpdateScoreboardGroups()
