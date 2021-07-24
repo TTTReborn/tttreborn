@@ -2,14 +2,11 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    using Player = Sandbox.Player;
-
     public class PlayerInfo : Panel
     {
         public PlayerInfo()
