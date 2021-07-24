@@ -6,9 +6,6 @@ namespace TTTReborn.Player.Camera
 {
     public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCamera
     {
-        private Vector3 _lastPos;
-        private Rotation _lastRot;
-
         private const float SMOOTH_SPEED = 25f;
 
         public override void Deactivated()
@@ -17,9 +14,6 @@ namespace TTTReborn.Player.Camera
             {
                 return;
             }
-
-            _lastPos = Pos;
-            _lastRot = Rot;
 
             player.CurrentPlayer.RenderAlpha = 1f;
             player.CurrentPlayer = null;
@@ -41,12 +35,9 @@ namespace TTTReborn.Player.Camera
             }
             else
             {
-                Pos = Vector3.Lerp(_lastPos, player.CurrentPlayer.EyePos, SMOOTH_SPEED * Time.Delta);
-                Rot = Rotation.Slerp(_lastRot, player.CurrentPlayer.EyeRot, SMOOTH_SPEED * Time.Delta);
+                Pos = Vector3.Lerp(Pos, player.CurrentPlayer.EyePos, SMOOTH_SPEED * Time.Delta);
+                Rot = Rotation.Slerp(Rot, player.CurrentPlayer.EyeRot, SMOOTH_SPEED * Time.Delta);
             }
-
-            _lastPos = Pos;
-            _lastRot = Rot;
 
             FieldOfView = 80;
         }
