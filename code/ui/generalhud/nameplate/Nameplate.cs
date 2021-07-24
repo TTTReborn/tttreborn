@@ -3,6 +3,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
+using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
@@ -84,7 +85,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonCamera)
+            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
             {
                 return;
             }
