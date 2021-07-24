@@ -39,8 +39,7 @@ namespace TTTReborn.Player
 
         public bool IsSpectator
         {
-            // TODO: Change to be spectator class once FirstPersonSpectateCamera is added as well.
-            get => (Camera is not FirstPersonCamera);
+            get => (Camera is IObservationCamera);
         }
 
         private DamageInfo _lastDamageInfo;
@@ -57,7 +56,7 @@ namespace TTTReborn.Player
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = useRagdollCamera ? new SpectateRagdollCamera() : new FreeSpectateCamera();
+            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 
             ShowFlashlight(false, false);
         }
@@ -148,7 +147,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerDied(To.Single(this), this);
+                RPCs.ClientOnPlayerDied(this);
                 SyncMIA();
             }
         }
@@ -232,7 +231,8 @@ namespace TTTReborn.Player
                 {
                     SpectateRagdollCamera => new FreeSpectateCamera(),
                     FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-                    ThirdPersonSpectateCamera => new FreeSpectateCamera(),
+                    ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
+                    FirstPersonSpectatorCamera => new FreeSpectateCamera(),
                     _ => Camera
                 };
             }

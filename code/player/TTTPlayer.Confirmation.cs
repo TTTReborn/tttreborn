@@ -1,7 +1,6 @@
 using Sandbox;
 
 using TTTReborn.Globals;
-using TTTReborn.Player.Camera;
 using TTTReborn.UI;
 
 namespace TTTReborn.Player
@@ -38,11 +37,11 @@ namespace TTTReborn.Player
         {
             using (Prediction.Off())
             {
-                PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
+                PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>(INSPECT_CORPSE_DISTANCE);
 
                 if (playerCorpse != null)
                 {
-                    if (IsServer && !playerCorpse.IsIdentified && Input.Down(InputButton.Use) && LifeState == LifeState.Alive)
+                    if (IsServer && !playerCorpse.IsIdentified && Input.Pressed(InputButton.Use) && LifeState == LifeState.Alive)
                     {
                         playerCorpse.IsIdentified = true;
 
@@ -89,40 +88,6 @@ namespace TTTReborn.Player
             }
         }
 
-        private PlayerCorpse IsLookingAtPlayerCorpse()
-        {
-            // TODO ignore dead players as well, they could block this
-            TraceResult trace;
-
-            if (Camera is FreeSpectateCamera camera)
-            {
-                trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * INSPECT_CORPSE_DISTANCE)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(this)
-                    .Run();
-            }
-            else
-            {
-                Trace tr = Trace.Ray(EyePos, EyePos + EyeRot.Forward * INSPECT_CORPSE_DISTANCE)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(this);
-
-                if (IsSpectatingPlayer)
-                {
-                    tr.Ignore(CurrentPlayer);
-                }
-
-                trace = tr.Run();
-            }
-
-            if (trace.Hit && trace.Entity is PlayerCorpse corpse)
-            {
-                return corpse;
-            }
-
-            return null;
-        }
-
         private void BecomePlayerCorpseOnServer(Vector3 force, int forceBone)
         {
             PlayerCorpse corpse = new PlayerCorpse
@@ -133,7 +98,6 @@ namespace TTTReborn.Player
 
             corpse.CopyFrom(this);
             corpse.ApplyForceToBone(force, forceBone);
-            corpse.Player = this;
 
             PlayerCorpse = corpse;
         }
