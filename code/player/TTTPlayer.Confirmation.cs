@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 
 using TTTReborn.Globals;
@@ -5,6 +7,16 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
+    public struct ConfirmationData
+    {
+        public bool Identified;
+        public bool Headshot;
+        public bool Suicide;
+        public float Time;
+        public float Distance;
+        // TODO damage type
+    }
+
     public partial class TTTPlayer
     {
         public PlayerCorpse PlayerCorpse { get; set; }
@@ -62,7 +74,7 @@ namespace TTTReborn.Player
 
                             playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
 
-                            RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name);
+                            RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name, playerCorpse.Player.Team.Name, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
                         }
                     }
 
@@ -72,7 +84,7 @@ namespace TTTReborn.Player
 
                         if (IsClient)
                         {
-                            InspectMenu.Instance.InspectCorpse(playerCorpse.Player);
+                            InspectMenu.Instance.InspectCorpse(playerCorpse.Player, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
                         }
                     }
                 }
@@ -95,6 +107,20 @@ namespace TTTReborn.Player
                 Position = Position,
                 Rotation = Rotation
             };
+
+            corpse.KillerWeapon = LastDamageWeapon?.Name;
+            corpse.WasHeadshot = LastDamageWasHeadshot;
+            corpse.Distance = LastDistanceToAttacker;
+            corpse.Suicide = LastAttacker == this;
+
+            PerksInventory perksInventory = (Inventory as Inventory).Perks;
+
+            corpse.Perks = new string[perksInventory.Count()];
+
+            for (int i = 0; i < corpse.Perks.Length; i++)
+            {
+                corpse.Perks[i] = perksInventory.Get(i).Name;
+            }
 
             corpse.CopyFrom(this);
             corpse.ApplyForceToBone(force, forceBone);

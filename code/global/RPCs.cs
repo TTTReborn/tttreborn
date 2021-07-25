@@ -56,7 +56,7 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string roleName, string teamName = null)
+        public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks)
         {
             if (!confirmPlayer.IsValid() || !deadPlayer.IsValid())
             {
@@ -66,6 +66,10 @@ namespace TTTReborn.Globals
             if (playerCorpse.IsValid())
             {
                 playerCorpse.Player = deadPlayer;
+                playerCorpse.KillerWeapon = killerWeapon;
+                playerCorpse.Perks = perks;
+
+                playerCorpse.CopyConfirmationData(confirmationData);
             }
 
             deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
@@ -75,7 +79,7 @@ namespace TTTReborn.Globals
 
             if (InspectMenu.Instance?.IsShowing ?? false)
             {
-                InspectMenu.Instance?.InspectCorpse(deadPlayer);
+                InspectMenu.Instance?.InspectCorpse(deadPlayer, confirmationData, killerWeapon, perks);
             }
 
             Client confirmClient = confirmPlayer.GetClientOwner();

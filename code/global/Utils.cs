@@ -146,5 +146,16 @@ namespace TTTReborn.Globals
         {
             return Library.GetAttribute(type).Name;
         }
+
+        /// <summary>
+        /// Returns an approximate value for meters given the Source engine units (for distances)
+        /// based on https://developer.valvesoftware.com/wiki/Dimensions
+        /// </summary>
+        /// <param name="sourceUnits"></param>
+        /// <returns>sourceUnits in meters</returns>
+        public static float SourceUnitsToMeters(float sourceUnits)
+        {
+            return sourceUnits / 39.37f;
+        }
     }
 }
