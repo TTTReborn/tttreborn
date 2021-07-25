@@ -81,8 +81,6 @@ namespace TTTReborn.Player
 
             SetRole(new NoneRole());
 
-            GetClientOwner().SetScore("alive", true);
-
             IsMissingInAction = false;
 
             using (Prediction.Off())
@@ -126,7 +124,17 @@ namespace TTTReborn.Player
             using (Prediction.Off())
             {
                 RPCs.ClientOnPlayerDied(this);
-                SyncMIA();
+
+                if (Gamemode.Game.Instance.Round is Rounds.InProgressRound)
+                {
+                    SyncMIA();
+                }
+                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified)
+                {
+                    PlayerCorpse.IsIdentified = true;
+
+                    RPCs.ClientConfirmPlayer(null, PlayerCorpse, this, Role.Name, Team.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon, PlayerCorpse.Perks);
+                }
             }
         }
 

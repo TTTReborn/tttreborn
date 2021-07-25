@@ -2,8 +2,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Items;
-
 namespace TTTReborn.Player
 {
     public partial class PlayerCorpse : ModelEntity

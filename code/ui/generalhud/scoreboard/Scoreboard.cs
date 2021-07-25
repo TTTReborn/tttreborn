@@ -59,11 +59,6 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.spawned")]
         private void OnPlayerSpawned(TTTPlayer player)
         {
-            if (player != Local.Client.Pawn)
-            {
-                return;
-            }
-
             UpdatePlayer(player.GetClientOwner());
         }
 

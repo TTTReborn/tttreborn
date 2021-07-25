@@ -29,13 +29,13 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Event.Run("tttreborn.player.spawned", player);
-
             player.IsMissingInAction = false;
             player.IsConfirmed = false;
             player.CorpseConfirmer = null;
 
             player.SetRole(new NoneRole());
+
+            Event.Run("tttreborn.player.spawned", player);
         }
 
         /// <summary>
@@ -53,15 +53,22 @@ namespace TTTReborn.Globals
             }
 
             player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+
+            Scoreboard.Instance.UpdatePlayer(player.GetClientOwner());
         }
 
         [ClientRpc]
         public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks)
         {
-            if (!confirmPlayer.IsValid() || !deadPlayer.IsValid())
+            if (!deadPlayer.IsValid())
             {
                 return;
             }
+
+            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+
+            deadPlayer.IsConfirmed = true;
+            deadPlayer.CorpseConfirmer = confirmPlayer;
 
             if (playerCorpse.IsValid())
             {
@@ -70,16 +77,18 @@ namespace TTTReborn.Globals
                 playerCorpse.Perks = perks;
 
                 playerCorpse.CopyConfirmationData(confirmationData);
+
+                if (InspectMenu.Instance?.PlayerCorpse == playerCorpse)
+                {
+                    InspectMenu.Instance.InspectCorpse(playerCorpse);
+                }
             }
 
-            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+            Scoreboard.Instance.UpdatePlayer(deadPlayer.GetClientOwner());
 
-            deadPlayer.IsConfirmed = true;
-            deadPlayer.CorpseConfirmer = confirmPlayer;
-
-            if (InspectMenu.Instance?.IsShowing ?? false)
+            if (!confirmPlayer.IsValid())
             {
-                InspectMenu.Instance?.InspectCorpse(deadPlayer, confirmationData, killerWeapon, perks);
+                return;
             }
 
             Client confirmClient = confirmPlayer.GetClientOwner();

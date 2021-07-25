@@ -70,8 +70,6 @@ namespace TTTReborn.Player
                                 playerCorpse.Player.CorpseCredits = credits;
                             }
 
-                            playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
-
                             RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name, playerCorpse.Player.Team.Name, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
                         }
                     }
@@ -82,7 +80,7 @@ namespace TTTReborn.Player
 
                         if (IsClient)
                         {
-                            InspectMenu.Instance.InspectCorpse(playerCorpse.Player, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
+                            InspectMenu.Instance.InspectCorpse(playerCorpse);
                         }
                     }
                 }
