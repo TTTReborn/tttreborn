@@ -20,6 +20,9 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        [Net]
+        public bool ForcedSpectator { get; set; } = true;
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
@@ -42,9 +45,11 @@ namespace TTTReborn.Player
         // Important: Server-side only
         public void InitialRespawn()
         {
-            Respawn();
-
             bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
+
+            ForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+
+            Respawn();
 
             // sync roles
             using (Prediction.Off())
@@ -57,6 +62,8 @@ namespace TTTReborn.Player
                     }
                 }
             }
+
+            ForcedSpectator = false;
         }
 
         // Important: Server-side only
@@ -66,13 +73,8 @@ namespace TTTReborn.Player
         {
             SetModel("models/citizen/citizen.vmdl");
 
-            Controller = new DefaultWalkController();
-
             Animator = new StandardPlayerAnimator();
-            Camera = new FirstPersonCamera();
 
-            EnableAllCollisions = true;
-            EnableDrawing = true;
             EnableHideInFirstPerson = true;
             EnableShadowInFirstPerson = true;
 
@@ -93,7 +95,16 @@ namespace TTTReborn.Player
             Inventory.DeleteContents();
             Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
 
-            base.Respawn();
+            if (!ForcedSpectator)
+            {
+                Controller = new DefaultWalkController();
+                Camera = new FirstPersonCamera();
+
+                EnableAllCollisions = true;
+                EnableDrawing = true;
+
+                base.Respawn();
+            }
 
             switch (Gamemode.Game.Instance.Round)
             {
