@@ -150,5 +150,22 @@ namespace TTTReborn.Player
                 Log.Info($"Player (ID: '{i}'): {playerList[i].Name}");
             }
         }
+
+        [ServerCmd(Name = "forcespec")]
+        public static void ToggleForceSpectator()
+        {
+            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+            if (!player.IsValid() || player.IsInitialSpawning)
+            {
+                return;
+            }
+
+            player.IsForcedSpectator = !player.IsForcedSpectator;
+
+            string toggle = player.IsForcedSpectator ? "activated" : "deactivated";
+
+            Log.Info($"You {toggle} force spectator.");
+        }
     }
 }

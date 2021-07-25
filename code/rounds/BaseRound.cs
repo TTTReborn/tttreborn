@@ -56,11 +56,11 @@ namespace TTTReborn.Rounds
         {
             Host.AssertServer();
 
-            if (!player.ForcedSpectator && !Players.Contains(player))
+            if (!player.IsForcedSpectator && !Players.Contains(player))
             {
                 Players.Add(player);
             }
-            else if (player.ForcedSpectator && !Spectators.Contains(player))
+            else if (player.IsForcedSpectator && !Spectators.Contains(player))
             {
                 Spectators.Add(player);
             }

@@ -21,7 +21,9 @@ namespace TTTReborn.Player
         public int Credits { get; set; } = 0;
 
         [Net]
-        public bool ForcedSpectator { get; set; } = true;
+        public bool IsForcedSpectator { get; set; } = true;
+
+        public bool IsInitialSpawning { get; set; } = false;
 
         private DamageInfo _lastDamageInfo;
 
@@ -47,7 +49,8 @@ namespace TTTReborn.Player
         {
             bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
 
-            ForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+            IsInitialSpawning = true;
+            IsForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
 
             Respawn();
 
@@ -63,7 +66,8 @@ namespace TTTReborn.Player
                 }
             }
 
-            ForcedSpectator = false;
+            IsInitialSpawning = false;
+            IsForcedSpectator = false;
         }
 
         // Important: Server-side only
@@ -95,7 +99,7 @@ namespace TTTReborn.Player
             Inventory.DeleteContents();
             Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
 
-            if (!ForcedSpectator)
+            if (!IsForcedSpectator)
             {
                 Controller = new DefaultWalkController();
                 Camera = new FirstPersonCamera();

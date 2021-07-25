@@ -66,7 +66,7 @@ namespace TTTReborn.Rounds
 
                     AddPlayer(player);
 
-                    if (!player.ForcedSpectator)
+                    if (!player.IsForcedSpectator)
                     {
                         SetLoadout(player);
                     }
@@ -85,7 +85,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            if (player.ForcedSpectator)
+            if (player.IsForcedSpectator)
             {
                 player.MakeSpectator(false);
 
