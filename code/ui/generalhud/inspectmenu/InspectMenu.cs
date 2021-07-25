@@ -13,8 +13,6 @@ namespace TTTReborn.UI
     {
         public static InspectMenu Instance;
 
-        public TTTPlayer deadPlayer;
-
         public bool IsShowing
         {
             get => _isShowing;
