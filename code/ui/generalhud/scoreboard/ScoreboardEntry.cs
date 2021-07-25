@@ -20,7 +20,6 @@ namespace TTTReborn.UI
         private readonly Label _ping;
 
         private Client _client;
-        private TTTRole _currentRole;
 
         public ScoreboardEntry()
         {
@@ -31,6 +30,8 @@ namespace TTTReborn.UI
             _karma = Add.Label("", "karma");
             _score = Add.Label("", "score");
             _ping = Add.Label("", "ping");
+
+            Initialize();
         }
 
         public virtual void UpdateFrom(PlayerScore.Entry entry)
@@ -41,6 +42,19 @@ namespace TTTReborn.UI
             _karma.Text = entry.Get<int>("karma", 0).ToString();
             _score.Text = entry.Get<int>("score", 0).ToString();
             _ping.Text = entry.Get<int>("ping", 0).ToString();
+
+            if (_client == null)
+            {
+                Initialize();
+            }
+
+            if (_client?.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            _roleColorLabel.Style.BackgroundColor = player.Role is NoneRole ? player.Role.Color : player.Role.Color.WithAlpha(0.75f);
+            _roleColorLabel.Style.Dirty();
         }
 
         private void Initialize()
@@ -56,26 +70,6 @@ namespace TTTReborn.UI
             }
 
             SetClass("me", SteamId == Local.Client?.SteamId);
-        }
-
-        public override void Tick()
-        {
-            base.Tick();
-
-            if (_client == null)
-            {
-                Initialize();
-            }
-
-            if (_client?.Pawn is not TTTPlayer player || _currentRole == player.Role)
-            {
-                return;
-            }
-
-            _currentRole = player.Role;
-
-            _roleColorLabel.Style.BackgroundColor = player.Role is Roles.NoneRole ? player.Role.Color : player.Role.Color.WithAlpha(0.75f);
-            _roleColorLabel.Style.Dirty();
         }
     }
 }

@@ -54,10 +54,16 @@ namespace TTTReborn.Rounds
                 {
                     foreach (TTTPlayer player in Utils.GetPlayers())
                     {
-                        RPCs.ClientSetRole(player, player.Role.Name);
+                        if (player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead)
+                        {
+                            player.PlayerCorpse.IsIdentified = true;
 
-                        // TODO move this to a method called after OnKilled() and use LifeState instead of Health
-                        player.GetClientOwner()?.SetScore("alive", player.Health > 0);
+                            RPCs.ClientConfirmPlayer(null, player.PlayerCorpse, player, player.Role.Name, player.Team.Name, player.PlayerCorpse.GetConfirmationData(), player.PlayerCorpse.KillerWeapon, player.PlayerCorpse.Perks);
+                        }
+                        else
+                        {
+                            RPCs.ClientSetRole(player, player.Role.Name);
+                        }
                     }
                 }
             }

@@ -13,12 +13,19 @@ namespace TTTReborn.UI
     {
         public static InspectMenu Instance;
 
+        public PlayerCorpse PlayerCorpse;
+
         public bool IsShowing
         {
             get => _isShowing;
             set
             {
                 _isShowing = value;
+
+                if (!_isShowing)
+                {
+                    PlayerCorpse = null;
+                }
 
                 SetClass("hide", !_isShowing);
             }
@@ -40,20 +47,28 @@ namespace TTTReborn.UI
             _confirmationPanel = new ConfirmationPanel(this);
         }
 
-        public void InspectCorpse(TTTPlayer deadPlayer, ConfirmationData confirmationData, string killerWeapon = null, string[] perks = null)
+        public void InspectCorpse(PlayerCorpse playerCorpse)
         {
-            IsShowing = true;
+            if (playerCorpse == null)
+            {
+                return;
+            }
 
-            if (confirmationData.Identified)
+            IsShowing = true;
+            PlayerCorpse = playerCorpse;
+
+            if (playerCorpse.IsIdentified)
             {
                 _confirmationHintPanel.SetClass("hide", true);
 
-                _confirmationPanel.SetPlayer(deadPlayer);
-                _confirmationPanel.SetConfirmationData(confirmationData);
-                _confirmationPanel.SetKillerWeapon(killerWeapon);
-                _confirmationPanel.SetPerks(perks);
+                _confirmationPanel.SetPlayer(playerCorpse.Player);
+                _confirmationPanel.SetConfirmationData(playerCorpse.GetConfirmationData());
+                _confirmationPanel.SetKillerWeapon(playerCorpse.KillerWeapon);
+                _confirmationPanel.SetPerks(playerCorpse.Perks);
                 _confirmationPanel.SetClass("hide", false);
-                _confirmationPanel.Style.BorderColor = deadPlayer.Role.Color;
+
+                _confirmationPanel.Style.BorderColor = playerCorpse.Player.Role.Color;
+                _confirmationPanel.Style.Dirty();
             }
             else
             {
