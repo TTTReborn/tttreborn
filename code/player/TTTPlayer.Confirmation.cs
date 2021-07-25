@@ -9,6 +9,7 @@ namespace TTTReborn.Player
 {
     public struct ConfirmationData
     {
+        public bool Identified;
         public bool Headshot;
         public bool Suicide;
         public float Time;
@@ -83,7 +84,7 @@ namespace TTTReborn.Player
 
                         if (IsClient)
                         {
-                            InspectMenu.Instance.InspectCorpse(playerCorpse.Player, playerCorpse.IsIdentified, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
+                            InspectMenu.Instance.InspectCorpse(playerCorpse.Player, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
                         }
                     }
                 }
@@ -112,15 +113,14 @@ namespace TTTReborn.Player
             corpse.Distance = LastDistanceToAttacker;
             corpse.Suicide = LastAttacker == this;
 
-            List<string> perks = new();
             PerksInventory perksInventory = (Inventory as Inventory).Perks;
 
-            for (int i = 0; i < perksInventory.Count(); i++)
-            {
-                perks.Add(perksInventory.Get(i).Name);
-            }
+            corpse.Perks = new string[perksInventory.Count()];
 
-            corpse.Perks = perks.ToArray();
+            for (int i = 0; i < corpse.Perks.Length; i++)
+            {
+                corpse.Perks[i] = perksInventory.Get(i).Name;
+            }
 
             corpse.CopyFrom(this);
             corpse.ApplyForceToBone(force, forceBone);

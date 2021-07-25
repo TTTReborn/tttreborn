@@ -42,11 +42,11 @@ namespace TTTReborn.UI
             _confirmationPanel = new ConfirmationPanel(this);
         }
 
-        public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified, ConfirmationData confirmationData, string killerWeapon = null, string[] perks = null)
+        public void InspectCorpse(TTTPlayer deadPlayer, ConfirmationData confirmationData, string killerWeapon = null, string[] perks = null)
         {
             IsShowing = true;
 
-            if (deadPlayer?.IsConfirmed ?? false)
+            if (confirmationData.Identified)
             {
                 _confirmationHintPanel.SetClass("hide", true);
 

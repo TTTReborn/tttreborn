@@ -12,14 +12,12 @@ namespace TTTReborn.Player
         public List<Particles> Ropes = new();
         public List<PhysicsJoint> RopeSprings = new();
         public string KillerWeapon { get; set; }
+        public bool IsIdentified { get; set; } = false;
         public bool WasHeadshot { get; set; } = false;
         public bool Suicide { get; set; } = false;
         public float Distance { get; set; } = 0f;
         public float KilledTime { get; private set; }
         public string[] Perks { get; set; }
-
-        [Net]
-        public bool IsIdentified { get; set; } = false;
 
         public PlayerCorpse()
         {
@@ -105,6 +103,7 @@ namespace TTTReborn.Player
 
         public void CopyConfirmationData(ConfirmationData confirmationData)
         {
+            IsIdentified = confirmationData.Identified;
             WasHeadshot = confirmationData.Headshot;
             KilledTime = confirmationData.Time;
             Distance = Distance;
@@ -115,6 +114,7 @@ namespace TTTReborn.Player
         {
             return new ConfirmationData
             {
+                Identified = IsIdentified,
                 Headshot = WasHeadshot,
                 Time = KilledTime,
                 Distance = Distance,

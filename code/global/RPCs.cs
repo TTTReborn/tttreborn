@@ -79,7 +79,7 @@ namespace TTTReborn.Globals
 
             if (InspectMenu.Instance?.IsShowing ?? false)
             {
-                InspectMenu.Instance?.InspectCorpse(deadPlayer, true, confirmationData, killerWeapon, perks);
+                InspectMenu.Instance?.InspectCorpse(deadPlayer, confirmationData, killerWeapon, perks);
             }
 
             Client confirmClient = confirmPlayer.GetClientOwner();
