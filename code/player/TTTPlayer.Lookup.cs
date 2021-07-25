@@ -10,10 +10,20 @@ namespace TTTReborn.Player
 
         public T IsLookingAtType<T>(float distance)
         {
-            Sandbox.Camera camera = Camera as Sandbox.Camera;
+            Trace trace;
 
-            Trace trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * distance)
-                .HitLayer(CollisionLayer.Debris)
+            if (IsClient)
+            {
+                Sandbox.Camera camera = Camera as Sandbox.Camera;
+
+                trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * distance);
+            }
+            else
+            {
+                trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * distance);
+            }
+
+            trace = trace.HitLayer(CollisionLayer.Debris)
                 .Ignore(this);
 
             if (IsSpectatingPlayer)

@@ -20,28 +20,6 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
-        private TTTPlayer _spectatingPlayer;
-        public TTTPlayer CurrentPlayer
-        {
-            get => _spectatingPlayer ?? this;
-            set
-            {
-                _spectatingPlayer = value == this ? null : value;
-
-                Event.Run("tttreborn.player.spectating.change", this);
-            }
-        }
-
-        public bool IsSpectatingPlayer
-        {
-            get => _spectatingPlayer != null;
-        }
-
-        public bool IsSpectator
-        {
-            get => (Camera is IObservationCamera);
-        }
-
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
