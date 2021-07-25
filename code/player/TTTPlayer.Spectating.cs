@@ -9,6 +9,28 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
+        private TTTPlayer _spectatingPlayer;
+        public TTTPlayer CurrentPlayer
+        {
+            get => _spectatingPlayer ?? this;
+            set
+            {
+                _spectatingPlayer = value == this ? null : value;
+
+                Event.Run("tttreborn.player.spectating.change", this);
+            }
+        }
+
+        public bool IsSpectatingPlayer
+        {
+            get => _spectatingPlayer != null;
+        }
+
+        public bool IsSpectator
+        {
+            get => (Camera is IObservationCamera);
+        }
+
         private int _targetIdx = 0;
 
         [Event("tttreborn.player.died")]
