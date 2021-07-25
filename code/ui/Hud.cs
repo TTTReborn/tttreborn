@@ -12,8 +12,6 @@ namespace TTTReborn.UI
         public GeneralHud GeneralHudPanel;
         public AliveHud AliveHudPanel;
 
-        private TTTPlayer _currentObservedPlayer;
-
         public Hud()
         {
             if (!IsClient)

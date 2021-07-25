@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-
 using Sandbox;
-
-using TTTReborn.Globals;
 
 namespace TTTReborn.Player.Camera
 {
@@ -17,7 +13,6 @@ namespace TTTReborn.Player.Camera
         private Rotation _targetRot;
         private Vector3 _targetPos;
         private Angles _lookAngles;
-        private int _targetIdx;
 
         public override void Activated()
         {
