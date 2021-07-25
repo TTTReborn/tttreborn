@@ -31,26 +31,29 @@ namespace TTTReborn.Player
 
                     UI.VoiceList.Current?.OnVoicePlayed(GetClientOwner(), 1f);
                 }
-
-                if (Input.Pressed(InputButton.Run) && CanUseTeamVoiceChat(this))
-                {
-                    ConsoleSystem.Run("requestteamchat", true);
-                }
-                else if (Input.Released(InputButton.Run) && IsTeamVoiceChatEnabled)
-                {
-                    ConsoleSystem.Run("requestteamchat", false);
-                }
-
-                // Edge-case fix (if `requestteamchat false` was sent, but IsTeamVoiceChatEnabled was not already set)
-                if (Input.Down(InputButton.Run))
-                {
-                    _teamChatButtonPressPending = 0f;
-                }
-                else if (IsTeamVoiceChatEnabled && _teamChatButtonPressPending > _pressDelayFix)
-                {
-                    ConsoleSystem.Run("requestteamchat", false);
-                }
             }
+        }
+
+        [ClientCmd(Name = "+teamvoicechat")]
+        public static void StartTeamVoiceChat()
+        {
+            if (Local.Pawn is not TTTPlayer player || !CanUseTeamVoiceChat(player))
+            {
+                return;
+            }
+
+            ConsoleSystem.Run("requestteamchat", true);
+        }
+
+        [ClientCmd(Name = "-teamvoicechat")]
+        public static void StopTeamVoiceChat()
+        {
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            ConsoleSystem.Run("requestteamchat", false);
         }
 
         [ServerCmd(Name = "requestteamchat")]
