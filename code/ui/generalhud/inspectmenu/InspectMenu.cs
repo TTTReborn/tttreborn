@@ -159,33 +159,26 @@ namespace TTTReborn.UI
                 {
                     _confirmationData = confirmationData;
 
-                    _timeSinceDeath?.Delete(true);
-
-                    _timeSinceDeath = new InspectItem(this);
+                    _timeSinceDeath ??= new InspectItem(this);
                     _timeSinceDeath.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/time.png");
                     _timeSinceDeath.InspectItemLabel.Text = "";
 
-                    _headshot?.Delete(true);
-
                     if (confirmationData.Headshot)
                     {
-                        _headshot = new InspectItem(this);
+                        _headshot ??= new InspectItem(this);
                         _headshot.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/headshot.png");
                         _headshot.InspectItemLabel.Text = "By a headshot";
                     }
 
-                    _distance?.Delete(true);
-                    _suicide?.Delete(true);
-
                     if (!confirmationData.Suicide)
                     {
-                        _distance = new InspectItem(this);
+                        _distance ??= new InspectItem(this);
                         _distance.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/distance.png");
                         _distance.InspectItemLabel.Text = $"From {confirmationData.Distance:n0}m away";
                     }
                     else
                     {
-                        _suicide = new InspectItem(this);
+                        _suicide ??= new InspectItem(this);
                         _suicide.ImageWrapper.Image.SetTexture("");
                         _suicide.InspectItemLabel.Text = $"Committed suicide";
                     }
