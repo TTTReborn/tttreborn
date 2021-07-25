@@ -106,8 +106,8 @@ namespace TTTReborn.Player
             IsIdentified = confirmationData.Identified;
             WasHeadshot = confirmationData.Headshot;
             KilledTime = confirmationData.Time;
-            Distance = Distance;
-            Suicide = Suicide;
+            Distance = confirmationData.Distance;
+            Suicide = confirmationData.Suicide;
         }
 
         public ConfirmationData GetConfirmationData()
