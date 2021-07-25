@@ -56,17 +56,31 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, TTTPlayer deadPlayer, string roleName, string teamName = null)
+        public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks)
         {
             if (!confirmPlayer.IsValid() || !deadPlayer.IsValid())
             {
                 return;
             }
 
+            if (playerCorpse.IsValid())
+            {
+                playerCorpse.Player = deadPlayer;
+                playerCorpse.KillerWeapon = killerWeapon;
+                playerCorpse.Perks = perks;
+
+                playerCorpse.CopyConfirmationData(confirmationData);
+            }
+
             deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
 
             deadPlayer.IsConfirmed = true;
             deadPlayer.CorpseConfirmer = confirmPlayer;
+
+            if (InspectMenu.Instance?.IsShowing ?? false)
+            {
+                InspectMenu.Instance?.InspectCorpse(deadPlayer, true, confirmationData, killerWeapon, perks);
+            }
 
             Client confirmClient = confirmPlayer.GetClientOwner();
             Client deadClient = deadPlayer.GetClientOwner();
@@ -97,7 +111,7 @@ namespace TTTReborn.Globals
 
             missingInActionPlayer.IsMissingInAction = true;
 
-            Hud.Current.GeneralHudPanel.Scoreboard.UpdatePlayer(missingInActionPlayer.GetClientOwner());
+            Scoreboard.Instance.UpdatePlayer(missingInActionPlayer.GetClientOwner());
         }
 
         [ClientRpc]
@@ -113,6 +127,24 @@ namespace TTTReborn.Globals
         public static void ClientClosePostRoundMenu()
         {
             PostRoundMenu.Instance.IsShowing = false;
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
+        {
+            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
+        }
+
+        [ClientRpc]
+        public static void ClientClearInventory()
+        {
+            Event.Run("tttreborn.player.inventory.clear");
         }
     }
 }

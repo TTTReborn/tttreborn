@@ -3,6 +3,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
+using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
@@ -57,7 +58,7 @@ namespace TTTReborn.UI
             Instance = this;
             IsShowing = false;
 
-            StyleSheet.Load("/ui/alivehud/nameplate/Nameplate.scss");
+            StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
 
             _labelHolder = Add.Panel("labelHolder");
 
@@ -65,7 +66,6 @@ namespace TTTReborn.UI
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damageIndicator");
-
         }
 
         private HealthGroup GetHealthGroup(float health)
@@ -85,15 +85,14 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            TTTPlayer player = Local.Pawn as TTTPlayer;
+            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
+            {
+                return;
+            }
 
-            TraceResult trace = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_DRAW_DISTANCE)
-                .Ignore(player.ActiveChild)
-                .Ignore(player)
-                .UseHitboxes()
-                .Run();
+            TTTPlayer target = player.IsLookingAtType<TTTPlayer>(MAX_DRAW_DISTANCE);
 
-            if (trace.Hit && trace.Entity is TTTPlayer target)
+            if (target != null)
             {
                 IsShowing = true;
 

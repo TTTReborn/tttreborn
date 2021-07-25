@@ -31,12 +31,12 @@ namespace TTTReborn.Player
             SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
 
             KilledTime = Time.Now;
-
-            IsIdentified = false;
         }
 
         public void CopyFrom(TTTPlayer player)
         {
+            Player = player;
+
             SetModel(player.GetModelName());
             TakeDecalsFrom(player);
 
@@ -101,6 +101,25 @@ namespace TTTReborn.Player
         protected override void OnDestroy()
         {
             ClearAttachments();
+        }
+
+        public void CopyConfirmationData(ConfirmationData confirmationData)
+        {
+            WasHeadshot = confirmationData.Headshot;
+            KilledTime = confirmationData.Time;
+            Distance = Distance;
+            Suicide = Suicide;
+        }
+
+        public ConfirmationData GetConfirmationData()
+        {
+            return new ConfirmationData
+            {
+                Headshot = WasHeadshot,
+                Time = KilledTime,
+                Distance = Distance,
+                Suicide = Suicide
+            };
         }
     }
 }

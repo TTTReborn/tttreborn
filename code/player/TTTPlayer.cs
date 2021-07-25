@@ -34,7 +34,7 @@ namespace TTTReborn.Player
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = useRagdollCamera ? new SpectateRagdollCamera() : new FreeSpectateCamera();
+            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 
             ShowFlashlight(false, false);
         }
@@ -125,7 +125,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerDied(To.Single(this), this);
+                RPCs.ClientOnPlayerDied(this);
                 SyncMIA();
             }
         }
@@ -136,6 +136,8 @@ namespace TTTReborn.Player
             {
                 TickPlayerVoiceChat();
             }
+
+            TickAttemptInspectPlayerCorpse();
 
             if (LifeState != LifeState.Alive)
             {
@@ -156,11 +158,6 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
-
-            if (IsServer)
-            {
-                TickAttemptInspectPlayerCorpse();
-            }
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -212,7 +209,8 @@ namespace TTTReborn.Player
                 {
                     SpectateRagdollCamera => new FreeSpectateCamera(),
                     FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-                    ThirdPersonSpectateCamera => new FreeSpectateCamera(),
+                    ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
+                    FirstPersonSpectatorCamera => new FreeSpectateCamera(),
                     _ => Camera
                 };
             }

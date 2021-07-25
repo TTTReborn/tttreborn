@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -12,6 +11,8 @@ namespace TTTReborn.UI
     public class InspectMenu : Panel
     {
         public static InspectMenu Instance;
+
+        public TTTPlayer deadPlayer;
 
         public bool IsShowing
         {
@@ -34,26 +35,22 @@ namespace TTTReborn.UI
             Instance = this;
             IsShowing = false;
 
-            StyleSheet.Load("/ui/alivehud/inspectmenu/InspectMenu.scss");
+            StyleSheet.Load("/ui/generalhud/inspectmenu/InspectMenu.scss");
 
             _confirmationHintPanel = new ConfirmationHintPanel(this);
             _confirmationPanel = new ConfirmationPanel(this);
         }
 
-        public void InspectCorpse(TTTPlayer deadPlayer, bool isIdentified, ConfirmationData confirmationData, string killerWeapon = null, string[] perks = null)
+        public void InspectCorpse(TTTPlayer deadPlayer)
         {
             IsShowing = true;
 
-            if (isIdentified)
+            if (deadPlayer?.IsConfirmed ?? false)
             {
                 _confirmationHintPanel.SetClass("hide", true);
 
                 _confirmationPanel.SetPlayer(deadPlayer);
-                _confirmationPanel.SetConfirmationData(confirmationData);
-                _confirmationPanel.SetKillerWeapon(killerWeapon);
-                _confirmationPanel.SetPerks(perks);
                 _confirmationPanel.SetClass("hide", false);
-                _confirmationPanel.Style.BorderColor = deadPlayer.Role.Color;
             }
             else
             {
@@ -86,21 +83,6 @@ namespace TTTReborn.UI
                 _footer.SetPlayer(player);
             }
 
-            public void SetConfirmationData(ConfirmationData confirmationData)
-            {
-                _content.SetConfirmationData(confirmationData);
-            }
-
-            public void SetKillerWeapon(string killerWeapon)
-            {
-                _content.SetKillerWeapon(killerWeapon);
-            }
-
-            public void SetPerks(string[] perks)
-            {
-                _content.SetPerks(perks);
-            }
-
             private class Header : Panel
             {
                 private readonly Label _playerLabel;
@@ -127,15 +109,9 @@ namespace TTTReborn.UI
 
             private class Content : Panel
             {
-                private InspectItem _timeSinceDeath;
-                private InspectItem _killerWeapon;
-                private InspectItem _headshot;
-                private InspectItem _distance;
-                private InspectItem _suicide;
-                private List<InspectItem> _perksList = new();
-                private ConfirmationData _confirmationData;
-
                 private readonly ImageWrapper _playerImage;
+
+                private readonly List<InspectItem> _inspectItems = new();
 
                 public Content(Panel parent)
                 {
@@ -143,6 +119,12 @@ namespace TTTReborn.UI
 
                     _playerImage = new ImageWrapper(this);
                     _playerImage.AddClass("playericon");
+
+                    InspectItem inspectWeapon = new InspectItem(this);
+                    inspectWeapon.ImageWrapper.Image.SetTexture("");
+                    inspectWeapon.InspectItemLabel.Text = "Pistol";
+
+                    _inspectItems.Add(inspectWeapon);
                 }
 
                 public void SetPlayer(TTTPlayer player)
@@ -151,88 +133,6 @@ namespace TTTReborn.UI
 
                     _playerImage.Style.BorderColor = player.Role.Color;
                     _playerImage.Style.Dirty();
-                }
-
-                public void SetConfirmationData(ConfirmationData confirmationData)
-                {
-                    _confirmationData = confirmationData;
-
-                    _timeSinceDeath?.Delete(true);
-
-                    _timeSinceDeath = new InspectItem(this);
-                    _timeSinceDeath.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/time.png");
-                    _timeSinceDeath.InspectItemLabel.Text = "";
-
-                    _headshot?.Delete(true);
-
-                    if (confirmationData.Headshot)
-                    {
-                        _headshot = new InspectItem(this);
-                        _headshot.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/headshot.png");
-                        _headshot.InspectItemLabel.Text = "By a headshot";
-                    }
-
-                    _distance?.Delete(true);
-                    _suicide?.Delete(true);
-
-                    if (!confirmationData.Suicide)
-                    {
-                        _distance = new InspectItem(this);
-                        _distance.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/distance.png");
-                        _distance.InspectItemLabel.Text = $"From {confirmationData.Distance:n0}m away";
-                    }
-                    else
-                    {
-                        _suicide = new InspectItem(this);
-                        _suicide.ImageWrapper.Image.SetTexture("");
-                        _suicide.InspectItemLabel.Text = $"Committed suicide";
-                    }
-                }
-
-                public void SetKillerWeapon(string killerWeapon)
-                {
-                    _killerWeapon?.Delete(true);
-
-                    if (killerWeapon != null)
-                    {
-                        _killerWeapon = new InspectItem(this);
-                        _killerWeapon.ImageWrapper.Image.SetTexture($"/ui/weapons/{killerWeapon}.png");
-                        _killerWeapon.InspectItemLabel.Text = $"With a {killerWeapon}";
-                    }
-                }
-
-                public void SetPerks(string[] perks)
-                {
-                    foreach (InspectItem loopItem in _perksList)
-                    {
-                        loopItem.Delete(true);
-                    }
-
-                    _perksList.Clear();
-
-                    if (perks == null)
-                    {
-                        return;
-                    }
-
-                    foreach (string perkName in perks)
-                    {
-                        InspectItem inspectItem = new InspectItem(this);
-                        inspectItem.ImageWrapper.Image.SetTexture($"/ui/weapons/{perkName}.png");
-                        inspectItem.InspectItemLabel.Text = perkName;
-
-                        _perksList.Add(inspectItem);
-                    }
-                }
-
-                public override void Tick()
-                {
-                    if (_timeSinceDeath != null && _timeSinceDeath.IsVisible)
-                    {
-                        string[] timeSplits = TimeSpan.FromSeconds(Math.Round(Time.Now - _confirmationData.Time)).ToString().Split(':');
-
-                        _timeSinceDeath.InspectItemLabel.Text = $"Died {timeSplits[1]}:{timeSplits[2]} ago";
-                    }
                 }
             }
 
@@ -244,7 +144,7 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    Image = Add.Image("", "image");
+                    Image = Add.Image("", "avatar");
                 }
             }
 

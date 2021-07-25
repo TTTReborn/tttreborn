@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globals;
+
 namespace TTTReborn.Player.Camera
 {
-    public partial class ThirdPersonSpectateCamera : Sandbox.Camera
+    public partial class ThirdPersonSpectateCamera : Sandbox.Camera, IObservationCamera
     {
         private Vector3 DefaultPosition { get; set; }
-
-        public TTTPlayer TargetPlayer { get; set; }
 
         private const float LERP_MODE = 0;
         private const int FIELD_OF_VIEW_OVERRIDE = 70;
@@ -36,19 +35,9 @@ namespace TTTReborn.Player.Camera
                 return;
             }
 
-            if (TargetPlayer == null || !TargetPlayer.IsValid() || Input.Pressed(InputButton.Attack1))
+            if (!player.IsSpectatingPlayer || Input.Pressed(InputButton.Attack1))
             {
-                List<TTTPlayer> players = Utils.GetAlivePlayers();
-
-                if (players.Count > 0)
-                {
-                    if (++_targetIdx >= players.Count)
-                    {
-                        _targetIdx = 0;
-                    }
-
-                    TargetPlayer = players[_targetIdx];
-                }
+                player.UpdateObservatedPlayer();
             }
 
             _targetRot = Rotation.From(_lookAngles);
@@ -60,17 +49,12 @@ namespace TTTReborn.Player.Camera
 
         private Vector3 GetSpectatePoint()
         {
-            if (Local.Pawn is not TTTPlayer)
+            if (Local.Pawn is not TTTPlayer player || !player.IsSpectatingPlayer)
             {
                 return DefaultPosition;
             }
 
-            if (TargetPlayer == null || !TargetPlayer.IsValid())
-            {
-                return DefaultPosition;
-            }
-
-            return TargetPlayer.EyePos;
+            return player.CurrentPlayer.EyePos;
         }
 
         public override void BuildInput(InputBuilder input)
@@ -79,6 +63,16 @@ namespace TTTReborn.Player.Camera
             _lookAngles.roll = 0;
 
             base.BuildInput(input);
+        }
+
+        public override void Deactivated()
+        {
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            player.CurrentPlayer = null;
         }
     }
 }

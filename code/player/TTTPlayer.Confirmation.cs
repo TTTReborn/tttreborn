@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -47,21 +48,11 @@ namespace TTTReborn.Player
         {
             using (Prediction.Off())
             {
-                To client = To.Single(this);
-                PlayerCorpse playerCorpse = IsLookingAtPlayerCorpse();
+                PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>(INSPECT_CORPSE_DISTANCE);
 
                 if (playerCorpse != null)
                 {
-                    if (_inspectingPlayerCorpse != playerCorpse)
-                    {
-                        _inspectingPlayerCorpse = playerCorpse;
-
-                        // Send the request to the player looking at the player corpse.
-                        // https://wiki.facepunch.com/sbox/RPCs#targetingplayers
-                        ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified, GetConfirmationData(playerCorpse), playerCorpse.KillerWeapon, playerCorpse.Perks);
-                    }
-
-                    if (!playerCorpse.IsIdentified && Input.Down(InputButton.Use))
+                    if (IsServer && !playerCorpse.IsIdentified && Input.Pressed(InputButton.Use) && LifeState == LifeState.Alive)
                     {
                         playerCorpse.IsIdentified = true;
 
@@ -82,50 +73,30 @@ namespace TTTReborn.Player
 
                             playerCorpse.Player.GetClientOwner()?.SetScore("alive", false);
 
-                            RPCs.ClientConfirmPlayer(this, playerCorpse.Player, playerCorpse.Player.Role.Name);
-
-                            ClientOpenInspectMenu(client, playerCorpse.Player, playerCorpse.IsIdentified, GetConfirmationData(playerCorpse), playerCorpse.KillerWeapon, playerCorpse.Perks);
+                            RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name, playerCorpse.Player.Team.Name, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
                         }
                     }
 
-                    return;
-                }
+                    if (_inspectingPlayerCorpse != playerCorpse)
+                    {
+                        _inspectingPlayerCorpse = playerCorpse;
 
-                if (_inspectingPlayerCorpse != null)
+                        if (IsClient)
+                        {
+                            InspectMenu.Instance.InspectCorpse(playerCorpse.Player, playerCorpse.IsIdentified, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
+                        }
+                    }
+                }
+                else if (_inspectingPlayerCorpse != null)
                 {
-                    ClientCloseInspectMenu(client);
+                    if (IsClient && InspectMenu.Instance.IsShowing)
+                    {
+                        InspectMenu.Instance.IsShowing = false;
+                    }
 
                     _inspectingPlayerCorpse = null;
                 }
             }
-        }
-
-        private ConfirmationData GetConfirmationData(PlayerCorpse playerCorpse)
-        {
-            return new ConfirmationData
-            {
-                Headshot = playerCorpse.WasHeadshot,
-                Time = playerCorpse.KilledTime,
-                Distance = playerCorpse.Distance,
-                Suicide = playerCorpse.Suicide
-            };
-        }
-
-        private PlayerCorpse IsLookingAtPlayerCorpse()
-        {
-            TraceResult trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * INSPECT_CORPSE_DISTANCE)
-                .HitLayer(CollisionLayer.Debris)
-                .Ignore(ActiveChild)
-                .Ignore(this)
-                .Radius(2)
-                .Run();
-
-            if (trace.Hit && trace.Entity is PlayerCorpse corpse && corpse.Player != null)
-            {
-                return corpse;
-            }
-
-            return null;
         }
 
         private void BecomePlayerCorpseOnServer(Vector3 force, int forceBone)
@@ -153,7 +124,6 @@ namespace TTTReborn.Player
 
             corpse.CopyFrom(this);
             corpse.ApplyForceToBone(force, forceBone);
-            corpse.Player = this;
 
             PlayerCorpse = corpse;
         }
