@@ -129,7 +129,7 @@ namespace TTTReborn.Player
                 {
                     SyncMIA();
                 }
-                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null)
+                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified)
                 {
                     PlayerCorpse.IsIdentified = true;
 

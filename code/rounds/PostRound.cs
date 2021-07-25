@@ -54,7 +54,7 @@ namespace TTTReborn.Rounds
                 {
                     foreach (TTTPlayer player in Utils.GetPlayers())
                     {
-                        if (player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead)
+                        if (player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead && !player.PlayerCorpse.IsIdentified)
                         {
                             player.PlayerCorpse.IsIdentified = true;
 
