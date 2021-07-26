@@ -69,6 +69,8 @@ namespace TTTReborn.Player
                 }
             }
 
+            GetClientOwner().SetScore("forcedspectator", IsForcedSpectator);
+
             IsInitialSpawning = false;
             IsForcedSpectator = false;
         }
@@ -98,6 +100,8 @@ namespace TTTReborn.Player
                 RPCs.ClientSetRole(To.Single(this), this, Role.Name);
             }
 
+            base.Respawn();
+
             if (!IsForcedSpectator)
             {
                 Controller = new DefaultWalkController();
@@ -106,8 +110,10 @@ namespace TTTReborn.Player
                 EnableAllCollisions = true;
                 EnableDrawing = true;
             }
-
-            base.Respawn();
+            else
+            {
+                MakeSpectator(false);
+            }
 
             RemovePlayerCorpse();
             Inventory.DeleteContents();

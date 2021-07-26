@@ -24,13 +24,6 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            if (player.IsForcedSpectator)
-            {
-                player.GetClientOwner().SetScore("forcedspectator", true);
-
-                player.MakeSpectator(false);
-            }
-
             AddPlayer(player);
 
             base.OnPlayerSpawn(player);

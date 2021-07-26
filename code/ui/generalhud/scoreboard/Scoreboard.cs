@@ -93,13 +93,13 @@ namespace TTTReborn.UI
                 // instead of remove and add, move the panel into the right parent
                 RemovePlayer(entry);
                 AddPlayer(entry);
-
-                UpdateScoreboardGroups();
-
-                return;
+            }
+            else
+            {
+                panel.UpdateFrom(entry);
             }
 
-            panel.UpdateFrom(entry);
+            UpdateScoreboardGroups();
         }
 
         public void UpdatePlayer(Client client)
