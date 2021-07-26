@@ -128,15 +128,20 @@ namespace TTTReborn.UI
                 if (cr.WasSuccess)
                 {
                     AddEntry("SYSTEM", $"You ran the cmd: '{cmd}'.");
-
-                    return;
                 }
-                else if (cr.WasFound)
+                else
                 {
-                    AddEntry("SYSTEM", $"Error with cmd: '{cmd}'!");
+                    if (!cr.WasFound)
+                    {
+                        AddEntry("SYSTEM", $"Cmd: '{cmd}' was not found!");
 
-                    return;
+                        return;
+                    }
+
+                    AddEntry("SYSTEM", $"Error with cmd: '{cmd}'!");
                 }
+
+                return;
             }
 
             if (wasTeamChatting)
@@ -230,31 +235,6 @@ namespace TTTReborn.UI
             Assert.NotNull(ConsoleSystem.Caller);
 
             MESSAGE_CLEAN_PATTERN.Replace(message, " ");
-
-            if (message.StartsWith('!'))
-            {
-                string cmd = message.TrimStart('!');
-
-                ConsoleResult cr = ConsoleSystem.Run(cmd);
-
-                if (cr.WasSuccess)
-                {
-                    AddChatEntry(To.Single(ConsoleSystem.Caller), "SYSTEM", $"You ran the cmd: '{cmd}'.");
-                }
-                else
-                {
-                    if (!cr.WasFound)
-                    {
-                        AddChatEntry(To.Single(ConsoleSystem.Caller), "SYSTEM", $"Cmd: '{cmd}' was not found!");
-
-                        return;
-                    }
-
-                    AddChatEntry(To.Single(ConsoleSystem.Caller), "SYSTEM", $"Error with cmd: '{cmd}'!");
-                }
-
-                return;
-            }
 
             Log.Info($"{ConsoleSystem.Caller}: {message}");
 
