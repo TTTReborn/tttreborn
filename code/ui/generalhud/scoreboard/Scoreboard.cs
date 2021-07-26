@@ -44,7 +44,8 @@ namespace TTTReborn.UI
 
             PlayerScore.OnPlayerAdded += AddPlayer;
             PlayerScore.OnPlayerUpdated += UpdatePlayer;
-            PlayerScore.OnPlayerRemoved += (entry) => {
+            PlayerScore.OnPlayerRemoved += (entry) =>
+            {
                 RemovePlayer(entry);
 
                 UpdateScoreboardGroups();
