@@ -147,10 +147,10 @@ namespace TTTReborn.Player
 
             TickAttemptInspectPlayerCorpse();
 
-            if (LifeState != LifeState.Alive)
+            if (IsSpectator)
             {
                 TickPlayerChangeSpectateCamera();
-
+                
                 return;
             }
 
