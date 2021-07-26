@@ -82,6 +82,11 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.carriableitem.pickup")]
         private void OnCarriableItemPickup(ICarriableItem carriable)
         {
+            if (carriable == null)
+            {
+                return;
+            }
+
             AddChild(new InventorySlot(this, carriable));
             SortChildren((p1, p2) =>
             {
@@ -89,7 +94,9 @@ namespace TTTReborn.UI
                 InventorySlot s2 = p2 as InventorySlot;
 
                 int result = s1.Carriable.SlotType.CompareTo(s2.Carriable.SlotType);
-                return result != 0 ? result : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
+                return result != 0
+                    ? result
+                    : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
             });
         }
 
