@@ -45,10 +45,19 @@ namespace TTTReborn.UI
             Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
             ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
 
+            bool invalidSlot = false;
+
             foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
                 {
+                    if (slot.Carriable == null)
+                    {
+                        invalidSlot = true;
+
+                        break;
+                    }
+
                     slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
 
                     if (slot.Carriable is TTTWeapon weapon && weapon.SlotType != SlotType.Melee)
@@ -56,6 +65,11 @@ namespace TTTReborn.UI
                         slot.UpdateAmmo(FormatAmmo(weapon, inventory));
                     }
                 }
+            }
+
+            if (invalidSlot)
+            {
+                OnSpectatingChange(player);
             }
         }
 
