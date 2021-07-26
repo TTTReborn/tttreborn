@@ -55,6 +55,8 @@ namespace TTTReborn.Rounds
                         continue;
                     }
 
+                    client.SetScore("forcedspectator", player.IsForcedSpectator);
+
                     if (player.LifeState == LifeState.Dead)
                     {
                         player.Respawn();
@@ -87,6 +89,8 @@ namespace TTTReborn.Rounds
         {
             if (player.IsForcedSpectator)
             {
+                player.GetClientOwner().SetScore("forcedspectator", true);
+
                 player.MakeSpectator(false);
 
                 if (!Spectators.Contains(player))

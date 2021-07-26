@@ -21,7 +21,7 @@ namespace TTTReborn.Player
         public int Credits { get; set; } = 0;
 
         [Net]
-        public bool IsForcedSpectator { get; set; } = true;
+        public bool IsForcedSpectator { get; set; } = false;
 
         public bool IsInitialSpawning { get; set; } = false;
 
@@ -40,6 +40,9 @@ namespace TTTReborn.Player
             EnableDrawing = false;
             Controller = null;
             Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+
+            LifeState = LifeState.Dead;
+            Health = 0f;
 
             ShowFlashlight(false, false);
         }
@@ -95,10 +98,6 @@ namespace TTTReborn.Player
                 RPCs.ClientSetRole(To.Single(this), this, Role.Name);
             }
 
-            RemovePlayerCorpse();
-            Inventory.DeleteContents();
-            Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
-
             if (!IsForcedSpectator)
             {
                 Controller = new DefaultWalkController();
@@ -106,9 +105,13 @@ namespace TTTReborn.Player
 
                 EnableAllCollisions = true;
                 EnableDrawing = true;
-
-                base.Respawn();
             }
+
+            base.Respawn();
+
+            RemovePlayerCorpse();
+            Inventory.DeleteContents();
+            Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
 
             switch (Gamemode.Game.Instance.Round)
             {
@@ -118,6 +121,8 @@ namespace TTTReborn.Player
                 case Rounds.PreRound:
                     IsConfirmed = false;
                     CorpseConfirmer = null;
+
+                    GetClientOwner().SetScore("forcedspectator", false);
 
                     break;
             }

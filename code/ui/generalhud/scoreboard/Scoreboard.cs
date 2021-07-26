@@ -44,7 +44,11 @@ namespace TTTReborn.UI
 
             PlayerScore.OnPlayerAdded += AddPlayer;
             PlayerScore.OnPlayerUpdated += UpdatePlayer;
-            PlayerScore.OnPlayerRemoved += RemovePlayer;
+            PlayerScore.OnPlayerRemoved += (entry) => {
+                RemovePlayer(entry);
+
+                UpdateScoreboardGroups();
+            };
 
             _footer = Add.Panel("footer");
 

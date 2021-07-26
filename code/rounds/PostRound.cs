@@ -26,6 +26,8 @@ namespace TTTReborn.Rounds
         {
             if (player.IsForcedSpectator)
             {
+                player.GetClientOwner().SetScore("forcedspectator", true);
+
                 player.MakeSpectator(false);
             }
 
