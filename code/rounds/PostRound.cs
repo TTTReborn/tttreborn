@@ -12,8 +12,6 @@ namespace TTTReborn.Rounds
         public override string RoundName => "Post";
         public override int RoundDuration => Gamemode.Game.TTTPostRoundTime;
 
-        private readonly List<TTTPlayer> _spectators = new();
-
         protected override void OnTimeUp()
         {
             base.OnTimeUp();
@@ -26,13 +24,6 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            if (Players.Contains(player))
-            {
-                return;
-            }
-
-            player.MakeSpectator(false);
-
             AddPlayer(player);
 
             base.OnPlayerSpawn(player);
@@ -41,7 +32,7 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(TTTPlayer player)
         {
             Players.Remove(player);
-            _spectators.Add(player);
+            Spectators.Add(player);
 
             player.MakeSpectator();
         }

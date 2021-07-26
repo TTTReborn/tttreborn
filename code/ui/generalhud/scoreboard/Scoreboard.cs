@@ -44,7 +44,12 @@ namespace TTTReborn.UI
 
             PlayerScore.OnPlayerAdded += AddPlayer;
             PlayerScore.OnPlayerUpdated += UpdatePlayer;
-            PlayerScore.OnPlayerRemoved += RemovePlayer;
+            PlayerScore.OnPlayerRemoved += (entry) =>
+            {
+                RemovePlayer(entry);
+
+                UpdateScoreboardGroups();
+            };
 
             _footer = Add.Panel("footer");
 
@@ -89,13 +94,13 @@ namespace TTTReborn.UI
                 // instead of remove and add, move the panel into the right parent
                 RemovePlayer(entry);
                 AddPlayer(entry);
-
-                UpdateScoreboardGroups();
-
-                return;
+            }
+            else
+            {
+                panel.UpdateFrom(entry);
             }
 
-            panel.UpdateFrom(entry);
+            UpdateScoreboardGroups();
         }
 
         public void UpdatePlayer(Client client)

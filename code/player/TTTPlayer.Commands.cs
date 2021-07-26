@@ -12,7 +12,7 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
-        [ServerCmd(Name = "respawn", Help = "Respawns the current player")]
+        [ServerCmd(Name = "ttt_respawn", Help = "Respawns the current player")]
         public static void RespawnPlayer()
         {
             if (!ConsoleSystem.Caller.HasPermission("respawn"))
@@ -22,8 +22,10 @@ namespace TTTReborn.Player
 
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
 
-            if (!player.IsValid())
+            if (!player.IsValid() || ConsoleSystem.Caller.GetScore<bool>("forcedspectator", false))
             {
+                Log.Info($"You tried to respawn yourself while you've been a forced spectator this round.");
+
                 return;
             }
 
@@ -34,7 +36,7 @@ namespace TTTReborn.Player
             return;
         }
 
-        [ServerCmd(Name = "respawnid", Help = "Respawns the player with the associated ID")]
+        [ServerCmd(Name = "ttt_respawnid", Help = "Respawns the player with the associated ID")]
         public static void RespawnPlayer(int id)
         {
             if (!ConsoleSystem.Caller.HasPermission("respawn"))
@@ -52,6 +54,13 @@ namespace TTTReborn.Player
                     {
                         if (player.IsValid())
                         {
+                            if (playerList[i].GetScore<bool>("forcedspectator", false))
+                            {
+                                Log.Info($"You tried to spawn the player '{playerList[i].Name}' who have been a forced spectator this round.");
+
+                                return;
+                            }
+
                             player.Respawn();
 
                             Log.Info($"You've respawned the client '{playerList[i].Name}'.");
@@ -67,7 +76,7 @@ namespace TTTReborn.Player
             }
         }
 
-        [ServerCmd(Name = "requestitem")]
+        [ServerCmd(Name = "ttt_requestitem")]
         public static void RequestItem(string itemName)
         {
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
@@ -98,7 +107,7 @@ namespace TTTReborn.Player
             player.RequestPurchase(item);
         }
 
-        [ServerCmd(Name = "setrole")]
+        [ServerCmd(Name = "ttt_setrole")]
         public static void SetRole(string roleName)
         {
             if (!ConsoleSystem.Caller.HasPermission("role"))
@@ -140,7 +149,7 @@ namespace TTTReborn.Player
             RPCs.ClientSetRole(To.Single(player), player, role.Name);
         }
 
-        [ClientCmd(Name = "playerids", Help = "Returns a list of all players (clients) and their associated IDs")]
+        [ClientCmd(Name = "ttt_playerids", Help = "Returns a list of all players (clients) and their associated IDs")]
         public static void PlayerID()
         {
             List<Client> playerList = Client.All.ToList();
@@ -149,6 +158,33 @@ namespace TTTReborn.Player
             {
                 Log.Info($"Player (ID: '{i}'): {playerList[i].Name}");
             }
+        }
+
+        [ServerCmd(Name = "ttt_forcespec")]
+        public static void ToggleForceSpectator()
+        {
+            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+            if (!player.IsValid() || player.IsInitialSpawning)
+            {
+                return;
+            }
+
+            player.IsForcedSpectator = !player.IsForcedSpectator;
+
+            if (player.IsForcedSpectator && player.LifeState == LifeState.Alive)
+            {
+                player.MakeSpectator(false);
+
+                if (!ConsoleSystem.Caller.GetScore<bool>("forcedspectator", false))
+                {
+                    ConsoleSystem.Caller.SetScore("forcedspectator", true);
+                }
+            }
+
+            string toggle = player.IsForcedSpectator ? "activated" : "deactivated";
+
+            Log.Info($"You {toggle} force spectator.");
         }
     }
 }
