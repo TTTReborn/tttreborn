@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 using Sandbox;
 using Sandbox.UI;
@@ -13,6 +14,8 @@ namespace TTTReborn.UI
     public partial class ChatBox : Panel
     {
         public static ChatBox Instance { get; private set; }
+
+        private static readonly Regex MESSAGE_CLEAN_PATTERN = new Regex("[\n\t\r]");
 
         public readonly List<ChatEntry> Messages = new();
 
@@ -116,6 +119,31 @@ namespace TTTReborn.UI
                 return;
             }
 
+            if (msg.StartsWith('!'))
+            {
+                string cmd = msg.TrimStart('!');
+
+                ConsoleResult cr = ConsoleSystem.Run(cmd);
+
+                if (cr.WasSuccess)
+                {
+                    AddEntry("SYSTEM", $"You ran the cmd: '{cmd}'.");
+                }
+                else
+                {
+                    if (!cr.WasFound)
+                    {
+                        AddEntry("SYSTEM", $"Cmd: '{cmd}' was not found!");
+
+                        return;
+                    }
+
+                    AddEntry("SYSTEM", $"Error with cmd: '{cmd}'!");
+                }
+
+                return;
+            }
+
             if (wasTeamChatting)
             {
                 SayTeam(msg);
@@ -126,7 +154,7 @@ namespace TTTReborn.UI
             }
         }
 
-        public void AddEntry(string name, string message, string avatar, LifeState lifeState, string team = null)
+        public void AddEntry(string name, string message, string avatar = null, LifeState lifeState = LifeState.Alive, string team = null)
         {
             _lastChatFocus = 0f;
 
@@ -206,9 +234,30 @@ namespace TTTReborn.UI
         {
             Assert.NotNull(ConsoleSystem.Caller);
 
-            // TODO: Consider RegEx to remove any messed up user chat messages.
-            if (message.Contains('\n') || message.Contains('\r'))
+            MESSAGE_CLEAN_PATTERN.Replace(message, " ");
+
+            if (message.StartsWith('!'))
             {
+                string cmd = message.TrimStart('!');
+
+                ConsoleResult cr = ConsoleSystem.Run(cmd);
+
+                if (cr.WasSuccess)
+                {
+                    AddChatEntry(To.Single(ConsoleSystem.Caller), "SYSTEM", $"You ran the cmd: '{cmd}'.");
+                }
+                else
+                {
+                    if (!cr.WasFound)
+                    {
+                        AddChatEntry(To.Single(ConsoleSystem.Caller), "SYSTEM", $"Cmd: '{cmd}' was not found!");
+
+                        return;
+                    }
+
+                    AddChatEntry(To.Single(ConsoleSystem.Caller), "SYSTEM", $"Error with cmd: '{cmd}'!");
+                }
+
                 return;
             }
 
@@ -230,6 +279,8 @@ namespace TTTReborn.UI
         public static void SayTeam(string message)
         {
             Assert.NotNull(ConsoleSystem.Caller);
+
+            MESSAGE_CLEAN_PATTERN.Replace(message, " ");
 
             // TODO: Consider RegEx to remove any messed up user chat messages.
             if (ConsoleSystem.Caller.Pawn is not TTTPlayer player || !CanUseTeamChat(player) || message.Contains('\n') || message.Contains('\r'))
