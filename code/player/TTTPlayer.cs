@@ -34,7 +34,7 @@ namespace TTTReborn.Player
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = useRagdollCamera ? new SpectateRagdollCamera() : new FreeSpectateCamera();
+            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 
             ShowFlashlight(false, false);
         }
@@ -81,8 +81,6 @@ namespace TTTReborn.Player
 
             SetRole(new NoneRole());
 
-            GetClientOwner().SetScore("alive", true);
-
             IsMissingInAction = false;
 
             using (Prediction.Off())
@@ -125,8 +123,18 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerDied(To.Single(this), this);
-                SyncMIA();
+                RPCs.ClientOnPlayerDied(this);
+
+                if (Gamemode.Game.Instance.Round is Rounds.InProgressRound)
+                {
+                    SyncMIA();
+                }
+                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified)
+                {
+                    PlayerCorpse.IsIdentified = true;
+
+                    RPCs.ClientConfirmPlayer(null, PlayerCorpse, this, Role.Name, Team.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon, PlayerCorpse.Perks);
+                }
             }
         }
 
@@ -136,6 +144,8 @@ namespace TTTReborn.Player
             {
                 TickPlayerVoiceChat();
             }
+
+            TickAttemptInspectPlayerCorpse();
 
             if (LifeState != LifeState.Alive)
             {
@@ -156,11 +166,6 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
-
-            if (IsServer)
-            {
-                TickAttemptInspectPlayerCorpse();
-            }
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -212,7 +217,8 @@ namespace TTTReborn.Player
                 {
                     SpectateRagdollCamera => new FreeSpectateCamera(),
                     FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-                    ThirdPersonSpectateCamera => new FreeSpectateCamera(),
+                    ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
+                    FirstPersonSpectatorCamera => new FreeSpectateCamera(),
                     _ => Camera
                 };
             }

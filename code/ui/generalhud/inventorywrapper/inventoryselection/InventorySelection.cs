@@ -15,14 +15,14 @@ namespace TTTReborn.UI
     {
         public InventorySelection()
         {
-            StyleSheet.Load("/ui/alivehud/inventorywrapper/inventoryselection/InventorySelection.scss");
+            StyleSheet.Load("/ui/generalhud/inventorywrapper/inventoryselection/InventorySelection.scss");
 
             if (Local.Pawn is not TTTPlayer player)
             {
                 return;
             }
 
-            Inventory inventory = player.Inventory as Inventory;
+            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
 
             foreach (Entity entity in inventory.List)
             {
@@ -42,8 +42,8 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Inventory inventory = player.Inventory as Inventory;
-            ICarriableItem activeItem = player.ActiveChild as ICarriableItem;
+            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
+            ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
 
             foreach (Panel child in Children)
             {
@@ -62,7 +62,7 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.inventory.clear")]
         private void OnCarriableItemClear()
         {
-            DeleteChildren();
+            DeleteChildren(true);
         }
 
         [Event("tttreborn.player.carriableitem.pickup")]
@@ -94,6 +94,21 @@ namespace TTTReborn.UI
             }
         }
 
+        [Event("tttreborn.player.spectating.change")]
+        private void OnSpectatingChange(TTTPlayer player)
+        {
+            OnCarriableItemClear();
+
+            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
+            foreach (Entity entity in inventory.List)
+            {
+                if (entity is ICarriableItem carriableItem)
+                {
+                    OnCarriableItemPickup(carriableItem);
+                }
+            }
+        }
+
         /// <summary>
         /// IClientInput implementation, calls during the client input build.
         /// You can both read and write to input, to affect what happens down the line.
@@ -101,6 +116,11 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
+            if (Local.Pawn is not TTTPlayer player || player.IsSpectatingPlayer)
+            {
+                return;
+            }
+
             if (Children == null || !Children.Any())
             {
                 return;
