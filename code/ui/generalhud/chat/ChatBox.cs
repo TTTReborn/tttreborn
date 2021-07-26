@@ -15,7 +15,7 @@ namespace TTTReborn.UI
     {
         public static ChatBox Instance { get; private set; }
 
-        private static readonly Regex MESSAGE_CLEAN_PATTERN = new Regex("[\n\t\r]");
+        private static Regex MESSAGE_CLEAN_PATTERN => new Regex(@"(\\n|\\t|\\r)");
 
         public readonly List<ChatEntry> Messages = new();
 
@@ -113,6 +113,8 @@ namespace TTTReborn.UI
             string msg = _input.Text.Trim();
 
             _input.Text = "";
+
+            msg = MESSAGE_CLEAN_PATTERN.Replace(msg, " ");
 
             if (string.IsNullOrWhiteSpace(msg))
             {
@@ -234,7 +236,7 @@ namespace TTTReborn.UI
         {
             Assert.NotNull(ConsoleSystem.Caller);
 
-            MESSAGE_CLEAN_PATTERN.Replace(message, " ");
+            message = MESSAGE_CLEAN_PATTERN.Replace(message, " ");
 
             Log.Info($"{ConsoleSystem.Caller}: {message}");
 
@@ -255,7 +257,7 @@ namespace TTTReborn.UI
         {
             Assert.NotNull(ConsoleSystem.Caller);
 
-            MESSAGE_CLEAN_PATTERN.Replace(message, " ");
+            message = MESSAGE_CLEAN_PATTERN.Replace(message, " ");
 
             // TODO: Consider RegEx to remove any messed up user chat messages.
             if (ConsoleSystem.Caller.Pawn is not TTTPlayer player || !CanUseTeamChat(player) || message.Contains('\n') || message.Contains('\r'))
