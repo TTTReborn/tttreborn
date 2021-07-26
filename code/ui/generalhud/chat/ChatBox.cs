@@ -128,20 +128,15 @@ namespace TTTReborn.UI
                 if (cr.WasSuccess)
                 {
                     AddEntry("SYSTEM", $"You ran the cmd: '{cmd}'.");
+
+                    return;
                 }
-                else
+                else if (cr.WasFound)
                 {
-                    if (!cr.WasFound)
-                    {
-                        AddEntry("SYSTEM", $"Cmd: '{cmd}' was not found!");
-
-                        return;
-                    }
-
                     AddEntry("SYSTEM", $"Error with cmd: '{cmd}'!");
-                }
 
-                return;
+                    return;
+                }
             }
 
             if (wasTeamChatting)
