@@ -1,5 +1,4 @@
 InspectMenu {
-    border: 1px solid #1b1b1b;
     background-color: #000c;
     color: #fafafa;
     font-family: Poppins;
@@ -10,19 +9,25 @@ InspectMenu {
     position: absolute;
     left: 50%;
     transform: translateX(-50%) translateY(-40%);
+    border: 1px solid #000c;
 
     &.hide {
         display: none;
     }
+    &.inspected {
+        border-radius:8px;
+        border: 0px;
+    }
 
     ConfirmationPanel {
-        min-width: 600px;
-        max-width: 75%;
-        padding: 6px 12px;
+        min-width: 550px;
+        min-height: 225px;
+        border-radius: 8px;
+        padding: 6px 15px;
         text-align: center;
         flex-direction: column;
-        border: 4px solid #031421;
-        border-radius: 4px;
+        border: 2px solid #031421;
+        border-radius: 8px;
 
         &.hide {
             display: none;
@@ -50,48 +55,66 @@ InspectMenu {
         }
 
         Content {
-            display: flex;
-            flex-wrap: wrap;
             margin-bottom: 25px;
-            margin-top: 15px;
-            justify-content: flex-start;
+            margin-top: 10px;
 
-            InspectItem {
-                flex-direction: column;
+            .itemWrapper {
+                width: 400px;
                 margin-top: 5px;
-                margin-left: 30px;
-                text-align: center;
-                width: 75px;
+
+                InspectItem {
+                    margin-top: 5px;
+
+                    .itemContent {
+                        flex-direction: column;
+                        align-items: center;
+                        margin: auto;
+                        width: 100px;
+
+                        ImageWrapper {
+                            background-color: rgba(0, 0, 0, 0.7);
+                            border: 1px solid #031421;
+                        }
+                        .inspectItemName {
+                            margin-top: 5px;
+                            text-align: center;
+                        }
+                    }
+                }
             }
 
             ImageWrapper {
-                text-align: center;
-                height: 75px;
-                width: 75px;
-                background-color: rgba(0, 0, 0, 0.7);
-                border: 1px solid #031421;
+                height: 66px;
+                width: 66px;
                 border-radius: 4px;
-                text-align: center;
                 // transition: all 0.05s linear;
                 margin-right: 5px;
-
-                &.playericon {
-                    height: 95px;
-                    width: 95px;
-                    border-radius: 50%;
-                    border: 2px solid white;
-
-                    Image {
-                        padding: 2px;
-                        border-radius: 50%;
-                    }
-                }
 
                 Image {
                     width: 100%;
                     height: 100%;
                 }
+
+                &.playericon {
+                    border-radius: 50%;
+                    width: 150px;
+                    border: 0;
+                    background-color: #fff0;
+
+                    .avatar {
+                        // padding: 2px;
+                        border-radius: 50%;
+                        border: 1.5px solid white;
+                        width: 110px;
+                        height: 110px;
+                    }
+                }
             }
+        }
+
+        Footer {
+            position: absolute;
+            bottom: 5px;
         }
     }
 
@@ -105,6 +128,8 @@ InspectMenu {
 
     Footer,
     ConfirmationHintPanel {
+        // position: absolute;
+        // bottom: 5px;
         Label.inspect {
             width: 100%;
             color: #ffae00;

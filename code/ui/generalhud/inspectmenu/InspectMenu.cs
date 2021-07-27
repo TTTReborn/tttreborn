@@ -54,6 +54,8 @@ namespace TTTReborn.UI
                 return;
             }
 
+            SetClass("inspected", playerCorpse.IsIdentified);
+
             IsShowing = true;
             PlayerCorpse = playerCorpse;
 
@@ -142,6 +144,7 @@ namespace TTTReborn.UI
 
             private class Content : Panel
             {
+                private Panel _itemWrapper;
                 private InspectItem _timeSinceDeath;
                 private InspectItem _killerWeapon;
                 private InspectItem _headshot;
@@ -158,14 +161,16 @@ namespace TTTReborn.UI
 
                     _playerImage = new ImageWrapper(this);
                     _playerImage.AddClass("playericon");
+
+                    _itemWrapper = new Panel(this, "itemWrapper");
                 }
 
                 public void SetPlayer(TTTPlayer player)
                 {
                     _playerImage.Image.SetTexture($"avatar:{player.GetClientOwner().SteamId}");
 
-                    _playerImage.Style.BorderColor = player.Role.Color;
-                    _playerImage.Style.Dirty();
+                    _playerImage.Image.Style.BorderColor = player.Role.Color;
+                    _playerImage.Image.Style.Dirty();
                 }
 
                 public void SetConfirmationData(ConfirmationData confirmationData)
@@ -174,7 +179,7 @@ namespace TTTReborn.UI
 
                     _timeSinceDeath?.Delete(true);
 
-                    _timeSinceDeath = new InspectItem(this);
+                    _timeSinceDeath = new InspectItem(this._itemWrapper);
                     _timeSinceDeath.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/time.png");
                     _timeSinceDeath.InspectItemLabel.Text = "";
 
@@ -182,9 +187,9 @@ namespace TTTReborn.UI
 
                     if (confirmationData.Headshot)
                     {
-                        _headshot = new InspectItem(this);
+                        _headshot = new InspectItem(this._itemWrapper);
                         _headshot.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/headshot.png");
-                        _headshot.InspectItemLabel.Text = "By a headshot";
+                        _headshot.InspectItemLabel.Text = "Headshot";
                     }
 
                     _distance?.Delete(true);
@@ -192,13 +197,13 @@ namespace TTTReborn.UI
 
                     if (!confirmationData.Suicide)
                     {
-                        _distance = new InspectItem(this);
+                        _distance = new InspectItem(this._itemWrapper);
                         _distance.ImageWrapper.Image.SetTexture($"/ui/inspectmenu/distance.png");
-                        _distance.InspectItemLabel.Text = $"From {confirmationData.Distance:n0}m away";
+                        _distance.InspectItemLabel.Text = $"{confirmationData.Distance:n0}m distance";
                     }
                     else
                     {
-                        _suicide = new InspectItem(this);
+                        _suicide = new InspectItem(this._itemWrapper);
                         _suicide.ImageWrapper.Image.SetTexture("");
                         _suicide.InspectItemLabel.Text = $"Committed suicide";
                     }
@@ -210,9 +215,9 @@ namespace TTTReborn.UI
 
                     if (killerWeapon != null)
                     {
-                        _killerWeapon = new InspectItem(this);
+                        _killerWeapon = new InspectItem(this._itemWrapper);
                         _killerWeapon.ImageWrapper.Image.SetTexture($"/ui/weapons/{killerWeapon}.png");
-                        _killerWeapon.InspectItemLabel.Text = $"With a {killerWeapon}";
+                        _killerWeapon.InspectItemLabel.Text = $"{killerWeapon}";
                     }
                 }
 
@@ -246,7 +251,7 @@ namespace TTTReborn.UI
                     {
                         string[] timeSplits = TimeSpan.FromSeconds(Math.Round(Time.Now - _confirmationData.Time)).ToString().Split(':');
 
-                        _timeSinceDeath.InspectItemLabel.Text = $"Died {timeSplits[1]}:{timeSplits[2]} ago";
+                        _timeSinceDeath.InspectItemLabel.Text = $"{timeSplits[1]}:{timeSplits[2]} ago";
                     }
                 }
             }
@@ -258,6 +263,7 @@ namespace TTTReborn.UI
                 public ImageWrapper(Panel parent)
                 {
                     Parent = parent;
+                    AddClass("imageWrapper");
 
                     Image = Add.Image("", "avatar");
                 }
@@ -266,6 +272,7 @@ namespace TTTReborn.UI
             private class InspectItem : Panel
             {
                 public readonly ImageWrapper ImageWrapper;
+                private Panel _itemContent;
 
                 public readonly Label InspectItemLabel;
 
@@ -273,8 +280,10 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    ImageWrapper = new ImageWrapper(this);
-                    InspectItemLabel = Add.Label("", "inspectItemName");
+                    _itemContent = new Panel(this, "itemContent");
+
+                    ImageWrapper = new ImageWrapper(_itemContent);
+                    InspectItemLabel = _itemContent.Add.Label("", "inspectItemName");
                 }
             }
 
