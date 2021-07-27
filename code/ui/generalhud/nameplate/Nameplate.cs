@@ -114,6 +114,7 @@ namespace TTTReborn.UI
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
 
                 Style.BorderColor = target.Role is not TTTReborn.Roles.NoneRole ? target.Role.Color : BORDER_COLOR_NONE;
+                Style.BorderWidth = target.Role is not TTTReborn.Roles.NoneRole ? 2 : 1;
 
                 Style.Dirty();
             }
