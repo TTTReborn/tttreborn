@@ -11,7 +11,6 @@ namespace TTTReborn.UI
 
         public GeneralHud GeneralHudPanel;
         public AliveHud AliveHudPanel;
-        public DeadHud DeadHudPanel;
 
         public Hud()
         {
@@ -24,7 +23,6 @@ namespace TTTReborn.UI
 
             GeneralHudPanel = new GeneralHud(RootPanel);
             AliveHudPanel = new AliveHud(RootPanel);
-            DeadHudPanel = new DeadHud(RootPanel);
         }
 
         [Event.Hotload]
@@ -36,16 +34,9 @@ namespace TTTReborn.UI
 
                 Hud hud = new Hud();
 
-                if (Local.Client.Pawn is TTTPlayer player)
+                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
                 {
-                    if (player.LifeState == LifeState.Alive)
-                    {
-                        hud.AliveHudPanel.CreateHud();
-                    }
-                    else
-                    {
-                        hud.DeadHudPanel.CreateHud();
-                    }
+                    hud.AliveHudPanel.CreateHud();
                 }
             }
         }
@@ -58,7 +49,6 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Current?.DeadHudPanel.DeleteHud();
             Current?.AliveHudPanel.CreateHud();
         }
 
@@ -71,33 +61,30 @@ namespace TTTReborn.UI
             }
 
             Current?.AliveHudPanel.DeleteHud();
-            Current?.DeadHudPanel.CreateHud();
         }
 
         public class GeneralHud : Panel
         {
-            public Scoreboard Scoreboard;
-
             public GeneralHud(Panel parent)
             {
                 Parent = parent;
 
+                Parent.AddChild<PlayerInfo>();
+                Parent.AddChild<InventoryWrapper>();
                 Parent.AddChild<ChatBox>();
                 Parent.AddChild<VoiceList>();
+                Parent.AddChild<Nameplate>();
                 Parent.AddChild<GameTimer>();
                 Parent.AddChild<InfoFeed>();
+                Parent.AddChild<InspectMenu>();
                 Parent.AddChild<PostRoundMenu>();
-                Scoreboard = Parent.AddChild<Scoreboard>();
+                Parent.AddChild<Scoreboard>();
             }
         }
 
         public class AliveHud : Panel
         {
             public DamageIndicator DamageIndicator;
-            public InventoryWrapper InventoryWrapper;
-            public PlayerInfo PlayerInfo;
-            public InspectMenu InspectMenu;
-            public Nameplate Nameplate;
             public QuickShop QuickShop;
             public DrowningIndicator DrowningIndicator;
 
@@ -108,11 +95,7 @@ namespace TTTReborn.UI
 
             public void CreateHud()
             {
-                InventoryWrapper ??= Parent.AddChild<InventoryWrapper>();
                 DamageIndicator ??= Parent.AddChild<DamageIndicator>();
-                PlayerInfo ??= Parent.AddChild<PlayerInfo>();
-                InspectMenu ??= Parent.AddChild<InspectMenu>();
-                Nameplate ??= Parent.AddChild<Nameplate>();
                 QuickShop ??= Parent.AddChild<QuickShop>();
                 DrowningIndicator ??= Parent.AddChild<DrowningIndicator>();
             }
@@ -122,44 +105,11 @@ namespace TTTReborn.UI
                 DamageIndicator?.Delete();
                 DamageIndicator = null;
 
-                InventoryWrapper?.Delete();
-                InventoryWrapper = null;
-
-                PlayerInfo?.Delete();
-                PlayerInfo = null;
-
-                InspectMenu?.Delete();
-                InspectMenu = null;
-
-                Nameplate?.Delete();
-                Nameplate = null;
-
                 QuickShop?.Delete();
                 QuickShop = null;
 
                 DrowningIndicator?.Delete();
                 DrowningIndicator = null;
-            }
-        }
-
-        public class DeadHud : Panel
-        {
-            public SpectatedPlayerInfo SpectatedPlayerInfo;
-
-            public DeadHud(Panel parent)
-            {
-                Parent = parent;
-            }
-
-            public void CreateHud()
-            {
-                SpectatedPlayerInfo ??= Parent.AddChild<SpectatedPlayerInfo>();
-            }
-
-            public void DeleteHud()
-            {
-                SpectatedPlayerInfo?.Delete();
-                SpectatedPlayerInfo = null;
             }
         }
     }

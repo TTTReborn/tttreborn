@@ -2,7 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 
@@ -12,10 +11,17 @@ namespace TTTReborn.UI
     {
         public PlayerInfo()
         {
-            StyleSheet.Load("/ui/alivehud/playerinfo/PlayerInfo.scss");
+            StyleSheet.Load("/ui/generalhud/playerinfo/PlayerInfo.scss");
 
             new RolePanel(this);
             new IndicatorsPanel(this);
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            SetClass("hide", Local.Pawn is not TTTPlayer player || (player.IsSpectator && !player.IsSpectatingPlayer));
         }
 
         private class RolePanel : Panel
@@ -23,6 +29,8 @@ namespace TTTReborn.UI
             private readonly Label _roleLabel;
 
             private TTTRole _currentRole;
+
+            private TTTPlayer _currentPlayer;
 
             public RolePanel(Panel parent)
             {
@@ -35,18 +43,28 @@ namespace TTTReborn.UI
             {
                 base.Tick();
 
-                if (Local.Pawn is not TTTPlayer player)
+                if (Local.Pawn is not TTTPlayer player || _currentPlayer == player.CurrentPlayer && _currentRole == player.CurrentPlayer.Role)
                 {
                     return;
                 }
 
-                if (_currentRole != player.Role)
+                _currentPlayer = player.CurrentPlayer;
+                _currentRole = _currentPlayer.Role;
+
+                Style.BackgroundColor = _currentPlayer.Role is NoneRole
+                    ? Color.Black
+                    : _currentPlayer.Role.Color;
+
+                Style.Dirty();
+
+                if (player.IsSpectatingPlayer)
                 {
-                    _currentRole = player.Role;
+                    _roleLabel.Text = $"{_currentPlayer.GetClientOwner()?.Name}";
 
-                    Style.BackgroundColor = player.Role.Color;
-                    Style.Dirty();
-
+                    SetClass("hide", false);
+                }
+                else
+                {
                     _roleLabel.Text = $"{player.Role.Name.ToUpper()}";
 
                     SetClass("hide", player.Role is NoneRole);
@@ -78,39 +96,37 @@ namespace TTTReborn.UI
             {
                 base.Tick();
 
-                TTTPlayer player = Local.Pawn as TTTPlayer;
-
-                if (player == null)
+                if (Local.Pawn is not TTTPlayer player)
                 {
                     return;
                 }
 
-                if (_currentHealth != player.Health)
+                if (_currentHealth != player.CurrentPlayer.Health)
                 {
-                    _currentHealth = player.Health;
+                    _currentHealth = player.CurrentPlayer.Health;
 
-                    _healthBar.TextLabel.Text = $"{player.Health:n0}";
+                    _healthBar.TextLabel.Text = $"{player.CurrentPlayer.Health:n0}";
 
-                    _healthBar.Style.Width = Length.Percent(player.Health / player.MaxHealth * 100f);
+                    _healthBar.Style.Width = Length.Percent(player.CurrentPlayer.Health / player.CurrentPlayer.MaxHealth * 100f);
                     _healthBar.Style.Dirty();
                 }
 
-                if (player.Controller is DefaultWalkController && DefaultWalkController.IsSprintEnabled)
+                if (player.CurrentPlayer.Controller is DefaultWalkController && DefaultWalkController.IsSprintEnabled)
                 {
                     _staminaBar.Style.Display = DisplayMode.Flex;
 
-                    _staminaBar.SetClass("hide", player.LifeState != LifeState.Alive);
+                    _staminaBar.SetClass("hide", player.CurrentPlayer.LifeState != LifeState.Alive);
 
-                    if (_currentStamina == player.Stamina)
+                    if (_currentStamina == player.CurrentPlayer.Stamina)
                     {
                         return;
                     }
 
-                    _currentStamina = player.Stamina;
+                    _currentStamina = player.CurrentPlayer.Stamina;
 
-                    _staminaBar.TextLabel.Text = $"{player.Stamina:n0}";
+                    _staminaBar.TextLabel.Text = $"{player.CurrentPlayer.Stamina:n0}";
 
-                    _staminaBar.Style.Width = Length.Percent(player.Stamina / player.MaxStamina * 100f);
+                    _staminaBar.Style.Width = Length.Percent(player.CurrentPlayer.Stamina / player.CurrentPlayer.MaxStamina * 100f);
                     _staminaBar.Style.Dirty();
                 }
                 else

@@ -3,6 +3,7 @@ using System;
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
@@ -47,6 +48,12 @@ namespace TTTReborn.Player
         [Net]
         public float MaxHealth { get; set; } = 100f;
 
+        public TTTWeapon LastDamageWeapon { get; private set; }
+
+        public bool LastDamageWasHeadshot { get; private set; } = false;
+
+        public float LastDistanceToAttacker { get; private set; } = 0f;
+
         public void SetHealth(float health)
         {
             Health = Math.Min(health, MaxHealth);
@@ -54,21 +61,31 @@ namespace TTTReborn.Player
 
         public override void TakeDamage(DamageInfo info)
         {
-            if (GetHitboxGroup(info.HitboxIndex) == (int) HitboxGroup.Head)
+            LastDamageWasHeadshot = GetHitboxGroup(info.HitboxIndex) == (int) HitboxGroup.Head;
+
+            if (LastDamageWasHeadshot)
             {
                 info.Damage *= 2.0f;
             }
+
+            LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as TTTWeapon : null;
 
             To client = To.Single(this);
 
             if (info.Attacker is TTTPlayer attacker && attacker != this)
             {
+                LastDistanceToAttacker = Utils.SourceUnitsToMeters(Position.Distance(attacker.Position));
+
                 if (Gamemode.Game.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
                 {
                     return;
                 }
 
                 ClientAnotherPlayerDidDamage(client, info.Position, ((float) Health).LerpInverse(100, 0));
+            }
+            else
+            {
+                LastDistanceToAttacker = 0f;
             }
 
             ClientTookDamage(client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage);
