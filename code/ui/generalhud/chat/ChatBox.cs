@@ -92,7 +92,7 @@ namespace TTTReborn.UI
             IsOpened = false;
 
             SetClass("open", false);
-
+            _lastChatFocus = MAX_DISPLAY_TIME;
             _input.Blur();
         }
 
@@ -145,8 +145,8 @@ namespace TTTReborn.UI
 
             chatEntry.Message.Text = message;
 
-            chatEntry.SetClass("noname", string.IsNullOrEmpty(name));
             chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
+            chatEntry.SetClass("serverInfo", string.IsNullOrEmpty(name));
 
             bool showHead = Messages.Count == 0 || name == null || Messages[Messages.Count - 1].Name != name;
 
@@ -189,6 +189,7 @@ namespace TTTReborn.UI
         [ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
         public static void AddInformation(string message, string avatar = null, LifeState lifeState = LifeState.Alive)
         {
+            Log.Info(12);
             Instance?.AddEntry(null, message, avatar, lifeState);
         }
 
