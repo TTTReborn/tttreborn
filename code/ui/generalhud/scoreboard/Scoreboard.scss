@@ -149,6 +149,16 @@ Scoreboard {
                     border: #c6793a;
                 }
             }
+
+            &.spectator {
+                .scoreboardGroup__title {
+                    background-color: #d6af02;
+                }
+
+                .scoreboardGroup__content {
+                    border: #d6af02;
+                }
+            }
         }
     }
 

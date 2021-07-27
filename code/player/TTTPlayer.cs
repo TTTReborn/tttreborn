@@ -20,6 +20,11 @@ namespace TTTReborn.Player
         [Net, Local]
         public int Credits { get; set; } = 0;
 
+        [Net]
+        public bool IsForcedSpectator { get; set; } = false;
+
+        public bool IsInitialSpawning { get; set; } = false;
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
@@ -36,15 +41,21 @@ namespace TTTReborn.Player
             Controller = null;
             Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 
+            LifeState = LifeState.Dead;
+            Health = 0f;
+
             ShowFlashlight(false, false);
         }
 
         // Important: Server-side only
         public void InitialRespawn()
         {
-            Respawn();
-
             bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
+
+            IsInitialSpawning = true;
+            IsForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+
+            Respawn();
 
             // sync roles
             using (Prediction.Off())
@@ -57,6 +68,11 @@ namespace TTTReborn.Player
                     }
                 }
             }
+
+            GetClientOwner().SetScore("forcedspectator", IsForcedSpectator);
+
+            IsInitialSpawning = false;
+            IsForcedSpectator = false;
         }
 
         // Important: Server-side only
@@ -66,13 +82,8 @@ namespace TTTReborn.Player
         {
             SetModel("models/citizen/citizen.vmdl");
 
-            Controller = new DefaultWalkController();
-
             Animator = new StandardPlayerAnimator();
-            Camera = new FirstPersonCamera();
 
-            EnableAllCollisions = true;
-            EnableDrawing = true;
             EnableHideInFirstPerson = true;
             EnableShadowInFirstPerson = true;
 
@@ -89,11 +100,24 @@ namespace TTTReborn.Player
                 RPCs.ClientSetRole(To.Single(this), this, Role.Name);
             }
 
+            base.Respawn();
+
+            if (!IsForcedSpectator)
+            {
+                Controller = new DefaultWalkController();
+                Camera = new FirstPersonCamera();
+
+                EnableAllCollisions = true;
+                EnableDrawing = true;
+            }
+            else
+            {
+                MakeSpectator(false);
+            }
+
             RemovePlayerCorpse();
             Inventory.DeleteContents();
             Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
-
-            base.Respawn();
 
             switch (Gamemode.Game.Instance.Round)
             {
@@ -103,6 +127,8 @@ namespace TTTReborn.Player
                 case Rounds.PreRound:
                     IsConfirmed = false;
                     CorpseConfirmer = null;
+
+                    GetClientOwner().SetScore("forcedspectator", false);
 
                     break;
             }

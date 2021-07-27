@@ -45,10 +45,19 @@ namespace TTTReborn.UI
             Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
             ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
 
+            bool invalidSlot = false;
+
             foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
                 {
+                    if (slot.Carriable == null)
+                    {
+                        invalidSlot = true;
+
+                        break;
+                    }
+
                     slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
 
                     if (slot.Carriable is TTTWeapon weapon && weapon.SlotType != SlotType.Melee)
@@ -56,6 +65,11 @@ namespace TTTReborn.UI
                         slot.UpdateAmmo(FormatAmmo(weapon, inventory));
                     }
                 }
+            }
+
+            if (invalidSlot)
+            {
+                OnSpectatingChange(player);
             }
         }
 
@@ -68,6 +82,11 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.carriableitem.pickup")]
         private void OnCarriableItemPickup(ICarriableItem carriable)
         {
+            if (carriable == null)
+            {
+                return;
+            }
+
             AddChild(new InventorySlot(this, carriable));
             SortChildren((p1, p2) =>
             {
@@ -75,7 +94,9 @@ namespace TTTReborn.UI
                 InventorySlot s2 = p2 as InventorySlot;
 
                 int result = s1.Carriable.SlotType.CompareTo(s2.Carriable.SlotType);
-                return result != 0 ? result : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
+                return result != 0
+                    ? result
+                    : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
             });
         }
 

@@ -17,12 +17,10 @@ namespace TTTReborn.Rounds
         public override string RoundName => "In Progress";
         public override int RoundDuration => Gamemode.Game.TTTRoundTime;
 
-        private readonly List<TTTPlayer> _spectators = new();
-
         public override void OnPlayerKilled(TTTPlayer player)
         {
             Players.Remove(player);
-            _spectators.Add(player);
+            Spectators.Add(player);
 
             player.MakeSpectator();
 
@@ -37,8 +35,6 @@ namespace TTTReborn.Rounds
         public override void OnPlayerLeave(TTTPlayer player)
         {
             base.OnPlayerLeave(player);
-
-            _spectators.Remove(player);
 
             TTTTeam result = IsRoundOver();
 
@@ -59,6 +55,8 @@ namespace TTTReborn.Rounds
                         continue;
                     }
 
+                    client.SetScore("forcedspectator", player.IsForcedSpectator);
+
                     if (player.LifeState == LifeState.Dead)
                     {
                         player.Respawn();
@@ -68,48 +66,15 @@ namespace TTTReborn.Rounds
                         player.SetHealth(player.MaxHealth);
                     }
 
-                    if (!Players.Contains(player))
-                    {
-                        AddPlayer(player);
-                    }
+                    AddPlayer(player);
 
-                    #region Inventory Creation
-                    Inventory inventory = player.Inventory as Inventory;
-
-                    inventory.TryAdd(new MagnetoStick(), true);
-
-                    // Randomize between SMG and shotgun
-                    if (new Random().Next() % 2 == 0)
+                    if (!player.IsForcedSpectator)
                     {
-                        if (inventory.TryAdd(new Shotgun(), false))
-                        {
-                            inventory.Ammo.Give(AmmoType.Buckshot, 16);
-                        }
+                        SetLoadout(player);
                     }
-                    else
-                    {
-                        if (inventory.TryAdd(new SMG(), false))
-                        {
-                            inventory.Ammo.Give(AmmoType.SMG, 60);
-                        }
-                    }
-
-                    if (inventory.TryAdd(new Pistol(), false))
-                    {
-                        inventory.Ammo.Give(AmmoType.Pistol, 30);
-                    }
-                    #endregion
                 }
 
                 AssignRoles();
-            }
-        }
-
-        protected override void OnFinish()
-        {
-            if (Host.IsServer)
-            {
-                _spectators.Clear();
             }
         }
 
@@ -122,12 +87,56 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            player.MakeSpectator(false);
+            if (player.IsForcedSpectator)
+            {
+                if (!Spectators.Contains(player))
+                {
+                    Spectators.Add(player);
+                }
 
-            _spectators.Add(player);
-            Players.Remove(player);
+                Players.Remove(player);
+            }
+            else
+            {
+                if (!Players.Contains(player))
+                {
+                    Players.Add(player);
+                }
+
+                Spectators.Remove(player);
+
+                SetLoadout(player);
+            }
 
             base.OnPlayerSpawn(player);
+        }
+
+        private void SetLoadout(TTTPlayer player)
+        {
+            Inventory inventory = player.Inventory as Inventory;
+
+            inventory.TryAdd(new MagnetoStick(), true);
+
+            // Randomize between SMG and shotgun
+            if (new Random().Next() % 2 == 0)
+            {
+                if (inventory.TryAdd(new Shotgun(), false))
+                {
+                    inventory.Ammo.Give(AmmoType.Buckshot, 16);
+                }
+            }
+            else
+            {
+                if (inventory.TryAdd(new SMG(), false))
+                {
+                    inventory.Ammo.Give(AmmoType.SMG, 60);
+                }
+            }
+
+            if (inventory.TryAdd(new Pistol(), false))
+            {
+                inventory.Ammo.Give(AmmoType.Pistol, 30);
+            }
         }
 
         private TTTTeam IsRoundOver()

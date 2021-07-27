@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -14,7 +12,8 @@ namespace TTTReborn.UI
         {
             Alive,
             MIA,
-            Dead
+            Dead,
+            Spectator
         }
 
         private class ScoreboardGroup : Panel
@@ -76,7 +75,11 @@ namespace TTTReborn.UI
             string group = DefaultScoreboardGroup.Alive.ToString();
             ulong steamId = entry.Get<ulong>("steamid", 0);
 
-            if (steamId != 0)
+            if (entry.Get<bool>("forcedspectator", false))
+            {
+                group = DefaultScoreboardGroup.Spectator.ToString();
+            }
+            else if (steamId != 0)
             {
                 foreach (Client client in Client.All)
                 {
