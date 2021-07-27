@@ -12,7 +12,6 @@ ChatBox {
     font-size: 13px;
     // border-radius: 10px;
 
-
     TextEntry {
         opacity: 0;
         color: #fafafa;
@@ -49,7 +48,7 @@ ChatBox {
         overflow: scroll;
 
         &.hide {
-            transition: opacity 2s ease-out;
+            transition: opacity 0.1s ease-out;
             opacity: 0;
         }
 
@@ -88,7 +87,7 @@ ChatBox {
 
             .head {
                 display: none;
-                // margin-bottom: 2px;
+                margin-top: 5px;
 
                 image {
                     width: 20px;
@@ -102,7 +101,6 @@ ChatBox {
                     font-weight: 600;
                     font-size: 14px;
                     flex-shrink: 0;
-                    // margin-top: 2px;
                 }
             }
 
@@ -127,17 +125,27 @@ ChatBox {
             }
 
             .message {
-                color: #ccc;
+                color: #fafafaf1;
                 font-size: 14px;
                 flex-grow: 1;
             }
 
-            &.noname {
+            &.serverInfo {
                 flex-direction: row;
                 padding: 6px 12px;
 
+                .message {
+                    color: #ffbb00e3;
+                    margin-top: 6px;
+                }
+
                 .head {
                     margin-bottom: 0;
+                }
+
+                image {
+                    width: 25px;
+                    height: 25px;
                 }
 
                 .name {
