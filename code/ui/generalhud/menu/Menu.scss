@@ -1,0 +1,30 @@
+Menu {
+    background-color: #000c;
+    border: 1px solid #1b1b1b;
+    border-radius: 8px;
+
+    font-family: Poppins;
+    padding: 5px 10px;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+
+    color: #fafafa;
+    font-family: Poppins;
+    font-weight: 500;
+    justify-content: center;
+    pointer-events: all;
+
+    &.hide {
+        display: none;
+        pointer-events: none;
+    }
+
+    KeybindEntry {
+        text-align: center;
+        margin: 0 auto;
+
+        min-width: 30px;
+    }
+}
