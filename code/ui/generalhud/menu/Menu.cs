@@ -1,12 +1,10 @@
-using Sandbox.UI;
-
 namespace TTTReborn.UI
 {
-    public partial class Menu : Panel
+    public partial class Menu : ResizeablePanel
     {
         private DraggableHeader _draggableHeader;
 
-        public Menu()
+        public Menu() : base()
         {
             StyleSheet.Load("/ui/generalhud/menu/Menu.scss");
 

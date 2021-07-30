@@ -18,8 +18,6 @@ namespace TTTReborn.UI
 
         protected override void OnMouseDown(MousePanelEvent e)
         {
-            base.OnMouseDown(e);
-
             if (IsVisible)
             {
                 _draggingMouseStartPosition = MousePosition;
@@ -29,15 +27,11 @@ namespace TTTReborn.UI
 
         protected override void OnMouseUp(MousePanelEvent e)
         {
-            base.OnMouseUp(e);
-
             IsDragging = false;
         }
 
         protected override void OnMouseMove(MousePanelEvent e)
         {
-            base.OnMouseMove(e);
-
             if (IsDragging)
             {
                 float screenWidth = Screen.Width;

@@ -4,10 +4,11 @@ Menu {
     border-radius: 8px;
 
     font-family: Poppins;
-    // min-width: 600px; // https://github.com/Facepunch/sbox-issues/issues/535
-    // max-width: 800px; // https://github.com/Facepunch/sbox-issues/issues/535
+    min-width: 600px; // https://github.com/Facepunch/sbox-issues/issues/535
+    max-width: 800px; // https://github.com/Facepunch/sbox-issues/issues/535
     width: 600px;
     height: 400px;
+    min-height: 400px;
     left: 50%;
     top: 50%;
     //transform: translateX(-50%) translateY(-50%); // https://github.com/Facepunch/sbox-issues/issues/536
