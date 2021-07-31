@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 using Sandbox.UI;
 
@@ -11,6 +13,7 @@ namespace TTTReborn.UI
         public float Right;
         public float Bottom;
         public float Left;
+        public Vector2? TransformRatio;
     }
 
     public partial class RichPanel : TTTPanel
@@ -136,21 +139,35 @@ namespace TTTReborn.UI
         {
             base.OnMouseDown(e);
 
-            if (!IsVisible || !CanStartDragging)
+            if (!IsVisible || !CanStartDragging || IsDragging)
             {
                 return;
             }
 
-            _draggingMouseStartPosition = MousePosition;
+            _draggingMouseStartPosition = Mouse.Position;
             _boxDataBeforeDraggingStarted = new BoxData
             {
-                Width = Box.Rect.width,
-                Height = Box.Rect.height,
-                Top = Box.Rect.top,
-                Right = Box.Rect.right,
-                Bottom = Box.Rect.bottom,
-                Left = Box.Rect.left
+                Width = (float) Math.Ceiling(Box.Rect.width),
+                Height = (float) Math.Ceiling(Box.Rect.height),
+                Top = (float) Math.Ceiling(Box.Rect.top),
+                Right = (float) Math.Ceiling(Box.Rect.right),
+                Bottom = (float) Math.Ceiling(Box.Rect.bottom),
+                Left = (float) Math.Ceiling(Box.Rect.left)
             };
+
+            Matrix? matrix = GlobalMatrix;
+
+            if (matrix != null)
+            {
+                _boxDataBeforeDraggingStarted.TransformRatio = new Vector2(
+                    (float) Math.Ceiling(matrix.Value.Numerics.M41) / _boxDataBeforeDraggingStarted.Width,
+                    (float) Math.Ceiling(matrix.Value.Numerics.M42) / _boxDataBeforeDraggingStarted.Height
+                );
+            }
+            else
+            {
+                _boxDataBeforeDraggingStarted.TransformRatio = new Vector2(0f, 0f);
+            }
 
             IsDragging = true;
         }
@@ -172,8 +189,8 @@ namespace TTTReborn.UI
             }
 
             Vector2 delta = new Vector2(
-                (MousePosition.x - _draggingMouseStartPosition.x),
-                (MousePosition.y - _draggingMouseStartPosition.y)
+                Mouse.Position.x - _draggingMouseStartPosition.x,
+                Mouse.Position.y - _draggingMouseStartPosition.y
             );
 
             float screenWidth = Screen.Width;
@@ -192,12 +209,13 @@ namespace TTTReborn.UI
             switch (CurrentHorizontalDragAnchor)
             {
                 case DragAnchor.LEFT:
-                    width = Box.Rect.width - delta.x;
-                    left = Box.Rect.left + delta.x;
+                    width = _boxDataBeforeDraggingStarted.Width - delta.x;
+                    left = _boxDataBeforeDraggingStarted.Left + delta.x - delta.x * _boxDataBeforeDraggingStarted.TransformRatio.Value.x;
 
                     break;
                 case DragAnchor.RIGHT:
                     width = _boxDataBeforeDraggingStarted.Width + delta.x;
+                    left = _boxDataBeforeDraggingStarted.Left + delta.x * _boxDataBeforeDraggingStarted.TransformRatio.Value.x;
 
                     break;
             }
@@ -205,60 +223,49 @@ namespace TTTReborn.UI
             switch (CurrentVerticalDragAnchor)
             {
                 case DragAnchor.TOP:
-                    height = Box.Rect.height - delta.y;
-                    top = Box.Rect.top + delta.y;
+                    height = _boxDataBeforeDraggingStarted.Height - delta.y;
+                    top = _boxDataBeforeDraggingStarted.Top + delta.y - delta.y * _boxDataBeforeDraggingStarted.TransformRatio.Value.y;
 
                     break;
                 case DragAnchor.BOTTOM:
                     height = _boxDataBeforeDraggingStarted.Height + delta.y;
+                    top = _boxDataBeforeDraggingStarted.Top + delta.y * _boxDataBeforeDraggingStarted.TransformRatio.Value.y;
 
                     break;
             }
 
-            if (minWidth > width)
+            if (minWidth > width || maxWidth < width)
             {
-                width = minWidth;
+                width = minWidth > width ? minWidth : maxWidth;
 
-                if (CurrentHorizontalDragAnchor == DragAnchor.LEFT)
+                float deltaWidth = _boxDataBeforeDraggingStarted.Width - width;
+
+                left = _boxDataBeforeDraggingStarted.Left + deltaWidth - deltaWidth * _boxDataBeforeDraggingStarted.TransformRatio.Value.x;
+
+                if (CurrentHorizontalDragAnchor == DragAnchor.RIGHT)
                 {
-                    left = _boxDataBeforeDraggingStarted.Right - minWidth;
+                    left -= deltaWidth;
                 }
             }
 
-            if (maxWidth < width)
+            if (minHeight > height || maxHeight < height)
             {
-                width = maxWidth;
+                height = minHeight > height ? minHeight : maxHeight;
 
-                if (CurrentHorizontalDragAnchor == DragAnchor.LEFT)
+                float deltaHeight = _boxDataBeforeDraggingStarted.Height - height;
+
+                top = _boxDataBeforeDraggingStarted.Top + deltaHeight - deltaHeight * _boxDataBeforeDraggingStarted.TransformRatio.Value.y;
+
+                if (CurrentVerticalDragAnchor == DragAnchor.BOTTOM)
                 {
-                    left = _boxDataBeforeDraggingStarted.Right - maxWidth;
+                    top -= deltaHeight;
                 }
             }
 
-            if (minHeight > height)
-            {
-                height = minHeight;
-
-                if (CurrentVerticalDragAnchor == DragAnchor.TOP)
-                {
-                    top = _boxDataBeforeDraggingStarted.Bottom - minHeight;
-                }
-            }
-
-            if (maxHeight < height)
-            {
-                height = maxHeight;
-
-                if (CurrentVerticalDragAnchor == DragAnchor.TOP)
-                {
-                    top = _boxDataBeforeDraggingStarted.Bottom - maxHeight;
-                }
-            }
-
-            Style.Width = Length.Pixels(width);
-            Style.Height = Length.Pixels(height);
-            Style.Left = Length.Pixels(left);
-            Style.Top = Length.Pixels(top);
+            Style.Width = Length.Pixels((float) Math.Ceiling(width));
+            Style.Height = Length.Pixels((float) Math.Ceiling(height));
+            Style.Left = Length.Pixels((float) Math.Ceiling(left));
+            Style.Top = Length.Pixels((float) Math.Ceiling(top));
             Style.Dirty();
         }
 
