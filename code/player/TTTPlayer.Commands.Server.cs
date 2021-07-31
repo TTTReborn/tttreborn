@@ -149,17 +149,6 @@ namespace TTTReborn.Player
             RPCs.ClientSetRole(To.Single(player), player, role.Name);
         }
 
-        [ClientCmd(Name = "ttt_playerids", Help = "Returns a list of all players (clients) and their associated IDs")]
-        public static void PlayerID()
-        {
-            List<Client> playerList = Client.All.ToList();
-
-            for (int i = 0; i < playerList.ToList().Count; i++)
-            {
-                Log.Info($"Player (ID: '{i}'): {playerList[i].Name}");
-            }
-        }
-
         [ServerCmd(Name = "ttt_forcespec")]
         public static void ToggleForceSpectator()
         {

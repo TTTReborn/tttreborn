@@ -3,13 +3,13 @@ using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
-    public partial class DraggableHeader : Panel
+    public partial class DraggableHeader : PanelHeader
     {
         public bool IsDragging { get; private set; } = false;
 
         private Vector2 _draggingMouseStartPosition;
 
-        public DraggableHeader(Panel parent)
+        public DraggableHeader(Panel parent) : base()
         {
             Parent = parent;
 

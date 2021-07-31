@@ -10,7 +10,7 @@ Menu {
     max-height: 600px;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    //transform: translateX(-50%) translateY(-50%);
     margin: auto;
     position: absolute;
 
@@ -22,5 +22,11 @@ Menu {
     &.hide {
         display: none;
         pointer-events: none;
+    }
+
+    DraggableHeader {
+        border-radius: 8px 8px 0px 0px;
+
+        background-color: black;
     }
 }

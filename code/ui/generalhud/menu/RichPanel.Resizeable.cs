@@ -13,8 +13,10 @@ namespace TTTReborn.UI
         public float Left;
     }
 
-    public partial class ResizeablePanel : Panel
+    public partial class RichPanel : TTTPanel
     {
+        public bool IsDraggable { get; set; } = false;
+
         public enum DragAnchor
         {
             TOPLEFT,
@@ -33,13 +35,13 @@ namespace TTTReborn.UI
         {
             get
             {
-                return _canStartDragging;
+                return _canStartDragging && IsDraggable;
             }
             private set
             {
                 _canStartDragging = value;
 
-                SetClass("draggable", _canStartDragging);
+                SetClass("draggable", CanStartDragging);
             }
         }
         private bool _canStartDragging = false;
@@ -129,13 +131,6 @@ namespace TTTReborn.UI
 
         private Vector2 _draggingMouseStartPosition;
         private BoxData _boxDataBeforeDraggingStarted;
-
-        public ResizeablePanel() : base()
-        {
-            StyleSheet.Load("/ui/generalhud/menu/ResizeablePanel.scss");
-
-            //AcceptsFocus = true;
-        }
 
         protected override void OnMouseDown(MousePanelEvent e)
         {
@@ -269,7 +264,7 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            if (!IsVisible || ComputedStyle == null || IsDragging)
+            if (!IsVisible || ComputedStyle == null || IsDragging || !IsDraggable)
             {
                 return;
             }
