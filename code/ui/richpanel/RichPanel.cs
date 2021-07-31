@@ -4,7 +4,7 @@ namespace TTTReborn.UI
     {
         public RichPanel() : base()
         {
-            StyleSheet.Load("/ui/generalhud/menu/RichPanel.scss");
+            StyleSheet.Load("/ui/richpanel/RichPanel.scss");
 
             //AcceptsFocus = true;
         }

@@ -11,7 +11,7 @@ namespace TTTReborn.UI
 
         public PanelHeader() : base()
         {
-            StyleSheet.Load("/ui/generalhud/menu/PanelHeader.scss");
+            StyleSheet.Load("/ui/panelheader/PanelHeader.scss");
 
             _title = Add.Label("", "title");
 

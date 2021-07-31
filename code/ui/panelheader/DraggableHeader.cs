@@ -13,7 +13,7 @@ namespace TTTReborn.UI
         {
             Parent = parent;
 
-            StyleSheet.Load("/ui/generalhud/menu/DraggableHeader.scss");
+            StyleSheet.Load("/ui/panelheader/DraggableHeader.scss");
         }
 
         protected override void OnMouseDown(MousePanelEvent e)
