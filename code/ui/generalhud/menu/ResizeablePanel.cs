@@ -56,8 +56,73 @@ namespace TTTReborn.UI
                 CanStartDragging = _currentDragAnchor != null;
             }
         }
-
         private DragAnchor? _currentDragAnchor = null;
+
+        public DragAnchor? CurrentHorizontalDragAnchor
+        {
+            get
+            {
+                return _currentHorizontalDragAnchor;
+            }
+            private set
+            {
+                _currentHorizontalDragAnchor = value;
+
+                if (value != null)
+                {
+                    if (CurrentDragAnchor == DragAnchor.TOP)
+                    {
+                        CurrentDragAnchor = value == DragAnchor.LEFT ? DragAnchor.TOPLEFT : DragAnchor.TOPRIGHT;
+                    }
+                    else if (CurrentDragAnchor == DragAnchor.BOTTOM)
+                    {
+                        CurrentDragAnchor = value == DragAnchor.LEFT ? DragAnchor.BOTTOMLEFT : DragAnchor.BOTTOMRIGHT;
+                    }
+                    else
+                    {
+                        CurrentDragAnchor = value;
+                    }
+                }
+                else
+                {
+                    CurrentDragAnchor = CurrentVerticalDragAnchor;
+                }
+            }
+        }
+        private DragAnchor? _currentHorizontalDragAnchor = null;
+
+        public DragAnchor? CurrentVerticalDragAnchor
+        {
+            get
+            {
+                return _currentVerticalDragAnchor;
+            }
+            private set
+            {
+                _currentVerticalDragAnchor = value;
+
+                if (value != null)
+                {
+                    if (CurrentDragAnchor == DragAnchor.LEFT)
+                    {
+                        CurrentDragAnchor = value == DragAnchor.TOP ? DragAnchor.TOPLEFT : DragAnchor.BOTTOMLEFT;
+                    }
+                    else if (CurrentDragAnchor == DragAnchor.RIGHT)
+                    {
+                        CurrentDragAnchor = value == DragAnchor.TOP ? DragAnchor.TOPRIGHT : DragAnchor.BOTTOMRIGHT;
+                    }
+                    else
+                    {
+                        CurrentDragAnchor = value;
+                    }
+                }
+                else
+                {
+                    CurrentDragAnchor = CurrentHorizontalDragAnchor;
+                }
+            }
+        }
+        private DragAnchor? _currentVerticalDragAnchor = null;
 
         public const float DRAG_OBLIGINGNESS = 16f;
 
@@ -128,7 +193,7 @@ namespace TTTReborn.UI
             float minHeight = ComputedStyle.MinHeight != null ? ComputedStyle.MinHeight.Value.GetPixels(screenHeight) : height;
             float maxHeight = ComputedStyle.MaxHeight != null ? ComputedStyle.MaxHeight.Value.GetPixels(screenHeight) : height;
 
-            switch (CurrentDragAnchor)
+            switch (CurrentHorizontalDragAnchor)
             {
                 case DragAnchor.LEFT:
                     width = Box.Rect.width - delta.x;
@@ -141,11 +206,24 @@ namespace TTTReborn.UI
                     break;
             }
 
+            switch (CurrentVerticalDragAnchor)
+            {
+                case DragAnchor.TOP:
+                    height = Box.Rect.height - delta.y;
+                    y = Box.Rect.top + delta.y;
+
+                    break;
+                case DragAnchor.BOTTOM:
+                    height = _boxDataBeforeDraggingStarted.Height + delta.y;
+
+                    break;
+            }
+
             if (minWidth > width)
             {
                 width = minWidth;
 
-                if (CurrentDragAnchor == DragAnchor.LEFT)
+                if (CurrentHorizontalDragAnchor == DragAnchor.LEFT)
                 {
                     x = _boxDataBeforeDraggingStarted.Right - minWidth;
                 }
@@ -155,7 +233,7 @@ namespace TTTReborn.UI
             {
                 width = maxWidth;
 
-                if (CurrentDragAnchor == DragAnchor.LEFT)
+                if (CurrentHorizontalDragAnchor == DragAnchor.LEFT)
                 {
                     x = _boxDataBeforeDraggingStarted.Right - maxWidth;
                 }
@@ -165,7 +243,7 @@ namespace TTTReborn.UI
             {
                 height = minHeight;
 
-                if (CurrentDragAnchor == DragAnchor.TOP)
+                if (CurrentVerticalDragAnchor == DragAnchor.TOP)
                 {
                     y = _boxDataBeforeDraggingStarted.Bottom - minHeight;
                 }
@@ -175,7 +253,7 @@ namespace TTTReborn.UI
             {
                 height = maxHeight;
 
-                if (CurrentDragAnchor == DragAnchor.TOP)
+                if (CurrentVerticalDragAnchor == DragAnchor.TOP)
                 {
                     y = _boxDataBeforeDraggingStarted.Bottom - maxHeight;
                 }
@@ -197,15 +275,28 @@ namespace TTTReborn.UI
 
             if (MousePosition.x > 0f && MousePosition.x < DRAG_OBLIGINGNESS)
             {
-                CurrentDragAnchor = DragAnchor.LEFT;
+                CurrentHorizontalDragAnchor = DragAnchor.LEFT;
             }
             else if (MousePosition.x < Box.Rect.width && MousePosition.x > Box.Rect.width - DRAG_OBLIGINGNESS)
             {
-                CurrentDragAnchor = DragAnchor.RIGHT;
+                CurrentHorizontalDragAnchor = DragAnchor.RIGHT;
             }
             else
             {
-                CurrentDragAnchor = null;
+                CurrentHorizontalDragAnchor = null;
+            }
+
+            if (MousePosition.y > 0f && MousePosition.y < DRAG_OBLIGINGNESS)
+            {
+                CurrentVerticalDragAnchor = DragAnchor.TOP;
+            }
+            else if (MousePosition.y < Box.Rect.height && MousePosition.y > Box.Rect.height - DRAG_OBLIGINGNESS)
+            {
+                CurrentVerticalDragAnchor = DragAnchor.BOTTOM;
+            }
+            else
+            {
+                CurrentVerticalDragAnchor = null;
             }
         }
     }

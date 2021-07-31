@@ -39,16 +39,16 @@ namespace TTTReborn.UI
                 return;
             }
 
+            Vector2 position = new Vector2(
+                (MousePosition.x - _draggingMouseStartPosition.x) + Parent.Box.Rect.left,
+                (MousePosition.y - _draggingMouseStartPosition.y) + Parent.Box.Rect.top
+            );
+
             float screenWidth = Screen.Width;
             float screenHeight = Screen.Height;
 
-            Vector2 position = new Vector2(
-                (MousePosition.x - _draggingMouseStartPosition.x) + Parent.ComputedStyle.Left.Value.GetPixels(screenWidth),
-                (MousePosition.y - _draggingMouseStartPosition.y) + Parent.ComputedStyle.Top.Value.GetPixels(screenHeight)
-            );
-
-            float parentWidth = Parent.ComputedStyle.Width.Value.GetPixels(screenWidth);
-            float parentHeight = Parent.ComputedStyle.Height.Value.GetPixels(screenHeight);
+            float parentWidth = Parent.Box.Rect.width;
+            float parentHeight = Parent.Box.Rect.height;
 
             if (position.x < 0f)
             {
