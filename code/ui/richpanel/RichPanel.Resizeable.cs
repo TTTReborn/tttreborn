@@ -234,6 +234,31 @@ namespace TTTReborn.UI
                     break;
             }
 
+            // This fixes +-1f jiggling
+            if (Math.Ceiling(Math.Ceiling(width * _boxDataBeforeDraggingStarted.TransformRatio.Value.x) / _boxDataBeforeDraggingStarted.TransformRatio.Value.x) != width)
+            {
+                if (CurrentHorizontalDragAnchor == DragAnchor.RIGHT)
+                {
+                    left -= 1f;
+                }
+                else if (CurrentHorizontalDragAnchor == DragAnchor.LEFT)
+                {
+                    width -= 1f;
+                }
+            }
+
+            if (Math.Ceiling(Math.Ceiling(height * _boxDataBeforeDraggingStarted.TransformRatio.Value.y) / _boxDataBeforeDraggingStarted.TransformRatio.Value.y) != height)
+            {
+                if (CurrentVerticalDragAnchor == DragAnchor.BOTTOM)
+                {
+                    top -= 1f;
+                }
+                else if (CurrentVerticalDragAnchor == DragAnchor.TOP)
+                {
+                    height -= 1f;
+                }
+            }
+
             if (minWidth > width || maxWidth < width)
             {
                 width = minWidth > width ? minWidth : maxWidth;
