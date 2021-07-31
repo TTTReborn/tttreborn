@@ -20,7 +20,7 @@ namespace TTTReborn.Player
         public bool RegisterType(string ammoType, int amount = 0)
         {
             var ammo = ammoType.ToLower();
-            if (ammo.Length < 1 || ammo == string.Empty)
+            if (string.IsNullOrEmpty(ammo))
             {
                 return false;
             }
