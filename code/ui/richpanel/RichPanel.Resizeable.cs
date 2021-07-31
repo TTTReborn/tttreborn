@@ -130,7 +130,7 @@ namespace TTTReborn.UI
         }
         private DragAnchor? _currentVerticalDragAnchor = null;
 
-        public const float DRAG_OBLIGINGNESS = 16f;
+        public const float DRAG_OBLIGINGNESS = 8f;
 
         private Vector2 _draggingMouseStartPosition;
         private BoxData _boxDataBeforeDraggingStarted;

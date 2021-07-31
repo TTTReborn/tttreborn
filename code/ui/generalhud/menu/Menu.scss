@@ -29,4 +29,8 @@ Menu {
 
         background-color: black;
     }
+
+    &.draggable {
+        cursor: pointer;
+    }
 }
