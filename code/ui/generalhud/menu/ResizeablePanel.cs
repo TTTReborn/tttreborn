@@ -15,7 +15,8 @@ namespace TTTReborn.UI
 
     public partial class ResizeablePanel : Panel
     {
-        public enum DragAnchor {
+        public enum DragAnchor
+        {
             TOPLEFT,
             TOP,
             TOPRIGHT,
