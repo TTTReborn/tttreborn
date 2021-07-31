@@ -50,14 +50,16 @@ namespace TTTReborn.UI
 
         private DragAnchor? _currentDragAnchor = null;
 
-        public const float DRAG_OBLIGINGNESS = 8f;
+        public const float DRAG_OBLIGINGNESS = 16f;
 
         private Vector2 _draggingMouseStartPosition;
-        private Vector2 _sizeBeforeDraggingStarted;
+        private Box _boxBeforeDraggingStarted;
 
         public ResizeablePanel() : base()
         {
             StyleSheet.Load("/ui/generalhud/menu/ResizeablePanel.scss");
+
+            //AcceptsFocus = true;
         }
 
         protected override void OnMouseDown(MousePanelEvent e)
@@ -70,10 +72,7 @@ namespace TTTReborn.UI
             }
 
             _draggingMouseStartPosition = MousePosition;
-            _sizeBeforeDraggingStarted = new Vector2(
-                ComputedStyle.Width.Value.GetPixels(Screen.Width),
-                ComputedStyle.Height.Value.GetPixels(Screen.Height)
-            );
+            _boxBeforeDraggingStarted = Box;
 
             IsDragging = true;
         }
@@ -102,54 +101,52 @@ namespace TTTReborn.UI
                 (MousePosition.y - _draggingMouseStartPosition.y)
             );
 
-            Vector2 position = new Vector2(
-                ComputedStyle.Left.Value.GetPixels(screenWidth),
-                ComputedStyle.Top.Value.GetPixels(screenHeight)
-            );
-
-            Vector2 size = new Vector2(
-                ComputedStyle.Width.Value.GetPixels(screenWidth),
-                ComputedStyle.Height.Value.GetPixels(screenHeight)
-            );
-
-            float width = size.x;
-            float height = size.y;
-            float x = position.x;
-            float y = position.y;
+            float width = Box.Rect.width;
+            float height = Box.Rect.height;
+            float x = Box.Left;
+            float y = Box.Top;
 
             switch (CurrentDragAnchor)
             {
                 case DragAnchor.LEFT:
-                    width = size.x - delta.x;
-                    x = position.x + delta.x;
+                    width = _boxBeforeDraggingStarted.Rect.width - delta.x;
+                    x = _boxBeforeDraggingStarted.Rect.left + delta.x;
 
                     break;
                 case DragAnchor.RIGHT:
-                    width = _sizeBeforeDraggingStarted.x + delta.x;
-                    height = _sizeBeforeDraggingStarted.y + delta.y;
+                    width = _boxBeforeDraggingStarted.Rect.width + delta.x;
+                    height = _boxBeforeDraggingStarted.Rect.height + delta.y;
 
                     break;
             }
 
-            // TODO improve fast mouse dragging (set x to min left and width to max width etc.)
-            if (ComputedStyle.MinWidth != null && ComputedStyle.MinWidth.Value.GetPixels(screenWidth) > width)
+            float minWidth = ComputedStyle.MinWidth != null ? ComputedStyle.MinWidth.Value.GetPixels(screenWidth) : width;
+            float maxWidth = ComputedStyle.MaxWidth != null ? ComputedStyle.MaxWidth.Value.GetPixels(screenWidth) : width;
+            float minHeight = ComputedStyle.MinHeight != null ? ComputedStyle.MinHeight.Value.GetPixels(screenHeight) : height;
+            float maxHeight = ComputedStyle.MaxHeight != null ? ComputedStyle.MaxHeight.Value.GetPixels(screenHeight) : height;
+
+            if (minWidth > width)
             {
-                return;
+                width = minWidth;
+                x = _boxBeforeDraggingStarted.Rect.right - minWidth;
             }
 
-            if (ComputedStyle.MaxWidth != null && ComputedStyle.MaxWidth.Value.GetPixels(screenWidth) < width)
+            if (maxWidth < width)
             {
-                return;
+                width = maxWidth;
+                x = _boxBeforeDraggingStarted.Rect.right - maxWidth;
             }
 
-            if (ComputedStyle.MinHeight != null && ComputedStyle.MinHeight.Value.GetPixels(screenHeight) > height)
+            if (minHeight > height)
             {
-                return;
+                height = minHeight;
+                y = _boxBeforeDraggingStarted.Rect.bottom - minHeight;
             }
 
-            if (ComputedStyle.MaxHeight != null && ComputedStyle.MaxHeight.Value.GetPixels(screenHeight) < height)
+            if (maxHeight < height)
             {
-                return;
+                height = maxHeight;
+                y = _boxBeforeDraggingStarted.Rect.bottom - maxHeight;
             }
 
             Style.Width = Length.Pixels(width);
@@ -166,20 +163,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            float screenWidth = Screen.Width;
-            float screenHeight = Screen.Height;
-
-            Vector2 size = new Vector2(
-                ComputedStyle.Width.Value.GetPixels(screenWidth),
-                ComputedStyle.Height.Value.GetPixels(screenHeight)
-            );
-
-            Vector2 position = new Vector2(
-                ComputedStyle.Left.Value.GetPixels(screenWidth),
-                ComputedStyle.Top.Value.GetPixels(screenHeight)
-            );
-
-            if (MousePosition.x > -DRAG_OBLIGINGNESS && MousePosition.x < DRAG_OBLIGINGNESS)
+            if (MousePosition.x > 0f && MousePosition.x < DRAG_OBLIGINGNESS)
             {
                 CurrentDragAnchor = DragAnchor.LEFT;
             }
