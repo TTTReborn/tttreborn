@@ -1,3 +1,6 @@
+using System;
+using System.Numerics;
+
 using Sandbox;
 using Sandbox.UI;
 
@@ -50,47 +53,61 @@ namespace TTTReborn.UI
             float parentWidth = Parent.Box.Rect.width;
             float parentHeight = Parent.Box.Rect.height;
 
-            if (position.x < 0f)
+            float left = position.x;
+            float top = position.y;
+
+            Matrix? matrix = Parent.GlobalMatrix;
+
+            if (matrix != null)
             {
-                Parent.Style.Left = Length.Pixels(0f);
+                Matrix4x4 matrix4X4 = matrix.Value.Numerics;
+
+                position.x = position.x - matrix4X4.M41;
+                position.y = position.y - matrix4X4.M42;
+            }
+
+            if (position.x < 0)
+            {
+                left = 0f;
+
+                if (matrix != null)
+                {
+                    left += matrix.Value.Numerics.M41;
+                }
             }
             else if (position.x + parentWidth > screenWidth)
             {
-                Parent.Style.Left = Length.Pixels(screenWidth - parentWidth);
-            }
-            else
-            {
-                Parent.Style.Left = Length.Pixels(position.x);
+                left = (screenWidth - parentWidth);
+
+                if (matrix != null)
+                {
+                    left += matrix.Value.Numerics.M41;
+                }
             }
 
             if (position.y < 0f)
             {
-                Parent.Style.Top = Length.Pixels(0f);
+                top = 0f;
+
+                if (matrix != null)
+                {
+                    top += matrix.Value.Numerics.M42;
+                }
             }
             else if (position.y + parentHeight > screenHeight)
             {
-                Parent.Style.Top = Length.Pixels(screenHeight - parentHeight);
+                top = screenHeight - parentHeight;
+
+                if (matrix != null)
+                {
+                    top += matrix.Value.Numerics.M42;
+                }
             }
-            else
-            {
-                Parent.Style.Top = Length.Pixels(position.y);
-            }
+
+            Parent.Style.Left = Length.Pixels(left);
+            Parent.Style.Top = Length.Pixels(top);
 
             Parent.Style.Dirty();
-        }
-
-        private bool IsInScreen(Vector2 position)
-        {
-            if (position.x < 0f || position.x > Screen.Width)
-            {
-                return false;
-            }
-            if (position.y < 0f || position.y > Screen.Height)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }
