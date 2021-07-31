@@ -185,8 +185,8 @@ namespace TTTReborn.UI
 
             float width = Box.Rect.width;
             float height = Box.Rect.height;
-            float x = Box.Rect.left;
-            float y = Box.Rect.top;
+            float left = Box.Rect.left;
+            float top = Box.Rect.top;
 
             float minWidth = ComputedStyle.MinWidth != null ? ComputedStyle.MinWidth.Value.GetPixels(screenWidth) : width;
             float maxWidth = ComputedStyle.MaxWidth != null ? ComputedStyle.MaxWidth.Value.GetPixels(screenWidth) : width;
@@ -197,7 +197,7 @@ namespace TTTReborn.UI
             {
                 case DragAnchor.LEFT:
                     width = Box.Rect.width - delta.x;
-                    x = Box.Rect.left + delta.x;
+                    left = Box.Rect.left + delta.x;
 
                     break;
                 case DragAnchor.RIGHT:
@@ -210,7 +210,7 @@ namespace TTTReborn.UI
             {
                 case DragAnchor.TOP:
                     height = Box.Rect.height - delta.y;
-                    y = Box.Rect.top + delta.y;
+                    top = Box.Rect.top + delta.y;
 
                     break;
                 case DragAnchor.BOTTOM:
@@ -225,7 +225,7 @@ namespace TTTReborn.UI
 
                 if (CurrentHorizontalDragAnchor == DragAnchor.LEFT)
                 {
-                    x = _boxDataBeforeDraggingStarted.Right - minWidth;
+                    left = _boxDataBeforeDraggingStarted.Right - minWidth;
                 }
             }
 
@@ -235,7 +235,7 @@ namespace TTTReborn.UI
 
                 if (CurrentHorizontalDragAnchor == DragAnchor.LEFT)
                 {
-                    x = _boxDataBeforeDraggingStarted.Right - maxWidth;
+                    left = _boxDataBeforeDraggingStarted.Right - maxWidth;
                 }
             }
 
@@ -245,7 +245,7 @@ namespace TTTReborn.UI
 
                 if (CurrentVerticalDragAnchor == DragAnchor.TOP)
                 {
-                    y = _boxDataBeforeDraggingStarted.Bottom - minHeight;
+                    top = _boxDataBeforeDraggingStarted.Bottom - minHeight;
                 }
             }
 
@@ -255,14 +255,14 @@ namespace TTTReborn.UI
 
                 if (CurrentVerticalDragAnchor == DragAnchor.TOP)
                 {
-                    y = _boxDataBeforeDraggingStarted.Bottom - maxHeight;
+                    top = _boxDataBeforeDraggingStarted.Bottom - maxHeight;
                 }
             }
 
             Style.Width = Length.Pixels(width);
             Style.Height = Length.Pixels(height);
-            Style.Left = Length.Pixels(x);
-            Style.Top = Length.Pixels(y);
+            Style.Left = Length.Pixels(left);
+            Style.Top = Length.Pixels(top);
             Style.Dirty();
         }
 
