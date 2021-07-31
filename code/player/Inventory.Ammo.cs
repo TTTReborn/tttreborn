@@ -9,7 +9,7 @@ namespace TTTReborn.Player
 {
     public partial class AmmoInventory
     {
-        private List<int> AmmoList { get; set; } = new();
+        private Dictionary<string, int> AmmoList { get; set; } = new();
         private Inventory Inventory;
 
         public AmmoInventory(Inventory inventory) : base()
@@ -17,58 +17,84 @@ namespace TTTReborn.Player
             Inventory = inventory;
         }
 
-        public int Count(AmmoType ammoType)
+        public bool RegisterType(string ammoType, int amount = 0)
         {
-            int iAmmoType = (int) ammoType;
-
-            if (AmmoList == null || AmmoList.Count <= iAmmoType)
-            {
-                return 0;
-            }
-
-            return AmmoList[iAmmoType];
-        }
-
-        public bool Set(AmmoType ammoType, int amount)
-        {
-            int iAmmoType = (int) ammoType;
-
-            if (AmmoList == null)
+            var ammo = ammoType.ToLower();
+            if (ammo.Length < 1 || ammo == string.Empty)
             {
                 return false;
             }
-
-            while (AmmoList.Count <= iAmmoType)
+            if (!AmmoList.ContainsKey(ammo))
             {
-                AmmoList.Add(0);
+                AmmoList.Add(ammo, amount);
             }
-
-            AmmoList[iAmmoType] = amount;
 
             if (Host.IsServer)
             {
                 TTTPlayer player = Inventory.Owner as TTTPlayer;
 
-                player.ClientSetAmmo(To.Single(player), ammoType, amount);
+                player.ClientRegisterAmmo(To.Single(player), ammo, amount);
             }
-
             return true;
         }
 
-        public bool Give(AmmoType ammoType, int amount)
+        public int Count(string ammoType)
         {
+            var ammo = ammoType.ToLower();
+
+            if (AmmoList == null || !AmmoList.ContainsKey(ammo))
+            {
+                return 0;
+            }
+
+            return AmmoList[ammo];
+        }
+
+        public bool Set(string ammoType, int amount)
+        {
+            var ammo = ammoType.ToLower();
+
             if (AmmoList == null)
             {
                 return false;
             }
 
-            Set(ammoType, Count(ammoType) + amount);
+            while (!AmmoList.ContainsKey(ammo))
+            {
+                AmmoList.Add(ammo, 0);
+            }
+
+            AmmoList[ammo] = amount;
+
+
+            if (Host.IsServer)
+            {
+                TTTPlayer player = Inventory.Owner as TTTPlayer;
+
+                player.ClientSetAmmo(To.Single(player), ammo, amount);
+            }
 
             return true;
         }
 
-        public int Take(AmmoType ammoType, int amount)
+        public bool Give(string ammoType, int amount)
         {
+            var ammo = ammoType.ToLower();
+
+            if (AmmoList == null)
+            {
+                return false;
+            }
+
+            Set(ammo, Count(ammo) + amount);
+
+            return true;
+        }
+
+        public int Take(string ammoType, int amount)
+        {
+            var ammo = ammoType.ToLower();
+
             if (AmmoList == null)
             {
                 return 0;

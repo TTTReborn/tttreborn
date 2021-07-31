@@ -20,7 +20,7 @@ namespace TTTReborn.Items
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public virtual SlotType SlotType => SlotType.Primary;
-        public virtual AmmoType AmmoType => AmmoType.Pistol;
+        public virtual string AmmoType => "pistol";
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
         public virtual float DeployTime => 0.6f;
@@ -104,6 +104,10 @@ namespace TTTReborn.Items
             base.Spawn();
 
             AmmoClip = ClipSize;
+            if (Owner is TTTPlayer owner)
+            {
+                (owner.Inventory as Inventory).Ammo.RegisterType(AmmoType);
+            }
 
             SetModel("weapons/rust_pistol/rust_pistol.vmdl");
 

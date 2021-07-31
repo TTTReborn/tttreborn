@@ -13,7 +13,7 @@ namespace TTTReborn.Items
         public override float ReloadTime => 2.8f;
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 8;
-        public override AmmoType AmmoType => AmmoType.SMG;
+        public override string AmmoType => "smg";
 
         public virtual int Price => 100;
 
