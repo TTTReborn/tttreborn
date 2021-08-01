@@ -9,7 +9,7 @@ namespace TTTReborn.Player
 {
     public partial class AmmoInventory
     {
-        private Dictionary<string, int> AmmoList { get; private set; } = new();
+        private Dictionary<string, int> AmmoList { get; set; } = new();
         private Inventory Inventory;
 
         public AmmoInventory(Inventory inventory) : base()
