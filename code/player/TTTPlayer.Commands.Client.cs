@@ -12,7 +12,7 @@ namespace TTTReborn.Player
         {
             List<Client> playerList = Client.All.ToList();
 
-            for (int i = 0; i < playerList.ToList().Count; i++)
+            for (int i = 0; i < playerList.Count; i++)
             {
                 Log.Info($"Player (ID: '{i}'): {playerList[i].Name}");
             }
