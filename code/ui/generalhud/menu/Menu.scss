@@ -10,8 +10,7 @@ Menu {
     max-height: 600px;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    margin: auto;
+    //transform: translateX(-50%) translateY(-50%); // waiting for https://github.com/Facepunch/sbox-issues/issues/551
     position: absolute;
 
     color: #fafafa;
@@ -26,12 +25,32 @@ Menu {
         pointer-events: none;
     }
 
-    &.draggable {
+    &.draggable,
+    Button {
         cursor: pointer;
     }
 
     PanelContent {
-        flex-direction: column;
+        flex-grow: 1;
         padding: 10px;
+        overflow: scroll;
+
+        &.mainmenu {
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            .menuButton {
+                margin-bottom: 5px;
+                padding: 40px;
+
+                background-color: #000c;
+                border: 1px solid #1b1b1b;
+                border-radius: 8px;
+            }
+        }
+
+        &.settings {
+            flex-direction: column;
+        }
     }
 }

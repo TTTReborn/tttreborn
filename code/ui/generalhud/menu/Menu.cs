@@ -27,30 +27,38 @@ namespace TTTReborn.UI.Menu
                 _menuHeader.PreviousButton.SetClass("disabled", !MenuContent.CanPrevious);
                 _menuHeader.NextButton.SetClass("disabled", !MenuContent.CanNext);
 
-                _menuHeader.SetTitle($"{_baseTitle} - {panelContentData.Title}");
+                if (!string.IsNullOrEmpty(panelContentData.Title))
+                {
+                    _menuHeader.SetTitle($"{_baseTitle} > {panelContentData.Title}");
+                }
+                else
+                {
+                    _menuHeader.SetTitle(_baseTitle);
+                }
             };
 
             MenuContent.SetPanelContent((panelContent) =>
             {
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-            }, "Test");
-
-            MenuContent.SetPanelContent((panelContent) =>
-            {
-                panelContent.Add.Label("Test2");
-                panelContent.Add.Label("Test2");
-                panelContent.Add.Label("Test2");
-                panelContent.Add.Label("Test2");
-                panelContent.Add.Label("Test2");
-                panelContent.Add.Label("Test2");
-            }, "Test2");
+                for (int i = 0; i < 12; i++)
+                {
+                    panelContent.Add.Button("Settings", "menuButton", () => OpenSettings(panelContent));
+                }
+            }, "", "mainmenu");
 
             IsDraggable = true;
+        }
+
+        private void OpenSettings(PanelContent menuContent)
+        {
+            menuContent.SetPanelContent((panelContent) =>
+            {
+                panelContent.Add.Label("Test");
+                panelContent.Add.Label("Test");
+                panelContent.Add.Label("Test");
+                panelContent.Add.Label("Test");
+                panelContent.Add.Label("Test");
+                panelContent.Add.Label("Test");
+            }, "Settings", "settings");
         }
     }
 }

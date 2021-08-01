@@ -7,13 +7,15 @@ namespace TTTReborn.UI
 {
     public struct PanelContentData
     {
-        public string Title;
         public Action<PanelContent> Content;
+        public string Title;
+        public string ClassName;
 
-        public PanelContentData(Action<PanelContent> content, string title = "")
+        public PanelContentData(Action<PanelContent> content, string title = "", string className = "")
         {
             Content = content;
             Title = title;
+            ClassName = className;
         }
     }
 
@@ -39,6 +41,8 @@ namespace TTTReborn.UI
 
         public Action<PanelContentData> OnPanelContentUpdated { get; set; }
 
+        public PanelContentData? CurrentPanelContentData { get; private set; }
+
         private readonly List<PanelContentData> _contentHistory = new();
 
         private int _historyIndex = 0;
@@ -56,9 +60,16 @@ namespace TTTReborn.UI
             DeleteChildren(true);
         }
 
-        public void SetPanelContent(Action<PanelContent> createContent, string title = "")
+        public void SetPanelContent(Action<PanelContent> createContent, string title = "", string className = "")
         {
-            _contentHistory.Add(new PanelContentData(createContent, title));
+            int historyOffset = _contentHistory.Count - _historyIndex - 1;
+
+            if (historyOffset > 0)
+            {
+                _contentHistory.RemoveRange(_historyIndex + 1, historyOffset);
+            }
+
+            _contentHistory.Add(new PanelContentData(createContent, title, className));
             _historyIndex = _contentHistory.Count - 1;
 
             UpdatePanelContent();
@@ -92,6 +103,13 @@ namespace TTTReborn.UI
         {
             DeleteChildren(true);
 
+            string oldClassName = CurrentPanelContentData?.ClassName;
+
+            if (!string.IsNullOrEmpty(oldClassName))
+            {
+                SetClass(oldClassName, false);
+            }
+
             PanelContentData panelContentData = _contentHistory[_historyIndex];
 
             Title = panelContentData.Title;
@@ -99,6 +117,13 @@ namespace TTTReborn.UI
             panelContentData.Content(this);
 
             OnPanelContentUpdated?.Invoke(panelContentData);
+
+            CurrentPanelContentData = panelContentData;
+
+            if (!string.IsNullOrEmpty(panelContentData.ClassName))
+            {
+                SetClass(panelContentData.ClassName, true);
+            }
         }
     }
 }
