@@ -5,32 +5,57 @@ Menu {
 
     font-family: Poppins;
     min-width: 600px;
+    width: 600px;
     max-width: 800px;
     min-height: 400px;
+    height: 480px;
     max-height: 600px;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    margin: auto;
+    //transform: translateX(-50%) translateY(-50%); // waiting for https://github.com/Facepunch/sbox-issues/issues/551
     position: absolute;
 
     color: #fafafa;
     font-family: Poppins;
     font-weight: 500;
     pointer-events: all;
+    flex-direction: column;
 
     &.hide {
         display: none;
         pointer-events: none;
     }
 
-    DraggableHeader {
-        border-radius: 8px 8px 0px 0px;
-
-        background-color: black;
+    &.draggable,
+    Button {
+        cursor: pointer;
     }
 
-    &.draggable {
-        cursor: pointer;
+    PanelContent {
+        flex-grow: 1;
+        padding: 10px;
+        overflow: scroll;
+
+        &.mainmenu {
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            .menuButton {
+                margin-bottom: 5px;
+                padding: 40px;
+
+                background-color: #000c;
+                border: 1px solid #1b1b1b;
+                border-radius: 8px;
+
+                font-size: 42px;
+                font-family: MaterialIcons;
+                color: white;
+            }
+        }
+
+        &.settings {
+            flex-direction: column;
+        }
     }
 }

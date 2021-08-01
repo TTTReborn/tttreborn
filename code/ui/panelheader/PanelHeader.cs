@@ -9,11 +9,15 @@ namespace TTTReborn.UI
 
         private Button _closeButton;
 
-        public PanelHeader() : base()
+        public PanelHeader(Panel parent = null) : base()
         {
+            Parent = parent ?? Parent;
+
             StyleSheet.Load("/ui/panelheader/PanelHeader.scss");
 
             _title = Add.Label("", "title");
+
+            OnCreateHeader();
 
             _closeButton = Add.Button("╳", "closeButton", () =>
             {
@@ -31,6 +35,11 @@ namespace TTTReborn.UI
         public void SetTitle(string text)
         {
             _title.Text = text;
+        }
+
+        public virtual void OnCreateHeader()
+        {
+
         }
     }
 }

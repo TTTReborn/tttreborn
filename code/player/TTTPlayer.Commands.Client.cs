@@ -3,6 +3,8 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.UI.Menu;
+
 namespace TTTReborn.Player
 {
     public partial class TTTPlayer
@@ -21,7 +23,7 @@ namespace TTTReborn.Player
         [ClientCmd(Name = "ttt_menu")]
         public static void ToggleMenu()
         {
-            UI.Menu.Instance.IsShowing = !UI.Menu.Instance.IsShowing;
+            Menu.Instance.IsShowing = !Menu.Instance.IsShowing;
         }
     }
 }
