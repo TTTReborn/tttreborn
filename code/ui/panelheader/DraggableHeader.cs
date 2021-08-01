@@ -11,9 +11,9 @@ namespace TTTReborn.UI
 
         private Vector2 _draggingMouseStartPosition;
 
-        public DraggableHeader(Panel parent) : base()
+        public DraggableHeader(Panel parent = null) : base(parent)
         {
-            Parent = parent;
+            Parent = parent ?? Parent;
 
             StyleSheet.Load("/ui/panelheader/DraggableHeader.scss");
         }
