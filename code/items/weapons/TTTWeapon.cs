@@ -104,10 +104,6 @@ namespace TTTReborn.Items
             base.Spawn();
 
             AmmoClip = ClipSize;
-            if (Owner is TTTPlayer owner)
-            {
-                (owner.Inventory as Inventory).Ammo.RegisterType(AmmoType);
-            }
 
             SetModel("weapons/rust_pistol/rust_pistol.vmdl");
 

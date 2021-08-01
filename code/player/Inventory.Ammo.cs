@@ -17,27 +17,6 @@ namespace TTTReborn.Player
             Inventory = inventory;
         }
 
-        public bool RegisterType(string ammoType, int amount = 0)
-        {
-            var ammo = ammoType.ToLower();
-            if (string.IsNullOrEmpty(ammo))
-            {
-                return false;
-            }
-            if (!AmmoList.ContainsKey(ammo))
-            {
-                AmmoList.Add(ammo, amount);
-            }
-
-            if (Host.IsServer)
-            {
-                TTTPlayer player = Inventory.Owner as TTTPlayer;
-
-                player.ClientRegisterAmmo(To.Single(player), ammo, amount);
-            }
-            return true;
-        }
-
         public int Count(string ammoType)
         {
             var ammo = ammoType.ToLower();
@@ -54,7 +33,7 @@ namespace TTTReborn.Player
         {
             var ammo = ammoType.ToLower();
 
-            if (AmmoList == null)
+            if (AmmoList == null || string.IsNullOrEmpty(ammo))
             {
                 return false;
             }
