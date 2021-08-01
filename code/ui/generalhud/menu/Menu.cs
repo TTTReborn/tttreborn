@@ -11,8 +11,6 @@ namespace TTTReborn.UI.Menu
 
         public readonly PanelContent MenuContent;
 
-        private readonly string _baseTitle = "Main Menu";
-
         public Menu() : base()
         {
             Instance = this;
@@ -20,22 +18,13 @@ namespace TTTReborn.UI.Menu
             StyleSheet.Load("/ui/generalhud/menu/Menu.scss");
 
             _menuHeader = new MenuHeader(this);
-            _menuHeader.SetTitle(_baseTitle);
 
             MenuContent = new PanelContent(this);
             MenuContent.OnPanelContentUpdated = (panelContentData) =>
             {
+                _menuHeader.SetTitle(panelContentData.Title ?? "");
                 _menuHeader.PreviousButton.SetClass("disabled", !MenuContent.CanPrevious);
                 _menuHeader.NextButton.SetClass("disabled", !MenuContent.CanNext);
-
-                if (!string.IsNullOrEmpty(panelContentData.Title))
-                {
-                    _menuHeader.SetTitle($"{_baseTitle} > {panelContentData.Title}");
-                }
-                else
-                {
-                    _menuHeader.SetTitle(_baseTitle);
-                }
             };
 
             MenuContent.SetPanelContent((panelContent) =>
