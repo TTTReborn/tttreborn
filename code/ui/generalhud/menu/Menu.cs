@@ -1,3 +1,4 @@
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.Menu
@@ -41,7 +42,10 @@ namespace TTTReborn.UI.Menu
             {
                 for (int i = 0; i < 12; i++)
                 {
-                    panelContent.Add.Button("Settings", "menuButton", () => OpenSettings(panelContent));
+                    Button button = new Button("settings", "", () => OpenSettings(panelContent));
+                    button.AddClass("menuButton");
+
+                    panelContent.AddChild(button);
                 }
             }, "", "mainmenu");
 
