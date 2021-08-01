@@ -23,9 +23,22 @@ namespace TTTReborn.UI.Menu
             MenuContent.OnPanelContentUpdated = (panelContentData) =>
             {
                 _menuHeader.SetTitle(panelContentData.Title ?? "");
+                _menuHeader.HomeButton.SetClass("disabled", panelContentData.ClassName == "home");
                 _menuHeader.PreviousButton.SetClass("disabled", !MenuContent.CanPrevious);
                 _menuHeader.NextButton.SetClass("disabled", !MenuContent.CanNext);
             };
+
+            OpenHomepage();
+
+            IsDraggable = true;
+        }
+
+        public void OpenHomepage()
+        {
+            if (MenuContent.CurrentPanelContentData?.ClassName == "home")
+            {
+                return;
+            }
 
             MenuContent.SetPanelContent((panelContent) =>
             {
@@ -36,12 +49,10 @@ namespace TTTReborn.UI.Menu
 
                     panelContent.AddChild(button);
                 }
-            }, "", "mainmenu");
-
-            IsDraggable = true;
+            }, "", "home");
         }
 
-        private void OpenSettings(PanelContent menuContent)
+        public void OpenSettings(PanelContent menuContent)
         {
             menuContent.SetPanelContent((panelContent) =>
             {
