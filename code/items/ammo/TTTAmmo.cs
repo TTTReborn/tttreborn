@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_ammo"), Hammer.Skip]
+    [Library("ttt_ammo")]
     public abstract partial class TTTAmmo : Prop
     {
         /// <summary>
@@ -27,6 +27,11 @@ namespace TTTReborn.Items
         private int CurrentAmmo { get; set; }
         private int AmmoEntMax { get; set; }
 
+        /// <summary>
+        /// Fired when a player picks up any amount of ammo from the entity.
+        /// </summary>
+        protected Output OnPickup { get; set; }
+
         public virtual string ModelPath => "models/ammo_buckshot.vmdl";
 
         public override void Spawn()
@@ -35,7 +40,6 @@ namespace TTTReborn.Items
 
             SetModel(ModelPath);
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
-            RemoveCollisionLayer(CollisionLayer.Player);
 
             AmmoEntMax = Amount;
             CurrentAmmo = Amount;
@@ -51,7 +55,7 @@ namespace TTTReborn.Items
                     var ammoType = Type.ToLower();
                     var playerInv = player.Inventory as Inventory;
 
-                    if (playerInv.GetAmmoTypes().Contains(ammoType))
+                    if (playerInv.GetAmmoTypes().Contains(ammoType)) //Possible optimization point by caching weapons that can our ammo, rather than checking if player has our ammo.
                     {
                         var playerAmount = playerInv.Ammo.Count(ammoType);
 
@@ -60,6 +64,7 @@ namespace TTTReborn.Items
                             var amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
                             playerInv.Ammo.Give(ammoType, amountGiven);
                             CurrentAmmo -= amountGiven;
+                            OnPickup.Fire(other);
 
                             if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
                             {
@@ -78,7 +83,7 @@ namespace TTTReborn.Items
 
         public override void TakeDamage(DamageInfo info)
         {
-            //Excerpt from Sandbox.BasePhysics | Removes the ability to remove entity health and destroy, but will start calculate appropriate physics for damage.
+            //Excerpt from Sandbox.BasePhysics | Removes the ability to remove entity health and destroy, but will still calculate appropriate physics for damage.
             //Unsure how Prop.Invulnerable works in comparison to this. Might be a better solution.
             var body = info.Body;
             if (!body.IsValid())

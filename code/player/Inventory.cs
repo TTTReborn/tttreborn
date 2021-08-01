@@ -108,7 +108,6 @@ namespace TTTReborn.Player
             return List.Any(x => x.GetType() == t);
         }
 
-        /// !!!!!
         public IList<string> GetAmmoTypes()
         {
             var types = new List<string>();
