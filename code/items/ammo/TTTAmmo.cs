@@ -1,5 +1,7 @@
 using System;
+
 using Sandbox;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -10,16 +12,16 @@ namespace TTTReborn.Items
         /// <summary>
         /// String definition of ammo type, should match TTTWeapon.AmmoType
         /// </summary>
-        public virtual string AmmoType { get; set; }
+        public virtual string Type { get; set; }
         /// <summary>
         /// Amount of Ammo within Entity.
         /// </summary>
-        public virtual int AmmoAmount { get; set; }
+        public virtual int Amount { get; set; }
 
         /// <summary>
         /// Maximum amount of ammo player can carry in their inventory.
         /// </summary>
-        public virtual int MaxAmmo { get; set; }
+        public virtual int Max { get; set; }
 
         [Net]
         private int CurrentAmmo { get; set; }
@@ -35,8 +37,8 @@ namespace TTTReborn.Items
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
             RemoveCollisionLayer(CollisionLayer.Player);
 
-            AmmoEntMax = AmmoAmount;
-            CurrentAmmo = AmmoAmount;
+            AmmoEntMax = Amount;
+            CurrentAmmo = Amount;
         }
 
         public override void Touch(Entity other)
@@ -44,18 +46,18 @@ namespace TTTReborn.Items
             base.Touch(other);
             if (IsServer)
             {
-                if(other is TTTPlayer player)
+                if (other is TTTPlayer player)
                 {
-                    var ammoType = AmmoType.ToLower();
+                    var ammoType = Type.ToLower();
                     var playerInv = player.Inventory as Inventory;
 
                     if (playerInv.GetAmmoTypes().Contains(ammoType))
                     {
                         var playerAmount = playerInv.Ammo.Count(ammoType);
 
-                        if (MaxAmmo >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25)))
+                        if (Max >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25)))
                         {
-                            var amountGiven = Math.Min(CurrentAmmo, MaxAmmo - playerAmount);
+                            var amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
                             playerInv.Ammo.Give(ammoType, amountGiven);
                             CurrentAmmo -= amountGiven;
 

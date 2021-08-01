@@ -113,9 +113,9 @@ namespace TTTReborn.Player
         {
             var types = new List<string>();
 
-            foreach(var entity in List)
+            foreach (var entity in List)
             {
-                if(entity is TTTWeapon wep)
+                if (entity is TTTWeapon wep)
                 {
                     if (!types.Contains(wep.AmmoType))
                     {

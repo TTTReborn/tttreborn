@@ -53,6 +53,9 @@ namespace TTTReborn.Items
 
         public string Name { get; }
 
+        private const int AmmoDropPositionOffset = 50;
+        private const int AmmoDropVelocity = 500;
+
         public TTTWeapon() : base()
         {
             LibraryAttribute attribute = Library.GetAttribute(GetType());
@@ -157,21 +160,19 @@ namespace TTTReborn.Items
                 }
             }
 
-            //No idea where else to put this. So it goes here.
             if (Input.Released(InputButton.View) && AmmoClip > 0) //Todo: Move this to be a bindable key (default Z???)
             {
                 if (IsServer)
                 {
                     var ammoBox = new BuckshotAmmo()
                     {
-                        AmmoAmount = AmmoClip,
-                        Position = Owner.EyePos + Owner.EyeRot.Forward * 50,
+                        Position = Owner.EyePos + Owner.EyeRot.Forward * AmmoDropPositionOffset,
                         Rotation = Owner.EyeRot
                     };
-                    ammoBox.Velocity = Owner.EyeRot.Forward * 500;
-                    ammoBox.SetCurrentAmmo(AmmoClip); //Was having issues when not having this, seems AmmoAmount doesn't want to appropriately update and ends up with the default of 12.
+                    ammoBox.Velocity = Owner.EyeRot.Forward * AmmoDropVelocity;
+                    ammoBox.SetCurrentAmmo(AmmoClip);
                 }
-               
+
                 TakeAmmo(AmmoClip);
             }
 
