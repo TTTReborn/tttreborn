@@ -19,7 +19,7 @@ namespace TTTReborn.Items
         /// <summary>
         /// Maximum amount of ammo player can carry in their inventory.
         /// </summary>
-        public virtual int AmmoMax { get; set; }
+        public virtual int MaxAmmo { get; set; }
 
         [Net]
         private int CurrentAmmo { get; set; }
@@ -53,9 +53,9 @@ namespace TTTReborn.Items
                     {
                         var playerAmount = playerInv.Ammo.Count(ammoType);
 
-                        if (AmmoMax >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25)))
+                        if (MaxAmmo >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25)))
                         {
-                            var amountGiven = Math.Min(CurrentAmmo, AmmoMax - playerAmount);
+                            var amountGiven = Math.Min(CurrentAmmo, MaxAmmo - playerAmount);
                             playerInv.Ammo.Give(ammoType, amountGiven);
                             CurrentAmmo -= amountGiven;
 
