@@ -161,6 +161,24 @@ namespace TTTReborn.Items
                 }
             }
 
+            //No idea where else to put this. So it goes here.
+            if (Input.Released(InputButton.View) && AmmoClip > 0) //Todo: Move this to be a bindable key (default Z???)
+            {
+                if (IsServer)
+                {
+                    var ammoBox = new BuckshotAmmo()
+                    {
+                        AmmoAmount = AmmoClip,
+                        Position = Owner.EyePos + Owner.EyeRot.Forward * 50,
+                        Rotation = Owner.EyeRot
+                    };
+                    ammoBox.Velocity = Owner.EyeRot.Forward * 500;
+                    ammoBox.SetCurrentAmmo(AmmoClip); //Was having issues when not having this, seems AmmoAmount doesn't want to appropriately update and ends up with the default of 12.
+                }
+               
+                TakeAmmo(AmmoClip);
+            }
+
             if (!IsReloading)
             {
                 base.Simulate(owner);

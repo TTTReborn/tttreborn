@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Sandbox;
@@ -105,6 +106,24 @@ namespace TTTReborn.Player
         public bool IsCarryingType(Type t)
         {
             return List.Any(x => x.GetType() == t);
+        }
+
+        /// !!!!!
+        public IList<string> GetAmmoTypes()
+        {
+            var types = new List<string>();
+
+            foreach(var entity in List)
+            {
+                if(entity is TTTWeapon wep)
+                {
+                    if (!types.Contains(wep.AmmoType))
+                    {
+                        types.Add(wep.AmmoType);
+                    }
+                }
+            }
+            return types;
         }
 
         public override bool Drop(Entity entity)
