@@ -42,13 +42,9 @@ namespace TTTReborn.UI.Menu
 
             MenuContent.SetPanelContent((panelContent) =>
             {
-                for (int i = 0; i < 12; i++)
-                {
-                    Button button = new Button("settings", "", () => OpenSettings(panelContent));
-                    button.AddClass("menuButton");
-
-                    panelContent.AddChild(button);
-                }
+                panelContent.Add.ButtonWithIcon("settings", "", "menuButton", () => OpenSettings(panelContent));
+                panelContent.Add.ButtonWithIcon("change_circle", "", "menuButton", () => OpenChanges(panelContent));
+                panelContent.Add.ButtonWithIcon("science", "", "menuButton", () => OpenTesting(panelContent));
             }, "", "home");
         }
 
@@ -63,6 +59,28 @@ namespace TTTReborn.UI.Menu
                 panelContent.Add.Label("Test");
                 panelContent.Add.Label("Test");
             }, "Settings", "settings");
+        }
+
+        public void OpenChanges(PanelContent menuContent)
+        {
+            menuContent.SetPanelContent((panelContent) =>
+            {
+                Label textLabel = panelContent.Add.Label("Loading...");
+
+                Sandbox.Internal.Http http = new Sandbox.Internal.Http(new System.Uri("https://commits.facepunch.com/r/sbox"));
+                http.GetStringAsync().ContinueWith(result =>
+                {
+                    textLabel.Text = result.Result;
+                });
+            }, "Http", "http");
+        }
+
+        public void OpenTesting(PanelContent menuContent)
+        {
+            menuContent.SetPanelContent((panelContent) =>
+            {
+                panelContent.AddChild(new Switch());
+            }, "Testing", "testing");
         }
     }
 }
