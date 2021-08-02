@@ -171,11 +171,8 @@ namespace TTTReborn.Rounds
                     if (i < unassignedPlayers.Count)
                     {
                         int randomId = random.Next(unassignedPlayers.Count);
-                        if (unassignedPlayers[randomId].Role is NoneRole)
-                        {
-                            unassignedPlayers[randomId].SetRole(role);
-                            unassignedPlayers.RemoveAt(randomId);
-                        }
+                        unassignedPlayers[randomId].SetRole(role);
+                        unassignedPlayers.RemoveAt(randomId);
                     }
                 }
             }
