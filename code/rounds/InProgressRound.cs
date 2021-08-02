@@ -161,19 +161,20 @@ namespace TTTReborn.Rounds
 
         private void AssignRoles()
         {
-            // TODO: There should be a neater way to handle this logic.
             Random random = new Random();
-
-            int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
-
-            for (int i = 0; i < traitorCount; i++)
+            foreach (Type type in Globals.Utils.GetTypes<TTTRole>())
             {
-                List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
-                int randomId = random.Next(unassignedPlayers.Count);
+                TTTRole role = Globals.Utils.GetObjectByType<TTTRole>(type);
 
-                if (unassignedPlayers[randomId].Role is NoneRole)
+                int roleCount = role.NumberOfPlayersWithRole(Players.Count);
+                for (int i = 0; i < roleCount; ++i)
                 {
-                    unassignedPlayers[randomId].SetRole(new TraitorRole());
+                    List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
+                    int randomId = random.Next(unassignedPlayers.Count);
+                    if (unassignedPlayers[randomId].Role is NoneRole)
+                    {
+                        unassignedPlayers[randomId].SetRole(role);
+                    }
                 }
             }
 
@@ -184,7 +185,6 @@ namespace TTTReborn.Rounds
                     player.SetRole(new InnocentRole());
                 }
 
-                // send everyone their roles
                 using (Prediction.Off())
                 {
                     RPCs.ClientSetRole(To.Single(player), player, player.Role.Name);

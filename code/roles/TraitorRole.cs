@@ -44,6 +44,11 @@ namespace TTTReborn.Roles
             base.OnSelect(player);
         }
 
+        public override int NumberOfPlayersWithRole(int playerCount)
+        {
+            return (int) Math.Max(playerCount * 0.25f, 1f);
+        }
+
         public override bool CanBuy() => true;
     }
 }

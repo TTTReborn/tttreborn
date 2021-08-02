@@ -50,6 +50,11 @@ namespace TTTReborn.Roles
 
         }
 
+        public virtual int NumberOfPlayersWithRole(int playerCount)
+        {
+            return 0;
+        }
+
         public virtual bool CanBuy() => false;
     }
 }
