@@ -162,18 +162,20 @@ namespace TTTReborn.Rounds
         private void AssignRoles()
         {
             Random random = new Random();
+            List<TTTPlayer> unassignedPlayers = Players.ToList();
             foreach (Type type in Globals.Utils.GetTypes<TTTRole>())
             {
                 TTTRole role = Globals.Utils.GetObjectByType<TTTRole>(type);
-
-                int roleCount = role.NumberOfPlayersWithRole(Players.Count);
-                for (int i = 0; i < roleCount; ++i)
+                for (int i = 0; i < role.NumberOfPlayersWithRole(Players.Count); ++i)
                 {
-                    List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
-                    int randomId = random.Next(unassignedPlayers.Count);
-                    if (unassignedPlayers[randomId].Role is NoneRole)
+                    if (i < unassignedPlayers.Count)
                     {
-                        unassignedPlayers[randomId].SetRole(role);
+                        int randomId = random.Next(unassignedPlayers.Count);
+                        if (unassignedPlayers[randomId].Role is NoneRole)
+                        {
+                            unassignedPlayers[randomId].SetRole(role);
+                            unassignedPlayers.RemoveAt(randomId);
+                        }
                     }
                 }
             }
@@ -199,11 +201,6 @@ namespace TTTReborn.Rounds
                 winningTeam.Name,
                 winningTeam.Color
             );
-        }
-
-        private bool CheckMinimumPlayers()
-        {
-            return Client.All.Count >= Gamemode.Game.TTTMinPlayers;
         }
 
         public override void OnSecond()
