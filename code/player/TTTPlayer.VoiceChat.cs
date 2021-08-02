@@ -79,7 +79,7 @@ namespace TTTReborn.Player
             {
                 foreach (Client client in Client.All)
                 {
-                    if (client.Pawn is TTTPlayer pawnPlayer)
+                    if (client.Pawn is TTTPlayer pawnPlayer && player != pawnPlayer)
                     {
                         if (player.Team == pawnPlayer.Team)
                         {
