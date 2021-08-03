@@ -7,7 +7,7 @@ namespace TTTReborn.UI.Menu
     {
         public readonly MenuNavigationHeader NavigationHeader;
 
-        private DragDrop _dragDropHeaderWrapper;
+        private MenuDragHeader _dragHeaderWrapper;
 
         public MenuHeader(Menu parent) : base(parent)
         {
@@ -15,10 +15,8 @@ namespace TTTReborn.UI.Menu
 
             StyleSheet.Load("/ui/generalhud/menu/MenuHeader.scss");
 
-            _dragDropHeaderWrapper = new MenuDragDropHeader(this, Parent as Menu);
-            _dragDropHeaderWrapper.IsFreeDraggable = true;
-
-            NavigationHeader = new MenuNavigationHeader(_dragDropHeaderWrapper, Parent as Menu);
+            _dragHeaderWrapper = new MenuDragHeader(this, Parent as Menu);
+            NavigationHeader = new MenuNavigationHeader(_dragHeaderWrapper, Parent as Menu);
         }
     }
 
@@ -57,12 +55,14 @@ namespace TTTReborn.UI.Menu
         }
     }
 
-    public partial class MenuDragDropHeader : DragDrop
+    public partial class MenuDragHeader : Drag
     {
-        public MenuDragDropHeader(Panel parent, Menu menu) : base(parent)
+        public MenuDragHeader(Panel parent, Menu menu) : base(parent)
         {
             Parent = parent;
             DragBasePanel = menu;
+
+            IsFreeDraggable = true;
         }
     }
 }

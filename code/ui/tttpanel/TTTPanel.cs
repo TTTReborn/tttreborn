@@ -22,5 +22,22 @@ namespace TTTReborn.UI
 
             IsShowing = false;
         }
+
+        public void AddChild(Panel child, int index)
+        {
+            AddChild(this);
+
+            Panel tmp = _children[index];
+            _children[index] = this;
+
+            for (++index; index < ChildCount; index++)
+            {
+                _children[index] = tmp;
+                tmp = _children[index + 1];
+            }
+
+            _children[index] = tmp;
+            _children[++index] = null;
+        }
     }
 }

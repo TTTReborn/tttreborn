@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Sandbox;
+using Sandbox.UI;
 
 using TTTReborn.Player;
 
@@ -156,6 +157,26 @@ namespace TTTReborn.Globals
         public static float SourceUnitsToMeters(float sourceUnits)
         {
             return sourceUnits / 39.37f;
+        }
+
+        public static T GetHoveringPanel<T>(Panel excludePanel)
+        {
+            T highestPanel = default(T);
+            int? zindex = null;
+
+            foreach (Panel loopPanel in UI.Hud.Current.RootPanel.Children)
+            {
+                if (loopPanel is T t && loopPanel.IsInside(Mouse.Position))
+                {
+                    if ((loopPanel.ComputedStyle.ZIndex ?? 0) >= (zindex ?? 0))
+                    {
+                        zindex = loopPanel.ComputedStyle.ZIndex;
+                        highestPanel = t;
+                    }
+                }
+            }
+
+            return highestPanel;
         }
     }
 }
