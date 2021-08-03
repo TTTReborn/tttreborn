@@ -8,6 +8,6 @@ namespace TTTReborn.Items
         public override string Type => "buckshot";
         public override int Amount => 12;
         public override int Max => 36;
-        public override string ModelPath => "models/ammo_buckshot.vmdl";
+        public override string ModelPath => "models/ammo/ammo_buckshot.vmdl";
     }
 }

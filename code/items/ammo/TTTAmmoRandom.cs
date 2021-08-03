@@ -19,6 +19,6 @@ namespace TTTReborn.Items
                 ent.Rotation = Rotation;
                 ent.Spawn();
             }
-       }
+        }
     }
 }
