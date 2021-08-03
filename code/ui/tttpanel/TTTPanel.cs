@@ -25,19 +25,29 @@ namespace TTTReborn.UI
 
         public void AddChild(Panel child, int index)
         {
-            AddChild(this);
+            AddChild(child);
 
-            Panel tmp = _children[index];
-            _children[index] = this;
+            int childCount = ChildCount;
 
-            for (++index; index < ChildCount; index++)
+            if (childCount > 1)
             {
-                _children[index] = tmp;
-                tmp = _children[index + 1];
-            }
+                if (index < 0 || index >= childCount)
+                {
+                    return;
+                }
 
-            _children[index] = tmp;
-            _children[++index] = null;
+                Panel tmp = _children[index];
+                _children[index++] = this;
+
+                while (index < childCount)
+                {
+                    _children[index] = tmp;
+                    tmp = _children[++index];
+                }
+
+                _children[index] = tmp;
+                _children[++index] = null;
+            }
         }
     }
 }

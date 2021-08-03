@@ -78,7 +78,22 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
+                panelContent.Add.Label("Switch:");
+
                 panelContent.AddChild(new Switch());
+
+                panelContent.Add.Label("DragDrop:");
+
+                Sandbox.UI.Panel wrapperPanel = new(panelContent);
+
+                Drop drop1 = new Drop(wrapperPanel);
+                drop1.DragDropGroupName = "dnd";
+
+                Drop drop2 = new Drop(wrapperPanel);
+                drop2.DragDropGroupName = "dnd";
+
+                Drag drag = new Drag(drop1);
+                drag.DragDropGroupName = "dnd";
             }, "Testing", "testing");
         }
     }
