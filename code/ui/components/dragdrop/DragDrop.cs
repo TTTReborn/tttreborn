@@ -11,7 +11,22 @@ namespace TTTReborn.UI
     {
         public bool IsDragging { get; private set; } = false;
 
+        public bool IsFreeDraggable { get; set; } = false;
+
+        public string DragDropGroupName { get; set; } = "";
+
+        public Panel DragBasePanel
+        {
+            get => _dragBasePanel ?? this;
+            set
+            {
+                _dragBasePanel = value;
+            }
+        }
+        private Panel _dragBasePanel;
+
         private Vector2 _draggingMouseStartPosition;
+        private Vector2? _draggingStartPosition;
 
         public DragDrop(Panel parent = null) : base(parent)
         {
@@ -28,12 +43,30 @@ namespace TTTReborn.UI
             }
 
             _draggingMouseStartPosition = MousePosition;
+            _draggingStartPosition = null;
             IsDragging = true;
         }
 
         protected override void OnMouseUp(MousePanelEvent e)
         {
-            IsDragging = false;
+            if (IsDragging)
+            {
+                if (!IsFreeDraggable)
+                {
+                    DragDrop TargetDragDrop = null; // TODO get the right hovering panel
+
+                    if (TargetDragDrop != null && DragDropGroupName == TargetDragDrop.DragDropGroupName)
+                    {
+                        OnDragPanelFinished(TargetDragDrop);
+                    }
+                    else
+                    {
+                        OnDragPanelFailed(TargetDragDrop);
+                    }
+                }
+
+                IsDragging = false;
+            }
         }
 
         protected override void OnMouseMove(MousePanelEvent e)
@@ -43,21 +76,26 @@ namespace TTTReborn.UI
                 return;
             }
 
+            if (_draggingStartPosition == null)
+            {
+                _draggingStartPosition = new Vector2(DragBasePanel.Box.Rect.left, DragBasePanel.Box.Rect.top);
+            }
+
             Vector2 position = new Vector2(
-                (MousePosition.x - _draggingMouseStartPosition.x) + Parent.Box.Rect.left,
-                (MousePosition.y - _draggingMouseStartPosition.y) + Parent.Box.Rect.top
+                (MousePosition.x - _draggingMouseStartPosition.x) + DragBasePanel.Box.Rect.left,
+                (MousePosition.y - _draggingMouseStartPosition.y) + DragBasePanel.Box.Rect.top
             );
 
             float screenWidth = Screen.Width;
             float screenHeight = Screen.Height;
 
-            float parentWidth = Parent.Box.Rect.width;
-            float parentHeight = Parent.Box.Rect.height;
+            float parentWidth = DragBasePanel.Box.Rect.width;
+            float parentHeight = DragBasePanel.Box.Rect.height;
 
             float left = position.x;
             float top = position.y;
 
-            Matrix? matrix = Parent.GlobalMatrix;
+            Matrix? matrix = DragBasePanel.GlobalMatrix;
 
             if (matrix != null)
             {
@@ -110,10 +148,30 @@ namespace TTTReborn.UI
 
         public virtual void OnDragPanel(float left, float top)
         {
-            Style.Left = Length.Pixels(left);
-            Style.Top = Length.Pixels(top);
+            DragBasePanel.Style.Left = Length.Pixels(left);
+            DragBasePanel.Style.Top = Length.Pixels(top);
 
-            Style.Dirty();
+            DragBasePanel.Style.Dirty();
+        }
+
+        public virtual void OnDragPanelFinished(DragDrop targetDragDrop)
+        {
+            targetDragDrop.AddChild(this);
+
+            // TODO add to the right position
+
+            DragBasePanel.Style.Left = null;
+            DragBasePanel.Style.Top = null;
+
+            DragBasePanel.Style.Dirty();
+        }
+
+        public virtual void OnDragPanelFailed(DragDrop targetDragDrop)
+        {
+            DragBasePanel.Style.Left = Length.Pixels(_draggingStartPosition?.x ?? 0f);
+            DragBasePanel.Style.Top = Length.Pixels(_draggingStartPosition?.y ?? 0f);
+
+            DragBasePanel.Style.Dirty();
         }
     }
 }

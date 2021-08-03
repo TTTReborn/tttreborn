@@ -16,6 +16,7 @@ namespace TTTReborn.UI.Menu
             StyleSheet.Load("/ui/generalhud/menu/MenuHeader.scss");
 
             _dragDropHeaderWrapper = new MenuDragDropHeader(this, Parent as Menu);
+            _dragDropHeaderWrapper.IsFreeDraggable = true;
 
             NavigationHeader = new MenuNavigationHeader(_dragDropHeaderWrapper, Parent as Menu);
         }
@@ -58,20 +59,10 @@ namespace TTTReborn.UI.Menu
 
     public partial class MenuDragDropHeader : DragDrop
     {
-        public readonly Menu Menu;
-
         public MenuDragDropHeader(Panel parent, Menu menu) : base(parent)
         {
             Parent = parent;
-            Menu = menu;
-        }
-
-        public override void OnDragPanel(float left, float top)
-        {
-            Menu.Style.Left = Length.Pixels(left);
-            Menu.Style.Top = Length.Pixels(top);
-
-            Menu.Style.Dirty();
+            DragBasePanel = menu;
         }
     }
 }
