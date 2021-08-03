@@ -3,19 +3,21 @@ using System.Numerics;
 using Sandbox;
 using Sandbox.UI;
 
+// TODO use M4x4 transform
+
 namespace TTTReborn.UI
 {
-    public partial class DraggableHeader : PanelHeader
+    public partial class DragDrop : Panel
     {
         public bool IsDragging { get; private set; } = false;
 
         private Vector2 _draggingMouseStartPosition;
 
-        public DraggableHeader(Panel parent = null) : base(parent)
+        public DragDrop(Panel parent = null) : base(parent)
         {
             Parent = parent ?? Parent;
 
-            StyleSheet.Load("/ui/panelheader/DraggableHeader.scss");
+            StyleSheet.Load("/ui/components/dragdrop/DragDrop.scss");
         }
 
         protected override void OnMouseDown(MousePanelEvent e)
@@ -103,10 +105,15 @@ namespace TTTReborn.UI
                 }
             }
 
-            Parent.Style.Left = Length.Pixels(left);
-            Parent.Style.Top = Length.Pixels(top);
+            OnDragPanel(left, top);
+        }
 
-            Parent.Style.Dirty();
+        public virtual void OnDragPanel(float left, float top)
+        {
+            Style.Left = Length.Pixels(left);
+            Style.Top = Length.Pixels(top);
+
+            Style.Dirty();
         }
     }
 }

@@ -16,8 +16,10 @@ namespace TTTReborn.UI
         }
         private bool _isShowing = false;
 
-        public TTTPanel() : base()
+        public TTTPanel(Panel parent = null) : base(parent)
         {
+            Parent = parent ?? Parent;
+
             IsShowing = false;
         }
     }

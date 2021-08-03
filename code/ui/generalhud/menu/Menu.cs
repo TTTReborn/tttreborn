@@ -1,4 +1,3 @@
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.Menu
@@ -7,9 +6,9 @@ namespace TTTReborn.UI.Menu
     {
         public static Menu Instance;
 
-        private MenuHeader _menuHeader;
-
         public readonly PanelContent MenuContent;
+
+        private readonly MenuHeader _menuHeader;
 
         public Menu() : base()
         {
@@ -22,10 +21,10 @@ namespace TTTReborn.UI.Menu
             MenuContent = new PanelContent(this);
             MenuContent.OnPanelContentUpdated = (panelContentData) =>
             {
-                _menuHeader.SetTitle(panelContentData.Title ?? "");
-                _menuHeader.HomeButton.SetClass("disabled", panelContentData.ClassName == "home");
-                _menuHeader.PreviousButton.SetClass("disabled", !MenuContent.CanPrevious);
-                _menuHeader.NextButton.SetClass("disabled", !MenuContent.CanNext);
+                _menuHeader.NavigationHeader.SetTitle(panelContentData.Title ?? "");
+                _menuHeader.NavigationHeader.HomeButton.SetClass("disabled", panelContentData.ClassName == "home");
+                _menuHeader.NavigationHeader.PreviousButton.SetClass("disabled", !MenuContent.CanPrevious);
+                _menuHeader.NavigationHeader.NextButton.SetClass("disabled", !MenuContent.CanNext);
             };
 
             OpenHomepage();
@@ -65,7 +64,7 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                Label textLabel = panelContent.Add.Label("Loading...");
+                Sandbox.UI.Label textLabel = panelContent.Add.Label("Loading...");
 
                 Sandbox.Internal.Http http = new Sandbox.Internal.Http(new System.Uri("https://commits.facepunch.com/r/sbox"));
                 http.GetStringAsync().ContinueWith(result =>
