@@ -52,6 +52,67 @@ ChatBox {
             opacity: 0;
         }
 
+        ChatGroup {
+            margin-top: 5px;
+            flex-direction: column;
+
+            .head {
+                display: flex;
+                margin-top: 5px;
+                padding: 0px 12px;
+
+                image {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 100px;
+                    margin-right: 10px;
+                    // display: none;
+                }
+                .name {
+                    padding-right: 10px;
+                    font-weight: 600;
+                    font-size: 14px;
+                    flex-shrink: 0;
+
+                    &.alive {
+                        color: $alive;
+                    }
+
+                    &.dead {
+                        color: $dead;
+                    }
+                }
+            }
+
+            .chatGroup_textMessages {
+                flex-direction: column;
+            }
+
+            ChatEntry {
+                margin-top: 2px;
+            }
+
+            &.serverInfo {
+                flex-direction: row;
+
+                .message {
+                    color: #ffbb00e3;
+                    margin-top: 6px;
+
+                }
+
+                .head {
+                    margin-bottom: 0;
+                }
+                image {
+                    margin-right: 0;
+                }
+                .name {
+                    display: none;
+                }
+            }
+        }
+
         ChatEntry {
             // background-color: rgba(black, 0.8);
             // margin-top: 1px;
@@ -85,32 +146,32 @@ ChatBox {
                 transition: all 0s ease-out;
             }
 
-            .head {
-                display: none;
-                margin-top: 5px;
+            // .head {
+            //     display: none;
+            //     margin-top: 5px;
 
-                image {
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 100px;
-                    margin-right: 10px;
-                    // display: none;
-                }
-                .name {
-                    padding-right: 10px;
-                    font-weight: 600;
-                    font-size: 14px;
-                    flex-shrink: 0;
-                }
-            }
+            //     image {
+            //         width: 20px;
+            //         height: 20px;
+            //         border-radius: 100px;
+            //         margin-right: 10px;
+            //         // display: none;
+            //     }
+            //     .name {
+            //         padding-right: 10px;
+            //         font-weight: 600;
+            //         font-size: 14px;
+            //         flex-shrink: 0;
+            //     }
+            // }
 
-            .alive {
-                color: $alive;
-            }
+            // .alive {
+            //     color: $alive;
+            // }
 
-            .dead {
-                color: $dead;
-            }
+            // .dead {
+            //     color: $dead;
+            // }
 
             &.showHead {
                 margin-top: 5px;
@@ -132,7 +193,7 @@ ChatBox {
 
             &.serverInfo {
                 flex-direction: row;
-                padding: 6px 12px;
+                padding: 0px 12px;
 
                 .message {
                     color: #ffbb00e3;
@@ -144,8 +205,8 @@ ChatBox {
                 }
 
                 image {
-                    width: 25px;
-                    height: 25px;
+                    width: 20px;
+                    height: 20px;
                 }
 
                 .name {
@@ -154,6 +215,10 @@ ChatBox {
             }
 
             &.noavatar image {
+                display: none;
+            }
+
+            &.hide {
                 display: none;
             }
         }

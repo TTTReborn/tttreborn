@@ -16,6 +16,9 @@ namespace TTTReborn.UI
 
         public readonly List<ChatEntry> Messages = new();
 
+        public int MessageCounter = 0;
+        public readonly List<ChatGroup> chatGroups = new();
+
         public const int MAX_MESSAGES_COUNT = 200;
         public const float MAX_DISPLAY_TIME = 8f;
 
@@ -126,48 +129,63 @@ namespace TTTReborn.UI
             }
         }
 
+        public void AddServerInfoEntry (string message, string avatar)
+        {
+            ChatEntry serverEntry = new ChatEntry(message);
+            serverEntry.AddClass("serverInfo");
+
+            _canvas.AddChild(serverEntry);
+        }
         public void AddEntry(string name, string message, string avatar, LifeState lifeState, string team = null)
         {
             _lastChatFocus = 0f;
 
-            if (Messages.Count > MAX_MESSAGES_COUNT)
-            {
-                ChatEntry entry = Messages[0];
+            // if(string.IsNullOrEmpty(name)) {
+            //     AddServerInfoEntry(message, avatar);
+            //     return;
+            // }
 
-                Messages.RemoveAt(0);
+            // if (Messages.Count > MAX_MESSAGES_COUNT)
+            // {
+            //     ChatEntry entry = Messages[0];
 
-                entry.Delete();
+            //     Messages.RemoveAt(0);
+
+            //     entry.Delete();
+            // }
+            bool isServerEntry = string.IsNullOrEmpty(name);
+            bool shouldCreateGroup = chatGroups.Count == 0 || chatGroups[chatGroups.Count - 1].Name != name || isServerEntry;
+
+            ChatGroup chatGroup;
+
+            if(shouldCreateGroup) {
+                chatGroup = _canvas.AddChild<ChatGroup>();
+                chatGroup.Name = name;
+                chatGroup.NameLabel.Text = name;
+
+                chatGroup.Avatar.SetTexture(avatar);
+
+                chatGroup.NameLabel.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
+
+                chatGroups.Add(chatGroup);
             }
+            else chatGroup = chatGroups[chatGroups.Count - 1];
 
-            ChatEntry chatEntry = _canvas.AddChild<ChatEntry>();
-            chatEntry.Name = name;
-            chatEntry.Text = message;
+            chatGroup.SetClass("serverInfo", isServerEntry);
 
-            chatEntry.Message.Text = message;
+            chatGroup.AddMessage(message, team);
 
-            chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
-            chatEntry.SetClass("serverInfo", string.IsNullOrEmpty(name));
+            // chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
+            // chatEntry.SetClass("serverInfo", string.IsNullOrEmpty(name));
 
-            bool showHead = Messages.Count == 0 || name == null || Messages[Messages.Count - 1].Name != name;
+            // if (!string.IsNullOrEmpty(team))
+            // {
+            //     chatEntry.Style.BorderLeftWidth = Length.Pixels(4f);
+                // chatEntry.Style.BorderLeftColor = TeamFunctions.GetTeam(team).Color;
+            //     chatEntry.Style.Dirty();
+            // }
 
-            if (showHead)
-            {
-                chatEntry.NameLabel.Text = name;
-                chatEntry.NameLabel.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
-
-                chatEntry.Avatar.SetTexture(avatar);
-            }
-
-            chatEntry.SetClass("showHead", showHead);
-
-            if (!string.IsNullOrEmpty(team))
-            {
-                chatEntry.Style.BorderLeftWidth = Length.Pixels(4f);
-                chatEntry.Style.BorderLeftColor = TeamFunctions.GetTeam(team).Color;
-                chatEntry.Style.Dirty();
-            }
-
-            Messages.Add(chatEntry);
+            // Messages.Add(chatEntry);
         }
         public static bool CanUseTeamChat(TTTPlayer player)
         {
