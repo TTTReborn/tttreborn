@@ -1,4 +1,8 @@
+using System.Collections.Generic;
+
 using Sandbox;
+
+using TTTReborn.Roles;
 
 namespace TTTReborn.Items
 {
@@ -12,6 +16,7 @@ namespace TTTReborn.Items
         public override int BaseDamage => 45;
         public virtual int MeleeDistance => 80;
         public virtual int Price => 100;
+        public List<TTTRole> AvailableForRoles => new List<TTTRole>(){new TraitorRole()};
 
         public override void Spawn()
         {

@@ -28,6 +28,6 @@ namespace TTTReborn.Roles
             return (int) Math.Max(playerCount * 0.125f, 1f);
         }
 
-        public override bool CanBuy() => true;
+        public override bool CanAccessQuickShop() => true;
     }
 }

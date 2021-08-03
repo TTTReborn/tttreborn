@@ -4,6 +4,7 @@ using Sandbox;
 
 using TTTReborn.Player;
 using TTTReborn.UI;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Items
 {
@@ -17,6 +18,7 @@ namespace TTTReborn.Items
         private List<RadarPoint> _cachedPoints = new();
 
         public int Price => 0;
+        public List<TTTRole> AvailableForRoles => new List<TTTRole>(){new TraitorRole()};
 
         public Radar() : base()
         {

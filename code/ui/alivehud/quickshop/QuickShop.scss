@@ -123,6 +123,10 @@ QuickShop {
                     }
                 }
 
+                &.hide {
+                    display: none;
+                }
+
                 &.disabled {
                     Panel.icon, .priceholder {
                         opacity: 0.6;

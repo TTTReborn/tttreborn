@@ -38,12 +38,17 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
             _wasOpened = _isOpen;
             _isOpen = !HasClass("hide");
 
             Update();
 
-            SetClass("hide", !Input.Down(InputButton.Menu) || !(Local.Pawn as TTTPlayer).Role.CanBuy());
+            SetClass("hide", !Input.Down(InputButton.Menu) || !player.Role.CanAccessQuickShop());
         }
 
         private class Header : Panel
@@ -87,11 +92,6 @@ namespace TTTReborn.UI
                     ShopItemData itemData = item.CreateItemData();
 
                     item.Delete();
-
-                    if (_selectedItemData == null)
-                    {
-                        _selectedItemData = itemData;
-                    }
 
                     AddItem(itemData);
                 }
@@ -163,9 +163,10 @@ namespace TTTReborn.UI
 
                 public void Update()
                 {
-                    IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(_buyableItemData) != BuyError.None;
+                    BuyError result = (Local.Pawn as TTTPlayer)?.CanBuy(_buyableItemData) ?? BuyError.Error;
 
-                    SetClass("disabled", IsDisabled);
+                    SetClass("hide", result == BuyError.RoleRestriction);
+                    SetClass("disabled", IsDisabled = result != BuyError.None);
                     SetClass("active", _selectedItemData?.Name == _buyableItemData?.Name);
                 }
             }
@@ -195,8 +196,8 @@ namespace TTTReborn.UI
                 {
                     Parent = parent;
 
-                    EquipmentLabel = Add.Label("ItemName", "equipment");
-                    DescriptionLabel = Add.Label("Some item description...", "description");
+                    EquipmentLabel = Add.Label("", "equipment");
+                    DescriptionLabel = Add.Label("", "description");
                 }
 
                 public void SetItem(ShopItemData? itemData)
@@ -221,7 +222,7 @@ namespace TTTReborn.UI
                     Parent = parent;
                     PriceHolder = Add.Panel("priceholder");
                     DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
-                    PriceLabel = PriceHolder.Add.Label("100", "price");
+                    PriceLabel = PriceHolder.Add.Label("", "price");
 
                     BuyButton = Add.Button("Buy", "buyButton");
                     BuyButton.AddEventListener("onclick", () =>

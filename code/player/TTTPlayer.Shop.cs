@@ -9,24 +9,36 @@ namespace TTTReborn.Player
         None,
         InventoryBlocked,
         NotEnoughCredits,
-        RoleRestriction
+        ShopRestriction,
+        RoleRestriction,
+        Error,
     }
 
     public partial class TTTPlayer
     {
         public BuyError CanBuy(ShopItemData? itemData)
         {
-            if (!itemData?.IsBuyable(this) ?? false)
+            if (itemData == null)
+            {
+                return BuyError.Error;
+            }
+
+            if (!itemData.Value.IsBuyable(this))
             {
                 return BuyError.InventoryBlocked;
             }
 
-            if (Credits < itemData?.Price)
+            if (Credits < itemData.Value.Price)
             {
                 return BuyError.NotEnoughCredits;
             }
 
-            if (!Role.CanBuy())
+            if (!Role.CanAccessQuickShop())
+            {
+                return BuyError.ShopRestriction;
+            }
+
+            if (!itemData.Value.AvailableForRoles.Exists((r) => r.Name == Role.Name))
             {
                 return BuyError.RoleRestriction;
             }

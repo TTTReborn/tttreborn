@@ -1,4 +1,9 @@
+using System.Collections.Generic;
+
+
 using Sandbox;
+
+using TTTReborn.Roles;
 
 namespace TTTReborn.Items
 {
@@ -16,6 +21,7 @@ namespace TTTReborn.Items
         public override AmmoType AmmoType => AmmoType.SMG;
 
         public virtual int Price => 100;
+        public List<TTTRole> AvailableForRoles => new List<TTTRole>(){new TraitorRole(), new DetectiveRole()};
 
         public override void Spawn()
         {

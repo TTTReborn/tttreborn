@@ -55,6 +55,6 @@ namespace TTTReborn.Roles
             return 0;
         }
 
-        public virtual bool CanBuy() => false;
+        public virtual bool CanAccessQuickShop() => false;
     }
 }

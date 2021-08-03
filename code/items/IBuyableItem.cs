@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Items
 {
@@ -13,6 +15,7 @@ namespace TTTReborn.Items
         public int Price;
         public SlotType SlotType;
         public Type Type;
+        public List<TTTRole> AvailableForRoles;
 
         public bool IsBuyable(TTTPlayer player)
         {
@@ -34,6 +37,7 @@ namespace TTTReborn.Items
     public interface IBuyableItem : IItem
     {
         int Price { get; }
+        List<TTTRole> AvailableForRoles => new ();
 
         ShopItemData CreateItemData()
         {
@@ -41,6 +45,7 @@ namespace TTTReborn.Items
             {
                 Name = Name,
                 Price = Price,
+                AvailableForRoles = AvailableForRoles,
                 Type = GetType()
             };
 

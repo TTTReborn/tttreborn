@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+
 using Sandbox;
 
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Items
 {
@@ -18,6 +21,7 @@ namespace TTTReborn.Items
         public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
 
         public virtual int Price => 100;
+        public List<TTTRole> AvailableForRoles => new List<TTTRole>(){new TraitorRole(), new DetectiveRole()};
 
         public override void Spawn()
         {
