@@ -122,6 +122,7 @@ namespace TTTReborn.Player
                     }
                 }
             }
+
             return types;
         }
 
