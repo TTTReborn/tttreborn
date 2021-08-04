@@ -8,22 +8,29 @@ MenuHeader {
 
     background-color: black;
 
-    .home,
-    .previous,
-    .next {
-        padding: 5px;
-        margin: 10px;
-        flex-shrink: 1;
-        cursor: pointer;
-        font-size: 16px;
-
-        &.disabled {
-            opacity: 0.1;
-        }
+    DragDrop,
+    MenuNavigationHeader {
+        width: 100%;
     }
 
-    .home {
-        font-size: 21px;
-        font-family: MaterialIcons;
+    MenuNavigationHeader {
+        .home,
+        .previous,
+        .next {
+            padding: 5px;
+            margin: 10px;
+            flex-shrink: 1;
+            cursor: pointer;
+            font-size: 16px;
+
+            &.disabled {
+                opacity: 0.1;
+            }
+        }
+
+        .home {
+            font-size: 21px;
+            font-family: MaterialIcons;
+        }
     }
 }
