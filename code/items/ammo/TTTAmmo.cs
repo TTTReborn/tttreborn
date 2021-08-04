@@ -40,6 +40,8 @@ namespace TTTReborn.Items
 
             SetModel(ModelPath);
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
+            CollisionGroup = CollisionGroup.Weapon;
+            SetInteractsAs(CollisionLayer.Debris);
 
             AmmoEntMax = Amount;
             CurrentAmmo = Amount;
