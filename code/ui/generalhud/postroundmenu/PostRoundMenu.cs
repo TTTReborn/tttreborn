@@ -1,6 +1,8 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Language;
+
 namespace TTTReborn.UI
 {
     public class PostRoundStats
@@ -34,6 +36,7 @@ namespace TTTReborn.UI
         private PostRoundStats _stats;
         private readonly Label _headerLabel;
         private readonly Label _contentLabel;
+        private TLanguage Lang;
 
         public PostRoundMenu()
         {
@@ -43,7 +46,7 @@ namespace TTTReborn.UI
 
             _headerLabel = Add.Label("", "headerLabel");
 
-            _contentLabel = Add.Label("Thanks for playing TTT Reborn, more updates and stats to come!", "contentLabel");
+            _contentLabel = Add.Label("", "contentLabel");
 
             IsShowing = false;
         }
@@ -58,8 +61,10 @@ namespace TTTReborn.UI
         public void OpenPostRoundMenu()
         {
             IsShowing = true;
+            Lang = ILanguage.GetActiveLanguage();
 
-            _headerLabel.Text = $"{_stats.WinningRole.ToUpper()} WIN!";
+            _contentLabel.Text = Lang.GetTranslation("PostRound_Text");
+            _headerLabel.Text = Lang.GetFormatedTranslation("PostRound_Header", Lang.GetTranslation($"TeamName_{_stats.WinningRole}"));
             _headerLabel.Style.BackgroundColor = _stats.WinningColor;
         }
     }

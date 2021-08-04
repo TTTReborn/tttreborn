@@ -4,6 +4,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
 using TTTReborn.Roles;
+using TTTReborn.Language;
 
 namespace TTTReborn.UI
 {
@@ -65,7 +66,7 @@ namespace TTTReborn.UI
                 }
                 else
                 {
-                    _roleLabel.Text = $"{player.Role.Name.ToUpper()}";
+                    _roleLabel.Text = ILanguage.GetActiveLanguage().GetTranslation($"RoleName_{player.Role.Name}");
 
                     SetClass("hide", player.Role is NoneRole);
                 }

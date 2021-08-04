@@ -2,6 +2,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Gamemode;
+using TTTReborn.Language;
 
 namespace TTTReborn.UI
 {
@@ -39,7 +40,7 @@ namespace TTTReborn.UI
 
                 bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
 
-                _textLabel.Text = $"{Game.Instance.Round.RoundName}:";
+                _textLabel.Text = $"{ILanguage.GetActiveLanguage().GetTranslation($"RoundState_{Game.Instance.Round.RoundName}")}:";
                 _timeLabel.Text = isWaitingRound ? "" : $"{Game.Instance.Round.TimeLeftFormatted}";
 
                 _timeLabel.SetClass("hide", isWaitingRound);
