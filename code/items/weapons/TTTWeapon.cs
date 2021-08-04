@@ -165,7 +165,7 @@ namespace TTTReborn.Items
 
             if (Input.Released(InputButton.View) && AmmoClip > 0)
             {
-                
+
                 if (IsServer && AmmoEntity != null)
                 {
                     TTTAmmo ammoBox = Globals.Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
