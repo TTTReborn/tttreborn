@@ -6,6 +6,7 @@ using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.UI;
+using TTTReborn.Language;
 
 namespace TTTReborn.Gamemode
 {
@@ -22,6 +23,8 @@ namespace TTTReborn.Gamemode
         public Game()
         {
             Instance = this;
+
+            ILanguage.LoadLanguages();
 
             if (IsServer)
             {
