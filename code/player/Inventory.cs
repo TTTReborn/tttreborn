@@ -110,12 +110,14 @@ namespace TTTReborn.Player
 
         public IList<string> GetAmmoTypes()
         {
-            var types = new List<string>();
+            List<string> types = new();
 
-            foreach (var entity in List)
+            foreach (Entity entity in List)
             {
+
                 if (entity is TTTWeapon wep)
                 {
+
                     if (!types.Contains(wep.AmmoType))
                     {
                         types.Add(wep.AmmoType);

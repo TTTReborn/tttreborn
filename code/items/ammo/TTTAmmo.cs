@@ -12,7 +12,7 @@ namespace TTTReborn.Items
         /// <summary>
         /// String definition of ammo type, should match TTTWeapon.AmmoType
         /// </summary>
-        public virtual string Type { get; set; }
+        public virtual string Name { get; set; }
         /// <summary>
         /// Amount of Ammo within Entity.
         /// </summary>
@@ -48,32 +48,31 @@ namespace TTTReborn.Items
         public override void Touch(Entity other)
         {
             base.Touch(other);
-            if (IsServer)
+
+            if (other is TTTPlayer player && IsServer)
             {
-                if (other is TTTPlayer player)
+                string ammoType = Name.ToLower();
+                Inventory inventory = (Inventory) player.Inventory;
+
+                if (inventory.GetAmmoTypes().Contains(ammoType)) //Possible optimization point by caching weapons that can our ammo, rather than checking if player has our ammo.
                 {
-                    var ammoType = Type.ToLower();
-                    var playerInv = player.Inventory as Inventory;
+                    int playerAmount = inventory.Ammo.Count(ammoType);
 
-                    if (playerInv.GetAmmoTypes().Contains(ammoType)) //Possible optimization point by caching weapons that can our ammo, rather than checking if player has our ammo.
+                    if (Max >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25)))
                     {
-                        var playerAmount = playerInv.Ammo.Count(ammoType);
+                        int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
+                        inventory.Ammo.Give(ammoType, amountGiven);
+                        CurrentAmmo -= amountGiven;
+                        OnPickup.Fire(other);
 
-                        if (Max >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25)))
+                        if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
                         {
-                            var amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
-                            playerInv.Ammo.Give(ammoType, amountGiven);
-                            CurrentAmmo -= amountGiven;
-                            OnPickup.Fire(other);
-
-                            if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
-                            {
-                                Delete();
-                            }
+                            Delete();
                         }
                     }
                 }
             }
+
         }
 
         public void SetCurrentAmmo(int ammo)

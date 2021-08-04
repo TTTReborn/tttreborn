@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 
@@ -9,11 +10,11 @@ namespace TTTReborn.Items
     {
         public void Activate()
         {
-            var wepTypes = Globals.Utils.GetTypes<TTTWeapon>();
+            List<Type> wepTypes = Globals.Utils.GetTypes<TTTWeapon>();
 
             if (wepTypes.Count > 0)
             {
-                var typeToSpawn = wepTypes[new Random().Next(wepTypes.Count)];
+                Type typeToSpawn = wepTypes[new Random().Next(wepTypes.Count)];
                 TTTWeapon ent = Globals.Utils.GetObjectByType<TTTWeapon>(typeToSpawn);
                 ent.Position = Position;
                 ent.Rotation = Rotation;

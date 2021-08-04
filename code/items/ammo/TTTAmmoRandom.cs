@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 
@@ -9,11 +10,11 @@ namespace TTTReborn.Items
     {
         public void Activate()
         {
-            var ammoTypes = Globals.Utils.GetTypes<TTTAmmo>();
+            List<Type> ammoTypes = Globals.Utils.GetTypes<TTTAmmo>();
 
             if (ammoTypes.Count > 0)
             {
-                var typeToSpawn = ammoTypes[new Random().Next(ammoTypes.Count)];
+                Type typeToSpawn = ammoTypes[new Random().Next(ammoTypes.Count)];
                 TTTAmmo ent = Globals.Utils.GetObjectByType<TTTAmmo>(typeToSpawn);
                 ent.Position = Position;
                 ent.Rotation = Rotation;

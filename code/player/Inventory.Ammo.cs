@@ -19,7 +19,7 @@ namespace TTTReborn.Player
 
         public int Count(string ammoType)
         {
-            var ammo = ammoType.ToLower();
+            string ammo = ammoType.ToLower();
 
             if (AmmoList == null || !AmmoList.ContainsKey(ammo))
             {
@@ -31,7 +31,7 @@ namespace TTTReborn.Player
 
         public bool Set(string ammoType, int amount)
         {
-            var ammo = ammoType.ToLower();
+            string ammo = ammoType.ToLower();
 
             if (AmmoList == null || string.IsNullOrEmpty(ammo))
             {
@@ -58,7 +58,7 @@ namespace TTTReborn.Player
 
         public bool Give(string ammoType, int amount)
         {
-            var ammo = ammoType.ToLower();
+            string ammo = ammoType.ToLower();
 
             if (AmmoList == null)
             {
@@ -72,7 +72,7 @@ namespace TTTReborn.Player
 
         public int Take(string ammoType, int amount)
         {
-            var ammo = ammoType.ToLower();
+            string ammo = ammoType.ToLower();
 
             if (AmmoList == null)
             {
