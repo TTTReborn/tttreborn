@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 using TTTReborn.Player;
@@ -21,6 +23,7 @@ namespace TTTReborn.Items
     {
         public virtual SlotType SlotType => SlotType.Primary;
         public virtual string AmmoType => "pistol";
+        public virtual Type AmmoEntity => typeof(PistolAmmo);
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
         public virtual float DeployTime => 0.6f;
@@ -160,15 +163,15 @@ namespace TTTReborn.Items
                 }
             }
 
-            if (Input.Released(InputButton.View) && AmmoClip > 0) //Todo: Move this to be a bindable key (default Z???)
+            if (Input.Released(InputButton.View) && AmmoClip > 0)
             {
+                
                 if (IsServer)
                 {
-                    var ammoBox = new BuckshotAmmo()
-                    {
-                        Position = Owner.EyePos + Owner.EyeRot.Forward * AmmoDropPositionOffset,
-                        Rotation = Owner.EyeRot
-                    };
+                    TTTAmmo ammoBox = Library.Create<TTTAmmo>(AmmoEntity);
+
+                    ammoBox.Position = Owner.EyePos + Owner.EyeRot.Forward * AmmoDropPositionOffset;
+                    ammoBox.Rotation = Owner.EyeRot;
                     ammoBox.Velocity = Owner.EyeRot.Forward * AmmoDropVelocity;
                     ammoBox.SetCurrentAmmo(AmmoClip);
                 }

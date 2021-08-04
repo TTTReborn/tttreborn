@@ -54,7 +54,7 @@ namespace TTTReborn.Items
                 string ammoType = Name.ToLower();
                 Inventory inventory = (Inventory) player.Inventory;
 
-                if (inventory.GetAmmoTypes().Contains(ammoType)) //Possible optimization point by caching weapons that can our ammo, rather than checking if player has our ammo.
+                if (inventory.GetAmmoTypes().Contains(ammoType))
                 {
                     int playerAmount = inventory.Ammo.Count(ammoType);
 
