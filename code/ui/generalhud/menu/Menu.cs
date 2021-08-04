@@ -92,8 +92,26 @@ namespace TTTReborn.UI.Menu
                 Drop drop2 = new Drop(wrapperPanel);
                 drop2.DragDropGroupName = "dnd";
 
-                Drag drag = new Drag(drop1);
-                drag.DragDropGroupName = "dnd";
+                new Drag(drop1).DragDropGroupName = "dnd";
+                new Drag(drop1).DragDropGroupName = "dnd";
+                new Drag(drop1).DragDropGroupName = "dnd";
+
+                panelContent.Add.Label("Dropdown:");
+
+                Dropdown dropdown = new Dropdown(panelContent);
+                dropdown.TextLabel.Text = "Choose entry...";
+
+                dropdown.AddOption("Test One", (option) =>
+                {
+                    Sandbox.Log.Error("Test One");
+                });
+
+                dropdown.AddOption("Test Two", (option) =>
+                {
+                    Sandbox.Log.Error("Test Two");
+                });
+
+                panelContent.AddChild(dropdown);
             }, "Testing", "testing");
         }
     }
