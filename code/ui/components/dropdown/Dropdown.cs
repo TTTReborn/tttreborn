@@ -10,7 +10,7 @@ namespace TTTReborn.UI
     {
         public readonly Label TextLabel;
 
-        public bool IsOpened
+        public bool IsOpen
         {
             get => OptionHolder.IsShowing;
             private set
@@ -51,12 +51,12 @@ namespace TTTReborn.UI
 
         public virtual void OnSelectOption(DropdownOption option)
         {
-            IsOpened = false;
+            IsOpen = false;
         }
 
         protected override void OnClick(MousePanelEvent e)
         {
-            IsOpened = !IsOpened;
+            IsOpen = !IsOpen;
         }
     }
 }
