@@ -168,7 +168,7 @@ namespace TTTReborn.Items
                 
                 if (IsServer && AmmoEntity != null)
                 {
-                    TTTAmmo ammoBox = Library.Create<TTTAmmo>(AmmoEntity);
+                    TTTAmmo ammoBox = Globals.Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
 
                     ammoBox.Position = Owner.EyePos + Owner.EyeRot.Forward * AmmoDropPositionOffset;
                     ammoBox.Rotation = Owner.EyeRot;
