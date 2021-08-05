@@ -114,10 +114,8 @@ namespace TTTReborn.Player
 
             foreach (Entity entity in List)
             {
-
                 if (entity is TTTWeapon wep)
                 {
-
                     if (!types.Contains(wep.AmmoType))
                     {
                         types.Add(wep.AmmoType);
