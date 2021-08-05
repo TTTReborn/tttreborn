@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 namespace TTTReborn.Items
@@ -13,7 +15,8 @@ namespace TTTReborn.Items
         public override float ReloadTime => 2.8f;
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 8;
-        public override AmmoType AmmoType => AmmoType.SMG;
+        public override string AmmoType => "smg";
+        public override Type AmmoEntity => typeof(SMGAmmo);
 
         public virtual int Price => 100;
 

@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 using TTTReborn.Player;
@@ -11,7 +13,8 @@ namespace TTTReborn.Items
         public override SlotType SlotType => SlotType.Primary;
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
-        public override AmmoType AmmoType => AmmoType.Buckshot;
+        public override string AmmoType => "buckshot";
+        public override Type AmmoEntity => typeof(BuckshotAmmo);
         public override int ClipSize => 8;
         public override float ReloadTime => 0.5f;
         public override float DeployTime => 0.6f;
