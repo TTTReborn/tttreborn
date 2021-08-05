@@ -7,6 +7,7 @@ using TTTReborn.Player;
 namespace TTTReborn.Items
 {
     [Library("ttt_shotgun")]
+    [Hammer.EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
     partial class Shotgun : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";

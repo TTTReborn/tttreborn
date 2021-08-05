@@ -3,6 +3,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Library("ttt_ammo_smg")]
+    [Hammer.EditorModel("models/ammo/ammo_smg.vmdl")]
     partial class SMGAmmo : TTTAmmo
     {
         public override string Name => "smg";

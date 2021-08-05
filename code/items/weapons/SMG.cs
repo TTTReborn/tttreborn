@@ -5,6 +5,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Library("ttt_smg")]
+    [Hammer.EditorModel("weapons/rust_smg/rust_smg.vmdl")]
     partial class SMG : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
