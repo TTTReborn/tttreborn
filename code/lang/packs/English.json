@@ -1,0 +1,40 @@
+{
+    "LANGUAGE_NAME": "English",
+
+    "ROLE_NAME_INNOCENT": "Innocent",
+    "ROLE_NAME_TRAITOR": "Traitor",
+
+    "ROUND_STATE_WAITING": "Waiting",
+    "ROUND_STATE_PREPARING": "Preparing",
+    "ROUND_STATE_IN_PROGRESS": "In progress",
+    "ROUND_STATE_POST_ROUND": "Post round",
+
+    "POST_ROUND_WIN_INNOCENT": "THE INNOCENT WIN!",
+    "POST_ROUND_WIN_TRAITORS": "THE TRAITORS WIN!",
+    "POST_ROUND_TEXT": "Thanks for playing TTT Reborn, more updates and stats to come!",
+
+    "PLAYER_STATUS_HEALTH_HEALTHY": "Healthy",
+    "PLAYER_STATUS_HEALTH_HURT": "Hurt",
+    "PLAYER_STATUS_HEALTH_WOUNDED": "Wounded",
+    "PLAYER_STATUS_HEALTH_BADLY_WOUNDED": "Badly Wounded",
+    "PLAYER_STATUS_HEALTH_NEAR_DEATH": "Near Вeath",
+    "PLAYER_STATUS_HEALTH_DEAD": "Dead",
+
+    "CORPSE_STATUS_TIME": "Died {0} ago",
+    "CORPSE_STATUS_DISTANCE": "From {0} away",
+    "CORPSE_STATUS_HEADSHOT": "By a headshot",
+    "CORPSE_STATUS_WEAPON": "With a {0}",
+
+    "SCOREBOARD_SERVER_INFO": "{0} players. Map: {1}",
+    "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} players left",
+
+    "SCOREBOARD_PLAYER_STATUS_KARMA": "Karma",
+    "SCOREBOARD_PLAYER_STATUS_DEATHS": "Deaths",
+    "SCOREBOARD_PLAYER_STATUS_SCORE": "Score",
+    "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
+
+    "SCOREBOARD_GROUP_NAME_ALIVE": "Alive",
+    "SCOREBOARD_GROUP_NAME_CONFIRMED": "Confirmed Dead",
+    "SCOREBOARD_GROUP_NAME_MIA": "Missing In Action",
+    "SCOREBOARD_GROUP_NAME_SPECTATORS": "Spectators"
+}
