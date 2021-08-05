@@ -49,7 +49,7 @@ namespace TTTReborn.UI
 
         public PanelContent(Panel parent = null) : base()
         {
-            Parent = parent;
+            Parent = parent ?? Parent;
         }
 
         public void Reset()

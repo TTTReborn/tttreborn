@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -5,6 +7,8 @@ namespace TTTReborn.UI
 {
     public partial class PanelHeader : Panel
     {
+        public Action<PanelHeader> OnClose { get; set; }
+
         private Label _title;
 
         private Button _closeButton;
@@ -21,14 +25,7 @@ namespace TTTReborn.UI
 
             _closeButton = Add.Button("╳", "closeButton", () =>
             {
-                if (Parent is TTTPanel tttPanel)
-                {
-                    tttPanel.IsShowing = false;
-                }
-                else
-                {
-                    Parent.Delete(true);
-                }
+                OnClose?.Invoke(this);
             });
         }
 
