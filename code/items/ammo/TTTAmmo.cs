@@ -84,9 +84,11 @@ namespace TTTReborn.Items
 
         public override void TakeDamage(DamageInfo info)
         {
-            var body = info.Body;
+            PhysicsBody body = info.Body;
             if (!body.IsValid())
+            {
                 body = PhysicsBody;
+            }
 
             if (body.IsValid() && !info.Flags.HasFlag(DamageFlags.PhysicsImpact))
             {
