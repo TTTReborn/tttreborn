@@ -27,7 +27,7 @@ namespace TTTReborn.Language
                 ActiveLanguage = FALLBACK_LANGUAGE;
         }
 
-        public static TLanguage GetActiveLanguage() => GetLanguageByName(ActiveLanguage);
+        public static TLanguage GetActiveLanguage() => GetLanguageByName( Host.IsServer ? ServerLanguage : ActiveLanguage );
         public static TLanguage GetLanguageByName(string name)
         {
             TLanguage lang = null;
