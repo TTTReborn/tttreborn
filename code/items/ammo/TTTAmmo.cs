@@ -84,8 +84,6 @@ namespace TTTReborn.Items
 
         public override void TakeDamage(DamageInfo info)
         {
-            //Excerpt from Sandbox.BasePhysics | Removes the ability to remove entity health and destroy, but will still calculate appropriate physics for damage.
-            //Unsure how Prop.Invulnerable works in comparison to this. Might be a better solution.
             var body = info.Body;
             if (!body.IsValid())
                 body = PhysicsBody;
