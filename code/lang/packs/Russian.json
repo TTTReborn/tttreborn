@@ -1,0 +1,40 @@
+{
+    "LANGUAGE_NAME": "Русский",
+
+    "ROLE_NAME_INNOCENT": "Невиновный",
+    "ROLE_NAME_TRAITOR": "Предатель",
+
+    "ROUND_STATE_WAITING": "Ожидание",
+    "ROUND_STATE_PREPARING": "Подготовка",
+    "ROUND_STATE_IN_PROGRESS": "В процессе",
+    "ROUND_STATE_POST_ROUND": "Конец",
+
+    "POST_ROUND_WIN_INNOCENTS": "ПОБЕДА НЕВИНОВНЫХ!",
+    "POST_ROUND_WIN_TRAITORS": "ПОБЕДА ПРЕДАТЕЛЕЙ!",
+    "POST_ROUND_TEXT": "Спасибо, что играете в TTT Reborn!",
+
+    "PLAYER_STATUS_HEALTH_HEALTHY": "Здоров",
+    "PLAYER_STATUS_HEALTH_HURT": "Слегка ранен",
+    "PLAYER_STATUS_HEALTH_WOUNDED": "Ранен",
+    "PLAYER_STATUS_HEALTH_BAD_WOUNDED": "Сильно ранен",
+    "PLAYER_STATUS_HEALTH_NEAR_DEATH": "Присмерти",
+    "PLAYER_STATUS_HEALTH_DEAD": "Dead",
+
+    "CORPSE_STATUS_TIME": "Умер {0} назад",
+    "CORPSE_STATUS_DISTANCE": "Дистанция {0}",
+    "CORPSE_STATUS_HEADSHOT": "Выстрелом в голову",
+    "CORPSE_STATUS_WEAPON": "С помощью {0}",
+
+    "SCOREBOARD_SERVER_INFO": "{0} игроков. Карта: {1}",
+    "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "Осталось игроков: {0}",
+
+    "SCOREBOARD_PLAYER_STATUS_KARMA": "Карма",
+    "SCOREBOARD_PLAYER_STATUS_DEATHS": "Смерти",
+    "SCOREBOARD_PLAYER_STATUS_SCORE": "Счёт",
+    "SCOREBOARD_PLAYER_STATUS_PING": "Пинг",
+
+    "SCOREBOARD_GROUP_NAME_ALIVE": "Живые",
+    "SCOREBOARD_GROUP_NAME_CONFIRMED": "Мёртвые",
+    "SCOREBOARD_GROUP_NAME_MIA": "Пропавшие без вести",
+    "SCOREBOARD_GROUP_NAME_SPECTATORS": "Наблюдатели"
+}
