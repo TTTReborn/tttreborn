@@ -30,12 +30,15 @@ namespace TTTReborn.UI
             private readonly Label _roleLabel;
 
             private TTTRole _currentRole;
-
             private TTTPlayer _currentPlayer;
+
+            private TLanguage lang;
 
             public RolePanel(Panel parent)
             {
                 Parent = parent;
+
+                lang = ILanguage.GetActiveLanguage();
 
                 _roleLabel = Add.Label("Unknown role", "rolelabel");
             }
@@ -66,8 +69,15 @@ namespace TTTReborn.UI
                 }
                 else
                 {
-                    _roleLabel.Text = ILanguage.GetActiveLanguage().GetTranslation($"RoleName_{player.Role.Name}");
+                    switch (_currentRole) {
+                        case InnocentRole:
+                            _roleLabel.Text = lang.GetTranslation("ROLE_NAME_INNOCENT");
+                            break;
 
+                        case TraitorRole:
+                            _roleLabel.Text = lang.GetTranslation("ROLE_NAME_TRAITOR");
+                            break;
+                    }
                     SetClass("hide", player.Role is NoneRole);
                 }
             }

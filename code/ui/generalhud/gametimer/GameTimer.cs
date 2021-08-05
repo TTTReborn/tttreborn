@@ -21,10 +21,13 @@ namespace TTTReborn.UI
         {
             private readonly Label _textLabel;
             private readonly Label _timeLabel;
+            private TLanguage lang;
 
             public GameTimerContent(Panel parent)
             {
                 Parent = parent;
+
+                lang = ILanguage.GetActiveLanguage();
 
                 _textLabel = Add.Label("", "textlabel");
                 _timeLabel = Add.Label("", "timelabel");
@@ -38,10 +41,29 @@ namespace TTTReborn.UI
                     return;
                 }
 
+                lang = ILanguage.GetActiveLanguage();
+
                 bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
 
-                _textLabel.Text = $"{ILanguage.GetActiveLanguage().GetTranslation($"RoundState_{Game.Instance.Round.RoundName}")}:";
-                _timeLabel.Text = isWaitingRound ? "" : $"{Game.Instance.Round.TimeLeftFormatted}";
+                switch (Game.Instance.Round)
+                {
+                    case Rounds.WaitingRound:
+                        _textLabel.Text = lang.GetTranslation("ROUND_STATE_WAITING");
+                        break;
+
+                    case Rounds.PreRound:
+                        _textLabel.Text = lang.GetTranslation("ROUND_STATE_PREPARING");
+                        break;
+
+                    case Rounds.InProgressRound:
+                        _textLabel.Text = lang.GetTranslation("ROUND_STATE_IN_PROGRESS");
+                        break;
+
+                    case Rounds.PostRound:
+                        _textLabel.Text = lang.GetTranslation("ROUND_STATE_POST_ROUND");
+                        break;
+                }
+                _timeLabel.Text = isWaitingRound ? "" : Game.Instance.Round.TimeLeftFormatted;
 
                 _timeLabel.SetClass("hide", isWaitingRound);
             }
