@@ -18,8 +18,9 @@ namespace TTTReborn.Language
 
         public string GetTranslation(string key)
         {
-            string translation = $"[ERROR: Translation of {key} not found]";
-            Strings.TryGetValue(key, out translation);
+            string translation;
+            if (!Strings.TryGetValue(key, out translation))
+                translation = $"[ERROR: Translation of {key} not found]";
 
             return translation;
         }
