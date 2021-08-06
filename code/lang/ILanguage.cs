@@ -28,6 +28,7 @@ namespace TTTReborn.Language
             if (Host.IsServer)
                 ConsoleSystem.SetValue("ttt_server_language", FALLBACK_LANGUAGE);
         }
+
         public static void LoadLanguages()
         {            
             foreach ( string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false) )
