@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+
 using Sandbox;
 
 namespace TTTReborn.Language
@@ -27,6 +28,7 @@ namespace TTTReborn.Language
             if (Host.IsServer)
                 ConsoleSystem.SetValue("ttt_server_language", FALLBACK_LANGUAGE);
         }
+
         public static void LoadLanguages()
         {            
             foreach ( string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false) )
@@ -41,7 +43,8 @@ namespace TTTReborn.Language
             FallbackLanguage();
         }
 
-        public static TLanguage GetActiveLanguage() => GetLanguageByName( Host.IsServer ? ServerLanguage : ActiveLanguage );
+        public static TLanguage GetActiveLanguage() => GetLanguageByName(Host.IsServer ? ServerLanguage : ActiveLanguage);
+
         public static TLanguage GetLanguageByName(string name)
         {
             TLanguage lang = null;
@@ -52,6 +55,7 @@ namespace TTTReborn.Language
                 if (Host.IsServer ? ServerLanguage == name : ActiveLanguage == name)
                     FallbackLanguage();
             }
+
             return lang;
         }
     }
