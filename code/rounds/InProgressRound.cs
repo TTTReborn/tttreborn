@@ -18,8 +18,6 @@ namespace TTTReborn.Rounds
         public override string RoundName => "In Progress";
         public override int RoundDuration => Gamemode.Game.TTTRoundTime;
 
-        private Dictionary<TTTRoleButton, string> RoleButtons = new();
-
         public override void OnPlayerKilled(TTTPlayer player)
         {
             Players.Remove(player);
