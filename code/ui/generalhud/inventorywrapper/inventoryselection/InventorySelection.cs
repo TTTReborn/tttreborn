@@ -11,7 +11,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class InventorySelection : Panel
+    public class InventorySelection : TTTPanel
     {
         public InventorySelection()
         {
@@ -235,7 +235,7 @@ namespace TTTReborn.UI
             return $"{weapon.AmmoClip} + {(inventory.Ammo.Count(weapon.AmmoType))}";
         }
 
-        private class InventorySlot : Panel
+        private class InventorySlot : TTTPanel
         {
             public ICarriableItem Carriable { get; private set; }
             private readonly Label _ammoLabel;

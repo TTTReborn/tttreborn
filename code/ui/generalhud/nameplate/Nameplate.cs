@@ -7,7 +7,7 @@ using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
-    public class Nameplate : Panel
+    public class Nameplate : TTTPanel
     {
         public static Nameplate Instance;
 
@@ -18,7 +18,7 @@ namespace TTTReborn.UI
             {
                 _isShowing = value;
 
-                SetClass("hide", !_isShowing);
+                SetClass("hide", !_isShowing);  // This is redundant as TTTPanel has this already
             }
         }
 

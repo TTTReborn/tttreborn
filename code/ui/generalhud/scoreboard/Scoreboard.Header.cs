@@ -6,7 +6,7 @@ namespace TTTReborn.UI
 {
     public partial class Scoreboard
     {
-        private class Header : Panel
+        private class Header : TTTPanel
         {
             //public Label ServerDescription;
 

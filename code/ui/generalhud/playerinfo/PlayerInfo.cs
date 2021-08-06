@@ -7,7 +7,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    public class PlayerInfo : Panel
+    public class PlayerInfo : TTTPanel
     {
         public PlayerInfo()
         {
@@ -24,7 +24,7 @@ namespace TTTReborn.UI
             SetClass("hide", Local.Pawn is not TTTPlayer player || (player.IsSpectator && !player.IsSpectatingPlayer));
         }
 
-        private class RolePanel : Panel
+        private class RolePanel : TTTPanel
         {
             private readonly Label _roleLabel;
 
@@ -72,7 +72,7 @@ namespace TTTReborn.UI
             }
         }
 
-        private class IndicatorsPanel : Panel
+        private class IndicatorsPanel : TTTPanel
         {
             private readonly BarPanel _healthBar;
             private readonly BarPanel _staminaBar;

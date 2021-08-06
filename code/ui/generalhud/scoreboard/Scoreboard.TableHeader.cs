@@ -8,7 +8,7 @@ namespace TTTReborn.UI
 {
     public partial class Scoreboard
     {
-        private class TableHeader : Panel
+        private class TableHeader : TTTPanel
         {
             private readonly Label _playerAliveCountLabel;
             private readonly Label _karmaLabel;

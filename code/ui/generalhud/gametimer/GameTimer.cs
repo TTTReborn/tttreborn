@@ -5,7 +5,7 @@ using TTTReborn.Gamemode;
 
 namespace TTTReborn.UI
 {
-    public class GameTimer : Panel
+    public class GameTimer : TTTPanel
     {
         private GameTimerContent _gameTimerContent;
 

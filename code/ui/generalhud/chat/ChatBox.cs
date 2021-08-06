@@ -10,7 +10,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.UI
 {
-    public partial class ChatBox : Panel
+    public partial class ChatBox : TTTPanel
     {
         public static ChatBox Instance { get; private set; }
 
