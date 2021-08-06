@@ -17,7 +17,7 @@ namespace TTTReborn.Player
 
             var applicableButtons = roleButtons.Where(x => x.Role.ToLower() == Role.Name.ToLower()).ToList();
 
-            ClientStoreRoleButton(To.Single(Owner), (Vector3[]) applicableButtons.Select(x => x.Position));
+            ClientStoreRoleButton(To.Single(Owner), applicableButtons.Select(x => x.Position).ToArray());
         }
 
         [ClientRpc]
