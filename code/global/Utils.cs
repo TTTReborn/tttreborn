@@ -86,6 +86,21 @@ namespace TTTReborn.Globals
             return clients;
         }
 
+        public static List<TTTPlayer> GetAlivePlayersByRoleName(string role)
+        {
+            List<TTTPlayer> players = new List<TTTPlayer>();
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role.Name.ToLower() == role.ToLower())
+                {
+                    players.Add(player);
+                }
+            }
+
+            return players;
+        }
+
         public static bool HasMinimumPlayers()
         {
             return Client.All.Count >= Gamemode.Game.TTTMinPlayers;

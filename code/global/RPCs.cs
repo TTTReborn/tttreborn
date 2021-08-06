@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Items;
+using TTTReborn.MapEntities;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
@@ -154,6 +155,12 @@ namespace TTTReborn.Globals
         public static void ClientClearInventory()
         {
             Event.Run("tttreborn.player.inventory.clear");
+        }
+
+        [ClientRpc]
+        public static void ClientDisplayMessage(string message, Color color)
+        {
+            InfoFeed.Current?.AddEntry(message);
         }
     }
 }

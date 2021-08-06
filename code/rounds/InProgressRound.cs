@@ -6,6 +6,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
+using TTTReborn.MapEntities;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
@@ -16,6 +17,8 @@ namespace TTTReborn.Rounds
     {
         public override string RoundName => "In Progress";
         public override int RoundDuration => Gamemode.Game.TTTRoundTime;
+
+        private Dictionary<TTTRoleButton, string> RoleButtons = new();
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
@@ -183,6 +186,8 @@ namespace TTTReborn.Rounds
                 {
                     player.SetRole(new InnocentRole());
                 }
+
+                player.SendRoleButtonsToClient();
 
                 // send everyone their roles
                 using (Prediction.Off())

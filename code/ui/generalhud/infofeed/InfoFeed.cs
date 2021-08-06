@@ -17,6 +17,15 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/infofeed/InfoFeed.scss");
         }
 
+        public virtual Panel AddEntry(string method)
+        {
+            InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
+
+            e.AddLabel(method, "method");
+
+            return e;
+        }
+
         public virtual Panel AddEntry(Client leftClient, string method)
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
