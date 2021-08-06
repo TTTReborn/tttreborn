@@ -11,7 +11,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class InventorySelection : TTTPanel
+    public class InventorySelection : Panel
     {
         public InventorySelection()
         {
