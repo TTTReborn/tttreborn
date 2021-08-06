@@ -5,7 +5,7 @@ using Sandbox;
 
 namespace TTTReborn.Language
 {
-    public interface ILanguage
+    public static class ILanguage
     {
         // TODO: On cvar change callback
         [ClientVar("ttt_language", Help = "Your current language", Saved = true)]
