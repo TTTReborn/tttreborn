@@ -59,21 +59,21 @@ namespace TTTReborn.UI
 
             if (playerCorpse.IsIdentified)
             {
-                _confirmationHintPanel.SetClass("hide", true);
+                _confirmationHintPanel.IsShowing = false;
 
                 _confirmationPanel.SetPlayer(playerCorpse.Player);
                 _confirmationPanel.SetConfirmationData(playerCorpse.GetConfirmationData());
                 _confirmationPanel.SetKillerWeapon(playerCorpse.KillerWeapon);
                 _confirmationPanel.SetPerks(playerCorpse.Perks);
-                _confirmationPanel.SetClass("hide", false);
+                _confirmationPanel.IsShowing = true;
 
                 _confirmationPanel.Style.BorderColor = playerCorpse.Player.Role.Color;
                 _confirmationPanel.Style.Dirty();
             }
             else
             {
-                _confirmationPanel.SetClass("hide", true);
-                _confirmationHintPanel.SetClass("hide", false);
+                _confirmationPanel.IsShowing = false;
+                _confirmationHintPanel.IsShowing = true;
             }
         }
 

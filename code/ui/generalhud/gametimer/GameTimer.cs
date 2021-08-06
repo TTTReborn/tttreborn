@@ -16,7 +16,7 @@ namespace TTTReborn.UI
             _gameTimerContent = new GameTimerContent(this);
         }
 
-        private class GameTimerContent : Panel
+        private class GameTimerContent : TTTPanel
         {
             private readonly Label _textLabel;
             private readonly Label _timeLabel;

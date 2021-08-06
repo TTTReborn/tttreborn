@@ -57,6 +57,7 @@ namespace TTTReborn.UI
             }
 
             _canvas.SetClass("hide", _lastChatFocus > MAX_DISPLAY_TIME);
+
         }
 
         private void Open()
