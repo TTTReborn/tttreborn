@@ -19,16 +19,6 @@ namespace TTTReborn.UI
     {
         public static PostRoundMenu Instance;
 
-        public bool IsShowing
-        {
-            get => _isShowing;
-            set
-            {
-                _isShowing = value;
-
-                SetClass("hide", !_isShowing);
-            }
-        }
         private bool _isShowing = false;
 
         private PostRoundStats _stats;

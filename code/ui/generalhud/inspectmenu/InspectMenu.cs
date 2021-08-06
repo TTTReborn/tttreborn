@@ -15,21 +15,6 @@ namespace TTTReborn.UI
 
         public PlayerCorpse PlayerCorpse;
 
-        public bool IsShowing
-        {
-            get => _isShowing;
-            set
-            {
-                _isShowing = value;
-
-                if (!_isShowing)
-                {
-                    PlayerCorpse = null;
-                }
-
-                SetClass("hide", !_isShowing);
-            }
-        }
         private bool _isShowing = false;
 
         private readonly ConfirmationPanel _confirmationPanel;

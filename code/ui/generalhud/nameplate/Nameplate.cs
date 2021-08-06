@@ -11,17 +11,6 @@ namespace TTTReborn.UI
     {
         public static Nameplate Instance;
 
-        public bool IsShowing
-        {
-            get => _isShowing;
-            set
-            {
-                _isShowing = value;
-
-                SetClass("hide", !_isShowing);  // This is redundant as TTTPanel has this already
-            }
-        }
-
         private const float MAX_DRAW_DISTANCE = 500;
         private readonly Color BORDER_COLOR_NONE = Color.FromBytes(0, 0, 0, 204);
 
