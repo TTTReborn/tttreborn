@@ -54,6 +54,7 @@ namespace TTTReborn.Language
                 if (Host.IsServer ? ServerLanguage == name : ActiveLanguage == name)
                     FallbackLanguage();
             }
+
             return lang;
         }
     }
