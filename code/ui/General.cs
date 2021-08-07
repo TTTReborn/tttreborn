@@ -3,7 +3,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public class BarPanel : Panel
+    public class BarPanel : TTTPanel
     {
         public readonly Label TextLabel;
 

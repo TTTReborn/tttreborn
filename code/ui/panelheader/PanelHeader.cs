@@ -5,7 +5,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class PanelHeader : Panel
+    public partial class PanelHeader : TTTPanel
     {
         public Action<PanelHeader> OnClose { get; set; }
 

@@ -5,7 +5,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class Crosshair : Panel
+    public class Crosshair : TTTPanel
     {
         public class Properties
         {
@@ -50,7 +50,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/Crosshair.scss");
         }
 
-        public Panel SetupCrosshair(Properties crosshairProperties)
+        public TTTPanel SetupCrosshair(Properties crosshairProperties)
         {
             int crossHairLinesToCreate = crosshairProperties.ShowTop ? 4 : 3;
 

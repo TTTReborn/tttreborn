@@ -8,7 +8,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public partial class Scoreboard : Panel
+    public partial class Scoreboard : TTTPanel
     {
         public static Scoreboard Instance;
 

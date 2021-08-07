@@ -16,7 +16,7 @@ namespace TTTReborn.UI
             Spectator
         }
 
-        private class ScoreboardGroup : Panel
+        private class ScoreboardGroup : TTTPanel
         {
             public readonly string GroupTitle;
             public int GroupMembers = 0;

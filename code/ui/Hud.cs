@@ -63,7 +63,7 @@ namespace TTTReborn.UI
             Current?.AliveHudPanel.DeleteHud();
         }
 
-        public class GeneralHud : Panel
+        public class GeneralHud : TTTPanel
         {
             public GeneralHud(Panel parent)
             {
@@ -83,7 +83,7 @@ namespace TTTReborn.UI
             }
         }
 
-        public class AliveHud : Panel
+        public class AliveHud : TTTPanel
         {
             public DamageIndicator DamageIndicator;
             public QuickShop QuickShop;

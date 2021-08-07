@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public partial class DamageIndicator : Panel
+    public partial class DamageIndicator : TTTPanel
     {
         private float _maxDamageIndicatorDuration = 10f;
         private float _currentRemainingDamageIndicatorDuration = 0f;

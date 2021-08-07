@@ -9,27 +9,12 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class InspectMenu : Panel
+    public class InspectMenu : TTTPanel
     {
         public static InspectMenu Instance;
 
         public PlayerCorpse PlayerCorpse;
 
-        public bool IsShowing
-        {
-            get => _isShowing;
-            set
-            {
-                _isShowing = value;
-
-                if (!_isShowing)
-                {
-                    PlayerCorpse = null;
-                }
-
-                SetClass("hide", !_isShowing);
-            }
-        }
         private bool _isShowing = false;
 
         private readonly ConfirmationPanel _confirmationPanel;
@@ -59,25 +44,25 @@ namespace TTTReborn.UI
 
             if (playerCorpse.IsIdentified)
             {
-                _confirmationHintPanel.SetClass("hide", true);
+                _confirmationHintPanel.IsShowing = false;
 
                 _confirmationPanel.SetPlayer(playerCorpse.Player);
                 _confirmationPanel.SetConfirmationData(playerCorpse.GetConfirmationData());
                 _confirmationPanel.SetKillerWeapon(playerCorpse.KillerWeapon);
                 _confirmationPanel.SetPerks(playerCorpse.Perks);
-                _confirmationPanel.SetClass("hide", false);
+                _confirmationPanel.IsShowing = true;
 
                 _confirmationPanel.Style.BorderColor = playerCorpse.Player.Role.Color;
                 _confirmationPanel.Style.Dirty();
             }
             else
             {
-                _confirmationPanel.SetClass("hide", true);
-                _confirmationHintPanel.SetClass("hide", false);
+                _confirmationPanel.IsShowing = false;
+                _confirmationHintPanel.IsShowing = true;
             }
         }
 
-        private class ConfirmationPanel : Panel
+        private class ConfirmationPanel : TTTPanel
         {
             private readonly Header _header;
 
@@ -116,7 +101,7 @@ namespace TTTReborn.UI
                 _content.SetPerks(perks);
             }
 
-            private class Header : Panel
+            private class Header : TTTPanel
             {
                 private readonly Label _playerLabel;
 
@@ -140,7 +125,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class Content : Panel
+            private class Content : TTTPanel
             {
                 private InspectItem _timeSinceDeath;
                 private InspectItem _killerWeapon;
@@ -251,7 +236,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class ImageWrapper : Panel
+            private class ImageWrapper : TTTPanel
             {
                 public readonly Image Image;
 
@@ -263,7 +248,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class InspectItem : Panel
+            private class InspectItem : TTTPanel
             {
                 public readonly ImageWrapper ImageWrapper;
 
@@ -278,7 +263,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class Footer : Panel
+            private class Footer : TTTPanel
             {
                 private readonly Label _footerLabel;
 
@@ -305,7 +290,7 @@ namespace TTTReborn.UI
             }
         }
 
-        private class ConfirmationHintPanel : Panel
+        private class ConfirmationHintPanel : TTTPanel
         {
             private Label _inspectLabel;
 
