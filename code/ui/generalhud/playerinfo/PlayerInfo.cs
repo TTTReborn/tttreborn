@@ -69,15 +69,7 @@ namespace TTTReborn.UI
                 }
                 else
                 {
-                    switch (_currentRole) {
-                        case InnocentRole:
-                            _roleLabel.Text = lang.GetTranslation("ROLE_NAME_INNOCENT");
-                            break;
-
-                        case TraitorRole:
-                            _roleLabel.Text = lang.GetTranslation("ROLE_NAME_TRAITOR");
-                            break;
-                    }
+                    _roleLabel.Text = _currentRole.GetRoleTranslation("ROLE_NAME");
                     SetClass("hide", player.Role is NoneRole);
                 }
             }
