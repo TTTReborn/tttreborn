@@ -44,7 +44,7 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/postroundmenu/PostRoundMenu.scss");
 
-            lang = ILanguage.GetActiveLanguage();
+            lang = TTTLanguage.GetActiveLanguage();
 
             _headerLabel = Add.Label("", "headerLabel");
 
@@ -63,7 +63,7 @@ namespace TTTReborn.UI
         public void OpenPostRoundMenu()
         {
             IsShowing = true;
-            lang = ILanguage.GetActiveLanguage();
+            lang = TTTLanguage.GetActiveLanguage();
 
             _contentLabel.Text = lang.GetTranslation("POST_ROUND_TEXT");
 

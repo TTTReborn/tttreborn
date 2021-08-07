@@ -6,7 +6,7 @@ using Sandbox;
 
 namespace TTTReborn.Language
 {
-    public static class ILanguage
+    public static class TTTLanguage
     {
         // TODO: On cvar change callback
         [ClientVar("ttt_language", Help = "Your current language", Saved = true)]
@@ -57,6 +57,11 @@ namespace TTTReborn.Language
             }
 
             return lang;
+        }
+
+        public static void AddTranslationString(string language, string key, string translation)
+        {
+            GetLanguageByName(language).AddTranslationString(key, translation);
         }
     }
 }

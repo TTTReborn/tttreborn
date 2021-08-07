@@ -27,7 +27,7 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                lang = ILanguage.GetActiveLanguage();
+                lang = TTTLanguage.GetActiveLanguage();
 
                 _textLabel = Add.Label("", "textlabel");
                 _timeLabel = Add.Label("", "timelabel");
@@ -41,7 +41,7 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                lang = ILanguage.GetActiveLanguage();
+                lang = TTTLanguage.GetActiveLanguage();
 
                 bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
 

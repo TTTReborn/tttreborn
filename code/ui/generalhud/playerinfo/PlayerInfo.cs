@@ -38,7 +38,7 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                lang = ILanguage.GetActiveLanguage();
+                lang = TTTLanguage.GetActiveLanguage();
 
                 _roleLabel = Add.Label("Unknown role", "rolelabel");
             }

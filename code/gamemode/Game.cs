@@ -24,7 +24,7 @@ namespace TTTReborn.Gamemode
         {
             Instance = this;
 
-            ILanguage.LoadLanguages();
+            TTTLanguage.LoadLanguages();
 
             if (IsServer)
             {
