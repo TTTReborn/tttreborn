@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
+using Sandbox;
+
 
 namespace TTTReborn.Language
 {
@@ -33,6 +35,14 @@ namespace TTTReborn.Language
                 return translation;
 
             return String.Format(translation, args);
+        }
+
+        public void AddTranslationString(string key, string translation)
+        {
+            if (!Strings.TryAdd(key, translation))
+            {
+                Log.Info($"Couldn't add translation string ({key}) to {LanguageName}");
+            }
         }
     }
 }
