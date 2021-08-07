@@ -11,7 +11,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class InventorySelection : Panel
+    public class InventorySelection : TTTPanel
     {
         public InventorySelection()
         {
@@ -98,6 +98,8 @@ namespace TTTReborn.UI
                     ? result
                     : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
             });
+
+            IsShowing = Children.Any();
         }
 
         [Event("tttreborn.player.carriableitem.drop")]
@@ -113,6 +115,8 @@ namespace TTTReborn.UI
                     }
                 }
             }
+
+            IsShowing = Children.Any();
         }
 
         [Event("tttreborn.player.spectating.change")]
