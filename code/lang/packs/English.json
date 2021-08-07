@@ -1,5 +1,6 @@
 {
     "LANGUAGE_NAME": "English",
+    "LANGUAGE_CODE": "en",
 
     "ROLE_NAME_INNOCENT": "Innocent",
     "ROLE_NAME_TRAITOR": "Traitor",

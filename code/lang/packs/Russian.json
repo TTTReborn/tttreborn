@@ -1,5 +1,6 @@
 {
     "LANGUAGE_NAME": "Русский",
+    "LANGUAGE_CODE": "ru",
 
     "ROLE_NAME_INNOCENT": "Невиновный",
     "ROLE_NAME_TRAITOR": "Предатель",
