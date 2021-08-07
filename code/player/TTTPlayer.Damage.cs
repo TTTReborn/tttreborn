@@ -54,6 +54,8 @@ namespace TTTReborn.Player
 
         public float LastDistanceToAttacker { get; private set; } = 0f;
 
+        private const float ArmorReductionPercentage = 0.7f;
+
         public void SetHealth(float health)
         {
             Health = Math.Min(health, MaxHealth);
@@ -66,6 +68,12 @@ namespace TTTReborn.Player
             if (LastDamageWasHeadshot)
             {
                 info.Damage *= 2.0f;
+            }
+
+            //If player has bodyarmor, was not shot in the head, and was shot by a bullet, reduce damage by 30%.
+            if ((Inventory as Inventory).Perks.Has("ttt_bodyarmor") && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
+            {
+                info.Damage *= ArmorReductionPercentage;
             }
 
             LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as TTTWeapon : null;
