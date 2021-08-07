@@ -20,10 +20,10 @@
     "PLAYER_STATUS_HEALTH_NEAR_DEATH": "Near Death",
     "PLAYER_STATUS_HEALTH_DEAD": "Dead",
 
-    "CORPSE_STATUS_TIME": "Died {0} ago",
-    "CORPSE_STATUS_DISTANCE": "From {0} away",
-    "CORPSE_STATUS_HEADSHOT": "By a headshot",
-    "CORPSE_STATUS_WEAPON": "With a {0}",
+    "CORPSE_INFO_TIME": "Died {0} ago",
+    "CORPSE_INFO_DISTANCE": "From {0} away",
+    "CORPSE_INFO_HEADSHOT": "By a headshot",
+    "CORPSE_INFO_WEAPON": "With a {0}",
 
     "SCOREBOARD_SERVER_INFO": "{0} players. Map: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} players left",
@@ -33,8 +33,8 @@
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Score",
     "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
 
-    "SCOREBOARD_GROUP_NAME_ALIVE": "Alive",
-    "SCOREBOARD_GROUP_NAME_CONFIRMED": "Confirmed Dead",
-    "SCOREBOARD_GROUP_NAME_MIA": "Missing In Action",
-    "SCOREBOARD_GROUP_NAME_SPECTATORS": "Spectators"
+    "SCOREBOARD_PLAYER_GROUP_ALIVE": "Alive",
+    "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Confirmed Dead",
+    "SCOREBOARD_PLAYER_GROUP_MIA": "Missing In Action",
+    "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Spectators"
 }

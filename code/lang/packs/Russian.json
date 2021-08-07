@@ -9,7 +9,7 @@
     "ROUND_STATE_IN_PROGRESS": "В процессе",
     "ROUND_STATE_POST_ROUND": "Конец",
 
-    "POST_ROUND_WIN_INNOCENTS": "ПОБЕДА НЕВИНОВНЫХ!",
+    "POST_ROUND_WIN_INNOCENT": "ПОБЕДА НЕВИНОВНЫХ!",
     "POST_ROUND_WIN_TRAITORS": "ПОБЕДА ПРЕДАТЕЛЕЙ!",
     "POST_ROUND_TEXT": "Спасибо, что играете в TTT Reborn!",
 
@@ -20,10 +20,10 @@
     "PLAYER_STATUS_HEALTH_NEAR_DEATH": "Присмерти",
     "PLAYER_STATUS_HEALTH_DEAD": "Dead",
 
-    "CORPSE_STATUS_TIME": "Умер {0} назад",
-    "CORPSE_STATUS_DISTANCE": "Дистанция {0}",
-    "CORPSE_STATUS_HEADSHOT": "Выстрелом в голову",
-    "CORPSE_STATUS_WEAPON": "С помощью {0}",
+    "CORPSE_INFO_TIME": "Умер {0} назад",
+    "CORPSE_INFO_DISTANCE": "Дистанция {0}",
+    "CORPSE_INFO_HEADSHOT": "Выстрелом в голову",
+    "CORPSE_INFO_WEAPON": "С помощью {0}",
 
     "SCOREBOARD_SERVER_INFO": "{0} игроков. Карта: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "Осталось игроков: {0}",
@@ -33,8 +33,8 @@
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Счёт",
     "SCOREBOARD_PLAYER_STATUS_PING": "Пинг",
 
-    "SCOREBOARD_GROUP_NAME_ALIVE": "Живые",
-    "SCOREBOARD_GROUP_NAME_CONFIRMED": "Мёртвые",
-    "SCOREBOARD_GROUP_NAME_MIA": "Пропавшие без вести",
-    "SCOREBOARD_GROUP_NAME_SPECTATORS": "Наблюдатели"
+    "SCOREBOARD_PLAYER_GROUP_ALIVE": "Живые",
+    "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Мёртвые",
+    "SCOREBOARD_PLAYER_GROUP_MIA": "Пропавшие без вести",
+    "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Наблюдатели"
 }
