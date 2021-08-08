@@ -41,7 +41,7 @@ namespace TTTReborn.Language
         {
             if (!Strings.TryAdd(key, translation))
             {
-                Log.Info($"Couldn't add translation string ({key}) to {LanguageName}");
+                Log.Warning($"Couldn't add translation string ({key}) to {LanguageName}");
             }
         }
     }

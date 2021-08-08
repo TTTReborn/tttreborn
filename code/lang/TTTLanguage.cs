@@ -20,13 +20,15 @@ namespace TTTReborn.Language
 
         private static void FallbackLanguage()
         {
-            //Log.Info($"Falling back to {FALLBACK_LANGUAGE}.");
-
             if (Host.IsClient)
+            {
                 ActiveLanguage = FALLBACK_LANGUAGE;
+            }
 
             if (Host.IsServer)
+            {
                 ConsoleSystem.SetValue("ttt_server_language", FALLBACK_LANGUAGE);
+            }
         }
 
         public static void LoadLanguages()
@@ -47,13 +49,14 @@ namespace TTTReborn.Language
 
         public static TLanguage GetLanguageByName(string name)
         {
-            TLanguage lang = null;
-            if (!Languages.TryGetValue(name, out lang))
+            if (!Languages.TryGetValue(name, out TLanguage lang))
             {
-                Log.Info($"Tried to get a language that doesn't exist: {name}.");
+                Log.Warning($"Tried to get a language that doesn't exist: {name}.");
 
                 if (Host.IsServer ? ServerLanguage == name : ActiveLanguage == name)
+                {
                     FallbackLanguage();
+                }
             }
 
             return lang;
