@@ -54,7 +54,7 @@ namespace TTTReborn.Player
 
         public float LastDistanceToAttacker { get; private set; } = 0f;
 
-        private const float ArmorReductionPercentage = 0.7f;
+        private const float ArmorReductionPercentage = 0.7f; //- Move ArmorReductionPercentage to read off a cvar for added customization
 
         public void SetHealth(float health)
         {
