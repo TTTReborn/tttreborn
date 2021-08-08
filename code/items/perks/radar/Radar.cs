@@ -48,13 +48,13 @@ namespace TTTReborn.Items
                     }
                 }
 
-                IEnumerable<Vector3> decoyPositions = Entity.All.Where(x=>x.GetType() == typeof(DecoyEntity))?.Select(x=>x.Position);
+                IEnumerable<Vector3> decoyPositions = Entity.All.Where(x => x.GetType() == typeof(DecoyEntity))?.Select(x => x.Position);
 
                 if (decoyPositions.Any())
                 {
                     positions.AddRange(decoyPositions);
                 }
-                
+
                 ClientSendRadarPositions(To.Single(Owner), Owner as TTTPlayer, positions.ToArray());
             }
             else

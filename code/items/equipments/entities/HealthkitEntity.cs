@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_healthkit_ent")]
+    [Library("ttt_healthkit_ent"), Hammer.Skip]
     public partial class HealthkitEntity : Prop, IUse
     {
         [Net]

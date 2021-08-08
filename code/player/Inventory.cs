@@ -102,7 +102,7 @@ namespace TTTReborn.Player
                 item.Delete();
                 List.Remove(item);
                 RPCs.ClientOnPlayerCarriableItemDrop(To.Single(Owner), item);
-                
+
                 return true;
             }
             return false;

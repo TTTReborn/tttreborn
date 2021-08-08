@@ -1,12 +1,11 @@
 using Sandbox;
-using Sandbox.Joints;
 
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
     /// <summary>
-    /// Healthkit equipment definition, for the physcal entity, see items/equipments/entities/HealthKitEntity.cs
+    /// Healthkit equipment definition, for the physical entity, see items/equipments/entities/HealthKitEntity.cs
     /// </summary>
     [Library("ttt_healthkit"), Hammer.Skip]
     public partial class HealthkitEquipment : TTTEquipment, IBuyableItem
@@ -38,9 +37,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            TTTPlayer owner = Owner as TTTPlayer;
-
-            if (owner == null)
+            if (Owner is not TTTPlayer owner)
             {
                 return;
             }
