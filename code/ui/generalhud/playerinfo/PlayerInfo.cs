@@ -8,7 +8,7 @@ using TTTReborn.Language;
 
 namespace TTTReborn.UI
 {
-    public class PlayerInfo : Panel
+    public class PlayerInfo : TTTPanel
     {
         public PlayerInfo()
         {
@@ -22,10 +22,10 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            SetClass("hide", Local.Pawn is not TTTPlayer player || (player.IsSpectator && !player.IsSpectatingPlayer));
+            IsShowing = Local.Pawn is TTTPlayer player && (!player.IsSpectator && !player.IsSpectatingPlayer);
         }
 
-        private class RolePanel : Panel
+        private class RolePanel : TTTPanel
         {
             private readonly Label _roleLabel;
 
@@ -65,17 +65,17 @@ namespace TTTReborn.UI
                 {
                     _roleLabel.Text = $"{_currentPlayer.GetClientOwner()?.Name}";
 
-                    SetClass("hide", false);
+                    IsShowing = true;
                 }
                 else
                 {
                     _roleLabel.Text = _currentRole.GetRoleTranslation("ROLE_NAME");
-                    SetClass("hide", player.Role is NoneRole);
+                    IsShowing = !(player.Role is NoneRole);
                 }
             }
         }
 
-        private class IndicatorsPanel : Panel
+        private class IndicatorsPanel : TTTPanel
         {
             private readonly BarPanel _healthBar;
             private readonly BarPanel _staminaBar;
@@ -110,6 +110,8 @@ namespace TTTReborn.UI
 
                     _healthBar.TextLabel.Text = $"{player.CurrentPlayer.Health:n0}";
 
+                    _healthBar.IsShowing = (player.CurrentPlayer.LifeState == LifeState.Alive);
+
                     _healthBar.Style.Width = Length.Percent(player.CurrentPlayer.Health / player.CurrentPlayer.MaxHealth * 100f);
                     _healthBar.Style.Dirty();
                 }
@@ -118,7 +120,7 @@ namespace TTTReborn.UI
                 {
                     _staminaBar.Style.Display = DisplayMode.Flex;
 
-                    _staminaBar.SetClass("hide", player.CurrentPlayer.LifeState != LifeState.Alive);
+                    _staminaBar.IsShowing = !(player.CurrentPlayer.LifeState != LifeState.Alive);
 
                     if (_currentStamina == player.CurrentPlayer.Stamina)
                     {

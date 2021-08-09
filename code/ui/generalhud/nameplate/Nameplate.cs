@@ -7,20 +7,9 @@ using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
-    public class Nameplate : Panel
+    public class Nameplate : TTTPanel
     {
         public static Nameplate Instance;
-
-        public bool IsShowing
-        {
-            get => _isShowing;
-            set
-            {
-                _isShowing = value;
-
-                SetClass("hide", !_isShowing);
-            }
-        }
 
         private const float MAX_DRAW_DISTANCE = 500;
         private readonly Color BORDER_COLOR_NONE = Color.FromBytes(0, 0, 0, 204);

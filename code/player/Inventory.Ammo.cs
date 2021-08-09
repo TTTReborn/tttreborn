@@ -9,7 +9,7 @@ namespace TTTReborn.Player
 {
     public partial class AmmoInventory
     {
-        private List<int> AmmoList { get; set; } = new();
+        private Dictionary<string, int> AmmoList { get; set; } = new();
         private Inventory Inventory;
 
         public AmmoInventory(Inventory inventory) : base()
@@ -17,58 +17,63 @@ namespace TTTReborn.Player
             Inventory = inventory;
         }
 
-        public int Count(AmmoType ammoType)
+        public int Count(string ammoType)
         {
-            int iAmmoType = (int) ammoType;
+            string ammo = ammoType.ToLower();
 
-            if (AmmoList == null || AmmoList.Count <= iAmmoType)
+            if (AmmoList == null || !AmmoList.ContainsKey(ammo))
             {
                 return 0;
             }
 
-            return AmmoList[iAmmoType];
+            return AmmoList[ammo];
         }
 
-        public bool Set(AmmoType ammoType, int amount)
+        public bool Set(string ammoType, int amount)
         {
-            int iAmmoType = (int) ammoType;
+            string ammo = ammoType.ToLower();
 
-            if (AmmoList == null)
+            if (AmmoList == null || string.IsNullOrEmpty(ammo))
             {
                 return false;
             }
 
-            while (AmmoList.Count <= iAmmoType)
+            while (!AmmoList.ContainsKey(ammo))
             {
-                AmmoList.Add(0);
+                AmmoList.Add(ammo, 0);
             }
 
-            AmmoList[iAmmoType] = amount;
+            AmmoList[ammo] = amount;
+
 
             if (Host.IsServer)
             {
                 TTTPlayer player = Inventory.Owner as TTTPlayer;
 
-                player.ClientSetAmmo(To.Single(player), ammoType, amount);
+                player.ClientSetAmmo(To.Single(player), ammo, amount);
             }
 
             return true;
         }
 
-        public bool Give(AmmoType ammoType, int amount)
+        public bool Give(string ammoType, int amount)
         {
+            string ammo = ammoType.ToLower();
+
             if (AmmoList == null)
             {
                 return false;
             }
 
-            Set(ammoType, Count(ammoType) + amount);
+            Set(ammo, Count(ammo) + amount);
 
             return true;
         }
 
-        public int Take(AmmoType ammoType, int amount)
+        public int Take(string ammoType, int amount)
         {
+            string ammo = ammoType.ToLower();
+
             if (AmmoList == null)
             {
                 return 0;

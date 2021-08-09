@@ -6,7 +6,7 @@ using TTTReborn.Items;
 
 namespace TTTReborn.UI
 {
-    public class Effect : Panel
+    public class Effect : TTTPanel
     {
         public IItem Item
         {

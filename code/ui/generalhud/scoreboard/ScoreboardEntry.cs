@@ -7,7 +7,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    public class ScoreboardEntry : Panel
+    public class ScoreboardEntry : TTTPanel
     {
         private PlayerScore.Entry _entry;
         public string ScoreboardGroupName;

@@ -6,7 +6,7 @@ using TTTReborn.Language;
 
 namespace TTTReborn.UI
 {
-    public class GameTimer : Panel
+    public class GameTimer : TTTPanel
     {
         private GameTimerContent _gameTimerContent;
 
@@ -17,7 +17,7 @@ namespace TTTReborn.UI
             _gameTimerContent = new GameTimerContent(this);
         }
 
-        private class GameTimerContent : Panel
+        private class GameTimerContent : TTTPanel
         {
             private readonly Label _textLabel;
             private readonly Label _timeLabel;

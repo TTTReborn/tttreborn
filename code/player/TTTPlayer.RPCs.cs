@@ -15,7 +15,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientSetAmmo(AmmoType ammoType, int amount)
+        public void ClientSetAmmo(string ammoType, int amount)
         {
             (Inventory as Inventory).Ammo.Set(ammoType, amount);
         }
