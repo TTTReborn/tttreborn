@@ -26,7 +26,6 @@ namespace TTTReborn.Items
 
             SetModel(ModelPath);
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
-            //CollisionGroup = CollisionGroup.Weapon; //Uncomment this if you want to be able to walk through the health kit.
         }
 
         private bool HealPlayer(TTTPlayer player)
