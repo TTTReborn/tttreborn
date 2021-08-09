@@ -10,7 +10,7 @@
     "ROUND_STATE_IN_PROGRESS": "В процессе",
     "ROUND_STATE_POST_ROUND": "Конец",
 
-    "POST_ROUND_WIN_INNOCENT": "ПОБЕДА НЕВИНОВНЫХ!",
+    "POST_ROUND_WIN_INNOCENTS": "ПОБЕДА НЕВИНОВНЫХ!",
     "POST_ROUND_WIN_TRAITORS": "ПОБЕДА ПРЕДАТЕЛЕЙ!",
     "POST_ROUND_TEXT": "Спасибо, что играете в TTT Reborn!",
 

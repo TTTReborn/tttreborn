@@ -10,7 +10,7 @@
     "ROUND_STATE_IN_PROGRESS": "In progress",
     "ROUND_STATE_POST_ROUND": "Round over",
 
-    "POST_ROUND_WIN_INNOCENT": "THE INNOCENT WIN!",
+    "POST_ROUND_WIN_INNOCENTS": "THE INNOCENT WIN!",
     "POST_ROUND_WIN_TRAITORS": "THE TRAITORS WIN!",
     "POST_ROUND_TEXT": "Thanks for playing TTT Reborn, more updates and stats to come!",
 

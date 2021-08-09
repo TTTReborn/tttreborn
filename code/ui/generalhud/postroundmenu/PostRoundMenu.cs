@@ -67,17 +67,7 @@ namespace TTTReborn.UI
 
             _contentLabel.Text = lang.GetTranslation("POST_ROUND_TEXT");
 
-            switch (_stats.WinningRole)
-            {
-                case "Innocents":
-                    _headerLabel.Text = lang.GetTranslation("POST_ROUND_WIN_INNOCENT");
-                    break;
-
-                case "Traitors":
-                    _headerLabel.Text = lang.GetTranslation("POST_ROUND_WIN_TRAITORS");
-                    break;
-            }
-
+            _headerLabel.Text = lang.GetTranslation($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}");
             _headerLabel.Style.BackgroundColor = _stats.WinningColor;
         }
     }
