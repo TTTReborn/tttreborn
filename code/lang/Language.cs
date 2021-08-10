@@ -37,7 +37,7 @@ namespace TTTReborn.Globalization
                     Log.Error($"Language '{language}' is missing '__LANGUAGE__.NAME' (language name)!");
                 }
 
-                if (!dict.TryGetValue("CODE", out string code))
+                if (!dict.TryGetValue("CODE", out string code) || String.IsNullOrEmpty(code))
                 {
                     Log.Error($"Language '{language}' is missing '__LANGUAGE__.CODE' (language ISO (tag) code)!");
                 }
