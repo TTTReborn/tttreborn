@@ -1,0 +1,61 @@
+DialogBox {
+    background-color: #000c;
+    border: 1px solid #1b1b1b;
+    border-radius: 8px;
+
+    font-family: Poppins;
+    width: 600px;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    flex-direction: column;
+
+    color: #fafafa;
+    font-family: Poppins;
+    font-weight: 500;
+    pointer-events: all;
+
+    &.hide {
+        display: none;
+        pointer-events: none;
+    }
+
+    .header,
+    .footer {
+        flex-direction: row;
+        background-color: #000c;
+        padding: 5px;
+    }
+
+    .content {
+        padding: 5px;
+    }
+
+    .header {
+        border-radius: 8px 8px 0px 0px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .footer {
+        border-radius: 0px 0px 8px 8px;
+        margin-top: 10px;
+
+        Button {
+            border: 1px solid #1b1b1b;
+            background-color: #000c;
+
+            flex-grow: 1;
+            justify-content: center;
+
+            font-size: 28px;
+            font-family: MaterialIcons;
+            color: white;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
