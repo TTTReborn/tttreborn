@@ -1,7 +1,4 @@
-using Sandbox.UI;
 using Sandbox.UI.Construct;
-
-using TTTReborn.Language;
 
 namespace TTTReborn.UI
 {
@@ -21,12 +18,9 @@ namespace TTTReborn.UI
     {
         public static PostRoundMenu Instance;
 
-        private bool _isShowing = false;
-
         private PostRoundStats _stats;
-        private readonly Label _headerLabel;
-        private readonly Label _contentLabel;
-        private TLanguage lang;
+        private readonly TranslationLabel _headerLabel;
+        private readonly TranslationLabel _contentLabel;
 
         public PostRoundMenu()
         {
@@ -34,11 +28,9 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/postroundmenu/PostRoundMenu.scss");
 
-            lang = TTTLanguage.GetActiveLanguage();
+            _headerLabel = Add.TranslationLabel("", "headerLabel");
 
-            _headerLabel = Add.Label("", "headerLabel");
-
-            _contentLabel = Add.Label("", "contentLabel");
+            _contentLabel = Add.TranslationLabel("", "contentLabel");
 
             IsShowing = false;
         }
@@ -53,11 +45,10 @@ namespace TTTReborn.UI
         public void OpenPostRoundMenu()
         {
             IsShowing = true;
-            lang = TTTLanguage.GetActiveLanguage();
 
-            _contentLabel.Text = lang.GetTranslation("POST_ROUND_TEXT");
+            _contentLabel.SetTranslation("POST_ROUND_TEXT");
 
-            _headerLabel.Text = lang.GetTranslation($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}");
+            _headerLabel.SetTranslation($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}");
             _headerLabel.Style.BackgroundColor = _stats.WinningColor;
         }
     }

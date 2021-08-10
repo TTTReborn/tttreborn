@@ -68,7 +68,7 @@ namespace TTTReborn.UI
         {
             Parent = parent ?? Parent;
 
-            StyleSheet.Load("/ui/components/dragdrop/DragDrop.scss");
+            StyleSheet.Load("/ui/components/dragdrop/Drag.scss");
         }
 
         protected override void OnMouseDown(MousePanelEvent e)

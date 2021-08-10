@@ -6,7 +6,7 @@ using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.UI;
-using TTTReborn.Language;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.Gamemode
 {

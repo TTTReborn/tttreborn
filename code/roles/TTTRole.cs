@@ -5,7 +5,6 @@ using Sandbox;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Teams;
-using TTTReborn.Language;
 
 namespace TTTReborn.Roles
 {
@@ -53,9 +52,9 @@ namespace TTTReborn.Roles
 
         public virtual bool CanBuy() => false;
 
-        public string GetRoleTranslation(string key)
+        public string GetRoleTranslationKey(string key)
         {
-            return TTTLanguage.GetActiveLanguage().GetTranslation($"{key}_{Name.ToUpper()}");
+            return $"{key}_{Name.ToUpper()}";
         }
     }
 }

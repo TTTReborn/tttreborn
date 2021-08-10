@@ -1,6 +1,8 @@
 {
-    "LANGUAGE_NAME": "Русский",
-    "LANGUAGE_CODE": "ru",
+    "__LANGUAGE__": {
+        "NAME": "Русский",
+        "CODE": "ru-RU"
+    },
 
     "ROLE_NAME_INNOCENT": "Невиновный",
     "ROLE_NAME_TRAITOR": "Предатель",
@@ -8,7 +10,7 @@
     "ROUND_STATE_WAITING": "Ожидание",
     "ROUND_STATE_PREPARING": "Подготовка",
     "ROUND_STATE_IN_PROGRESS": "В процессе",
-    "ROUND_STATE_POST_ROUND": "Конец",
+    "ROUND_STATE_POST": "Конец",
 
     "POST_ROUND_WIN_INNOCENTS": "ПОБЕДА НЕВИНОВНЫХ!",
     "POST_ROUND_WIN_TRAITORS": "ПОБЕДА ПРЕДАТЕЛЕЙ!",

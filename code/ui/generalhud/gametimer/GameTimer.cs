@@ -2,7 +2,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Gamemode;
-using TTTReborn.Language;
 
 namespace TTTReborn.UI
 {
@@ -19,17 +18,14 @@ namespace TTTReborn.UI
 
         private class GameTimerContent : TTTPanel
         {
-            private readonly Label _textLabel;
+            private readonly TranslationLabel _textLabel;
             private readonly Label _timeLabel;
-            private TLanguage lang;
 
             public GameTimerContent(Panel parent)
             {
                 Parent = parent;
 
-                lang = TTTLanguage.GetActiveLanguage();
-
-                _textLabel = Add.Label("", "textlabel");
+                _textLabel = Add.TranslationLabel("", "textlabel");
                 _timeLabel = Add.Label("", "timelabel");
             }
             public override void Tick()
@@ -41,30 +37,11 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                lang = TTTLanguage.GetActiveLanguage();
-
                 bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
 
-                switch (Game.Instance.Round)
-                {
-                    case Rounds.WaitingRound:
-                        _textLabel.Text = lang.GetTranslation("ROUND_STATE_WAITING");
-                        break;
+                _textLabel.SetTranslation($"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}");
 
-                    case Rounds.PreRound:
-                        _textLabel.Text = lang.GetTranslation("ROUND_STATE_PREPARING");
-                        break;
-
-                    case Rounds.InProgressRound:
-                        _textLabel.Text = lang.GetTranslation("ROUND_STATE_IN_PROGRESS");
-                        break;
-
-                    case Rounds.PostRound:
-                        _textLabel.Text = lang.GetTranslation("ROUND_STATE_POST_ROUND");
-                        break;
-                }
                 _timeLabel.Text = isWaitingRound ? "" : Game.Instance.Round.TimeLeftFormatted;
-
                 _timeLabel.SetClass("hide", isWaitingRound);
             }
         }

@@ -1,14 +1,17 @@
 {
-    "LANGUAGE_NAME": "English",
-    "LANGUAGE_CODE": "en",
+    "__LANGUAGE__": {
+        "NAME": "English",
+        "CODE": "en-US"
+    },
 
+    "ROLE_UNKNOWN": "Unknown",
     "ROLE_NAME_INNOCENT": "Innocent",
     "ROLE_NAME_TRAITOR": "Traitor",
 
     "ROUND_STATE_WAITING": "Waiting",
     "ROUND_STATE_PREPARING": "Preparing",
     "ROUND_STATE_IN_PROGRESS": "In progress",
-    "ROUND_STATE_POST_ROUND": "Round over",
+    "ROUND_STATE_POST": "Round over",
 
     "POST_ROUND_WIN_INNOCENTS": "THE INNOCENT WIN!",
     "POST_ROUND_WIN_TRAITORS": "THE TRAITORS WIN!",
