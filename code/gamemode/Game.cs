@@ -2,11 +2,11 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.UI;
-using TTTReborn.Globalization;
 
 namespace TTTReborn.Gamemode
 {
