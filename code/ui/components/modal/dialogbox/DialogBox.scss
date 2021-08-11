@@ -1,4 +1,5 @@
-DialogBox {
+DialogBox,
+.dialogbox {
     background-color: #000c;
     border: 1px solid #1b1b1b;
     border-radius: 8px;
@@ -7,7 +8,7 @@ DialogBox {
     width: 600px;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    //transform: translateX(-50%) translateY(-50%);
     position: absolute;
     flex-direction: column;
 

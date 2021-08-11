@@ -116,6 +116,10 @@ namespace TTTReborn.UI.Menu
                 panelContent.Add.Label("Keybind & DialogBox:");
 
                 panelContent.Add.Keybind("Press a key...").BoundCommand = "+teamvoicechat";
+
+                panelContent.Add.Label("FileSelection:");
+
+                panelContent.Add.Button("Open FileSelection...", () => FindRootPanel().Add.FileSelection().Display());
             }, "Testing", "testing");
         }
     }

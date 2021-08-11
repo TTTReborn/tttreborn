@@ -10,22 +10,26 @@ namespace TTTReborn.UI
         public Action<DialogBox> OnAgree { get; set; }
         public Action<DialogBox> OnDecline { get; set; }
 
-        public Label TitleLabel { get; set; }
-        public Panel ContentPanel { get; set; }
+        public readonly Drag HeaderPanel;
+        public readonly Label TitleLabel;
+        public readonly Panel ContentPanel;
 
-        private Panel _headerPanel;
         private Panel _footerPanel;
         private Button _agreeButton;
         private Button _declineButton;
 
-        public DialogBox(Panel parent = null) : base(parent)
+        public DialogBox() : base()
         {
-            Parent = parent ?? Parent;
-
             StyleSheet.Load("/ui/components/modal/dialogbox/DialogBox.scss");
 
-            _headerPanel = Add.Panel("header");
-            TitleLabel = _headerPanel.Add.Label("", "title");
+            AddClass("dialogbox");
+
+            HeaderPanel = new Drag(this);
+            HeaderPanel.AddClass("header");
+            HeaderPanel.DragBasePanel = this;
+            HeaderPanel.IsFreeDraggable = false;
+
+            TitleLabel = HeaderPanel.Add.Label("", "title");
 
             ContentPanel = Add.Panel("content");
 

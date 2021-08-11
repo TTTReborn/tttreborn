@@ -28,7 +28,7 @@ namespace TTTReborn.UI
 
             if (!string.IsNullOrEmpty(BoundCommand))
             {
-                DialogBox dialogBox = new DialogBox(this.FindRootPanel());
+                DialogBox dialogBox = new DialogBox();
                 dialogBox.TitleLabel.Text = $"Bind '{BoundCommand}'";
                 dialogBox.AddText($"Are you sure that you wanna bind '{BoundCommand}' to '{BoundKey}'?");
                 dialogBox.OnAgree = (panel) =>
@@ -38,6 +38,9 @@ namespace TTTReborn.UI
                     panel.Close();
                 };
                 dialogBox.OnDecline = (panel) => panel.Close();
+
+                FindRootPanel().AddChild(dialogBox);
+
                 dialogBox.Display();
             }
         }
