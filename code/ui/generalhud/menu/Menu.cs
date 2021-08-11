@@ -119,7 +119,7 @@ namespace TTTReborn.UI.Menu
 
                 panelContent.Add.Label("FileSelection:");
 
-                panelContent.Add.Button("Open FileSelection...", () => FindRootPanel().Add.FileSelection().Display());
+                panelContent.Add.Button("Open FileSelection...", "fileselectionbutton", () => FindRootPanel().Add.FileSelection().Display());
             }, "Testing", "testing");
         }
     }

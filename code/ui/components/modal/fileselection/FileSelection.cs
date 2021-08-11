@@ -75,7 +75,7 @@ namespace TTTReborn.UI
 
             foreach (string folder in FileSystem.Mounted.FindDirectory(path))
             {
-                FileSelectionEntry fileSelectionEntry = ContentPanel.Add.FileSelectionEntry(Path.GetDirectoryName(folder + '/') + '/', "folder");
+                FileSelectionEntry fileSelectionEntry = ContentPanel.Add.FileSelectionEntry(Path.GetDirectoryName(folder + "/") + "/", "folder");
                 fileSelectionEntry.SetFileSelection(this);
                 fileSelectionEntry.IsFolder = true;
             }

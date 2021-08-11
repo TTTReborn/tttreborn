@@ -81,6 +81,14 @@ Menu {
                 width: 80px;
                 height: 80px;
             }
+
+            .fileselectionbutton {
+                padding: 5px 10px;
+
+                background-color: #000c;
+                border: 1px solid #1b1b1b;
+                border-radius: 8px;
+            }
         }
     }
 }
