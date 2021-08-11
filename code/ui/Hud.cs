@@ -80,6 +80,7 @@ namespace TTTReborn.UI
                 Parent.AddChild<PostRoundMenu>();
                 Parent.AddChild<Scoreboard>();
                 Parent.AddChild<Menu.Menu>();
+                Parent.AddChild<C4Menu>();
             }
         }
 
