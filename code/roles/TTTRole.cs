@@ -51,5 +51,10 @@ namespace TTTReborn.Roles
         }
 
         public virtual bool CanBuy() => false;
+
+        public string GetRoleTranslationKey(string key)
+        {
+            return $"{key}_{Name.ToUpper()}";
+        }
     }
 }

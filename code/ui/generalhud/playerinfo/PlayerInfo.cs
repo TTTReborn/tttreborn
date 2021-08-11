@@ -26,17 +26,17 @@ namespace TTTReborn.UI
 
         private class RolePanel : TTTPanel
         {
-            private readonly Label _roleLabel;
+            private readonly TranslationLabel _roleLabel;
 
             private TTTRole _currentRole;
-
             private TTTPlayer _currentPlayer;
+
 
             public RolePanel(Panel parent)
             {
                 Parent = parent;
 
-                _roleLabel = Add.Label("Unknown role", "rolelabel");
+                _roleLabel = Add.TranslationLabel("", "rolelabel");
             }
 
             public override void Tick()
@@ -59,13 +59,14 @@ namespace TTTReborn.UI
 
                 if (player.IsSpectatingPlayer)
                 {
+                    _roleLabel.SetTranslation(null); // disable auto-update Text on language change
                     _roleLabel.Text = $"{_currentPlayer.GetClientOwner()?.Name}";
 
                     IsShowing = true;
                 }
                 else
                 {
-                    _roleLabel.Text = $"{player.Role.Name.ToUpper()}";
+                    _roleLabel.SetTranslation(_currentRole.GetRoleTranslationKey("ROLE_NAME"));
 
                     IsShowing = !(player.Role is NoneRole);
                 }

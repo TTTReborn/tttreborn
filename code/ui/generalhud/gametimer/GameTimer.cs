@@ -18,14 +18,14 @@ namespace TTTReborn.UI
 
         private class GameTimerContent : TTTPanel
         {
-            private readonly Label _textLabel;
+            private readonly TranslationLabel _textLabel;
             private readonly Label _timeLabel;
 
             public GameTimerContent(Panel parent)
             {
                 Parent = parent;
 
-                _textLabel = Add.Label("", "textlabel");
+                _textLabel = Add.TranslationLabel("", "textlabel");
                 _timeLabel = Add.Label("", "timelabel");
             }
             public override void Tick()
@@ -39,9 +39,9 @@ namespace TTTReborn.UI
 
                 bool isWaitingRound = Game.Instance.Round is Rounds.WaitingRound;
 
-                _textLabel.Text = $"{Game.Instance.Round.RoundName}:";
-                _timeLabel.Text = isWaitingRound ? "" : $"{Game.Instance.Round.TimeLeftFormatted}";
+                _textLabel.SetTranslation($"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}");
 
+                _timeLabel.Text = isWaitingRound ? "" : Game.Instance.Round.TimeLeftFormatted;
                 _timeLabel.SetClass("hide", isWaitingRound);
             }
         }
