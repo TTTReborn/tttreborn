@@ -48,7 +48,7 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/components/modal/fileselection/FileSelection.scss");
 
-            TitleLabel.Text = "Select a file";
+            TitleLabel.Text = DefaultSelectionPath;
 
             OnDecline = (panel) => panel.Close();
         }
@@ -63,6 +63,8 @@ namespace TTTReborn.UI
         public void CreateTreeView(string path)
         {
             _currentFolderPath = path;
+
+            TitleLabel.Text = path;
 
             ContentPanel.DeleteChildren(true);
 
