@@ -66,7 +66,7 @@ namespace TTTReborn.UI
 
             ContentPanel.DeleteChildren(true);
 
-            if (!path.Equals("/") && !path.Equals("\\"))
+            if (!path.Equals("/"))
             {
                 FileSelectionEntry fileSelectionEntry = ContentPanel.Add.FileSelectionEntry("../", "folder");
                 fileSelectionEntry.SetFileSelection(this);
@@ -110,7 +110,7 @@ namespace TTTReborn.UI
             {
                 if (fileSelectionEntry.FileNameLabel.Text.Equals("../"))
                 {
-                    CreateTreeView(Path.GetDirectoryName(_currentFolderPath.TrimEnd('/')));
+                    CreateTreeView(Path.GetDirectoryName(_currentFolderPath.TrimEnd('/')).Replace('\\', '/'));
                 }
                 else
                 {
