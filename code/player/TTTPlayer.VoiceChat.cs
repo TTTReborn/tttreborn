@@ -13,13 +13,9 @@ namespace TTTReborn.Player
         // clientside-only
         public bool IsSpeaking { get; internal set; } = false;
 
-        private static Dictionary<TTTPlayer, List<Client>> _oldReceiveClients = new();
+        private static readonly Dictionary<TTTPlayer, List<Client>> OldReceiveClients = new();
 
-        private TimeSince _teamChatButtonPressPending = 0f;
-
-        private const float _pressDelayFix = 0.5f;
-
-        public void TickPlayerVoiceChat()
+        private void TickPlayerVoiceChat()
         {
             using (Prediction.Off())
             {
@@ -79,27 +75,24 @@ namespace TTTReborn.Player
             {
                 foreach (Client client in Client.All)
                 {
-                    if (client.Pawn is TTTPlayer pawnPlayer)
+                    if (client.Pawn is TTTPlayer pawnPlayer && player.Team == pawnPlayer.Team)
                     {
-                        if (player.Team == pawnPlayer.Team)
-                        {
-                            clients.Add(client);
-                        }
+                        clients.Add(client);
                     }
                 }
 
-                _oldReceiveClients[player] = clients;
+                OldReceiveClients[player] = clients;
             }
             else
             {
                 // Player has not talked before
-                if (!_oldReceiveClients.ContainsKey(player))
+                if (!OldReceiveClients.ContainsKey(player))
                 {
                     return;
                 }
 
                 // cleanup disconnected clients
-                foreach (Client client in _oldReceiveClients[player])
+                foreach (Client client in OldReceiveClients[player])
                 {
                     if (client.IsValid())
                     {
@@ -107,13 +100,13 @@ namespace TTTReborn.Player
                     }
                 }
 
-                _oldReceiveClients[player] = clients;
+                OldReceiveClients[player] = clients;
             }
 
             ClientToggleTeamVoiceChat(To.Multiple(clients), player, toggle);
         }
 
-        public static bool CanUseTeamVoiceChat(TTTPlayer player)
+        private static bool CanUseTeamVoiceChat(TTTPlayer player)
         {
             return player.LifeState == LifeState.Alive && player.Team.GetType() == typeof(TraitorTeam);
         }
@@ -156,23 +149,20 @@ namespace TTTReborn.Player
             // sync already talking other players with the current player
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer pawnPlayer)
+                if (client.Pawn is TTTPlayer pawnPlayer && player != pawnPlayer && pawnPlayer.IsTeamVoiceChatEnabled)
                 {
-                    if (player != pawnPlayer && pawnPlayer.IsTeamVoiceChatEnabled)
+                    bool activateTalking = player.Team == pawnPlayer.Team;
+
+                    if (activateTalking)
                     {
-                        bool activateTalking = player.Team == pawnPlayer.Team;
-
-                        if (activateTalking)
-                        {
-                            _oldReceiveClients[pawnPlayer].Add(playerClient);
-                        }
-                        else
-                        {
-                            _oldReceiveClients[pawnPlayer].Remove(playerClient);
-                        }
-
-                        ClientToggleTeamVoiceChat(To.Single(player), pawnPlayer, activateTalking);
+                        OldReceiveClients[pawnPlayer].Add(playerClient);
                     }
+                    else
+                    {
+                        OldReceiveClients[pawnPlayer].Remove(playerClient);
+                    }
+
+                    ClientToggleTeamVoiceChat(To.Single(player), pawnPlayer, activateTalking);
                 }
             }
         }

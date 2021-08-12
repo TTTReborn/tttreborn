@@ -10,8 +10,7 @@ namespace TTTReborn.Player
 
         public ModelEntity AttachClothing(string modelName)
         {
-            ModelEntity entity = new ModelEntity();
-
+            ModelEntity entity = new();
             entity.SetModel(modelName);
             entity.SetParent(this, true);
             entity.EnableShadowInFirstPerson = true;

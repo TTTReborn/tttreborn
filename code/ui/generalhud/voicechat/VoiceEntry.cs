@@ -30,7 +30,7 @@ namespace TTTReborn.UI
             Parent = parent;
 
             Client = client;
-            Friend = new Friend(client.SteamId);
+            Friend = new(client.SteamId);
 
             Avatar = Add.Image("", "avatar");
             Avatar.SetTexture($"avatar:{client.SteamId}");

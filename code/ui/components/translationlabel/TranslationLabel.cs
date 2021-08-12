@@ -8,7 +8,7 @@ namespace TTTReborn.UI
 {
     public class TranslationLabel : Label
     {
-        public readonly static List<TranslationLabel> TranslationLabels = new();
+        private readonly static List<TranslationLabel> TranslationLabels = new();
 
         private string _translationKey;
 
@@ -37,17 +37,17 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Text = TTTLanguage.GetActiveLanguage().GetFormatedTranslation(_translationKey, _translationParams);
+            Text = TTTLanguage.GetActiveLanguage().GetFormattedTranslation(_translationKey, _translationParams);
         }
 
-        public void UpdateTranslation(Language language)
+        private void UpdateTranslation(Language language)
         {
             if (_translationKey is null)
             {
                 return;
             }
 
-            Text = language.GetFormatedTranslation(_translationKey, _translationParams);
+            Text = language.GetFormattedTranslation(_translationKey, _translationParams);
         }
 
         public static void UpdateLanguage(Language language)

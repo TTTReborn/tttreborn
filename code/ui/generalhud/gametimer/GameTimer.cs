@@ -7,13 +7,13 @@ namespace TTTReborn.UI
 {
     public class GameTimer : TTTPanel
     {
-        private GameTimerContent _gameTimerContent;
+        private readonly GameTimerContent _gameTimerContent;
 
         public GameTimer()
         {
             StyleSheet.Load("/ui/generalhud/gametimer/GameTimer.scss");
 
-            _gameTimerContent = new GameTimerContent(this);
+            _gameTimerContent = new(this);
         }
 
         private class GameTimerContent : TTTPanel

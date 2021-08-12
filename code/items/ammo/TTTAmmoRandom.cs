@@ -12,14 +12,16 @@ namespace TTTReborn.Items
         {
             List<Type> ammoTypes = Globals.Utils.GetTypes<TTTAmmo>();
 
-            if (ammoTypes.Count > 0)
+            if (ammoTypes.Count <= 0)
             {
-                Type typeToSpawn = ammoTypes[new Random().Next(ammoTypes.Count)];
-                TTTAmmo ent = Globals.Utils.GetObjectByType<TTTAmmo>(typeToSpawn);
-                ent.Position = Position;
-                ent.Rotation = Rotation;
-                ent.Spawn();
+                return;
             }
+
+            Type typeToSpawn = ammoTypes[new Random().Next(ammoTypes.Count)];
+            TTTAmmo ent = Globals.Utils.GetObjectByType<TTTAmmo>(typeToSpawn);
+            ent.Position = Position;
+            ent.Rotation = Rotation;
+            ent.Spawn();
         }
     }
 }
