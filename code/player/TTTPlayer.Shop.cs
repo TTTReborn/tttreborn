@@ -20,11 +20,13 @@ namespace TTTReborn.Player
             {
                 return BuyError.InventoryBlocked;
             }
-            else if (Credits < itemData?.Price)
+
+            if (Credits < itemData?.Price)
             {
                 return BuyError.NotEnoughCredits;
             }
-            else if (!Role.CanBuy())
+
+            if (!Role.CanBuy())
             {
                 return BuyError.RoleRestriction;
             }
@@ -32,7 +34,7 @@ namespace TTTReborn.Player
             return BuyError.None;
         }
 
-        public void RequestPurchase(IBuyableItem buyableItem)
+        private void RequestPurchase(IBuyableItem buyableItem)
         {
             ShopItemData itemData = buyableItem.CreateItemData();
 

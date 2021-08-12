@@ -161,7 +161,7 @@ namespace TTTReborn.Globals
 
         public static T GetHoveringPanel<T>(Panel excludePanel, Panel rootPanel = null) where T : Panel
         {
-            rootPanel = rootPanel ?? UI.Hud.Current.RootPanel;
+            rootPanel ??= UI.Hud.Current.RootPanel;
 
             T highestPanel = default(T);
             int? zindex = null;

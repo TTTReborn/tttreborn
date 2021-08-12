@@ -22,7 +22,8 @@ namespace TTTReborn.Items
             {
                 return !inventory.Perks.Has(Name);
             }
-            else if (Type.IsSubclassOf(typeof(TTTEquipment)) || Type.IsSubclassOf(typeof(TTTWeapon)))
+
+            if (Type.IsSubclassOf(typeof(TTTEquipment)) || Type.IsSubclassOf(typeof(TTTWeapon)))
             {
                 return !inventory.IsCarryingType(Type) && inventory.HasEmptySlot(SlotType);
             }

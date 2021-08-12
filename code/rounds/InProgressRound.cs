@@ -196,11 +196,6 @@ namespace TTTReborn.Rounds
             );
         }
 
-        private bool CheckMinimumPlayers()
-        {
-            return Client.All.Count >= Gamemode.Game.TTTMinPlayers;
-        }
-
         public override void OnSecond()
         {
             if (Host.IsServer)

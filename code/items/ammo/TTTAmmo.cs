@@ -51,28 +51,34 @@ namespace TTTReborn.Items
         {
             base.Touch(other);
 
-            if (other is TTTPlayer player && IsServer)
+            if (!IsServer || other is not TTTPlayer player)
             {
-                string ammoType = Name.ToLower();
-                Inventory inventory = (Inventory) player.Inventory;
+                return;
+            }
 
-                if (inventory.GetAmmoTypes().Contains(ammoType))
-                {
-                    int playerAmount = inventory.Ammo.Count(ammoType);
+            string ammoType = Name.ToLower();
+            Inventory inventory = (Inventory) player.Inventory;
 
-                    if (Max >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25)))
-                    {
-                        int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
-                        inventory.Ammo.Give(ammoType, amountGiven);
-                        CurrentAmmo -= amountGiven;
-                        OnPickup.Fire(other);
+            if (!inventory.GetAmmoTypes().Contains(ammoType))
+            {
+                return;
+            }
 
-                        if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
-                        {
-                            Delete();
-                        }
-                    }
-                }
+            int playerAmount = inventory.Ammo.Count(ammoType);
+
+            if (!(Max >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25))))
+            {
+                return;
+            }
+
+            int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
+            inventory.Ammo.Give(ammoType, amountGiven);
+            CurrentAmmo -= amountGiven;
+            OnPickup.Fire(other);
+
+            if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
+            {
+                Delete();
             }
 
         }
