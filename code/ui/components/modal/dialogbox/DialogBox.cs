@@ -27,7 +27,7 @@ namespace TTTReborn.UI
             HeaderPanel = new Drag(this);
             HeaderPanel.AddClass("header");
             HeaderPanel.DragBasePanel = this;
-            HeaderPanel.IsFreeDraggable = false;
+            HeaderPanel.IsLocked = true;
 
             TitleLabel = HeaderPanel.Add.Label("", "title");
 

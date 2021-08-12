@@ -44,6 +44,7 @@ namespace TTTReborn.UI
 
         public FileSelection() : base()
         {
+            HeaderPanel.IsLocked = false;
             HeaderPanel.IsFreeDraggable = true;
 
             StyleSheet.Load("/ui/components/modal/fileselection/FileSelection.scss");

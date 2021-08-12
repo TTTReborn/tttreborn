@@ -9,6 +9,8 @@ namespace TTTReborn.UI
 
         public string BoundCommand { get; set; } = "";
 
+        public string DefaultText { get; set; } = "";
+
         public Keybind() : base()
         {
             StyleSheet.Load("/ui/components/keybind/Keybind.scss");
@@ -37,7 +39,14 @@ namespace TTTReborn.UI
 
                     panel.Close();
                 };
-                dialogBox.OnDecline = (panel) => panel.Close();
+                dialogBox.OnDecline = (panel) =>
+                {
+                    BoundKey = "";
+                    Text = DefaultText;
+                    CaretPos = Text.Length;
+
+                    panel.Close();
+                };
 
                 FindRootPanel().AddChild(dialogBox);
 
@@ -55,10 +64,11 @@ namespace Sandbox.UI.Construct
     {
         public static Keybind Keybind(this PanelCreator self, string text)
         {
-            Keybind control = self.panel.AddChild<Keybind>();
-            control.Text = text;
+            Keybind keybind = self.panel.AddChild<Keybind>();
+            keybind.DefaultText = text;
+            keybind.Text = text;
 
-            return control;
+            return keybind;
         }
     }
 }
