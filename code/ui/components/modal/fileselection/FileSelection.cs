@@ -113,7 +113,14 @@ namespace TTTReborn.UI
             {
                 if (fileSelectionEntry.FileNameLabel.Text.Equals("../"))
                 {
-                    CreateTreeView(Path.GetDirectoryName(_currentFolderPath.TrimEnd('/')).Replace('\\', '/'));
+                    string path = Path.GetDirectoryName(_currentFolderPath.TrimEnd('/')).Replace('\\', '/');
+
+                    if (!path.Equals("/"))
+                    {
+                        path += "/";
+                    }
+
+                    CreateTreeView(path);
                 }
                 else
                 {
