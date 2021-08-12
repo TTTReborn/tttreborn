@@ -42,7 +42,7 @@ namespace TTTReborn.UI.Menu
             MenuContent.SetPanelContent((panelContent) =>
             {
                 panelContent.Add.ButtonWithIcon("settings", "", "menuButton", () => OpenSettings(panelContent));
-                panelContent.Add.ButtonWithIcon("change_circle", "", "menuButton", () => OpenChanges(panelContent));
+                panelContent.Add.ButtonWithIcon("published_with_changes", "", "menuButton", () => OpenChanges(panelContent));
                 panelContent.Add.ButtonWithIcon("science", "", "menuButton", () => OpenTesting(panelContent));
             }, "", "home");
         }
@@ -101,15 +101,8 @@ namespace TTTReborn.UI.Menu
                 Dropdown dropdown = new Dropdown(panelContent);
                 dropdown.TextLabel.Text = "Choose entry...";
 
-                dropdown.AddOption("Test One", (option) =>
-                {
-                    Sandbox.Log.Error("Test One");
-                });
-
-                dropdown.AddOption("Test Two", (option) =>
-                {
-                    Sandbox.Log.Error("Test Two");
-                });
+                dropdown.AddOption("Test One");
+                dropdown.AddOption("Test Two");
 
                 panelContent.AddChild(dropdown);
 

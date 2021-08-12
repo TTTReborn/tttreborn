@@ -13,11 +13,11 @@ namespace TTTReborn.UI
 
         public Action<TTTPanel> OnSelect { get; set; }
 
-        public DropdownOption(Panel parent = null, string text = null) : base(parent)
+        public DropdownOption(Panel parent = null, string text = "") : base(parent)
         {
             Parent = parent ?? Parent;
 
-            TextLabel = Add.Label(text ?? "Select", "optiontext");
+            TextLabel = Add.Label(text, "optiontext");
         }
 
         protected override void OnClick(MousePanelEvent e)
