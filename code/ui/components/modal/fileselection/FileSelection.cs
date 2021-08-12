@@ -63,8 +63,8 @@ namespace TTTReborn.UI
         public void CreateTreeView(string path)
         {
             _currentFolderPath = path;
-
             TitleLabel.Text = path;
+            SelectedEntry = null;
 
             ContentPanel.DeleteChildren(true);
 
