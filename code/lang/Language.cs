@@ -67,7 +67,7 @@ namespace TTTReborn.Globalization
             return $"[ERROR: Translation of '{key}' not found]";
         }
 
-        private object GetRawTranslation(string key)
+        public object GetRawTranslation(string key)
         {
             return _langDict.TryGetValue(key, out object translation) ? translation : null;
         }

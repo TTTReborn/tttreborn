@@ -19,7 +19,7 @@ namespace TTTReborn.Globalization
         }
         private static Language _activeLanguage;
 
-        private static Language ServerLanguage
+        public static Language ServerLanguage
         {
             get => _serverLanguage;
             set

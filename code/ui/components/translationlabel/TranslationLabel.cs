@@ -40,7 +40,7 @@ namespace TTTReborn.UI
             Text = TTTLanguage.GetActiveLanguage().GetFormattedTranslation(_translationKey, _translationParams);
         }
 
-        private void UpdateTranslation(Language language)
+        public void UpdateTranslation(Language language)
         {
             if (_translationKey is null)
             {
