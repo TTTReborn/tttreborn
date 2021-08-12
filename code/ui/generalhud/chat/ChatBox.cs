@@ -10,7 +10,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.UI
 {
-    public partial class ChatBox : Panel
+    public partial class ChatBox : TTTPanel
     {
         public static ChatBox Instance { get; private set; }
 
@@ -57,6 +57,7 @@ namespace TTTReborn.UI
             }
 
             _canvas.SetClass("hide", _lastChatFocus > MAX_DISPLAY_TIME);
+
         }
 
         private void Open()

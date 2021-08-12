@@ -15,25 +15,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientOnPlayerCarriableItemPickup(Entity carriable)
-        {
-            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
-        }
-
-        [ClientRpc]
-        public void ClientOnPlayerCarriableItemDrop(Entity carriable)
-        {
-            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
-        }
-
-        [ClientRpc]
-        public void ClientClearInventory()
-        {
-            Event.Run("tttreborn.player.inventory.clear");
-        }
-
-        [ClientRpc]
-        public void ClientSetAmmo(AmmoType ammoType, int amount)
+        public void ClientSetAmmo(string ammoType, int amount)
         {
             (Inventory as Inventory).Ammo.Set(ammoType, amount);
         }
@@ -74,26 +56,6 @@ namespace TTTReborn.Player
         public void ClientClearPerks()
         {
             (Inventory as Inventory).Perks.Clear();
-        }
-
-        [ClientRpc]
-        public void ClientOpenInspectMenu(TTTPlayer deadPlayer, bool isIdentified)
-        {
-            if (!deadPlayer.IsValid())
-            {
-                return;
-            }
-
-            InspectMenu.Instance.InspectCorpse(deadPlayer, isIdentified);
-        }
-
-        [ClientRpc]
-        public void ClientCloseInspectMenu()
-        {
-            if (InspectMenu.Instance?.IsShowing ?? false)
-            {
-                InspectMenu.Instance.IsShowing = false;
-            }
         }
 
         [ClientRpc]

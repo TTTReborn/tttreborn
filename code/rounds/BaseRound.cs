@@ -13,6 +13,7 @@ namespace TTTReborn.Rounds
         public virtual string RoundName => "";
 
         public readonly List<TTTPlayer> Players = new();
+        public readonly List<TTTPlayer> Spectators = new();
 
         public float RoundEndTime { get; set; }
 
@@ -45,6 +46,7 @@ namespace TTTReborn.Rounds
                 RoundEndTime = 0f;
 
                 Players.Clear();
+                Spectators.Clear();
             }
 
             OnFinish();
@@ -54,22 +56,36 @@ namespace TTTReborn.Rounds
         {
             Host.AssertServer();
 
-            if (!Players.Contains(player))
+            if (!player.IsForcedSpectator && !Players.Contains(player))
             {
                 Players.Add(player);
             }
+            else if (player.IsForcedSpectator && !Spectators.Contains(player))
+            {
+                Spectators.Add(player);
+            }
         }
 
-        public virtual void OnPlayerSpawn(TTTPlayer player) { }
+        public virtual void OnPlayerSpawn(TTTPlayer player)
+        {
 
-        public virtual void OnPlayerKilled(TTTPlayer player) { }
+        }
+
+        public virtual void OnPlayerKilled(TTTPlayer player)
+        {
+
+        }
 
         public virtual void OnPlayerLeave(TTTPlayer player)
         {
             Players.Remove(player);
+            Spectators.Remove(player);
         }
 
-        public virtual void OnTick() { }
+        public virtual void OnTick()
+        {
+
+        }
 
         public virtual void OnSecond()
         {
@@ -88,10 +104,19 @@ namespace TTTReborn.Rounds
             }
         }
 
-        protected virtual void OnStart() { }
+        protected virtual void OnStart()
+        {
 
-        protected virtual void OnFinish() { }
+        }
 
-        protected virtual void OnTimeUp() { }
+        protected virtual void OnFinish()
+        {
+
+        }
+
+        protected virtual void OnTimeUp()
+        {
+
+        }
     }
 }

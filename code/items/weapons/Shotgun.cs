@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 using TTTReborn.Player;
@@ -5,13 +7,15 @@ using TTTReborn.Player;
 namespace TTTReborn.Items
 {
     [Library("ttt_shotgun")]
+    [Hammer.EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
     partial class Shotgun : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
         public override SlotType SlotType => SlotType.Primary;
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
-        public override AmmoType AmmoType => AmmoType.Buckshot;
+        public override string AmmoType => "buckshot";
+        public override Type AmmoEntity => typeof(BuckshotAmmo);
         public override int ClipSize => 8;
         public override float ReloadTime => 0.5f;
         public override float DeployTime => 0.6f;
@@ -106,7 +110,7 @@ namespace TTTReborn.Items
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetParam("holdtype", 1);
+            anim.SetParam("holdtype", 3);
             anim.SetParam("aimat_weight", 1.0f);
         }
     }

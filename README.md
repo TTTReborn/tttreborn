@@ -8,8 +8,13 @@
 
 TTT Reborn is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). Our first goal is to perfect the vanilla TTT experience. Then, similarly as we did for [TTT2](https://github.com/TTT-2/TTT2), create a framework that will allow users to extend the gamemode (i.e roles, weapons, etc).
 
+## CONTRIBUTING
+
+If you'd like to contribute, please check out our [document](https://github.com/TTTReborn/tttreborn/blob/master/CONTRIBUTING.md) which runs through the process of how to setup and contribute to our repo.
+
 ## DEVELOPMENT
 
-We are still in the early development process due to our team having limited access to s&box. We plan to provide more information as development occurs, meanwhile, feel free to participate and chat about the project in our [Discord](https://discord.gg/Npcbb4W).
+TTT Reborn is under active development. We are slowly trying to finalize some of the core systems found within TTT. If you'd like to track our progress, feel free to checkout the progress updates we post in the [Discord](https://discord.gg/Npcbb4W).
 
 You can also find additional information from our [TTT Reborn Facepunch forum post](https://forum.facepunch.com/t/ttt-reborn-for-s-box/243652).
+

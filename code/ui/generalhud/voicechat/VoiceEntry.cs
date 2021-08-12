@@ -11,7 +11,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    public class VoiceEntry : Panel
+    public class VoiceEntry : TTTPanel
     {
         public Friend Friend;
 

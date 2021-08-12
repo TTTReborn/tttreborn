@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public partial class DrowningIndicator : Panel
+    public partial class DrowningIndicator : TTTPanel
     {
         private BarPanel _drowningBar;
 
@@ -17,7 +17,7 @@ namespace TTTReborn.UI
 
             _drowningBar = new(this, "100", "drowningbar");
 
-            SetClass("hide", true);
+            IsShowing = false;
         }
 
         public override void Tick()
@@ -37,7 +37,7 @@ namespace TTTReborn.UI
                 _drowningBar.Style.Dirty();
             }
 
-            SetClass("hide", !defaultWalkController.IsUnderwater);
+            IsShowing = defaultWalkController.IsUnderwater;
         }
     }
 }

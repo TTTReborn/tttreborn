@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Sandbox;
+using Sandbox.UI;
 
 using TTTReborn.Player;
 
@@ -70,6 +71,21 @@ namespace TTTReborn.Globals
             return players;
         }
 
+        public static IEnumerable<Client> GetClientsSpectatingPlayer(TTTPlayer player)
+        {
+            List<Client> clients = new();
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer p && p.CurrentPlayer == player)
+                {
+                    clients.Add(client);
+                }
+            }
+
+            return clients;
+        }
+
         public static bool HasMinimumPlayers()
         {
             return Client.All.Count >= Gamemode.Game.TTTMinPlayers;
@@ -130,6 +146,55 @@ namespace TTTReborn.Globals
         public static string GetTypeName(Type type)
         {
             return Library.GetAttribute(type).Name;
+        }
+
+        /// <summary>
+        /// Returns an approximate value for meters given the Source engine units (for distances)
+        /// based on https://developer.valvesoftware.com/wiki/Dimensions
+        /// </summary>
+        /// <param name="sourceUnits"></param>
+        /// <returns>sourceUnits in meters</returns>
+        public static float SourceUnitsToMeters(float sourceUnits)
+        {
+            return sourceUnits / 39.37f;
+        }
+
+        public static T GetHoveringPanel<T>(Panel excludePanel, Panel rootPanel = null) where T : Panel
+        {
+            rootPanel = rootPanel ?? UI.Hud.Current.RootPanel;
+
+            T highestPanel = default(T);
+            int? zindex = null;
+
+            foreach (Panel loopPanel in rootPanel.Children)
+            {
+                if (loopPanel == excludePanel)
+                {
+                    continue;
+                }
+
+                if (loopPanel.IsInside(Mouse.Position))
+                {
+                    if (loopPanel is T t)
+                    {
+                        if ((loopPanel.ComputedStyle.ZIndex ?? 0) >= (zindex ?? 0))
+                        {
+                            zindex = loopPanel.ComputedStyle.ZIndex;
+                            highestPanel = t;
+                        }
+                    }
+
+                    T childLoopPanel = GetHoveringPanel<T>(excludePanel, loopPanel);
+
+                    if (childLoopPanel != null && (childLoopPanel.ComputedStyle.ZIndex ?? 0) >= (zindex ?? 0))
+                    {
+                        zindex = childLoopPanel.ComputedStyle.ZIndex;
+                        highestPanel = childLoopPanel;
+                    }
+                }
+            }
+
+            return highestPanel;
         }
     }
 }

@@ -6,7 +6,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    public partial class InfoFeed : Panel
+    public partial class InfoFeed : TTTPanel
     {
         public static InfoFeed Current;
 

@@ -12,8 +12,6 @@ namespace TTTReborn.Rounds
         public override string RoundName => "Post";
         public override int RoundDuration => Gamemode.Game.TTTPostRoundTime;
 
-        private readonly List<TTTPlayer> _spectators = new();
-
         protected override void OnTimeUp()
         {
             base.OnTimeUp();
@@ -26,13 +24,6 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            if (Players.Contains(player))
-            {
-                return;
-            }
-
-            player.MakeSpectator(false);
-
             AddPlayer(player);
 
             base.OnPlayerSpawn(player);
@@ -41,7 +32,7 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(TTTPlayer player)
         {
             Players.Remove(player);
-            _spectators.Add(player);
+            Spectators.Add(player);
 
             player.MakeSpectator();
         }
@@ -54,10 +45,16 @@ namespace TTTReborn.Rounds
                 {
                     foreach (TTTPlayer player in Utils.GetPlayers())
                     {
-                        RPCs.ClientSetRole(player, player.Role.Name);
+                        if (player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead && !player.PlayerCorpse.IsIdentified)
+                        {
+                            player.PlayerCorpse.IsIdentified = true;
 
-                        // TODO move this to a method called after OnKilled() and use LifeState instead of Health
-                        player.GetClientOwner()?.SetScore("alive", player.Health > 0);
+                            RPCs.ClientConfirmPlayer(null, player.PlayerCorpse, player, player.Role.Name, player.Team.Name, player.PlayerCorpse.GetConfirmationData(), player.PlayerCorpse.KillerWeapon, player.PlayerCorpse.Perks);
+                        }
+                        else
+                        {
+                            RPCs.ClientSetRole(player, player.Role.Name);
+                        }
                     }
                 }
             }

@@ -10,7 +10,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class QuickShop : Panel
+    public class QuickShop : TTTPanel
     {
         private static ShopItemData? _selectedItemData;
         private static bool _isOpen = false;
@@ -43,10 +43,10 @@ namespace TTTReborn.UI
 
             Update();
 
-            SetClass("hide", !Input.Down(InputButton.Menu) || !(Local.Pawn as TTTPlayer).Role.CanBuy());
+            IsShowing = Input.Down(InputButton.Menu) && (Local.Pawn as TTTPlayer).Role.CanBuy();
         }
 
-        private class Header : Panel
+        private class Header : TTTPanel
         {
             public Panel PriceHolder { get; set; }
             public Label DollarSignLabel;
@@ -69,7 +69,7 @@ namespace TTTReborn.UI
             }
         }
 
-        private class Content : Panel
+        private class Content : TTTPanel
         {
             private readonly List<ItemPanel> _itemPanels = new();
 
@@ -125,7 +125,7 @@ namespace TTTReborn.UI
                 _itemPanels.Add(itemPanel);
             }
 
-            private class ItemPanel : Panel
+            private class ItemPanel : TTTPanel
             {
                 private ShopItemData? _buyableItemData;
 
@@ -171,7 +171,7 @@ namespace TTTReborn.UI
             }
         }
 
-        private class Footer : Panel
+        private class Footer : TTTPanel
         {
             private Description _description;
             private BuyArea _buyArea;
@@ -185,7 +185,7 @@ namespace TTTReborn.UI
                 _buyArea = new(this);
             }
 
-            private class Description : Panel
+            private class Description : TTTPanel
             {
                 public Label EquipmentLabel;
                 public Label DescriptionLabel;
@@ -208,7 +208,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class BuyArea : Panel
+            private class BuyArea : TTTPanel
             {
                 public Panel PriceHolder;
                 public Label DollarSignLabel;
@@ -228,7 +228,7 @@ namespace TTTReborn.UI
                     {
                         if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
                         {
-                            ConsoleSystem.Run("requestitem", ItemData?.Name);
+                            ConsoleSystem.Run("ttt_requestitem", ItemData?.Name);
                         }
                     });
                 }

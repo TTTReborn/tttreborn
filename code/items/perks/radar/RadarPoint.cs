@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class RadarPoint : Panel
+    public class RadarPoint : TTTPanel
     {
         public Vector3 Position;
 
@@ -35,11 +35,9 @@ namespace TTTReborn.UI
             DistanceLabel.Text = $"{player.Position.Distance(Position):n0}";
 
             Vector3 screenPos = Position.ToScreen();
-            bool visible = screenPos.z > 0f;
+            IsShowing = screenPos.z > 0f;
 
-            SetClass("hide", !visible);
-
-            if (visible)
+            if (IsShowing)
             {
                 Style.Left = Length.Fraction(screenPos.x);
                 Style.Top = Length.Fraction(screenPos.y);

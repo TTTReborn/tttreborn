@@ -1,8 +1,11 @@
+using System;
+
 using Sandbox;
 
 namespace TTTReborn.Items
 {
     [Library("ttt_smg")]
+    [Hammer.EditorModel("weapons/rust_smg/rust_smg.vmdl")]
     partial class SMG : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
@@ -13,7 +16,8 @@ namespace TTTReborn.Items
         public override float ReloadTime => 2.8f;
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 8;
-        public override AmmoType AmmoType => AmmoType.SMG;
+        public override string AmmoType => "smg";
+        public override Type AmmoEntity => typeof(SMGAmmo);
 
         public virtual int Price => 100;
 
@@ -60,7 +64,7 @@ namespace TTTReborn.Items
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetParam("holdtype", 1);
+            anim.SetParam("holdtype", 2);
             anim.SetParam("aimat_weight", 1.0f);
         }
     }

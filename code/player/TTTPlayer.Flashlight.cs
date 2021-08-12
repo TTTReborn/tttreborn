@@ -10,6 +10,7 @@ namespace TTTReborn.Player
         private Flashlight _viewFlashlight;
 
         private const float FLASHLIGHT_DISTANCE = 40f;
+        private const float SMOOTH_SPEED = 25f;
 
         public bool HasFlashlightEntity
         {
@@ -63,7 +64,10 @@ namespace TTTReborn.Player
 
             if (IsServer)
             {
-                ClientShowFlashlightLocal(To.Single(this), shouldShow);
+                using (Prediction.Off())
+                {
+                    ClientShowFlashlightLocal(To.Single(this), shouldShow);
+                }
             }
 
             if (shouldShow)
@@ -118,21 +122,15 @@ namespace TTTReborn.Player
         {
             if (Input.Released(InputButton.Flashlight))
             {
-                using (Prediction.Off())
-                {
-                    ToggleFlashlight();
-                }
+                ToggleFlashlight();
             }
 
             if (IsServer)
             {
-                using (Prediction.Off())
+                if (IsFlashlightOn)
                 {
-                    if (IsFlashlightOn)
-                    {
-                        _worldFlashlight.Rotation = Input.Rotation;
-                        _worldFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
-                    }
+                    _worldFlashlight.Rotation = Rotation.Slerp(_worldFlashlight.Rotation, Input.Rotation, SMOOTH_SPEED);
+                    _worldFlashlight.Position = Vector3.Lerp(_worldFlashlight.Position, EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE, SMOOTH_SPEED);
                 }
             }
         }
@@ -141,13 +139,10 @@ namespace TTTReborn.Player
         {
             base.PostCameraSetup(ref camSetup);
 
-            using (Prediction.Off())
+            if (IsFlashlightOn)
             {
-                if (IsFlashlightOn)
-                {
-                    _viewFlashlight.Rotation = Input.Rotation;
-                    _viewFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
-                }
+                _viewFlashlight.Rotation = Input.Rotation;
+                _viewFlashlight.Position = EyePos + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
             }
         }
     }

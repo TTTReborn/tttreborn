@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 using TTTReborn.Player;
@@ -20,7 +22,8 @@ namespace TTTReborn.Items
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public virtual SlotType SlotType => SlotType.Primary;
-        public virtual AmmoType AmmoType => AmmoType.Pistol;
+        public virtual string AmmoType => "pistol";
+        public virtual Type AmmoEntity => null;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
         public virtual float DeployTime => 0.6f;
@@ -52,6 +55,9 @@ namespace TTTReborn.Items
         public PickupTrigger PickupTrigger { get; protected set; }
 
         public string Name { get; }
+
+        private const int AmmoDropPositionOffset = 50;
+        private const int AmmoDropVelocity = 500;
 
         public TTTWeapon() : base()
         {
@@ -155,6 +161,22 @@ namespace TTTReborn.Items
                 {
                     ChargeAttackEndTime = 0f;
                 }
+            }
+
+            if (Input.Released(InputButton.View) && AmmoClip > 0)
+            {
+
+                if (IsServer && AmmoEntity != null)
+                {
+                    TTTAmmo ammoBox = Globals.Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
+
+                    ammoBox.Position = Owner.EyePos + Owner.EyeRot.Forward * AmmoDropPositionOffset;
+                    ammoBox.Rotation = Owner.EyeRot;
+                    ammoBox.Velocity = Owner.EyeRot.Forward * AmmoDropVelocity;
+                    ammoBox.SetCurrentAmmo(AmmoClip);
+                }
+
+                TakeAmmo(AmmoClip);
             }
 
             if (!IsReloading)

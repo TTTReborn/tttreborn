@@ -1,4 +1,3 @@
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
@@ -15,25 +14,13 @@ namespace TTTReborn.UI
         }
     }
 
-    public class PostRoundMenu : Panel
+    public class PostRoundMenu : TTTPanel
     {
         public static PostRoundMenu Instance;
 
-        public bool IsShowing
-        {
-            get => _isShowing;
-            set
-            {
-                _isShowing = value;
-
-                SetClass("hide", !_isShowing);
-            }
-        }
-        private bool _isShowing = false;
-
         private PostRoundStats _stats;
-        private readonly Label _headerLabel;
-        private readonly Label _contentLabel;
+        private readonly TranslationLabel _headerLabel;
+        private readonly TranslationLabel _contentLabel;
 
         public PostRoundMenu()
         {
@@ -41,9 +28,9 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/postroundmenu/PostRoundMenu.scss");
 
-            _headerLabel = Add.Label("", "headerLabel");
+            _headerLabel = Add.TranslationLabel("", "headerLabel");
 
-            _contentLabel = Add.Label("Thanks for playing TTT Reborn, more updates and stats to come!", "contentLabel");
+            _contentLabel = Add.TranslationLabel("", "contentLabel");
 
             IsShowing = false;
         }
@@ -59,7 +46,9 @@ namespace TTTReborn.UI
         {
             IsShowing = true;
 
-            _headerLabel.Text = $"{_stats.WinningRole.ToUpper()} WIN!";
+            _contentLabel.SetTranslation("POST_ROUND_TEXT");
+
+            _headerLabel.SetTranslation($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}");
             _headerLabel.Style.BackgroundColor = _stats.WinningColor;
         }
     }

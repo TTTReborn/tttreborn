@@ -3,7 +3,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class ChatEntry : Panel
+    public partial class ChatEntry : TTTPanel
     {
         public string Name;
         public string Text;
