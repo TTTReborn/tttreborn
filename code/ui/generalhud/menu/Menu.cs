@@ -42,7 +42,7 @@ namespace TTTReborn.UI.Menu
             MenuContent.SetPanelContent((panelContent) =>
             {
                 panelContent.Add.ButtonWithIcon("settings", "", "menuButton", () => OpenSettings(panelContent));
-                panelContent.Add.ButtonWithIcon("change_circle", "", "menuButton", () => OpenChanges(panelContent));
+                panelContent.Add.ButtonWithIcon("published_with_changes", "", "menuButton", () => OpenChanges(panelContent));
                 panelContent.Add.ButtonWithIcon("science", "", "menuButton", () => OpenTesting(panelContent));
             }, "", "home");
         }
@@ -92,8 +92,27 @@ namespace TTTReborn.UI.Menu
                 Drop drop2 = new Drop(wrapperPanel);
                 drop2.DragDropGroupName = "dnd";
 
-                Drag drag = new Drag(drop1);
-                drag.DragDropGroupName = "dnd";
+                new Drag(drop1).DragDropGroupName = "dnd";
+                new Drag(drop1).DragDropGroupName = "dnd";
+                new Drag(drop1).DragDropGroupName = "dnd";
+
+                panelContent.Add.Label("Dropdown:");
+
+                Dropdown dropdown = new Dropdown(panelContent);
+                dropdown.TextLabel.Text = "Choose entry...";
+
+                dropdown.AddOption("Test One");
+                dropdown.AddOption("Test Two");
+
+                panelContent.AddChild(dropdown);
+
+                panelContent.Add.Label("Keybind & DialogBox:");
+
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+teamvoicechat";
+
+                panelContent.Add.Label("FileSelection:");
+
+                panelContent.Add.Button("Open FileSelection...", "fileselectionbutton", () => FindRootPanel().Add.FileSelection().Display());
             }, "Testing", "testing");
         }
     }

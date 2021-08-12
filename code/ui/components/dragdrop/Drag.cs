@@ -9,6 +9,8 @@ namespace TTTReborn.UI
 {
     public partial class Drag : DragDrop
     {
+        public bool IsLocked = false;
+
         public bool IsDragging
         {
             get => _isDragging;
@@ -73,7 +75,7 @@ namespace TTTReborn.UI
 
         protected override void OnMouseDown(MousePanelEvent e)
         {
-            if (!IsVisible)
+            if (!IsVisible || IsLocked)
             {
                 return;
             }
