@@ -121,6 +121,25 @@ namespace TTTReborn.UI
             }
         }
 
+        public override void OnClickAgree()
+        {
+            if (SelectedEntry is null)
+            {
+                return;
+            }
+
+            if (!FolderOnly && SelectedEntry.IsFolder)
+            {
+                OnConfirm(SelectedEntry);
+
+                return;
+            }
+
+            OnSelectEntry?.Invoke(SelectedEntry);
+
+            base.OnClickAgree();
+        }
+
         public static string GetIconByFileType(string fileType)
         {
             switch (fileType)

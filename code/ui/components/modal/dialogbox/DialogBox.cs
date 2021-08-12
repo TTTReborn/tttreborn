@@ -34,8 +34,18 @@ namespace TTTReborn.UI
             ContentPanel = Add.Panel("content");
 
             _footerPanel = Add.Panel("footer");
-            _agreeButton = _footerPanel.Add.ButtonWithIcon("done", "", "agree", () => OnAgree?.Invoke(this));
-            _declineButton = _footerPanel.Add.ButtonWithIcon("close", "", "decline", () => OnDecline?.Invoke(this));
+            _agreeButton = _footerPanel.Add.ButtonWithIcon("done", "", "agree", OnClickAgree);
+            _declineButton = _footerPanel.Add.ButtonWithIcon("close", "", "decline", OnClickDecline);
+        }
+
+        public virtual void OnClickAgree()
+        {
+            OnAgree?.Invoke(this);
+        }
+
+        public virtual void OnClickDecline()
+        {
+            OnDecline?.Invoke(this);
         }
 
         public Label AddText(string text)
