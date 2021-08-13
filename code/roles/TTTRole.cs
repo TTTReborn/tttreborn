@@ -30,7 +30,7 @@ namespace TTTReborn.Roles
 
         public TTTRole()
         {
-            Name = Utils.GetTypeName(GetType());
+            Name = Utils.GetTypeName(GetType()).ToLower();
 
             if (TeamFunctions.GetTeamByType(DefaultTeamType) == null)
             {

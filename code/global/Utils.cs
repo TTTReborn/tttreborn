@@ -6,6 +6,7 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Globals
 {
@@ -86,13 +87,13 @@ namespace TTTReborn.Globals
             return clients;
         }
 
-        public static List<TTTPlayer> GetAlivePlayersByRoleName(string role)
+        public static List<TTTPlayer> GetAlivePlayersByRoleName(TTTRole role)
         {
             List<TTTPlayer> players = new List<TTTPlayer>();
 
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role.Name.ToLower() == role.ToLower())
+                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role.Name == role.Name)
                 {
                     players.Add(player);
                 }
