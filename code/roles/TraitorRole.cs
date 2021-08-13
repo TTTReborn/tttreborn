@@ -8,7 +8,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [RoleAttribute("Traitor")]
+    [RoleAttribute("traitor")]
     public class TraitorRole : TTTRole
     {
         public override Color Color => Color.FromBytes(223, 41, 53);

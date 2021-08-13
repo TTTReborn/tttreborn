@@ -17,7 +17,7 @@ namespace TTTReborn.Roles
         }
     }
 
-    [RoleAttribute("Base")]
+    [RoleAttribute("base")]
     public abstract class TTTRole
     {
         public readonly string Name;

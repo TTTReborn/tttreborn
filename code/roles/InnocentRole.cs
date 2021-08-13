@@ -4,7 +4,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [RoleAttribute("Innocent")]
+    [RoleAttribute("innocent")]
     public class InnocentRole : TTTRole
     {
         public override Color Color => Color.FromBytes(27, 197, 78);

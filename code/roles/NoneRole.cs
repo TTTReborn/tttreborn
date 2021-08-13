@@ -4,7 +4,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [RoleAttribute("None")]
+    [RoleAttribute("none")]
     public class NoneRole : TTTRole
     {
         public override Color Color => Color.Transparent;
