@@ -22,10 +22,13 @@ namespace TTTReborn.Items
             {
                 return !inventory.Perks.Has(Name);
             }
-
-            if (Type.IsSubclassOf(typeof(TTTEquipment)) || Type.IsSubclassOf(typeof(TTTWeapon)))
+            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
             {
                 return !inventory.IsCarryingType(Type) && inventory.HasEmptySlot(SlotType);
+            }
+            else if (Type.IsSubclassOf(typeof(TTTEquipment))) //This was previously apart of the TTTWeapon if statement. We don't have to remove it, but I'd rather not interfere with IsCarryingType
+            {
+                return inventory.HasEmptySlot(SlotType);
             }
 
             return false;

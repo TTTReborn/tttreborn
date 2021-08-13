@@ -1,3 +1,5 @@
+using System.Linq;
+
 using Sandbox;
 
 using TTTReborn.Globals;
@@ -187,6 +189,7 @@ namespace TTTReborn.Player
 
             SimulateActiveChild(client, ActiveChild);
 
+            TickC4Simulate();
             TickItemSimulate();
             TickPlayerUse();
             TickPlayerDropCarriable();
@@ -264,6 +267,12 @@ namespace TTTReborn.Player
             {
                 perks.Get(i).Simulate(client);
             }
+        }
+
+        private void TickC4Simulate()
+        {
+            var props = All.Where(x => x is C4Entity).ToList();
+            props.ForEach(x => x.Simulate(GetClientOwner()));
         }
 
         protected override void OnDestroy()

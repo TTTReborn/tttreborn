@@ -71,5 +71,11 @@ namespace TTTReborn.Player
         {
             Event.Run("tttreborn.player.takedamage", this, damage);
         }
+
+        [ClientRpc]
+        public void ClientOpenC4Control(C4Entity ent)
+        {
+            //C4Menu.Instance?.Open(ent);
+        }
     }
 }
