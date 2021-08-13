@@ -160,7 +160,7 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientDisplayMessage(string message, Color color)
         {
-            InfoFeed.Current?.AddEntry(message);
+            InfoFeed.Current?.AddEntry(message, color);
         }
     }
 }
