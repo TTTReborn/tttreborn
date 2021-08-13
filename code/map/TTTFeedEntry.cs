@@ -12,31 +12,34 @@ namespace TTTReborn.Map
         [Property("Message")]
         public string Message { get; set; } = "";
 
-        [Property("Receiver", "The name of the team receiving the message. `Activator` for activator of entity trigger, `All` for everyone, `Innocents` and `Traitors`.")]
-        public string Receiver { get; set; } = "Activator";
+        [Property("Receiver", "Who will this message go to? If using a custom team, choose `Other` and set the `Receiver Team Override` to the name of your team.")]
+        public FeedEntryType Receiver { get; set; } = FeedEntryType.Activator;
 
         [Property("Text color")]
         public Color Color { get; set; } = Color.White;
 
+        [Property("Receiver Team Override")]
+        public string ReceiverTeamOverride { get; set; } = "Override Team Name";
+
         [Input]
         public void DisplayMessage(Entity activator)
         {
-            switch (Receiver.ToLower())
+            switch (Receiver)
             {
-                case "activator":
+                case FeedEntryType.Activator:
                     RPCs.ClientDisplayMessage(To.Single(activator), Message, Color);
                     break;
-                case "all":
+                case FeedEntryType.All:
                     RPCs.ClientDisplayMessage(To.Everyone, Message, Color);
                     break;
-                case "innocents":
+                case FeedEntryType.Innocents:
                     RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeam("Innocents").GetClients()), Message, Color);
                     break;
-                case "traitors":
+                case FeedEntryType.Traitors:
                     RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeam("Traitors").GetClients()), Message, Color);
                     break;
-                default:
-                    TTTTeam team = TeamFunctions.GetTeam(Receiver);
+                case FeedEntryType.Other:
+                    TTTTeam team = TeamFunctions.GetTeam(ReceiverTeamOverride);
 
                     if (team != null)
                     {
@@ -49,5 +52,14 @@ namespace TTTReborn.Map
                     break;
             }
         }
+    }
+
+    public enum FeedEntryType
+    {
+        All,
+        Activator,
+        Innocents,
+        Traitors,
+        Other
     }
 }
