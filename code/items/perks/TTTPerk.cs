@@ -18,7 +18,7 @@ namespace TTTReborn.Items
     public abstract class TTTPerk : IItem
     {
         public string Name { get; }
-        public Entity Owner { get; set; }
+        public Entity Owner { get; private set; }
 
         protected TTTPerk()
         {

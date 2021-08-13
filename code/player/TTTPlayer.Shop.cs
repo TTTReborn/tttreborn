@@ -34,7 +34,7 @@ namespace TTTReborn.Player
             return BuyError.None;
         }
 
-        public void RequestPurchase(IBuyableItem buyableItem)
+        private void RequestPurchase(IBuyableItem buyableItem)
         {
             ShopItemData itemData = buyableItem.CreateItemData();
 

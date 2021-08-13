@@ -38,21 +38,14 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client client)
         {
-            if (!IsServer)
+            if (!IsServer || Owner is not TTTPlayer player)
             {
                 return;
             }
 
-            TTTPlayer owner = Owner as TTTPlayer;
-
-            if (owner == null)
-            {
-                return;
-            }
-
-            Vector3 eyePos = owner.EyePos;
-            Vector3 eyeDir = owner.EyeRot.Forward;
-            Rotation eyeRot = Rotation.From(new Angles(0.0f, owner.EyeRot.Angles().yaw, 0.0f));
+            Vector3 eyePos = player.EyePos;
+            Vector3 eyeDir = player.EyeRot.Forward;
+            Rotation eyeRot = Rotation.From(new Angles(0.0f, player.EyeRot.Angles().yaw, 0.0f));
 
             using (Prediction.Off())
             {
@@ -82,7 +75,7 @@ namespace TTTReborn.Items
                     }
                     else
                     {
-                        TryStartGrab(owner, eyePos, eyeRot, eyeDir);
+                        TryStartGrab(player, eyePos, eyeRot, eyeDir);
                     }
 
                     if (Input.Down(InputButton.Attack2))
@@ -174,6 +167,7 @@ namespace TTTReborn.Items
             if (Vector3.DistanceBetween(_previousPosition, _heldBody.Position) > _maxPropSpeed)
             {
                 GrabEnd();
+
                 return;
             }
 

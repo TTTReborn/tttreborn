@@ -27,27 +27,26 @@ namespace TTTReborn.UI
         {
             AddChild(child);
 
-            int childCount = ChildCount;
+            // int childCount = ChildCount;
 
-            if (childCount > 1)
-            {
-                if (index < 0 || index >= childCount)
-                {
-                    return;
-                }
+            // if (childCount > 1)
+            // {
+            //     if (index < 0 || index >= childCount)
+            //     {
+            //         return;
+            //     }
 
-                Panel tmp = _children[index];
-                _children[index++] = this;
+            //     Panel tmp = _children[index];
+            //     _children[index++] = this;
 
-                while (index < childCount)
-                {
-                    _children[index] = tmp;
-                    tmp = _children[++index];
-                }
+            //     while (index < childCount)
+            //     {
+            //         _children[index] = tmp;
+            //         tmp = _children[++index];
+            //     }
 
-                _children[index] = tmp;
-                _children[++index] = null;
-            }
+            //     _children[index] = tmp;
+            // }
         }
     }
 }

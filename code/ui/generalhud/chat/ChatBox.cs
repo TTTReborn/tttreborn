@@ -149,7 +149,7 @@ namespace TTTReborn.UI
             chatEntry.SetClass("noname", string.IsNullOrEmpty(name));
             chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
 
-            bool showHead = Messages.Count == 0 || name == null || Messages[Messages.Count - 1].Name != name;
+            bool showHead = Messages.Count == 0 || name == null || Messages[^1].Name != name;
 
             if (showHead)
             {

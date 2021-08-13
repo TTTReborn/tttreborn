@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
@@ -17,11 +18,13 @@ namespace TTTReborn.Gamemode
         [Net]
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
-        public KarmaSystem Karma { get; private set; } = new KarmaSystem();
+        public KarmaSystem Karma { get; private set; } = new();
 
         public Game()
         {
             Instance = this;
+
+            TTTLanguage.LoadLanguages();
 
             if (IsServer)
             {
@@ -37,14 +40,7 @@ namespace TTTReborn.Gamemode
         {
             Assert.NotNull(round);
 
-            if (Utils.HasMinimumPlayers())
-            {
-                ForceRoundChange(round);
-            }
-            else
-            {
-                ForceRoundChange(new WaitingRound());
-            }
+            ForceRoundChange(Utils.HasMinimumPlayers() ? round : new WaitingRound());
         }
 
         /// <summary>
@@ -92,7 +88,7 @@ namespace TTTReborn.Gamemode
             }
             */
 
-            TTTPlayer player = new TTTPlayer();
+            TTTPlayer player = new();
             client.Pawn = player;
             player.InitialRespawn();
 
@@ -117,12 +113,9 @@ namespace TTTReborn.Gamemode
                 return false;
             }
 
-            if (Round is InProgressRound && sourcePlayer.LifeState == LifeState.Dead)
+            if (Round is InProgressRound && sourcePlayer.LifeState == LifeState.Dead && destPlayer.LifeState == LifeState.Alive)
             {
-                if (destPlayer.LifeState == LifeState.Alive)
-                {
-                    return false;
-                }
+                return false;
             }
 
             if (sourcePlayer.IsTeamVoiceChatEnabled && destPlayer.Team != sourcePlayer.Team)
