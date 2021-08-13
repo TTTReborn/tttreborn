@@ -7,8 +7,8 @@ namespace TTTReborn.Map
     [Library("ttt_credit_adjust", Description = "Changes the amount of credits upon the activator.")]
     public partial class TTTChangeCredits : Entity
     {
-        [Property("Credits", "Removes amount of credits. Use a negative number to add credits to the activator.")]
-        public int Credits { get; set; } = 0;
+        [Property("Credits", "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default.")]
+        public int Credits { get; set; } = 1;
 
         [Input]
         public void ExchangeCredits(Entity activator)
