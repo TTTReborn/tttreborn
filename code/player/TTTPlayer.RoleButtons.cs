@@ -13,9 +13,9 @@ namespace TTTReborn.Player
 
         public void SendRoleButtonsToClient() //Called Serverside when Player is assigned role.
         {
-            var roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
+            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
 
-            var applicableButtons = roleButtons.Where(x => x.Role.ToLower() == Role.Name.ToLower()).ToList();
+            List<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role.ToLower() == Role.Name.ToLower()).ToList();
 
             ClientStoreRoleButton(To.Single(Owner), applicableButtons.Select(x => x.Position).ToArray());
         }
