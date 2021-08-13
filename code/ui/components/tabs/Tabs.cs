@@ -10,7 +10,7 @@ namespace TTTReborn.UI
         public readonly List<Tab> TabList = new();
 
         public readonly Panel Header;
-        public readonly Panel Content;
+        public readonly PanelContent PanelContent;
 
         public Tab SelectedTab { get; private set; }
 
@@ -19,13 +19,15 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/components/tabs/Tabs.scss");
 
             Header = Add.Panel("header");
-            Content = Add.Panel("content");
+
+            PanelContent = new PanelContent(this);
+            PanelContent.AddClass("content");
         }
 
-        public Tab AddTab(string title, Action<Panel> content, Action onSelectTab = null)
+        public Tab AddTab(string title, Action<PanelContent> createContent, Action onSelectTab = null)
         {
             Tab tab = new Tab(Header, this);
-            tab.Content = content;
+            tab.CreateContent = createContent;
             tab.OnSelectTab = onSelectTab;
             tab.SetTitle(title);
 
@@ -46,14 +48,12 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Content.DeleteChildren(true);
-
             SelectedTab?.SetClass("selected", false);
 
             SelectedTab = tab;
 
             SelectedTab.SetClass("selected", true);
-            SelectedTab.Content?.Invoke(Content);
+            PanelContent.SetPanelContent(SelectedTab.CreateContent, SelectedTab.TitleLabel.Text);
             SelectedTab.OnSelectTab?.Invoke();
         }
     }

@@ -11,7 +11,7 @@ namespace TTTReborn.UI
         public readonly Tabs Tabs;
 
         public Action OnSelectTab { get; set; }
-        public Action<Panel> Content { get; set; }
+        public Action<PanelContent> CreateContent { get; set; }
 
         public Tab(Panel parent, Tabs tabs) : base(parent)
         {
