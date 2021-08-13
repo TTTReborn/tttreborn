@@ -30,6 +30,7 @@ namespace TTTReborn.UI.Menu
             OpenHomepage();
 
             IsDraggable = true;
+            IsShowing = false;
         }
 
         public void OpenHomepage()
@@ -107,12 +108,16 @@ namespace TTTReborn.UI.Menu
                 panelContent.AddChild(dropdown);
 
                 panelContent.Add.Label("Keybind & DialogBox:");
-
                 panelContent.Add.Keybind("Press a key...").BoundCommand = "+teamvoicechat";
 
                 panelContent.Add.Label("FileSelection:");
-
                 panelContent.Add.Button("Open FileSelection...", "fileselectionbutton", () => FindRootPanel().Add.FileSelection().Display());
+
+                panelContent.Add.Label("Tabs:");
+
+                Tabs tabs = panelContent.Add.Tabs();
+                tabs.AddTab("Test1", (contentPanel) => contentPanel.Add.Label("Test1"));
+                tabs.AddTab("Test2", (contentPanel) => contentPanel.Add.Label("Test2"));
             }, "Testing", "testing");
         }
     }

@@ -14,13 +14,13 @@ namespace TTTReborn.UI
                 SetClass("hide", !_isShowing);
             }
         }
-        private bool _isShowing = false;
+        private bool _isShowing = true;
 
         public TTTPanel(Panel parent = null) : base(parent)
         {
             Parent = parent ?? Parent;
 
-            IsShowing = false;
+            IsShowing = true;
         }
 
         public void AddChild(Panel child, int index)
