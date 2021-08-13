@@ -15,8 +15,6 @@ namespace TTTReborn.UI
 
         public PlayerCorpse PlayerCorpse;
 
-        private bool _isShowing = false;
-
         private readonly ConfirmationPanel _confirmationPanel;
 
         private readonly ConfirmationHintPanel _confirmationHintPanel;

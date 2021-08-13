@@ -15,6 +15,8 @@ namespace TTTReborn.UI
             Parent = parent ?? Parent;
 
             List.Add(this);
+
+            StyleSheet.Load("/ui/components/dragdrop/Drop.scss");
         }
 
         public override void OnDeleted()

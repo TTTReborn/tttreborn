@@ -19,8 +19,6 @@ namespace TTTReborn.UI
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 
-        private bool _isShowing = false;
-
         private struct HealthGroup
         {
             public string Title;

@@ -20,11 +20,11 @@ namespace TTTReborn.UI
 
         private readonly Header _header;
 
-        private TableHeader _tableHeader;
+        private readonly TableHeader _tableHeader;
 
         private readonly Panel _mainContent;
 
-        private Panel _footer;
+        private readonly Panel _footer;
 
         public Scoreboard()
         {
@@ -32,8 +32,8 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/scoreboard/Scoreboard.scss");
 
-            _header = new Header(this);
-            _tableHeader = new TableHeader(this);
+            _header = new(this);
+            _tableHeader = new(this);
 
             _mainContent = Add.Panel("mainContent");
 

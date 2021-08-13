@@ -113,7 +113,7 @@ namespace TTTReborn.Items
 
             SetModel("weapons/rust_pistol/rust_pistol.vmdl");
 
-            PickupTrigger = new PickupTrigger();
+            PickupTrigger = new();
             PickupTrigger.Parent = this;
             PickupTrigger.Position = Position;
         }

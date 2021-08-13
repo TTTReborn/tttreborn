@@ -13,6 +13,19 @@ namespace TTTReborn.UI
 {
     public class InventorySelection : TTTPanel
     {
+        private readonly InputButton[] _slotInputButtons = new[] {
+            InputButton.Slot0,
+            InputButton.Slot1,
+            InputButton.Slot2,
+            InputButton.Slot3,
+            InputButton.Slot4,
+            InputButton.Slot5,
+            InputButton.Slot6,
+            InputButton.Slot7,
+            InputButton.Slot8,
+            InputButton.Slot9
+        };
+
         public InventorySelection()
         {
             StyleSheet.Load("/ui/generalhud/inventorywrapper/inventoryselection/InventorySelection.scss");
@@ -156,7 +169,7 @@ namespace TTTReborn.UI
             ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
 
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
-            if (keyboardIndexPressed != 0)
+            if (keyboardIndexPressed != -1)
             {
                 List<ICarriableItem> weaponsOfSlotTypeSelected = new();
                 int activeCarriableOfSlotTypeIndex = -1;
@@ -220,20 +233,22 @@ namespace TTTReborn.UI
 
         private int GetKeyboardNumberPressed(InputBuilder input)
         {
-            if (input.Pressed(InputButton.Slot1)) return 1;
-            if (input.Pressed(InputButton.Slot2)) return 2;
-            if (input.Pressed(InputButton.Slot3)) return 3;
-            if (input.Pressed(InputButton.Slot4)) return 4;
-            if (input.Pressed(InputButton.Slot5)) return 5;
+            for (int i = 0; i < _slotInputButtons.Length; i++)
+            {
+                if (input.Pressed(_slotInputButtons[i]))
+                {
+                    return i;
+                }
+            }
 
-            return 0;
+            return -1;
         }
 
         private static string FormatAmmo(TTTWeapon weapon, Inventory inventory)
         {
             if (weapon.UnlimitedAmmo)
             {
-                return $"{weapon.AmmoClip}";
+                return $"{weapon.AmmoClip} + ∞";
             }
 
             return $"{weapon.AmmoClip} + {(inventory.Ammo.Count(weapon.AmmoType))}";
@@ -241,7 +256,7 @@ namespace TTTReborn.UI
 
         private class InventorySlot : TTTPanel
         {
-            public ICarriableItem Carriable { get; private set; }
+            public ICarriableItem Carriable { get; init; }
             private readonly Label _ammoLabel;
             private Label _slotLabel;
             private Label _carriableLabel;

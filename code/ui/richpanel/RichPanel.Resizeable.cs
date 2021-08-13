@@ -149,12 +149,12 @@ namespace TTTReborn.UI
             _draggingMouseStartPosition = Mouse.Position;
             _boxDataBeforeDraggingStarted = new BoxData
             {
-                Width = (float) Math.Ceiling(Box.Rect.width),
-                Height = (float) Math.Ceiling(Box.Rect.height),
-                Top = (float) Math.Ceiling(Box.Rect.top),
-                Right = (float) Math.Ceiling(Box.Rect.right),
-                Bottom = (float) Math.Ceiling(Box.Rect.bottom),
-                Left = (float) Math.Ceiling(Box.Rect.left)
+                Width = (float) (Math.Ceiling(Box.Rect.width)),
+                Height = (float) (Math.Ceiling(Box.Rect.height)),
+                Top = (float) (Math.Ceiling(Box.Rect.top)),
+                Right = (float) (Math.Ceiling(Box.Rect.right)),
+                Bottom = (float) (Math.Ceiling(Box.Rect.bottom)),
+                Left = (float) (Math.Ceiling(Box.Rect.left))
             };
 
             Matrix? matrix = GlobalMatrix;

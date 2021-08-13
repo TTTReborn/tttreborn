@@ -32,7 +32,7 @@ namespace TTTReborn.UI
             {
                 Local.Hud?.Delete();
 
-                Hud hud = new Hud();
+                Hud hud = new();
 
                 if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
                 {
