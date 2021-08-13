@@ -4,7 +4,7 @@ using System.Linq;
 using Sandbox;
 
 using TTTReborn.Globals;
-using TTTReborn.MapEntities;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.UI;

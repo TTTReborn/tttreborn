@@ -3,7 +3,7 @@ using Sandbox;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 
-namespace TTTReborn.MapEntities
+namespace TTTReborn.Map
 {
     [Library("ttt_role_button", Description = "Used to provide an onscreen button for a role to activate.")]
     public partial class TTTRoleButton : Entity

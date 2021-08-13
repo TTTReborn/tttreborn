@@ -2,7 +2,7 @@ using Sandbox;
 
 using TTTReborn.Player;
 
-namespace TTTReborn.MapEntities
+namespace TTTReborn.Map
 {
     [Library("ttt_credit_adjust", Description = "Changes the amount of credits upon the activator.")]
     public partial class TTTChangeCredits : Entity

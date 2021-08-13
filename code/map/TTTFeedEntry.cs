@@ -4,7 +4,7 @@ using Sandbox;
 using TTTReborn.Globals;
 using TTTReborn.Teams;
 
-namespace TTTReborn.MapEntities
+namespace TTTReborn.Map
 {
     [Library("ttt_feed_entry", Description = "Add text entry to the game feed when input fired.")]
     public partial class TTTFeedEntry : Entity

@@ -2,7 +2,7 @@ using Sandbox;
 
 using TTTReborn.Rounds;
 
-namespace TTTReborn.MapEntities
+namespace TTTReborn.Map
 {
     [Library("ttt_map_settings")]
     public partial class TTTMapSettings : Entity

@@ -3,7 +3,7 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.MapEntities;
+using TTTReborn.Map;
 
 namespace TTTReborn.Player
 {

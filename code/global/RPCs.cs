@@ -1,7 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Items;
-using TTTReborn.MapEntities;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;

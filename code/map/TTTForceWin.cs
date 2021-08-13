@@ -5,7 +5,7 @@ using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
 
-namespace TTTReborn.MapEntities
+namespace TTTReborn.Map
 {
     [Library("ttt_force_win", Description = "Forces round to end and win be awarded to team depending on input.")]
     public partial class TTTForceWin : Entity

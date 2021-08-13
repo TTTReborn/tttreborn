@@ -3,7 +3,7 @@ using Sandbox;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 
-namespace TTTReborn.MapEntities
+namespace TTTReborn.Map
 {
     [Library("ttt_logic_assigned", Description = "Used to test the assigned team or role of the activator.")]
     public partial class TTTLogicAssigned : Entity
