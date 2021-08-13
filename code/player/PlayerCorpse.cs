@@ -64,7 +64,7 @@ namespace TTTReborn.Player
                 }
             }
 
-            foreach(C4Entity c4 in attachedC4s)
+            foreach (C4Entity c4 in attachedC4s)
             {
                 c4.SetParent(this, c4.AttachedBone);
             }

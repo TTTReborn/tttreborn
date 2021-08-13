@@ -56,7 +56,7 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client cl)
         {
-            if( IsClient )
+            if (IsClient)
             {
 
                 if (CreatedDisplay)
