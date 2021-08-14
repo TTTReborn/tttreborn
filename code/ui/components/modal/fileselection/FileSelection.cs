@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 using Sandbox;
@@ -8,7 +9,7 @@ namespace TTTReborn.UI
 {
     public partial class FileSelection : DialogBox
     {
-        public string SelectedFilePath { get; private set; }
+        public bool IsDataFolder { get; set; } = true;
 
         public string DefaultSelectionPath
         {
@@ -76,7 +77,18 @@ namespace TTTReborn.UI
                 fileSelectionEntry.IsFolder = true;
             }
 
-            foreach (string folder in FileSystem.Mounted.FindDirectory(path))
+            IEnumerable<string> folders;
+
+            if (IsDataFolder)
+            {
+                folders = FileSystem.Data.FindDirectory(path);
+            }
+            else
+            {
+                folders = FileSystem.Mounted.FindDirectory(path);
+            }
+
+            foreach (string folder in folders)
             {
                 FileSelectionEntry fileSelectionEntry = ContentPanel.Add.FileSelectionEntry(Path.GetDirectoryName(folder + "/") + "/", "folder");
                 fileSelectionEntry.SetFileSelection(this);
@@ -88,7 +100,18 @@ namespace TTTReborn.UI
                 return;
             }
 
-            foreach (string file in FileSystem.Mounted.FindFile(path, DefaultSelectionFileType))
+            IEnumerable<string> files;
+
+            if (IsDataFolder)
+            {
+                files = FileSystem.Data.FindFile(path, DefaultSelectionFileType);
+            }
+            else
+            {
+                files = FileSystem.Mounted.FindFile(path, DefaultSelectionFileType);
+            }
+
+            foreach (string file in files)
             {
                 ContentPanel.Add.FileSelectionEntry(Path.GetFileName(file), GetIconByFileType(Path.GetExtension(file))).SetFileSelection(this);
             }
