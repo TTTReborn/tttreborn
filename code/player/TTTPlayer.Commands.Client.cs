@@ -37,7 +37,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Language language = TTTLanguage.GetLanguageByName(name);
+            Language language = TTTLanguage.GetLanguageByCode(name);
 
             if (language is null)
             {
@@ -48,9 +48,7 @@ namespace TTTReborn.Player
 
             Log.Warning($"You set your language to '{language.Data.Name}'.");
 
-            TTTLanguage.ActiveLanguage = language;
-
-            UI.TranslationLabel.UpdateLanguage(language);
+            Settings.ClientSettings.Instance.Language = language.Data.Code;
         }
     }
 }

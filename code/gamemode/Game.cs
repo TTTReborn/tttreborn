@@ -26,10 +26,19 @@ namespace TTTReborn.Gamemode
 
             TTTLanguage.LoadLanguages();
 
+            Settings.SettingFunctions.LoadSettings();
+
             if (IsServer)
             {
                 new Hud();
             }
+        }
+
+        public override void Shutdown()
+        {
+            Settings.SettingFunctions.SaveSettings();
+
+            base.Shutdown();
         }
 
         /// <summary>
