@@ -5,6 +5,7 @@ using Sandbox;
 using TTTReborn.Globals;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
+using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -64,6 +65,16 @@ namespace TTTReborn.Player
             }
 
             Role.OnSelect(this);
+
+            if (QuickShop.Instance != null)
+            {
+                QuickShop.Instance.CheckAccess();
+
+                if (QuickShop.Instance.IsShowing)
+                {
+                    QuickShop.Instance.Update();
+                }
+            }
         }
 
         public void SyncMIA(TTTPlayer player = null)

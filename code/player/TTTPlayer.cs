@@ -33,19 +33,6 @@ namespace TTTReborn.Player
             Inventory = new Inventory(this);
         }
 
-        public void MakeSpectator(bool useRagdollCamera = true)
-        {
-            EnableAllCollisions = false;
-            EnableDrawing = false;
-            Controller = null;
-            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
-
-            LifeState = LifeState.Dead;
-            Health = 0f;
-
-            ShowFlashlight(false, false);
-        }
-
         // Important: Server-side only
         public void InitialRespawn()
         {
@@ -170,6 +157,7 @@ namespace TTTReborn.Player
             if (IsClient)
             {
                 TickPlayerVoiceChat();
+                TickMenu();
             }
 
             TickAttemptInspectPlayerCorpse();

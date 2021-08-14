@@ -70,5 +70,18 @@ namespace TTTReborn.Player
                 camera.OnUpdateObservatedPlayer(oldObservatedPlayer, CurrentPlayer);
             }
         }
+
+        public void MakeSpectator(bool useRagdollCamera = true)
+        {
+            EnableAllCollisions = false;
+            EnableDrawing = false;
+            Controller = null;
+            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+
+            LifeState = LifeState.Dead;
+            Health = 0f;
+
+            ShowFlashlight(false, false);
+        }
     }
 }

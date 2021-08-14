@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Items;
+using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -50,6 +51,17 @@ namespace TTTReborn.Player
             Credits -= itemData.Price;
 
             buyableItem.OnPurchase(this);
+
+            ClientSendQuickshopUpdate(To.Single(this));
+        }
+
+        [ClientRpc]
+        public static void ClientSendQuickshopUpdate()
+        {
+            if (QuickShop.Instance?.IsShowing ?? false)
+            {
+                QuickShop.Instance.Update();
+            }
         }
     }
 }

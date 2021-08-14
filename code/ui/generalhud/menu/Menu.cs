@@ -52,12 +52,11 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
+                panelContent.Add.Label("Bind TeamVoiceChat:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
+
+                panelContent.Add.Label("Bind Quickshop:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
             }, "Settings", "settings");
         }
 
@@ -108,7 +107,7 @@ namespace TTTReborn.UI.Menu
                 panelContent.AddChild(dropdown);
 
                 panelContent.Add.Label("Keybind & DialogBox:");
-                panelContent.Add.Keybind("Press a key...").BoundCommand = "+teamvoicechat";
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
 
                 panelContent.Add.Label("FileSelection:");
                 panelContent.Add.Button("Open FileSelection...", "fileselectionbutton", () => FindRootPanel().Add.FileSelection().Display());
@@ -119,6 +118,24 @@ namespace TTTReborn.UI.Menu
                 tabs.AddTab("Test1", (contentPanel) => contentPanel.Add.Label("Test1"));
                 tabs.AddTab("Test2", (contentPanel) => contentPanel.Add.Label("Test2"));
             }, "Testing", "testing");
+        }
+    }
+}
+
+namespace TTTReborn.Player
+{
+    using Sandbox;
+
+    using UI.Menu;
+
+    public partial class TTTPlayer
+    {
+        private void TickMenu()
+        {
+            if (Input.Pressed(InputButton.Menu))
+            {
+                Menu.Instance.IsShowing = !Menu.Instance.IsShowing;
+            }
         }
     }
 }

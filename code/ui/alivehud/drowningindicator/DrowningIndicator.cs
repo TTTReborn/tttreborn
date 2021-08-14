@@ -9,10 +9,14 @@ namespace TTTReborn.UI
 {
     public partial class DrowningIndicator : TTTPanel
     {
+        public static DrowningIndicator Instance;
+
         private BarPanel _drowningBar;
 
         public DrowningIndicator()
         {
+            Instance = this;
+
             StyleSheet.Load("/ui/alivehud/drowningindicator/DrowningIndicator.scss");
 
             _drowningBar = new(this, "100", "drowningbar");

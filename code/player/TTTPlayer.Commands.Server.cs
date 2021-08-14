@@ -79,6 +79,11 @@ namespace TTTReborn.Player
         [ServerCmd(Name = "ttt_requestitem")]
         public static void RequestItem(string itemName)
         {
+            if (itemName == null)
+            {
+                return;
+            }
+
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
 
             if (!player.IsValid())
