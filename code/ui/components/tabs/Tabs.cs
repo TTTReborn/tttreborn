@@ -26,10 +26,7 @@ namespace TTTReborn.UI
 
         public Tab AddTab(string title, Action<PanelContent> createContent, Action onSelectTab = null)
         {
-            Tab tab = new Tab(Header, this);
-            tab.CreateContent = createContent;
-            tab.OnSelectTab = onSelectTab;
-            tab.SetTitle(title);
+            Tab tab = new Tab(Header, this, title, createContent, onSelectTab);
 
             TabList.Add(tab);
 

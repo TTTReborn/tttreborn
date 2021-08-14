@@ -8,27 +8,25 @@ namespace TTTReborn.UI
     public partial class Tab : TTTPanel
     {
         public readonly Label TitleLabel;
-        public readonly Tabs Tabs;
 
         public Action OnSelectTab { get; set; }
         public Action<PanelContent> CreateContent { get; set; }
 
-        public Tab(Panel parent, Tabs tabs) : base(parent)
+        private readonly Tabs _parentTabs;
+
+        public Tab(Panel parent, Tabs parentTabs, string title, Action<PanelContent> createContent, Action onSelectTab = null) : base(parent)
         {
             Parent = parent;
-            Tabs = tabs;
+            _parentTabs = parentTabs;
+            CreateContent = createContent;
+            OnSelectTab = onSelectTab;
 
-            TitleLabel = Add.Label("", "title");
-        }
-
-        public void SetTitle(string title)
-        {
-            TitleLabel.Text = title;
+            TitleLabel = Add.Label(title, "title");
         }
 
         protected override void OnClick(MousePanelEvent e)
         {
-            Tabs.OnSelectTab(this);
+            _parentTabs.OnSelectTab(this);
         }
     }
 }
