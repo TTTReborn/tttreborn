@@ -7,48 +7,21 @@ namespace TTTReborn.Settings
 {
     using Globalization;
 
-    public partial class ServerSettings
+    public partial class RealmSettings
     {
         public string Language
         {
-            get => _language ?? TTTLanguage.ServerLanguage.Data.Code;
+            get => TTTLanguage.ActiveLanguage.Data.Code;
             set
             {
-                if (_language == value)
+                if (TTTLanguage.ActiveLanguage.Data.Code == value)
                 {
                     return;
                 }
 
-                _language = value;
-
-                TTTLanguage.ServerLanguage = TTTLanguage.GetLanguageByCode(_language);
+                TTTLanguage.UpdateLanguage(TTTLanguage.GetLanguageByCode(value));
             }
         }
-        private string _language;
-    }
-
-    public partial class ClientSettings
-    {
-        public string Language
-        {
-            get => _language ?? TTTLanguage.ActiveLanguage.Data.Code;
-            set
-            {
-                if (_language == value)
-                {
-                    return;
-                }
-
-                _language = value;
-
-                Language language = TTTLanguage.GetLanguageByCode(_language);
-
-                TTTLanguage.ActiveLanguage = language;
-
-                UI.TranslationLabel.UpdateLanguage(language);
-            }
-        }
-        private string _language;
     }
 }
 
@@ -70,16 +43,6 @@ namespace TTTReborn.Globalization
         }
         private static Language _activeLanguage;
 
-        public static Language ServerLanguage
-        {
-            get => _serverLanguage;
-            set
-            {
-                _serverLanguage = value ?? GetLanguageByCode(FALLBACK_LANGUAGE);
-            }
-        }
-        private static Language _serverLanguage;
-
         public static void LoadLanguages()
         {
             foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
@@ -94,13 +57,8 @@ namespace TTTReborn.Globalization
                 Log.Info($"Added language pack: '{name}'.");
             }
 
-            Language fallbackLanguage = GetLanguageByCode(FALLBACK_LANGUAGE);
-
-            ActiveLanguage = fallbackLanguage;
-            ServerLanguage = fallbackLanguage;
+            ActiveLanguage = GetLanguageByCode(FALLBACK_LANGUAGE);
         }
-
-        public static Language GetActiveLanguage() => Host.IsServer ? ServerLanguage : ActiveLanguage;
 
         public static Language GetLanguageByCode(string name)
         {
@@ -110,6 +68,16 @@ namespace TTTReborn.Globalization
             }
 
             return lang;
+        }
+
+        public static void UpdateLanguage(Language language)
+        {
+            TTTLanguage.ActiveLanguage = language;
+
+            if (Host.IsClient)
+            {
+                UI.TranslationLabel.UpdateLanguage(language);
+            }
         }
     }
 }

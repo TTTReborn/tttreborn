@@ -2,11 +2,32 @@ using System;
 
 using Sandbox;
 
+namespace TTTReborn.Settings
+{
+    using Player;
+
+    public partial class ServerSettings
+    {
+        public bool IsSprintEnabled
+        {
+            get => DefaultWalkController.IsSprintEnabled;
+            set
+            {
+                if (DefaultWalkController.IsSprintEnabled == value)
+                {
+                    return;
+                }
+
+                DefaultWalkController.SetSprintEnabled(value);
+            }
+        }
+    }
+}
+
 namespace TTTReborn.Player
 {
     public partial class DefaultWalkController : WalkController
     {
-        [ServerVar]
         public static bool IsSprintEnabled { get; set; } = false;
 
         public float MaxSprintSpeed = 300f;
@@ -121,6 +142,13 @@ namespace TTTReborn.Player
             }
         }
 
+        public static void SetSprintEnabled(bool enabled)
+        {
+            IsSprintEnabled = enabled;
+
+            ClientSendToggleSprint(IsSprintEnabled);
+        }
+
         [ServerCmd(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
         public static void ToggleSprinting()
         {
@@ -129,9 +157,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IsSprintEnabled = !IsSprintEnabled;
-
-            ClientSendToggleSprint(IsSprintEnabled);
+            Settings.ServerSettings.Instance.IsSprintEnabled = !IsSprintEnabled;
 
             string text = IsSprintEnabled ? "enabled" : "disabled";
 
@@ -144,6 +170,12 @@ namespace TTTReborn.Player
         public static void ClientSendToggleSprint(bool toggle)
         {
             IsSprintEnabled = toggle;
+        }
+
+        [Event("tttreborn.player.initialspawn")]
+        public static void InitializeSprint()
+        {
+            ClientSendToggleSprint(IsSprintEnabled);
         }
     }
 }

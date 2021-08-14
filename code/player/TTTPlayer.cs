@@ -66,6 +66,8 @@ namespace TTTReborn.Player
                         RPCs.ClientSetRole(To.Single(this), player, player.Role.Name);
                     }
                 }
+
+                Event.Run("tttreborn.player.initialspawn");
             }
 
             GetClientOwner().SetScore("forcedspectator", IsForcedSpectator);
