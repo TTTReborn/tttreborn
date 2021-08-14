@@ -50,6 +50,8 @@ namespace TTTReborn.UI
 
             OptionHolder = new TTTPanel(this);
             OptionHolder.AddClass("optionholder");
+
+            IsOpen = false;
         }
 
         public DropdownOption AddOption(string text, Action<TTTPanel> onSelect = null)

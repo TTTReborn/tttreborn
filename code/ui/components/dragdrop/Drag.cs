@@ -9,7 +9,17 @@ namespace TTTReborn.UI
 {
     public partial class Drag : DragDrop
     {
-        public bool IsLocked = false;
+        public bool IsLocked
+        {
+            get => _isLocked;
+            set
+            {
+                _isLocked = value;
+
+                SetClass("locked", _isLocked);
+            }
+        }
+        private bool _isLocked = false;
 
         public bool IsDragging
         {
@@ -71,6 +81,8 @@ namespace TTTReborn.UI
             Parent = parent ?? Parent;
 
             StyleSheet.Load("/ui/components/dragdrop/Drag.scss");
+
+            IsLocked = false;
         }
 
         protected override void OnMouseDown(MousePanelEvent e)

@@ -1,5 +1,5 @@
 Drag {
-    &:hover {
+    &:not(.locked):hover {
         cursor: pointer;
     }
 }

@@ -75,6 +75,7 @@ namespace TTTReborn.UI
             if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
             {
                 IsShowing = false;
+
                 return;
             }
 
