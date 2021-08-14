@@ -44,7 +44,7 @@ namespace TTTReborn.UI.Menu
             MenuContent.SetPanelContent((panelContent) =>
             {
                 panelContent.Add.ButtonWithIcon("settings", "", "menuButton", () => OpenSettings(panelContent));
-                panelContent.Add.ButtonWithIcon("published_with_changes", "", "menuButton", () => OpenChanges(panelContent));
+                panelContent.Add.ButtonWithIcon("keyboard", "", "menuButton", () => OpenKeybindings(panelContent));
                 panelContent.Add.ButtonWithIcon("science", "", "menuButton", () => OpenTesting(panelContent));
             }, "", "home");
         }
@@ -53,12 +53,6 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                panelContent.Add.Label("Bind TeamVoiceChat:");
-                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
-
-                panelContent.Add.Label("Bind Quickshop:");
-                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
-
                 Panel buttonsWrapperPanel = panelContent.Add.Panel("wrapper");
 
                 buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
@@ -129,18 +123,16 @@ namespace TTTReborn.UI.Menu
             }, "Settings", "settings");
         }
 
-        public void OpenChanges(PanelContent menuContent)
+        public void OpenKeybindings(PanelContent menuContent)
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                Sandbox.UI.Label textLabel = panelContent.Add.Label("Loading...");
+                panelContent.Add.Label("Bind TeamVoiceChat:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
 
-                Sandbox.Internal.Http http = new Sandbox.Internal.Http(new System.Uri("https://commits.facepunch.com/r/sbox"));
-                http.GetStringAsync().ContinueWith(result =>
-                {
-                    textLabel.Text = result.Result;
-                });
-            }, "Http", "http");
+                panelContent.Add.Label("Bind Quickshop:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
+            }, "Keybindings", "keybindings");
         }
 
         public void OpenTesting(PanelContent menuContent)
