@@ -98,9 +98,30 @@ namespace TTTReborn.UI.Menu
                             return;
                         }
 
-                        Settings.SettingFunctions.LoadSettings(fileName.Split('/')[^1].Split('.')[0]);
+                        fileName = fileName.Split('/')[^1].Split('.')[0];
+
+                        Settings.SettingFunctions.LoadSettings(fileName);
 
                         fileSelection.Close();
+
+                        // Ask whether the player want to use the loaded settings as default ones
+                        DialogBox dialogBox = new DialogBox();
+                        dialogBox.TitleLabel.Text = "Default settings";
+                        dialogBox.AddText($"Do you want to use '{fileName}.json' as the default settings? (If you agree, the current default settings will be overwritten!)");
+                        dialogBox.OnAgree = () =>
+                        {
+                            Settings.SettingFunctions.SaveSettings();
+
+                            dialogBox.Close();
+                        };
+                        dialogBox.OnDecline = () =>
+                        {
+                            dialogBox.Close();
+                        };
+
+                        FindRootPanel().AddChild(dialogBox);
+
+                        dialogBox.Display();
                     };
 
                     fileSelection.Display();
