@@ -50,7 +50,7 @@ namespace TTTReborn.Globalization
             }
         }
 
-        private string GetTranslation(string key)
+        public string GetTranslation(string key)
         {
             object translation = GetRawTranslation(key);
 
