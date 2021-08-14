@@ -63,6 +63,24 @@ Menu {
             }
         }
 
+        &.settings {
+            .wrapper {
+                margin-top: 10px;
+
+                Button {
+                    flex-grow: 1;
+                    justify-content: center;
+
+                    background-color: #000c;
+                    border: 1px solid #1b1b1b;
+                    border-radius: 8px;
+
+                    margin: 4px;
+                    padding: 8px 0px;
+                }
+            }
+        }
+
         &.testing {
             Label {
                 margin-bottom: 10px;
