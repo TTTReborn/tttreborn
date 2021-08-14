@@ -56,13 +56,15 @@ namespace TTTReborn.Settings
             return JsonSerializer.Deserialize<T>(json, options);
         }
 
-        public static void LoadSettings()
+        public static void LoadSettings(string fileName = null)
         {
             if (Host.IsClient)
             {
-                if (FileSystem.Data.FileExists("/settings/client.json"))
+                fileName ??= "client";
+
+                if (FileSystem.Data.FileExists($"/settings/{fileName}.json"))
                 {
-                    GetRealmSettings<ClientSettings>(FileSystem.Data.ReadAllText("/settings/client.json"));
+                    GetRealmSettings<ClientSettings>(FileSystem.Data.ReadAllText($"/settings/{fileName}.json"));
                 }
 
                 if (ClientSettings.Instance is null)
@@ -72,9 +74,11 @@ namespace TTTReborn.Settings
             }
             else
             {
-                if (FileSystem.Data.FileExists("/settings/server.json"))
+                fileName ??= "server";
+
+                if (FileSystem.Data.FileExists($"/settings/{fileName}.json"))
                 {
-                    GetRealmSettings<ServerSettings>(FileSystem.Data.ReadAllText("/settings/server.json"));
+                    GetRealmSettings<ServerSettings>(FileSystem.Data.ReadAllText($"/settings/{fileName}.json"));
                 }
 
                 if (ServerSettings.Instance is null)
@@ -84,7 +88,7 @@ namespace TTTReborn.Settings
             }
         }
 
-        public static void SaveSettings()
+        public static void SaveSettings(string fileName = null)
         {
             if (!FileSystem.Data.DirectoryExists("settings"))
             {
@@ -93,16 +97,20 @@ namespace TTTReborn.Settings
 
             if (Host.IsClient)
             {
+                fileName ??= "client";
+
                 if (ClientSettings.Instance is not null)
                 {
-                    FileSystem.Data.WriteAllText("/settings/client.json", GetJSON<ClientSettings>(ClientSettings.Instance));
+                    FileSystem.Data.WriteAllText($"/settings/{fileName}.json", GetJSON<ClientSettings>(ClientSettings.Instance));
                 }
             }
             else
             {
+                fileName ??= "server";
+
                 if (ServerSettings.Instance is not null)
                 {
-                    FileSystem.Data.WriteAllText("/settings/server.json", GetJSON<ServerSettings>(ServerSettings.Instance));
+                    FileSystem.Data.WriteAllText($"/settings/{fileName}.json", GetJSON<ServerSettings>(ServerSettings.Instance));
                 }
             }
         }

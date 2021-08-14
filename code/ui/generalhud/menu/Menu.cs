@@ -1,3 +1,4 @@
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.Menu
@@ -57,6 +58,53 @@ namespace TTTReborn.UI.Menu
 
                 panelContent.Add.Label("Bind Quickshop:");
                 panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
+
+                Panel buttonsWrapperPanel = panelContent.Add.Panel("wrapper");
+
+                buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
+                {
+                    FileSelection fileSelection = FindRootPanel().Add.FileSelection();
+                    fileSelection.DefaultSelectionPath = "/settings/";
+
+                    fileSelection.OnAgree = () =>
+                    {
+                        string fileName = fileSelection.FileNameEntry.Text;
+
+                        if (string.IsNullOrEmpty(fileName))
+                        {
+                            return;
+                        }
+
+                        Settings.SettingFunctions.SaveSettings(fileName.Split('/')[^1].Split('.')[0]);
+
+                        fileSelection.Close();
+                    };
+
+                    fileSelection.EnableFileNameEntry();
+                    fileSelection.Display();
+                });
+
+                buttonsWrapperPanel.Add.Button("Load from", "fileselectionbutton", () =>
+                {
+                    FileSelection fileSelection = FindRootPanel().Add.FileSelection();
+                    fileSelection.DefaultSelectionPath = "/settings/";
+
+                    fileSelection.OnAgree = () =>
+                    {
+                        string fileName = fileSelection.SelectedEntry.FileNameLabel.Text;
+
+                        if (string.IsNullOrEmpty(fileName))
+                        {
+                            return;
+                        }
+
+                        Settings.SettingFunctions.LoadSettings(fileName.Split('/')[^1].Split('.')[0]);
+
+                        fileSelection.Close();
+                    };
+
+                    fileSelection.Display();
+                });
             }, "Settings", "settings");
         }
 

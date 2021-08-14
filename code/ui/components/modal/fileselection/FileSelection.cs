@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using Sandbox;
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
@@ -43,6 +44,9 @@ namespace TTTReborn.UI
 
         private string _currentFolderPath = DEFAULT_SELECTION_PATH;
 
+        private readonly Panel _selectionPanel;
+        public readonly TextEntry FileNameEntry;
+
         public FileSelection() : base()
         {
             HeaderPanel.IsLocked = false;
@@ -52,7 +56,18 @@ namespace TTTReborn.UI
 
             TitleLabel.Text = DefaultSelectionPath;
 
-            OnDecline = (panel) => panel.Close();
+            OnDecline = () => Close();
+
+            _selectionPanel = ContentPanel.Add.Panel("selection");
+
+            FileNameEntry = ContentPanel.Add.TextEntry("");
+            FileNameEntry.AddClass("filename");
+            FileNameEntry.AddClass("hide");
+        }
+
+        public void EnableFileNameEntry(bool enable = true)
+        {
+            FileNameEntry.SetClass("hide", !enable);
         }
 
         public override void Display()
@@ -68,11 +83,11 @@ namespace TTTReborn.UI
             TitleLabel.Text = path;
             SelectedEntry = null;
 
-            ContentPanel.DeleteChildren(true);
+            _selectionPanel.DeleteChildren(true);
 
             if (!path.Equals("/"))
             {
-                FileSelectionEntry fileSelectionEntry = ContentPanel.Add.FileSelectionEntry("../", "folder");
+                FileSelectionEntry fileSelectionEntry = _selectionPanel.Add.FileSelectionEntry("../", "folder");
                 fileSelectionEntry.SetFileSelection(this);
                 fileSelectionEntry.IsFolder = true;
             }
@@ -90,7 +105,7 @@ namespace TTTReborn.UI
 
             foreach (string folder in folders)
             {
-                FileSelectionEntry fileSelectionEntry = ContentPanel.Add.FileSelectionEntry(Path.GetDirectoryName(folder + "/") + "/", "folder");
+                FileSelectionEntry fileSelectionEntry = _selectionPanel.Add.FileSelectionEntry(Path.GetDirectoryName(folder + "/") + "/", "folder");
                 fileSelectionEntry.SetFileSelection(this);
                 fileSelectionEntry.IsFolder = true;
             }
@@ -113,7 +128,7 @@ namespace TTTReborn.UI
 
             foreach (string file in files)
             {
-                ContentPanel.Add.FileSelectionEntry(Path.GetFileName(file), GetIconByFileType(Path.GetExtension(file))).SetFileSelection(this);
+                _selectionPanel.Add.FileSelectionEntry(Path.GetFileName(file), GetIconByFileType(Path.GetExtension(file))).SetFileSelection(this);
             }
         }
 
@@ -122,6 +137,7 @@ namespace TTTReborn.UI
             SelectedEntry?.SetClass("selected", false);
 
             SelectedEntry = fileSelectionEntry;
+            FileNameEntry.Text = SelectedEntry.FileNameLabel.Text;
 
             SelectedEntry.SetClass("selected", true);
         }
@@ -154,19 +170,17 @@ namespace TTTReborn.UI
 
         public override void OnClickAgree()
         {
-            if (SelectedEntry is null)
+            if (SelectedEntry is not null)
             {
-                return;
+                if (!FolderOnly && SelectedEntry.IsFolder)
+                {
+                    OnConfirm(SelectedEntry);
+
+                    return;
+                }
+
+                OnSelectEntry?.Invoke(SelectedEntry);
             }
-
-            if (!FolderOnly && SelectedEntry.IsFolder)
-            {
-                OnConfirm(SelectedEntry);
-
-                return;
-            }
-
-            OnSelectEntry?.Invoke(SelectedEntry);
 
             base.OnClickAgree();
         }
