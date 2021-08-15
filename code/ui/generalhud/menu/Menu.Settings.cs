@@ -3,6 +3,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
+using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
 {
@@ -17,7 +18,7 @@ namespace TTTReborn.UI.Menu
 
                 if (Local.Client.HasPermission("serversettings"))
                 {
-                    tabs.AddTab("Server", CreateServerSettings);
+                    tabs.AddTab("Server", InitServerSettings);
                 }
 
                 CreateSettingsButtons(menuContent);
@@ -45,9 +46,57 @@ namespace TTTReborn.UI.Menu
             languageSelection.SelectByData(Settings.SettingsManager.Instance.Language);
         }
 
-        private void CreateServerSettings(PanelContent menuContent)
+        private void InitServerSettings(PanelContent menuContent)
         {
-            menuContent.Add.Label("Work in progress...");
+            menuContent.Add.Label("Loading...");
+
+            ConsoleSystem.Run("ttt_serversettings_request");
+        }
+
+        internal void CreateServerSettings(PanelContent menuContent, ServerSettings serverSettings)
+        {
+            menuContent.DeleteChildren(true);
+
+            menuContent.Add.Label($"Sprint enabled? {serverSettings.IsSprintEnabled.ToString()}");
+        }
+    }
+}
+
+namespace TTTReborn.Player
+{
+    using TTTReborn.UI.Menu;
+
+    public partial class TTTPlayer
+    {
+        [ServerCmd(Name = "ttt_serversettings_request")]
+        public static void RequestServerSettings()
+        {
+            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            {
+                return;
+            }
+
+            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), Settings.SettingFunctions.GetJSON<ServerSettings>(SettingsManager.Instance as ServerSettings));
+        }
+
+        [ClientRpc]
+        public static void ClientSendServerSettings(string serverSettingsJson)
+        {
+            Menu menu = Menu.Instance;
+
+            if (menu == null || !menu.IsShowing)
+            {
+                return;
+            }
+
+            ServerSettings serverSettings = Settings.SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
+
+            if (serverSettingsJson == null)
+            {
+                return;
+            }
+
+            menu.MenuContent.SetPanelContent((menuContent) => menu.CreateServerSettings(menuContent, serverSettings));
         }
     }
 }
