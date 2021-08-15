@@ -24,6 +24,7 @@ namespace TTTReborn.UI.Menu
             {
                 FileSelection fileSelection = FindRootPanel().Add.FileSelection();
                 fileSelection.DefaultSelectionPath = "/settings/";
+                fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
 
                 fileSelection.OnAgree = () =>
                 {
@@ -34,7 +35,7 @@ namespace TTTReborn.UI.Menu
                         return;
                     }
 
-                    SettingFunctions.SaveSettings(fileName.Split('/')[^1].Split('.')[0]);
+                    SettingFunctions.SaveSettings(fileSelection.CurrentFolderPath + fileName.Split('/')[^1].Split('.')[0]);
 
                     fileSelection.Close();
                 };
