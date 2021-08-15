@@ -15,19 +15,21 @@ namespace TTTReborn.Items
         private string ModelPath => "models/entities/c4.vmdl";
 
         [Net]
-        public int AttachedBone { get; set; } = -1;
+        public int AttachedBone { get; set; } = -1; //Defaults to -1, which indicates no bone attached as this value will not always be set.
 
         [Net]
         public bool IsArmed { get; set; } = false;
 
+        [Net]
+        public C4State State { get; set; } = C4State.Unarmed;
+
         //Timer display on C4 entity.
-        private WorldPanel Display;
+        private WorldPanel BombDisplay;
         private bool CreatedDisplay = false;
 
-        //Explosion parameters.
-        private const int RADIUS = 1024;
-        private const int DAMAGE = 500;
-        private const int FORCE = 50;
+        private const int BOMB_RADIUS = 1024;
+        private const int BOMB_DAMAGE = 500;
+        private const int BOMB_FORCE = 50;
 
         public override void Spawn()
         {
@@ -40,19 +42,12 @@ namespace TTTReborn.Items
         {
             TTTPlayer player = user as TTTPlayer;
 
-            //player.ClientOpenC4Control(State, this);
+            player.ClientOpenC4Control(State, this);
 
             return false; //Only fire once
         }
 
-        public bool IsUsable(Entity user)
-        {
-            if (user is TTTPlayer player)
-            {
-                return true;
-            }
-            return false;
-        }
+        public bool IsUsable(Entity user) => user is TTTPlayer;
 
         public override void Simulate(Client cl)
         {
@@ -64,20 +59,20 @@ namespace TTTReborn.Items
                     //No way to parent a world panel to an entity :(
                     //We need to find a better way of doing this.
                     //I heard supposedly you can use FrameSimulate, but I was getting weird duplicated results (think Windows XP window glitch)
-                    Display.Transform = GetAttachment("timer") ?? Transform;
-                    Display.WorldScale = 0.1f;
+                    BombDisplay.Transform = GetAttachment("timer") ?? Transform;
+                    BombDisplay.WorldScale = 0.1f;
 
                     return;
                 }
                 else
                 {
-                    Display = new WorldPanel();
+                    BombDisplay = new WorldPanel();
                     CreatedDisplay = true;
 
-                    Display.AddClass("c4display");
-                    Display.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/c4Display.scss"));
+                    BombDisplay.AddClass("c4display");
+                    BombDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/c4Display.scss"));
 
-                    var label = Display.AddChild<Label>();
+                    var label = BombDisplay.AddChild<Label>();
                     label.Text = "00:00";
                 }
             }
@@ -103,7 +98,7 @@ namespace TTTReborn.Items
             Particles.Create("particles/explosion_fireball.vpcf", PhysicsBody.MassCenter);
 
             Vector3 sourcePos = PhysicsBody.MassCenter;
-            IEnumerable<Entity> overlaps = Physics.GetEntitiesInSphere(sourcePos, RADIUS);
+            IEnumerable<Entity> overlaps = Physics.GetEntitiesInSphere(sourcePos, BOMB_RADIUS);
 
             foreach (Entity overlap in overlaps)
             {
@@ -122,7 +117,7 @@ namespace TTTReborn.Items
                 Vector3 targetPos = ent.PhysicsBody.MassCenter;
 
                 float dist = Vector3.DistanceBetween(sourcePos, targetPos);
-                if (dist > RADIUS)
+                if (dist > BOMB_RADIUS)
                     continue;
 
                 TraceResult tr = Trace.Ray(sourcePos, targetPos)
@@ -135,9 +130,9 @@ namespace TTTReborn.Items
                     continue;
                 }
 
-                float distanceMul = 1.0f - Math.Clamp(dist / RADIUS, 0.0f, 1.0f);
-                float damage = DAMAGE * distanceMul;
-                float force = (FORCE * distanceMul) * ent.PhysicsBody.Mass;
+                float distanceMul = 1.0f - Math.Clamp(dist / BOMB_RADIUS, 0.0f, 1.0f);
+                float damage = BOMB_DAMAGE * distanceMul;
+                float force = (BOMB_FORCE * distanceMul) * ent.PhysicsBody.Mass;
                 Vector3 forceDir = (targetPos - sourcePos).Normal;
 
                 ent.TakeDamage(DamageInfo.Explosion(sourcePos, forceDir * force, damage)
@@ -146,5 +141,12 @@ namespace TTTReborn.Items
 
             base.OnKilled();
         }
+    }
+
+    public enum C4State
+    {
+        Unarmed, //Shows initial timer
+        Armed, //Shows wire cutting minigame
+        Disarmed //Shows completed wire cutting minigame and "DISARMED" text. 
     }
 }

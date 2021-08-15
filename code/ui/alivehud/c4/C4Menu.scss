@@ -1,2 +1,84 @@
 C4Menu {
+    border: 1px solid #1b1b1b;
+    background-color: #000c;
+    color: #fafafa;
+    font-family: Poppins;
+    font-weight: 500;
+    border-radius: 4px;
+    top: 40%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(-40%);
+    pointer-events: all;
+
+    &.hide {
+        display: none;
+        pointer-events: none;
+    }
+
+    C4ControlPanel {
+        border: 4px solid #031421;
+        width: 100%;
+        height: 100%;
+        width: 600px;
+        height: 325px;
+
+
+        ArmScreen {
+
+            TimerSection {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+
+                .timestuff {
+                    margin-top: 5px;
+                    width: 90%;
+                    height: 30%;
+                    font-size: 20px;
+                }
+
+                slider {
+                    width: 90%;
+                    height: 20%;
+                }
+
+                Label {
+                    flex-direction: column;
+                    margin: 20px;
+                    //background-color: green;
+                }
+            }
+
+            .RemovalSection {
+                width: 100%;
+                height: 35%;
+                padding: 1%;
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+
+                Button {
+                    margin: 15px;
+                    padding: 5px;
+                    border-radius: 5px;
+                    background-color: #000c;
+                    font-size: 14px;
+                    transition: 0.3s;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: black;
+                    }
+                }
+            }
+        }
+
+
+        DisarmScreen {
+            flex-direction: column;
+        }
+    }
 }

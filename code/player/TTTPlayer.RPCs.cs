@@ -73,9 +73,9 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientOpenC4Control(C4Entity ent)
+        public void ClientOpenC4Control(C4State state, C4Entity ent)
         {
-            //C4Menu.Instance?.Open(ent);
+            C4Menu.Instance?.Open(state, ent);
         }
     }
 }

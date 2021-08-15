@@ -3,6 +3,7 @@ using System.Linq;
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
 
