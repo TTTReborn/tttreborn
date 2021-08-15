@@ -1,5 +1,8 @@
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+
+using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
 {
@@ -31,7 +34,7 @@ namespace TTTReborn.UI.Menu
                         return;
                     }
 
-                    Settings.SettingFunctions.SaveSettings(fileName.Split('/')[^1].Split('.')[0]);
+                    SettingFunctions.SaveSettings(fileName.Split('/')[^1].Split('.')[0]);
 
                     fileSelection.Close();
                 };
@@ -44,6 +47,7 @@ namespace TTTReborn.UI.Menu
             {
                 FileSelection fileSelection = FindRootPanel().Add.FileSelection();
                 fileSelection.DefaultSelectionPath = "/settings/";
+                fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
 
                 fileSelection.OnAgree = () =>
                 {
@@ -56,17 +60,24 @@ namespace TTTReborn.UI.Menu
 
                     fileName = fileName.Split('/')[^1].Split('.')[0];
 
-                    Settings.SettingFunctions.LoadSettings(fileName);
+                    SettingsLoadingError settingsLoadingError = SettingFunctions.LoadSettings(fileSelection.CurrentFolderPath + fileName);
+
+                    if (settingsLoadingError != SettingsLoadingError.None)
+                    {
+                        Log.Error($"Settings file '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{settingsLoadingError.ToString()}'");
+
+                        return;
+                    }
 
                     fileSelection.Close();
 
                     // Ask whether the player want to use the loaded settings as default ones
                     DialogBox dialogBox = new DialogBox();
                     dialogBox.TitleLabel.Text = "Default settings";
-                    dialogBox.AddText($"Do you want to use '{fileName}.json' as the default settings? (If you agree, the current default settings will be overwritten!)");
+                    dialogBox.AddText($"Do you want to use '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' as the default settings? (If you agree, the current default settings will be overwritten!)");
                     dialogBox.OnAgree = () =>
                     {
-                        Settings.SettingFunctions.SaveSettings();
+                        SettingFunctions.SaveSettings();
 
                         dialogBox.Close();
                     };

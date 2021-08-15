@@ -42,7 +42,7 @@ namespace TTTReborn.UI
 
         public Action<FileSelectionEntry> OnSelectEntry { get; set; }
 
-        private string _currentFolderPath = DEFAULT_SELECTION_PATH;
+        public string CurrentFolderPath = DEFAULT_SELECTION_PATH;
 
         private readonly Panel _selectionPanel;
         public readonly TextEntry FileNameEntry;
@@ -79,7 +79,7 @@ namespace TTTReborn.UI
 
         public void CreateTreeView(string path)
         {
-            _currentFolderPath = path;
+            CurrentFolderPath = path;
             TitleLabel.Text = path;
             SelectedEntry = null;
 
@@ -147,12 +147,13 @@ namespace TTTReborn.UI
             if (!fileSelectionEntry.IsFolder || FolderOnly)
             {
                 OnSelectEntry?.Invoke(fileSelectionEntry);
+                OnAgree?.Invoke();
             }
             else // go deeper
             {
                 if (fileSelectionEntry.FileNameLabel.Text.Equals("../"))
                 {
-                    string path = Path.GetDirectoryName(_currentFolderPath.TrimEnd('/')).Replace('\\', '/');
+                    string path = Path.GetDirectoryName(CurrentFolderPath.TrimEnd('/')).Replace('\\', '/');
 
                     if (!path.Equals("/"))
                     {
@@ -163,7 +164,7 @@ namespace TTTReborn.UI
                 }
                 else
                 {
-                    CreateTreeView(_currentFolderPath + fileSelectionEntry.FileNameLabel.Text);
+                    CreateTreeView(CurrentFolderPath + fileSelectionEntry.FileNameLabel.Text);
                 }
             }
         }

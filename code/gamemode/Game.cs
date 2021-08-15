@@ -6,6 +6,7 @@ using TTTReborn.Globalization;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
+using TTTReborn.Settings;
 using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
@@ -26,7 +27,18 @@ namespace TTTReborn.Gamemode
 
             TTTLanguage.LoadLanguages();
 
-            Settings.SettingFunctions.LoadSettings();
+            SettingsLoadingError settingsLoadingError = SettingFunctions.LoadSettings();
+
+            // overwrite settings if they got invalid
+            if (settingsLoadingError != SettingsLoadingError.None)
+            {
+                SettingFunctions.SaveSettings();
+
+                if (settingsLoadingError != SettingsLoadingError.NotExist)
+                {
+                    Log.Warning("Your TTT Reborn settings were overwritten (reset) due to an error in the file!");
+                }
+            }
 
             if (IsServer)
             {
