@@ -44,7 +44,7 @@ namespace TTTReborn.Settings
         NotExist, // file does not exist
         Invalid, // not a settings json
         Malicious, // could not be parsed
-        WrongRealm // wrong realm
+        InvalidSettingsType // wrong settings type
     }
 
     public partial class SettingsLoader
@@ -147,7 +147,7 @@ namespace TTTReborn.Settings
 
                         if (!string.IsNullOrEmpty(settings.JsonType))
                         {
-                            settingsLoadingError = SettingsLoadingError.WrongRealm;
+                            settingsLoadingError = SettingsLoadingError.InvalidSettingsType;
                         }
                     }
                 }
