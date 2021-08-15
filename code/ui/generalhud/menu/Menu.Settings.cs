@@ -62,9 +62,20 @@ namespace TTTReborn.UI.Menu
             tabContent.DeleteChildren(true);
 
             tabContent.Add.Label($"Sprint enabled?");
-            tabContent.Add.Switch("sprint", serverSettings.IsSprintEnabled);
+            Switch sw = tabContent.Add.Switch("sprint", serverSettings.IsSprintEnabled);
+
+            // TODO remove later due to avoid tons of syncing
+            sw.AddEventListener("onchange", (panelEvent) =>
+            {
+                serverSettings.IsSprintEnabled = !serverSettings.IsSprintEnabled;
+
+                ConsoleSystem.Run("ttt_serversettings_send", Settings.SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+            });
 
             // TODO add save button to sync settings back to the server
+            // TODO reuse save as button
+            // TODO reuse load from button
+            // TODO update server settings for other admins that have the settings opened -> needed? Discuss!
         }
     }
 }
@@ -83,7 +94,27 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), Settings.SettingFunctions.GetJSON<ServerSettings>(SettingsManager.Instance as ServerSettings));
+            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), Settings.SettingFunctions.GetJSON<ServerSettings>(SettingsManager.Instance as ServerSettings, true));
+        }
+
+        [ServerCmd(Name = "ttt_serversettings_send")]
+        public static void SendServerSettings(string serverSettingsJson)
+        {
+            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            {
+                return;
+            }
+
+            ServerSettings serverSettings = Settings.SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
+
+            if (serverSettingsJson == null)
+            {
+                return;
+            }
+
+            Settings.SettingsManager.Instance = serverSettings;
+
+            // TODO save the settings as default settings
         }
 
         [ClientRpc]

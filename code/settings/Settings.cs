@@ -100,11 +100,11 @@ namespace TTTReborn.Settings
     {
         public const string SETTINGS_FILE_EXTENSION = ".settings.json";
 
-        public static string GetJSON<T>(T settings) where T : Settings
+        public static string GetJSON<T>(T settings, bool compressed = false) where T : Settings
         {
             JsonSerializerOptions options = new JsonSerializerOptions
             {
-                WriteIndented = true
+                WriteIndented = !compressed
             };
 
             return JsonSerializer.Serialize<T>(settings, options);

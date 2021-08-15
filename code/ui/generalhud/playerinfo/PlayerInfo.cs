@@ -122,6 +122,8 @@ namespace TTTReborn.UI
 
                     if (_currentStamina == player.CurrentPlayer.Stamina)
                     {
+                        _staminaBar.Style.Dirty();
+
                         return;
                     }
 
@@ -135,6 +137,7 @@ namespace TTTReborn.UI
                 else
                 {
                     _staminaBar.Style.Display = DisplayMode.None;
+                    _staminaBar.Style.Dirty();
                 }
             }
         }
