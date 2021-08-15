@@ -9,6 +9,8 @@ namespace TTTReborn.UI.Menu
 {
     public partial class Menu
     {
+        public PanelContent ServerSettingsTabContent;
+
         internal void OpenSettings(PanelContent menuContent)
         {
             menuContent.SetPanelContent((menuContent) =>
@@ -25,9 +27,9 @@ namespace TTTReborn.UI.Menu
             }, "Settings", "settings");
         }
 
-        private void CreateClientSettings(PanelContent menuContent)
+        private void CreateClientSettings(PanelContent tabContent)
         {
-            Panel languagePanel = menuContent.Add.Panel("language");
+            Panel languagePanel = tabContent.Add.Panel("language");
 
             languagePanel.Add.Label("Language:");
 
@@ -46,18 +48,23 @@ namespace TTTReborn.UI.Menu
             languageSelection.SelectByData(Settings.SettingsManager.Instance.Language);
         }
 
-        private void InitServerSettings(PanelContent menuContent)
+        private void InitServerSettings(PanelContent tabContent)
         {
-            menuContent.Add.Label("Loading...");
+            ServerSettingsTabContent = tabContent;
+
+            tabContent.Add.Label("Loading...");
 
             ConsoleSystem.Run("ttt_serversettings_request");
         }
 
-        internal void CreateServerSettings(PanelContent menuContent, ServerSettings serverSettings)
+        internal void CreateServerSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
-            menuContent.DeleteChildren(true);
+            tabContent.DeleteChildren(true);
 
-            menuContent.Add.Label($"Sprint enabled? {serverSettings.IsSprintEnabled.ToString()}");
+            tabContent.Add.Label($"Sprint enabled?");
+            tabContent.Add.Switch("sprint", serverSettings.IsSprintEnabled);
+
+            // TODO add save button to sync settings back to the server
         }
     }
 }
@@ -84,7 +91,7 @@ namespace TTTReborn.Player
         {
             Menu menu = Menu.Instance;
 
-            if (menu == null || !menu.IsShowing)
+            if (menu == null || !menu.IsShowing || menu.ServerSettingsTabContent == null)
             {
                 return;
             }
@@ -96,7 +103,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            menu.MenuContent.SetPanelContent((menuContent) => menu.CreateServerSettings(menuContent, serverSettings));
+            menu.ServerSettingsTabContent.SetPanelContent((menuContent) => menu.CreateServerSettings(menuContent, serverSettings));
         }
     }
 }
