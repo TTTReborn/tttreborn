@@ -7,8 +7,8 @@ namespace TTTReborn.UI
 {
     public partial class DialogBox : Modal
     {
-        public Action<DialogBox> OnAgree { get; set; }
-        public Action<DialogBox> OnDecline { get; set; }
+        public Action OnAgree { get; set; }
+        public Action OnDecline { get; set; }
 
         public readonly Drag HeaderPanel;
         public readonly Label TitleLabel;
@@ -40,12 +40,12 @@ namespace TTTReborn.UI
 
         public virtual void OnClickAgree()
         {
-            OnAgree?.Invoke(this);
+            OnAgree?.Invoke();
         }
 
         public virtual void OnClickDecline()
         {
-            OnDecline?.Invoke(this);
+            OnDecline?.Invoke();
         }
 
         public Label AddText(string text)

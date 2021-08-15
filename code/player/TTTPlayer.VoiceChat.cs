@@ -30,7 +30,7 @@ namespace TTTReborn.Player
             }
         }
 
-        [ClientCmd(Name = "+teamvoicechat")]
+        [ClientCmd(Name = "+ttt_teamvoicechat")]
         public static void StartTeamVoiceChat()
         {
             if (Local.Pawn is not TTTPlayer player || !CanUseTeamVoiceChat(player))
@@ -38,10 +38,10 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ConsoleSystem.Run("requestteamchat", true);
+            ConsoleSystem.Run("ttt_requestteamchat", true);
         }
 
-        [ClientCmd(Name = "-teamvoicechat")]
+        [ClientCmd(Name = "-ttt_teamvoicechat")]
         public static void StopTeamVoiceChat()
         {
             if (Local.Pawn is not TTTPlayer player)
@@ -49,10 +49,10 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ConsoleSystem.Run("requestteamchat", false);
+            ConsoleSystem.Run("ttt_requestteamchat", false);
         }
 
-        [ServerCmd(Name = "requestteamchat")]
+        [ServerCmd(Name = "ttt_requestteamchat")]
         public static void RequestTeamChat(bool toggle)
         {
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;

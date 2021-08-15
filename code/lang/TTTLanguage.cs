@@ -3,10 +3,34 @@ using System.IO;
 
 using Sandbox;
 
+namespace TTTReborn.Settings
+{
+    using Globalization;
+
+    public partial class RealmSettings
+    {
+        public string Language
+        {
+            get => TTTLanguage.ActiveLanguage.Data.Code;
+            set
+            {
+                if (TTTLanguage.ActiveLanguage.Data.Code == value)
+                {
+                    return;
+                }
+
+                TTTLanguage.UpdateLanguage(TTTLanguage.GetLanguageByCode(value));
+            }
+        }
+    }
+}
+
 namespace TTTReborn.Globalization
 {
     public static class TTTLanguage
     {
+        public static readonly Dictionary<string, Language> Languages = new();
+
         public const string FALLBACK_LANGUAGE = "en-US";
 
         public static Language ActiveLanguage
@@ -14,22 +38,10 @@ namespace TTTReborn.Globalization
             get => _activeLanguage;
             set
             {
-                _activeLanguage = value ?? GetLanguageByName(FALLBACK_LANGUAGE);
+                _activeLanguage = value ?? GetLanguageByCode(FALLBACK_LANGUAGE);
             }
         }
         private static Language _activeLanguage;
-
-        public static Language ServerLanguage
-        {
-            get => _serverLanguage;
-            set
-            {
-                _serverLanguage = value ?? GetLanguageByName(FALLBACK_LANGUAGE);
-            }
-        }
-        private static Language _serverLanguage;
-
-        public static readonly Dictionary<string, Language> Languages = new();
 
         public static void LoadLanguages()
         {
@@ -45,15 +57,10 @@ namespace TTTReborn.Globalization
                 Log.Info($"Added language pack: '{name}'.");
             }
 
-            Language fallbackLanguage = GetLanguageByName(FALLBACK_LANGUAGE);
-
-            ActiveLanguage = fallbackLanguage;
-            ServerLanguage = fallbackLanguage;
+            ActiveLanguage = GetLanguageByCode(FALLBACK_LANGUAGE);
         }
 
-        public static Language GetActiveLanguage() => Host.IsServer ? ServerLanguage : ActiveLanguage;
-
-        public static Language GetLanguageByName(string name)
+        public static Language GetLanguageByCode(string name)
         {
             if (!Languages.TryGetValue(name, out Language lang))
             {
@@ -61,6 +68,48 @@ namespace TTTReborn.Globalization
             }
 
             return lang;
+        }
+
+        public static void UpdateLanguage(Language language)
+        {
+            TTTLanguage.ActiveLanguage = language;
+
+            if (Host.IsClient)
+            {
+                UI.TranslationLabel.UpdateLanguage(language);
+            }
+        }
+    }
+}
+
+namespace TTTReborn.Player
+{
+    using Globalization;
+
+    public partial class TTTPlayer
+    {
+        [ClientCmd("ttt_language")]
+        public static void ChangeLanguage(string name = null)
+        {
+            if (name is null)
+            {
+                Log.Info($"Your current language is set to '{TTTLanguage.ActiveLanguage.Data.Name}' ('{TTTLanguage.ActiveLanguage.Data.Code}').");
+
+                return;
+            }
+
+            Language language = TTTLanguage.GetLanguageByCode(name);
+
+            if (language is null)
+            {
+                Log.Warning($"Language '{name}' does not exist. Please enter an ISO (tag) code (http://www.lingoes.net/en/translator/langcode.htm).");
+
+                return;
+            }
+
+            Log.Warning($"You set your language to '{language.Data.Name}'.");
+
+            Settings.ClientSettings.Instance.Language = language.Data.Code;
         }
     }
 }

@@ -9,6 +9,8 @@ namespace TTTReborn.UI
 {
     public partial class DamageIndicator : TTTPanel
     {
+        public static DamageIndicator Instance;
+
         private float _maxDamageIndicatorDuration = 10f;
         private float _currentRemainingDamageIndicatorDuration = 0f;
         private TimeSince _timeSinceLastDamage = 0f;
@@ -17,6 +19,8 @@ namespace TTTReborn.UI
 
         public DamageIndicator()
         {
+            Instance = this;
+
             StyleSheet.Load("/ui/alivehud/damageindicator/DamageIndicator.scss");
 
             Style.SetBackgroundImage(Texture.Load("/ui/damageindicator/default.png"));

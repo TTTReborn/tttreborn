@@ -1,3 +1,4 @@
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.Menu
@@ -43,7 +44,7 @@ namespace TTTReborn.UI.Menu
             MenuContent.SetPanelContent((panelContent) =>
             {
                 panelContent.Add.ButtonWithIcon("settings", "", "menuButton", () => OpenSettings(panelContent));
-                panelContent.Add.ButtonWithIcon("published_with_changes", "", "menuButton", () => OpenChanges(panelContent));
+                panelContent.Add.ButtonWithIcon("keyboard", "", "menuButton", () => OpenKeybindings(panelContent));
                 panelContent.Add.ButtonWithIcon("science", "", "menuButton", () => OpenTesting(panelContent));
             }, "", "home");
         }
@@ -52,27 +53,86 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
+                Panel buttonsWrapperPanel = panelContent.Add.Panel("wrapper");
+
+                buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
+                {
+                    FileSelection fileSelection = FindRootPanel().Add.FileSelection();
+                    fileSelection.DefaultSelectionPath = "/settings/";
+
+                    fileSelection.OnAgree = () =>
+                    {
+                        string fileName = fileSelection.FileNameEntry.Text;
+
+                        if (string.IsNullOrEmpty(fileName))
+                        {
+                            return;
+                        }
+
+                        Settings.SettingFunctions.SaveSettings(fileName.Split('/')[^1].Split('.')[0]);
+
+                        fileSelection.Close();
+                    };
+
+                    fileSelection.EnableFileNameEntry();
+                    fileSelection.Display();
+                });
+
+                buttonsWrapperPanel.Add.Button("Load from", "fileselectionbutton", () =>
+                {
+                    FileSelection fileSelection = FindRootPanel().Add.FileSelection();
+                    fileSelection.DefaultSelectionPath = "/settings/";
+
+                    fileSelection.OnAgree = () =>
+                    {
+                        string fileName = fileSelection.SelectedEntry.FileNameLabel.Text;
+
+                        if (string.IsNullOrEmpty(fileName))
+                        {
+                            return;
+                        }
+
+                        fileName = fileName.Split('/')[^1].Split('.')[0];
+
+                        Settings.SettingFunctions.LoadSettings(fileName);
+
+                        fileSelection.Close();
+
+                        // Ask whether the player want to use the loaded settings as default ones
+                        DialogBox dialogBox = new DialogBox();
+                        dialogBox.TitleLabel.Text = "Default settings";
+                        dialogBox.AddText($"Do you want to use '{fileName}.json' as the default settings? (If you agree, the current default settings will be overwritten!)");
+                        dialogBox.OnAgree = () =>
+                        {
+                            Settings.SettingFunctions.SaveSettings();
+
+                            dialogBox.Close();
+                        };
+                        dialogBox.OnDecline = () =>
+                        {
+                            dialogBox.Close();
+                        };
+
+                        FindRootPanel().AddChild(dialogBox);
+
+                        dialogBox.Display();
+                    };
+
+                    fileSelection.Display();
+                });
             }, "Settings", "settings");
         }
 
-        public void OpenChanges(PanelContent menuContent)
+        public void OpenKeybindings(PanelContent menuContent)
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                Sandbox.UI.Label textLabel = panelContent.Add.Label("Loading...");
+                panelContent.Add.Label("Bind TeamVoiceChat:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
 
-                Sandbox.Internal.Http http = new Sandbox.Internal.Http(new System.Uri("https://commits.facepunch.com/r/sbox"));
-                http.GetStringAsync().ContinueWith(result =>
-                {
-                    textLabel.Text = result.Result;
-                });
-            }, "Http", "http");
+                panelContent.Add.Label("Bind Quickshop:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
+            }, "Keybindings", "keybindings");
         }
 
         public void OpenTesting(PanelContent menuContent)
@@ -108,7 +168,7 @@ namespace TTTReborn.UI.Menu
                 panelContent.AddChild(dropdown);
 
                 panelContent.Add.Label("Keybind & DialogBox:");
-                panelContent.Add.Keybind("Press a key...").BoundCommand = "+teamvoicechat";
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
 
                 panelContent.Add.Label("FileSelection:");
                 panelContent.Add.Button("Open FileSelection...", "fileselectionbutton", () => FindRootPanel().Add.FileSelection().Display());
@@ -119,6 +179,24 @@ namespace TTTReborn.UI.Menu
                 tabs.AddTab("Test1", (contentPanel) => contentPanel.Add.Label("Test1"));
                 tabs.AddTab("Test2", (contentPanel) => contentPanel.Add.Label("Test2"));
             }, "Testing", "testing");
+        }
+    }
+}
+
+namespace TTTReborn.Player
+{
+    using Sandbox;
+
+    using UI.Menu;
+
+    public partial class TTTPlayer
+    {
+        private void TickMenu()
+        {
+            if (Input.Pressed(InputButton.Menu))
+            {
+                Menu.Instance.IsShowing = !Menu.Instance.IsShowing;
+            }
         }
     }
 }

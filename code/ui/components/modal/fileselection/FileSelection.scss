@@ -1,44 +1,60 @@
 FileSelection {
     .content {
+        flex-direction: column;
         justify-content: start;
         flex-wrap: wrap;
-        max-height: 400px;
-        overflow: scroll;
 
-        FileSelectionEntry {
+        .selection {
+            justify-content: start;
+            flex-wrap: wrap;
+            max-height: 400px;
+            overflow: scroll;
+
+            FileSelectionEntry {
+                background-color: #000c;
+                border: 2px solid #1b1b1b;
+                border-radius: 8px;
+
+                min-width: 80px;
+                width: 80px;
+                height: 80px;
+
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+
+                margin: 0px 0px 4px 4px;
+
+                &:hover {
+                    border: 2px solid rgb(50, 137, 236);
+                    cursor: pointer;
+                }
+
+                &:active,
+                &.selected {
+                    border: 2px solid rgb(4, 74, 155);
+                }
+
+                .filetype {
+                    font-size: 36px;
+                    font-family: MaterialIcons;
+                    color: white;
+                }
+
+                .filename {
+                    text-align: center;
+                    font-size: 10px;
+                }
+            }
+        }
+
+        TextEntry {
             background-color: #000c;
             border: 2px solid #1b1b1b;
             border-radius: 8px;
 
-            min-width: 80px;
-            width: 80px;
-            height: 80px;
-
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-
-            margin: 0px 0px 4px 4px;
-
-            &:hover {
-                border: 2px solid rgb(50, 137, 236);
-                cursor: pointer;
-            }
-
-            &:active,
-            &.selected {
-                border: 2px solid rgb(4, 74, 155);
-            }
-
-            .filetype {
-                font-size: 36px;
-                font-family: MaterialIcons;
-                color: white;
-            }
-
-            .filename {
-                text-align: center;
-                font-size: 10px;
+            &.hide {
+                display: none;
             }
         }
     }

@@ -1,14 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 using Sandbox;
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
     public partial class FileSelection : DialogBox
     {
-        public string SelectedFilePath { get; private set; }
+        public bool IsDataFolder { get; set; } = true;
 
         public string DefaultSelectionPath
         {
@@ -42,6 +44,9 @@ namespace TTTReborn.UI
 
         private string _currentFolderPath = DEFAULT_SELECTION_PATH;
 
+        private readonly Panel _selectionPanel;
+        public readonly TextEntry FileNameEntry;
+
         public FileSelection() : base()
         {
             HeaderPanel.IsLocked = false;
@@ -51,7 +56,18 @@ namespace TTTReborn.UI
 
             TitleLabel.Text = DefaultSelectionPath;
 
-            OnDecline = (panel) => panel.Close();
+            OnDecline = () => Close();
+
+            _selectionPanel = ContentPanel.Add.Panel("selection");
+
+            FileNameEntry = ContentPanel.Add.TextEntry("");
+            FileNameEntry.AddClass("filename");
+            FileNameEntry.AddClass("hide");
+        }
+
+        public void EnableFileNameEntry(bool enable = true)
+        {
+            FileNameEntry.SetClass("hide", !enable);
         }
 
         public override void Display()
@@ -67,18 +83,29 @@ namespace TTTReborn.UI
             TitleLabel.Text = path;
             SelectedEntry = null;
 
-            ContentPanel.DeleteChildren(true);
+            _selectionPanel.DeleteChildren(true);
 
             if (!path.Equals("/"))
             {
-                FileSelectionEntry fileSelectionEntry = ContentPanel.Add.FileSelectionEntry("../", "folder");
+                FileSelectionEntry fileSelectionEntry = _selectionPanel.Add.FileSelectionEntry("../", "folder");
                 fileSelectionEntry.SetFileSelection(this);
                 fileSelectionEntry.IsFolder = true;
             }
 
-            foreach (string folder in FileSystem.Mounted.FindDirectory(path))
+            IEnumerable<string> folders;
+
+            if (IsDataFolder)
             {
-                FileSelectionEntry fileSelectionEntry = ContentPanel.Add.FileSelectionEntry(Path.GetDirectoryName(folder + "/") + "/", "folder");
+                folders = FileSystem.Data.FindDirectory(path);
+            }
+            else
+            {
+                folders = FileSystem.Mounted.FindDirectory(path);
+            }
+
+            foreach (string folder in folders)
+            {
+                FileSelectionEntry fileSelectionEntry = _selectionPanel.Add.FileSelectionEntry(Path.GetDirectoryName(folder + "/") + "/", "folder");
                 fileSelectionEntry.SetFileSelection(this);
                 fileSelectionEntry.IsFolder = true;
             }
@@ -88,9 +115,20 @@ namespace TTTReborn.UI
                 return;
             }
 
-            foreach (string file in FileSystem.Mounted.FindFile(path, DefaultSelectionFileType))
+            IEnumerable<string> files;
+
+            if (IsDataFolder)
             {
-                ContentPanel.Add.FileSelectionEntry(Path.GetFileName(file), GetIconByFileType(Path.GetExtension(file))).SetFileSelection(this);
+                files = FileSystem.Data.FindFile(path, DefaultSelectionFileType);
+            }
+            else
+            {
+                files = FileSystem.Mounted.FindFile(path, DefaultSelectionFileType);
+            }
+
+            foreach (string file in files)
+            {
+                _selectionPanel.Add.FileSelectionEntry(Path.GetFileName(file), GetIconByFileType(Path.GetExtension(file))).SetFileSelection(this);
             }
         }
 
@@ -99,6 +137,7 @@ namespace TTTReborn.UI
             SelectedEntry?.SetClass("selected", false);
 
             SelectedEntry = fileSelectionEntry;
+            FileNameEntry.Text = SelectedEntry.FileNameLabel.Text;
 
             SelectedEntry.SetClass("selected", true);
         }
@@ -131,19 +170,17 @@ namespace TTTReborn.UI
 
         public override void OnClickAgree()
         {
-            if (SelectedEntry is null)
+            if (SelectedEntry is not null)
             {
-                return;
+                if (!FolderOnly && SelectedEntry.IsFolder)
+                {
+                    OnConfirm(SelectedEntry);
+
+                    return;
+                }
+
+                OnSelectEntry?.Invoke(SelectedEntry);
             }
-
-            if (!FolderOnly && SelectedEntry.IsFolder)
-            {
-                OnConfirm(SelectedEntry);
-
-                return;
-            }
-
-            OnSelectEntry?.Invoke(SelectedEntry);
 
             base.OnClickAgree();
         }

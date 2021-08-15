@@ -33,19 +33,19 @@ namespace TTTReborn.UI
                 DialogBox dialogBox = new DialogBox();
                 dialogBox.TitleLabel.Text = $"Bind '{BoundCommand}'";
                 dialogBox.AddText($"Are you sure that you wanna bind '{BoundCommand}' to '{BoundKey}'?");
-                dialogBox.OnAgree = (panel) =>
+                dialogBox.OnAgree = () =>
                 {
                     ConsoleSystem.Run($"bind {BoundKey} {BoundCommand}");
 
-                    panel.Close();
+                    dialogBox.Close();
                 };
-                dialogBox.OnDecline = (panel) =>
+                dialogBox.OnDecline = () =>
                 {
                     BoundKey = "";
                     Text = DefaultText;
                     CaretPos = Text.Length;
 
-                    panel.Close();
+                    dialogBox.Close();
                 };
 
                 FindRootPanel().AddChild(dialogBox);
