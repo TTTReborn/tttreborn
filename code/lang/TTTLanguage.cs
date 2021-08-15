@@ -7,7 +7,7 @@ namespace TTTReborn.Settings
 {
     using Globalization;
 
-    public partial class RealmSettings
+    public partial class Settings
     {
         public string Language
         {
