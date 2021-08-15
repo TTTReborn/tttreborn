@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 namespace TTTReborn.Items
@@ -8,7 +10,8 @@ namespace TTTReborn.Items
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override SlotType SlotType => SlotType.Secondary;
-        public override bool UnlimitedAmmo => true;
+        public override string AmmoType => "pistol";
+        public override Type AmmoEntity => typeof(PistolAmmo);
         public override int ClipSize => 15;
         public override float PrimaryRate => 15.0f;
         public override float SecondaryRate => 1.0f;
