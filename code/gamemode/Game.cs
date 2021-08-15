@@ -26,19 +26,7 @@ namespace TTTReborn.Gamemode
             Instance = this;
 
             TTTLanguage.LoadLanguages();
-
-            SettingsLoadingError settingsLoadingError = SettingFunctions.LoadSettings();
-
-            // overwrite settings if they got invalid
-            if (settingsLoadingError != SettingsLoadingError.None)
-            {
-                SettingFunctions.SaveSettings();
-
-                if (settingsLoadingError != SettingsLoadingError.NotExist)
-                {
-                    Log.Warning("Your TTT Reborn settings were overwritten (reset) due to an error in the file!");
-                }
-            }
+            SettingsLoader.Load();
 
             if (IsServer)
             {
@@ -48,7 +36,7 @@ namespace TTTReborn.Gamemode
 
         public override void Shutdown()
         {
-            Settings.SettingFunctions.SaveSettings();
+            SettingsLoader.Unload();
 
             base.Shutdown();
         }

@@ -15,7 +15,7 @@ namespace TTTReborn.UI.Menu
             buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
             {
                 FileSelection fileSelection = FindRootPanel().Add.FileSelection();
-                fileSelection.DefaultSelectionPath = "/settings/";
+                fileSelection.DefaultSelectionPath = "/settings/clientsettings/";
                 fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
 
                 fileSelection.OnAgree = () =>
@@ -34,7 +34,7 @@ namespace TTTReborn.UI.Menu
 
                     if (!FileSystem.Data.FileExists(fullFilePath))
                     {
-                        SettingFunctions.SaveSettings(fileSelection.CurrentFolderPath + fileName);
+                        SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance, fileSelection.CurrentFolderPath, fileName);
                     }
                     else
                     {
@@ -44,7 +44,7 @@ namespace TTTReborn.UI.Menu
                         dialogBox.AddText($"Do you want to overwrite '{fullFilePath}' with the current settings? (If you agree, the settings defined in this file will be lost!)");
                         dialogBox.OnAgree = () =>
                         {
-                            SettingFunctions.SaveSettings(fileSelection.CurrentFolderPath + fileName);
+                            SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance, fileSelection.CurrentFolderPath, fileName);
 
                             dialogBox.Close();
                         };
@@ -66,7 +66,7 @@ namespace TTTReborn.UI.Menu
             buttonsWrapperPanel.Add.Button("Load from", "fileselectionbutton", () =>
             {
                 FileSelection fileSelection = FindRootPanel().Add.FileSelection();
-                fileSelection.DefaultSelectionPath = "/settings/";
+                fileSelection.DefaultSelectionPath = "/settings/clientsettings/";
                 fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
 
                 fileSelection.OnAgree = () =>
@@ -80,11 +80,11 @@ namespace TTTReborn.UI.Menu
 
                     fileName = fileName.Split('/')[^1].Split('.')[0];
 
-                    SettingsLoadingError settingsLoadingError = SettingFunctions.LoadSettings(fileSelection.CurrentFolderPath + fileName);
+                    ClientSettings.Instance = SettingFunctions.LoadSettings<ClientSettings>(fileSelection.CurrentFolderPath, fileName);
 
-                    if (settingsLoadingError != SettingsLoadingError.None)
+                    if (ClientSettings.Instance.LoadingError != SettingsLoadingError.None)
                     {
-                        Log.Error($"Settings file '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{settingsLoadingError.ToString()}'");
+                        Log.Error($"Settings file '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{ClientSettings.Instance.LoadingError.ToString()}'");
 
                         return;
                     }
@@ -97,7 +97,7 @@ namespace TTTReborn.UI.Menu
                     dialogBox.AddText($"Do you want to use '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' as the default settings? (If you agree, the current default settings will be overwritten!)");
                     dialogBox.OnAgree = () =>
                     {
-                        SettingFunctions.SaveSettings();
+                        SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
 
                         dialogBox.Close();
                     };

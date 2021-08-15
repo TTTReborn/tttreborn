@@ -137,7 +137,11 @@ namespace TTTReborn.UI
             SelectedEntry?.SetClass("selected", false);
 
             SelectedEntry = fileSelectionEntry;
-            FileNameEntry.Text = SelectedEntry.FileNameLabel.Text;
+
+            if (FolderOnly || !SelectedEntry.IsFolder)
+            {
+                FileNameEntry.Text = SelectedEntry.FileNameLabel.Text;
+            }
 
             SelectedEntry.SetClass("selected", true);
         }

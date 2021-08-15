@@ -9,11 +9,13 @@ namespace TTTReborn.Settings
     {
         public static RealmSettings Instance;
 
+        public SettingsLoadingError LoadingError = SettingsLoadingError.None;
+
         public string JsonType { get; set; } = "RealmSettings";
 
         public RealmSettings()
         {
-            Instance = this;
+
         }
     }
 
@@ -23,7 +25,7 @@ namespace TTTReborn.Settings
 
         public ServerSettings() : base()
         {
-            Instance = this;
+
         }
     }
 
@@ -33,7 +35,7 @@ namespace TTTReborn.Settings
 
         public ClientSettings() : base()
         {
-            Instance = this;
+
         }
     }
 
@@ -45,6 +47,55 @@ namespace TTTReborn.Settings
         Invalid, // not a settings json
         Malicious, // could not be parsed
         WrongRealm // wrong realm
+    }
+
+    public partial class SettingsLoader
+    {
+        public static void Load()
+        {
+            RealmSettings settings = null;
+
+            if (Host.IsClient)
+            {
+                ClientSettings.Instance = SettingFunctions.LoadSettings<ClientSettings>();
+                settings = ClientSettings.Instance;
+            }
+            else
+            {
+                ServerSettings.Instance = SettingFunctions.LoadSettings<ServerSettings>();
+                settings = ServerSettings.Instance;
+            }
+
+            // overwrite settings if they got invalid
+            if (settings.LoadingError != SettingsLoadingError.None)
+            {
+                if (Host.IsClient)
+                {
+                    SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
+                }
+                else
+                {
+                    SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+                }
+
+                if (settings.LoadingError != SettingsLoadingError.NotExist)
+                {
+                    Log.Warning("Your TTT Reborn settings were overwritten (reset) due to an error in the file!");
+                }
+            }
+        }
+
+        public static void Unload()
+        {
+            if (Host.IsClient)
+            {
+                SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
+            }
+            else
+            {
+                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+            }
+        }
     }
 
     public partial class SettingFunctions
@@ -71,125 +122,84 @@ namespace TTTReborn.Settings
             return JsonSerializer.Deserialize<T>(json, options);
         }
 
-        public static SettingsLoadingError LoadSettings(string filePath = null)
+        public static T LoadSettings<T>(string path = null, string fileName = "default") where T : RealmSettings, new()
         {
             SettingsLoadingError settingsLoadingError = SettingsLoadingError.None;
 
-            if (Host.IsClient)
+            Type realmType = typeof(T);
+            string realm = realmType.FullName.Replace(realmType.Namespace, "").TrimStart('.');
+
+            path ??= $"/settings/{realm.ToLower()}/";
+
+            T settings = null;
+
+            if (FileSystem.Data.FileExists(path + fileName + SETTINGS_FILE_EXTENSION))
             {
-                filePath ??= "/settings/client";
-
-                if (FileSystem.Data.FileExists($"{filePath}{SETTINGS_FILE_EXTENSION}"))
+                try
                 {
-                    try
+                    settings = GetRealmSettings<T>(FileSystem.Data.ReadAllText(path + fileName + SETTINGS_FILE_EXTENSION));
+
+                    if (settings is null)
                     {
-                        ClientSettings settings = GetRealmSettings<ClientSettings>(FileSystem.Data.ReadAllText($"{filePath}{SETTINGS_FILE_EXTENSION}"));
+                        settingsLoadingError = SettingsLoadingError.Empty;
+                    }
+                    else if (!settings.JsonType.Equals(realm))
+                    {
+                        settingsLoadingError = SettingsLoadingError.Invalid;
 
-                        if (settings is null)
+                        if (!string.IsNullOrEmpty(settings.JsonType))
                         {
-                            settingsLoadingError = SettingsLoadingError.Empty;
-                        }
-                        else if (!settings.JsonType.Equals("ClientSettings"))
-                        {
-                            settingsLoadingError = SettingsLoadingError.Invalid;
-
-                            if (settings.JsonType.Equals("ServerSettings"))
-                            {
-                                settingsLoadingError = SettingsLoadingError.WrongRealm;
-                            }
+                            settingsLoadingError = SettingsLoadingError.WrongRealm;
                         }
                     }
-                    catch (Exception)
-                    {
-                        settingsLoadingError = SettingsLoadingError.Malicious;
-                    }
                 }
-                else
+                catch (Exception)
                 {
-                    settingsLoadingError = SettingsLoadingError.NotExist;
-                }
-
-                if (ClientSettings.Instance is null)
-                {
-                    settingsLoadingError = SettingsLoadingError.Empty;
-
-                    new ClientSettings();
+                    settingsLoadingError = SettingsLoadingError.Malicious;
                 }
             }
             else
             {
-                filePath ??= "/settings/server";
-
-                if (FileSystem.Data.FileExists($"{filePath}{SETTINGS_FILE_EXTENSION}"))
-                {
-                    try
-                    {
-                        ServerSettings settings = GetRealmSettings<ServerSettings>(FileSystem.Data.ReadAllText($"{filePath}{SETTINGS_FILE_EXTENSION}"));
-
-                        if (settings is null)
-                        {
-                            settingsLoadingError = SettingsLoadingError.Empty;
-                        }
-                        else if (!settings.JsonType.Equals("ServerSettings"))
-                        {
-                            settingsLoadingError = SettingsLoadingError.Invalid;
-
-                            if (settings.JsonType.Equals("ClientSettings"))
-                            {
-                                settingsLoadingError = SettingsLoadingError.WrongRealm;
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        settingsLoadingError = SettingsLoadingError.Malicious;
-                    }
-                }
-                else
-                {
-                    settingsLoadingError = SettingsLoadingError.NotExist;
-                }
-
-                if (ServerSettings.Instance is null)
-                {
-                    settingsLoadingError = SettingsLoadingError.Empty;
-
-                    new ServerSettings();
-                }
+                settingsLoadingError = SettingsLoadingError.NotExist;
             }
 
-            return settingsLoadingError;
+            if (settings is null)
+            {
+                settingsLoadingError = SettingsLoadingError.Empty;
+
+                settings = new T();
+            }
+
+            settings.LoadingError = settingsLoadingError;
+
+            return settings;
         }
 
-        public static void SaveSettings(string filePath = null)
+        public static void SaveSettings<T>(T settings, string path = null, string fileName = "default") where T : RealmSettings
         {
             if (!FileSystem.Data.DirectoryExists("settings"))
             {
                 FileSystem.Data.CreateDirectory("settings");
             }
 
-            if (Host.IsClient)
+            if (settings is null)
             {
-                filePath ??= "/settings/client";
-
-                if (ClientSettings.Instance is not null)
-                {
-                    ClientSettings.Instance.JsonType = "ClientSettings";
-
-                    FileSystem.Data.WriteAllText($"{filePath}{SETTINGS_FILE_EXTENSION}", GetJSON<ClientSettings>(ClientSettings.Instance));
-                }
+                return;
             }
-            else
+
+            Type realmType = typeof(T);
+            string realm = realmType.FullName.Replace(realmType.Namespace, "").TrimStart('.');
+
+            path ??= $"/settings/{realm.ToLower()}/";
+
+            if (!FileSystem.Data.DirectoryExists(path))
             {
-                filePath ??= "/settings/server";
-
-                if (ServerSettings.Instance is not null)
-                {
-                    ServerSettings.Instance.JsonType = "ServerSettings";
-
-                    FileSystem.Data.WriteAllText($"{filePath}{SETTINGS_FILE_EXTENSION}", GetJSON<ServerSettings>(ServerSettings.Instance));
-                }
+                FileSystem.Data.CreateDirectory(path);
             }
+
+            settings.JsonType = realm;
+
+            FileSystem.Data.WriteAllText(path + fileName + SETTINGS_FILE_EXTENSION, GetJSON<T>(settings));
         }
     }
 }

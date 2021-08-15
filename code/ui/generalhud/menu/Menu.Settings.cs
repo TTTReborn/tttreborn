@@ -6,6 +6,14 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
+                // add separation between server and client
+
+                // client
+                // add language
+
+                // server (send / receive via json)
+                // add sprint
+
                 CreateSettingsButtons(panelContent);
             }, "Settings", "settings");
         }
