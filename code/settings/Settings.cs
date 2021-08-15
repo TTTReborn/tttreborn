@@ -3,6 +3,8 @@ using System.Text.Json;
 
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.Settings
 {
     public abstract partial class Settings
@@ -19,8 +21,6 @@ namespace TTTReborn.Settings
 
     public partial class ServerSettings : Settings
     {
-        public static ServerSettings Instance;
-
         public ServerSettings() : base()
         {
 
@@ -29,8 +29,6 @@ namespace TTTReborn.Settings
 
     public partial class ClientSettings : Settings
     {
-        public static ClientSettings Instance;
-
         public ClientSettings() : base()
         {
 
@@ -47,33 +45,35 @@ namespace TTTReborn.Settings
         InvalidSettingsType // wrong settings type
     }
 
-    public partial class SettingsLoader
+    public partial class SettingsManager
     {
+        public static Settings Instance;
+
         public static void Load()
         {
             Settings settings = null;
 
             if (Host.IsClient)
             {
-                ClientSettings.Instance = SettingFunctions.LoadSettings<ClientSettings>();
-                settings = ClientSettings.Instance;
+                Instance = SettingFunctions.LoadSettings<ClientSettings>();
             }
             else
             {
-                ServerSettings.Instance = SettingFunctions.LoadSettings<ServerSettings>();
-                settings = ServerSettings.Instance;
+                Instance = SettingFunctions.LoadSettings<ServerSettings>();
             }
+
+            settings = Instance;
 
             // overwrite settings if they got invalid
             if (settings.LoadingError != SettingsLoadingError.None)
             {
                 if (Host.IsClient)
                 {
-                    SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
+                    SettingFunctions.SaveSettings<ClientSettings>(Instance as ClientSettings);
                 }
                 else
                 {
-                    SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+                    SettingFunctions.SaveSettings<ServerSettings>(Instance as ServerSettings);
                 }
 
                 if (settings.LoadingError != SettingsLoadingError.NotExist)
@@ -87,11 +87,11 @@ namespace TTTReborn.Settings
         {
             if (Host.IsClient)
             {
-                SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
+                SettingFunctions.SaveSettings<ClientSettings>(Instance as ClientSettings);
             }
             else
             {
-                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+                SettingFunctions.SaveSettings<ServerSettings>(Instance as ServerSettings);
             }
         }
     }
@@ -124,8 +124,7 @@ namespace TTTReborn.Settings
         {
             SettingsLoadingError settingsLoadingError = SettingsLoadingError.None;
 
-            Type settingsType = typeof(T);
-            string settingsName = settingsType.FullName.Replace(settingsType.Namespace, "").TrimStart('.');
+            string settingsName = Utils.GetTypeNameByType(typeof(T));
 
             path ??= $"/settings/{settingsName.ToLower()}/";
 
@@ -185,8 +184,7 @@ namespace TTTReborn.Settings
                 return;
             }
 
-            Type settingsType = typeof(T);
-            string settingsName = settingsType.FullName.Replace(settingsType.Namespace, "").TrimStart('.');
+            string settingsName = Utils.GetTypeNameByType(typeof(T));
 
             path ??= $"/settings/{settingsName.ToLower()}/";
 

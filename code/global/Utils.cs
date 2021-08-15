@@ -196,5 +196,10 @@ namespace TTTReborn.Globals
 
             return highestPanel;
         }
+
+        public static string GetTypeNameByType(Type type)
+        {
+            return type.FullName.Replace(type.Namespace, "").TrimStart('.');
+        }
     }
 }

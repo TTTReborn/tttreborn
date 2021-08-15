@@ -26,7 +26,7 @@ namespace TTTReborn.Gamemode
             Instance = this;
 
             TTTLanguage.LoadLanguages();
-            SettingsLoader.Load();
+            SettingsManager.Load();
 
             if (IsServer)
             {
@@ -36,7 +36,7 @@ namespace TTTReborn.Gamemode
 
         public override void Shutdown()
         {
-            SettingsLoader.Unload();
+            SettingsManager.Unload();
 
             base.Shutdown();
         }

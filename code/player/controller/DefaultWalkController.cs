@@ -157,7 +157,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Settings.ServerSettings.Instance.IsSprintEnabled = !IsSprintEnabled;
+            (Settings.SettingsManager.Instance as Settings.ServerSettings).IsSprintEnabled = !IsSprintEnabled;
 
             string text = IsSprintEnabled ? "enabled" : "disabled";
 

@@ -109,7 +109,7 @@ namespace TTTReborn.Player
 
             Log.Warning($"You set your language to '{language.Data.Name}'.");
 
-            Settings.ClientSettings.Instance.Language = language.Data.Code;
+            Settings.SettingsManager.Instance.Language = language.Data.Code;
         }
     }
 }
