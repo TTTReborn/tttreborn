@@ -35,9 +35,36 @@ namespace TTTReborn.UI.Menu
                         return;
                     }
 
-                    SettingFunctions.SaveSettings(fileSelection.CurrentFolderPath + fileName.Split('/')[^1].Split('.')[0]);
-
                     fileSelection.Close();
+
+                    fileName = fileName.Split('/')[^1].Split('.')[0];
+                    string fullFilePath = fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
+
+                    if (!FileSystem.Data.FileExists(fullFilePath))
+                    {
+                        SettingFunctions.SaveSettings(fileSelection.CurrentFolderPath + fileName);
+                    }
+                    else
+                    {
+                        // Ask whether the player want to overwrite the selected file
+                        DialogBox dialogBox = new DialogBox();
+                        dialogBox.TitleLabel.Text = $"Overwrite '{fullFilePath}'";
+                        dialogBox.AddText($"Do you want to overwrite '{fullFilePath}' with the current settings? (If you agree, the settings defined in this file will be lost!)");
+                        dialogBox.OnAgree = () =>
+                        {
+                            SettingFunctions.SaveSettings(fileSelection.CurrentFolderPath + fileName);
+
+                            dialogBox.Close();
+                        };
+                        dialogBox.OnDecline = () =>
+                        {
+                            dialogBox.Close();
+                        };
+
+                        FindRootPanel().AddChild(dialogBox);
+
+                        dialogBox.Display();
+                    }
                 };
 
                 fileSelection.EnableFileNameEntry();
