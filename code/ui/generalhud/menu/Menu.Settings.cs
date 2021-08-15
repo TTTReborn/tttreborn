@@ -8,11 +8,11 @@ namespace TTTReborn.UI.Menu
 {
     public partial class Menu
     {
-        private void OpenSettings(PanelContent menuContent)
+        internal void OpenSettings(PanelContent menuContent)
         {
-            menuContent.SetPanelContent((panelContent) =>
+            menuContent.SetPanelContent((menuContent) =>
             {
-                Tabs tabs = panelContent.Add.Tabs();
+                Tabs tabs = menuContent.Add.Tabs();
                 tabs.AddTab("Client", CreateClientSettings);
 
                 if (Local.Client.HasPermission("serversettings"))
@@ -20,13 +20,13 @@ namespace TTTReborn.UI.Menu
                     tabs.AddTab("Server", CreateServerSettings);
                 }
 
-                CreateSettingsButtons(panelContent);
+                CreateSettingsButtons(menuContent);
             }, "Settings", "settings");
         }
 
-        private void CreateClientSettings(PanelContent panelContent)
+        private void CreateClientSettings(PanelContent menuContent)
         {
-            Panel languagePanel = panelContent.Add.Panel("language");
+            Panel languagePanel = menuContent.Add.Panel("language");
 
             languagePanel.Add.Label("Language:");
 
@@ -45,9 +45,9 @@ namespace TTTReborn.UI.Menu
             languageSelection.SelectByData(Settings.SettingsManager.Instance.Language);
         }
 
-        private void CreateServerSettings(PanelContent panelContent)
+        private void CreateServerSettings(PanelContent menuContent)
         {
-            panelContent.Add.Label("Work in progress...");
+            menuContent.Add.Label("Work in progress...");
         }
     }
 }

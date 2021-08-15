@@ -9,9 +9,9 @@ namespace TTTReborn.UI.Menu
 {
     public partial class Menu
     {
-        private void CreateSettingsButtons(PanelContent panelContent)
+        private void CreateSettingsButtons(PanelContent menuContent)
         {
-            Panel buttonsWrapperPanel = panelContent.Add.Panel("wrapper");
+            Panel buttonsWrapperPanel = menuContent.Add.Panel("wrapper");
 
             buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
             {
@@ -28,7 +28,7 @@ namespace TTTReborn.UI.Menu
                 FileSelection fileSelection = FindRootPanel().Add.FileSelection();
                 fileSelection.DefaultSelectionPath = $"/settings/{Utils.GetTypeNameByType(SettingsManager.Instance.GetType()).ToLower()}/";
                 fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
-                fileSelection.OnAgree = () => OnAgreeLoadFrom(fileSelection);
+                fileSelection.OnAgree = () => OnAgreeLoadFrom(fileSelection, menuContent);
                 fileSelection.Display();
             });
         }
@@ -79,7 +79,7 @@ namespace TTTReborn.UI.Menu
             dialogBox.Display();
         }
 
-        private void OnAgreeLoadFrom(FileSelection fileSelection)
+        private void OnAgreeLoadFrom(FileSelection fileSelection, PanelContent menuContent)
         {
             string fileName = fileSelection.SelectedEntry.FileNameLabel.Text;
 
@@ -100,6 +100,9 @@ namespace TTTReborn.UI.Menu
             }
 
             fileSelection.Close();
+
+            // refresh settings
+            menuContent.SetPanelContent(OpenSettings);
 
             AskDefaultSettingsChange(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION);
         }
