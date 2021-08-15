@@ -28,8 +28,6 @@ namespace TTTReborn.Gamemode
             TTTLanguage.LoadLanguages();
             SettingsManager.Load();
 
-            Settings.SettingFunctions.LoadSettings();
-
             if (IsServer)
             {
                 new Hud();

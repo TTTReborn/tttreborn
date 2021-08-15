@@ -47,9 +47,6 @@ namespace TTTReborn.UI
         private readonly Panel _selectionPanel;
         public readonly TextEntry FileNameEntry;
 
-        private readonly Panel _selectionPanel;
-        public readonly TextEntry FileNameEntry;
-
         public FileSelection() : base()
         {
             HeaderPanel.IsLocked = false;
