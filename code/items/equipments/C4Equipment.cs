@@ -13,8 +13,6 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "";
         public override SlotType SlotType => SlotType.OffensiveEquipment;
 
-        private const int DropPositionOffset = 50;
-        private const int DropVelocity = 500;
         private const int PlaceDistance = 200;
 
         public int Price => 0;
@@ -47,13 +45,7 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Attack1)) //Drops C4
                 {
-                    _ = new C4Entity()
-                    {
-                        Position = Owner.EyePos + Owner.EyeRot.Forward * DropPositionOffset,
-                        Rotation = Owner.EyeRot,
-                        Velocity = Owner.EyeRot.Forward * DropVelocity,
-                    };
-                    (owner.Inventory as Inventory).Remove(this);
+                    (owner.Inventory as Inventory).DropEntity(this, typeof(C4Entity));
                 }
                 else if (Input.Pressed(InputButton.Attack2)) //Plants C4
                 {
