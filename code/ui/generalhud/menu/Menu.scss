@@ -64,6 +64,10 @@ Menu {
         }
 
         &.settings {
+            Tabs {
+                min-height: 500px;
+            }
+
             .wrapper {
                 margin-top: 10px;
 

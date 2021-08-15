@@ -84,7 +84,7 @@ namespace TTTReborn.UI.Menu
 
                 panelContent.Add.Label("Dropdown:");
 
-                Dropdown dropdown = new Dropdown(panelContent);
+                Dropdown dropdown = panelContent.Add.Dropdown();
                 dropdown.TextLabel.Text = "Choose entry...";
 
                 dropdown.AddOption("Test One");
