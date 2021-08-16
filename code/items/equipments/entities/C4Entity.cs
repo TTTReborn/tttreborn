@@ -32,7 +32,7 @@ namespace TTTReborn.Items
         private const int BOMB_DAMAGE = 500;
         private const int BOMB_FORCE = 50;
 
-        private List<TTTPlayer> _currentUsers;
+        private List<TTTPlayer> _currentUsers = new();
 
         public override void Spawn()
         {
@@ -40,8 +40,6 @@ namespace TTTReborn.Items
 
             SetModel(ModelPath);
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
-
-            _currentUsers = new();
         }
 
         public bool OnUse(Entity user)
@@ -97,6 +95,14 @@ namespace TTTReborn.Items
             }
 
             base.Simulate(cl);
+        }
+
+        protected override void OnDestroy()
+        {
+            BombDisplay?.Delete();
+            BombDisplay = null;
+
+            base.OnDestroy();
         }
 
         //Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
