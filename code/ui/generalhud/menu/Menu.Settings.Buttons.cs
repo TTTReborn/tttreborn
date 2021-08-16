@@ -48,7 +48,6 @@ namespace TTTReborn.UI.Menu
 
             fileName = fileName.Split('/')[^1].Split('.')[0];
 
-
             if ((Utils.Realm) SettingsTabs.SelectedTab.Value == Utils.Realm.Client)
             {
                 if (!FileSystem.Data.FileExists(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
@@ -94,7 +93,7 @@ namespace TTTReborn.UI.Menu
         {
             string fileName = fileSelection.SelectedEntry.FileNameLabel.Text;
 
-            if (string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(fileName) || SettingsTabs == null)
             {
                 return;
             }

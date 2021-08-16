@@ -48,7 +48,7 @@ namespace TTTReborn.UI.Menu
                 ConsoleSystem.Run("ttt_language", (string) option.Data);
             };
 
-            languageSelection.SelectByData(Settings.SettingsManager.Instance.Language);
+            languageSelection.SelectByData(SettingsManager.Instance.Language);
         }
 
         private void InitServerSettings(PanelContent tabContent)
@@ -72,7 +72,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.IsSprintEnabled = !serverSettings.IsSprintEnabled;
 
-                ConsoleSystem.Run("ttt_serversettings_send", Settings.SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
 
             // TODO add save button to sync settings back to the server
@@ -97,7 +97,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), Settings.SettingFunctions.GetJSON<ServerSettings>(SettingsManager.Instance as ServerSettings, true));
+            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), SettingFunctions.GetJSON<ServerSettings>(SettingsManager.Instance as ServerSettings, true));
         }
 
         [ServerCmd(Name = "ttt_serversettings_send")]
@@ -108,14 +108,14 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ServerSettings serverSettings = Settings.SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
+            ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
 
             if (serverSettingsJson == null)
             {
                 return;
             }
 
-            Settings.SettingsManager.Instance = serverSettings;
+            SettingsManager.Instance = serverSettings;
         }
 
         [ClientRpc]
@@ -128,7 +128,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ServerSettings serverSettings = Settings.SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
+            ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
 
             if (serverSettingsJson == null)
             {
