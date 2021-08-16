@@ -73,9 +73,15 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientOpenC4Control(C4State state, C4Entity ent)
+        public void ClientOpenC4Menu(C4Entity c4Entity)
         {
-            C4Menu.Instance?.Open(state, ent);
+            Hud.Current.AliveHudPanel.C4Menu.Open(c4Entity, this);
+        }
+
+        [ClientRpc]
+        public void ClientCloseC4Menu()
+        {
+            Hud.Current.AliveHudPanel.C4Menu.Close();
         }
     }
 }

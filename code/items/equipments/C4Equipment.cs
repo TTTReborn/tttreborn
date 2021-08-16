@@ -13,8 +13,6 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "";
         public override SlotType SlotType => SlotType.OffensiveEquipment;
 
-        private const int DropPositionOffset = 50;
-        private const int DropVelocity = 500;
         private const int PlaceDistance = 200;
 
         public int Price => 0;
@@ -45,32 +43,25 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                if (Input.Pressed(InputButton.Attack1)) //Drops C4
-                {
-                    _ = new C4Entity()
-                    {
-                        Position = Owner.EyePos + Owner.EyeRot.Forward * DropPositionOffset,
-                        Rotation = Owner.EyeRot,
-                        Velocity = Owner.EyeRot.Forward * DropVelocity,
-                    };
-                    (owner.Inventory as Inventory).Remove(this);
-                }
-                else if (Input.Pressed(InputButton.Attack2)) //Plants C4
+                if (Input.Pressed(InputButton.Attack1))
                 {
                     TraceResult placementTrace = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * PlaceDistance)
-                        .Ignore(owner)
-                        .UseHitboxes()
-                        .Run();
+                       .Ignore(owner)
+                       .UseHitboxes()
+                       .Run();
+
                     if (!placementTrace.Hit)
                     {
                         return;
                     }
 
                     C4Entity bomb = new C4Entity();
+
                     if (placementTrace.Entity.IsWorld)
                     {
                         bomb.PhysicsEnabled = false;
                     }
+
                     if (placementTrace.Entity is Prop prop)
                     {
                         bomb.CollisionGroup = CollisionGroup.Debris;

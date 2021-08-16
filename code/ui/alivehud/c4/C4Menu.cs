@@ -13,14 +13,12 @@ namespace TTTReborn.UI
 {
     public class C4Menu : TTTPanel
     {
-        public static C4Menu Instance;
-
         private C4ControlPanel ControlPanel;
-        private static C4Entity Entity;
+        private C4Entity Entity;
+        private TTTPlayer User;
 
         public C4Menu()
         {
-            Instance = this;
             IsShowing = false;
 
             StyleSheet.Load("/ui/alivehud/c4/C4Menu.scss");
@@ -28,10 +26,12 @@ namespace TTTReborn.UI
             ControlPanel = new C4ControlPanel(this);
         }
 
-        public void Open(C4State state, C4Entity entity)
+        public void Open(C4Entity entity, TTTPlayer user)
         {
             IsShowing = true;
             Entity = entity;
+            User = user;
+
             // ControlPanel.ShowState(state); //Implement this
         }
 
@@ -71,7 +71,6 @@ namespace TTTReborn.UI
                 }
             }
 
-            //Start of arming panels
             private class ArmScreen : TTTPanel
             {
                 private readonly TimerSection _TimerSection;
@@ -101,13 +100,13 @@ namespace TTTReborn.UI
                     {
                         Parent = parent;
                         IsShowing = true;
+
                         TimeStuff = Add.Panel("timestuff");
                         _TimeTillD = TimeStuff.Add.Label("Time until detonation:");
                         _TimePreview = TimeStuff.Add.Label("00:00");
                         _TimeSlider = Add.Slider(45, 600, 15);
                         _TimeSlider.Value = _TimeSlider.MinValue;
                         _WireHint = Add.Label("In disarm attempts, X out of 6 wires will cause instant detonation when cut.");
-
                         _RemovalSection = Add.Panel("RemovalSection");
 
                         _Arm = _RemovalSection.Add.Button("Arm C4", () =>
@@ -127,28 +126,32 @@ namespace TTTReborn.UI
 
                         _Cancel = _RemovalSection.Add.Button("Cancel", () =>
                         {
-                            Instance.Close();
-                        }
-
-                        );
+                            // There has to be a better way to do this
+                            ((C4Menu) Parent.Parent.Parent).Close();
+                        });
                     }
 
                     public override void Tick()
                     {
                         base.Tick();
+
                         _TimePreview.Text = TimeSpan.FromSeconds(_TimeSlider.Value).ToString(@"mm\:ss");
+
                         var badWires = Math.Floor(_TimeSlider.Value / 60);
                         badWires += 1;
                         if (badWires >= 6)
                         {
                             badWires = 5;
                         }
+
                         _WireHint.Text = $"In disarm attempts, {badWires} out of 6 wires will cause instant detonation when cut.";
+
+
                     }
                 }
 
 
-            } //End of ArmScreen panel
+            }
 
             private class DisarmScreen : TTTPanel
             {
@@ -161,8 +164,6 @@ namespace TTTReborn.UI
 
             }
 
-        } //End of C4Control panel
-
-
+        }
     }
 }

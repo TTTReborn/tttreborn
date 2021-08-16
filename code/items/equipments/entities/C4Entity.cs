@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 using Sandbox;
 using Sandbox.UI;
@@ -31,20 +32,26 @@ namespace TTTReborn.Items
         private const int BOMB_DAMAGE = 500;
         private const int BOMB_FORCE = 50;
 
+        private List<TTTPlayer> _currentUsers;
+
         public override void Spawn()
         {
             base.Spawn();
+
             SetModel(ModelPath);
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
+
+            _currentUsers = new();
         }
 
         public bool OnUse(Entity user)
         {
             TTTPlayer player = user as TTTPlayer;
+            player.ClientOpenC4Menu(this);
 
-            player.ClientOpenC4Control(State, this);
+            _currentUsers.Add(player);
 
-            return false; //Only fire once
+            return false;
         }
 
         public bool IsUsable(Entity user) => user is TTTPlayer;
@@ -53,7 +60,6 @@ namespace TTTReborn.Items
         {
             if (IsClient)
             {
-
                 if (CreatedDisplay)
                 {
                     //No way to parent a world panel to an entity :(
@@ -76,21 +82,25 @@ namespace TTTReborn.Items
                     label.Text = "00:00";
                 }
             }
+
+            // If the player moves away from the bomb, close the UI
+            if (_currentUsers.Count > 0)
+            {
+                for (int i = _currentUsers.Count - 1; i >= 0; i--)
+                {
+                    if (Vector3.DistanceBetween(_currentUsers[i].Controller.Position, this.Position) > 100)
+                    {
+                        _currentUsers[i].ClientCloseC4Menu();
+                        _currentUsers.Remove(_currentUsers[i]);
+                    }
+                }
+            }
+
             base.Simulate(cl);
         }
 
-        public override void TakeDamage(DamageInfo info)
-        {
-            //TODO: Move this functionality to cvar.
-            //If player or corpse with C4 attached is shot, explode.
-            if (Parent is TTTPlayer || Parent is PlayerCorpse && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
-            {
-                _ = OnExplosion();
-            }
-        }
-
         //Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
-        private async Task OnExplosion()
+        private async Task Explode()
         {
             await Task.DelaySeconds(0.1f);
 

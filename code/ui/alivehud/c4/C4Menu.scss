@@ -1,19 +1,26 @@
 C4Menu {
-    border: 1px solid #1b1b1b;
     background-color: #000c;
+    border: 1px solid #1b1b1b;
+    border-radius: 8px;
     color: #fafafa;
     font-family: Poppins;
     font-weight: 500;
-    border-radius: 4px;
     top: 40%;
-    position: absolute;
     left: 50%;
     transform: translateX(-50%) translateY(-40%);
+    margin: auto;
+    position: absolute;
     pointer-events: all;
 
     &.hide {
         display: none;
         pointer-events: none;
+    }
+
+    Header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
     }
 
     C4ControlPanel {
