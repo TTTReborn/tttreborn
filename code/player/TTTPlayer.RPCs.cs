@@ -75,7 +75,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientOpenC4Menu(C4Entity c4Entity)
         {
-            Hud.Current.AliveHudPanel.C4Menu.Open(c4Entity, this);
+            Hud.Current.AliveHudPanel.C4Menu.Open(c4Entity);
         }
 
         [ClientRpc]

@@ -23,6 +23,16 @@ namespace TTTReborn.UI
             IsShowing = false;
         }
 
+        public void Open()
+        {
+            IsShowing = true;
+        }
+
+        public void Close()
+        {
+            IsShowing = false;
+        }
+
         public void AddChild(Panel child, int index)
         {
             AddChild(child);
