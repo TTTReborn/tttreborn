@@ -201,5 +201,11 @@ namespace TTTReborn.Globals
         {
             return type.FullName.Replace(type.Namespace, "").TrimStart('.');
         }
+
+        public enum Realm
+        {
+            Client,
+            Server
+        }
     }
 }

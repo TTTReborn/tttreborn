@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globals;
 using TTTReborn.Globalization;
 using TTTReborn.Settings;
 
@@ -9,18 +10,20 @@ namespace TTTReborn.UI.Menu
 {
     public partial class Menu
     {
-        public PanelContent ServerSettingsTabContent;
+        public PanelContent ServerSettingsTabContent { get; private set; }
+
+        public Tabs SettingsTabs { get; private set; }
 
         internal void OpenSettings(PanelContent menuContent)
         {
             menuContent.SetPanelContent((menuContent) =>
             {
-                Tabs tabs = menuContent.Add.Tabs();
-                tabs.AddTab("Client", CreateClientSettings);
+                SettingsTabs = menuContent.Add.Tabs();
+                SettingsTabs.AddTab("Client", CreateClientSettings, Utils.Realm.Client);
 
                 if (Local.Client.HasPermission("serversettings"))
                 {
-                    tabs.AddTab("Server", InitServerSettings);
+                    SettingsTabs.AddTab("Server", InitServerSettings, Utils.Realm.Server);
                 }
 
                 CreateSettingsButtons(menuContent);
@@ -113,8 +116,6 @@ namespace TTTReborn.Player
             }
 
             Settings.SettingsManager.Instance = serverSettings;
-
-            // TODO save the settings as default settings
         }
 
         [ClientRpc]

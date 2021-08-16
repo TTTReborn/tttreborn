@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -37,7 +39,7 @@ namespace TTTReborn.UI.Menu
         {
             string fileName = fileSelection.FileNameEntry.Text;
 
-            if (string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(fileName) || SettingsTabs == null)
             {
                 return;
             }
@@ -46,17 +48,26 @@ namespace TTTReborn.UI.Menu
 
             fileName = fileName.Split('/')[^1].Split('.')[0];
 
-            if (!FileSystem.Data.FileExists(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
+
+            if ((Utils.Realm) SettingsTabs.SelectedTab.Value == Utils.Realm.Client)
             {
-                SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings, fileSelection.CurrentFolderPath, fileName);
+                if (!FileSystem.Data.FileExists(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
+                {
+                    SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings, fileSelection.CurrentFolderPath, fileName);
+                }
+                else
+                {
+                    AskOverwriteSelectedSettings(fileSelection.CurrentFolderPath, fileName, () => SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings, fileSelection.CurrentFolderPath, fileName));
+                }
             }
             else
             {
-                AskOverwriteSelectedSettings(fileSelection.CurrentFolderPath, fileName);
+                // TODO sync with server etc.
+                // TODO ask for overwrite of server settings
             }
         }
 
-        private void AskOverwriteSelectedSettings(string folderPath, string fileName)
+        private void AskOverwriteSelectedSettings(string folderPath, string fileName, Action onConfirm)
         {
             string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
@@ -65,7 +76,7 @@ namespace TTTReborn.UI.Menu
             dialogBox.AddText($"Do you want to overwrite '{fullFilePath}' with the current settings? (If you agree, the settings defined in this file will be lost!)");
             dialogBox.OnAgree = () =>
             {
-                SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings, folderPath, fileName);
+                onConfirm();
 
                 dialogBox.Close();
             };
@@ -90,31 +101,39 @@ namespace TTTReborn.UI.Menu
 
             fileName = fileName.Split('/')[^1].Split('.')[0];
 
-            SettingsManager.Instance = SettingFunctions.LoadSettings<ClientSettings>(fileSelection.CurrentFolderPath, fileName);
-
-            if (SettingsManager.Instance.LoadingError != SettingsLoadingError.None)
+            if ((Utils.Realm) SettingsTabs.SelectedTab.Value == Utils.Realm.Client)
             {
-                Log.Error($"Settings file '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{SettingsManager.Instance.LoadingError.ToString()}'");
+                SettingsManager.Instance = SettingFunctions.LoadSettings<ClientSettings>(fileSelection.CurrentFolderPath, fileName);
 
-                return;
+                if (SettingsManager.Instance.LoadingError != SettingsLoadingError.None)
+                {
+                    Log.Error($"Settings file '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{SettingsManager.Instance.LoadingError.ToString()}'");
+
+                    return;
+                }
+
+                fileSelection.Close();
+
+                // refresh settings
+                menuContent.SetPanelContent(OpenSettings);
+
+                AskDefaultSettingsChange(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION, () => SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings));
             }
-
-            fileSelection.Close();
-
-            // refresh settings
-            menuContent.SetPanelContent(OpenSettings);
-
-            AskDefaultSettingsChange(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION);
+            else
+            {
+                // TODO sync with server etc.
+                // TODO ask for overwrite of server settings
+            }
         }
 
-        private void AskDefaultSettingsChange(string filePath)
+        private void AskDefaultSettingsChange(string filePath, Action onConfirm)
         {
             DialogBox dialogBox = new DialogBox();
             dialogBox.TitleLabel.Text = "Default settings";
             dialogBox.AddText($"Do you want to use '{filePath}' as the default settings? (If you agree, the current default settings will be overwritten!)");
             dialogBox.OnAgree = () =>
             {
-                SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings);
+                onConfirm();
 
                 dialogBox.Close();
             };
