@@ -20,6 +20,8 @@ namespace TTTReborn.Gamemode
 
         public KarmaSystem Karma { get; private set; } = new();
 
+        public DNARegistry DNA { get; private set; } = new();
+
         public Game()
         {
             Instance = this;
@@ -200,6 +202,7 @@ namespace TTTReborn.Gamemode
         private void OnGameSecond()
         {
             Round?.OnSecond();
+            DNA.OnSecond();
         }
     }
 }

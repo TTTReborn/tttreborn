@@ -26,6 +26,8 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
+                Gamemode.Game.Instance.DNA.Clear();
+
                 List<TTTAmmoRandom> randomAmmo = new();
                 List<TTTWeaponRandom> randomWeapons = new();
 

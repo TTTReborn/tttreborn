@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 
@@ -31,6 +32,7 @@ namespace TTTReborn.Items
         public virtual float ChargeAttackDuration => 2;
         public virtual int BaseDamage => 10;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
+
         // TODO add player role to weapon to access in UI InventorySelection.cs.
         // E.G. this weapon is bought in traitor shop: Role => "Traitor";
         // This weapon is a normal weapon: Role => "None"
@@ -174,6 +176,8 @@ namespace TTTReborn.Items
                     ammoBox.Rotation = Owner.EyeRot;
                     ammoBox.Velocity = Owner.EyeRot.Forward * AmmoDropVelocity;
                     ammoBox.SetCurrentAmmo(AmmoClip);
+
+                    Gamemode.Game.Instance.DNA.Track(new Globals.DNAInstance(ammoBox, owner.Pawn as TTTPlayer, 30));
                 }
 
                 TakeAmmo(AmmoClip);
@@ -381,6 +385,14 @@ namespace TTTReborn.Items
         public override void OnCarryDrop(Entity dropper)
         {
             base.OnCarryDrop(dropper);
+
+            if (IsServer)
+            {
+                if (dropper is TTTPlayer player)
+                {
+                    Gamemode.Game.Instance.DNA.Track(new Globals.DNAInstance(this, player, 60));
+                }
+            }
 
             if (PickupTrigger.IsValid())
             {
