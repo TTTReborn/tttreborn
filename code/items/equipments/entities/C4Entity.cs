@@ -47,6 +47,16 @@ namespace TTTReborn.Items
             TTTPlayer player = user as TTTPlayer;
             player.ClientOpenC4Menu(this);
 
+            switch(State)
+            {
+                case C4State.Armed:
+                    // Open C4 disarm minigame
+                    break;
+
+                default:
+
+                    break;
+            }
             _currentUsers.Add(player);
 
             return false;
@@ -73,11 +83,11 @@ namespace TTTReborn.Items
                     BombDisplay = new WorldPanel();
                     CreatedDisplay = true;
 
-                    BombDisplay.AddClass("c4display");
-                    BombDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/c4Display.scss"));
+                    BombDisplay.AddClass("c4worldtimer");
+                    BombDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
 
                     var label = BombDisplay.AddChild<Label>();
-                    label.Text = "00:00";
+                    label.Text = "--:--";
                 }
             }
 

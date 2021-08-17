@@ -88,7 +88,7 @@ namespace TTTReborn.UI
             public DamageIndicator DamageIndicator;
             public DrowningIndicator DrowningIndicator;
             public QuickShop QuickShop;
-            public C4Menu C4Menu;
+            public C4ArmControl C4ArmControl;
 
             public AliveHud(Panel parent)
             {
@@ -100,7 +100,7 @@ namespace TTTReborn.UI
                 DamageIndicator ??= Parent.AddChild<DamageIndicator>();
                 DrowningIndicator ??= Parent.AddChild<DrowningIndicator>();
                 QuickShop ??= Parent.AddChild<QuickShop>();
-                C4Menu ??= Parent.AddChild<C4Menu>();
+                C4ArmControl ??= Parent.AddChild<C4ArmControl>();
             }
 
             public void DeleteHud()
@@ -114,8 +114,8 @@ namespace TTTReborn.UI
                 QuickShop?.Delete();
                 QuickShop = null;
 
-                C4Menu?.Delete();
-                C4Menu = null;
+                C4ArmControl?.Delete();
+                C4ArmControl = null;
             }
         }
     }

@@ -1,0 +1,105 @@
+C4ArmControl {
+    background-color: #000c;
+    border: 1px solid #1b1b1b;
+    border-radius: 8px;
+    min-width: 600px;
+    max-width: 800px;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-40%);
+    flex-direction: column;
+    margin: auto;
+    position: absolute;
+    color: #fafafa;
+    font-family: Poppins;
+    font-weight: 500;
+    pointer-events: all;
+
+    &.hide {
+        display: none;
+        pointer-events: none;
+    }
+
+    Header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 16px 30px;
+        background-color: #0007;
+        border-bottom: 1px solid #363636;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+
+    Content {
+        flex-direction: column;
+        max-height: 600px;
+        padding: 16px;
+
+        Display {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+
+            .timer {
+                font-size: 54px;
+            }
+
+            Presets {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                margin-left: 25px;
+                text-align: center;
+
+                PresetButtons {
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: row;
+
+                    Button {
+                        padding: 4px 50px;
+                        height: 32px;
+                        border-radius: 2px;
+                        border-radius: 8px;
+                        background-color: #0007;
+                        margin: 5px;
+
+                        &:hover {
+                            cursor: pointer;
+                            opacity: 1;
+                            background-color: #df2935;
+                        }
+                    }
+                }
+            }
+        }
+
+        Controls {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+
+            Button {
+                padding: 4px 50px;
+                height: 38px;
+                border-radius: 2px;
+                border-radius: 8px;
+                background-color: #0007;
+                margin: 5px;
+                width: 100%;
+
+                &.armButton {
+                    background-color: #df2935;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
