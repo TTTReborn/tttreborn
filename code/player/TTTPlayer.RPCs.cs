@@ -17,13 +17,13 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientSetAmmo(string ammoType, int amount)
         {
-            (Inventory as Inventory).Ammo.Set(ammoType, amount);
+            Inventory.Ammo.Set(ammoType, amount);
         }
 
         [ClientRpc]
         public void ClientClearAmmo()
         {
-            (Inventory as Inventory).Ammo.Clear();
+            Inventory.Ammo.Clear();
         }
 
         [ClientRpc]
@@ -36,7 +36,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            (Inventory as Inventory).TryAdd(perk);
+            Inventory.TryAdd(perk);
         }
 
         [ClientRpc]
@@ -49,13 +49,13 @@ namespace TTTReborn.Player
                 return;
             }
 
-            (Inventory as Inventory).Perks.Take(perk);
+            Inventory.Perks.Take(perk);
         }
 
         [ClientRpc]
         public void ClientClearPerks()
         {
-            (Inventory as Inventory).Perks.Clear();
+            Inventory.Perks.Clear();
         }
 
         [ClientRpc]

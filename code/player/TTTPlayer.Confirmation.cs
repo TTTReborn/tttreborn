@@ -109,7 +109,7 @@ namespace TTTReborn.Player
             corpse.Distance = LastDistanceToAttacker;
             corpse.Suicide = LastAttacker == this;
 
-            PerksInventory perksInventory = (Inventory as Inventory).Perks;
+            PerksInventory perksInventory = Inventory.Perks;
 
             corpse.Perks = new string[perksInventory.Count()];
 

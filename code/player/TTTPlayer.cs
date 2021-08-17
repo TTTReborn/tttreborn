@@ -24,6 +24,8 @@ namespace TTTReborn.Player
 
         public bool IsInitialSpawning { get; set; } = false;
 
+        public new Inventory Inventory { get; }
+
         private DamageInfo _lastDamageInfo;
 
         private TimeSince _timeSinceDropped = 0;
@@ -248,7 +250,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            PerksInventory perks = (Inventory as Inventory).Perks;
+            PerksInventory perks = Inventory.Perks;
 
             for (int i = 0; i < perks.Count(); i++)
             {

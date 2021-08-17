@@ -21,7 +21,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            PerksInventory perks = (player.Inventory as Inventory).Perks;
+            PerksInventory perks = player.Inventory.Perks;
 
             for (int i = 0; i < perks.Count(); i++)
             {

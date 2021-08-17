@@ -93,7 +93,7 @@ namespace TTTReborn.Items
                 return 0;
             }
 
-            return (owner.Inventory as Inventory).Ammo.Count(AmmoType);
+            return owner.Inventory.Ammo.Count(AmmoType);
         }
 
         public override void ActiveStart(Entity owner)
@@ -127,7 +127,7 @@ namespace TTTReborn.Items
 
             TimeSinceReload = 0;
 
-            if (Owner is TTTPlayer player && !UnlimitedAmmo && (player.Inventory as Inventory).Ammo.Count(AmmoType) <= 0)
+            if (Owner is TTTPlayer player && !UnlimitedAmmo && player.Inventory.Ammo.Count(AmmoType) <= 0)
             {
                 return;
             }
@@ -230,7 +230,7 @@ namespace TTTReborn.Items
 
             if (!UnlimitedAmmo)
             {
-                int ammo = (player.Inventory as Inventory).Ammo.Take(AmmoType, ClipSize - AmmoClip);
+                int ammo = player.Inventory.Ammo.Take(AmmoType, ClipSize - AmmoClip);
 
                 if (ammo == 0)
                 {
