@@ -24,7 +24,11 @@ namespace TTTReborn.Player
 
         public bool IsInitialSpawning { get; set; } = false;
 
-        public new Inventory Inventory { get; }
+        public new Inventory Inventory
+        {
+            get => (Inventory) base.Inventory;
+            private init => base.Inventory = value;
+        }
 
         private DamageInfo _lastDamageInfo;
 
