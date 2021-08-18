@@ -24,13 +24,13 @@ namespace TTTReborn.Items
             new C4Preset
             {
                 timer = 150,
-                wires = 3
+                wires = 2
             },
 
             new C4Preset
             {
                 timer = 300,
-                wires = 5
+                wires = 4
             }
         };
 
@@ -50,6 +50,9 @@ namespace TTTReborn.Items
 
         [Net]
         public C4State State { get; set; } = C4State.Unarmed;
+
+        [Net]
+        public C4TimerPreset CurrentPreset { get; set; } = C4TimerPreset.None;
 
         //Timer display on C4 entity.
         private WorldPanel TimerDisplay;
@@ -77,7 +80,7 @@ namespace TTTReborn.Items
             switch(State)
             {
                 case C4State.Armed:
-                    Disarm();
+                    TryDisarm();
                     break;
 
                 default:
@@ -124,12 +127,12 @@ namespace TTTReborn.Items
                 }
             }
 
-            // If the player moves away from the bomb, close the UI
-            if (_currentUsers.Count > 0)
+            // If the player moves away from the bomb or the bomb becomes armed, close the UI
+            if (_currentUsers.Count > 0 || State == C4State.Armed)
             {
                 for (int i = _currentUsers.Count - 1; i >= 0; i--)
                 {
-                    if (Vector3.DistanceBetween(_currentUsers[i].Controller.Position, this.Position) > 100)
+                    if (Vector3.DistanceBetween(_currentUsers[i].Controller.Position, Position) > 100)
                     {
                         _currentUsers[i].ClientCloseC4Menu();
                         _currentUsers.Remove(_currentUsers[i]);
@@ -137,26 +140,40 @@ namespace TTTReborn.Items
                 }
             }
 
-            Log.Info("Simulate!");
-
             base.Simulate(cl);
         }
 
-        public void Disarm()
+        public void TryDisarm()
         {
+            if (CurrentPreset == C4TimerPreset.None)
+            {
+                Log.Error("CurrentPreset should not be None if we are trying to disarm!");
+                return;
+            }
+
+            // Add a wire minigame in here later
+            // For now, if you randomly roll the wrong wire the bomb explodes
+            var disarmRoll = new Random().Next(1, TimerPresets[(int) CurrentPreset].wires + 1);
+            if (disarmRoll != 1)
+            {
+                _ = Explode();
+                return;
+            }
+
             State = C4State.Disarmed;
             ClientUpdateTimer("--:--");
         }
 
         public async void StartTimer(C4TimerPreset preset)
         {
+            CurrentPreset = preset;
             State = C4State.Armed;
 
             var timeRemaining = TimerPresets[(int)preset].timer + 1;
 
             while (timeRemaining > 0 && IsArmed)
             {
-                if (timeRemaining < 60)
+                if (timeRemaining <= 60)
                 {
                     Sound.FromEntity("c4-beep", this)
                         .SetVolume(0.05f);
@@ -190,6 +207,8 @@ namespace TTTReborn.Items
         //Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
         private async Task Explode()
         {
+            State = C4State.Unarmed;
+
             await Task.DelaySeconds(0.1f);
 
             Sound.FromWorld("rust_pumpshotgun.shootdouble", PhysicsBody.MassCenter);
