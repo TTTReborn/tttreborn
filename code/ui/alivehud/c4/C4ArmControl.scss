@@ -24,45 +24,63 @@ C4ArmControl {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        padding: 16px 30px;
+        padding: 5px 14px;
         background-color: #0007;
         border-bottom: 1px solid #363636;
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
+
+        Button {
+            padding: 6px;
+            height: 32px;
+            border-radius: 2px;
+            border-radius: 8px;
+            background-color: #0007;
+            margin: 5px;
+
+            &:hover {
+                cursor: pointer;
+                opacity: 1;
+                background-color: #df2935;
+            }
+        }
     }
 
     Content {
         flex-direction: column;
         max-height: 600px;
         padding: 16px;
+        width: 100%;
 
         Display {
             display: flex;
             justify-content: center;
-            flex-direction: row;
+            flex-direction: column;
 
             .timer {
-                font-size: 54px;
+                font-size: 64px;
+                text-align: center;
             }
 
             Presets {
                 display: flex;
                 justify-content: center;
                 flex-direction: column;
-                margin-left: 25px;
                 text-align: center;
 
                 PresetButtons {
                     display: flex;
-                    justify-content: space-between;
+                    justify-content: center;
                     flex-direction: row;
+                    padding: 10px;
 
                     Button {
-                        padding: 4px 50px;
+                        padding: 6px 50px;
                         height: 32px;
                         border-radius: 2px;
                         border-radius: 8px;
-                        background-color: #0007;
+                        background-color: #000;
+                        opacity: 0.8;
                         margin: 5px;
 
                         &:hover {
@@ -74,31 +92,36 @@ C4ArmControl {
                 }
             }
         }
+    }
 
-        Controls {
-            display: flex;
-            justify-content: space-between;
-            font-size: 16px;
-            font-weight: 500;
+    Footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 12px 18px;
+        background-color: #0007;
+        border-bottom: 1px solid #363636;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+        width: 100%;
+
+        Button {
+            padding: 10px 60px;
+            height: 38px;
+            border-radius: 2px;
+            border-radius: 8px;
+            background-color: #000;
+            opacity: 0.8;
+            margin: 5px;
             width: 100%;
 
-            Button {
-                padding: 4px 50px;
-                height: 38px;
-                border-radius: 2px;
-                border-radius: 8px;
-                background-color: #0007;
-                margin: 5px;
-                width: 100%;
+            &.armButton {
+                background-color: #df2935;
+            }
 
-                &.armButton {
-                    background-color: #df2935;
-                }
-
-                &:hover {
-                    cursor: pointer;
-                    opacity: 1;
-                }
+            &:hover {
+                cursor: pointer;
+                opacity: 1;
             }
         }
     }

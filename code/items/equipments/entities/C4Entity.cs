@@ -13,19 +13,47 @@ namespace TTTReborn.Items
     [Library("ttt_c4_ent"), Hammer.Skip]
     public partial class C4Entity : Prop, IUse
     {
+        public static C4Preset[] TimerPresets =
+        {
+            new C4Preset
+            {
+                timer = 10,
+                wires = 1
+            },
+
+            new C4Preset
+            {
+                timer = 150,
+                wires = 3
+            },
+
+            new C4Preset
+            {
+                timer = 300,
+                wires = 5
+            }
+        };
+
         private string ModelPath => "models/entities/c4.vmdl";
 
         [Net]
         public int AttachedBone { get; set; } = -1; //Defaults to -1, which indicates no bone attached as this value will not always be set.
 
         [Net]
-        public bool IsArmed { get; set; } = false;
+        public bool IsArmed
+        {
+            get
+            {
+                return State == C4State.Armed;
+            }
+        }
 
         [Net]
         public C4State State { get; set; } = C4State.Unarmed;
 
         //Timer display on C4 entity.
-        private WorldPanel BombDisplay;
+        private WorldPanel TimerDisplay;
+        private Label TimerDisplayLabel;
         private bool CreatedDisplay = false;
 
         private const int BOMB_RADIUS = 1024;
@@ -45,7 +73,6 @@ namespace TTTReborn.Items
         public bool OnUse(Entity user)
         {
             TTTPlayer player = user as TTTPlayer;
-            player.ClientOpenC4Menu(this);
 
             switch(State)
             {
@@ -54,12 +81,18 @@ namespace TTTReborn.Items
                     break;
 
                 default:
-
+                    player.ClientOpenC4Menu(this);
                     break;
             }
+
             _currentUsers.Add(player);
 
             return false;
+        }
+
+        public void UpdateTimerDisplay(string timerString)
+        {
+            TimerDisplayLabel.Text = timerString;
         }
 
         public bool IsUsable(Entity user) => user is TTTPlayer;
@@ -73,21 +106,21 @@ namespace TTTReborn.Items
                     //No way to parent a world panel to an entity :(
                     //We need to find a better way of doing this.
                     //I heard supposedly you can use FrameSimulate, but I was getting weird duplicated results (think Windows XP window glitch)
-                    BombDisplay.Transform = GetAttachment("timer") ?? Transform;
-                    BombDisplay.WorldScale = 0.1f;
+                    TimerDisplay.Transform = GetAttachment("timer") ?? Transform;
+                    TimerDisplay.WorldScale = 0.05f;
 
                     return;
                 }
                 else
                 {
-                    BombDisplay = new WorldPanel();
+                    TimerDisplay = new WorldPanel();
                     CreatedDisplay = true;
 
-                    BombDisplay.AddClass("c4worldtimer");
-                    BombDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
+                    TimerDisplay.AddClass("c4worldtimer");
+                    TimerDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
 
-                    var label = BombDisplay.AddChild<Label>();
-                    label.Text = "--:--";
+                    TimerDisplayLabel = TimerDisplay.AddChild<Label>();
+                    TimerDisplayLabel.Text = "--:--";
                 }
             }
 
@@ -109,10 +142,35 @@ namespace TTTReborn.Items
 
         protected override void OnDestroy()
         {
-            BombDisplay?.Delete();
-            BombDisplay = null;
+            TimerDisplay?.Delete();
+            TimerDisplay = null;
 
             base.OnDestroy();
+        }
+
+        public async void StartTimer(C4TimerPreset preset)
+        {
+            var timeRemaining = TimerPresets[(int)preset].timer;
+
+            while (timeRemaining >= 0)
+            {
+                await GameTask.DelaySeconds(1);
+
+                if (timeRemaining < 60)
+                {
+                    Sound.FromEntity("beepsound", this);
+                }
+
+                timeRemaining -= 1;
+
+                TimeSpan span = TimeSpan.FromSeconds(timeRemaining);
+                string timerString = span.ToString("mm\\:ss");
+
+                // This causes a null ref for some reason
+                // UpdateTimerDisplay(timerString);
+            }
+
+            await Explode();
         }
 
         //Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
@@ -167,6 +225,35 @@ namespace TTTReborn.Items
 
             base.OnKilled();
         }
+
+        [ServerCmd]
+        public static void Arm(int c4EntityIdent, C4TimerPreset preset)
+        {
+            var c4Entity = ((C4Entity) FindByIndex(c4EntityIdent));
+
+            if (c4Entity.State != C4State.Armed)
+            {
+                c4Entity.StartTimer(preset);
+                c4Entity.State = C4State.Armed;
+            }
+        }
+
+        [ServerCmd]
+        public static void Delete(int c4EntityIdent)
+        {
+            FindByIndex(c4EntityIdent).Delete();
+        }
+
+        [ServerCmd]
+        public static void PickUp(int c4EntityIdent, int playerIdent)
+        {
+            var player = FindByIndex(playerIdent);
+
+            if ((player.Inventory as Inventory).TryAdd(new C4Equipment()))
+            {
+                Delete(c4EntityIdent);
+            }
+        }
     }
 
     public enum C4State
@@ -174,5 +261,19 @@ namespace TTTReborn.Items
         Unarmed, //Shows initial timer
         Armed, //Shows wire cutting minigame
         Disarmed //Shows completed wire cutting minigame and "DISARMED" text. 
+    }
+
+    public enum C4TimerPreset
+    {
+        None = -1,
+        Short,
+        Medium,
+        Long
+    }
+
+    public struct C4Preset
+    {
+        public int timer;
+        public int wires;
     }
 }
