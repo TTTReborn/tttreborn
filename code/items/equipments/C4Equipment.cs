@@ -50,35 +50,18 @@ namespace TTTReborn.Items
                        .UseHitboxes()
                        .Run();
 
-                    if (!placementTrace.Hit)
+                    if (!placementTrace.Hit || !placementTrace.Entity.IsWorld)
                     {
                         return;
                     }
 
                     C4Entity bomb = new C4Entity();
 
-                    if (placementTrace.Entity.IsWorld)
-                    {
-                        bomb.PhysicsEnabled = false;
-                    }
-
-                    if (placementTrace.Entity is Prop prop)
-                    {
-                        bomb.CollisionGroup = CollisionGroup.Debris;
-                        bomb.Parent = prop;
-                    }
-
+                    bomb.PhysicsEnabled = false;
                     bomb.Position = placementTrace.EndPos;
                     bomb.WorldAng = placementTrace.Normal.EulerAngles;
                     bomb.Rotation = bomb.Rotation.RotateAroundAxis(Vector3.Right, -90);
                     bomb.Rotation = bomb.Rotation.RotateAroundAxis(Vector3.Up, 90);
-
-                    if (placementTrace.Entity is TTTPlayer player)
-                    {
-                        bomb.EnableSolidCollisions = false;
-                        bomb.AttachedBone = placementTrace.Bone;
-                        bomb.SetParent(player, placementTrace.Bone);
-                    }
 
                     (owner.Inventory as Inventory).Remove(this);
                 }

@@ -51,12 +51,7 @@ namespace TTTReborn.UI
             int wires = C4Entity.TimerPresets[(int) preset].wires;
             int defuseChance = (1f / wires * 100f).FloorToInt();
 
-            _content.UpdatePresetInfo($"1 out of {wires} wires will defuse the bomb ({defuseChance}% chance)");
-        }
-
-        public void Arm()
-        {
-
+            _content.UpdatePresetInfo($"{defuseChance}% chance to defuse");
         }
 
         private class Header : TTTPanel

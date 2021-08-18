@@ -17,7 +17,7 @@ namespace TTTReborn.Items
         {
             new C4Preset
             {
-                timer = 10,
+                timer = 60,
                 wires = 1
             },
 
@@ -57,8 +57,8 @@ namespace TTTReborn.Items
         private bool CreatedDisplay = false;
 
         private const int BOMB_RADIUS = 1024;
-        private const int BOMB_DAMAGE = 500;
-        private const int BOMB_FORCE = 50;
+        private const int BOMB_DAMAGE = 300;
+        private const int BOMB_FORCE = 5;
 
         private List<TTTPlayer> _currentUsers = new();
 
@@ -77,7 +77,7 @@ namespace TTTReborn.Items
             switch(State)
             {
                 case C4State.Armed:
-                    // Open C4 disarm minigame
+                    Disarm();
                     break;
 
                 default:
@@ -137,7 +137,45 @@ namespace TTTReborn.Items
                 }
             }
 
+            Log.Info("Simulate!");
+
             base.Simulate(cl);
+        }
+
+        public void Disarm()
+        {
+            State = C4State.Disarmed;
+            ClientUpdateTimer("--:--");
+        }
+
+        public async void StartTimer(C4TimerPreset preset)
+        {
+            State = C4State.Armed;
+
+            var timeRemaining = TimerPresets[(int)preset].timer + 1;
+
+            while (timeRemaining > 0 && IsArmed)
+            {
+                if (timeRemaining < 60)
+                {
+                    Sound.FromEntity("c4-beep", this)
+                        .SetVolume(0.05f);
+                }
+
+                timeRemaining -= 1;
+
+                TimeSpan span = TimeSpan.FromSeconds(timeRemaining);
+                string timerString = span.ToString("mm\\:ss");
+
+                ClientUpdateTimer(timerString);
+
+                await GameTask.DelaySeconds(1);
+            }
+
+            if (IsArmed)
+            {
+                await Explode();
+            }
         }
 
         protected override void OnDestroy()
@@ -148,30 +186,6 @@ namespace TTTReborn.Items
             base.OnDestroy();
         }
 
-        public async void StartTimer(C4TimerPreset preset)
-        {
-            var timeRemaining = TimerPresets[(int)preset].timer;
-
-            while (timeRemaining >= 0)
-            {
-                await GameTask.DelaySeconds(1);
-
-                if (timeRemaining < 60)
-                {
-                    Sound.FromEntity("beepsound", this);
-                }
-
-                timeRemaining -= 1;
-
-                TimeSpan span = TimeSpan.FromSeconds(timeRemaining);
-                string timerString = span.ToString("mm\\:ss");
-
-                // This causes a null ref for some reason
-                // UpdateTimerDisplay(timerString);
-            }
-
-            await Explode();
-        }
 
         //Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
         private async Task Explode()
@@ -226,6 +240,12 @@ namespace TTTReborn.Items
             base.OnKilled();
         }
 
+        [ClientRpc]
+        public void ClientUpdateTimer(string timerString)
+        {
+            TimerDisplayLabel.Text = timerString;
+        }
+
         [ServerCmd]
         public static void Arm(int c4EntityIdent, C4TimerPreset preset)
         {
@@ -234,7 +254,6 @@ namespace TTTReborn.Items
             if (c4Entity.State != C4State.Armed)
             {
                 c4Entity.StartTimer(preset);
-                c4Entity.State = C4State.Armed;
             }
         }
 
