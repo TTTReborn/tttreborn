@@ -15,6 +15,9 @@ namespace TTTReborn.Player
         public readonly AmmoInventory Ammo;
         public readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 
+        private const int DropPositionOffset = 50;
+        private const int DropVelocity = 500;
+
         public Inventory(TTTPlayer player) : base(player)
         {
             Ammo = new(this);
@@ -151,6 +154,15 @@ namespace TTTReborn.Player
             }
 
             return base.Drop(entity);
+        }
+
+        public bool DropEntity(Entity self, Type entity)
+        {
+            Entity droppedEntity = Utils.GetObjectByType(entity);
+            droppedEntity.Position = Owner.EyePos + Owner.EyeRot.Forward * DropPositionOffset;
+            droppedEntity.Rotation = Owner.EyeRot;
+            droppedEntity.Velocity = Owner.EyeRot.Forward * DropVelocity;
+            return Remove(self);
         }
     }
 }

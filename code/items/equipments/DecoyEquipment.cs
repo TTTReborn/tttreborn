@@ -13,9 +13,6 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "";
         public override SlotType SlotType => SlotType.UtilityEquipment;
 
-        private const int DropPositionOffset = 50;
-        private const int DropVelocity = 500;
-
         public int Price => 0;
 
         public DecoyEquipment() : base()
@@ -46,13 +43,7 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Attack1))
                 {
-                    _ = new DecoyEntity()
-                    {
-                        Position = Owner.EyePos + Owner.EyeRot.Forward * DropPositionOffset,
-                        Rotation = Owner.EyeRot,
-                        Velocity = Owner.EyeRot.Forward * DropVelocity,
-                    };
-                    (owner.Inventory as Inventory).Remove(this);
+                    (owner.Inventory as Inventory).DropEntity(this, typeof(DecoyEntity));
                 }
             }
         }
