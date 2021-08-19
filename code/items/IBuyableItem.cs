@@ -14,16 +14,14 @@ namespace TTTReborn.Items
 
         public bool IsBuyable(TTTPlayer player)
         {
-            Inventory inventory = player.Inventory as Inventory;
-
             if (Type.IsSubclassOf(typeof(TTTPerk)))
             {
-                return !inventory.Perks.Has(Name);
+                return !player.Inventory.Perks.Has(Name);
             }
 
             if (Type.IsSubclassOf(typeof(TTTEquipment)) || Type.IsSubclassOf(typeof(TTTWeapon)))
             {
-                return !inventory.IsCarryingType(Type) && inventory.HasEmptySlot(SlotType);
+                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType);
             }
 
             return false;
@@ -54,7 +52,7 @@ namespace TTTReborn.Items
 
         void OnPurchase(TTTPlayer player)
         {
-            (player.Inventory as Inventory).TryAdd(this);
+            player.Inventory.TryAdd(this);
         }
     }
 }

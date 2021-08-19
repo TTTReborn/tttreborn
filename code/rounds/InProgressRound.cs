@@ -113,29 +113,27 @@ namespace TTTReborn.Rounds
 
         private void SetLoadout(TTTPlayer player)
         {
-            Inventory inventory = player.Inventory as Inventory;
-
-            inventory.TryAdd(new MagnetoStick(), true);
+            player.Inventory.TryAdd(new MagnetoStick(), true);
 
             // Randomize between SMG and shotgun
             if (new Random().Next() % 2 == 0)
             {
-                if (inventory.TryAdd(new Shotgun(), false))
+                if (player.Inventory.TryAdd(new Shotgun(), false))
                 {
-                    inventory.Ammo.Give("buckshot", 16);
+                    player.Inventory.Ammo.Give("buckshot", 16);
                 }
             }
             else
             {
-                if (inventory.TryAdd(new SMG(), false))
+                if (player.Inventory.TryAdd(new SMG(), false))
                 {
-                    inventory.Ammo.Give("smg", 60);
+                    player.Inventory.Ammo.Give("smg", 60);
                 }
             }
 
-            if (inventory.TryAdd(new Pistol(), false))
+            if (player.Inventory.TryAdd(new Pistol(), false))
             {
-                inventory.Ammo.Give("pistol", 30);
+                player.Inventory.Ammo.Give("pistol", 30);
             }
         }
 

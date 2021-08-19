@@ -96,7 +96,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            Radar radar = (player.Inventory as Inventory).Perks.Find<Radar>();
+            Radar radar = player.Inventory.Perks.Find<Radar>();
 
             if (radar == null)
             {

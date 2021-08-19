@@ -35,9 +35,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
-
-            foreach (Entity entity in inventory.List)
+            foreach (Entity entity in player.CurrentPlayer.Inventory.List)
             {
                 if (entity is ICarriableItem carriableItem)
                 {
@@ -55,7 +53,6 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
             ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
 
             bool invalidSlot = false;
@@ -75,7 +72,7 @@ namespace TTTReborn.UI
 
                     if (slot.Carriable is TTTWeapon weapon && weapon.SlotType != SlotType.Melee)
                     {
-                        slot.UpdateAmmo(FormatAmmo(weapon, inventory));
+                        slot.UpdateAmmo(FormatAmmo(weapon, player.CurrentPlayer.Inventory));
                     }
                 }
             }
@@ -137,8 +134,7 @@ namespace TTTReborn.UI
         {
             OnCarriableItemClear();
 
-            Inventory inventory = player.CurrentPlayer.Inventory as Inventory;
-            foreach (Entity entity in inventory.List)
+            foreach (Entity entity in player.Inventory.List)
             {
                 if (entity is ICarriableItem carriableItem)
                 {
@@ -269,9 +265,9 @@ namespace TTTReborn.UI
                 _slotLabel = Add.Label(((int) carriable.SlotType).ToString(), "slotlabel");
                 _carriableLabel = Add.Label(carriable.Name, "carriablelabel");
 
-                if (carriable.SlotType != SlotType.Melee && carriable is TTTWeapon weapon)
+                if (Local.Pawn is TTTPlayer player && carriable is TTTWeapon weapon && carriable.SlotType != SlotType.Melee)
                 {
-                    _ammoLabel = Add.Label(FormatAmmo(weapon, (Local.Pawn as TTTPlayer).Inventory as Inventory), "ammolabel");
+                    _ammoLabel = Add.Label(FormatAmmo(weapon, player.Inventory), "ammolabel");
                 }
             }
 
