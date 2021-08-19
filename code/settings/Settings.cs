@@ -64,17 +64,9 @@ namespace TTTReborn.Settings
 
             settings = Instance;
 
-            // overwrite settings if they got invalid
             if (settings.LoadingError != SettingsLoadingError.None)
             {
-                if (Host.IsClient)
-                {
-                    SettingFunctions.SaveSettings<ClientSettings>(Instance as ClientSettings);
-                }
-                else
-                {
-                    SettingFunctions.SaveSettings<ServerSettings>(Instance as ServerSettings);
-                }
+                Unload(); // overwrite settings if they got invalid
 
                 if (settings.LoadingError != SettingsLoadingError.NotExist)
                 {
