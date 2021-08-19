@@ -74,7 +74,7 @@ namespace TTTReborn.UI
             scoreboardGroup.UpdateLabel();
 
             _entries.Add(entry.Id, scoreboardGroup.AddEntry(entry));
-            
+
             _header.UpdateServerInfo();
         }
 
