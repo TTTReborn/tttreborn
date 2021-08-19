@@ -67,18 +67,14 @@ namespace TTTReborn.UI.Menu
             tabContent.Add.Label($"Sprint enabled?");
             Switch sw = tabContent.Add.Switch("sprint", serverSettings.IsSprintEnabled);
 
-            // TODO remove later due to avoid tons of syncing
             sw.AddEventListener("onchange", (panelEvent) =>
             {
                 serverSettings.IsSprintEnabled = !serverSettings.IsSprintEnabled;
 
+                // TODO Can be improved to avoid syncing EVERYTHING
+                // send settings to server
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
-
-            // TODO add save button to sync settings back to the server
-            // TODO reuse save as button
-            // TODO reuse load from button
-            // TODO update server settings for other admins that have the settings opened -> needed? Discuss!
         }
     }
 }
@@ -116,6 +112,8 @@ namespace TTTReborn.Player
             }
 
             SettingsManager.Instance = serverSettings;
+
+            // TODO Update server settings for other admins that have the settings opened -> needed? Discuss!
         }
 
         [ClientRpc]
