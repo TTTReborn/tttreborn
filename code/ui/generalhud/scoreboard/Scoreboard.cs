@@ -70,11 +70,13 @@ namespace TTTReborn.UI
         private void AddPlayer(PlayerScore.Entry entry)
         {
             ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
+            ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry(entry);
+
             scoreboardGroup.GroupMembers++;
+
+            _entries.Add(entry.Id, scoreboardEntry);
+
             scoreboardGroup.UpdateLabel();
-
-            _entries.Add(entry.Id, scoreboardGroup.AddEntry(entry));
-
             _header.UpdateServerInfo();
         }
 
