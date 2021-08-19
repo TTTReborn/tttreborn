@@ -42,10 +42,7 @@ namespace TTTReborn.Items
         [Net]
         public bool IsArmed
         {
-            get
-            {
-                return State == C4State.Armed;
-            }
+            get => State == C4State.Armed;
         }
 
         [Net]
