@@ -1,11 +1,9 @@
 Scoreboard {
     position: absolute;
-    left: 50%;
-    top: 50%;
     font-family: Poppins;
     border-radius: 8px;
     width: 1200px;
-    transform: translateX(-50%) translateY(-60%);
+    left: 50%;
     border: 1px solid #1b1b1b;
     color: #fafafa;
     opacity: 0;
@@ -14,6 +12,8 @@ Scoreboard {
     display: flex;
     flex-direction: column;
     background-color: #000c;
+    align-self: center;
+    transform: translateX(-50%);
 
     &.open {
         opacity: 1;
