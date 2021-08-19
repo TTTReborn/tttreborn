@@ -87,7 +87,12 @@ namespace TTTReborn.UI.Menu
 
             fileName = fileName.Split('/')[^1].Split('.')[0];
 
-            if ((Utils.Realm) SettingsTabs.SelectedTab.Value == Utils.Realm.Client)
+            if (SettingsTabs.SelectedTab.Value is not Utils.Realm realm)
+            {
+                return;
+            }
+
+            if (realm == Utils.Realm.Client)
             {
                 if (!FileSystem.Data.FileExists(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
                 {
@@ -98,7 +103,7 @@ namespace TTTReborn.UI.Menu
                     AskOverwriteSelectedSettings(fileSelection.CurrentFolderPath, fileName, () => SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings, fileSelection.CurrentFolderPath, fileName));
                 }
             }
-            else if ((Utils.Realm) SettingsTabs.SelectedTab.Value == Utils.Realm.Server)
+            else if (realm == Utils.Realm.Server)
             {
                 ConsoleSystem.Run("ttt_serversettings_saveas_request", fileSelection.CurrentFolderPath, fileName);
             }
@@ -138,7 +143,12 @@ namespace TTTReborn.UI.Menu
 
             fileName = fileName.Split('/')[^1].Split('.')[0];
 
-            if ((Utils.Realm) SettingsTabs.SelectedTab.Value == Utils.Realm.Client)
+            if (SettingsTabs.SelectedTab.Value is not Utils.Realm realm)
+            {
+                return;
+            }
+
+            if (realm == Utils.Realm.Client)
             {
                 SettingsManager.Instance = SettingFunctions.LoadSettings<ClientSettings>(fileSelection.CurrentFolderPath, fileName);
 
@@ -156,7 +166,7 @@ namespace TTTReborn.UI.Menu
 
                 AskDefaultSettingsChange(fileSelection.CurrentFolderPath, fileName, () => SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings));
             }
-            else if ((Utils.Realm) SettingsTabs.SelectedTab.Value == Utils.Realm.Server)
+            else if (realm == Utils.Realm.Server)
             {
                 ConsoleSystem.Run("ttt_serversettings_loadfrom_request", fileSelection.CurrentFolderPath, fileName);
             }
