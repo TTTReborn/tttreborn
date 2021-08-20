@@ -13,7 +13,7 @@ namespace TTTReborn.Settings
             get => DefaultWalkController.IsSprintEnabled;
             set
             {
-                if (DefaultWalkController.IsSprintEnabled == value)
+                if (!RealmCheck() || DefaultWalkController.IsSprintEnabled == value)
                 {
                     return;
                 }

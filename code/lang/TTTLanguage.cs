@@ -14,7 +14,7 @@ namespace TTTReborn.Settings
             get => TTTLanguage.ActiveLanguage.Data.Code;
             set
             {
-                if (TTTLanguage.ActiveLanguage.Data.Code == value)
+                if (!RealmCheck() || TTTLanguage.ActiveLanguage.Data.Code == value)
                 {
                     return;
                 }

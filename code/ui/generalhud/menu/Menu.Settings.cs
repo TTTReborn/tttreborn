@@ -106,7 +106,7 @@ namespace TTTReborn.Player
 
             ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
 
-            if (serverSettingsJson == null)
+            if (serverSettings == null)
             {
                 return;
             }
@@ -128,7 +128,7 @@ namespace TTTReborn.Player
 
             ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
 
-            if (serverSettingsJson == null)
+            if (serverSettings == null)
             {
                 return;
             }

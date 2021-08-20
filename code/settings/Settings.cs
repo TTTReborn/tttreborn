@@ -17,6 +17,11 @@ namespace TTTReborn.Settings
         {
 
         }
+
+        public bool RealmCheck()
+        {
+            return Host.IsServer && this is ServerSettings || Host.IsClient && this is ClientSettings;
+        }
     }
 
     public partial class ServerSettings : Settings
@@ -51,8 +56,6 @@ namespace TTTReborn.Settings
 
         public static void Load()
         {
-            Settings settings = null;
-
             if (Host.IsClient)
             {
                 Instance = SettingFunctions.LoadSettings<ClientSettings>();
@@ -62,13 +65,11 @@ namespace TTTReborn.Settings
                 Instance = SettingFunctions.LoadSettings<ServerSettings>();
             }
 
-            settings = Instance;
-
-            if (settings.LoadingError != SettingsLoadingError.None)
+            if (Instance.LoadingError != SettingsLoadingError.None)
             {
                 Unload(); // overwrite settings if they got invalid
 
-                if (settings.LoadingError != SettingsLoadingError.NotExist)
+                if (Instance.LoadingError != SettingsLoadingError.NotExist)
                 {
                     Log.Warning("Your TTT Reborn settings were overwritten (reset) due to an error in the file!");
                 }
