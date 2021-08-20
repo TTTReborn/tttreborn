@@ -15,12 +15,17 @@ namespace TTTReborn.UI
     {
         public TTTPlayer User { get; set; }
         public C4Entity Entity { get; set; }
+        public bool IsPresetSelected { get; set; } = false;
 
         private readonly Header _header;
         private readonly Content _content;
         private readonly Footer _footer;
 
-        private C4TimerPreset Preset;
+        public static string TimerString(int time)
+        {
+            TimeSpan span = TimeSpan.FromSeconds(time);
+            return span.ToString("mm\\:ss");
+        }
 
         public C4ArmControl()
         {
@@ -40,18 +45,31 @@ namespace TTTReborn.UI
             Open();
         }
 
-        public void SetTimer(C4TimerPreset preset)
+        public void SetTimer(C4Preset preset)
         {
-            TimeSpan span = TimeSpan.FromSeconds(C4Entity.TimerPresets[(int) preset].timer);
-            string timerString = span.ToString("mm\\:ss");
+            var timerString = TimerString(preset.timer);
 
             Entity.UpdateTimerDisplay(timerString);
             _content.UpdateTimer(timerString);
 
-            int wires = C4Entity.TimerPresets[(int) preset].wires;
+            int wires = preset.wires;
             int defuseChance = (1f / wires * 100f).FloorToInt();
 
             _content.UpdatePresetInfo($"{defuseChance}% chance to defuse");
+        }
+
+        public override void Tick()
+        {
+            if (IsShowing && User != null && Entity != null)
+            {
+                // If the player moves away from the bomb or the bomb becomes armed, close the UI
+                if (Vector3.DistanceBetween(User.Position, Entity.Position) > 100 || Entity.IsArmed)
+                {
+                    Close();
+                }
+            }
+
+            base.Tick();
         }
 
         private class Header : TTTPanel
@@ -132,9 +150,7 @@ namespace TTTReborn.UI
 
                     public class PresetButtons : TTTPanel
                     {
-                        private Button _presetShort;
-                        private Button _presetMedium;
-                        private Button _presetLong;
+                        private List<Button> _presetButtons;
 
                         public PresetButtons(Panel parent)
                         {
@@ -142,27 +158,23 @@ namespace TTTReborn.UI
 
                             var controls = (C4ArmControl) Parent.Parent.Parent.Parent;
 
-                            _presetShort = Add.Button("Short");
-                            _presetMedium = Add.Button("Medium");
-                            _presetLong = Add.Button("Long");
+                            _presetButtons = new List<Button>();
 
-                            _presetShort.AddEventListener("onclick", () =>
+                            for (int i = 0; i < C4Entity.TimerPresets.Length; i++)
                             {
-                                controls.SetTimer(C4TimerPreset.Short);
-                                controls.Preset = C4TimerPreset.Short;
-                            });
+                                var preset = C4Entity.TimerPresets[i];
 
-                            _presetMedium.AddEventListener("onclick", () =>
-                            {
-                                controls.SetTimer(C4TimerPreset.Medium);
-                                controls.Preset = C4TimerPreset.Medium;
-                            });
+                                var button = Add.Button(TimerString(preset.timer));
+                                button.AddEventListener("onclick", () =>
+                                {
+                                    // Somehow set the CurrentPreset of the C4 Entity
 
-                            _presetLong.AddEventListener("onclick", () =>
-                            {
-                                controls.SetTimer(C4TimerPreset.Long);
-                                controls.Preset = C4TimerPreset.Long;
-                            });
+                                    controls.SetTimer(preset);
+                                    controls.IsPresetSelected = true;
+                                });
+
+                                _presetButtons.Add(button);
+                            }
                         }
                     }
                 }
@@ -199,13 +211,11 @@ namespace TTTReborn.UI
 
                 _armButton.AddEventListener("onclick", () =>
                 {
-                    if (armControl.Preset == C4TimerPreset.None)
+                    if (armControl.IsPresetSelected)
                     {
-                        return;
+                        C4Entity.Arm(armControl.Entity.NetworkIdent);
+                        armControl.Close();
                     }
-
-                    C4Entity.Arm(armControl.Entity.NetworkIdent, armControl.Preset);
-                    armControl.Close();
                 });
 
             }

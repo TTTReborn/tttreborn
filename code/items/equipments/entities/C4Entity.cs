@@ -40,16 +40,10 @@ namespace TTTReborn.Items
         public int AttachedBone { get; set; } = -1; //Defaults to -1, which indicates no bone attached as this value will not always be set.
 
         [Net]
-        public bool IsArmed
-        {
-            get => State == C4State.Armed;
-        }
+        public bool IsArmed { get; set; } = false;
 
         [Net]
-        public C4State State { get; set; } = C4State.Unarmed;
-
-        [Net]
-        public C4TimerPreset CurrentPreset { get; set; } = C4TimerPreset.None;
+        public C4Preset CurrentPreset { get; set; } = TimerPresets[0];
 
         //Timer display on C4 entity.
         private WorldPanel TimerDisplay;
@@ -60,7 +54,7 @@ namespace TTTReborn.Items
         private const int BOMB_DAMAGE = 300;
         private const int BOMB_FORCE = 5;
 
-        private List<TTTPlayer> _currentUsers = new();
+        private const string EMPTY_TIMER = "--:--";
 
         public override void Spawn()
         {
@@ -74,18 +68,14 @@ namespace TTTReborn.Items
         {
             TTTPlayer player = user as TTTPlayer;
 
-            switch(State)
+            if (IsArmed)
             {
-                case C4State.Armed:
-                    TryDisarm();
-                    break;
-
-                default:
-                    player.ClientOpenC4Menu(this);
-                    break;
+                TryDisarm();
             }
-
-            _currentUsers.Add(player);
+            else
+            {
+                player.ClientOpenC4Menu(this);
+            }
 
             return false;
         }
@@ -120,20 +110,7 @@ namespace TTTReborn.Items
                     TimerDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
 
                     TimerDisplayLabel = TimerDisplay.AddChild<Label>();
-                    TimerDisplayLabel.Text = "--:--";
-                }
-            }
-
-            // If the player moves away from the bomb or the bomb becomes armed, close the UI
-            if (_currentUsers.Count > 0 || State == C4State.Armed)
-            {
-                for (int i = _currentUsers.Count - 1; i >= 0; i--)
-                {
-                    if (Vector3.DistanceBetween(_currentUsers[i].Controller.Position, Position) > 100)
-                    {
-                        _currentUsers[i].ClientCloseC4Menu();
-                        _currentUsers.Remove(_currentUsers[i]);
-                    }
+                    TimerDisplayLabel.Text = EMPTY_TIMER;
                 }
             }
 
@@ -142,31 +119,25 @@ namespace TTTReborn.Items
 
         public void TryDisarm()
         {
-            if (CurrentPreset == C4TimerPreset.None)
-            {
-                Log.Error("CurrentPreset should not be None if we are trying to disarm!");
-                return;
-            }
-
             // Add a wire minigame in here later
             // For now, if you randomly roll the wrong wire the bomb explodes
-            var disarmRoll = new Random().Next(1, TimerPresets[(int) CurrentPreset].wires + 1);
+            var disarmRoll = new Random().Next(1, CurrentPreset.wires + 1);
             if (disarmRoll != 1)
             {
                 _ = Explode();
                 return;
             }
 
-            State = C4State.Disarmed;
-            ClientUpdateTimer("--:--");
+            IsArmed = false;
+
+            ClientUpdateTimer(EMPTY_TIMER);
         }
 
-        public async void StartTimer(C4TimerPreset preset)
+        public async void StartTimer()
         {
-            CurrentPreset = preset;
-            State = C4State.Armed;
+            IsArmed = true;
 
-            var timeRemaining = TimerPresets[(int)preset].timer + 1;
+            var timeRemaining = CurrentPreset.timer + 1;
 
             while (timeRemaining > 0 && IsArmed)
             {
@@ -204,7 +175,7 @@ namespace TTTReborn.Items
         //Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
         private async Task Explode()
         {
-            State = C4State.Unarmed;
+            IsArmed = false;
 
             await Task.DelaySeconds(0.1f);
 
@@ -263,20 +234,22 @@ namespace TTTReborn.Items
         }
 
         [ServerCmd]
-        public static void Arm(int c4EntityIdent, C4TimerPreset preset)
+        public static void Arm(int c4EntityIdent)
         {
             var c4Entity = ((C4Entity) FindByIndex(c4EntityIdent));
 
-            if (c4Entity.State != C4State.Armed)
+            if (c4Entity != null && !c4Entity.IsArmed)
             {
-                c4Entity.StartTimer(preset);
+                c4Entity.StartTimer();
             }
         }
 
         [ServerCmd]
         public static void Delete(int c4EntityIdent)
         {
-            FindByIndex(c4EntityIdent).Delete();
+            var c4Entity = FindByIndex(c4EntityIdent);
+
+            c4Entity?.Delete();
         }
 
         [ServerCmd]
@@ -284,26 +257,14 @@ namespace TTTReborn.Items
         {
             var player = FindByIndex(playerIdent);
 
-            if ((player.Inventory as Inventory).TryAdd(new C4Equipment()))
+            if (player != null)
             {
-                Delete(c4EntityIdent);
+                if ((player.Inventory as Inventory).TryAdd(new C4Equipment()))
+                {
+                    Delete(c4EntityIdent);
+                }
             }
         }
-    }
-
-    public enum C4State
-    {
-        Unarmed, //Shows initial timer
-        Armed, //Shows wire cutting minigame
-        Disarmed //Shows completed wire cutting minigame and "DISARMED" text. 
-    }
-
-    public enum C4TimerPreset
-    {
-        None = -1,
-        Short,
-        Medium,
-        Long
     }
 
     public struct C4Preset
