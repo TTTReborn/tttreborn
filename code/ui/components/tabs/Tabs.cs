@@ -57,6 +57,19 @@ namespace TTTReborn.UI
 
             OnTabSelected?.Invoke(SelectedTab);
         }
+
+        public void SelectByValue(object data)
+        {
+            foreach (Tab tab in TabList)
+            {
+                if (tab.Value.Equals(data))
+                {
+                    OnSelectTab(tab);
+
+                    return;
+                }
+            }
+        }
     }
 }
 

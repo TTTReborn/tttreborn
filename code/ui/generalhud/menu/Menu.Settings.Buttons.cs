@@ -248,6 +248,7 @@ namespace TTTReborn.Player
             {
                 // refresh settings
                 menu.MenuContent.SetPanelContent(menu.OpenSettings);
+                menu.SettingsTabs?.SelectByValue(Utils.Realm.Server);
 
                 menu.ServerSettingsFileSelection?.Close();
             }
