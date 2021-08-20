@@ -58,7 +58,7 @@ namespace TTTReborn.Globalization
                     Log.Warning($"Tried to get a language that does not exist: '{name}'.");
                 }
             }
-            catch (Exception) {}
+            catch (Exception) { }
 
             return lang ?? GetLanguageByCode(FALLBACK_LANGUAGE);
         }
