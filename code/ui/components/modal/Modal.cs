@@ -21,11 +21,18 @@ namespace TTTReborn.UI
             OnDisplay?.Invoke(this);
         }
 
-        public virtual void Close()
+        public virtual void Close(bool delete = false)
         {
             OnClose?.Invoke(this);
 
-            IsShowing = false;
+            if (delete)
+            {
+                Delete(true);
+            }
+            else
+            {
+                IsShowing = false;
+            }
         }
     }
 }

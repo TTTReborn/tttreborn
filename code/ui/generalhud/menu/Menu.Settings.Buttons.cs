@@ -13,6 +13,8 @@ namespace TTTReborn.UI.Menu
     {
         public FileSelection ServerSettingsFileSelection { get; private set; }
 
+        private FileSelection _currentFileSelection;
+
         private string GetSettingsPathByData(object data)
         {
             if (data is Utils.Realm realm)
@@ -36,16 +38,22 @@ namespace TTTReborn.UI.Menu
 
             buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
             {
+                _currentFileSelection?.Close();
+
                 FileSelection fileSelection = FindRootPanel().Add.FileSelection();
                 fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
                 fileSelection.OnAgree = () => OnAgreeSaveAs(fileSelection);
                 fileSelection.DefaultSelectionPath = GetSettingsPathByData(SettingsTabs.SelectedTab.Value);
                 fileSelection.EnableFileNameEntry();
                 fileSelection.Display();
+
+                _currentFileSelection = fileSelection;
             });
 
             buttonsWrapperPanel.Add.Button("Load from", "fileselectionbutton", () =>
             {
+                _currentFileSelection?.Close();
+
                 FileSelection fileSelection = FindRootPanel().Add.FileSelection();
                 fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
                 fileSelection.OnAgree = () => OnAgreeLoadFrom(fileSelection, menuContent);
@@ -71,6 +79,8 @@ namespace TTTReborn.UI.Menu
                 }
 
                 fileSelection.Display();
+
+                _currentFileSelection = fileSelection;
             });
         }
 
