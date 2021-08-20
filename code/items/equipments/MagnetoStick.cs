@@ -19,6 +19,7 @@ namespace TTTReborn.Items
         private WeldJoint _holdJoint;
 
         private PhysicsBody _heldBody;
+        private int _heldBone;
         private Rotation _heldRot;
 
         private float _holdDistance = 0f;
@@ -98,7 +99,7 @@ namespace TTTReborn.Items
             }
         }
 
-        private void GrabInit(PhysicsBody body, Vector3 startPos, Vector3 grabPos, Rotation rot)
+        private void GrabInit(PhysicsBody body, int bone, Vector3 startPos, Vector3 grabPos, Rotation rot)
         {
             if (!body.IsValid())
             {
@@ -108,6 +109,7 @@ namespace TTTReborn.Items
             GrabEnd();
 
             _heldBody = body;
+            _heldBone = bone;
             _holdDistance = Vector3.DistanceBetween(startPos, grabPos);
             _holdDistance = _holdDistance.Clamp(0, _grabbingDistance);
 
@@ -189,6 +191,7 @@ namespace TTTReborn.Items
 
             Entity rootEnt = tr.Entity.Root;
             PhysicsBody body = tr.Body;
+            int bone = tr.Bone;
 
             if (tr.Entity.Parent.IsValid() && rootEnt.IsValid() && rootEnt.PhysicsGroup != null)
             {
@@ -207,7 +210,7 @@ namespace TTTReborn.Items
                 body.BodyType = PhysicsBodyType.Dynamic;
             }
 
-            GrabInit(body, eyePos, tr.EndPos, eyeRot);
+            GrabInit(body, bone, eyePos, tr.EndPos, eyeRot);
 
             GrabbedEntity = rootEnt;
 
@@ -244,19 +247,21 @@ namespace TTTReborn.Items
                 }
 
                 Particles rope = Particles.Create("particles/rope.vpcf");
-                rope.SetEntity(0, _heldBody.Entity);
+                rope.SetEntityBone(0, _heldBody.Entity, _heldBone, new Transform(_heldBody.Transform.PointToLocal(_heldBody.Position) * (1.0f / _heldBody.Entity.Scale)));
                 rope.SetPosition(1, tr.Body.Transform.PointToLocal(tr.EndPos));
 
+                SpringJoint spring = PhysicsJoint.Spring
+                        .From(_heldBody, _heldBody.Transform.PointToLocal(_heldBody.Position))
+                        .To(tr.Body, tr.Body.Transform.PointToLocal(tr.EndPos))
+                        .WithFrequency(1f)
+                        .WithDampingRatio(1f)
+                        .WithReferenceMass(_heldBody.PhysicsGroup.Mass)
+                        .WithMinRestLength(0)
+                        .WithMaxRestLength(10f)
+                        .Create();
+
                 playerCorpse.Ropes.Add(rope);
-                playerCorpse.RopeSprings.Add(
-                    PhysicsJoint.Spring
-                        .From(_heldBody)
-                        .To(tr.Body)
-                        .WithPivot(tr.EndPos)
-                        .WithDampingRatio(5f)
-                        .WithFrequency(8f)
-                        .Create()
-                );
+                playerCorpse.RopeSprings.Add(spring);
             }
         }
 
