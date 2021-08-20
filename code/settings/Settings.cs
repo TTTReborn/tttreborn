@@ -17,11 +17,6 @@ namespace TTTReborn.Settings
         {
 
         }
-
-        public bool RealmCheck()
-        {
-            return Host.IsServer && this is ServerSettings || Host.IsClient && this is ClientSettings;
-        }
     }
 
     public partial class ServerSettings : Settings
@@ -52,7 +47,22 @@ namespace TTTReborn.Settings
 
     public partial class SettingsManager
     {
-        public static Settings Instance;
+        public static Settings Instance
+        {
+            get => _instance;
+            set
+            {
+                if (_instance == value)
+                {
+                    return;
+                }
+
+                _instance = value;
+
+                Event.Run("tttreborn.settings.instance.change");
+            }
+        }
+        private static Settings _instance;
 
         public static void Load()
         {

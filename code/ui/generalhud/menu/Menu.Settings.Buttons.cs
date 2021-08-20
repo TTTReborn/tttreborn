@@ -159,38 +159,17 @@ namespace TTTReborn.UI.Menu
                     return;
                 }
 
+                SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings);
+
                 fileSelection.Close();
 
                 // refresh settings
                 menuContent.SetPanelContent(OpenSettings);
-
-                AskDefaultSettingsChange(fileSelection.CurrentFolderPath, fileName, () => SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings));
             }
             else if (realm == Utils.Realm.Server)
             {
                 ConsoleSystem.Run("ttt_serversettings_loadfrom_request", fileSelection.CurrentFolderPath, fileName);
             }
-        }
-
-        internal static void AskDefaultSettingsChange(string folderPath, string fileName, Action onConfirm)
-        {
-            DialogBox dialogBox = new DialogBox();
-            dialogBox.TitleLabel.Text = "Default settings";
-            dialogBox.AddText($"Do you want to use '{folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION}' as the default settings? (If you agree, the current default settings will be overwritten!)");
-            dialogBox.OnAgree = () =>
-            {
-                onConfirm();
-
-                dialogBox.Close();
-            };
-            dialogBox.OnDecline = () =>
-            {
-                dialogBox.Close();
-            };
-
-            Hud.Current.RootPanel.AddChild(dialogBox);
-
-            dialogBox.Display();
         }
     }
 }
@@ -245,11 +224,13 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ClientAskDefaultSettingsChange(To.Single(ConsoleSystem.Caller), filePath, fileName);
+            SettingFunctions.SaveSettings<ServerSettings>(SettingsManager.Instance as ServerSettings);
+
+            ClientFinishServerSettingsLoading(To.Single(ConsoleSystem.Caller), filePath, fileName);
         }
 
         [ClientRpc]
-        public static void ClientAskDefaultSettingsChange(string filePath, string fileName)
+        public static void ClientFinishServerSettingsLoading(string filePath, string fileName)
         {
             Menu menu = Menu.Instance;
 
@@ -260,22 +241,6 @@ namespace TTTReborn.Player
 
                 menu.ServerSettingsFileSelection?.Close();
             }
-
-            Menu.AskDefaultSettingsChange(filePath, fileName, () =>
-            {
-                ConsoleSystem.Run("ttt_serversettings_overwritedefault");
-            });
-        }
-
-        [ServerCmd(Name = "ttt_serversettings_overwritedefault")]
-        public static void OverwriteDefault()
-        {
-            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
-            {
-                return;
-            }
-
-            SettingFunctions.SaveSettings<ServerSettings>(SettingsManager.Instance as ServerSettings);
         }
     }
 }

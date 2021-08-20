@@ -4,6 +4,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
 using TTTReborn.Roles;
+using TTTReborn.Settings;
 
 namespace TTTReborn.UI
 {
@@ -30,7 +31,6 @@ namespace TTTReborn.UI
 
             private TTTRole _currentRole;
             private TTTPlayer _currentPlayer;
-
 
             public RolePanel(Panel parent)
             {

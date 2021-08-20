@@ -84,7 +84,7 @@ namespace TTTReborn.UI
         {
             foreach (DropdownOption option in Options)
             {
-                if (option.Data == data)
+                if (option.Data.Equals(data))
                 {
                     SelectedOption = option;
 
