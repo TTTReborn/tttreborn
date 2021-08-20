@@ -23,10 +23,7 @@ namespace TTTReborn.Settings
     {
         public static ServerSettings Instance
         {
-            get
-            {
-                return SettingsManager.Instance as ServerSettings;
-            }
+            get => SettingsManager.Instance as ServerSettings;
         }
 
         public ServerSettings() : base()
@@ -39,10 +36,7 @@ namespace TTTReborn.Settings
     {
         public static ClientSettings Instance
         {
-            get
-            {
-                return SettingsManager.Instance as ClientSettings;
-            }
+            get => SettingsManager.Instance as ClientSettings;
         }
 
         public ClientSettings() : base()
