@@ -1,21 +1,15 @@
-namespace TTTReborn.Gamemode
+namespace TTTReborn.Settings
 {
-    public partial class Game
+    public partial class ServerSettings
     {
-        [ServerVar("ttt_min_players", Help = "The minimum players required to start.")]
-        public static int TTTMinPlayers { get; set; } = 2;
+        public int TTTMinPlayers { get; set; } = 2; // The minimum players required to start.
 
-        [ServerVar("ttt_preround_timer", Help = "The amount of time allowed for preparation.")]
-        public static int TTTPreRoundTime { get; set; } = 20;
+        public int TTTPreRoundTime { get; set; } = 20; // The amount of time allowed for preparation.
 
-        [ServerVar("ttt_round_timer", Help = "The amount of time allowed for the main round.")]
-        public static int TTTRoundTime { get; set; } = 300;
+        public int TTTRoundTime { get; set; } = 300; // The amount of time allowed for the main round.
 
-        [ServerVar("ttt_postround_timer", Help = "The amount of time before the next round starts.")]
-        public static int TTTPostRoundTime { get; set; } = 10;
+        public int TTTPostRoundTime { get; set; } = 10; // The amount of time before the next round starts.
 
-        [ServerVar("ttt_kill_time_reward", Help = "The amount of extra time given to traitors for killing an innocent.")]
-        public static int TTTKillTimeReward { get; set; } = 30;
+        public int TTTKillTimeReward { get; set; } = 30; // The amount of extra time given to traitors for killing an innocent.
     }
-
 }

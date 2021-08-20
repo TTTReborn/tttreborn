@@ -15,7 +15,10 @@ namespace TTTReborn.Rounds
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
-        public override int RoundDuration => Gamemode.Game.TTTRoundTime;
+        public override int RoundDuration
+        {
+            get => (Settings.SettingsManager.Instance as Settings.ServerSettings).TTTRoundTime;
+        }
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
