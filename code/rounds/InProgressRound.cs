@@ -17,7 +17,7 @@ namespace TTTReborn.Rounds
         public override string RoundName => "In Progress";
         public override int RoundDuration
         {
-            get => (Settings.SettingsManager.Instance as Settings.ServerSettings).TTTRoundTime;
+            get => Settings.ServerSettings.Instance.TTTRoundTime;
         }
 
         public override void OnPlayerKilled(TTTPlayer player)

@@ -93,7 +93,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), SettingFunctions.GetJSON<ServerSettings>(SettingsManager.Instance as ServerSettings, true));
+            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), SettingFunctions.GetJSON<ServerSettings>(ServerSettings.Instance, true));
         }
 
         [ServerCmd(Name = "ttt_serversettings_send")]
@@ -113,7 +113,7 @@ namespace TTTReborn.Player
 
             SettingsManager.Instance = serverSettings;
 
-            SettingFunctions.SaveSettings<ServerSettings>(SettingsManager.Instance as ServerSettings);
+            SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
 
             // TODO Update server settings for other admins that have the settings opened -> needed? Discuss!
         }

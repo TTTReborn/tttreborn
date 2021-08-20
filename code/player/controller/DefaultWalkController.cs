@@ -142,7 +142,7 @@ namespace TTTReborn.Player
         {
             if (Host.IsServer)
             {
-                TTTPlayer.ClientSendToggleSprint((SettingsManager.Instance as ServerSettings).IsSprintEnabled);
+                TTTPlayer.ClientSendToggleSprint(ServerSettings.Instance.IsSprintEnabled);
             }
         }
     }

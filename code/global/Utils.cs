@@ -88,7 +88,7 @@ namespace TTTReborn.Globals
 
         public static bool HasMinimumPlayers()
         {
-            return Client.All.Count >= (Settings.SettingsManager.Instance as Settings.ServerSettings).TTTMinPlayers;
+            return Client.All.Count >= Settings.ServerSettings.Instance.TTTMinPlayers;
         }
 
         /// <summary>

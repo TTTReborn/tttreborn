@@ -96,11 +96,11 @@ namespace TTTReborn.UI.Menu
             {
                 if (!FileSystem.Data.FileExists(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
                 {
-                    SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings, fileSelection.CurrentFolderPath, fileName);
+                    SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance, fileSelection.CurrentFolderPath, fileName);
                 }
                 else
                 {
-                    AskOverwriteSelectedSettings(fileSelection.CurrentFolderPath, fileName, () => SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings, fileSelection.CurrentFolderPath, fileName));
+                    AskOverwriteSelectedSettings(fileSelection.CurrentFolderPath, fileName, () => SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance, fileSelection.CurrentFolderPath, fileName));
                 }
             }
             else if (realm == Utils.Realm.Server)
@@ -159,7 +159,7 @@ namespace TTTReborn.UI.Menu
                     return;
                 }
 
-                SettingFunctions.SaveSettings<ClientSettings>(SettingsManager.Instance as ClientSettings);
+                SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
 
                 fileSelection.Close();
 
@@ -190,7 +190,7 @@ namespace TTTReborn.Player
 
             if (overwrite || !FileSystem.Data.FileExists(filePath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
             {
-                SettingFunctions.SaveSettings<ServerSettings>(SettingsManager.Instance as ServerSettings, filePath, fileName);
+                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance, filePath, fileName);
             }
             else
             {
@@ -224,7 +224,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            SettingFunctions.SaveSettings<ServerSettings>(SettingsManager.Instance as ServerSettings);
+            SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
 
             ClientFinishServerSettingsLoading(To.Single(ConsoleSystem.Caller), filePath, fileName);
         }

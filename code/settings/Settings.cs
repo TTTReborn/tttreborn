@@ -21,6 +21,14 @@ namespace TTTReborn.Settings
 
     public partial class ServerSettings : Settings
     {
+        public static ServerSettings Instance
+        {
+            get
+            {
+                return SettingsManager.Instance as ServerSettings;
+            }
+        }
+
         public ServerSettings() : base()
         {
 
@@ -29,6 +37,14 @@ namespace TTTReborn.Settings
 
     public partial class ClientSettings : Settings
     {
+        public static ClientSettings Instance
+        {
+            get
+            {
+                return SettingsManager.Instance as ClientSettings;
+            }
+        }
+
         public ClientSettings() : base()
         {
 
@@ -90,11 +106,11 @@ namespace TTTReborn.Settings
         {
             if (Host.IsClient)
             {
-                SettingFunctions.SaveSettings<ClientSettings>(Instance as ClientSettings);
+                SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
             }
             else
             {
-                SettingFunctions.SaveSettings<ServerSettings>(Instance as ServerSettings);
+                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
             }
         }
     }

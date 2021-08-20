@@ -12,7 +12,7 @@ namespace TTTReborn.Rounds
         public override string RoundName => "Post";
         public override int RoundDuration
         {
-            get => (Settings.SettingsManager.Instance as Settings.ServerSettings).TTTPostRoundTime;
+            get => Settings.ServerSettings.Instance.TTTPostRoundTime;
         }
 
         protected override void OnTimeUp()
