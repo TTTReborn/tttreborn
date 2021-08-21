@@ -74,7 +74,7 @@ namespace TTTReborn.Items
             }
             else
             {
-                player.ClientOpenC4Menu(this);
+                player.ClientOpenC4Menu(To.Single(player), this);
             }
 
             return false;

@@ -49,7 +49,6 @@ namespace TTTReborn.UI
         {
             var timerString = TimerString(preset.timer);
 
-            Entity.UpdateTimerDisplay(timerString);
             _content.UpdateTimer(timerString);
 
             int wires = preset.wires;
@@ -63,7 +62,7 @@ namespace TTTReborn.UI
             if (IsShowing && User != null && Entity != null)
             {
                 // If the player moves away from the bomb or the bomb becomes armed, close the UI
-                if (Vector3.DistanceBetween(User.Position, Entity.Position) > 100 || Entity.IsArmed)
+                if (!Entity.IsValid() || Vector3.DistanceBetween(User.Position, Entity.Position) > 100 || Entity.IsArmed)
                 {
                     Close();
                 }
