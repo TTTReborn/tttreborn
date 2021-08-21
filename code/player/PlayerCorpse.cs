@@ -24,7 +24,7 @@ namespace TTTReborn.Player
 
             SetInteractsAs(CollisionLayer.Debris);
             SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
-            SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
+            SetInteractsExclude(CollisionLayer.Player);
 
             KilledTime = Time.Now;
         }
