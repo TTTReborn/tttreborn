@@ -1,13 +1,13 @@
 using Sandbox;
-using Sandbox.UI;
-using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
-using TTTReborn.Globals;
 using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
 {
+    using Sandbox.UI.Construct;
+
+    using TTTReborn.Globals;
+
     public partial class Menu
     {
         public PanelContent ServerSettingsTabContent { get; private set; }
@@ -30,27 +30,6 @@ namespace TTTReborn.UI.Menu
             }, "Settings", "settings");
         }
 
-        private void CreateClientSettings(PanelContent tabContent)
-        {
-            Panel languagePanel = tabContent.Add.Panel("language");
-
-            languagePanel.Add.Label("Language:");
-
-            Dropdown languageSelection = languagePanel.Add.Dropdown();
-
-            foreach (Language language in TTTLanguage.Languages.Values)
-            {
-                languageSelection.AddOption(language.Data.Name, language.Data.Code);
-            }
-
-            languageSelection.OnSelectOption = (option) =>
-            {
-                ConsoleSystem.Run("ttt_language", (string) option.Data);
-            };
-
-            languageSelection.SelectByData(SettingsManager.Instance.Language);
-        }
-
         private void InitServerSettings(PanelContent tabContent)
         {
             ServerSettingsTabContent = tabContent;
@@ -58,23 +37,6 @@ namespace TTTReborn.UI.Menu
             tabContent.Add.Label("Loading...");
 
             ConsoleSystem.Run("ttt_serversettings_request");
-        }
-
-        internal void CreateServerSettings(PanelContent tabContent, ServerSettings serverSettings)
-        {
-            tabContent.DeleteChildren(true);
-
-            tabContent.Add.Label($"Sprint enabled?");
-            Switch sw = tabContent.Add.Switch("sprint", serverSettings.IsSprintEnabled);
-
-            sw.AddEventListener("onchange", (panelEvent) =>
-            {
-                serverSettings.IsSprintEnabled = !serverSettings.IsSprintEnabled;
-
-                // TODO Can be improved to avoid syncing EVERYTHING
-                // send settings to server
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
-            });
         }
     }
 }

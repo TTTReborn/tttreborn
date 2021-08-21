@@ -1,7 +1,7 @@
-using Sandbox.UI.Construct;
-
 namespace TTTReborn.UI.Menu
 {
+    using Sandbox.UI.Construct;
+
     public partial class Menu : RichPanel
     {
         public static Menu Instance;
