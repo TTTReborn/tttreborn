@@ -36,7 +36,7 @@ namespace TTTReborn.UI.Menu
         private void AddRoundSettings(PanelContent panelContent, ServerSettings serverSettings)
         {
             // TTTMinPlayers
-            CreateSettingsEntry<int>(panelContent, "Min Players", serverSettings.TTTMinPlayers, (value) =>
+            CreateSettingsEntry<int>(panelContent, "Min Players", serverSettings.TTTMinPlayers, "The minimum players required to start.", (value) =>
             {
                 serverSettings.TTTMinPlayers = value;
 
@@ -44,7 +44,7 @@ namespace TTTReborn.UI.Menu
             });
 
             // TTTPreRoundTime
-            CreateSettingsEntry<int>(panelContent, "PreRound Time", serverSettings.TTTPreRoundTime, (value) =>
+            CreateSettingsEntry<int>(panelContent, "PreRound Time", serverSettings.TTTPreRoundTime, "The amount of time allowed for preparation.", (value) =>
             {
                 serverSettings.TTTPreRoundTime = value;
 
@@ -52,7 +52,7 @@ namespace TTTReborn.UI.Menu
             });
 
             // TTTRoundTime
-            CreateSettingsEntry<int>(panelContent, "Round Time", serverSettings.TTTRoundTime, (value) =>
+            CreateSettingsEntry<int>(panelContent, "Round Time", serverSettings.TTTRoundTime, "The amount of time allowed for the main round.", (value) =>
             {
                 serverSettings.TTTRoundTime = value;
 
@@ -60,7 +60,7 @@ namespace TTTReborn.UI.Menu
             });
 
             // TTTPostRoundTime
-            CreateSettingsEntry<int>(panelContent, "PostRound Time", serverSettings.TTTPostRoundTime, (value) =>
+            CreateSettingsEntry<int>(panelContent, "PostRound Time", serverSettings.TTTPostRoundTime, "The amount of time before the next round starts.", (value) =>
             {
                 serverSettings.TTTPostRoundTime = value;
 
@@ -68,7 +68,7 @@ namespace TTTReborn.UI.Menu
             });
 
             // TTTKillTimeReward
-            CreateSettingsEntry<int>(panelContent, "Kill Time Reward", serverSettings.TTTKillTimeReward, (value) =>
+            CreateSettingsEntry<int>(panelContent, "Kill Time Reward", serverSettings.TTTKillTimeReward, "The amount of extra time given to traitors for killing an innocent.", (value) =>
             {
                 serverSettings.TTTKillTimeReward = value;
 
@@ -76,10 +76,11 @@ namespace TTTReborn.UI.Menu
             });
         }
 
-        private TextEntry CreateSettingsEntry<T>(Panel parent, string title, T defaultValue, Action<T> OnChange = null)
+        private TextEntry CreateSettingsEntry<T>(Panel parent, string title, T defaultValue, string description, Action<T> OnChange = null)
         {
             Panel wrapper = parent.Add.Panel();
-            wrapper.Add.Label(title);
+            Label textLabel = wrapper.Add.Label(title);
+            textLabel.Add.Tooltip(description, "");
 
             TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
 

@@ -66,6 +66,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
+            base.Tick();
+
             if (Countdown != null && Item is TTTCountdownPerk countdownPerk)
             {
                 Countdown.Text = $"{(countdownPerk.Countdown - countdownPerk.LastCountdown):n1}";

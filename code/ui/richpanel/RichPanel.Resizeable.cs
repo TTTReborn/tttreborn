@@ -298,6 +298,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
+            base.Tick();
+
             if (!IsVisible || ComputedStyle == null || IsDragging || !IsDraggable)
             {
                 return;
