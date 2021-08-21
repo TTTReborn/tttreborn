@@ -8,7 +8,15 @@ namespace TTTReborn.Settings
 {
     public partial class Settings
     {
-        public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
+        public Topics.General General { get; set; } = new Topics.General();
+    }
+
+    namespace Topics
+    {
+        public partial class General
+        {
+            public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
+        }
     }
 }
 
@@ -81,7 +89,7 @@ namespace TTTReborn.Globalization
         [Event("tttreborn.settings.instance.change")]
         public static void OnChangeLanguageSettings()
         {
-            TTTLanguage.UpdateLanguage(TTTLanguage.GetLanguageByCode(Settings.SettingsManager.Instance.Language));
+            TTTLanguage.UpdateLanguage(TTTLanguage.GetLanguageByCode(Settings.SettingsManager.Instance.General.Language));
         }
     }
 }
@@ -113,7 +121,7 @@ namespace TTTReborn.Player
 
             Log.Warning($"You set your language to '{language.Data.Name}'.");
 
-            Settings.SettingsManager.Instance.Language = language.Data.Code;
+            Settings.SettingsManager.Instance.General.Language = language.Data.Code;
 
             TTTLanguage.OnChangeLanguageSettings();
         }

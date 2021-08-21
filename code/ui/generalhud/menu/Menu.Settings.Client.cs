@@ -36,7 +36,7 @@ namespace TTTReborn.UI.Menu
                 ConsoleSystem.Run("ttt_language", (string) option.Data);
             };
 
-            languageSelection.SelectByData(SettingsManager.Instance.Language);
+            languageSelection.SelectByData(SettingsManager.Instance.General.Language);
         }
     }
 }

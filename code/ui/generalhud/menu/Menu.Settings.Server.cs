@@ -29,10 +29,10 @@ namespace TTTReborn.UI.Menu
             Panel sprintPanel = tabContent.Add.Panel("sprint");
             sprintPanel.Add.Label($"Sprint enabled?");
 
-            Switch sw = sprintPanel.Add.Switch("sprint", serverSettings.IsSprintEnabled);
+            Switch sw = sprintPanel.Add.Switch("sprint", serverSettings.Movement.IsSprintEnabled);
             sw.AddEventListener("onchange", (panelEvent) =>
             {
-                serverSettings.IsSprintEnabled = !serverSettings.IsSprintEnabled;
+                serverSettings.Movement.IsSprintEnabled = !serverSettings.Movement.IsSprintEnabled;
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
@@ -41,41 +41,41 @@ namespace TTTReborn.UI.Menu
         private void AddRoundSettings(PanelContent panelContent, ServerSettings serverSettings)
         {
             // TTTMinPlayers
-            CreateSettingsEntry<int>(panelContent, "Min Players", serverSettings.TTTMinPlayers, "The minimum players required to start.", (value) =>
+            CreateSettingsEntry<int>(panelContent, "Min Players", serverSettings.Round.MinPlayers, "The minimum players required to start.", (value) =>
             {
-                serverSettings.TTTMinPlayers = value;
+                serverSettings.Round.MinPlayers = value;
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
 
             // TTTPreRoundTime
-            CreateSettingsEntry<int>(panelContent, "PreRound Time", serverSettings.TTTPreRoundTime, "The amount of time allowed for preparation.", (value) =>
+            CreateSettingsEntry<int>(panelContent, "PreRound Time", serverSettings.Round.PreRoundTime, "The amount of time allowed for preparation.", (value) =>
             {
-                serverSettings.TTTPreRoundTime = value;
+                serverSettings.Round.PreRoundTime = value;
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
 
             // TTTRoundTime
-            CreateSettingsEntry<int>(panelContent, "Round Time", serverSettings.TTTRoundTime, "The amount of time allowed for the main round.", (value) =>
+            CreateSettingsEntry<int>(panelContent, "Round Time", serverSettings.Round.RoundTime, "The amount of time allowed for the main round.", (value) =>
             {
-                serverSettings.TTTRoundTime = value;
+                serverSettings.Round.RoundTime = value;
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
 
             // TTTPostRoundTime
-            CreateSettingsEntry<int>(panelContent, "PostRound Time", serverSettings.TTTPostRoundTime, "The amount of time before the next round starts.", (value) =>
+            CreateSettingsEntry<int>(panelContent, "PostRound Time", serverSettings.Round.PostRoundTime, "The amount of time before the next round starts.", (value) =>
             {
-                serverSettings.TTTPostRoundTime = value;
+                serverSettings.Round.PostRoundTime = value;
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
 
             // TTTKillTimeReward
-            CreateSettingsEntry<int>(panelContent, "Kill Time Reward", serverSettings.TTTKillTimeReward, "The amount of extra time given to traitors for killing an innocent.", (value) =>
+            CreateSettingsEntry<int>(panelContent, "Kill Time Reward", serverSettings.Round.KillTimeReward, "The amount of extra time given to traitors for killing an innocent.", (value) =>
             {
-                serverSettings.TTTKillTimeReward = value;
+                serverSettings.Round.KillTimeReward = value;
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });

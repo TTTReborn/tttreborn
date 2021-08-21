@@ -8,7 +8,16 @@ namespace TTTReborn.Settings
 {
     public partial class ServerSettings
     {
-        public bool IsSprintEnabled { get; set; } = false;
+        public Topics.Movement Movement { get; set; } = new Topics.Movement();
+    }
+
+
+    namespace Topics
+    {
+        public partial class Movement
+        {
+            public bool IsSprintEnabled { get; set; } = false;
+        }
     }
 }
 
@@ -142,7 +151,7 @@ namespace TTTReborn.Player
         {
             if (Host.IsServer)
             {
-                TTTPlayer.ClientSendToggleSprint(ServerSettings.Instance.IsSprintEnabled);
+                TTTPlayer.ClientSendToggleSprint(ServerSettings.Instance.Movement.IsSprintEnabled);
             }
         }
     }
