@@ -82,7 +82,7 @@ namespace TTTReborn.UI
                 Parent = parent;
 
                 _title = Add.Label("C4 Control", "title");
-                _closeButton = Add.Button("Close", () => { ((C4ArmControl)Parent).Close(); });
+                _closeButton = Add.Button("Close", () => { ((C4ArmControl) Parent).Close(); });
             }
         }
 
@@ -195,7 +195,7 @@ namespace TTTReborn.UI
                 _destroyButton = Add.Button("Destroy", "destroyButton");
                 _armButton = Add.Button("Arm", "armButton");
 
-                var armControl = (C4ArmControl)Parent;
+                var armControl = (C4ArmControl) Parent;
 
                 _pickUpButton.AddEventListener("onclick", () =>
                 {
