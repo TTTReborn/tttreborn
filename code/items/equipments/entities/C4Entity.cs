@@ -121,7 +121,7 @@ namespace TTTReborn.Items
         {
             // Add a wire minigame in here later
             // For now, if you randomly roll the wrong wire the bomb explodes
-            var disarmRoll = new Random().Next(1, CurrentPreset.wires + 1);
+            int disarmRoll = new Random().Next(1, CurrentPreset.wires + 1);
             if (disarmRoll != 1)
             {
                 _ = Explode();
@@ -236,9 +236,9 @@ namespace TTTReborn.Items
         [ServerCmd]
         public static void Arm(int c4EntityIdent)
         {
-            var c4Entity = (C4Entity) FindByIndex(c4EntityIdent);
+            Entity entity = FindByIndex(c4EntityIdent);
 
-            if (c4Entity != null && !c4Entity.IsArmed)
+            if (entity != null && entity is C4Entity c4Entity && !c4Entity.IsArmed)
             {
                 c4Entity.StartTimer();
             }
@@ -247,17 +247,20 @@ namespace TTTReborn.Items
         [ServerCmd]
         public static void Delete(int c4EntityIdent)
         {
-            var c4Entity = FindByIndex(c4EntityIdent);
+            Entity entity = FindByIndex(c4EntityIdent);
 
-            c4Entity?.Delete();
+            if (entity != null && entity is C4Entity c4Entity)
+            {
+                c4Entity.Delete();
+            }
         }
 
         [ServerCmd]
         public static void PickUp(int c4EntityIdent, int playerIdent)
         {
-            var player = FindByIndex(playerIdent);
+            Entity player = FindByIndex(playerIdent);
 
-            if (player != null)
+            if (player != null && player is TTTPlayer)
             {
                 if ((player.Inventory as Inventory).TryAdd(new C4Equipment()))
                 {
@@ -269,9 +272,9 @@ namespace TTTReborn.Items
         [ServerCmd]
         public static void SetPreset(int c4EntityIdent, int preset)
         {
-            var c4Entity = (C4Entity) FindByIndex(c4EntityIdent);
+            Entity entity = FindByIndex(c4EntityIdent);
 
-            if (c4Entity != null)
+            if (entity != null && entity is C4Entity c4Entity)
             {
                 c4Entity.CurrentPreset = TimerPresets[preset];
             }
