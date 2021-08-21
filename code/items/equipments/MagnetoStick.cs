@@ -13,6 +13,7 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "";
 
         private static int _grabbingDistance => 80;
+        private static int _holdingDistance => 35;
         private static float _maxPropSpeed => 10f;
 
         private PhysicsBody _holdBody;
@@ -110,8 +111,7 @@ namespace TTTReborn.Items
 
             _heldBody = body;
             _heldBone = bone;
-            _holdDistance = Vector3.DistanceBetween(startPos, grabPos);
-            _holdDistance = _holdDistance.Clamp(0, _grabbingDistance);
+            _holdDistance = _holdingDistance;
 
             Vector3 heldPos = _heldBody.Transform.PointToLocal(grabPos);
 
@@ -127,7 +127,7 @@ namespace TTTReborn.Items
             _holdJoint = PhysicsJoint.Weld
                 .From(_holdBody)
                 .To(_heldBody, heldPos)
-                .WithLinearSpring(20f, 1f, 0.0f)
+                .WithLinearSpring(8f, 2f, 0f)
                 .WithAngularSpring(0.0f, 0.0f, 0.0f)
                 .Create();
         }
