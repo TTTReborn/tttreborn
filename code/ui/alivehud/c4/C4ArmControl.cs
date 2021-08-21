@@ -163,11 +163,12 @@ namespace TTTReborn.UI
                             for (int i = 0; i < C4Entity.TimerPresets.Length; i++)
                             {
                                 var preset = C4Entity.TimerPresets[i];
+                                int presetIndex = i; // This hack is required to set preset in the for loop
 
                                 var button = Add.Button(TimerString(preset.timer));
                                 button.AddEventListener("onclick", () =>
                                 {
-                                    // Somehow set the CurrentPreset of the C4 Entity
+                                    C4Entity.SetPreset(controls.Entity.NetworkIdent, presetIndex);
 
                                     controls.SetTimer(preset);
                                     controls.IsPresetSelected = true;

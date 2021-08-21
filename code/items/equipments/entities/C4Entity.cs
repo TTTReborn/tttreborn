@@ -236,7 +236,7 @@ namespace TTTReborn.Items
         [ServerCmd]
         public static void Arm(int c4EntityIdent)
         {
-            var c4Entity = ((C4Entity) FindByIndex(c4EntityIdent));
+            var c4Entity = (C4Entity)FindByIndex(c4EntityIdent);
 
             if (c4Entity != null && !c4Entity.IsArmed)
             {
@@ -263,6 +263,17 @@ namespace TTTReborn.Items
                 {
                     Delete(c4EntityIdent);
                 }
+            }
+        }
+
+        [ServerCmd]
+        public static void SetPreset(int c4EntityIdent, int preset)
+        {
+            var c4Entity = (C4Entity)FindByIndex(c4EntityIdent);
+
+            if (c4Entity != null)
+            {
+                c4Entity.CurrentPreset = TimerPresets[preset];
             }
         }
     }
