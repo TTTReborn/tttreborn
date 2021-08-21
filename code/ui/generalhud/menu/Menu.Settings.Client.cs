@@ -11,7 +11,16 @@ namespace TTTReborn.UI.Menu
     {
         private void CreateClientSettings(PanelContent tabContent)
         {
-            Panel languagePanel = tabContent.Add.Panel("language");
+            Tabs tabs = tabContent.Add.Tabs();
+            tabs.AddTab("Language", (panelContent) =>
+            {
+                AddLanguageSettings(panelContent);
+            }, "language");
+        }
+
+        private void AddLanguageSettings(PanelContent panelContent)
+        {
+            Panel languagePanel = panelContent.Add.Panel("language");
 
             languagePanel.Add.Label("Language:");
 

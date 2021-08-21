@@ -12,11 +12,16 @@ namespace TTTReborn.UI.Menu
     {
         internal void CreateServerSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
-            tabContent.DeleteChildren(true);
+            Tabs tabs = tabContent.Add.Tabs();
+            tabs.AddTab("Sprint", (panelContent) =>
+            {
+                AddSprintSettings(panelContent, serverSettings);
+            }, "sprint");
 
-            AddSprintSettings(tabContent, serverSettings);
-
-            AddRoundSettings(tabContent, serverSettings);
+            tabs.AddTab("Rounds", (panelContent) =>
+            {
+                AddRoundSettings(panelContent, serverSettings);
+            }, "rounds");
         }
 
         private void AddSprintSettings(PanelContent tabContent, ServerSettings serverSettings)

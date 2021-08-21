@@ -31,7 +31,7 @@ Menu {
         cursor: pointer;
     }
 
-    PanelContent {
+    > PanelContent {
         flex-grow: 1;
         overflow: scroll;
         justify-content: start;
@@ -64,10 +64,29 @@ Menu {
         }
 
         &.settings {
-            Tabs {
+            overflow: hidden;
+
+            > Tabs {
                 min-height: 500px;
+                flex-grow: 1;
+
+                overflow: scroll;
+                justify-content: start;
+                flex-wrap: wrap;
+            }
+
+            Tabs {
+                Tab Label {
+                    flex-grow: 0;
+                }
 
                 PanelContent {
+                    flex-grow: 1;
+                    overflow: scroll;
+                    justify-content: start;
+                    flex-wrap: wrap;
+                    flex-direction: column;
+
                     Label {
                         flex-grow: 1;
                     }
