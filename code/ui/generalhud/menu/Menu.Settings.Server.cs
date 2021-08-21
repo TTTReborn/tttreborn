@@ -42,6 +42,38 @@ namespace TTTReborn.UI.Menu
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
+
+            // TTTPreRoundTime
+            CreateSettingsEntry<int>(panelContent, "PreRound Time", serverSettings.TTTPreRoundTime, (value) =>
+            {
+                serverSettings.TTTPreRoundTime = value;
+
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+            });
+
+            // TTTRoundTime
+            CreateSettingsEntry<int>(panelContent, "Round Time", serverSettings.TTTRoundTime, (value) =>
+            {
+                serverSettings.TTTRoundTime = value;
+
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+            });
+
+            // TTTPostRoundTime
+            CreateSettingsEntry<int>(panelContent, "PostRound Time", serverSettings.TTTPostRoundTime, (value) =>
+            {
+                serverSettings.TTTPostRoundTime = value;
+
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+            });
+
+            // TTTKillTimeReward
+            CreateSettingsEntry<int>(panelContent, "Kill Time Reward", serverSettings.TTTKillTimeReward, (value) =>
+            {
+                serverSettings.TTTKillTimeReward = value;
+
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+            });
         }
 
         private TextEntry CreateSettingsEntry<T>(Panel parent, string title, T defaultValue, Action<T> OnChange = null)
