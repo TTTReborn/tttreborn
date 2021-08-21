@@ -11,15 +11,16 @@ Dropdown {
     Label {
         &.textLabel {
             padding: 2px;
-            width: 100%;
+            padding-right: 12px;
         }
 
         &.openLabel {
-            margin-left: 4px;
             font-family: MaterialIcons;
             transform: rotate(0deg);
-            margin-top: 2px;
             font-size: 21px;
+            position: absolute;
+            right: 10px;
+            top: 12px;
 
             &.opened {
                 transform: rotate(180deg);
@@ -47,7 +48,6 @@ Dropdown {
 
         DropdownOption {
             position: relative;
-            width: 100%;
             color: white;
             border-radius: 8px;
             padding: 4px;

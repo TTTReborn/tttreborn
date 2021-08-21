@@ -1,4 +1,7 @@
+using System;
+
 using Sandbox;
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Settings;
@@ -11,17 +14,62 @@ namespace TTTReborn.UI.Menu
         {
             tabContent.DeleteChildren(true);
 
-            tabContent.Add.Label($"Sprint enabled?");
-            Switch sw = tabContent.Add.Switch("sprint", serverSettings.IsSprintEnabled);
+            AddSprintSettings(tabContent, serverSettings);
 
+            AddRoundSettings(tabContent, serverSettings);
+        }
+
+        private void AddSprintSettings(PanelContent tabContent, ServerSettings serverSettings)
+        {
+            Panel sprintPanel = tabContent.Add.Panel("sprint");
+            sprintPanel.Add.Label($"Sprint enabled?");
+
+            Switch sw = sprintPanel.Add.Switch("sprint", serverSettings.IsSprintEnabled);
             sw.AddEventListener("onchange", (panelEvent) =>
             {
                 serverSettings.IsSprintEnabled = !serverSettings.IsSprintEnabled;
 
-                // TODO Can be improved to avoid syncing EVERYTHING
-                // send settings to server
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
             });
+        }
+
+        private void AddRoundSettings(PanelContent panelContent, ServerSettings serverSettings)
+        {
+            // TTTMinPlayers
+            CreateSettingsEntry<int>(panelContent, "Min Players", serverSettings.TTTMinPlayers, (value) =>
+            {
+                serverSettings.TTTMinPlayers = value;
+
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+            });
+        }
+
+        private TextEntry CreateSettingsEntry<T>(Panel parent, string title, T defaultValue, Action<T> OnChange = null)
+        {
+            Panel wrapper = parent.Add.Panel();
+            wrapper.Add.Label(title);
+
+            TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
+
+            textEntry.AddEventListener("onsubmit", (panelEvent) =>
+            {
+                try
+                {
+                    StringX.TryToType(textEntry.Text, typeof(T), out object value);
+
+                    T newValue = (T) value;
+
+                    OnChange?.Invoke(newValue);
+
+                    defaultValue = newValue;
+                }
+                catch (Exception)
+                {
+                    textEntry.Text = defaultValue.ToString();
+                }
+            });
+
+            return textEntry;
         }
     }
 }
