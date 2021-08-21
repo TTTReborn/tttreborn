@@ -87,18 +87,20 @@ namespace TTTReborn.UI.Menu
             {
                 try
                 {
-                    StringX.TryToType(textEntry.Text, typeof(T), out object value);
+                    textEntry.Text.TryToType(typeof(T), out object value);
 
-                    T newValue = (T) value;
+                    if (value.ToString().Equals(textEntry.Text))
+                    {
+                        T newValue = (T) value;
 
-                    OnChange?.Invoke(newValue);
+                        OnChange?.Invoke(newValue);
 
-                    defaultValue = newValue;
+                        defaultValue = newValue;
+                    }
                 }
-                catch (Exception)
-                {
-                    textEntry.Text = defaultValue.ToString();
-                }
+                catch (Exception) { }
+
+                textEntry.Text = defaultValue.ToString();
             });
 
             return textEntry;
