@@ -54,7 +54,14 @@ namespace TTTReborn.Globals
 
             player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
 
-            Scoreboard.Instance.UpdatePlayer(player.GetClientOwner());
+            Client client = player.GetClientOwner();
+
+            if (client == null || !client.IsValid())
+            {
+                return;
+            }
+
+            Scoreboard.Instance.UpdatePlayer(client);
         }
 
         [ClientRpc]
