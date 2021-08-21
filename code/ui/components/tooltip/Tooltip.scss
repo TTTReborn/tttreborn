@@ -1,7 +1,5 @@
 Tooltip {
     position: absolute;
-    top: 0px;
-    width: 100%;
     transform: translateY(-100%);
     margin: -4px;
 
@@ -12,6 +10,12 @@ Tooltip {
     border-radius: 8px;
 
     transition: opacity 0.2s linear;
+
+    z-index: 9999;
+
+    color: #fafafa;
+    font-family: Poppins;
+    font-weight: 500;
 
     &.hide {
         opacity: 0;

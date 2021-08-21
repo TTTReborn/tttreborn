@@ -6,23 +6,26 @@ namespace TTTReborn.UI
     public partial class Tooltip : Label
     {
         public float RequiredHoveringTime { get; set; } = 0.5f;
+        public Panel RelatedPanel { get; private set; }
 
         private TimeSince _timeSinceMouseStopped = 0f;
         private Vector2 _lastMousePosition = Vector2.Zero;
         private bool _hovering = false;
 
-        public Tooltip(Panel parent = null) : base()
+        public Tooltip(Panel relatedPanel = null) : base()
         {
-            Parent = parent ?? Parent;
+            RelatedPanel = relatedPanel ?? Parent;
+
+            Hud.Current.RootPanel.AddChild(this);
 
             StyleSheet.Load("/ui/components/tooltip/Tooltip.scss");
 
-            Parent.AddEventListener("onmouseover", (panelEvent) =>
+            RelatedPanel.AddEventListener("onmouseover", (panelEvent) =>
             {
                 _hovering = true;
             });
 
-            Parent.AddEventListener("onmouseout", (panelEvent) =>
+            RelatedPanel.AddEventListener("onmouseout", (panelEvent) =>
             {
                 _hovering = false;
             });
@@ -34,14 +37,24 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
+            bool hide = !_hovering || _timeSinceMouseStopped < RequiredHoveringTime;
+
             if (_lastMousePosition != Mouse.Position)
             {
                 _lastMousePosition = Mouse.Position;
-
                 _timeSinceMouseStopped = 0f;
             }
+            else if (HasClass("hide") && !hide)
+            {
+                Rect rect = RelatedPanel.Box.Rect;
 
-            SetClass("hide", !_hovering || _timeSinceMouseStopped < RequiredHoveringTime);
+                Style.Left = Length.Pixels(rect.left);
+                Style.Top = Length.Pixels(rect.top);
+                Style.Width = Length.Pixels(rect.width);
+                Style.Dirty();
+            }
+
+            SetClass("hide", hide);
         }
     }
 }
