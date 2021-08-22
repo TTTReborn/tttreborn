@@ -76,8 +76,6 @@ namespace TTTReborn.Player
             SettingsManager.Instance = serverSettings;
 
             SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
-
-            // TODO Update server settings for other admins that have the settings opened -> needed? Discuss!
         }
 
         [ClientRpc]
