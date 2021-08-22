@@ -47,6 +47,8 @@ namespace TTTReborn.Rounds
                     {
                         randomWeapons.Add(rwep); //See above comment.
                     }
+
+                    entity.RemoveAllDecals();
                 }
 
                 randomAmmo.ForEach(x => x.Activate());

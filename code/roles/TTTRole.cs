@@ -17,7 +17,7 @@ namespace TTTReborn.Roles
         }
     }
 
-    [RoleAttribute("Base")]
+    [RoleAttribute("base")]
     public abstract class TTTRole
     {
         public readonly string Name;
@@ -30,7 +30,7 @@ namespace TTTReborn.Roles
 
         public TTTRole()
         {
-            Name = Utils.GetTypeName(GetType());
+            Name = Utils.GetTypeName(GetType()).ToLower();
 
             if (TeamFunctions.GetTeamByType(DefaultTeamType) == null)
             {

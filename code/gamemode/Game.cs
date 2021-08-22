@@ -1,16 +1,18 @@
 using System;
+using System.Linq;
 
 using Sandbox;
 
 using TTTReborn.Globalization;
 using TTTReborn.Globals;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
 {
-    [Library("tttreborn", Title = "Trouble in Terry's Town")]
+    [Library("tttreborn", Title = "Trouble in Terry's Town"), Hammer.Skip]
     partial class Game : Sandbox.Game
     {
         public static Game Instance { get; private set; }
@@ -19,6 +21,8 @@ namespace TTTReborn.Gamemode
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
         public KarmaSystem Karma { get; private set; } = new();
+
+        public TTTMapSettings MapSettings { get; private set; }
 
         public Game()
         {
@@ -60,6 +64,7 @@ namespace TTTReborn.Gamemode
         {
             Round.Finish();
             Round = round;
+            Event.Run("tttreborn.round.changed", round);
             Round.Start();
         }
 
@@ -169,6 +174,12 @@ namespace TTTReborn.Gamemode
         public override void PostLevelLoaded()
         {
             StartGameTimer();
+
+            MapSettings = (TTTMapSettings) All.FirstOrDefault(x => x.GetType().Equals(typeof(TTTMapSettings)));
+            MapSettings?.FireSettingsSpawn();
+            //Run setup function here with MapSettings data. In original TTT this included various settings for the crowbar and stuff.
+            //Relatively easy to add things to it and will definitely be used for give map-sided config.
+            //Pending addition of tweakable things once development has furthered.
 
             base.PostLevelLoaded();
         }

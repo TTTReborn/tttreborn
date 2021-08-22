@@ -6,6 +6,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
@@ -176,6 +177,8 @@ namespace TTTReborn.Rounds
                 {
                     player.SetRole(new InnocentRole());
                 }
+
+                player.SendRoleButtonsToClient();
 
                 // send everyone their roles
                 using (Prediction.Off())
