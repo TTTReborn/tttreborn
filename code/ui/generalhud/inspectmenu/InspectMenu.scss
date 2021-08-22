@@ -1,50 +1,36 @@
 InspectMenu {
-    border: 1px solid #1b1b1b;
     background-color: #000c;
     color: #fafafa;
-    font-family: Poppins;
     font-weight: 500;
-    border-radius: 4px;
-    margin: auto;
     top: 66%;
-    position: absolute;
     left: 50%;
+    position: absolute;
+    margin: auto;
     transform: translateX(-50%) translateY(-40%);
+    font-family: Poppins;
 
     &.hide {
         display: none;
     }
 
     ConfirmationPanel {
-        min-width: 600px;
-        max-width: 75%;
         padding: 6px 12px;
-        text-align: center;
         flex-direction: column;
-        border: 4px solid #031421;
-        border-radius: 4px;
 
         &.hide {
             display: none;
         }
 
         Header {
-            margin-bottom: 10px;
-
             Label {
                 &.player {
-                    text-align: left;
-                    flex-grow: 1;
                     font-size: 24px;
                     font-weight: 500;
                 }
 
                 &.role {
-                    text-align: right;
                     font-size: 18px;
-                    flex-shrink: 1;
                     font-weight: 500;
-                    padding-top: 6px;
                 }
             }
         }
@@ -54,26 +40,22 @@ InspectMenu {
             flex-wrap: wrap;
             margin-bottom: 25px;
             margin-top: 15px;
-            justify-content: flex-start;
 
-            InspectItem {
+            InspectIcon {
                 flex-direction: column;
-                margin-top: 5px;
-                margin-left: 30px;
-                text-align: center;
-                width: 75px;
+
+                &.selected {
+                    border: 2px solid #f6c552;
+                    border-radius: 4px;
+                }
             }
 
             ImageWrapper {
-                text-align: center;
-                height: 75px;
-                width: 75px;
+                height: 50px;
+                width: 50px;
                 background-color: rgba(0, 0, 0, 0.7);
-                border: 1px solid #031421;
+                border: 2px solid #031421;
                 border-radius: 4px;
-                text-align: center;
-                // transition: all 0.05s linear;
-                margin-right: 5px;
 
                 &.playericon {
                     height: 95px;
@@ -95,25 +77,18 @@ InspectMenu {
         }
     }
 
-    ConfirmationHintPanel {
+    ConfirmCorpsePanel {
+        padding: 5px 15px;
+
         &.hide {
             display: none;
         }
 
-        padding: 5px 15px;
-    }
-
-    Footer,
-    ConfirmationHintPanel {
-        Label.inspect {
+        Label {
             width: 100%;
             color: #ffae00;
-            font-size: 0.8em;
+            font-size: 18px;
             text-align: center;
-
-            &.hide {
-                display: none;
-            }
         }
     }
 }

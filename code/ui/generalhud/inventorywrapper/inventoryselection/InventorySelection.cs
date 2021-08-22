@@ -205,7 +205,14 @@ namespace TTTReborn.UI
                 }
             }
 
-            int mouseWheelIndex = Input.MouseWheel;
+            // The InspectMenu allows navigation using the mouse wheel. Do not allow weapon switching
+            // using the mouse wheel if the InspectMenu is active.
+            if (InspectMenu.Instance?.IsShowing ?? true)
+            {
+                return;
+            }
+
+            int mouseWheelIndex = input.MouseWheel;
             if (mouseWheelIndex != 0)
             {
                 int activeCarriableIndex = childrenList.FindIndex((p) =>
@@ -216,15 +223,15 @@ namespace TTTReborn.UI
             }
         }
 
+        public static int NormalizeSlotIndex(int index, int maxIndex)
+        {
+            return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
+        }
+
         // Keyboard selection can only increment the index by 1.
         private int GetNextWeaponIndex(int index, int count)
         {
             return NormalizeSlotIndex(index + 1, count - 1);
-        }
-
-        private int NormalizeSlotIndex(int index, int maxIndex)
-        {
-            return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
         }
 
         private int GetKeyboardNumberPressed(InputBuilder input)
