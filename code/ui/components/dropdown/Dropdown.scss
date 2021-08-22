@@ -6,7 +6,6 @@ Dropdown {
     font-family: Poppins;
 
     border-radius: 16px;
-    z-index: 1;
 
     Label {
         &.textLabel {
@@ -25,35 +24,6 @@ Dropdown {
             &.opened {
                 transform: rotate(180deg);
                 margin-top: -2px;
-            }
-        }
-    }
-
-    .optionholder {
-        opacity: 1;
-        transform: translateY(100%);
-        transition: opacity 0.2s ease-in-out;
-        flex-direction: column;
-        position: absolute;
-        bottom: -5px;
-        left: 10px;
-        background-color: #000F;
-        padding: 10px;
-        border-radius: 8px;
-        width: 100%;
-
-        &.hide {
-            opacity: 0;
-        }
-
-        DropdownOption {
-            position: relative;
-            color: white;
-            border-radius: 8px;
-            padding: 4px;
-
-            &:hover {
-                background-color: #555c;
             }
         }
     }

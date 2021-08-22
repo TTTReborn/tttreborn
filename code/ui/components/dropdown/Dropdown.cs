@@ -27,7 +27,7 @@ namespace TTTReborn.UI
 
         public readonly List<DropdownOption> Options = new();
 
-        public readonly TTTPanel OptionHolder;
+        public readonly DropdownOptionHolder OptionHolder;
 
         public DropdownOption SelectedOption
         {
@@ -48,17 +48,15 @@ namespace TTTReborn.UI
             TextLabel = Add.Label("Select...", "textLabel");
             _openLabel = Add.Label("expand_more", "openLabel");
 
-            OptionHolder = new TTTPanel(this);
-            OptionHolder.AddClass("optionholder");
+            OptionHolder = new DropdownOptionHolder(this);
 
             IsOpen = false;
         }
 
         public DropdownOption AddOption(string text, object data = null, Action<TTTPanel> onSelect = null)
         {
-            DropdownOption dropdownOption = new DropdownOption(OptionHolder, text, data)
+            DropdownOption dropdownOption = new DropdownOption(this, OptionHolder, text, data)
             {
-                Dropdown = this,
                 OnSelect = onSelect
             };
 
@@ -98,6 +96,8 @@ namespace TTTReborn.UI
             SelectedOption = option;
 
             OnSelectOption?.Invoke(SelectedOption);
+
+            IsOpen = false;
         }
 
         protected override void OnClick(MousePanelEvent e)
