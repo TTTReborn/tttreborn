@@ -138,20 +138,17 @@ namespace TTTReborn.Player
             }
         }
 
-        public static void SetSprintEnabled(bool enabled)
-        {
-            IsSprintEnabled = enabled;
-
-            TTTPlayer.ClientSendToggleSprint(enabled);
-        }
-
         [Event("tttreborn.player.initialspawn")]
         [Event("tttreborn.settings.instance.change")]
         public static void InitializeSprint()
         {
             if (Host.IsServer)
             {
-                TTTPlayer.ClientSendToggleSprint(ServerSettings.Instance.Movement.IsSprintEnabled);
+                bool enabled = ServerSettings.Instance.Movement.IsSprintEnabled;
+
+                IsSprintEnabled = enabled;
+
+                TTTPlayer.ClientSendToggleSprint(enabled);
             }
         }
     }
