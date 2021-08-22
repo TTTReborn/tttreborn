@@ -59,14 +59,13 @@ namespace TTTReborn.Globalization
         {
             Language lang = null;
 
-            try
+            if (Languages != null && !String.IsNullOrEmpty(name))
             {
                 if (!Languages.TryGetValue(name, out lang))
                 {
                     Log.Warning($"Tried to get a language that does not exist: '{name}'.");
                 }
             }
-            catch (Exception) { }
 
             return lang ?? GetLanguageByCode(FALLBACK_LANGUAGE);
         }
