@@ -24,6 +24,13 @@ namespace TTTReborn.UI
 
             AddClass("hide");
 
+            Rect rect = RelatedPanel.Box.Rect;
+
+            Style.Left = Length.Pixels(rect.left);
+            Style.Top = Length.Pixels(rect.top);
+            Style.Width = Length.Pixels(rect.width);
+            Style.Dirty();
+
             Tooltips.Add(this);
         }
 
@@ -36,23 +43,12 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            bool hide = _timeSinceMouseStopped < RequiredHoveringTime;
-
             if (Mouse.Delta != Vector2.Zero)
             {
                 _timeSinceMouseStopped = 0f;
             }
-            else if (HasClass("hide") && !hide)
-            {
-                Rect rect = RelatedPanel.Box.Rect;
 
-                Style.Left = Length.Pixels(rect.left);
-                Style.Top = Length.Pixels(rect.top);
-                Style.Width = Length.Pixels(rect.width);
-                Style.Dirty();
-            }
-
-            SetClass("hide", hide);
+            SetClass("hide", _timeSinceMouseStopped < RequiredHoveringTime);
         }
     }
 }
