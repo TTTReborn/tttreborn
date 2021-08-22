@@ -85,7 +85,7 @@ namespace TTTReborn.UI.Menu
         {
             Panel wrapper = parent.Add.Panel();
             Label textLabel = wrapper.Add.Label(title);
-            textLabel.Add.Tooltip(description, "");
+            textLabel.AddTooltip(description, "");
 
             TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
 

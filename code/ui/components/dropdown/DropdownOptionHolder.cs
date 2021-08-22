@@ -4,11 +4,11 @@ namespace TTTReborn.UI
 {
     public partial class DropdownOptionHolder : TTTPanel
     {
-        public Panel RelatedPanel { get; private set; }
+        public Dropdown RelatedPanel { get; private set; }
 
-        public DropdownOptionHolder(Panel relatedPanel = null) : base()
+        public DropdownOptionHolder(Dropdown relatedPanel) : base()
         {
-            RelatedPanel = relatedPanel ?? Parent;
+            RelatedPanel = relatedPanel;
 
             Hud.Current.RootPanel.AddChild(this);
 
@@ -18,6 +18,18 @@ namespace TTTReborn.UI
         public override void Tick()
         {
             base.Tick();
+
+            if (RelatedPanel.IsDeleted)
+            {
+                Delete(true);
+
+                return;
+            }
+
+            if (!RelatedPanel.IsVisible)
+            {
+                IsShowing = false;
+            }
 
             if (!IsShowing)
             {

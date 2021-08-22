@@ -12,6 +12,8 @@ namespace TTTReborn.UI
 
         public Action<DropdownOption> OnSelectOption { get; set; }
 
+        public bool IsDeleted { get; private set; } = false;
+
         public bool IsOpen
         {
             get => OptionHolder.IsShowing;
@@ -102,7 +104,16 @@ namespace TTTReborn.UI
 
         protected override void OnClick(MousePanelEvent e)
         {
+            base.OnClick(e);
+
             IsOpen = !IsOpen;
+        }
+
+        public override void OnDeleted()
+        {
+            base.OnDeleted();
+
+            IsDeleted = true;
         }
     }
 }
