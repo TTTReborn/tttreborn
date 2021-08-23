@@ -1,8 +1,7 @@
-using Sandbox.UI;
-using Sandbox.UI.Construct;
-
 namespace TTTReborn.UI.Menu
 {
+    using Sandbox.UI.Construct;
+
     public partial class Menu : RichPanel
     {
         public static Menu Instance;
@@ -34,7 +33,7 @@ namespace TTTReborn.UI.Menu
             IsShowing = false;
         }
 
-        public void OpenHomepage()
+        internal void OpenHomepage()
         {
             if (MenuContent.CurrentPanelContentData?.ClassName == "home")
             {
@@ -49,81 +48,7 @@ namespace TTTReborn.UI.Menu
             }, "", "home");
         }
 
-        public void OpenSettings(PanelContent menuContent)
-        {
-            menuContent.SetPanelContent((panelContent) =>
-            {
-                Panel buttonsWrapperPanel = panelContent.Add.Panel("wrapper");
-
-                buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
-                {
-                    FileSelection fileSelection = FindRootPanel().Add.FileSelection();
-                    fileSelection.DefaultSelectionPath = "/settings/";
-
-                    fileSelection.OnAgree = () =>
-                    {
-                        string fileName = fileSelection.FileNameEntry.Text;
-
-                        if (string.IsNullOrEmpty(fileName))
-                        {
-                            return;
-                        }
-
-                        Settings.SettingFunctions.SaveSettings(fileName.Split('/')[^1].Split('.')[0]);
-
-                        fileSelection.Close();
-                    };
-
-                    fileSelection.EnableFileNameEntry();
-                    fileSelection.Display();
-                });
-
-                buttonsWrapperPanel.Add.Button("Load from", "fileselectionbutton", () =>
-                {
-                    FileSelection fileSelection = FindRootPanel().Add.FileSelection();
-                    fileSelection.DefaultSelectionPath = "/settings/";
-
-                    fileSelection.OnAgree = () =>
-                    {
-                        string fileName = fileSelection.SelectedEntry.FileNameLabel.Text;
-
-                        if (string.IsNullOrEmpty(fileName))
-                        {
-                            return;
-                        }
-
-                        fileName = fileName.Split('/')[^1].Split('.')[0];
-
-                        Settings.SettingFunctions.LoadSettings(fileName);
-
-                        fileSelection.Close();
-
-                        // Ask whether the player want to use the loaded settings as default ones
-                        DialogBox dialogBox = new DialogBox();
-                        dialogBox.TitleLabel.Text = "Default settings";
-                        dialogBox.AddText($"Do you want to use '{fileName}.json' as the default settings? (If you agree, the current default settings will be overwritten!)");
-                        dialogBox.OnAgree = () =>
-                        {
-                            Settings.SettingFunctions.SaveSettings();
-
-                            dialogBox.Close();
-                        };
-                        dialogBox.OnDecline = () =>
-                        {
-                            dialogBox.Close();
-                        };
-
-                        FindRootPanel().AddChild(dialogBox);
-
-                        dialogBox.Display();
-                    };
-
-                    fileSelection.Display();
-                });
-            }, "Settings", "settings");
-        }
-
-        public void OpenKeybindings(PanelContent menuContent)
+        private void OpenKeybindings(PanelContent menuContent)
         {
             menuContent.SetPanelContent((panelContent) =>
             {
@@ -135,7 +60,7 @@ namespace TTTReborn.UI.Menu
             }, "Keybindings", "keybindings");
         }
 
-        public void OpenTesting(PanelContent menuContent)
+        private void OpenTesting(PanelContent menuContent)
         {
             menuContent.SetPanelContent((panelContent) =>
             {
@@ -159,7 +84,7 @@ namespace TTTReborn.UI.Menu
 
                 panelContent.Add.Label("Dropdown:");
 
-                Dropdown dropdown = new Dropdown(panelContent);
+                Dropdown dropdown = panelContent.Add.Dropdown();
                 dropdown.TextLabel.Text = "Choose entry...";
 
                 dropdown.AddOption("Test One");

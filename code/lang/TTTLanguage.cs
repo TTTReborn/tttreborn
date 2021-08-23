@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -5,22 +6,16 @@ using Sandbox;
 
 namespace TTTReborn.Settings
 {
-    using Globalization;
-
-    public partial class RealmSettings
+    public partial class Settings
     {
-        public string Language
-        {
-            get => TTTLanguage.ActiveLanguage.Data.Code;
-            set
-            {
-                if (TTTLanguage.ActiveLanguage.Data.Code == value)
-                {
-                    return;
-                }
+        public Categories.General General { get; set; } = new Categories.General();
+    }
 
-                TTTLanguage.UpdateLanguage(TTTLanguage.GetLanguageByCode(value));
-            }
+    namespace Categories
+    {
+        public partial class General
+        {
+            public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
         }
     }
 }
@@ -62,22 +57,38 @@ namespace TTTReborn.Globalization
 
         public static Language GetLanguageByCode(string name)
         {
-            if (!Languages.TryGetValue(name, out Language lang))
+            Language lang = null;
+
+            if (Languages != null && !String.IsNullOrEmpty(name))
             {
-                Log.Warning($"Tried to get a language that does not exist: '{name}'.");
+                if (!Languages.TryGetValue(name, out lang))
+                {
+                    Log.Warning($"Tried to get a language that does not exist: '{name}'.");
+                }
             }
 
-            return lang;
+            return lang ?? GetLanguageByCode(FALLBACK_LANGUAGE);
         }
 
         public static void UpdateLanguage(Language language)
         {
+            if (language.Data.Code == ActiveLanguage.Data.Code)
+            {
+                return;
+            }
+
             TTTLanguage.ActiveLanguage = language;
 
             if (Host.IsClient)
             {
                 UI.TranslationLabel.UpdateLanguage(language);
             }
+        }
+
+        [Event("tttreborn.settings.instance.change")]
+        public static void OnChangeLanguageSettings()
+        {
+            TTTLanguage.UpdateLanguage(TTTLanguage.GetLanguageByCode(Settings.SettingsManager.Instance.General.Language));
         }
     }
 }
@@ -109,7 +120,9 @@ namespace TTTReborn.Player
 
             Log.Warning($"You set your language to '{language.Data.Name}'.");
 
-            Settings.ClientSettings.Instance.Language = language.Data.Code;
+            Settings.SettingsManager.Instance.General.Language = language.Data.Code;
+
+            TTTLanguage.OnChangeLanguageSettings();
         }
     }
 }

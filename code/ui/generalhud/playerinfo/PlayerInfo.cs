@@ -4,6 +4,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
 using TTTReborn.Roles;
+using TTTReborn.Settings;
 
 namespace TTTReborn.UI
 {
@@ -30,7 +31,6 @@ namespace TTTReborn.UI
 
             private TTTRole _currentRole;
             private TTTPlayer _currentPlayer;
-
 
             public RolePanel(Panel parent)
             {
@@ -122,6 +122,8 @@ namespace TTTReborn.UI
 
                     if (_currentStamina == player.CurrentPlayer.Stamina)
                     {
+                        _staminaBar.Style.Dirty();
+
                         return;
                     }
 
@@ -135,6 +137,7 @@ namespace TTTReborn.UI
                 else
                 {
                     _staminaBar.Style.Display = DisplayMode.None;
+                    _staminaBar.Style.Dirty();
                 }
             }
         }

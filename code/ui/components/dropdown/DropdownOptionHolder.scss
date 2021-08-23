@@ -1,0 +1,36 @@
+DropdownOptionHolder {
+    position: absolute;
+    flex-direction: column;
+
+    background-color: #000F;
+    border-radius: 8px;
+
+    padding: 10px;
+
+    margin-top: 4px;
+
+    opacity: 1;
+    transition: opacity 0.2s linear;
+
+    z-index: 9999;
+
+    &.hide {
+        opacity: 0;
+    }
+
+    DropdownOption {
+        position: relative;
+
+        cursor: pointer;
+        color: #fafafa;
+        font-family: Poppins;
+
+        border-radius: 8px;
+
+        padding: 4px;
+
+        &:hover {
+            background-color: #555c;
+        }
+    }
+}

@@ -1,52 +1,129 @@
+using System;
 using System.Text.Json;
 
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.Settings
 {
-    public abstract partial class RealmSettings
+    public abstract partial class Settings
     {
-        public static RealmSettings Instance;
+        public SettingsLoadingError LoadingError = SettingsLoadingError.None;
 
-        public RealmSettings()
+        public string JsonType { get; set; } = "Settings";
+
+        public Settings()
         {
-            Instance = this;
+
         }
     }
 
-    public partial class ServerSettings : RealmSettings
+    public partial class ServerSettings : Settings
     {
-        public new static ServerSettings Instance;
+        public static ServerSettings Instance
+        {
+            get => SettingsManager.Instance as ServerSettings;
+        }
 
         public ServerSettings() : base()
         {
-            Instance = this;
+
         }
     }
 
-    public partial class ClientSettings : RealmSettings
+    public partial class ClientSettings : Settings
     {
-        public new static ClientSettings Instance;
+        public static ClientSettings Instance
+        {
+            get => SettingsManager.Instance as ClientSettings;
+        }
 
         public ClientSettings() : base()
         {
-            Instance = this;
+
+        }
+    }
+
+    public enum SettingsLoadingError
+    {
+        None, // no error
+        Empty, // null data
+        NotExist, // file does not exist
+        Invalid, // not a settings json
+        Malicious, // could not be parsed
+        InvalidSettingsType // wrong settings type
+    }
+
+    public partial class SettingsManager
+    {
+        public static Settings Instance
+        {
+            get => _instance;
+            set
+            {
+                if (_instance == value)
+                {
+                    return;
+                }
+
+                _instance = value;
+
+                Event.Run("tttreborn.settings.instance.change");
+            }
+        }
+        private static Settings _instance;
+
+        public static void Load()
+        {
+            if (Host.IsClient)
+            {
+                Instance = SettingFunctions.LoadSettings<ClientSettings>();
+            }
+            else
+            {
+                Instance = SettingFunctions.LoadSettings<ServerSettings>();
+            }
+
+            if (Instance.LoadingError != SettingsLoadingError.None)
+            {
+                Unload(); // overwrite settings if they got invalid
+
+                if (Instance.LoadingError != SettingsLoadingError.NotExist)
+                {
+                    Log.Warning("Your TTT Reborn settings were overwritten (reset) due to an error in the file!");
+                }
+            }
+        }
+
+        public static void Unload()
+        {
+            if (Host.IsClient)
+            {
+                SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
+            }
+            else
+            {
+                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+            }
         }
     }
 
     public partial class SettingFunctions
     {
-        public static string GetJSON<T>(T realmSettings) where T : RealmSettings
+        public const string SETTINGS_FILE_EXTENSION = ".settings.json";
+
+        public static string GetJSON<T>(T settings, bool compressed = false) where T : Settings
         {
             JsonSerializerOptions options = new JsonSerializerOptions
             {
-                WriteIndented = true
+                WriteIndented = !compressed
             };
 
-            return JsonSerializer.Serialize<T>(realmSettings, options);
+            return JsonSerializer.Serialize<T>(settings, options);
         }
 
-        public static T GetRealmSettings<T>(string json) where T : RealmSettings
+        public static T GetSettings<T>(string json) where T : Settings
         {
             JsonSerializerOptions options = new JsonSerializerOptions
             {
@@ -56,63 +133,82 @@ namespace TTTReborn.Settings
             return JsonSerializer.Deserialize<T>(json, options);
         }
 
-        public static void LoadSettings(string fileName = null)
+        public static T LoadSettings<T>(string path = null, string fileName = "default") where T : Settings, new()
         {
-            if (Host.IsClient)
+            SettingsLoadingError settingsLoadingError = SettingsLoadingError.None;
+
+            string settingsName = Utils.GetTypeNameByType(typeof(T));
+
+            path ??= $"/settings/{settingsName.ToLower()}/";
+
+            T settings = null;
+
+            if (FileSystem.Data.FileExists(path + fileName + SETTINGS_FILE_EXTENSION))
             {
-                fileName ??= "client";
-
-                if (FileSystem.Data.FileExists($"/settings/{fileName}.json"))
+                try
                 {
-                    GetRealmSettings<ClientSettings>(FileSystem.Data.ReadAllText($"/settings/{fileName}.json"));
+                    settings = GetSettings<T>(FileSystem.Data.ReadAllText(path + fileName + SETTINGS_FILE_EXTENSION));
+
+                    if (settings is null)
+                    {
+                        settingsLoadingError = SettingsLoadingError.Empty;
+                    }
+                    else if (!settings.JsonType.Equals(settingsName))
+                    {
+                        settingsLoadingError = SettingsLoadingError.Invalid;
+
+                        if (!string.IsNullOrEmpty(settings.JsonType))
+                        {
+                            settingsLoadingError = SettingsLoadingError.InvalidSettingsType;
+                        }
+                    }
                 }
-
-                if (ClientSettings.Instance is null)
+                catch (Exception)
                 {
-                    new ClientSettings();
+                    settingsLoadingError = SettingsLoadingError.Malicious;
                 }
             }
             else
             {
-                fileName ??= "server";
-
-                if (FileSystem.Data.FileExists($"/settings/{fileName}.json"))
-                {
-                    GetRealmSettings<ServerSettings>(FileSystem.Data.ReadAllText($"/settings/{fileName}.json"));
-                }
-
-                if (ServerSettings.Instance is null)
-                {
-                    new ServerSettings();
-                }
+                settingsLoadingError = SettingsLoadingError.NotExist;
             }
+
+            if (settings is null)
+            {
+                settingsLoadingError = SettingsLoadingError.Empty;
+
+                settings = new T();
+            }
+
+            settings.LoadingError = settingsLoadingError;
+
+            return settings;
         }
 
-        public static void SaveSettings(string fileName = null)
+        public static void SaveSettings<T>(T settings, string path = null, string fileName = "default") where T : Settings
         {
             if (!FileSystem.Data.DirectoryExists("settings"))
             {
                 FileSystem.Data.CreateDirectory("settings");
             }
 
-            if (Host.IsClient)
+            if (settings is null)
             {
-                fileName ??= "client";
-
-                if (ClientSettings.Instance is not null)
-                {
-                    FileSystem.Data.WriteAllText($"/settings/{fileName}.json", GetJSON<ClientSettings>(ClientSettings.Instance));
-                }
+                return;
             }
-            else
+
+            string settingsName = Utils.GetTypeNameByType(typeof(T));
+
+            path ??= $"/settings/{settingsName.ToLower()}/";
+
+            if (!FileSystem.Data.DirectoryExists(path))
             {
-                fileName ??= "server";
-
-                if (ServerSettings.Instance is not null)
-                {
-                    FileSystem.Data.WriteAllText($"/settings/{fileName}.json", GetJSON<ServerSettings>(ServerSettings.Instance));
-                }
+                FileSystem.Data.CreateDirectory(path);
             }
+
+            settings.JsonType = settingsName;
+
+            FileSystem.Data.WriteAllText(path + fileName + SETTINGS_FILE_EXTENSION, GetJSON<T>(settings));
         }
     }
 }
