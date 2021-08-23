@@ -2,11 +2,11 @@ namespace TTTReborn.Settings
 {
     public partial class ServerSettings
     {
-        public Topics.Round Round { get; set; } = new Topics.Round();
+        public Categories.Round Round { get; set; } = new Categories.Round();
     }
 
 
-    namespace Topics
+    namespace Categories
     {
         public partial class Round
         {

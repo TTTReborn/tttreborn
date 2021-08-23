@@ -8,11 +8,11 @@ namespace TTTReborn.Settings
 {
     public partial class ServerSettings
     {
-        public Topics.Movement Movement { get; set; } = new Topics.Movement();
+        public Categories.Movement Movement { get; set; } = new Categories.Movement();
     }
 
 
-    namespace Topics
+    namespace Categories
     {
         public partial class Movement
         {

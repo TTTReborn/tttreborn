@@ -8,10 +8,10 @@ namespace TTTReborn.Settings
 {
     public partial class Settings
     {
-        public Topics.General General { get; set; } = new Topics.General();
+        public Categories.General General { get; set; } = new Categories.General();
     }
 
-    namespace Topics
+    namespace Categories
     {
         public partial class General
         {
