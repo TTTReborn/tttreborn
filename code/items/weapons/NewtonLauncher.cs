@@ -96,7 +96,7 @@ namespace TTTReborn.Items
                     float chargeForce = ((NEWTON_FORCE_MAX - NEWTON_FORCE_MIN) * chargePercentage) + NEWTON_FORCE_MIN;
 
                     tr.Entity.GroundEntity = null;
-                    tr.Entity.LocalVelocity = pushDirection * chargeForce;
+                    tr.Entity.LocalVelocity = tr.Entity.Velocity + (pushDirection * chargeForce);
                 }
             }
         }
