@@ -48,7 +48,10 @@ namespace TTTReborn.Items
 
         public override void AttackPrimary()
         {
-            if (IsCharging) return;
+            if (IsCharging)
+            {
+                return;
+            }
 
             IsCharging = true;
             ChargingStartTime = Time.Now;
