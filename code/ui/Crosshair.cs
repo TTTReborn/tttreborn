@@ -151,8 +151,7 @@ namespace TTTReborn.UI
                     {
                         ChargeStartTime = Time.Now;
                     }
-                    float chargePercentage = MathX.Clamp((Time.Now - ChargeStartTime) / ChargeTime, 0, 1) * 100;
-                    ChargeBar.Style.Width = Length.Percent(chargePercentage);
+                    ChargeBar.Style.Width = Length.Percent(MathX.Clamp((Time.Now - ChargeStartTime) / ChargeTime, 0, 1) * 100);
                     ChargeBar.Style.Dirty();
                 }
                 else
