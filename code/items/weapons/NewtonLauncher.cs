@@ -114,7 +114,7 @@ namespace TTTReborn.Items
                 2,
                 0,
                 0,
-                3,
+                NEWTON_CHARGE_TIME,
                 Color.Green));
             CrosshairPanel.Parent = Local.Hud;
             CrosshairPanel.AddClass(ClassInfo.Name);
