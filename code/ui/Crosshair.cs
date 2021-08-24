@@ -119,7 +119,7 @@ namespace TTTReborn.UI
                 ChargeBar = chargeBarOutline.Add.Panel("element");
                 ChargeBar.Style.BackgroundColor = crosshairProperties.Color;
                 ChargeBar.Style.Height = Length.Percent(100);
-                ChargeBar.Style.Dirty();  
+                ChargeBar.Style.Dirty();
             }
 
             Style.Dirty();
