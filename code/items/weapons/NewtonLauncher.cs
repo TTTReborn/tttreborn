@@ -77,8 +77,7 @@ namespace TTTReborn.Items
             {
                 tr.Surface.DoBulletImpact(tr);
 
-                if (!tr.Entity.IsValid() || tr.Entity.IsWorld) return;
-                if (!IsServer)
+                if (!IsServer || !tr.Entity.IsValid() || tr.Entity.IsWorld)
                 {
                     continue;
                 }
