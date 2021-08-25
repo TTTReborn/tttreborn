@@ -177,9 +177,6 @@ namespace TTTReborn.Gamemode
 
             MapSettings = (TTTMapSettings) All.FirstOrDefault(x => x.GetType().Equals(typeof(TTTMapSettings)));
             MapSettings?.FireSettingsSpawn();
-            //Run setup function here with MapSettings data. In original TTT this included various settings for the crowbar and stuff.
-            //Relatively easy to add things to it and will definitely be used for give map-sided config.
-            //Pending addition of tweakable things once development has furthered.
 
             base.PostLevelLoaded();
         }

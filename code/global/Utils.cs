@@ -87,9 +87,9 @@ namespace TTTReborn.Globals
             return clients;
         }
 
-        public static List<TTTPlayer> GetAlivePlayersByRoleName(TTTRole role)
+        public static List<TTTPlayer> GetAlivePlayersByRole(TTTRole role)
         {
-            List<TTTPlayer> players = new List<TTTPlayer>();
+            List<TTTPlayer> players = new();
 
             foreach (Client client in Client.All)
             {

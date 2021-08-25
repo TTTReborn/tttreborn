@@ -17,10 +17,10 @@ namespace TTTReborn.Map
         public bool UseActivatorsTeam { get; set; } = false;
 
         [Input]
-        public void InnocentsWin() => ForceEndRound(TeamFunctions.GetTeam("Innocents"));
+        public void InnocentsWin() => ForceEndRound(TeamFunctions.GetTeamByType(typeof(InnocentTeam)));
 
         [Input]
-        public void TraitorsWin() => ForceEndRound(TeamFunctions.GetTeam("Traitors"));
+        public void TraitorsWin() => ForceEndRound(TeamFunctions.GetTeamByType(typeof(TraitorTeam)));
 
         [Input]
         public void ForceWin(Entity activator)

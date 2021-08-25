@@ -40,7 +40,6 @@ namespace TTTReborn.Map
         [Net]
         public bool IsRemoved { get; set; }
 
-        [Net]
         public bool IsDisabled => IsLocked || IsDelayed || IsRemoved;
 
         public bool HasDelay => Delay > 0.0f;
@@ -48,7 +47,6 @@ namespace TTTReborn.Map
         private RealTimeUntil NextUse { get; set; }
 
         protected Output OnPressed { get; set; }
-
 
         public TTTRoleButton()
         {

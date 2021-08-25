@@ -45,6 +45,5 @@ namespace TTTReborn.Map
                     break;
             }
         }
-
     }
 }

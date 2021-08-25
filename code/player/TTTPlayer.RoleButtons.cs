@@ -55,34 +55,35 @@ namespace TTTReborn.Player
         }
 
         //Debug method
-        //[ServerCmd("ttt_sendrb")]
-        //public static void ForceRBSend() 
-        //{
-        //    TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-        //
-        //    if (!player.IsValid())
-        //    {
-        //        return;
-        //   }
-        //
-        //    IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
-        //
-        //    IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role.ToLower() == "traitor");
-        //
-        //    player.ClientStoreRoleButton(To.Single(ConsoleSystem.Caller), applicableButtons.Select(x => x.PackageData()).ToArray());
-        //}
+        /*
+        [ServerCmd("ttt_sendrb")]
+        public static void ForceRBSend() 
+        {
+            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+        
+            if (!player.IsValid())
+            {
+                return;
+            }
+        
+            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
+        
+            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role.ToLower() == "traitor");
+        
+            player.ClientStoreRoleButton(To.Single(ConsoleSystem.Caller), applicableButtons.Select(x => x.PackageData()).ToArray(), );
+        }
+        */
 
         //Handle client telling server to activate a specific button
         [ServerCmd]
         public static void ActivateRoleButton(int networkIdent)
         {
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
             TTTRoleButton button = (TTTRoleButton) FindByIndex(networkIdent);
 
             if (button == null)
             {
-                Log.Warning($"Server received call for null role button with network id {networkIdent}");
+                Log.Warning($"Server received call for null role button with network id `{networkIdent}`.");
                 return;
             }
 
@@ -112,7 +113,6 @@ namespace TTTReborn.Player
             {
                 ActivateRoleButton(FocusedButton.Data.NetworkIdent);
             }
-
         }
 
         [ClientCmd("-ttt_activate_rb")]

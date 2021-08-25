@@ -16,7 +16,6 @@ namespace TTTReborn.Map
 
             if (activator is TTTPlayer player)
             {
-
                 if (player.Credits >= Credits)
                 {
                     player.Credits -= Credits;

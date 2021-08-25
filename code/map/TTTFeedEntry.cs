@@ -1,6 +1,5 @@
 using Sandbox;
 
-
 using TTTReborn.Globals;
 using TTTReborn.Teams;
 
@@ -33,10 +32,10 @@ namespace TTTReborn.Map
                     RPCs.ClientDisplayMessage(To.Everyone, Message, Color);
                     break;
                 case FeedEntryType.Innocents:
-                    RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeam("Innocents").GetClients()), Message, Color);
+                    RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeamByType(typeof(InnocentTeam)).GetClients()), Message, Color);
                     break;
                 case FeedEntryType.Traitors:
-                    RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeam("Traitors").GetClients()), Message, Color);
+                    RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeamByType(typeof(TraitorTeam)).GetClients()), Message, Color);
                     break;
                 case FeedEntryType.Other:
                     TTTTeam team = TeamFunctions.GetTeam(ReceiverTeamOverride);

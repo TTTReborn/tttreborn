@@ -1,4 +1,3 @@
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -14,32 +13,32 @@ namespace TTTReborn.UI
         public TTTRoleButtonData Data { get; private set; }
 
         //Our specific assigned Entity.
-        private TTTRoleButton Entity;
+        private TTTRoleButton _entity;
 
         //Position pulled from Data
         public Vector3 Position { get; private set; }
 
-        private readonly Label DescriptionLabel;
+        private readonly Label _descriptionLabel;
 
         //If the distance from the player to the button is less than this value, the element is fully visible.
         private const int MINVIEWDISTANCE = 512;
         //Between MINVIEWDISTANCE and this value, the element will slowly become transparent.
         //Past this distance, the button is unusuable.
-        private readonly int MaxViewDistance = 1024;
+        private readonly int _maxViewDistance = 1024;
 
         public RoleButtonPoint(TTTRoleButtonData data)
         {
             Data = data;
             Position = data.Position;
-            MaxViewDistance = data.Range;
+            _maxViewDistance = data.Range;
 
             StyleSheet.Load("/map/RoleButton/RoleButtonPoint.scss");
 
             Hud.Current.RootPanel.AddChild(this);
 
-            Entity = Sandbox.Entity.FindByIndex(Data.NetworkIdent) as TTTRoleButton;
+            _entity = Entity.FindByIndex(Data.NetworkIdent) as TTTRoleButton;
 
-            DescriptionLabel = Add.Label(Entity.Description);
+            _descriptionLabel = Add.Label(_entity.Description);
         }
 
         public override void Tick()
@@ -55,12 +54,13 @@ namespace TTTReborn.UI
             IsShowing = screenPos.z > 0f;
 
             //If our entity is locked, delayed or removed, let's not show it.
-            if (Entity.IsDisabled)
+            if (_entity.IsDisabled)
             {
                 //Since we're just technically just making it invisible. Let's go ahead and move it off screen so it doesn't interfere with UI input.
                 Style.Left = -10;
                 Style.Top = -10;
                 Style.Opacity = 0;
+                Style.Dirty();
 
                 //Make sure our client is no longer tracking this element.
                 if (TTTPlayer.FocusedButton == this)
@@ -76,20 +76,13 @@ namespace TTTReborn.UI
                 Style.Left = Length.Fraction(screenPos.x);
                 Style.Top = Length.Fraction(screenPos.y);
 
-                Style.Opacity = MathX.Clamp(1.0f - (player.Position.Distance(Position) - MINVIEWDISTANCE) / (MaxViewDistance - MINVIEWDISTANCE), 0.0f, 1.0f);
+                Style.Opacity = MathX.Clamp(1.0f - (player.Position.Distance(Position) - MINVIEWDISTANCE) / (_maxViewDistance - MINVIEWDISTANCE), 0.0f, 1.0f);
 
                 //Update our 'focus' CSS look if our player currently is looking near this point.
-                if (TTTPlayer.FocusedButton == this)
-                {
-                    SetClass("focus", true);
-                }
-                else
-                {
-                    SetClass("focus", false);
-                }
+                SetClass("focus", TTTPlayer.FocusedButton == this);
 
                 //Check if point is within 10% of the crosshair.
-                if (IsLengthWithinCamerasFocus() && player.Position.Distance(Position) <= MaxViewDistance)
+                if (IsLengthWithinCamerasFocus() && player.Position.Distance(Position) <= _maxViewDistance)
                 {
                     TTTPlayer.FocusedButton ??= this; //If the current focused button is null, update it to this.
                 }
@@ -104,17 +97,17 @@ namespace TTTReborn.UI
 
         //Our "screen focus" size, roughly %5 of the screen around the cross hair.
         //It might be worth considering using an alternate method to percentages for larger screens. Hoping we can test that with someone who has a UHD monitor.
-        private float FocusSize = 2.5f;
+        private float _focusSize = 2.5f;
+        private const int _centerPercent = 50;
 
         public bool IsLengthWithinCamerasFocus()
         {
             //We have to adjust the top check by the screen's aspect ratio in order to compensate for screen size
-            float topHeight = FocusSize * Screen.Aspect;
+            float topHeight = _focusSize * Screen.Aspect;
 
             //I think we could alternatively use 
-            return Style.Left.Value.Value > 50 - FocusSize && Style.Left.Value.Value < 50 + FocusSize
-                &&
-                Style.Top.Value.Value > 50 - topHeight && Style.Top.Value.Value < 50 + topHeight;
+            return Style.Left.Value.Value > _centerPercent - _focusSize && Style.Left.Value.Value < _centerPercent + _focusSize
+                && Style.Top.Value.Value > _centerPercent - topHeight && Style.Top.Value.Value < _centerPercent + topHeight;
         }
 
         //Check to make sure player is within range and our button is not disabled.
@@ -125,5 +118,3 @@ namespace TTTReborn.UI
         }
     }
 }
-
-

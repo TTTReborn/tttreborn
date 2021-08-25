@@ -27,13 +27,10 @@ namespace TTTReborn.Map
         [Input]
         public void Activate(Entity activator)
         {
-
             if (activator is TTTPlayer player && Gamemode.Game.Instance.Round is InProgressRound)
             {
-
                 if (CheckType == Check.Role)
                 {
-
                     if (player.Role.Name.ToLower() == CheckValue.ToLower())
                     {
                         OnPass.Fire(this);
@@ -42,7 +39,6 @@ namespace TTTReborn.Map
                 }
                 else //CheckType == Check.Team
                 {
-
                     if (player.Team.Name.ToLower() == CheckValue.ToLower())
                     {
                         OnPass.Fire(this);
