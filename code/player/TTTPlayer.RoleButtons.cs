@@ -46,6 +46,7 @@ namespace TTTReborn.Player
         }
 
         //Clear role buttons, called before player respawns.
+        [ClientRpc]
         public void RemoveRoleButtons()
         {
             RoleButtons = new();
