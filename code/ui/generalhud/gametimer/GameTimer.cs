@@ -5,7 +5,7 @@ using TTTReborn.Gamemode;
 
 namespace TTTReborn.UI
 {
-    public class GameTimer : TTTPanel
+    public class GameTimer : Panel
     {
         private readonly GameTimerContent _gameTimerContent;
 
@@ -16,12 +16,12 @@ namespace TTTReborn.UI
             _gameTimerContent = new(this);
         }
 
-        private class GameTimerContent : TTTPanel
+        private class GameTimerContent : Panel
         {
             private readonly TranslationLabel _textLabel;
             private readonly Label _timeLabel;
 
-            public GameTimerContent(Panel parent)
+            public GameTimerContent(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 

@@ -10,7 +10,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.UI
 {
-    public partial class ChatBox : TTTPanel
+    public partial class ChatBox : Panel
     {
         public static ChatBox Instance { get; private set; }
 
@@ -24,7 +24,7 @@ namespace TTTReborn.UI
 
         private TimeSince _lastChatFocus = 0f;
 
-        private readonly Panel _canvas;
+        private readonly Sandbox.UI.Panel _canvas;
         private readonly TextEntry _input;
 
         public ChatBox()

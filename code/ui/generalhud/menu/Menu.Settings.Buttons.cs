@@ -34,7 +34,7 @@ namespace TTTReborn.UI.Menu
 
         private void CreateSettingsButtons(PanelContent menuContent)
         {
-            Panel buttonsWrapperPanel = menuContent.Add.Panel("wrapper");
+            Sandbox.UI.Panel buttonsWrapperPanel = menuContent.Add.Panel("wrapper");
 
             buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
             {

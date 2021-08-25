@@ -6,7 +6,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class Dropdown : TTTPanel
+    public partial class Dropdown : Panel
     {
         public readonly Label TextLabel;
 
@@ -55,7 +55,7 @@ namespace TTTReborn.UI
             IsOpen = false;
         }
 
-        public DropdownOption AddOption(string text, object data = null, Action<TTTPanel> onSelect = null)
+        public DropdownOption AddOption(string text, object data = null, Action<Panel> onSelect = null)
         {
             DropdownOption dropdownOption = new DropdownOption(this, OptionHolder, text, data)
             {

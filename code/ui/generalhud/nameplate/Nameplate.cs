@@ -7,15 +7,15 @@ using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
-    public class Nameplate : TTTPanel
+    public class Nameplate : Panel
     {
         public static Nameplate Instance;
 
         private const float MAX_DRAW_DISTANCE = 500;
         private readonly Color BORDER_COLOR_NONE = Color.FromBytes(0, 0, 0, 204);
 
-        private readonly Panel _labelHolder;
-        private readonly Panel _nameHolder;
+        private readonly Sandbox.UI.Panel _labelHolder;
+        private readonly Sandbox.UI.Panel _nameHolder;
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 

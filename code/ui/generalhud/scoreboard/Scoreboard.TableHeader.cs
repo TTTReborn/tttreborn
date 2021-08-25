@@ -8,14 +8,14 @@ namespace TTTReborn.UI
 {
     public partial class Scoreboard
     {
-        private class TableHeader : TTTPanel
+        private class TableHeader : Panel
         {
             private readonly Label _playerAliveCountLabel;
             private readonly Label _karmaLabel;
             private readonly Label _scoreLabel;
             private readonly Label _pingLabel;
 
-            public TableHeader(Panel parent)
+            public TableHeader(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 

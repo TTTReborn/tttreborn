@@ -6,7 +6,7 @@ using TTTReborn.Items;
 
 namespace TTTReborn.UI
 {
-    public class Effect : TTTPanel
+    public class Effect : Panel
     {
         public IItem Item
         {
@@ -49,7 +49,7 @@ namespace TTTReborn.UI
         private readonly Image _effectImage;
         private Label Countdown;
 
-        public Effect(Panel parent, IItem effect)
+        public Effect(Sandbox.UI.Panel parent, IItem effect)
         {
             Parent = parent;
 

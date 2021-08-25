@@ -11,7 +11,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class InventorySelection : TTTPanel
+    public class InventorySelection : Panel
     {
         private readonly InputButton[] _slotInputButtons = new[] {
             InputButton.Slot0,
@@ -57,7 +57,7 @@ namespace TTTReborn.UI
 
             bool invalidSlot = false;
 
-            foreach (Panel child in Children)
+            foreach (Sandbox.UI.Panel child in Children)
             {
                 if (child is InventorySlot slot)
                 {
@@ -115,7 +115,7 @@ namespace TTTReborn.UI
         [Event("tttreborn.player.carriableitem.drop")]
         private void OnCarriableItemDrop(ICarriableItem carriable)
         {
-            foreach (Panel child in Children)
+            foreach (Sandbox.UI.Panel child in Children)
             {
                 if (child is InventorySlot slot)
                 {
@@ -160,7 +160,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            List<Panel> childrenList = Children.ToList();
+            List<Sandbox.UI.Panel> childrenList = Children.ToList();
 
             ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
 
@@ -250,14 +250,14 @@ namespace TTTReborn.UI
             return $"{weapon.AmmoClip} + {(inventory.Ammo.Count(weapon.AmmoType))}";
         }
 
-        private class InventorySlot : TTTPanel
+        private class InventorySlot : Panel
         {
             public ICarriableItem Carriable { get; init; }
             private readonly Label _ammoLabel;
             private Label _slotLabel;
             private Label _carriableLabel;
 
-            public InventorySlot(Panel parent, ICarriableItem carriable)
+            public InventorySlot(Sandbox.UI.Panel parent, ICarriableItem carriable)
             {
                 Parent = parent;
                 Carriable = carriable;

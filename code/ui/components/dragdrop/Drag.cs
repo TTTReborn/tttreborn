@@ -60,7 +60,7 @@ namespace TTTReborn.UI
         }
         private bool _isFreeDraggable = false;
 
-        public Panel DragBasePanel
+        public Sandbox.UI.Panel DragBasePanel
         {
             get => _dragBasePanel ?? this;
             set
@@ -68,7 +68,7 @@ namespace TTTReborn.UI
                 _dragBasePanel = value;
             }
         }
-        private Panel _dragBasePanel;
+        private Sandbox.UI.Panel _dragBasePanel;
 
         private Vector2 _draggingMouseStartPosition;
         private Vector2 _draggingStartPosition;
@@ -76,7 +76,7 @@ namespace TTTReborn.UI
         private Length? _oldPositionTop;
         private PositionMode? _oldPositionMode;
 
-        public Drag(Panel parent = null) : base(parent)
+        public Drag(Sandbox.UI.Panel parent = null) : base(parent)
         {
             Parent = parent ?? Parent;
 
@@ -217,7 +217,7 @@ namespace TTTReborn.UI
         {
             if (targetDrop != null)
             {
-                targetDrop.AddChild(this, index ?? targetDrop.ChildCount - 1);
+                targetDrop.AddChild(this);
 
                 if (!IsFreeDraggable)
                 {

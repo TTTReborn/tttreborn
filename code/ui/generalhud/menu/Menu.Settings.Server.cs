@@ -26,7 +26,7 @@ namespace TTTReborn.UI.Menu
 
         private void AddSprintSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
-            Panel sprintPanel = tabContent.Add.Panel("sprint");
+            Sandbox.UI.Panel sprintPanel = tabContent.Add.Panel("sprint");
             sprintPanel.Add.Label($"Sprint enabled?");
 
             Switch sw = sprintPanel.Add.Switch("sprint", serverSettings.Movement.IsSprintEnabled);
@@ -81,9 +81,9 @@ namespace TTTReborn.UI.Menu
             });
         }
 
-        private TextEntry CreateSettingsEntry<T>(Panel parent, string title, T defaultValue, string description, Action<T> OnChange = null)
+        private TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnChange = null)
         {
-            Panel wrapper = parent.Add.Panel();
+            Sandbox.UI.Panel wrapper = parent.Add.Panel();
             Label textLabel = wrapper.Add.Label(title);
             textLabel.AddTooltip(description, "");
 

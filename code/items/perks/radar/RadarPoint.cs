@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class RadarPoint : TTTPanel
+    public class RadarPoint : Panel
     {
         public Vector3 Position;
 

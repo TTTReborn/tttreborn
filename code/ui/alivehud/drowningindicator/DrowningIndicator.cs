@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public partial class DrowningIndicator : TTTPanel
+    public partial class DrowningIndicator : Panel
     {
         public static DrowningIndicator Instance;
 

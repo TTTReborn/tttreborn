@@ -5,7 +5,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public partial class QuickShop : TTTPanel
+    public partial class QuickShop : Panel
     {
         public static QuickShop Instance;
 

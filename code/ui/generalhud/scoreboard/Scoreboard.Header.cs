@@ -6,16 +6,16 @@ namespace TTTReborn.UI
 {
     public partial class Scoreboard
     {
-        private class Header : TTTPanel
+        private class Header : Panel
         {
             //public Label ServerDescription;
 
-            private readonly Panel _scoreboardLogo;
+            private readonly Sandbox.UI.Panel _scoreboardLogo;
             private readonly Label _serverName;
-            private readonly Panel _informationHolder;
+            private readonly Sandbox.UI.Panel _informationHolder;
             private readonly Label _serverInfo;
 
-            public Header(Panel parent)
+            public Header(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 

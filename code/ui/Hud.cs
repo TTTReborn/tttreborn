@@ -63,9 +63,9 @@ namespace TTTReborn.UI
             Current?.AliveHudPanel.DeleteHud();
         }
 
-        public class GeneralHud : TTTPanel
+        public class GeneralHud : Panel
         {
-            public GeneralHud(Panel parent)
+            public GeneralHud(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 
@@ -83,9 +83,9 @@ namespace TTTReborn.UI
             }
         }
 
-        public class AliveHud : TTTPanel
+        public class AliveHud : Panel
         {
-            public AliveHud(Panel parent)
+            public AliveHud(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
             }

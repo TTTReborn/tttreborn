@@ -16,15 +16,15 @@ namespace TTTReborn.UI
             Spectator
         }
 
-        private class ScoreboardGroup : TTTPanel
+        private class ScoreboardGroup : Panel
         {
             public readonly string GroupTitle;
             public int GroupMembers = 0;
-            private readonly Panel _groupContent;
-            private readonly Panel _groupTitleWrapper;
+            private readonly Sandbox.UI.Panel _groupContent;
+            private readonly Sandbox.UI.Panel _groupTitleWrapper;
             private readonly Label _groupTitleLabel;
 
-            public ScoreboardGroup(Panel parent, string groupName)
+            public ScoreboardGroup(Sandbox.UI.Panel parent, string groupName)
             {
                 Parent = parent;
 

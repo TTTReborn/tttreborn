@@ -3,7 +3,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.Menu
 {
-    public partial class MenuHeader : TTTPanel
+    public partial class MenuHeader : Panel
     {
         public readonly MenuNavigationHeader NavigationHeader;
 
@@ -28,7 +28,7 @@ namespace TTTReborn.UI.Menu
 
         public readonly Menu Menu;
 
-        public MenuNavigationHeader(Panel parent, Menu menu) : base(parent)
+        public MenuNavigationHeader(Sandbox.UI.Panel parent, Menu menu) : base(parent)
         {
             Parent = parent;
             Menu = menu;
@@ -57,7 +57,7 @@ namespace TTTReborn.UI.Menu
 
     public partial class MenuDragHeader : Drag
     {
-        public MenuDragHeader(Panel parent, Menu menu) : base(parent)
+        public MenuDragHeader(Sandbox.UI.Panel parent, Menu menu) : base(parent)
         {
             Parent = parent;
             DragBasePanel = menu;

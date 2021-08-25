@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public partial class DamageIndicator : TTTPanel
+    public partial class DamageIndicator : Panel
     {
         public static DamageIndicator Instance;
 

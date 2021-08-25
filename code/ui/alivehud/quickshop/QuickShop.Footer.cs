@@ -9,13 +9,13 @@ namespace TTTReborn.UI
 {
     public partial class QuickShop
     {
-        private class Footer : TTTPanel
+        private class Footer : Panel
         {
             private Description _description;
             private BuyArea _buyArea;
             private ShopItemData? _currentItemData;
 
-            public Footer(Panel parent)
+            public Footer(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 
@@ -23,13 +23,13 @@ namespace TTTReborn.UI
                 _buyArea = new(this);
             }
 
-            private class Description : TTTPanel
+            private class Description : Panel
             {
                 public Label EquipmentLabel;
                 public Label DescriptionLabel;
                 public ShopItemData? ItemData;
 
-                public Description(Panel parent)
+                public Description(Sandbox.UI.Panel parent)
                 {
                     Parent = parent;
 
@@ -46,15 +46,15 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class BuyArea : TTTPanel
+            private class BuyArea : Panel
             {
-                public Panel PriceHolder;
+                public Sandbox.UI.Panel PriceHolder;
                 public Label DollarSignLabel;
                 public Label PriceLabel;
                 public Button BuyButton;
                 public ShopItemData? ItemData;
 
-                public BuyArea(Panel parent)
+                public BuyArea(Sandbox.UI.Panel parent)
                 {
                     Parent = parent;
                     PriceHolder = Add.Panel("priceholder");

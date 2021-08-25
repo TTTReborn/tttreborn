@@ -9,7 +9,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class InspectMenu : TTTPanel
+    public class InspectMenu : Panel
     {
         public static InspectMenu Instance;
 
@@ -60,7 +60,7 @@ namespace TTTReborn.UI
             }
         }
 
-        private class ConfirmationPanel : TTTPanel
+        private class ConfirmationPanel : Panel
         {
             private readonly Header _header;
 
@@ -68,7 +68,7 @@ namespace TTTReborn.UI
 
             private readonly Footer _footer;
 
-            public ConfirmationPanel(Panel parent)
+            public ConfirmationPanel(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 
@@ -99,13 +99,13 @@ namespace TTTReborn.UI
                 _content.SetPerks(perks);
             }
 
-            private class Header : TTTPanel
+            private class Header : Panel
             {
                 private readonly Label _playerLabel;
 
                 private readonly Label _roleLabel;
 
-                public Header(Panel parent)
+                public Header(Sandbox.UI.Panel parent)
                 {
                     Parent = parent;
 
@@ -123,7 +123,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class Content : TTTPanel
+            private class Content : Panel
             {
                 private InspectItem _timeSinceDeath;
                 private InspectItem _killerWeapon;
@@ -135,7 +135,7 @@ namespace TTTReborn.UI
 
                 private readonly ImageWrapper _playerImage;
 
-                public Content(Panel parent)
+                public Content(Sandbox.UI.Panel parent)
                 {
                     Parent = parent;
 
@@ -236,11 +236,11 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class ImageWrapper : TTTPanel
+            private class ImageWrapper : Panel
             {
                 public readonly Image Image;
 
-                public ImageWrapper(Panel parent)
+                public ImageWrapper(Sandbox.UI.Panel parent)
                 {
                     Parent = parent;
 
@@ -248,13 +248,13 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class InspectItem : TTTPanel
+            private class InspectItem : Panel
             {
                 public readonly ImageWrapper ImageWrapper;
 
                 public readonly Label InspectItemLabel;
 
-                public InspectItem(Panel parent)
+                public InspectItem(Sandbox.UI.Panel parent)
                 {
                     Parent = parent;
 
@@ -263,11 +263,11 @@ namespace TTTReborn.UI
                 }
             }
 
-            private class Footer : TTTPanel
+            private class Footer : Panel
             {
                 private readonly Label _footerLabel;
 
-                public Footer(Panel parent)
+                public Footer(Sandbox.UI.Panel parent)
                 {
                     Parent = parent;
 
@@ -290,11 +290,11 @@ namespace TTTReborn.UI
             }
         }
 
-        private class ConfirmationHintPanel : TTTPanel
+        private class ConfirmationHintPanel : Panel
         {
             private Label _inspectLabel;
 
-            public ConfirmationHintPanel(Panel parent)
+            public ConfirmationHintPanel(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 

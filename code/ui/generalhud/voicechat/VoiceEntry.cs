@@ -11,7 +11,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    public class VoiceEntry : TTTPanel
+    public class VoiceEntry : Panel
     {
         public Friend Friend;
 
@@ -25,7 +25,7 @@ namespace TTTReborn.UI
 
         RealTimeSince timeSincePlayed;
 
-        public VoiceEntry(Panel parent, Client client)
+        public VoiceEntry(Sandbox.UI.Panel parent, Client client)
         {
             Parent = parent;
 

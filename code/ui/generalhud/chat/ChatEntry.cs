@@ -3,12 +3,12 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class ChatEntry : TTTPanel
+    public partial class ChatEntry : Panel
     {
         public string Name;
         public string Text;
 
-        public readonly Panel HeadHolder;
+        public readonly Sandbox.UI.Panel HeadHolder;
         public readonly Image Avatar;
         public readonly Label NameLabel;
         public readonly Label Message;

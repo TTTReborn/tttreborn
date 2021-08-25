@@ -6,7 +6,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class InfoFeedEntry : TTTPanel
+    public partial class InfoFeedEntry : Panel
     {
         private readonly List<Label> _labels = new();
 

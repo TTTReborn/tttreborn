@@ -8,14 +8,14 @@ namespace TTTReborn.UI
 {
     public partial class QuickShop
     {
-        private class Header : TTTPanel
+        private class Header : Panel
         {
-            public Panel PriceHolder { get; set; }
+            public Sandbox.UI.Panel PriceHolder { get; set; }
             public Label DollarSignLabel;
             private Label _titleLabel;
             private readonly Label _creditsLabel;
 
-            public Header(Panel parent)
+            public Header(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 

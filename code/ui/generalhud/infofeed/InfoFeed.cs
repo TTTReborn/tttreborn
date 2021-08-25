@@ -6,7 +6,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    public partial class InfoFeed : TTTPanel
+    public partial class InfoFeed : Panel
     {
         public static InfoFeed Current;
 
@@ -17,7 +17,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/infofeed/InfoFeed.scss");
         }
 
-        public virtual Panel AddEntry(Client leftClient, string method)
+        public virtual Sandbox.UI.Panel AddEntry(Client leftClient, string method)
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 
@@ -34,7 +34,7 @@ namespace TTTReborn.UI
             return e;
         }
 
-        public virtual Panel AddEntry(Client leftClient, Client rightClient, string method, string postfix = "")
+        public virtual Sandbox.UI.Panel AddEntry(Client leftClient, Client rightClient, string method, string postfix = "")
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 

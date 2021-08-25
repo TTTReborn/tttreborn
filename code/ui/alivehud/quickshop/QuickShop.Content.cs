@@ -12,13 +12,13 @@ namespace TTTReborn.UI
 {
     public partial class QuickShop
     {
-        private class Content : TTTPanel
+        private class Content : Panel
         {
             private readonly List<ItemPanel> _itemPanels = new();
 
-            private readonly Panel _wrapper;
+            private readonly Sandbox.UI.Panel _wrapper;
 
-            public Content(Panel parent)
+            public Content(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 
@@ -68,20 +68,20 @@ namespace TTTReborn.UI
                 _itemPanels.Add(itemPanel);
             }
 
-            private class ItemPanel : TTTPanel
+            private class ItemPanel : Panel
             {
                 private ShopItemData? _buyableItemData;
 
-                private readonly Panel _iconPanel;
+                private readonly Sandbox.UI.Panel _iconPanel;
 
-                public Panel PriceHolder;
+                public Sandbox.UI.Panel PriceHolder;
                 public Label DollarSignLabel;
 
                 private readonly Label _priceLabel;
 
                 public bool IsDisabled = false;
 
-                public ItemPanel(Panel parent)
+                public ItemPanel(Sandbox.UI.Panel parent)
                 {
                     Parent = parent;
 

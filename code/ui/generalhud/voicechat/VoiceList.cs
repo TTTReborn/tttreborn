@@ -5,7 +5,7 @@ using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
-    public class VoiceList : TTTPanel
+    public class VoiceList : Panel
     {
         public static VoiceList Current { get; internal set; }
 

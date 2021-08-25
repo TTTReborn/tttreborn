@@ -8,7 +8,7 @@ using TTTReborn.Settings;
 
 namespace TTTReborn.UI
 {
-    public class PlayerInfo : TTTPanel
+    public class PlayerInfo : Panel
     {
         public PlayerInfo()
         {
@@ -25,14 +25,14 @@ namespace TTTReborn.UI
             IsShowing = Local.Pawn is TTTPlayer player && (!player.IsSpectator && !player.IsSpectatingPlayer);
         }
 
-        private class RolePanel : TTTPanel
+        private class RolePanel : Panel
         {
             private readonly TranslationLabel _roleLabel;
 
             private TTTRole _currentRole;
             private TTTPlayer _currentPlayer;
 
-            public RolePanel(Panel parent)
+            public RolePanel(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 
@@ -73,7 +73,7 @@ namespace TTTReborn.UI
             }
         }
 
-        private class IndicatorsPanel : TTTPanel
+        private class IndicatorsPanel : Panel
         {
             private readonly BarPanel _healthBar;
             private readonly BarPanel _staminaBar;
@@ -82,7 +82,7 @@ namespace TTTReborn.UI
             private float _currentHealth = -1;
             private float _currentStamina = -1;
 
-            public IndicatorsPanel(Panel parent)
+            public IndicatorsPanel(Sandbox.UI.Panel parent)
             {
                 Parent = parent;
 

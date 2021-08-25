@@ -14,7 +14,7 @@ namespace TTTReborn.UI
         }
     }
 
-    public class PostRoundMenu : TTTPanel
+    public class PostRoundMenu : Panel
     {
         public static PostRoundMenu Instance;
 
