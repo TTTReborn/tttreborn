@@ -19,7 +19,7 @@ namespace TTTReborn.UI
         //Position pulled from Data
         public Vector3 Position { get; private set; }
 
-        private Label DescriptionLabel;
+        private readonly Label DescriptionLabel;
 
         //If the distance from the player to the button is less than this value, the element is fully visible.
         private const int MINVIEWDISTANCE = 512;
