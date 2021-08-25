@@ -19,7 +19,10 @@ namespace TTTReborn.Player
         //TODO: Call whenever player's role is set serverside, not initially during assignment.
         public void SendRoleButtonsToClient()
         {
-            Host.AssertServer();
+            if (!IsServer)
+            {
+                return;
+            }
 
             //Find all role button entities in the world and cast to TTTRoleButton.
             IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
