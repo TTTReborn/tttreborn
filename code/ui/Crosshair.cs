@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
@@ -151,7 +152,7 @@ namespace TTTReborn.UI
                     {
                         ChargeStartTime = Time.Now;
                     }
-                    ChargeBar.Style.Width = Length.Percent(MathX.Clamp((Time.Now - ChargeStartTime) / ChargeTime, 0, 1) * 100);
+                    ChargeBar.Style.Width = Length.Percent(Math.Clamp((Time.Now - ChargeStartTime) / ChargeTime, 0, 1) * 100);
                     ChargeBar.Style.Dirty();
                 }
                 else
