@@ -19,7 +19,7 @@ namespace TTTReborn.UI
         //Position pulled from Data
         public Vector3 Position { get; private set; }
 
-        private Label DescriptionLabel; 
+        private Label DescriptionLabel;
 
         //If the distance from the player to the button is less than this value, the element is fully visible.
         private const int MINVIEWDISTANCE = 512;
@@ -55,7 +55,7 @@ namespace TTTReborn.UI
             IsShowing = screenPos.z > 0f;
 
             //If our entity is locked, delayed or removed, let's not show it.
-            if(Entity.IsDisabled)
+            if (Entity.IsDisabled)
             {
                 //Since we're just technically just making it invisible. Let's go ahead and move it off screen so it doesn't interfere with UI input.
                 Style.Left = -10;
@@ -75,7 +75,7 @@ namespace TTTReborn.UI
             {
                 Style.Left = Length.Fraction(screenPos.x);
                 Style.Top = Length.Fraction(screenPos.y);
-                
+
                 Style.Opacity = MathX.Clamp(1.0f - (player.Position.Distance(Position) - MINVIEWDISTANCE) / (MaxViewDistance - MINVIEWDISTANCE), 0.0f, 1.0f);
 
                 //Update our 'focus' CSS look if our player currently is looking near this point.

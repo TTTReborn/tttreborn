@@ -71,7 +71,7 @@ namespace TTTReborn.Map
             NextUse = 0;
         }
 
-       public void OnSecond() //Hijack the round timer to tick on every second. No reason to tick any faster.
+        public void OnSecond() //Hijack the round timer to tick on every second. No reason to tick any faster.
         {
             Host.AssertServer();
 

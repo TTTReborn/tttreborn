@@ -205,7 +205,7 @@ namespace TTTReborn.Rounds
                 base.OnSecond();
 
                 RoleButtons.ForEach(x => x.OnSecond()); //Tick role button delay timer.
-                
+
                 if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {
                     Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());

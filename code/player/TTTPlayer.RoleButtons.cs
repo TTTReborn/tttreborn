@@ -41,8 +41,8 @@ namespace TTTReborn.Player
             FocusedButton = null;
 
             //Index our data table by the role buttons network identity so we can find it later if need be.
-            RoleButtons = buttons.ToDictionary(x => x.NetworkIdent, x => x);
-            RoleButtonPoints = buttons.ToDictionary(x => x.NetworkIdent, x => new RoleButtonPoint(x));
+            RoleButtons = buttons.ToDictionary(k => k.NetworkIdent, v => v);
+            RoleButtonPoints = buttons.ToDictionary(k => k.NetworkIdent, v => new RoleButtonPoint(v));
         }
 
         //Clear role buttons, called before player respawns.
@@ -111,7 +111,7 @@ namespace TTTReborn.Player
             {
                 ActivateRoleButton(FocusedButton.Data.NetworkIdent);
             }
-            
+
         }
 
         [ClientCmd("-ttt_activate_rb")]
