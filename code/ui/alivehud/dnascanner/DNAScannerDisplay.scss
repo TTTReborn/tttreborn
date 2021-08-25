@@ -1,3 +1,63 @@
 DNAScannerDisplay {
+    background-color: #000c;
+    border: 1px solid #1b1b1b;
+    border-radius: 8px;
+    font-family: Poppins;
+    min-width: 375px;
+    max-width: 800px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateY(-25%);
+    margin: auto;
+    position: absolute;
+    flex-direction: column;
+    color: #fafafa;
+    font-family: Poppins;
+    font-weight: 500;
 
+    Content {
+        max-height: 300px;
+        padding: 16px;
+        text-align: center;
+        flex-direction: column;
+
+        Panel.wrapper {
+            flex-wrap: wrap;
+            justify-content: center;
+
+            DNAPanel {
+                flex-direction: column;
+                margin: 5px;
+                padding: 5px;
+
+
+
+                Panel.icon {
+                    width: 90px;
+                    height: 90px;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    border-radius: 4px;
+                    border: 1px solid #1b1b1b;
+                    transition: all 0.05s linear;
+                    background-size: cover;
+                    
+
+                    &.selected {
+                        border: 4px solid white;
+                   }
+                }
+            }
+        }
+
+        Panel.header {
+            justify-content: center;
+        }
+
+        Panel.footer {
+            justify-content: center;
+            flex-direction: column;
+        }
+    }
 }

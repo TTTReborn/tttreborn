@@ -5,6 +5,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
@@ -19,6 +20,14 @@ namespace TTTReborn.Items
         private List<DNAInstance> StoredDNA = new();
         private const int SelectDistance = 200;
 
+        private bool ShowUI = true;
+
+        [Event.Hotload]
+        public void onHL()
+        {
+            StoredDNA = new();
+        }
+
         public override void Spawn()
         {
             base.Spawn();
@@ -31,12 +40,6 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client client)
         {
-            if (!IsServer || Owner is not TTTPlayer player)
-            {
-                return;
-            }
-
-            
             using (Prediction.Off())
             {
                 if (Input.Pressed(InputButton.Attack1))
@@ -53,11 +56,21 @@ namespace TTTReborn.Items
                 {
                     ClearDNA();
                 }
+
+                if (Input.Pressed(InputButton.Duck))
+                {
+                    ShowUI = !ShowUI;
+                }
             }
         }
 
         private void CollectDNA()
         {
+            if (!IsServer)
+            {
+                return;
+            }
+
             TraceResult selectionTrace = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * SelectDistance)
                      .Ignore(Owner)
                      .UseHitboxes()
@@ -73,6 +86,7 @@ namespace TTTReborn.Items
             if (selectionTrace.Entity.IsWorld)
             {
                 List<Entity> entities = Physics.GetEntitiesInSphere(selectionTrace.EndPos, 10.0f).ToList();
+
                 if (!entities.Any())
                 {
                     return;
@@ -85,22 +99,71 @@ namespace TTTReborn.Items
                 selected = selectionTrace.Entity;
             }
 
-            var DNAonEnt = Gamemode.Game.Instance.DNA.GetDNA(selected);
+            List<DNAInstance> DNAonEnt = Gamemode.Game.Instance.DNA.GetDNA(selected);
 
-            if (DNAonEnt.Count > 0)
+            if (DNAonEnt.Any())
             {
-                StoredDNA.AddRange(DNAonEnt);
+                //Truncate our list of collected DNA if we got a bunch more than we can hold.
+                int openSlots = DNARegistry.MAXIMUMSLOTS - StoredDNA.Count;
+
+                if (DNAonEnt.Count > openSlots)
+                {
+                    DNAonEnt.RemoveRange(openSlots, DNAonEnt.Count - openSlots);
+                }
+
+                StoredDNA.AddRange(DNAonEnt); //Store on the server side of the weapon our DNA.
+
+                foreach (DNAInstance dna in DNAonEnt)
+                {
+                    AddNewDNAToUI(To.Single(Owner), dna.Type); //Send each type of DNA to our client for UI. 
+                }
+
+                //We've pulled DNA off something, so let's stop tracking it on that entity. You own that DNA now.
+                Gamemode.Game.Instance.DNA.Untrack(DNAonEnt);
             }
+        }
+
+        [ClientRpc]
+        public void AddNewDNAToUI(DNAType dna)
+        {
+            DNAScannerDisplay.Instance.DisplayDNA(dna);
         }
 
         private void SwapDNA()
         {
-            Log.Error("Swapping DNA");
+            if (IsServer)
+            {
+                return;
+            }
+
+            DNAScannerDisplay.Instance.ChangeSelectedSlot();
         }
 
         private void ClearDNA()
         {
-            Log.Error("Clearing DNA");
+            if (IsServer)
+            {
+                return;
+            }
+
+            DNAScannerDisplay.Instance.RemoveDNA();
+            RemoveDNAAtIndex(NetworkIdent, DNAScannerDisplay.Instance.CurrentSlot);
+        }
+
+        [ServerCmd]
+        public static void RemoveDNAAtIndex(int scannerId, int index)
+        {
+            DNAScanner scanner = FindByIndex(scannerId) as DNAScanner;
+            if (scanner == null)
+            {
+                Log.Warning($"Received request to update DNA for scanner: {scannerId}, however it does not exist.");
+            }
+
+            if (!scanner.StoredDNA.ElementAtOrDefault(index).Equals(default(DNAInstance)))
+            {
+                scanner.StoredDNA.RemoveAt(index);
+            }
+
         }
 
         public override bool CanDrop() => true;

@@ -95,6 +95,7 @@ namespace TTTReborn.UI
                 Parent.AddChild<DamageIndicator>();
                 Parent.AddChild<QuickShop>();
                 Parent.AddChild<DrowningIndicator>();
+                Parent.AddChild<DNAScannerDisplay>();
             }
 
             public void DeleteHud()

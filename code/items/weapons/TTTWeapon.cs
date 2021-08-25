@@ -177,7 +177,7 @@ namespace TTTReborn.Items
                     ammoBox.Velocity = Owner.EyeRot.Forward * AmmoDropVelocity;
                     ammoBox.SetCurrentAmmo(AmmoClip);
 
-                    Gamemode.Game.Instance.DNA.Track(new Globals.DNAInstance(ammoBox, owner.Pawn as TTTPlayer, 30));
+                    Gamemode.Game.Instance.DNA.Track(new Globals.DNAInstance(ammoBox, Globals.DNAType.Ammo, owner.Pawn as TTTPlayer, 30));
                 }
 
                 TakeAmmo(AmmoClip);
@@ -390,7 +390,7 @@ namespace TTTReborn.Items
             {
                 if (dropper is TTTPlayer player)
                 {
-                    Gamemode.Game.Instance.DNA.Track(new Globals.DNAInstance(this, player, 60));
+                    Gamemode.Game.Instance.DNA.Track(new Globals.DNAInstance(this, Globals.DNAType.Weapon, player, 60));
                 }
             }
 
