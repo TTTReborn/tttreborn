@@ -92,7 +92,7 @@ namespace TTTReborn.Items
 
                     tr.Entity.TakeDamage(damageInfo);
 
-                    Vector3 pushDirection = new Vector3(-tr.Normal.x, -tr.Normal.y, tr.Normal.z < 0.5F ? 0.5F : -0.5F);
+                    Vector3 pushDirection = new Vector3(tr.Direction.x, tr.Direction.y, Math.Min(tr.Direction.z + 0.5F, 0.75F));
                     float chargePercentage = Math.Clamp((Time.Now - ChargingStartTime) / NEWTON_CHARGE_TIME, 0, 1);
                     float chargeForce = ((NEWTON_FORCE_MAX - NEWTON_FORCE_MIN) * chargePercentage) + NEWTON_FORCE_MIN;
 
