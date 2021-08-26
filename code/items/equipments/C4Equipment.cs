@@ -17,6 +17,9 @@ namespace TTTReborn.Items
 
         public int Price => 0;
 
+        [ServerVar("ttt_c4_can_drop", Help = "If enabled, allows players to drop the C4 as a physics item with Attack2.")]
+        public static bool TTTC4CanDrop { get; set; } = false;
+
         public C4Equipment() : base()
         {
 
@@ -65,7 +68,7 @@ namespace TTTReborn.Items
 
                     (owner.Inventory as Inventory).Remove(this);
                 }
-                if (Input.Pressed(InputButton.Attack2))
+                if (Input.Pressed(InputButton.Attack2) && TTTC4CanDrop)
                 {
                     (owner.Inventory as Inventory).DropEntity(this, typeof(C4Entity));
                 }
