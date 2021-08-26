@@ -54,18 +54,18 @@
 						parent_bone = ""
 						surface_prop = "plastic"
 						collision_prop = "default"
-						origin = [ -1.71541, -0.083702, 1.5779 ]
+						origin = [ -0.870751, 0.025457, 0.827393 ]
 						angles = [ 0.0, 0.0, 0.0 ]
-						dimensions = [ 26.170948, 13.461134, 6.945908 ]
+						dimensions = [ 13.048605, 6.592257, 3.431166 ]
 					},
 					{
 						_class = "PhysicsShapeBox"
 						parent_bone = ""
 						surface_prop = "metal"
 						collision_prop = "default"
-						origin = [ -7.044949, -0.034684, 6.224169 ]
+						origin = [ -3.911311, 0.597094, 3.041393 ]
 						angles = [ 0.0, 0.0, 0.0 ]
-						dimensions = [ 9.053578, 6.205878, 2.174573 ]
+						dimensions = [ 5.2529, 4.331772, 0.908991 ]
 					},
 				]
 			},
@@ -77,8 +77,8 @@
 						_class = "Attachment"
 						name = "timer"
 						parent_bone = ""
-						relative_origin = [ -4.98818, 1.07982, 3.53 ]
-						relative_angles = [ 0.0, 0.0, 0.0 ]
+						relative_origin = [ -5.055619, 0.801569, 3.543593 ]
+						relative_angles = [ 90.0, 90.000023, 0.0 ]
 						weight = 1.0
 						ignore_rotation = false
 					},

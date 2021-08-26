@@ -91,23 +91,15 @@ namespace TTTReborn.Items
         {
             if (IsClient)
             {
-                if (CreatedDisplay)
-                {
-                    //No way to parent a world panel to an entity :(
-                    //We need to find a better way of doing this.
-                    //I heard supposedly you can use FrameSimulate, but I was getting weird duplicated results (think Windows XP window glitch)
-                    TimerDisplay.Transform = GetAttachment("timer") ?? Transform;
-                    TimerDisplay.WorldScale = 0.05f;
-
-                    return;
-                }
-                else
-                {
+                if (!CreatedDisplay)
+                { 
                     TimerDisplay = new WorldPanel();
                     CreatedDisplay = true;
 
                     TimerDisplay.AddClass("c4worldtimer");
                     TimerDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
+
+                    TimerDisplay.PanelBounds = new Rect(0, 0, 140, 80);
 
                     TimerDisplayLabel = TimerDisplay.AddChild<Label>();
                     TimerDisplayLabel.Text = EMPTY_TIMER;
@@ -115,6 +107,18 @@ namespace TTTReborn.Items
             }
 
             base.Simulate(cl);
+        }
+
+        [Event.Frame]
+        private void UpdateDisplayTransform()
+        {
+            if (CreatedDisplay)
+            {
+                TimerDisplay.Transform = GetAttachment("timer") ?? Transform;
+                TimerDisplay.WorldScale = 0.5f;
+
+                return;
+            }
         }
 
         public void TryDisarm()
