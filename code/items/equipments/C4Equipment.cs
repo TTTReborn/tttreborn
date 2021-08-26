@@ -65,6 +65,10 @@ namespace TTTReborn.Items
 
                     (owner.Inventory as Inventory).Remove(this);
                 }
+                if (Input.Pressed(InputButton.Attack2))
+                {
+                    (owner.Inventory as Inventory).DropEntity(this, typeof(C4Entity));
+                }
             }
         }
 
