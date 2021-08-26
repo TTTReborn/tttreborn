@@ -2,6 +2,7 @@ namespace TTTReborn.UI
 {
     public class Panel : Sandbox.UI.Panel
     {
+        private bool _isShowing = true;
         public bool IsShowing
         {
             get => _isShowing;
@@ -9,16 +10,15 @@ namespace TTTReborn.UI
             {
                 _isShowing = value;
 
-                SetClass("hide", !_isShowing);
+                SetClass("hidden", !_isShowing);
             }
         }
-        private bool _isShowing = true;
 
         public Panel(Sandbox.UI.Panel parent = null) : base(parent)
         {
             Parent = parent ?? Parent;
 
-            IsShowing = true;
+            StyleSheet.Load("/ui/components/generic/Generic.scss");
         }
     }
 }
