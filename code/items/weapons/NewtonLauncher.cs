@@ -77,8 +77,6 @@ namespace TTTReborn.Items
 
             foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
             {
-                tr.Surface.DoBulletImpact(tr);
-
                 if (!IsServer || !tr.Entity.IsValid() || tr.Entity.IsWorld)
                 {
                     continue;
@@ -91,6 +89,7 @@ namespace TTTReborn.Items
                         .WithAttacker(Owner)
                         .WithWeapon(this);
 
+                    tr.Surface.DoBulletImpact(tr);
                     tr.Entity.TakeDamage(damageInfo);
 
                     Vector3 pushDirection = new Vector3(tr.Direction.x, tr.Direction.y, Math.Min(tr.Direction.z + 0.5F, 0.75F));
