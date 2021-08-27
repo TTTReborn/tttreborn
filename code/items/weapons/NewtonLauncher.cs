@@ -22,9 +22,9 @@ namespace TTTReborn.Items
 
         public virtual int Price => 100;
 
-        public static int NEWTON_FORCE_MIN => 300;
-        public static int NEWTON_FORCE_MAX => 700;
-        public static float NEWTON_CHARGE_TIME => 3;
+        public const int NEWTON_FORCE_MIN = 300;
+        public const int NEWTON_FORCE_MAX = 700;
+        public const float NEWTON_CHARGE_TIME = 3;
 
         public bool IsCharging { get; set; } = false;
         public float ChargingStartTime;
@@ -98,7 +98,7 @@ namespace TTTReborn.Items
                     float chargeForce = ((NEWTON_FORCE_MAX - NEWTON_FORCE_MIN) * chargePercentage) + NEWTON_FORCE_MIN;
 
                     tr.Entity.GroundEntity = null;
-                    tr.Entity.LocalVelocity = tr.Entity.Velocity + (pushDirection * chargeForce);
+                    tr.Entity.ApplyAbsoluteImpulse(pushDirection * chargeForce);
                 }
             }
         }
