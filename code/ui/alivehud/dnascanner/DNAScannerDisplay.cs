@@ -16,33 +16,34 @@ namespace TTTReborn.UI
     {
         public static DNAScannerDisplay Instance;
 
-        private Content _content;
+        public Content ScannerContent { get; set; }
 
         public DNAScannerDisplay()
         {
             Instance = this;
-
             IsShowing = true;
             StyleSheet.Load("/ui/alivehud/dnascanner/DNAScannerDisplay.scss");
-            _content = new(this);
+
+            ScannerContent = new(this);
         }
 
-        public override void Tick()
+        //There's something interesting to consider in this section,
+        //This is nothing more than "wrapper" functions to access pieces of Content.
+        //And even then, content has to be public for some of these to even work.
+        //I don't think there is any issue if I just...delete these, and move everything
+        //up from `Content` into `DNAScannerDisplay`, but I am too afraid to try.
+        public void ChangeSelectedSlot() => ScannerContent.ChangeSelectedSlot();
+        public void DisplayDNA(DNAType dna) => ScannerContent.DisplayDNA(dna);
+        public void RemoveDNA() => ScannerContent.RemoveDNA();
+        public bool HasDNAInCurrentSlot() => ScannerContent.HasDNAInCurrentSlot();
+        public int CurrentSlot => ScannerContent.SelectedSlot;
+        public void UpdateScannerCharge(float charge)
         {
-            base.Tick();
-            IsShowing = true;
+            ScannerContent.Charge.SetValue(charge);
+            ScannerContent.Charge.SetText($"Charge: {charge.ToString("0.00")}%");
         }
 
-
-        public void ChangeSelectedSlot() => _content.ChangeSelectedSlot();
-
-        public void DisplayDNA(DNAType dna) => _content.DisplayDNA(dna);
-
-        public void RemoveDNA() => _content.RemoveDNA();
-
-        public int CurrentSlot => _content.SelectedSlot;
-
-        private class Content : TTTPanel
+        public class Content : TTTPanel
         {
             private List<DNAPanel> DNASlots;
             public int SelectedSlot = 0;
@@ -51,23 +52,36 @@ namespace TTTReborn.UI
             private Panel _wrapper;
             private Panel _footer;
 
+            public ProgressBar Charge;
+
+            public bool HasDNAInCurrentSlot() => DNASlots[SelectedSlot].HasDNA;
+
             public Content(TTTPanel parent)
             {
                 Parent = parent;
-
 
                 _header = Add.Panel("header");
                 _wrapper = Add.Panel("wrapper");
                 _footer = Add.Panel("footer");
 
+                //Don't need to set these to variables. Never needed ever again.
                 _header.Add.Label("Collected DNA Samples:");
-
                 _footer.Add.Label("Select a sample to search for that DNA.");
-                _footer.Add.Label("Fancy progress bar that has the scan charge here. woosh.");
+
+                //Disgusting ProgressBar implementation.
+                Charge = _footer.AddChild<ProgressBar>();
+                Charge.SetValue(1);
+                Charge.SetText("Charge: ");
+                Charge.SetColorAtMax(Color.Green); //new Color(r, g, b) doesn't work. Sets it to white.
+
+                _footer.Style.Dirty();
+
+                //Delete this in favor of something else? How else are people going to know the controls?
                 _footer.Add.Label("Left click to collect DNA. Right click to change slot.");
                 _footer.Add.Label("Reload to clear selected slot.");
 
-
+                //I am not ashamed by this. TODO: Set this to pull from DNARegistry.MAXIMUMSLOTS
+                //TODO: unfuck the UI if you have any number different than 4.
                 DNASlots = new()
                 {
                     new DNAPanel(_wrapper),
@@ -81,21 +95,24 @@ namespace TTTReborn.UI
             {
                 base.Tick();
                 DNASlots[SelectedSlot].IconPanel.SetClass("selected", true);
-                
             }
-
+                    
             public void DisplayDNA(DNAType dna)
             {
+                //Find an open slot.
                 DNAPanel slot = DNASlots.FirstOrDefault(x => !x.HasDNA);
 
+                //Server should have caught that we didn't have an open slot. Fail but warn.
                 if (slot == null)
                 {
                     Log.Warning("Received request to display DNA type but no open slot.");
                     return;
                 }
 
+                //Flag our slot as containing DNA.
                 slot.HasDNA = true;
 
+                //Set our background to our passed enum. This should really be a full URL as noted in the calling method.
                 slot.IconPanel.Style.Background = new PanelBackground
                 {
                     Texture = Texture.Load($"/ui/dna/from_{dna.ToString().ToLower()}.png")
@@ -105,6 +122,8 @@ namespace TTTReborn.UI
 
             public void ChangeSelectedSlot()
             {
+                //We're not giving advanced control. So clicking moves.
+                //If you're upset that you can't go left, go around.
                 DNASlots[SelectedSlot].IconPanel.SetClass("selected", false);
 
                 SelectedSlot += 1;
@@ -117,10 +136,14 @@ namespace TTTReborn.UI
 
             public void RemoveDNA()
             {
+                //We need to remove a DNA from display, so let's find it.
                 DNAPanel slot = DNASlots[SelectedSlot];
 
+                //Flag it as appropriate.
                 slot.HasDNA = false;
 
+                //I don't want to straight up delete the DNAPanel, so set the background to transparent.
+                //The server tracks the specific values in each slot, the HasDNA flag is only for selection assistance.
                 slot.IconPanel.Style.Background = new PanelBackground
                 {
                     Texture = Texture.Transparent
@@ -135,17 +158,11 @@ namespace TTTReborn.UI
 
                 public DNAPanel(Panel parent)
                 {
-                    var options = new[]
-                    {
-                        "weapons",
-                        "corpse",
-                        "ammo"
-                    };
-
                     Parent = parent;
 
                     IconPanel = Add.Panel("icon");
 
+                    //Have nothing in here by default.
                     IconPanel.Style.Background = new PanelBackground
                     {
                         Texture = Texture.Transparent

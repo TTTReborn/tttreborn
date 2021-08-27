@@ -1,0 +1,22 @@
+ProgressBar {
+    border-radius: 100px;
+    min-height: 35px;
+    background-color: #000c;
+    width: 100%;
+
+    .bar {
+        border-radius: 100px;
+        width: 1px;
+        background-color: green;
+        transition: width 0.1s linear;
+    }
+
+    Label {
+        color: white;
+        font: Poppins;
+        font-weight: bold;
+        padding: 7px;
+        margin-left: 5px;
+        position: absolute;
+    }
+}
