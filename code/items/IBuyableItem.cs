@@ -32,7 +32,7 @@ namespace TTTReborn.Items
                 return player.Inventory.HasEmptySlot(SlotType);
             }
 
-                return false;
+            return false;
         }
     }
 
