@@ -23,8 +23,16 @@ namespace TTTReborn.Items
             {
                 return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType);
             }
+            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
+            {
+                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType);
+            }
+            else if (Type.IsSubclassOf(typeof(TTTEquipment)))
+            {
+                return player.Inventory.HasEmptySlot(SlotType);
+            }
 
-            return false;
+                return false;
         }
     }
 
