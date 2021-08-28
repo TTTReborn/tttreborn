@@ -10,17 +10,20 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/components/generic/Window.scss");
 
-            SetClass("color-secondary", true);
+            Style.BackgroundColor = ColorScheme.Primary;
+            SetClass("rounded", true);
 
             Header = new(this);
             Header.SetClass("header", true);
-            Header.SetClass("color-primary", true);
+            Header.SetClass("rounded-top", true);
+            Header.Style.BackgroundColor = ColorScheme.Secondary;
 
             Content = new(this);
 
             Footer = new(this);
             Footer.SetClass("footer", true);
-            Footer.SetClass("color-primary", true);
+            Footer.SetClass("rounded-bottom", true);
+            Footer.Style.BackgroundColor = ColorScheme.Secondary;
 
             AddChild(Header);
             AddChild(Content);

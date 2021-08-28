@@ -72,7 +72,7 @@ namespace TTTReborn.UI
                 Parent.AddChild<PlayerInfo>();
                 Parent.AddChild<InventoryWrapper>();
                 Parent.AddChild<ChatBox>();
-                Parent.AddChild<VoiceList>();
+                Parent.AddChild<VoiceChatDisplay>();
                 Parent.AddChild<Nameplate>();
                 Parent.AddChild<GameTimer>();
                 Parent.AddChild<InfoFeed>();
@@ -95,7 +95,6 @@ namespace TTTReborn.UI
                 Parent.AddChild<DamageIndicator>();
                 Parent.AddChild<QuickShop>();
                 Parent.AddChild<DrowningIndicator>();
-                Window w = Parent.AddChild<Window>();
             }
 
             public void DeleteHud()

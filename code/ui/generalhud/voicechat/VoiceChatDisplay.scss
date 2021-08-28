@@ -1,21 +1,18 @@
-VoiceList
+VoiceChatDisplay
 {
     position: absolute;
     top: 30px;
     left: 30px;
     flex-direction: column;
     width: 240px;
-    font-family: Poppins;
 
-    VoiceEntry
+    VoiceChatEntry
     {
-        background-color: rgba(black, 0.8);
         flex-direction: row;
-        padding: 7.5px 10px;
+        padding: 8px 10px;
         margin-bottom: 5px;
         align-items: center;
         align-content: center;
-        border-radius: 4px;
         overflow: hidden;
         left: 0;
         transition: all 0.05s ease-out;
@@ -28,20 +25,17 @@ VoiceList
         &:outro
         {
             opacity: 0;
-            transition: all 0.1s ease-out;
         }
 
         .avatar
         {
             width: 25px;
             height: 25px;
-            border-radius: 50%;
         }
 
         .name
         {
             font-size: 16px;
-            font-weight: 500;
             margin-left: 10px;
             flex-grow: 1;
             margin-top: 1px;
