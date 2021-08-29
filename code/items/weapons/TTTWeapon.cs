@@ -277,7 +277,6 @@ namespace TTTReborn.Items
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);
-            CrosshairPanel?.CreateEvent("fire");
         }
 
         public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
@@ -344,18 +343,6 @@ namespace TTTReborn.Items
             {
                 return;
             }
-
-            // TODO: Give users a way to change their crosshair.
-            CrosshairPanel = new Crosshair().SetupCrosshair(new Crosshair.Properties(true,
-                false,
-                false,
-                10,
-                2,
-                0,
-                0,
-                Color.Green));
-            CrosshairPanel.Parent = Local.Hud;
-            CrosshairPanel.AddClass(ClassInfo.Name);
         }
 
         public bool IsUsable()

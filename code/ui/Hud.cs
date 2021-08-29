@@ -69,6 +69,7 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
+                Parent.AddChild<Crosshair>();
                 Parent.AddChild<PlayerInfo>();
                 Parent.AddChild<InventoryWrapper>();
                 Parent.AddChild<ChatBox>();

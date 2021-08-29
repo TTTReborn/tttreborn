@@ -1,48 +1,69 @@
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.UI
 {
     public class Crosshair : Panel
     {
-        public class Properties
+        public static Crosshair Current;
+
+        private bool _showDot = true;
+        public bool ShowDot
         {
-            public bool ShowTop { get; private set; }
-            public bool ShowDot { get; private set; }
-            public bool ShowOutline { get; private set; }
-
-            public uint Size { get; private set; }
-            public uint Thickness { get; private set; }
-            public uint OutlineThickness { get; private set; }
-
-            public int Gap { get; private set; }
-
-            public Color Color { get; private set; }
-
-            public Properties(
-                bool showTop = true,
-                bool showDot = false,
-                bool showOutline = false,
-                uint size = 20,
-                uint thickness = 2,
-                uint outlineThickness = 0,
-                int gap = 2,
-                Color? color = null)
-            {
-                ShowTop = showTop;
-                ShowDot = showDot;
-                ShowOutline = showOutline;
-                Size = size;
-                Thickness = thickness;
-                OutlineThickness = outlineThickness;
-                Gap = gap;
-                Color = color ?? Color.White;
-            }
+            get { return _showDot; }
+            set { _showDot = value; UpdateCrosshair(); }
+        }
+        private bool _showTop = true;
+        public bool ShowTop
+        {
+            get { return _showTop; }
+            set { _showTop = value; UpdateCrosshair(); }
+        }
+        private bool _showOutline = true;
+        public bool ShowOutline
+        {
+            get { return _showOutline; }
+            set { _showOutline = value; UpdateCrosshair(); }
+        }
+        private int _thickness = 4;
+        public int Thickness
+        {
+            get { return _thickness; }
+            set { _thickness = value; UpdateCrosshair(); }
+        }
+        private int _size = 0;
+        public int Size
+        {
+            get { return _size; }
+            set { _size = value; UpdateCrosshair(); }
+        }
+        private int _outlineThickness = 0;
+        public int OutlineThickness
+        {
+            get { return _outlineThickness; }
+            set { _outlineThickness = value; UpdateCrosshair(); }
+        }
+        private int _outlineBlur = 3;
+        public int OutlineBlur
+        {
+            get { return _outlineBlur; }
+            set { _outlineBlur = value; UpdateCrosshair(); }
+        }
+        private int _gap = 4;
+        public int Gap
+        {
+            get { return _gap; }
+            set { _gap = value; UpdateCrosshair(); }
+        }
+        private Color _color = Color.White;
+        public Color Color
+        {
+            get { return _color; }
+            set { _color = value; UpdateCrosshair(); }
         }
 
-        public static Crosshair Current;
+        private Panel _crosshairDot;
+        private Panel[] _crosshairLines;
 
         public Crosshair()
         {
@@ -50,75 +71,85 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/Crosshair.scss");
 
             AddClass("center");
+
+            _crosshairDot = new Panel(this);
+            _crosshairDot.AddClass("center");
+            _crosshairDot.AddClass("circular");
+
+            _crosshairLines = new Panel[4];
+            for (int i = 0; i < _crosshairLines.Length; i++)
+            {
+                _crosshairLines[i] = new Panel(this);
+                _crosshairLines[i].AddClass("center");
+            }
+
+            UpdateCrosshair();
         }
 
-        public Panel SetupCrosshair(Properties crosshairProperties)
+        public void UpdateCrosshair()
         {
-            int crossHairLinesToCreate = crosshairProperties.ShowTop ? 4 : 3;
+            Shadow shadow = new Shadow();
+            shadow.OffsetX = 0;
+            shadow.OffsetY = 0;
+            shadow.Blur = OutlineBlur;
+            shadow.Spread = OutlineThickness;
+            shadow.Color = Color.Black;
 
-            for (int i = 0; i < crossHairLinesToCreate; i++)
+            #region Update Crosshair Dot
+            _crosshairDot.Enabled = ShowDot;
+
+            if (ShowDot)
+            {
+                _crosshairDot.Style.BackgroundColor = Color;
+
+                _crosshairDot.Style.Width = Thickness;
+                _crosshairDot.Style.Height = Thickness;
+
+                if (ShowOutline)
+                {
+                    _crosshairDot.Style.BoxShadow.Add(shadow);
+                }
+
+                _crosshairDot.Style.Dirty();
+            }
+            #endregion
+
+            #region Update Crosshair Lines
+            for (int i = 0; i < _crosshairLines.Length; i++)
             {
                 bool isHorizontal = i % 2 == 0;
-                Sandbox.UI.Panel crossHairLine = Add.Panel("element");
-                crossHairLine.Style.BackgroundColor = crosshairProperties.Color;
-                crossHairLine.Style.Width = isHorizontal
-                    ? crosshairProperties.Size
-                    : crosshairProperties.Thickness;
-                crossHairLine.Style.Height = isHorizontal ? crosshairProperties.Thickness : crosshairProperties.Size;
+
+                _crosshairLines[i].Style.BackgroundColor = Color;
+                _crosshairLines[i].Style.Width = isHorizontal ? Size : Thickness;
+                _crosshairLines[i].Style.Height = isHorizontal ? Thickness : Size;
 
                 switch (i)
                 {
-                    case 0: // Left element
-                        crossHairLine.Style.Left = Length.Pixels(crosshairProperties.Size + crosshairProperties.Gap);
+                    case 0: // Left
+                        _crosshairLines[i].Style.MarginLeft = -(Size + Gap);
                         break;
-                    case 1: // Bottom element
-                        crossHairLine.Style.Top = Length.Pixels(crosshairProperties.Size + crosshairProperties.Gap);
+                    case 1: // Bottom
+                        _crosshairLines[i].Style.MarginTop = (Size + Gap);
                         break;
-                    case 2: // Right element
-                        crossHairLine.Style.Left = Length.Pixels(-crosshairProperties.Size - crosshairProperties.Gap);
+                    case 2: // Right
+                        _crosshairLines[i].Style.MarginLeft = (Size + Gap);
                         break;
-                    case 3: // Top element
-                        crossHairLine.Style.Top = Length.Pixels(-crosshairProperties.Size - crosshairProperties.Gap);
+                    case 3: // Top
+                        _crosshairLines[i].Enabled = ShowTop;
+                        _crosshairLines[i].Style.MarginTop = -(Size + Gap);
                         break;
                 }
 
-                if (crosshairProperties.ShowOutline)
+                if (ShowOutline && Size > 0)
                 {
-                    crossHairLine.Style.BorderColor = Color.Black;
-                    crossHairLine.Style.BorderWidth = crosshairProperties.OutlineThickness;
+                    _crosshairLines[i].Style.BoxShadow.Add(shadow);
                 }
 
-                crossHairLine.Style.Dirty();
+                _crosshairLines[i].Style.Dirty();
             }
-
-            if (crosshairProperties.ShowDot)
-            {
-                Sandbox.UI.Panel dot = Add.Panel("element");
-                dot.Style.BackgroundColor = crosshairProperties.Color;
-                dot.Style.Width = crosshairProperties.Thickness;
-                dot.Style.Height = crosshairProperties.Thickness;
-                dot.Style.Dirty();
-            }
+            #endregion
 
             Style.Dirty();
-
-            return this;
-        }
-
-        public override void Tick()
-        {
-            base.Tick();
-
-            TTTPlayer player = Local.Pawn as TTTPlayer;
-
-            if (player == null)
-            {
-                return;
-            }
-
-            BaseCarriable carr = player.ActiveChild as BaseCarriable;
-
-            this.Style.Display = carr == null ? DisplayMode.None : DisplayMode.Flex;
         }
     }
 }
