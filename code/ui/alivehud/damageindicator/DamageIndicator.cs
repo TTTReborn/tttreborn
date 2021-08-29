@@ -49,7 +49,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            float remainingDamageIndicatorTime = _maxDamageIndicatorDuration * (_lastDamage / player.MaxHealth);
+            float remainingDamageIndicatorTime = Math.Max(_lastDamage / player.MaxHealth, _maxDamageIndicatorDuration);
 
             if (_additionalDamageIndicatorDuration != 0f)
             {
