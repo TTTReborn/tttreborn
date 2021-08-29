@@ -43,13 +43,13 @@ namespace TTTReborn.UI
             get { return _outlineThickness; }
             set { _outlineThickness = value; UpdateCrosshair(); }
         }
-        private int _outlineBlur = 3;
+        private int _outlineBlur = 4;
         public int OutlineBlur
         {
             get { return _outlineBlur; }
             set { _outlineBlur = value; UpdateCrosshair(); }
         }
-        private int _gap = 4;
+        private int _gap = 6;
         public int Gap
         {
             get { return _gap; }
@@ -126,17 +126,17 @@ namespace TTTReborn.UI
                 switch (i)
                 {
                     case 0: // Left
-                        _crosshairLines[i].Style.MarginLeft = -(Size + Gap);
+                        _crosshairLines[i].Style.MarginLeft = -(Size / 2 + Gap);
                         break;
                     case 1: // Bottom
-                        _crosshairLines[i].Style.MarginTop = (Size + Gap);
+                        _crosshairLines[i].Style.MarginTop = (Size / 2 + Gap);
                         break;
                     case 2: // Right
-                        _crosshairLines[i].Style.MarginLeft = (Size + Gap);
+                        _crosshairLines[i].Style.MarginLeft = (Size / 2 + Gap);
                         break;
                     case 3: // Top
                         _crosshairLines[i].Enabled = ShowTop;
-                        _crosshairLines[i].Style.MarginTop = -(Size + Gap);
+                        _crosshairLines[i].Style.MarginTop = -(Size / 2 + Gap);
                         break;
                 }
 
