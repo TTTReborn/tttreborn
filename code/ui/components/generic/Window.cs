@@ -8,10 +8,8 @@ namespace TTTReborn.UI
 
         public Window() : base()
         {
-            StyleSheet.Load("/ui/components/generic/Window.scss");
-
-            SetClass("rounded", true);
             SetClass("window", true);
+            SetClass("rounded", true);
             Style.BackgroundColor = ColorScheme.Primary;
 
             Header = new(this);
@@ -25,10 +23,6 @@ namespace TTTReborn.UI
             Footer.SetClass("footer", true);
             Footer.SetClass("rounded-bottom", true);
             Footer.Style.BackgroundColor = ColorScheme.Secondary;
-
-            AddChild(Header);
-            AddChild(Content);
-            AddChild(Footer);
         }
     }
 }

@@ -18,7 +18,6 @@ namespace TTTReborn.UI
         {
             Parent = parent ?? Parent;
 
-            StyleSheet.Load("/ui/components/generic/Generic.scss");
             StyleSheet.Load("/ui/components/generic/Panel.scss");
 
             SetClass("panel", true);
