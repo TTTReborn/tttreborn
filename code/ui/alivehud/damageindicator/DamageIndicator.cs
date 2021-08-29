@@ -15,7 +15,6 @@ namespace TTTReborn.UI
         private float _currentRemainingDamageIndicatorDuration = 0f;
         private TimeSince _timeSinceLastDamage = 0f;
         private float _lastDamage = 0f;
-        private float _additionalDamageIndicatorDuration = 0f;
 
         public DamageIndicator()
         {
@@ -49,7 +48,7 @@ namespace TTTReborn.UI
 
             float remainingDamageIndicatorTime = _lastDamage / player.MaxHealth * 20;
 
-            if(_currentRemainingDamageIndicatorDuration != 0f)
+            if (_currentRemainingDamageIndicatorDuration != 0f)
             {
                 remainingDamageIndicatorTime += _currentRemainingDamageIndicatorDuration;
                 _currentRemainingDamageIndicatorDuration = 0f;
