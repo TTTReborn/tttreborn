@@ -1,27 +1,38 @@
+using Sandbox.UI.Construct;
+
 namespace TTTReborn.UI
 {
     public class Window : Panel
     {
         public Panel Header { get; set; }
+        public Sandbox.UI.Label WindowLabel { get; set; }
+        public Sandbox.UI.Button CloseButton { get; set; }
         public Panel Content { get; set; }
         public Panel Footer { get; set; }
 
         public Window() : base()
         {
-            SetClass("window", true);
-            SetClass("rounded", true);
+            AddClass("window");
+            AddClass("rounded");
+            AddClass("center");
             Style.BackgroundColor = ColorScheme.Primary;
 
             Header = new(this);
-            Header.SetClass("header", true);
-            Header.SetClass("rounded-top", true);
+            Header.AddClass("header");
+            Header.AddClass("rounded-top");
             Header.Style.BackgroundColor = ColorScheme.Secondary;
+
+            WindowLabel = Header.Add.Label("Window");
+
+            CloseButton = Header.Add.Button("✕");
+            CloseButton.AddClass("button");
+            CloseButton.AddEventListener("onclick", () => { Enabled = false; });
 
             Content = new(this);
 
             Footer = new(this);
-            Footer.SetClass("footer", true);
-            Footer.SetClass("rounded-bottom", true);
+            Footer.AddClass("footer");
+            Footer.AddClass("rounded-bottom");
             Footer.Style.BackgroundColor = ColorScheme.Secondary;
         }
     }
