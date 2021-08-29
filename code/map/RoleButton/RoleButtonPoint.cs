@@ -21,7 +21,8 @@ namespace TTTReborn.UI
         private readonly Label _descriptionLabel;
 
         //If the distance from the player to the button is less than this value, the element is fully visible.
-        private const int MINVIEWDISTANCE = 512;
+        private const int MIN_VIEW_DISTANCE = 512;
+
         //Between MINVIEWDISTANCE and this value, the element will slowly become transparent.
         //Past this distance, the button is unusuable.
         private readonly int _maxViewDistance = 1024;
