@@ -58,11 +58,11 @@ namespace TTTReborn.Player
                    if (Health == 0 && LifeState == LifeState.Alive)
                    {
                        display.BottomLabel.SetText(""); // network-sync workaround
-                    }
+                   }
                    else
                    {
-                        //Set health group related data on bottom label.
-                        float health = Health / MaxHealth * 100;
+                       //Set health group related data on bottom label.
+                       float health = Health / MaxHealth * 100;
                        HealthGroup healthGroup = GetHealthGroup(health);
 
                        display.BottomLabel.Style.FontColor = healthGroup.Color;
