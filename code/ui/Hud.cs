@@ -74,7 +74,7 @@ namespace TTTReborn.UI
                 Parent.AddChild<ChatBox>();
                 Parent.AddChild<VoiceChatDisplay>();
                 Parent.AddChild<Nameplate>();
-                Parent.AddChild<GameTimer>();
+                Parent.AddChild<GameTimerDisplay>();
                 Parent.AddChild<InfoFeed>();
                 Parent.AddChild<InspectMenu>();
                 Parent.AddChild<PostRoundMenu>();

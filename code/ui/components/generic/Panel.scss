@@ -75,6 +75,16 @@
     transform: translateX(-50%) translateY(-50%);
 }
 
+.center-horizontal {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .button {
     cursor: pointer;
+}
+
+.text-shadow {
+    text-shadow: 0px 0px 2px black, 0px 0px 2px black;
 }
