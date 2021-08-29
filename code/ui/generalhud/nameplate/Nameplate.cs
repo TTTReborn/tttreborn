@@ -43,7 +43,7 @@ namespace TTTReborn.UI
         public Nameplate()
         {
             Instance = this;
-            IsShowing = false;
+            Enabled = false;
 
             StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
 
@@ -74,7 +74,7 @@ namespace TTTReborn.UI
 
             if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
             {
-                IsShowing = false;
+                Enabled = false;
 
                 return;
             }
@@ -83,7 +83,7 @@ namespace TTTReborn.UI
 
             if (target != null)
             {
-                IsShowing = true;
+                Enabled = true;
 
                 if (target.Health == 0 && target.LifeState == LifeState.Alive) // network-sync workaround
                 {
@@ -107,7 +107,7 @@ namespace TTTReborn.UI
             }
             else
             {
-                IsShowing = false;
+                Enabled = false;
             }
         }
     }

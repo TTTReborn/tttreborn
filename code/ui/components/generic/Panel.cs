@@ -2,15 +2,15 @@ namespace TTTReborn.UI
 {
     public class Panel : Sandbox.UI.Panel
     {
-        private bool _isShowing = true;
-        public bool IsShowing
+        private bool _isEnabled = true;
+        public bool Enabled
         {
-            get => _isShowing;
+            get => _isEnabled;
             set
             {
-                _isShowing = value;
+                _isEnabled = value;
 
-                SetClass("hidden", !_isShowing);
+                SetClass("disabled", !_isEnabled);
             }
         }
 
@@ -19,6 +19,9 @@ namespace TTTReborn.UI
             Parent = parent ?? Parent;
 
             StyleSheet.Load("/ui/components/generic/Generic.scss");
+            StyleSheet.Load("/ui/components/generic/Panel.scss");
+
+            SetClass("panel", true);
         }
     }
 }

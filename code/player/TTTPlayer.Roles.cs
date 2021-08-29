@@ -70,7 +70,7 @@ namespace TTTReborn.Player
             {
                 QuickShop.Instance.CheckAccess();
 
-                if (QuickShop.Instance.IsShowing)
+                if (QuickShop.Instance.Enabled)
                 {
                     QuickShop.Instance.Update();
                 }

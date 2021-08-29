@@ -22,7 +22,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            IsShowing = Local.Pawn is TTTPlayer player && (!player.IsSpectator && !player.IsSpectatingPlayer);
+            Enabled = Local.Pawn is TTTPlayer player && (!player.IsSpectator && !player.IsSpectatingPlayer);
         }
 
         private class RolePanel : Panel
@@ -62,13 +62,13 @@ namespace TTTReborn.UI
                     _roleLabel.SetTranslation(null); // disable auto-update Text on language change
                     _roleLabel.Text = $"{_currentPlayer.GetClientOwner()?.Name}";
 
-                    IsShowing = true;
+                    Enabled = true;
                 }
                 else
                 {
                     _roleLabel.SetTranslation(_currentRole.GetRoleTranslationKey("ROLE_NAME"));
 
-                    IsShowing = !(player.Role is NoneRole);
+                    Enabled = !(player.Role is NoneRole);
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace TTTReborn.UI
 
                     _healthBar.TextLabel.Text = $"{player.CurrentPlayer.Health:n0}";
 
-                    _healthBar.IsShowing = (player.CurrentPlayer.LifeState == LifeState.Alive);
+                    _healthBar.Enabled = (player.CurrentPlayer.LifeState == LifeState.Alive);
 
                     _healthBar.Style.Width = Length.Percent(player.CurrentPlayer.Health / player.CurrentPlayer.MaxHealth * 100f);
                     _healthBar.Style.Dirty();
@@ -118,7 +118,7 @@ namespace TTTReborn.UI
                 {
                     _staminaBar.Style.Display = DisplayMode.Flex;
 
-                    _staminaBar.IsShowing = !(player.CurrentPlayer.LifeState != LifeState.Alive);
+                    _staminaBar.Enabled = !(player.CurrentPlayer.LifeState != LifeState.Alive);
 
                     if (_currentStamina == player.CurrentPlayer.Stamina)
                     {

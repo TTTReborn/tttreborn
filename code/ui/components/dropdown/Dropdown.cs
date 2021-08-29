@@ -16,10 +16,10 @@ namespace TTTReborn.UI
 
         public bool IsOpen
         {
-            get => OptionHolder.IsShowing;
+            get => OptionHolder.Enabled;
             private set
             {
-                OptionHolder.IsShowing = value;
+                OptionHolder.Enabled = value;
 
                 _openLabel.SetClass("opened", value);
             }

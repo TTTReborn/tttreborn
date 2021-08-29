@@ -35,9 +35,9 @@ namespace TTTReborn.UI
             DistanceLabel.Text = $"{player.Position.Distance(Position):n0}";
 
             Vector3 screenPos = Position.ToScreen();
-            IsShowing = screenPos.z > 0f;
+            Enabled = screenPos.z > 0f;
 
-            if (IsShowing)
+            if (Enabled)
             {
                 Style.Left = Length.Fraction(screenPos.x);
                 Style.Top = Length.Fraction(screenPos.y);

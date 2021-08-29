@@ -86,9 +86,9 @@ namespace TTTReborn.Player
                 }
                 else if (_inspectingPlayerCorpse != null)
                 {
-                    if (IsClient && InspectMenu.Instance.IsShowing)
+                    if (IsClient && InspectMenu.Instance.Enabled)
                     {
-                        InspectMenu.Instance.IsShowing = false;
+                        InspectMenu.Instance.Enabled = false;
                     }
 
                     _inspectingPlayerCorpse = null;

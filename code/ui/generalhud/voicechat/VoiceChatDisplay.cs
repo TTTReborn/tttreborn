@@ -9,7 +9,7 @@ namespace TTTReborn.UI
     {
         public static VoiceChatDisplay Current { get; internal set; }
 
-        public VoiceChatDisplay()
+        public VoiceChatDisplay() : base()
         {
             Current = this;
 

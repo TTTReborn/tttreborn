@@ -28,10 +28,10 @@ namespace TTTReborn.UI
 
             if (!RelatedPanel.IsVisible)
             {
-                IsShowing = false;
+                Enabled = false;
             }
 
-            if (!IsShowing)
+            if (!Enabled)
             {
                 return;
             }

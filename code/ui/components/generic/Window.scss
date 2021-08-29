@@ -1,4 +1,4 @@
-Window
+.window
 {
     width: 600px;
     height: 400px;
@@ -8,6 +8,7 @@ Window
     position: absolute;
     flex-direction: column;
     justify-content: space-between;
+    pointer-events: all;
 
     .header
     {

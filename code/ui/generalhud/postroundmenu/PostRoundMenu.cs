@@ -32,7 +32,7 @@ namespace TTTReborn.UI
 
             _contentLabel = Add.TranslationLabel("", "contentLabel");
 
-            IsShowing = false;
+            Enabled = false;
         }
 
         public void OpenAndSetPostRoundMenu(PostRoundStats stats)
@@ -44,7 +44,7 @@ namespace TTTReborn.UI
 
         public void OpenPostRoundMenu()
         {
-            IsShowing = true;
+            Enabled = true;
 
             _contentLabel.SetTranslation("POST_ROUND_TEXT");
 

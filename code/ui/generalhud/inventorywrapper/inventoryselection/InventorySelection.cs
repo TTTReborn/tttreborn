@@ -109,7 +109,7 @@ namespace TTTReborn.UI
                     : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
             });
 
-            IsShowing = Children.Any();
+            Enabled = Children.Any();
         }
 
         [Event("tttreborn.player.carriableitem.drop")]
@@ -126,7 +126,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            IsShowing = Children.Any();
+            Enabled = Children.Any();
         }
 
         [Event("tttreborn.player.spectating.change")]

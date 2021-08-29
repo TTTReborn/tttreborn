@@ -35,7 +35,7 @@ namespace TTTReborn.UI.Menu
 
             OnClose = (panelHeader) =>
             {
-                Menu.IsShowing = false;
+                Menu.Enabled = false;
             };
         }
 

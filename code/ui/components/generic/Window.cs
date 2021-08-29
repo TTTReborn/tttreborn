@@ -6,12 +6,13 @@ namespace TTTReborn.UI
         public Panel Content { get; set; }
         public Panel Footer { get; set; }
 
-        public Window()
+        public Window() : base()
         {
             StyleSheet.Load("/ui/components/generic/Window.scss");
 
-            Style.BackgroundColor = ColorScheme.Primary;
             SetClass("rounded", true);
+            SetClass("window", true);
+            Style.BackgroundColor = ColorScheme.Primary;
 
             Header = new(this);
             Header.SetClass("header", true);

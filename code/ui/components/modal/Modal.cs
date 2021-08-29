@@ -16,7 +16,7 @@ namespace TTTReborn.UI
 
         public virtual void Display()
         {
-            IsShowing = true;
+            Enabled = true;
 
             OnDisplay?.Invoke(this);
         }
@@ -31,7 +31,7 @@ namespace TTTReborn.UI
             }
             else
             {
-                IsShowing = false;
+                Enabled = false;
             }
         }
     }

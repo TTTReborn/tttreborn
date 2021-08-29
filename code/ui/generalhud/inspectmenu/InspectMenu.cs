@@ -22,7 +22,7 @@ namespace TTTReborn.UI
         public InspectMenu()
         {
             Instance = this;
-            IsShowing = false;
+            Enabled = false;
 
             StyleSheet.Load("/ui/generalhud/inspectmenu/InspectMenu.scss");
 
@@ -37,26 +37,26 @@ namespace TTTReborn.UI
                 return;
             }
 
-            IsShowing = true;
+            Enabled = true;
             PlayerCorpse = playerCorpse;
 
             if (playerCorpse.IsIdentified)
             {
-                _confirmationHintPanel.IsShowing = false;
+                _confirmationHintPanel.Enabled = false;
 
                 _confirmationPanel.SetPlayer(playerCorpse.Player);
                 _confirmationPanel.SetConfirmationData(playerCorpse.GetConfirmationData());
                 _confirmationPanel.SetKillerWeapon(playerCorpse.KillerWeapon);
                 _confirmationPanel.SetPerks(playerCorpse.Perks);
-                _confirmationPanel.IsShowing = true;
+                _confirmationPanel.Enabled = true;
 
                 _confirmationPanel.Style.BorderColor = playerCorpse.Player.Role.Color;
                 _confirmationPanel.Style.Dirty();
             }
             else
             {
-                _confirmationPanel.IsShowing = false;
-                _confirmationHintPanel.IsShowing = true;
+                _confirmationPanel.Enabled = false;
+                _confirmationHintPanel.Enabled = true;
             }
         }
 

@@ -21,7 +21,7 @@ namespace TTTReborn.UI
 
             _drowningBar = new(this, "100", "drowningbar");
 
-            IsShowing = false;
+            Enabled = false;
         }
 
         public override void Tick()
@@ -43,7 +43,7 @@ namespace TTTReborn.UI
                 _drowningBar.Style.Dirty();
             }
 
-            IsShowing = defaultWalkController.IsUnderwater;
+            Enabled = defaultWalkController.IsUnderwater;
         }
     }
 }

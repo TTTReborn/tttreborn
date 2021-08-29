@@ -27,7 +27,7 @@ namespace TTTReborn.UI
             _content = new(this);
             _footer = new(this);
 
-            IsShowing = false;
+            Enabled = false;
         }
 
         public void Update()
@@ -39,7 +39,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (!IsShowing)
+            if (!Enabled)
             {
                 return;
             }
@@ -77,7 +77,7 @@ namespace TTTReborn.Player
 
             QuickShop.Instance.Update();
 
-            QuickShop.Instance.IsShowing = true;
+            QuickShop.Instance.Enabled = true;
         }
 
         [ClientCmd("-ttt_quickshop")]
@@ -88,7 +88,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            QuickShop.Instance.IsShowing = false;
+            QuickShop.Instance.Enabled = false;
         }
     }
 }
