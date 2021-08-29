@@ -49,7 +49,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            float remainingDamageIndicatorTime = _maxDamageIndicatorDuration * (_lastDamage / player.MaxHealth);
+            float remainingDamageIndicatorTime = _lastDamage / player.MaxHealth * 20;
 
             if (_additionalDamageIndicatorDuration != 0f)
             {
@@ -57,13 +57,14 @@ namespace TTTReborn.UI
                 _additionalDamageIndicatorDuration = 0f;
             }
 
+            remainingDamageIndicatorTime = Math.Min(remainingDamageIndicatorTime, _maxDamageIndicatorDuration);
+
             if (_lastDamage > 0f && _timeSinceLastDamage < remainingDamageIndicatorTime)
             {
                 _currentRemainingDamageIndicatorDuration = remainingDamageIndicatorTime - _timeSinceLastDamage;
 
                 Style.Display = DisplayMode.Flex;
                 Style.Opacity = Math.Clamp((_currentRemainingDamageIndicatorDuration / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / _maxDamageIndicatorDuration), 0f, 1f);
-                Style.Dirty();
             }
             else
             {
@@ -71,6 +72,7 @@ namespace TTTReborn.UI
 
                 Style.Display = DisplayMode.None;
             }
+            Style.Dirty();
         }
     }
 }
