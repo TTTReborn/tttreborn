@@ -36,8 +36,6 @@ namespace TTTReborn.UI
 
             _lastDamage = damage;
             _timeSinceLastDamage = 0f;
-            _additionalDamageIndicatorDuration += _currentRemainingDamageIndicatorDuration;
-            _currentRemainingDamageIndicatorDuration = 0f;
         }
 
         public override void Tick()
@@ -51,10 +49,10 @@ namespace TTTReborn.UI
 
             float remainingDamageIndicatorTime = _lastDamage / player.MaxHealth * 20;
 
-            if (_additionalDamageIndicatorDuration != 0f)
+            if(_currentRemainingDamageIndicatorDuration != 0)
             {
-                remainingDamageIndicatorTime += _additionalDamageIndicatorDuration;
-                _additionalDamageIndicatorDuration = 0f;
+                remainingDamageIndicatorTime += _currentRemainingDamageIndicatorDuration;
+                _currentRemainingDamageIndicatorDuration = 0f;
             }
 
             remainingDamageIndicatorTime = Math.Min(remainingDamageIndicatorTime, _maxDamageIndicatorDuration);
