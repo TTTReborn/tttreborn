@@ -48,6 +48,8 @@ namespace TTTReborn.UI
         {
             Current = this;
             StyleSheet.Load("/ui/Crosshair.scss");
+
+            AddClass("center");
         }
 
         public Panel SetupCrosshair(Properties crosshairProperties)
