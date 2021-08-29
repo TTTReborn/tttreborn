@@ -5,7 +5,7 @@ using Sandbox.UI.Construct;
 
 
 namespace TTTReborn.UI
-{ 
+{
     public class EntityHintPanel : TTTPanel
     {
         public Panel TopPanel;
@@ -33,7 +33,7 @@ namespace TTTReborn.UI
             TopLabel = TopPanel.Add.Label(title, "topLabel");
 
             //Can't string.empty this. We only check this because if we leave it blank, there will be an empty space below the top label.
-            if (subtitle != null) 
+            if (subtitle != null)
             {
                 BottomLabel = BottomPanel.Add.Label(subtitle, "bottomLabel");
             }
