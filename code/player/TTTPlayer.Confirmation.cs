@@ -30,8 +30,6 @@ namespace TTTReborn.Player
 
         private const float INSPECT_CORPSE_DISTANCE = 80f;
 
-        private PlayerCorpse _inspectingPlayerCorpse = null;
-
         public void RemovePlayerCorpse()
         {
             if (PlayerCorpse == null || !PlayerCorpse.IsValid())
@@ -48,50 +46,42 @@ namespace TTTReborn.Player
             using (Prediction.Off())
             {
                 PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>(INSPECT_CORPSE_DISTANCE);
-
-                if (playerCorpse != null)
+                if (playerCorpse == null)
                 {
-                    if (IsServer && !playerCorpse.IsIdentified && Input.Pressed(InputButton.Use) && LifeState == LifeState.Alive)
+                    return;
+                }
+
+                if (!Input.Pressed(InputButton.Use))
+                {
+                    return;
+                }
+
+                if (IsServer && !playerCorpse.IsIdentified && LifeState == LifeState.Alive)
+                {
+                    playerCorpse.IsIdentified = true;
+
+                    // TODO: Handle player disconnects.
+                    if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
                     {
-                        playerCorpse.IsIdentified = true;
+                        playerCorpse.Player.IsConfirmed = true;
+                        playerCorpse.Player.CorpseConfirmer = this;
 
-                        // TODO Handling if a player disconnects!
-                        if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
+                        int credits = playerCorpse.Player.Credits;
+
+                        if (credits > 0)
                         {
-                            playerCorpse.Player.IsConfirmed = true;
-                            playerCorpse.Player.CorpseConfirmer = this;
-
-                            int credits = playerCorpse.Player.Credits;
-
-                            if (credits > 0)
-                            {
-                                Credits += credits;
-                                playerCorpse.Player.Credits = 0;
-                                playerCorpse.Player.CorpseCredits = credits;
-                            }
-
-                            RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name, playerCorpse.Player.Team.Name, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
+                            Credits += credits;
+                            playerCorpse.Player.Credits = 0;
+                            playerCorpse.Player.CorpseCredits = credits;
                         }
-                    }
 
-                    if (_inspectingPlayerCorpse != playerCorpse)
-                    {
-                        _inspectingPlayerCorpse = playerCorpse;
-
-                        if (IsClient)
-                        {
-                            InspectMenu.Instance.InspectCorpse(playerCorpse);
-                        }
+                        RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name, playerCorpse.Player.Team.Name, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
                     }
                 }
-                else if (_inspectingPlayerCorpse != null)
-                {
-                    if (IsClient && InspectMenu.Instance.IsShowing)
-                    {
-                        InspectMenu.Instance.IsShowing = false;
-                    }
 
-                    _inspectingPlayerCorpse = null;
+                if (playerCorpse.IsIdentified)
+                {
+                    RPCs.ClientOpenInspectMenu(playerCorpse);
                 }
             }
         }

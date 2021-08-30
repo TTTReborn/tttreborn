@@ -84,11 +84,7 @@ namespace TTTReborn.Globals
                 playerCorpse.Perks = perks;
 
                 playerCorpse.CopyConfirmationData(confirmationData);
-
-                if (InspectMenu.Instance?.PlayerCorpse == playerCorpse)
-                {
-                    InspectMenu.Instance.InspectCorpse(playerCorpse);
-                }
+                InspectMenu.Instance.SetPlayerData(playerCorpse);
             }
 
             Scoreboard.Instance.UpdatePlayer(deadPlayer.GetClientOwner());
@@ -115,6 +111,12 @@ namespace TTTReborn.Globals
                     $"found $ {deadPlayer.CorpseCredits} credits!"
                 );
             }
+        }
+
+        [ClientRpc]
+        public static void ClientOpenInspectMenu(PlayerCorpse playerCorpse)
+        {
+            InspectMenu.Instance.InspectCorpse(playerCorpse);
         }
 
         [ClientRpc]
