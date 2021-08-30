@@ -20,8 +20,10 @@ namespace TTTReborn.UI
 
             Hud.Current.RootPanel.AddChild(this);
 
+            AddClass("circular");
+
             DistanceLabel = Add.Label();
-            DistanceLabel.AddClass("distance");
+            DistanceLabel.AddClass("distance-label");
             DistanceLabel.AddClass("text-shadow");
         }
 

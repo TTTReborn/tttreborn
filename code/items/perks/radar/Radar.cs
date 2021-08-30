@@ -55,7 +55,7 @@ namespace TTTReborn.Items
 
                 foreach (Vector3 vector3 in _lastPositions)
                 {
-                    _cachedPoints.Add(new RadarPoint(vector3 + Vector3.Up * 40));
+                    _cachedPoints.Add(new RadarPoint(vector3 + Vector3.Up * 45));
                 }
             }
         }
