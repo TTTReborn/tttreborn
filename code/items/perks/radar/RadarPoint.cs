@@ -20,7 +20,9 @@ namespace TTTReborn.UI
 
             Hud.Current.RootPanel.AddChild(this);
 
-            DistanceLabel = Add.Label($"{(Local.Pawn as TTTPlayer)?.Position.Distance(Position):n0}", "distance");
+            DistanceLabel = Add.Label();
+            DistanceLabel.AddClass("distance");
+            DistanceLabel.AddClass("text-shadow");
         }
 
         public override void Tick()
@@ -32,7 +34,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            DistanceLabel.Text = $"{player.Position.Distance(Position):n0}";
+            DistanceLabel.Text = $"{Globals.Utils.SourceUnitsToMeters(player.Position.Distance(Position)):n0}m";
 
             Vector3 screenPos = Position.ToScreen();
             Enabled = screenPos.z > 0f;
