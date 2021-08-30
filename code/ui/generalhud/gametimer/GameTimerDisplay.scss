@@ -1,8 +1,17 @@
 GameTimerDisplay {
-    margin-top: 30px;
+    min-width: 150px;
+    width: fit-content;
+    height: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    .timer {
+    .round-label {
+        font-size: 14px;
+    }
+
+    .timer-label {
         font-weight: bold;
-        font-size: 24px;
+        font-size: 18px;
     }
 }

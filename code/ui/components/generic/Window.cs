@@ -14,7 +14,7 @@ namespace TTTReborn.UI
         {
             AddClass("window");
             AddClass("rounded");
-            AddClass("center");
+            AddClass("centered");
             Style.BackgroundColor = ColorScheme.Primary;
 
             Header = new(this);

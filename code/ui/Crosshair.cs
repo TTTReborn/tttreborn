@@ -70,17 +70,17 @@ namespace TTTReborn.UI
             Current = this;
             StyleSheet.Load("/ui/Crosshair.scss");
 
-            AddClass("center");
+            AddClass("centered");
 
             _crosshairDot = new Panel(this);
-            _crosshairDot.AddClass("center");
+            _crosshairDot.AddClass("centered");
             _crosshairDot.AddClass("circular");
 
             _crosshairLines = new Panel[4];
             for (int i = 0; i < _crosshairLines.Length; i++)
             {
                 _crosshairLines[i] = new Panel(this);
-                _crosshairLines[i].AddClass("center");
+                _crosshairLines[i].AddClass("centered");
             }
 
             UpdateCrosshair();

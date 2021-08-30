@@ -34,12 +34,13 @@ namespace TTTReborn.UI
 
             Avatar = Add.Image("", "avatar");
             Avatar.SetTexture($"avatar:{client.SteamId}");
-            Avatar.SetClass("circular", true);
+            Avatar.AddClass("circular");
 
             Name = Add.Label(Friend.Name, "name");
+            Name.AddClass("text-shadow");
 
-            SetClass("rounded", true);
-            SetClass("opacity-90", true);
+            AddClass("rounded");
+            AddClass("opacity-90");
         }
 
         public void Update(float level)

@@ -43,19 +43,19 @@
 
 .rounded
 {
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
 .rounded-top
 {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .rounded-bottom
 {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
 .circular
@@ -68,14 +68,14 @@
     opacity: 0.9;
 }
 
-.center {
+.centered {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
 }
 
-.center-horizontal {
+.centered-horizontal {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -86,5 +86,5 @@
 }
 
 .text-shadow {
-    text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+    text-shadow: 0px 0px 5px black, 0px 0px 5px black;
 }

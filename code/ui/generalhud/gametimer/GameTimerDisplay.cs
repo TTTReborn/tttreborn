@@ -7,20 +7,24 @@ namespace TTTReborn.UI
 {
     public class GameTimerDisplay : Panel
     {
-        private readonly TranslationLabel _timerLabel;
+        private readonly TranslationLabel _roundLabel;
+        private readonly Label _timerLabel;
 
         public GameTimerDisplay() : base()
         {
             StyleSheet.Load("/ui/generalhud/gametimer/GameTimerDisplay.scss");
 
-            AddClass("center-horizontal");
+            Style.BackgroundColor = ColorScheme.Primary;
+            AddClass("centered-horizontal");
+            AddClass("rounded-bottom");
+            AddClass("opacity-90");
+            AddClass("text-shadow");
 
-            _timerLabel = Add.TranslationLabel();
-            _timerLabel.AddClass("timer");
-            _timerLabel.AddClass("center");
-            _timerLabel.AddClass("text-shadow");
+            _roundLabel = Add.TranslationLabel();
+            _roundLabel.AddClass("round-label");
 
-            AddChild(_timerLabel);
+            _timerLabel = Add.Label();
+            _timerLabel.AddClass("timer-label");
         }
 
         public override void Tick()
@@ -32,14 +36,10 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (Game.Instance.Round is Rounds.WaitingRound)
-            {
-                _timerLabel.SetTranslation($"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}");
-            }
-            else
-            {
-                _timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;
-            }
+            _roundLabel.SetTranslation($"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}");
+
+            _timerLabel.SetClass("disabled", Game.Instance.Round is Rounds.WaitingRound);
+            _timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;
         }
     }
 }

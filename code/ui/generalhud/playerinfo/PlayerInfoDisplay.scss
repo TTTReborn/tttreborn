@@ -1,0 +1,18 @@
+PlayerInfoDisplay {
+    position: absolute;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    left: 25px;
+    bottom: 25px;
+    min-width: 200px;
+    width: fit-content;
+    height: 50px;
+
+    .info {
+        padding: 16px;
+        font-size: 28px;
+        font-weight: bold;
+    }
+}
