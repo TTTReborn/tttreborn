@@ -1,12 +1,14 @@
 InspectIcon {
     min-height: 75px;
     min-width: 75px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgb(23, 23, 23);
     cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 4px;
 
     &.selected {
-        border: 2px solid #f6c552;
-        border-radius: 4px;
+        border: 1px solid #ffffff;
+        border-radius: 5px;
     }
 
     image {

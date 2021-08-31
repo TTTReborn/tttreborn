@@ -166,6 +166,8 @@ namespace TTTReborn.Player
                 TickMenu();
             }
 
+            TickAttemptInspectPlayerCorpse();
+
             if (LifeState != LifeState.Alive)
             {
                 TickPlayerChangeSpectateCamera();
@@ -181,7 +183,6 @@ namespace TTTReborn.Player
 
             SimulateActiveChild(client, ActiveChild);
 
-            TickAttemptInspectPlayerCorpse();
             TickItemSimulate();
             TickPlayerUse();
             TickPlayerDropCarriable();

@@ -6,6 +6,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
@@ -47,7 +48,7 @@ namespace TTTReborn.UI
         {
             _playerCorpse = playerCorpse;
             _header.SetPlayerData(_playerCorpse.Player);
-            _content.SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
+            _content.SetConfirmationData(playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
         }
 
         private class Header : TTTPanel
@@ -59,10 +60,11 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                _playerLabel = Add.Label(String.Empty, "player");
-                _roleLabel = Add.Label(String.Empty, "role");
+                Panel headerText = Add.Panel();
+                _playerLabel = headerText.Add.Label(String.Empty, "player");
+                _roleLabel = headerText.Add.Label(String.Empty, "role");
 
-                Button button = Add.Button("X", () =>
+                Button button = Add.Button("x", () =>
                 {
                     parent.IsShowing = false;
                 });
@@ -91,7 +93,7 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
                 _iconsWrapper = new IconsWrapper(this, new DescriptionWrapper(this));
-                _timeSinceDeathIcon = _iconsWrapper.Add(new InspectIconData{Description = String.Empty, ImagePath = $"/ui/inspectmenu/time.png", IsUnique = false});
+                _timeSinceDeathIcon = _iconsWrapper.Add(new InspectIconData(false, $"/ui/inspectmenu/time.png", String.Empty));
                 _iconsWrapper.SelectIcon(_timeSinceDeathIcon);
             }
 
@@ -100,7 +102,7 @@ namespace TTTReborn.UI
                 base.Tick();
 
                 string[] timeSplits = TimeSpan.FromSeconds(Math.Round(Time.Now - _confirmationData.Time)).ToString().Split(':');
-                _timeSinceDeathIcon.IconData.Description = $"Died {timeSplits[1]}:{timeSplits[2]} ago";
+                _timeSinceDeathIcon.IconData.Description = $"They died roughly {timeSplits[1]}:{timeSplits[2]} ago.";
             }
 
             public void SetConfirmationData(ConfirmationData confirmationData, string killerWeapon, string[] perks)
@@ -108,31 +110,37 @@ namespace TTTReborn.UI
                 _confirmationData = confirmationData;
 
                 _iconsWrapper.ClearUniqueIcons();
+                _iconsWrapper.ScrollOffset = Vector2.Zero; // Reset scroll position back to top.
 
                 if (confirmationData.Headshot)
                 {
-                    _iconsWrapper.Add(new InspectIconData{Description = $"This body is missing a head.", ImagePath = "/ui/inspectmenu/headshot.png", IsUnique = true});
+                    _iconsWrapper.Add(new InspectIconData(true, "/ui/inspectmenu/headshot.png",
+                        "The fatal wound was a headshot. No time to scream."));
                 }
 
-                if (!confirmationData.Suicide)
+                if (confirmationData.Suicide)
                 {
-                    _iconsWrapper.Add(new InspectIconData{Description = $"From {confirmationData.Distance:n0}m away", ImagePath = "/ui/inspectmenu/distance.png", IsUnique = true});
+                    _iconsWrapper.Add(new InspectIconData(true, String.Empty,
+                        "You cannot find a specific cause of this Terry's death."));
                 }
                 else
                 {
-                    _iconsWrapper.Add(new InspectIconData{Description = $"Committed suicide.", ImagePath = String.Empty, IsUnique = true});
+                    _iconsWrapper.Add(new InspectIconData(true, "/ui/inspectmenu/distance.png",
+                        $"They were killed from approximately {confirmationData.Distance:n0}m away."));
                 }
 
                 if (!string.IsNullOrEmpty(killerWeapon))
                 {
-                    _iconsWrapper.Add(new InspectIconData{Description = $"With a {killerWeapon}", ImagePath = $"/ui/weapons/{killerWeapon}.png", IsUnique = true});
+                    _iconsWrapper.Add(new InspectIconData(true, $"/ui/weapons/{killerWeapon}.png",
+                        $"It appears a {killerWeapon} was used to kill them."));
                 }
 
                 if (perks != null)
                 {
                     foreach (string perkName in perks)
                     {
-                        _iconsWrapper.Add(new InspectIconData{Description = perkName, ImagePath = $"/ui/weapons/{perkName}.png", IsUnique = true});
+                        _iconsWrapper.Add(new InspectIconData(true, $"/ui/weapons/{perkName}.png",
+                            $"They were carrying a {perkName}."));
                     }
                 }
             }
@@ -151,8 +159,11 @@ namespace TTTReborn.UI
 
         private class IconsWrapper : TTTPanel
         {
-            private readonly DescriptionWrapper _descriptionWrapper;
             private InspectIcon _selectedIcon;
+            private readonly DescriptionWrapper _descriptionWrapper;
+
+            // Keep a reference to any icons that can uniquely exist on a corpse. As we will need to
+            // potentially delete these icons if we inspect a new corpse that doesn't have these icons.
             private readonly List<InspectIcon> _uniqueIcons = new();
 
             public IconsWrapper(Panel parent, DescriptionWrapper descriptionWrapper)

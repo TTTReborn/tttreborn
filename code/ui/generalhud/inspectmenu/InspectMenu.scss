@@ -1,15 +1,13 @@
 InspectMenu {
-    background-color: #000c;
+    background-color: #212121;
     color: #fafafa;
-    border: 1px solid #1b1b1b;
-    border-radius: 4px;
+    border-radius: 5px;
     font-weight: 500;
     top: 60%;
-    left: 37%;
+    left: 38%;
     position: absolute;
     margin: auto;
     font-family: Poppins;
-    padding: 6px 12px;
     flex-direction: column;
     pointer-events: all;
 
@@ -19,21 +17,41 @@ InspectMenu {
     }
 
     Header {
+        justify-content: space-between;
+
         Label {
             &.player {
                 font-size: 24px;
                 font-weight: 500;
+                padding: 5px 5px 0 8px;
             }
 
             &.role {
-                margin: 7px 0 0 5px;
                 font-size: 18px;
                 font-weight: 500;
+                padding-top: 11px;
             }
         }
 
         Button {
             cursor: pointer;
+
+            &.closeButton {
+                justify-self: end;
+                height: 20px;
+                width: 20px;
+                font-size: 12px;
+                border-radius: 50%;
+                justify-content: center;
+                margin: 5px;
+                background-color: rgba(91, 91, 91, 0.44);
+            }
+
+            &.closeButton:hover {
+                height: 20px;
+                width: 20px;
+                background-color: rgba(128, 128, 128, 0.44);
+            }
         }
     }
 
@@ -41,9 +59,12 @@ InspectMenu {
         DescriptionWrapper {
             height: 175px;
             width: 300px;
-            background-color: rgba(0, 0, 0, 0.7);
-            margin: 0 10px 10px 10px;
-            padding: 10px;
+            background-color: rgb(23, 23, 23);
+            border-radius: 5px;
+            padding: 5px;
+            margin: 0 0 5px 5px;
+            font-weight: normal;
+            color: rgb(224, 224, 224);
         }
 
         IconsWrapper {
