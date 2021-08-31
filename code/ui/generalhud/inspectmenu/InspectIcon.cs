@@ -6,7 +6,7 @@ namespace TTTReborn.UI
     public class InspectIconData
     {
         // Determines if the icon exist on every single corpse. If the icon is unique, the icon
-        // needs to be deleted/created on each corpse inspection.
+        // needs to be deleted/created on each corpse inspection
         public readonly bool IsUnique;
         // Image path to the icon
         public readonly string ImagePath;
