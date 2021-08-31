@@ -37,10 +37,10 @@ namespace TTTReborn.UI
             Avatar.AddClass("circular");
 
             Name = Add.Label(Friend.Name, "name");
-            Name.AddClass("text-shadow");
 
             AddClass("rounded");
             AddClass("opacity-90");
+            AddClass("text-shadow");
         }
 
         public void Update(float level)

@@ -17,7 +17,7 @@ namespace TTTReborn.UI
         public readonly List<ChatEntry> Messages = new();
 
         public const int MAX_MESSAGES_COUNT = 200;
-        public const float MAX_DISPLAY_TIME = 8f;
+        public const float MAX_DISPLAY_TIME = 5f;
 
         public bool IsOpened { get; private set; } = false;
         public bool IsTeamChatting { get; private set; } = false;
@@ -27,16 +27,24 @@ namespace TTTReborn.UI
         private readonly Sandbox.UI.Panel _canvas;
         private readonly TextEntry _input;
 
-        public ChatBox()
+        public ChatBox() : base()
         {
             Instance = this;
 
             StyleSheet.Load("/ui/generalhud/chat/ChatBox.scss");
 
-            _canvas = Add.Panel("chat_canvas");
+            _canvas = Add.Panel();
+            _canvas.Style.BackgroundColor = ColorScheme.Primary;
+            _canvas.AddClass("chat-canvas");
+            _canvas.AddClass("rounded");
+            _canvas.AddClass("opacity-75");
             _canvas.PreferScrollToBottom = true;
 
             _input = Add.TextEntry("");
+            _input.Style.BackgroundColor = ColorScheme.Primary;
+            _input.CaretColor = Color.White;
+            _input.AddClass("input");
+            _input.AddClass("rounded");
             _input.AddEventListener("onsubmit", Submit);
             _input.AddEventListener("onblur", Close);
             _input.AcceptsFocus = true;

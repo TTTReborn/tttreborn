@@ -1,18 +1,16 @@
 PlayerInfoDisplay {
     position: absolute;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
     text-align: center;
     left: 25px;
     bottom: 25px;
-    min-width: 200px;
-    width: fit-content;
+    width: 250px;
     height: 50px;
 
     .info {
-        padding: 16px;
-        font-size: 28px;
+        font-size: 30px;
         font-weight: bold;
     }
 }

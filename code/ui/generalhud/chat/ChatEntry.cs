@@ -13,12 +13,21 @@ namespace TTTReborn.UI
         public readonly Label NameLabel;
         public readonly Label Message;
 
-        public ChatEntry()
+        public ChatEntry() : base()
         {
             HeadHolder = Add.Panel("head");
+
             Avatar = HeadHolder.Add.Image();
-            NameLabel = HeadHolder.Add.Label("", "name");
-            Message = Add.Label("Message", "message");
+            Avatar.AddClass("avatar");
+            Avatar.AddClass("circular");
+
+            NameLabel = HeadHolder.Add.Label();
+            NameLabel.AddClass("name");
+            NameLabel.AddClass("text-shadow");
+
+            Message = Add.Label();
+            Message.AddClass("message");
+            Message.AddClass("text-shadow");
         }
     }
 }
