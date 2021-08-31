@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 using Sandbox.UI;
 
@@ -69,6 +71,7 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
+                Parent.AddChild<RadarDisplay>();
                 Parent.AddChild<Crosshair>();
                 Parent.AddChild<PlayerInfoDisplay>();
                 Parent.AddChild<InventoryWrapper>();
