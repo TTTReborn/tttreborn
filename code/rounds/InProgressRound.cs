@@ -17,7 +17,7 @@ namespace TTTReborn.Rounds
     {
         public override string RoundName => "In Progress";
         private List<TTTRoleButton> RoleButtons;
-        
+
         public override int RoundDuration
         {
             get => Settings.ServerSettings.Instance.Round.RoundTime;
