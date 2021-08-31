@@ -6,7 +6,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
-using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
