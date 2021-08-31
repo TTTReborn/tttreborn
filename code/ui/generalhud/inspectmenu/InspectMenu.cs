@@ -17,8 +17,6 @@ namespace TTTReborn.UI
 
         private readonly ConfirmationPanel _confirmationPanel;
 
-        private readonly ConfirmationHintPanel _confirmationHintPanel;
-
         public InspectMenu()
         {
             Instance = this;
@@ -26,7 +24,6 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/inspectmenu/InspectMenu.scss");
 
-            _confirmationHintPanel = new ConfirmationHintPanel(this);
             _confirmationPanel = new ConfirmationPanel(this);
         }
 
@@ -42,8 +39,6 @@ namespace TTTReborn.UI
 
             if (playerCorpse.IsIdentified)
             {
-                _confirmationHintPanel.IsShowing = false;
-
                 _confirmationPanel.SetPlayer(playerCorpse.Player);
                 _confirmationPanel.SetConfirmationData(playerCorpse.GetConfirmationData());
                 _confirmationPanel.SetKillerWeapon(playerCorpse.KillerWeapon);
@@ -56,7 +51,6 @@ namespace TTTReborn.UI
             else
             {
                 _confirmationPanel.IsShowing = false;
-                _confirmationHintPanel.IsShowing = true;
             }
         }
 
@@ -287,18 +281,6 @@ namespace TTTReborn.UI
 
                     _footerLabel.Text = $"$ {player.CorpseCredits} credits found";
                 }
-            }
-        }
-
-        private class ConfirmationHintPanel : TTTPanel
-        {
-            private Label _inspectLabel;
-
-            public ConfirmationHintPanel(Panel parent)
-            {
-                Parent = parent;
-
-                _inspectLabel = Add.Label("Press E to confirm", "inspect");
             }
         }
     }
