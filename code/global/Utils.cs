@@ -104,7 +104,7 @@ namespace TTTReborn.Globals
 
         public static bool HasMinimumPlayers()
         {
-            return Client.All.Count >= Gamemode.Game.TTTMinPlayers;
+            return Client.All.Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
         }
 
         /// <summary>
@@ -211,6 +211,17 @@ namespace TTTReborn.Globals
             }
 
             return highestPanel;
+        }
+
+        public static string GetTypeNameByType(Type type)
+        {
+            return type.FullName.Replace(type.Namespace, "").TrimStart('.');
+        }
+
+        public enum Realm
+        {
+            Client,
+            Server
         }
     }
 }

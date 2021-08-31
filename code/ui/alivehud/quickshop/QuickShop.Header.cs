@@ -27,6 +27,8 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
+                base.Tick();
+
                 _creditsLabel.Text = $"{(Local.Pawn as TTTPlayer).Credits}";
             }
         }

@@ -8,6 +8,7 @@ using TTTReborn.Globals;
 using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
+using TTTReborn.Settings;
 using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
@@ -29,8 +30,7 @@ namespace TTTReborn.Gamemode
             Instance = this;
 
             TTTLanguage.LoadLanguages();
-
-            Settings.SettingFunctions.LoadSettings();
+            SettingsManager.Load();
 
             if (IsServer)
             {
@@ -40,7 +40,7 @@ namespace TTTReborn.Gamemode
 
         public override void Shutdown()
         {
-            Settings.SettingFunctions.SaveSettings();
+            SettingsManager.Unload();
 
             base.Shutdown();
         }

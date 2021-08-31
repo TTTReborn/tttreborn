@@ -12,6 +12,8 @@ namespace TTTReborn.UI
         public readonly Panel Header;
         public readonly PanelContent PanelContent;
 
+        public Action<Tab> OnTabSelected { get; set; }
+
         public Tab SelectedTab { get; private set; }
 
         public Tabs() : base()
@@ -24,9 +26,9 @@ namespace TTTReborn.UI
             PanelContent.AddClass("content");
         }
 
-        public Tab AddTab(string title, Action<PanelContent> createContent, Action onSelectTab = null)
+        public Tab AddTab(string title, Action<PanelContent> createContent, object value = null, Action onSelectTab = null)
         {
-            Tab tab = new Tab(Header, this, title, createContent, onSelectTab);
+            Tab tab = new Tab(Header, this, title, createContent, value, onSelectTab);
 
             TabList.Add(tab);
 
@@ -52,6 +54,21 @@ namespace TTTReborn.UI
             SelectedTab.SetClass("selected", true);
             PanelContent.SetPanelContent(SelectedTab.CreateContent, SelectedTab.TitleLabel.Text);
             SelectedTab.OnSelectTab?.Invoke();
+
+            OnTabSelected?.Invoke(SelectedTab);
+        }
+
+        public void SelectByValue(object data)
+        {
+            foreach (Tab tab in TabList)
+            {
+                if (tab.Value.Equals(data))
+                {
+                    OnSelectTab(tab);
+
+                    return;
+                }
+            }
         }
     }
 }

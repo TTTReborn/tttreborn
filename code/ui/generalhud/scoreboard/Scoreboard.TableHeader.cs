@@ -27,6 +27,8 @@ namespace TTTReborn.UI
 
             public override void Tick()
             {
+                base.Tick();
+
                 _playerAliveCountLabel.Text = $"{Client.All.Count - Utils.GetConfirmedPlayers().Count} players left";
             }
         }

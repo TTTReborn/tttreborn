@@ -12,7 +12,10 @@ namespace TTTReborn.Rounds
     public class PreRound : BaseRound
     {
         public override string RoundName => "Preparing";
-        public override int RoundDuration => Gamemode.Game.TTTPreRoundTime;
+        public override int RoundDuration
+        {
+            get => Settings.ServerSettings.Instance.Round.PreRoundTime;
+        }
 
         public override void OnPlayerKilled(TTTPlayer player)
         {

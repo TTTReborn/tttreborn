@@ -26,6 +26,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
+            base.Tick();
+
             if (Local.Pawn is not TTTPlayer player || player.Controller is not DefaultWalkController defaultWalkController)
             {
                 return;

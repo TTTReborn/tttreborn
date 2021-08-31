@@ -225,6 +225,8 @@ namespace TTTReborn.UI
 
                 public override void Tick()
                 {
+                    base.Tick();
+
                     if (_timeSinceDeath != null && _timeSinceDeath.IsVisible)
                     {
                         string[] timeSplits = TimeSpan.FromSeconds(Math.Round(Time.Now - _confirmationData.Time)).ToString().Split(':');
