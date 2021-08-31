@@ -111,6 +111,7 @@ namespace TTTReborn.UI
 
                 _iconsWrapper.ClearUniqueIcons();
                 _iconsWrapper.ScrollOffset = Vector2.Zero; // Reset scroll position back to top.
+                _iconsWrapper.SelectIcon(_timeSinceDeathIcon); // Select first icon.
 
                 if (confirmationData.Headshot)
                 {
