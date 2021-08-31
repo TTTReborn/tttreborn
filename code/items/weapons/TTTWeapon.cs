@@ -353,6 +353,7 @@ namespace TTTReborn.Items
                 2,
                 0,
                 0,
+                0,
                 Color.Green));
             CrosshairPanel.Parent = Local.Hud;
             CrosshairPanel.AddClass(ClassInfo.Name);

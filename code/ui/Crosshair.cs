@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 using Sandbox.UI;
 
@@ -19,6 +21,8 @@ namespace TTTReborn.UI
 
             public int Gap { get; private set; }
 
+            public float ChargeTime { get; private set; }
+
             public Color Color { get; private set; }
 
             public Properties(
@@ -29,6 +33,7 @@ namespace TTTReborn.UI
                 uint thickness = 2,
                 uint outlineThickness = 0,
                 int gap = 2,
+                float chargeTime = 0,
                 Color? color = null)
             {
                 ShowTop = showTop;
@@ -38,11 +43,15 @@ namespace TTTReborn.UI
                 Thickness = thickness;
                 OutlineThickness = outlineThickness;
                 Gap = gap;
+                ChargeTime = chargeTime;
                 Color = color ?? Color.White;
             }
         }
 
         public static Crosshair Current;
+
+        private Panel ChargeBar;
+        private float ChargeTime;
 
         public Crosshair()
         {
@@ -98,11 +107,29 @@ namespace TTTReborn.UI
                 dot.Style.Dirty();
             }
 
+            if (crosshairProperties.ChargeTime > 0)
+            {
+                ChargeTime = crosshairProperties.ChargeTime;
+
+                Panel chargeBarOutline = Add.Panel("element");
+                chargeBarOutline.Style.BorderWidth = 1;
+                chargeBarOutline.Style.BorderColor = Color.Black;
+                chargeBarOutline.Style.Top = crosshairProperties.Size * 2.5f;
+                chargeBarOutline.Style.Width = crosshairProperties.Size * 5f;
+                chargeBarOutline.Style.Height = crosshairProperties.Size;
+                chargeBarOutline.Style.Dirty();
+                ChargeBar = chargeBarOutline.Add.Panel("element");
+                ChargeBar.Style.BackgroundColor = crosshairProperties.Color;
+                ChargeBar.Style.Height = Length.Percent(100);
+                ChargeBar.Style.Dirty();
+            }
+
             Style.Dirty();
 
             return this;
         }
 
+        private float ChargeStartTime = 0;
         public override void Tick()
         {
             base.Tick();
@@ -117,6 +144,25 @@ namespace TTTReborn.UI
             BaseCarriable carr = player.ActiveChild as BaseCarriable;
 
             this.Style.Display = carr == null ? DisplayMode.None : DisplayMode.Flex;
+
+            if (ChargeTime > 0)
+            {
+                if (Input.Down(InputButton.Attack1))
+                {
+                    if (ChargeStartTime == 0)
+                    {
+                        ChargeStartTime = Time.Now;
+                    }
+                    ChargeBar.Style.Width = Length.Percent(Math.Clamp((Time.Now - ChargeStartTime) / ChargeTime, 0, 1) * 100);
+                    ChargeBar.Style.Dirty();
+                }
+                else
+                {
+                    ChargeStartTime = 0;
+                    ChargeBar.Style.Width = Length.Percent(0);
+                    ChargeBar.Style.Dirty();
+                }
+            }
         }
     }
 }
