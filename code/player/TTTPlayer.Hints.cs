@@ -10,6 +10,7 @@ namespace TTTReborn.Player
         private const float MAX_HINT_DISTANCE = 100;
 
         private TTTPanel _currentHint;
+        private IEntityHint _currentTarget;
 
         private void TickEntityHints()
         {
@@ -24,7 +25,7 @@ namespace TTTReborn.Player
             //If we're looking at a valid target and we currently have a hint displayed, double check that the entity still wants us to hint.
             if (target != null && _currentHint != null)
             {
-                if (!target.CanHint(player))
+                if (!target.CanHint(player) || target != _currentTarget)
                 {
                     DeleteHint();
                     return;
@@ -39,6 +40,7 @@ namespace TTTReborn.Player
                     _currentHint = target.DisplayHint(player); //Retrieves panel information from entity
                     _currentHint.Parent = Hud.Current.RootPanel;
                     _currentHint.IsShowing = true;
+                    _currentTarget = target;
                 }
             }
             else
@@ -52,6 +54,7 @@ namespace TTTReborn.Player
         {
             _currentHint?.Delete();
             _currentHint = null;
+            _currentTarget = null;
         }
     }
 }
