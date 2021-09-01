@@ -100,6 +100,8 @@ namespace TTTReborn.UI
             IsTeamChatting = false;
             IsOpened = false;
 
+            _input.Text = "";
+
             SetClass("open", false);
 
             _input.Blur();
@@ -109,33 +111,24 @@ namespace TTTReborn.UI
         {
             bool wasTeamChatting = IsTeamChatting;
 
-            Close();
-
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                return;
-            }
-
             string msg = _input.Text.Trim();
 
-            _input.Text = "";
-
-            if (string.IsNullOrWhiteSpace(msg))
+            if (!string.IsNullOrWhiteSpace(msg) && Local.Pawn is TTTPlayer)
             {
-                return;
+                if (wasTeamChatting)
+                {
+                    SayTeam(msg);
+                }
+                else
+                {
+                    Say(msg);
+                }
             }
 
-            if (wasTeamChatting)
-            {
-                SayTeam(msg);
-            }
-            else
-            {
-                Say(msg);
-            }
+            Close();
         }
 
-        public void AddEntry(string name, string message, string avatar, LifeState lifeState, string team = null)
+        public void AddEntry(string header, string content, string avatar, LifeState lifeState, string team = null)
         {
             _lastChatFocus = 0f;
 
@@ -149,25 +142,23 @@ namespace TTTReborn.UI
             }
 
             ChatEntry chatEntry = _canvas.AddChild<ChatEntry>();
-            chatEntry.Name = name;
-            chatEntry.Text = message;
+            chatEntry.Name = header;
 
-            chatEntry.Message.Text = message;
+            chatEntry.Header.Text = header;
+            chatEntry.Content.Text = content;
 
-            chatEntry.SetClass("noname", string.IsNullOrEmpty(name));
-            chatEntry.SetClass("noavatar", string.IsNullOrEmpty(avatar));
+            chatEntry.Header.SetClass("disable", string.IsNullOrEmpty(header));
+            chatEntry.Content.SetClass("disable", string.IsNullOrEmpty(content));
 
-            bool showHead = Messages.Count == 0 || name == null || Messages[^1].Name != name;
+            bool showHeader = Messages.Count == 0 || header == null || Messages[^1].Name != header;
 
-            if (showHead)
+            if (showHeader)
             {
-                chatEntry.NameLabel.Text = name;
-                chatEntry.NameLabel.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
-
+                chatEntry.Header.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
                 chatEntry.Avatar.SetTexture(avatar);
             }
 
-            chatEntry.SetClass("showHead", showHead);
+            chatEntry.SetClass("show-header", showHeader);
 
             if (!string.IsNullOrEmpty(team))
             {
@@ -198,7 +189,7 @@ namespace TTTReborn.UI
         [ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
         public static void AddInformation(string message, string avatar = null, LifeState lifeState = LifeState.Alive)
         {
-            Instance?.AddEntry(null, message, avatar, lifeState);
+            Instance?.AddEntry(message, null, avatar, lifeState);
         }
 
         [ClientCmd("open_teamchat")]

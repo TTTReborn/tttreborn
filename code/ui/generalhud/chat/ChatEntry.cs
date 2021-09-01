@@ -8,26 +8,27 @@ namespace TTTReborn.UI
         public string Name;
         public string Text;
 
-        public readonly Sandbox.UI.Panel HeadHolder;
+        public readonly Sandbox.UI.Panel Message;
         public readonly Image Avatar;
-        public readonly Label NameLabel;
-        public readonly Label Message;
+        public readonly Label Header;
+        public readonly Label Content;
 
         public ChatEntry() : base()
         {
-            HeadHolder = Add.Panel("head");
 
-            Avatar = HeadHolder.Add.Image();
+            Avatar = Add.Image();
             Avatar.AddClass("avatar");
             Avatar.AddClass("circular");
 
-            NameLabel = HeadHolder.Add.Label();
-            NameLabel.AddClass("name");
-            NameLabel.AddClass("text-shadow");
+            Message = Add.Panel("message");
 
-            Message = Add.Label();
-            Message.AddClass("message");
-            Message.AddClass("text-shadow");
+            Header = Message.Add.Label();
+            Header.AddClass("header");
+            Header.AddClass("text-shadow");
+
+            Content = Message.Add.Label();
+            Content.AddClass("content");
+            Content.AddClass("text-shadow");
         }
     }
 }

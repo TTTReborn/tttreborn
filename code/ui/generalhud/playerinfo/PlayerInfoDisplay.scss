@@ -6,10 +6,11 @@ PlayerInfoDisplay {
     text-align: center;
     left: 25px;
     bottom: 25px;
-    width: 250px;
+    width: 225px;
     height: 50px;
 
     .info {
+        width: 100%;
         font-size: 30px;
         font-weight: bold;
     }
