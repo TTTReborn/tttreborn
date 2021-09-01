@@ -122,10 +122,20 @@ namespace TTTReborn.Player
             };
         }
 
-        public bool CanHint(TTTPlayer client) => !IsIdentified;
+        public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.IsShowing ?? false;
 
         public TTTPanel DisplayHint(TTTPlayer client)
         {
+            if (IsIdentified)
+            {
+                return new EntityHintPanel("Press E to search body")
+                    .WithStyle("font-color", "#ffffff")
+                    .WithStyle("font-size", "0.8em")
+                    .WithStyle("text-align", "center")
+                    .WithStyle("padding", "5px 15px")
+                    .WithBackground();
+            }
+
             return new EntityHintPanel("Press E to confirm body")
                 .WithStyle("font-color", "#ffae00")
                 .WithStyle("font-size", "0.8em")
