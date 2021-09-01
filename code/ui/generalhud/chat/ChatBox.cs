@@ -24,8 +24,10 @@ namespace TTTReborn.UI
 
         private TimeSince _lastChatFocus = 0f;
 
-        private readonly Sandbox.UI.Panel _canvas;
-        private readonly TextEntry _input;
+        private readonly Panel _canvas;
+        private readonly Panel _inputPanel;
+        private readonly Panel _inputTeamIndicator;
+        private readonly TextEntry _inputField;
 
         public ChatBox() : base()
         {
@@ -33,23 +35,31 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/chat/ChatBox.scss");
 
-            _canvas = Add.Panel();
-            _canvas.AddClass("background-color-primary");
+            _canvas = new Panel(this);
             _canvas.AddClass("chat-canvas");
+            _canvas.AddClass("background-color-primary");
             _canvas.AddClass("rounded");
-            _canvas.AddClass("opacity-75");
+            _canvas.AddClass("opacity-90");
             _canvas.PreferScrollToBottom = true;
 
-            _input = Add.TextEntry("");
-            _input.CaretColor = Color.White;
-            _input.AddClass("background-color-primary");
-            _input.AddClass("input");
-            _input.AddClass("rounded");
-            _input.AddClass("text-color-player");
-            _input.AddEventListener("onsubmit", Submit);
-            _input.AddEventListener("onblur", Close);
-            _input.AcceptsFocus = true;
-            _input.AllowEmojiReplace = true;
+            _inputPanel = new Panel(this);
+            _inputPanel.AddClass("input-panel");
+            _inputPanel.AddClass("background-color-primary");
+            _inputPanel.AddClass("opacity-0");
+            _inputPanel.AddClass("rounded");
+
+            _inputTeamIndicator = new Panel(_inputPanel);
+            _inputTeamIndicator.AddClass("input-team-indicator");
+            _inputTeamIndicator.AddClass("circular");
+
+            _inputField = _inputPanel.Add.TextEntry("");
+            _inputField.CaretColor = Color.White;
+            _inputField.AcceptsFocus = true;
+            _inputField.AllowEmojiReplace = true;
+            _inputField.AddClass("input-field");
+            _inputField.AddClass("text-color-player");
+            _inputField.AddEventListener("onsubmit", Submit);
+            _inputField.AddEventListener("onblur", Close);
 
             Sandbox.Hooks.Chat.OnOpenChat += Open;
         }
@@ -60,11 +70,24 @@ namespace TTTReborn.UI
 
             if (Local.Pawn.LifeState == LifeState.Alive)
             {
-                _input.AddClass("border-color-player");
+                if (IsTeamChatting && Local.Pawn is TTTPlayer player)
+                {
+                    _inputTeamIndicator.Style.BackgroundColor = player.Team.Color;
+                    _inputPanel.Style.BorderColor = player.Team.Color;
+                }
+                else
+                {
+                    _inputTeamIndicator.Style.BackgroundColor = null;
+                    _inputPanel.Style.BorderColor = null;
+                }
+
+                _inputTeamIndicator.AddClass("background-color-player");
+                _inputPanel.AddClass("border-color-player");
             }
             else
             {
-                _input.AddClass("border-color-spectator");
+                _inputTeamIndicator.AddClass("background-color-spectator");
+                _inputPanel.AddClass("border-color-spectator");
             }
 
             if (IsOpened)
@@ -72,28 +95,24 @@ namespace TTTReborn.UI
                 _lastChatFocus = 0f;
             }
 
-            _canvas.SetClass("hide", _lastChatFocus > MAX_DISPLAY_TIME);
-
+            _canvas.SetClass("fadeOut", _lastChatFocus > MAX_DISPLAY_TIME);
         }
 
         private void Open()
         {
+            if (Input.Down(InputButton.Run) && Local.Pawn is TTTPlayer player && CanUseTeamChat(player))
+            {
+                IsTeamChatting = true;
+            }
+
             IsOpened = true;
 
-            SetClass("open", true);
+            _inputPanel.SetClass("opacity-90", true);
+            _inputPanel.SetClass("open", true);
 
-            if (IsTeamChatting && Local.Pawn is TTTPlayer player)
-            {
-                _input.Style.BorderBottomColor = player.Team.Color;
-            }
-            else
-            {
-                _input.Style.BorderBottomColor = null;
-            }
+            _inputPanel.Style.Dirty();
 
-            _input.Style.Dirty();
-
-            _input.Focus();
+            _inputField.Focus();
         }
 
         private void OpenTeamChat()
@@ -108,18 +127,18 @@ namespace TTTReborn.UI
             IsTeamChatting = false;
             IsOpened = false;
 
-            _input.Text = "";
+            _inputPanel.SetClass("opacity-90", false);
+            _inputPanel.SetClass("open", false);
 
-            SetClass("open", false);
-
-            _input.Blur();
+            _inputField.Text = "";
+            _inputField.Blur();
         }
 
         private void Submit()
         {
             bool wasTeamChatting = IsTeamChatting;
 
-            string msg = _input.Text.Trim();
+            string msg = _inputField.Text.Trim();
 
             if (!string.IsNullOrWhiteSpace(msg) && Local.Pawn is TTTPlayer)
             {
@@ -170,8 +189,7 @@ namespace TTTReborn.UI
 
             if (!string.IsNullOrEmpty(team))
             {
-                chatEntry.Style.BorderLeftWidth = Length.Pixels(4f);
-                chatEntry.Style.BorderLeftColor = TeamFunctions.GetTeam(team).Color;
+                chatEntry.Header.Style.FontColor = TeamFunctions.GetTeam(team).Color;
                 chatEntry.Style.Dirty();
             }
 
@@ -198,15 +216,6 @@ namespace TTTReborn.UI
         public static void AddInformation(string message, string avatar = null, LifeState lifeState = LifeState.Alive)
         {
             Instance?.AddEntry(message, null, avatar, lifeState);
-        }
-
-        [ClientCmd("open_teamchat")]
-        public static void OpenTeamChatInput()
-        {
-            if (Local.Pawn is TTTPlayer player && CanUseTeamChat(player))
-            {
-                Instance?.OpenTeamChat();
-            }
         }
 
         [ServerCmd("say")]

@@ -68,6 +68,10 @@ $spectator: #fcdb38;
     border-radius: 50%;
 }
 
+.opacity-0 {
+    opacity: 0;
+}
+
 .opacity-90
 {
     opacity: 0.9;
@@ -109,6 +113,14 @@ $spectator: #fcdb38;
 
 .background-color-primary {
     background-color: $primary;
+}
+
+.background-color-player {
+    background-color: $player;
+}
+
+.background-color-spectator {
+    background-color: $spectator;
 }
 
 .panel-color-secondary {
