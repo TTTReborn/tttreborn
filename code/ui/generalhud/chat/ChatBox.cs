@@ -163,6 +163,11 @@ namespace TTTReborn.UI
                 return;
             }
 
+            if (header == null)
+            {
+                header = "";
+            }
+
             #region Cleanup Old Messages
             if (Messages.Count > MAX_MESSAGES_COUNT)
             {
@@ -179,7 +184,10 @@ namespace TTTReborn.UI
             chatEntry.Channel = channel;
 
             chatEntry.Header.SetClass("disable", string.IsNullOrEmpty(header));
+            chatEntry.Header.SetClass("header", chatEntry.Channel != Channel.Info);
             chatEntry.Content.SetClass("disable", string.IsNullOrEmpty(content));
+            chatEntry.Content.SetClass("header", chatEntry.Channel == Channel.Info);
+            chatEntry.Content.SetClass("text-color-info", chatEntry.Channel == Channel.Info);
 
             switch (channel)
             {
@@ -203,8 +211,8 @@ namespace TTTReborn.UI
             bool showHeader =
                 Messages.Count == 0 ||
                 Messages[^1].Channel != chatEntry.Channel ||
-                Messages[^1].Channel == Channel.Info ||
-                !Messages[^1].Header.Text.Equals(chatEntry.Header.Text);
+                !Messages[^1].Header.Text.Equals(chatEntry.Header.Text) ||
+                chatEntry.Channel == Channel.Info;
 
             if (showHeader)
             {
@@ -245,7 +253,7 @@ namespace TTTReborn.UI
         [ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
         public static void AddInformation(string message, string avatar = null)
         {
-            Instance?.AddEntry(message, null, Channel.Info, avatar);
+            Instance?.AddEntry(null, message, Channel.Info, avatar);
         }
 
         [ServerCmd("say")]
