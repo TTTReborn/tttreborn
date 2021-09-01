@@ -2,9 +2,11 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.UI;
+
 namespace TTTReborn.Player
 {
-    public partial class PlayerCorpse : ModelEntity
+    public partial class PlayerCorpse : ModelEntity, IEntityHint
     {
         public TTTPlayer Player { get; set; }
         public List<Particles> Ropes = new();
@@ -118,6 +120,18 @@ namespace TTTReborn.Player
                 Distance = Distance,
                 Suicide = Suicide
             };
+        }
+
+        public bool CanHint(TTTPlayer client) => !IsIdentified;
+
+        public TTTPanel DisplayHint(TTTPlayer client)
+        {
+            return new EntityHintPanel("Press E to confirm body")
+                .WithStyle("font-color", "#ffae00")
+                .WithStyle("font-size", "0.8em")
+                .WithStyle("text-align", "center")
+                .WithStyle("padding", "5px 15px")
+                .WithBackground();
         }
     }
 }
