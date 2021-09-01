@@ -2,6 +2,7 @@ $primary: #282828;
 $secondary: #232323;
 $player: #dedede;
 $spectator: #fcdb38;
+$info: #e08d1f;
 
 .panel
 {
@@ -109,6 +110,10 @@ $spectator: #fcdb38;
 
 .text-color-spectator {
     color: $spectator;
+}
+
+.text-color-info {
+    color: $info;
 }
 
 .background-color-primary {
