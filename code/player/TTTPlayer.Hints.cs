@@ -25,6 +25,7 @@ namespace TTTReborn.Player
             //If we're looking at a valid target and we currently have a hint displayed, double check that the entity still wants us to hint.
             if (target != null && _currentHint != null)
             {
+                //Check if we can still hint, or if the target has changed.
                 if (!target.CanHint(player) || target != _currentTarget)
                 {
                     DeleteHint();
