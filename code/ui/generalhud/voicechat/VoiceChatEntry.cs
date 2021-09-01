@@ -38,6 +38,7 @@ namespace TTTReborn.UI
 
             Name = Add.Label(Friend.Name, "name");
 
+            AddClass("background-color-primary");
             AddClass("rounded");
             AddClass("opacity-90");
             AddClass("text-shadow");
@@ -51,16 +52,7 @@ namespace TTTReborn.UI
 
             if (Client != null && Client.IsValid() && Client.Pawn is TTTPlayer player)
             {
-                if (player.IsSpeaking)
-                {
-                    Style.BackgroundColor = ColorScheme.Primary;
-                }
-
-                if (player.LifeState == LifeState.Dead)
-                {
-                    Style.BackgroundColor = ColorScheme.Spectator;
-                }
-                else if (player.IsTeamVoiceChatEnabled && player.Role is not NoneRole)
+                if (player.IsTeamVoiceChatEnabled && player.Role is not NoneRole)
                 {
                     Style.BackgroundColor = player.Role.Color;
                 }

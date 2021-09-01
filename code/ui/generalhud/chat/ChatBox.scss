@@ -1,6 +1,3 @@
-$alive: #c0fb2e;
-$dead: #ffcc03;
-
 ChatBox {
     position: absolute;
     bottom: 150px;
@@ -11,14 +8,10 @@ ChatBox {
     .input {
         opacity: 0;
         padding: 10px 10px 5px 10px;
-        border: 2px solid $alive;
         width: 100%;
         margin-top: 5px;
         padding-left: 44px;
-    }
-
-    &.dead .input {
-        border-color: $dead;
+        border-width: 2px;
     }
 
     &.open .input {
@@ -85,13 +78,5 @@ ChatEntry {
         .header {
             display: flex;
         }
-    }
-
-    .alive {
-        color: $alive;
-    }
-
-    .dead {
-        color: $dead;
     }
 }

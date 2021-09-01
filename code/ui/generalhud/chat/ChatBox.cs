@@ -34,17 +34,18 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/chat/ChatBox.scss");
 
             _canvas = Add.Panel();
-            _canvas.Style.BackgroundColor = ColorScheme.Primary;
+            _canvas.AddClass("background-color-primary");
             _canvas.AddClass("chat-canvas");
             _canvas.AddClass("rounded");
             _canvas.AddClass("opacity-75");
             _canvas.PreferScrollToBottom = true;
 
             _input = Add.TextEntry("");
-            _input.Style.BackgroundColor = ColorScheme.Primary;
             _input.CaretColor = Color.White;
+            _input.AddClass("background-color-primary");
             _input.AddClass("input");
             _input.AddClass("rounded");
+            _input.AddClass("text-color-player");
             _input.AddEventListener("onsubmit", Submit);
             _input.AddEventListener("onblur", Close);
             _input.AcceptsFocus = true;
@@ -57,7 +58,14 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            SetClass("dead", Local.Pawn.LifeState == LifeState.Dead);
+            if (Local.Pawn.LifeState == LifeState.Alive)
+            {
+                _input.AddClass("border-color-player");
+            }
+            else
+            {
+                _input.AddClass("border-color-spectator");
+            }
 
             if (IsOpened)
             {
@@ -154,7 +162,7 @@ namespace TTTReborn.UI
 
             if (showHeader)
             {
-                chatEntry.Header.AddClass(lifeState == LifeState.Alive ? "alive" : "dead");
+                chatEntry.Header.Style.FontColor = Color.White;
                 chatEntry.Avatar.SetTexture(avatar);
             }
 

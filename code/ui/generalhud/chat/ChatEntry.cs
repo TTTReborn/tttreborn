@@ -15,7 +15,6 @@ namespace TTTReborn.UI
 
         public ChatEntry() : base()
         {
-
             Avatar = Add.Image();
             Avatar.AddClass("avatar");
             Avatar.AddClass("circular");

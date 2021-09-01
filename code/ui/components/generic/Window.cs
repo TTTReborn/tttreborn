@@ -12,15 +12,15 @@ namespace TTTReborn.UI
 
         public Window() : base()
         {
+            AddClass("background-color-primary");
             AddClass("window");
             AddClass("rounded");
             AddClass("centered");
-            Style.BackgroundColor = ColorScheme.Primary;
 
             Header = new(this);
             Header.AddClass("header");
             Header.AddClass("rounded-top");
-            Header.Style.BackgroundColor = ColorScheme.Secondary;
+            Header.AddClass("panel-color-secondary");
 
             WindowLabel = Header.Add.Label("Window");
 
@@ -33,7 +33,7 @@ namespace TTTReborn.UI
             Footer = new(this);
             Footer.AddClass("footer");
             Footer.AddClass("rounded-bottom");
-            Footer.Style.BackgroundColor = ColorScheme.Secondary;
+            Footer.AddClass("panel-color-secondary");
         }
     }
 }

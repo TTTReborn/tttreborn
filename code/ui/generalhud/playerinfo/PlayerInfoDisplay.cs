@@ -20,7 +20,7 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/generalhud/playerinfo/PlayerInfoDisplay.scss");
 
-            Style.BackgroundColor = ColorScheme.Primary;
+            AddClass("background-color-primary");
             AddClass("rounded");
             AddClass("opacity-90");
             AddClass("text-shadow");

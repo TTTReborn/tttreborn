@@ -14,7 +14,7 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/generalhud/gametimer/GameTimerDisplay.scss");
 
-            Style.BackgroundColor = ColorScheme.Primary;
+            AddClass("background-color-primary");
             AddClass("centered-horizontal");
             AddClass("rounded-bottom");
             AddClass("opacity-90");
