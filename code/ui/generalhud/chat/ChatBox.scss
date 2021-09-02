@@ -3,7 +3,7 @@ ChatBox {
     bottom: 150px;
     left: 25px;
     flex-direction: column;
-    width: 450px;
+    width: 400px;
 
     .input-panel {
         flex-direction: row;
@@ -12,6 +12,7 @@ ChatBox {
         margin-top: 5px;
         border-width: 2px;
         align-items: center;
+        transition: opacity 0.1s ease-out;
 
         .input-team-indicator {
             width: 12px;
@@ -21,7 +22,6 @@ ChatBox {
         }
 
         &.open {
-            transition: opacity 0.15s ease-out;
             pointer-events: all;
         }
     }
