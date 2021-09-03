@@ -288,8 +288,6 @@ namespace TTTReborn.Items
 
             foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
             {
-                tr.Surface.DoBulletImpact(tr);
-
                 if (!IsServer || !tr.Entity.IsValid())
                 {
                     continue;
@@ -297,6 +295,8 @@ namespace TTTReborn.Items
 
                 using (Prediction.Off())
                 {
+                    tr.Surface.DoBulletImpact(tr);
+
                     DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)
