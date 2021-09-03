@@ -6,6 +6,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
@@ -13,7 +14,8 @@ namespace TTTReborn.UI
 {
     public class InventorySelection : Panel
     {
-        private readonly InputButton[] _slotInputButtons = new[] {
+        private readonly InputButton[] _slotInputButtons = new[]
+        {
             InputButton.Slot0,
             InputButton.Slot1,
             InputButton.Slot2,
@@ -26,9 +28,12 @@ namespace TTTReborn.UI
             InputButton.Slot9
         };
 
-        public InventorySelection()
+        public InventorySelection() : base()
         {
             StyleSheet.Load("/ui/generalhud/inventorywrapper/inventoryselection/InventorySelection.scss");
+
+            AddClass("opacity-90");
+            AddClass("text-shadow");
 
             if (Local.Pawn is not TTTPlayer player)
             {
@@ -68,7 +73,11 @@ namespace TTTReborn.UI
                         break;
                     }
 
+                    slot.SetClass("rounded-top", child == Children.First());
+                    slot.SetClass("rounded-bottom", child == Children.Last());
+
                     slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
+                    slot.SetClass("opacity-90", slot.Carriable.Name == activeItem?.Name);
 
                     if (slot.Carriable is TTTWeapon weapon && weapon.SlotType != SlotType.Melee)
                     {
@@ -257,17 +266,37 @@ namespace TTTReborn.UI
             private Label _slotLabel;
             private Label _carriableLabel;
 
-            public InventorySlot(Sandbox.UI.Panel parent, ICarriableItem carriable)
+            public InventorySlot(Sandbox.UI.Panel parent, ICarriableItem carriable) : base(parent)
             {
                 Parent = parent;
                 Carriable = carriable;
 
-                _slotLabel = Add.Label(((int) carriable.SlotType).ToString(), "slotlabel");
-                _carriableLabel = Add.Label(carriable.Name, "carriablelabel");
+                AddClass("background-color-primary");
 
-                if (Local.Pawn is TTTPlayer player && carriable is TTTWeapon weapon && carriable.SlotType != SlotType.Melee)
+                _slotLabel = Add.Label(((int) carriable.SlotType).ToString());
+                _slotLabel.AddClass("slot-label");
+
+                _carriableLabel = Add.Label(carriable.Name);
+
+                _ammoLabel = Add.Label();
+
+                if (Local.Pawn is TTTPlayer player)
                 {
-                    _ammoLabel = Add.Label(FormatAmmo(weapon, player.Inventory), "ammolabel");
+                    if (carriable is TTTWeapon weapon && carriable.SlotType != SlotType.Melee)
+                    {
+                        _ammoLabel.Text = FormatAmmo(weapon, player.Inventory);
+                        _ammoLabel.AddClass("ammo-label");
+                    }
+                }
+            }
+
+            public override void Tick()
+            {
+                base.Tick();
+
+                if (Local.Pawn is TTTPlayer player)
+                {
+                    _slotLabel.Style.BackgroundColor = player.Team.Color;
                 }
             }
 
