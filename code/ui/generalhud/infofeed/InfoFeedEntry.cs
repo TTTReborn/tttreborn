@@ -14,7 +14,8 @@ namespace TTTReborn.UI
 
         public InfoFeedEntry()
         {
-
+            AddClass("background-color-primary");
+            AddClass("opacity-90");
         }
 
         public Label AddLabel(string text, string classname)
