@@ -3,34 +3,25 @@ InfoFeed
     position: absolute;
     top: 25px;
     right: 25px;
-    flex-direction: column-reverse;
+    flex-direction: column;
     width: 400px;
     align-items: flex-end;
 }
 
 InfoFeedEntry {
-    border-radius: 4px;
-    margin-bottom: 5px;
-    flex-shrink: 0;
-    flex-grow: 0;
-    padding: 5px 10px;
     position: relative;
-    transition: all 0.2s ease-out;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    transition: all 0.25s ease-out;
 
     &:intro {
-        transform: scale(1.5);
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-bottom: 0;
-        height: 0;
+        right: 10px;
         opacity: 0;
     }
 
     &:outro {
-        top: -20px;
+        right: 10px;
         opacity: 0;
-        transform: scale(1.25);
-        transition: all 0.2s ease-in;
     }
 
     .left, .right {

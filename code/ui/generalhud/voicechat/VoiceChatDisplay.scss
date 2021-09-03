@@ -15,10 +15,12 @@ VoiceChatDisplay {
 
         &:intro {
             opacity: 0;
+            left: 10px;
         }
 
         &:outro {
             opacity: 0;
+            left: 10px;
         }
 
         .avatar {

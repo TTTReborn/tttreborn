@@ -80,7 +80,6 @@ namespace TTTReborn.UI
 
             _voiceLevel = _voiceLevel.LerpTo(_targetVoiceLevel, Time.Delta * 40.0f);
 
-            Style.Left = 10f + _voiceLevel * -10.0f * timeoutInv;
             Style.Dirty();
         }
     }
