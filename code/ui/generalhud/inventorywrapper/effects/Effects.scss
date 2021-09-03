@@ -1,47 +1,32 @@
 Effects {
+    align-items: flex-end;
     display: flex;
-    justify-content: flex-end;
-    font-size: 12px;
-    font-family: Poppins;
-    margin-bottom: 10px;
+    flex-direction: column-reverse;
+    margin-bottom: 25px;
+}
 
-    Effect {
-        border: 1px solid #031421;
-        background-color: rgba(0, 0, 0, 0.7);
-        border-radius: 4px;
-        width: 62px;
-        height: 62px;
-        margin-left: 10px;
-        margin-top: 10px;
+Effect {
+    width: 64px;
+    height: 64px;
+    margin-top: 15px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 
-        align-items: center;
-        justify-content: center;
+    .countdown {
+        font-size: 24px;
+        font-weight: bold;
+    }
 
-        Label {
-            color: #fafafa;
-            text-align: center;
+    .effect-image {
+        width: 100%;
+        height: 100%;
+        opacity: 0.25;
+    }
 
-            &:not(.countdown) {
-                width: 100%;
-            }
-
-            &.countdown {
-                position: absolute;
-                right: -10px;
-                bottom: -8px;
-                padding:1px;
-                background-color: rgba(0, 0, 0, 0.975);
-                border-radius: 4px;
-                width: inherit;
-                min-width: 30px;
-            }
-        }
-
-        Image {
-            color: #fafafa;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-        }
+    .name-label {
+        font-size: 10px;
+        position: absolute;
+        bottom: 5px;
     }
 }

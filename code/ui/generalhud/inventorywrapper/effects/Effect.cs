@@ -21,25 +21,14 @@ namespace TTTReborn.UI
                 _nameLabel.Text = _item?.Name ?? "";
                 _effectImage.Texture = _item != null ? Texture.Load($"/ui/weapons/{_item.Name}.png") : null;
 
-                if (_effectImage.Texture == null)
-                {
-                    _effectImage.Style.Display = DisplayMode.None;
-                    _nameLabel.Style.Display = DisplayMode.Flex;
-                }
-                else
-                {
-                    _effectImage.Style.Display = DisplayMode.Flex;
-                    _nameLabel.Style.Display = DisplayMode.None;
-                }
-
                 if (_item is TTTCountdownPerk countdownPerk)
                 {
                     ActivateCountdown();
                 }
                 else
                 {
-                    Countdown?.Delete();
-                    Countdown ??= null;
+                    _countdownLabel?.Delete();
+                    _countdownLabel ??= null;
                 }
             }
         }
@@ -47,30 +36,47 @@ namespace TTTReborn.UI
         private IItem _item;
         private readonly Label _nameLabel;
         private readonly Image _effectImage;
-        private Label Countdown;
+        private Label _countdownLabel;
 
-        public Effect(Sandbox.UI.Panel parent, IItem effect)
+        public Effect(Sandbox.UI.Panel parent, IItem effect) : base(parent)
         {
             Parent = parent;
 
-            _nameLabel = Add.Label("", "textlabel");
-            _effectImage = Add.Image("", "effectimage");
+            AddClass("background-color-primary");
+            AddClass("opacity-90");
+            AddClass("rounded");
+
+            _nameLabel = Add.Label();
+            _nameLabel.AddClass("name-label");
+
+            _effectImage = Add.Image();
+            _effectImage.AddClass("effect-image");
 
             Item = effect;
         }
 
         private void ActivateCountdown()
         {
-            Countdown = Add.Label("", "countdown");
+            _countdownLabel = Add.Label();
+            _countdownLabel.AddClass("countdown");
+            _countdownLabel.AddClass("centered");
+            _countdownLabel.AddClass("text-shadow");
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            if (Countdown != null && Item is TTTCountdownPerk countdownPerk)
+            if (_countdownLabel != null && Item is TTTCountdownPerk countdownPerk)
             {
-                Countdown.Text = $"{(countdownPerk.Countdown - countdownPerk.LastCountdown):n1}";
+                int currentCountdown = (countdownPerk.Countdown - countdownPerk.LastCountdown).CeilToInt();
+
+                if (currentCountdown == countdownPerk.Countdown.CeilToInt())
+                {
+                    _countdownLabel.Text = "";
+                }
+
+                _countdownLabel.Text = $"{currentCountdown:n0}";
             }
         }
     }
