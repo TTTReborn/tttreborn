@@ -114,9 +114,12 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientOpenInspectMenu(PlayerCorpse playerCorpse)
+        public static void ClientOpenInspectMenuIfNotShowing(PlayerCorpse playerCorpse)
         {
-            InspectMenu.Instance.InspectCorpse(playerCorpse);
+            if (!InspectMenu.Instance.IsShowing)
+            {
+                InspectMenu.Instance.InspectCorpse(playerCorpse);
+            }
         }
 
         [ClientRpc]

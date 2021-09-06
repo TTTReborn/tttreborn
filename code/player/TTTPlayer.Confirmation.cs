@@ -45,13 +45,14 @@ namespace TTTReborn.Player
         {
             using (Prediction.Off())
             {
-                PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>(INSPECT_CORPSE_DISTANCE);
-                if (playerCorpse == null)
+                if (IsClient && !Input.Down(InputButton.Use))
                 {
+                    InspectMenu.Instance.IsShowing = false;
                     return;
                 }
 
-                if (!Input.Pressed(InputButton.Use))
+                PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>(INSPECT_CORPSE_DISTANCE);
+                if (playerCorpse == null)
                 {
                     return;
                 }
@@ -79,9 +80,9 @@ namespace TTTReborn.Player
                     }
                 }
 
-                if (playerCorpse.IsIdentified)
+                if (Input.Down(InputButton.Use) && playerCorpse.IsIdentified)
                 {
-                    RPCs.ClientOpenInspectMenu(playerCorpse);
+                    RPCs.ClientOpenInspectMenuIfNotShowing(playerCorpse);
                 }
             }
         }
