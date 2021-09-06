@@ -7,10 +7,9 @@ GameTimerDisplay {
     align-items: center;
 
     .timer-label {
-        display: flex;
         justify-content: center;
         font-size: 26px;
-        font-weight: bold;
+        font-weight: 600;
     }
 
     .round-label {
