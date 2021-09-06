@@ -11,8 +11,7 @@ namespace TTTReborn.UI
     {
         public static Nameplate Instance;
 
-        private const float MAX_DRAW_DISTANCE = 500;
-        private readonly Color BORDER_COLOR_NONE = Color.FromBytes(0, 0, 0, 204);
+        private const float MAX_DRAW_DISTANCE = 2048;
 
         private readonly Sandbox.UI.Panel _labelHolder;
         private readonly Sandbox.UI.Panel _nameHolder;
@@ -34,9 +33,10 @@ namespace TTTReborn.UI
         }
 
         // Pay attention when adding new values! The highest health-based entry has to be the first item, etc.
-        private HealthGroup[] HealthGroupList = new HealthGroup[]{
-            new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 70),
-            new HealthGroup("Injured", Color.FromBytes(233, 135, 44), 20),
+        private HealthGroup[] HealthGroupList = new HealthGroup[]
+        {
+            new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 66),
+            new HealthGroup("Injured", Color.FromBytes(233, 135, 44), 33),
             new HealthGroup("Near death", Color.FromBytes(252, 42, 42), 0)
         };
 
@@ -47,12 +47,14 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
 
-            _labelHolder = Add.Panel("labelHolder");
+            AddClass("text-shadow");
 
-            _nameHolder = _labelHolder.Add.Panel("nameHolder");
+            _labelHolder = Add.Panel("label-holder");
+
+            _nameHolder = _labelHolder.Add.Panel("name-holder");
             _nameLabel = _nameHolder.Add.Label("", "name");
 
-            _damageIndicatorLabel = _labelHolder.Add.Label("", "damageIndicator");
+            _damageIndicatorLabel = _labelHolder.Add.Label("", "damage-indicator");
         }
 
         private HealthGroup GetHealthGroup(float health)
@@ -101,14 +103,10 @@ namespace TTTReborn.UI
 
                 _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
 
-                Style.BorderColor = target.Role is not TTTReborn.Roles.NoneRole ? target.Role.Color : BORDER_COLOR_NONE;
-
                 Style.Dirty();
             }
-            else
-            {
-                Enabled = false;
-            }
+
+            SetClass("fade", target == null);
         }
     }
 }
