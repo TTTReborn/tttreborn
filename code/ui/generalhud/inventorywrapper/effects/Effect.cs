@@ -21,6 +21,11 @@ namespace TTTReborn.UI
                 _nameLabel.Text = _item?.Name ?? "";
                 _effectImage.Texture = _item != null ? Texture.Load($"/ui/weapons/{_item.Name}.png") : null;
 
+                if (_effectImage.Texture == null)
+                {
+                    _effectImage.Texture = Texture.Load($"/ui/none.png");
+                }
+
                 if (_item is TTTCountdownPerk countdownPerk)
                 {
                     ActivateCountdown();
@@ -35,6 +40,7 @@ namespace TTTReborn.UI
 
         private IItem _item;
         private readonly Label _nameLabel;
+        private readonly Panel _effectIconPanel;
         private readonly Image _effectImage;
         private Label _countdownLabel;
 
@@ -42,22 +48,23 @@ namespace TTTReborn.UI
         {
             Parent = parent;
 
-            AddClass("background-color-primary");
-            AddClass("opacity-90");
-            AddClass("rounded");
+            AddClass("text-shadow");
+
+            _effectIconPanel = new Panel(this);
+            _effectIconPanel.AddClass("effect-icon-panel");
+
+            _effectImage = _effectIconPanel.Add.Image();
+            _effectImage.AddClass("effect-image");
 
             _nameLabel = Add.Label();
             _nameLabel.AddClass("name-label");
-
-            _effectImage = Add.Image();
-            _effectImage.AddClass("effect-image");
 
             Item = effect;
         }
 
         private void ActivateCountdown()
         {
-            _countdownLabel = Add.Label();
+            _countdownLabel = _effectIconPanel.Add.Label();
             _countdownLabel.AddClass("countdown");
             _countdownLabel.AddClass("centered");
             _countdownLabel.AddClass("text-shadow");
@@ -71,12 +78,16 @@ namespace TTTReborn.UI
             {
                 int currentCountdown = (countdownPerk.Countdown - countdownPerk.LastCountdown).CeilToInt();
 
-                if (currentCountdown == countdownPerk.Countdown.CeilToInt())
+                if (currentCountdown == countdownPerk.Countdown.CeilToInt() || currentCountdown == 0)
                 {
+                    _effectImage.SetClass("cooldown", false);
                     _countdownLabel.Text = "";
                 }
-
-                _countdownLabel.Text = $"{currentCountdown:n0}";
+                else
+                {
+                    _effectImage.SetClass("cooldown", true);
+                    _countdownLabel.Text = $"{currentCountdown:n0}";
+                }
             }
         }
     }

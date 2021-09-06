@@ -1,32 +1,44 @@
 Effects {
-    align-items: flex-end;
     display: flex;
+    align-items: flex-end;
     flex-direction: column-reverse;
     margin-bottom: 25px;
 }
 
 Effect {
-    width: 64px;
-    height: 64px;
+    flex-direction: column;
+    width: 72px;
+    height: 72px;
     margin-top: 15px;
     align-items: center;
     justify-content: center;
     text-align: center;
 
-    .countdown {
-        font-size: 24px;
-        font-weight: bold;
+    .name-label {
+        font-size: 10px;
+    }
+
+    .effect-icon-panel {
+        width: 60px;
+        height: 60px;
     }
 
     .effect-image {
-        width: 100%;
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+        background-repeat: no-repeat;
+        background-size: contain;
         height: 100%;
-        opacity: 0.25;
+        width: 100%;
+
+        &.cooldown {
+            opacity: 0.25;
+        }
     }
 
-    .name-label {
-        font-size: 10px;
+    .countdown {
         position: absolute;
-        bottom: 5px;
+        font-size: 24px;
+        font-weight: bold;
     }
 }

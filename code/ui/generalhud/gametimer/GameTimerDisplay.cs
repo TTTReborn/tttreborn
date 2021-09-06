@@ -16,15 +16,16 @@ namespace TTTReborn.UI
 
             AddClass("background-color-primary");
             AddClass("centered-horizontal");
-            AddClass("rounded-bottom");
             AddClass("opacity-90");
+            AddClass("rounded-bottom");
             AddClass("text-shadow");
-
-            _roundLabel = Add.TranslationLabel();
-            _roundLabel.AddClass("round-label");
 
             _timerLabel = Add.Label();
             _timerLabel.AddClass("timer-label");
+
+            _roundLabel = Add.TranslationLabel();
+            _roundLabel.AddClass("round-label");
+            _roundLabel.AddClass("text-color-info");
         }
 
         public override void Tick()
@@ -40,6 +41,8 @@ namespace TTTReborn.UI
 
             _timerLabel.SetClass("disabled", Game.Instance.Round is Rounds.WaitingRound);
             _timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;
+
+            _roundLabel.SetClass("waiting-round", Game.Instance.Round is Rounds.WaitingRound);
         }
     }
 }

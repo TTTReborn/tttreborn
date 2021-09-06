@@ -29,13 +29,13 @@ namespace TTTReborn.UI
             AddClass("background-color-secondary");
 
             _itemNameLabel = Add.Label();
-            _itemNameLabel.AddClass("item-name-label");
 
             _itemIcon = new Panel(this);
             _itemIcon.AddClass("item-icon");
 
             _itemPriceLabel = Add.Label();
             _itemPriceLabel.AddClass("item-price-label");
+            _itemPriceLabel.AddClass("text-color-info");
         }
 
         public void SetItem(ShopItemData buyableItemData)
@@ -45,9 +45,15 @@ namespace TTTReborn.UI
             _itemNameLabel.Text = $"{buyableItemData.Name}";
             _itemPriceLabel.Text = $"${buyableItemData.Price}";
 
+            var icon = Texture.Load($"/ui/weapons/{buyableItemData.Name}.png");
+            if (icon == null)
+            {
+                icon = Texture.Load($"/ui/none.png");
+            }
+
             _itemIcon.Style.Background = new PanelBackground
             {
-                Texture = Texture.Load($"/ui/weapons/{buyableItemData.Name}.png")
+                Texture = icon
             };
 
             _itemIcon.Style.Dirty();

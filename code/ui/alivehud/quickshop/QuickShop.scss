@@ -37,7 +37,7 @@ QuickShopItem {
     margin: 15px;
     align-items: center;
     justify-content: center;
-    padding: 8px;
+    padding: 4px;
     box-shadow: 0 0 10px black;
     transition: transform 0.1s ease-in;
 
@@ -53,13 +53,12 @@ QuickShopItem {
     .item-icon {
         background-repeat: no-repeat;
         background-size: contain;
-        height: 80px;
-        width: 80px;
-    }
-
-    .item-name-label {
+        height: 64px;
+        width: 64px;
     }
 
     .item-price-label {
+        font-weight: bold;
+        font-size: 18px;
     }
 }

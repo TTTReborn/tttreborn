@@ -2,13 +2,14 @@ $primary: #282828;
 $secondary: #1e1e1e;
 $player: #dedede;
 $spectator: #fcdb38;
-$info: #e08d1f;
+$info: #ffae00;
 
 .panel
 {
     font-family: Poppins;
     font-weight: 400;
     color: #fafafa;
+    letter-spacing: 0.5px;
 }
 
 .window {
@@ -91,7 +92,7 @@ $info: #e08d1f;
 }
 
 .text-shadow {
-    text-shadow: 0px 0px 2px black;
+    text-shadow: 0px 0px 2px black, 0px 0px 2px black;
 }
 
 .fullscreen {
