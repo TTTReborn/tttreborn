@@ -2,7 +2,7 @@ namespace TTTReborn.UI
 {
     public class Panel : Sandbox.UI.Panel
     {
-        private bool _isEnabled = true;
+        protected bool _isEnabled = true;
         public bool Enabled
         {
             get => _isEnabled;

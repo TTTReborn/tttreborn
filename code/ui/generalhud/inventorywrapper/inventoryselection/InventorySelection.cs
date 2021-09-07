@@ -214,7 +214,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            int mouseWheelIndex = Input.MouseWheel;
+            int mouseWheelIndex = input.MouseWheel;
             if (mouseWheelIndex != 0)
             {
                 int activeCarriableIndex = childrenList.FindIndex((p) =>
