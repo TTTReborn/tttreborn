@@ -28,14 +28,15 @@ namespace TTTReborn.UI
             AddClass("text-shadow");
             AddClass("background-color-secondary");
 
-            _itemNameLabel = Add.Label();
+            _itemPriceLabel = Add.Label();
+            _itemPriceLabel.AddClass("item-price-label");
+            _itemPriceLabel.AddClass("text-color-info");
 
             _itemIcon = new Panel(this);
             _itemIcon.AddClass("item-icon");
 
-            _itemPriceLabel = Add.Label();
-            _itemPriceLabel.AddClass("item-price-label");
-            _itemPriceLabel.AddClass("text-color-info");
+            _itemNameLabel = Add.Label();
+            _itemNameLabel.AddClass("item-name-label");
         }
 
         public void SetItem(ShopItemData buyableItemData)

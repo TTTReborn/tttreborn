@@ -14,9 +14,23 @@ namespace TTTReborn.UI
         public static InspectMenu Instance;
 
         private PlayerCorpse _playerCorpse;
+        private ConfirmationData _confirmationData;
+        private InspectEntry? _selectedInspectEntry;
 
-        private readonly Header _header;
-        private readonly Content _content;
+        private readonly InspectEntry _timeSinceDeathEntry;
+        private readonly InspectEntry _suicideEntry;
+        private readonly InspectEntry _weaponEntry;
+        private readonly InspectEntry _headshotEntry;
+        private readonly InspectEntry _distanceEntry;
+        private readonly List<InspectEntry> _perkEntries;
+
+        private readonly Panel _backgroundPanel;
+        private readonly Panel _inspectContainer;
+        private readonly Image _avatarImage;
+        private readonly Label _playerLabel;
+        private readonly Label _roleLabel;
+        private readonly Panel _inspectIconsPanel;
+        private readonly Label _inspectDetailsLabel;
 
         public new bool Enabled
         {
@@ -25,8 +39,8 @@ namespace TTTReborn.UI
             {
                 base._isEnabled = value;
 
-                SetClass("opacity-90", base._isEnabled);
-                SetClass("disabled", !base._isEnabled);
+                SetClass("fade-in", base._isEnabled);
+                _inspectContainer.SetClass("pop-in", base._isEnabled);
             }
         }
 
@@ -36,11 +50,75 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/inspectmenu/InspectMenu.scss");
 
-            AddClass("background-color-secondary");
             AddClass("text-shadow");
 
-            _header = new Header(this);
-            _content = new Content(this);
+            _backgroundPanel = new Panel(this);
+            _backgroundPanel.AddClass("background-color-secondary");
+            _backgroundPanel.AddClass("opacity-75");
+            _backgroundPanel.AddClass("centered");
+            _backgroundPanel.AddClass("fullscreen");
+
+            _inspectContainer = new Panel(this);
+            _inspectContainer.AddClass("inspect-container");
+
+            _avatarImage = _inspectContainer.Add.Image();
+            _avatarImage.AddClass("avatar-image");
+            _avatarImage.AddClass("box-shadow");
+            _avatarImage.AddClass("circular");
+
+            _playerLabel = _inspectContainer.Add.Label(String.Empty);
+            _playerLabel.AddClass("player-label");
+
+            _roleLabel = _inspectContainer.Add.Label(String.Empty);
+            _roleLabel.AddClass("role-label");
+
+            _inspectIconsPanel = new Panel(_inspectContainer);
+            _inspectIconsPanel.AddClass("info-panel");
+
+            #region Inspection Icons
+            List<InspectEntry> inspectionEntries = new List<InspectEntry>();
+
+            _timeSinceDeathEntry = new InspectEntry(_inspectIconsPanel);
+            _timeSinceDeathEntry.Enabled = true; // Time since death is ALWAYS visible
+            _timeSinceDeathEntry.SetData("/ui/inspectmenu/time.png", string.Empty);
+            inspectionEntries.Add(_timeSinceDeathEntry);
+
+            _suicideEntry = new InspectEntry(_inspectIconsPanel);
+            _suicideEntry.Enabled = false;
+            inspectionEntries.Add(_suicideEntry);
+
+            _weaponEntry = new InspectEntry(_inspectIconsPanel);
+            _weaponEntry.Enabled = false;
+            inspectionEntries.Add(_weaponEntry);
+
+            _headshotEntry = new InspectEntry(_inspectIconsPanel);
+            _headshotEntry.Enabled = false;
+            inspectionEntries.Add(_headshotEntry);
+
+            _distanceEntry = new InspectEntry(_inspectIconsPanel);
+            _distanceEntry.Enabled = false;
+            inspectionEntries.Add(_distanceEntry);
+
+            _perkEntries = new List<InspectEntry>();
+
+            foreach(InspectEntry entry in inspectionEntries)
+            {
+                entry.AddEventListener("onmouseover", () =>
+                {
+                    _selectedInspectEntry = entry;
+                    UpdateCurrentInspectDescription();
+                });
+
+                entry.AddEventListener("onmouseout", () =>
+                {
+                    _selectedInspectEntry = null;
+                    UpdateCurrentInspectDescription();
+                });
+            }
+            #endregion
+
+            _inspectDetailsLabel = _inspectContainer.Add.Label();
+            _inspectDetailsLabel.AddClass("inspect-details-label");
 
             Enabled = false;
         }
@@ -53,8 +131,16 @@ namespace TTTReborn.UI
             }
 
             _playerCorpse = playerCorpse;
-            _header.SetPlayerData(_playerCorpse.Player);
-            _content.SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
+
+            _avatarImage.SetTexture($"avatar:{_playerCorpse.Player?.GetClientOwner().SteamId}");
+
+            _playerLabel.Text = _playerCorpse.Player?.GetClientOwner().Name;
+
+            _roleLabel.Text = _playerCorpse.Player?.Role.Name;
+            _roleLabel.Style.FontColor = _playerCorpse.Player?.Role.Color;
+            _roleLabel.Style.Dirty();
+
+            SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
 
             Enabled = true;
         }
@@ -62,155 +148,77 @@ namespace TTTReborn.UI
         public void SetPlayerData(PlayerCorpse playerCorpse)
         {
             _playerCorpse = playerCorpse;
-            _header.SetPlayerData(_playerCorpse.Player);
-            _content.SetConfirmationData(playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
+
+            SetConfirmationData(playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
         }
 
-        private class Header : Panel
+        public void SetConfirmationData(ConfirmationData confirmationData, string killerWeapon, string[] perks)
         {
-            private readonly Label _playerLabel;
-            private readonly Label _roleLabel;
+            _confirmationData = confirmationData;
 
-            public Header(Panel parent)
+            _headshotEntry.Enabled = confirmationData.Headshot;
+            _headshotEntry.SetData("/ui/inspectmenu/headshot.png", "The fatal wound was a headshot. No time to scream.");
+            _headshotEntry.SetQuickInfo("Headshot");
+
+            _suicideEntry.Enabled = confirmationData.Suicide;
+            _suicideEntry.SetData(String.Empty, "You cannot find a specific cause of this Terry's death.");
+            _suicideEntry.SetQuickInfo("Suicide");
+
+            _distanceEntry.Enabled = !confirmationData.Suicide;
+            _distanceEntry.SetData("/ui/inspectmenu/distance.png", $"They were killed from approximately {confirmationData.Distance:n0}m away.");
+            _distanceEntry.SetQuickInfo($"{confirmationData.Distance:n0}m");
+
+            _weaponEntry.Enabled = !string.IsNullOrEmpty(killerWeapon);
+            _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", $"It appears a {killerWeapon} was used to kill them.");
+            _weaponEntry.SetQuickInfo($"{killerWeapon}");
+
+            // Clear and delete all perks
+            foreach(var perkEntry in _perkEntries)
             {
-                Parent = parent;
-
-                _playerLabel = Add.Label(String.Empty, "player");
-                _roleLabel = Add.Label(String.Empty, "role");
+                perkEntry.Delete();
             }
 
-            public void SetPlayerData(TTTPlayer player)
+            _perkEntries.Clear();
+
+            // Populate perk entries
+            if (perks != null)
             {
-                _playerLabel.Text = player?.GetClientOwner().Name;
-
-                _roleLabel.Text = player?.Role.Name;
-                _roleLabel.Style.FontColor = player?.Role.Color;
-                _roleLabel.Style.Dirty();
-            }
-        }
-
-        private class Content : Panel
-        {
-            private ConfirmationData _confirmationData;
-
-            // Unique case: Every corpse has a time since death icon, we need a reference to update the clock each tick.
-            private readonly InspectIcon _timeSinceDeathIcon;
-            private readonly IconsWrapper _iconsWrapper;
-
-            public Content(Panel parent)
-            {
-                Parent = parent;
-                _iconsWrapper = new IconsWrapper(this, new DescriptionWrapper(this));
-
-                _timeSinceDeathIcon = _iconsWrapper.Add(new InspectIconData(false, $"/ui/inspectmenu/time.png", String.Empty));
-                _iconsWrapper.SelectIcon(_timeSinceDeathIcon);
-            }
-
-            public override void Tick()
-            {
-                base.Tick();
-
-                string[] timeSplits = TimeSpan.FromSeconds(Math.Round(Time.Now - _confirmationData.Time)).ToString().Split(':');
-                _timeSinceDeathIcon.IconData.Description = $"They died roughly {timeSplits[1]}:{timeSplits[2]} ago.";
-            }
-
-            public void SetConfirmationData(ConfirmationData confirmationData, string killerWeapon, string[] perks)
-            {
-                _confirmationData = confirmationData;
-
-                _iconsWrapper.ClearUniqueIcons();
-                _iconsWrapper.SelectIcon(_timeSinceDeathIcon);
-
-                if (confirmationData.Headshot)
+                foreach (string perkName in perks)
                 {
-                    _iconsWrapper.Add(new InspectIconData(true, "/ui/inspectmenu/headshot.png",
-                        "The fatal wound was a headshot. No time to scream."));
-                }
+                    var perkEntry = new InspectEntry(this);
+                    perkEntry.SetData($"/ui/weapons/{perkName}.png", $"They were carrying a {perkName}.");
 
-                if (confirmationData.Suicide)
-                {
-                    _iconsWrapper.Add(new InspectIconData(true, String.Empty,
-                        "You cannot find a specific cause of this Terry's death."));
-                }
-                else
-                {
-                    _iconsWrapper.Add(new InspectIconData(true, "/ui/inspectmenu/distance.png",
-                        $"They were killed from approximately {confirmationData.Distance:n0}m away."));
-                }
-
-                if (!string.IsNullOrEmpty(killerWeapon))
-                {
-                    _iconsWrapper.Add(new InspectIconData(true, $"/ui/weapons/{killerWeapon}.png",
-                        $"It appears a {killerWeapon} was used to kill them."));
-                }
-
-                if (perks != null)
-                {
-                    foreach (string perkName in perks)
-                    {
-                        _iconsWrapper.Add(new InspectIconData(true, $"/ui/weapons/{perkName}.png",
-                            $"They were carrying a {perkName}."));
-                    }
+                    _perkEntries.Add(perkEntry);
                 }
             }
         }
 
-        private class DescriptionWrapper : Panel
+        private void UpdateCurrentInspectDescription()
         {
-            public readonly Label DescriptionLabel;
+            _inspectDetailsLabel.SetClass("fade-in", _selectedInspectEntry != null);
 
-            public DescriptionWrapper(Panel parent)
+            if (_selectedInspectEntry == null)
             {
-                Parent = parent;
-                DescriptionLabel = Add.Label(String.Empty);
+                return;
             }
+
+            _inspectDetailsLabel.Text = _selectedInspectEntry.Description;
         }
 
-        private class IconsWrapper : Panel
+        public override void Tick()
         {
-            private InspectIcon _selectedIcon;
-            private readonly DescriptionWrapper _descriptionWrapper;
-
-            // Keep a reference to any icons that can uniquely exist on a corpse. As we will need to
-            // potentially delete these icons if we inspect a new corpse that doesn't have these icons.
-            private readonly List<InspectIcon> _uniqueIcons = new();
-
-            public IconsWrapper(Panel parent, DescriptionWrapper descriptionWrapper)
+            if (Enabled && _playerCorpse?.Transform.Position.Distance(Local.Pawn.Position) > 50f)
             {
-                Parent = parent;
-                _descriptionWrapper = descriptionWrapper;
+                Enabled = false;
             }
 
-            public new InspectIcon Add(InspectIconData iconData)
+            var timeSinceDeath = Globals.Utils.TimerString(Time.Now - _confirmationData.Time);
+            _timeSinceDeathEntry.Description = $"They died roughly {timeSinceDeath} ago.";
+            _timeSinceDeathEntry.SetQuickInfo($"{timeSinceDeath}");
+
+            if (_selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry)
             {
-                InspectIcon icon = new InspectIcon(this, iconData);
-                icon.AddEventListener("onclick", () =>
-                {
-                    SelectIcon(icon);
-                });
-
-                if (iconData.IsUnique)
-                {
-                    _uniqueIcons.Add(icon);
-                }
-
-                return icon;
-            }
-
-            public override void Tick()
-            {
-                _descriptionWrapper.DescriptionLabel.Text = _selectedIcon?.IconData.Description;
-            }
-
-            public void SelectIcon(InspectIcon icon)
-            {
-                _selectedIcon = icon;
-            }
-
-            public void ClearUniqueIcons()
-            {
-                _uniqueIcons.ForEach((i) => i.Delete(true));
-                _uniqueIcons.Clear();
+                UpdateCurrentInspectDescription();
             }
         }
     }

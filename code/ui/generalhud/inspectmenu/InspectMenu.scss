@@ -5,59 +5,71 @@ InspectMenu {
     opacity: 0;
     transition: all 0.15s ease-out;
     pointer-events: all;
-    align-items: center;
-    justify-content: center;
     text-align: center;
-    flex-direction: column;
 
-    &.hide {
-        display: none;
-        pointer-events: none;
-    }
-
-    Header {
+    .inspect-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease-out;
+        transform: scale(0.9);
 
-        Label {
-            &.player {
-                font-size: 30px;
-                font-weight: bold;
-            }
-
-            &.role {
-                font-size: 24px;
-                font-weight: bold;
-            }
+        &.pop-in {
+            transform: scale(1);
         }
-    }
 
-    Content {
-        flex-direction: column;
+        .avatar-image {
+            width: 80px;
+            height: 80px;
+        }
 
-        DescriptionWrapper {
+        .player-label {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .role-label {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .info-panel {
+            max-width: 50%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
             justify-content: center;
+            margin: 25px;
+        }
 
-            Label {
-                margin: 25px;
-                font-size: 18px;
+        .inspect-details-label {
+            margin: 25px;
+            font-size: 18px;
+            transition: opacity 0.25s ease-out;
+            opacity: 0;
+
+            &.fade-in {
+                opacity: 1;
             }
         }
+    }
 
-        IconsWrapper {
-            flex-direction: row;
-            overflow: scroll;
-        }
+    &.fade-in {
+        opacity: 1;
     }
 }
 
-InspectIcon {
+InspectEntry {
     flex-direction: column;
-    width: 125px;
-    height: 125px;
+    width: 100px;
+    height: 100px;
     margin: 15px;
     align-items: center;
     justify-content: center;
-    padding: 4px;
+    padding: 8px;
     box-shadow: 0 0 10px black;
     transition: transform 0.1s ease-in;
 
@@ -66,14 +78,20 @@ InspectIcon {
         cursor: pointer;
     }
 
-    &:active {
-        transform: scale(1);
-    }
-
-    image {
+    .inspect-icon {
         background-repeat: no-repeat;
         background-size: contain;
         height: 100%;
         width: 100%;
+    }
+
+    .quick-label {
+        position: absolute;
+        bottom: -28px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: auto;
     }
 }

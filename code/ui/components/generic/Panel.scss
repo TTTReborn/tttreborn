@@ -74,6 +74,10 @@ $info: #ffae00;
     opacity: 0.9;
 }
 
+.opacity-75 {
+    opacity: 0.75;
+}
+
 .centered {
     position: absolute;
     left: 50%;
@@ -93,6 +97,10 @@ $info: #ffae00;
 
 .text-shadow {
     text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+}
+
+.box-shadow {
+    box-shadow: 0px 0px 10px black;
 }
 
 .fullscreen {

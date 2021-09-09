@@ -5,41 +5,67 @@ QuickShop {
     opacity: 0;
     transition: all 0.15s ease-out;
     pointer-events: all;
-    align-items: center;
-    justify-content: center;
     text-align: center;
-    flex-direction: column;
 
-    .credit-label {
-        margin: 25px;
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    .item-panel {
-        width: 50%;
-        display: flex;
-        flex-wrap: wrap;
+    .quickshop-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        transition: transform 0.25s ease-out;
+        transform: scale(0.9);
+
+        &.pop-in {
+            transform: scale(1);
+        }
+
+        .credit-label {
+            margin: 25px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .item-panel {
+            max-width: 50%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            margin: 25px;
+        }
+
+        .item-description-label {
+            margin: 25px;
+            font-size: 18px;
+            transition: opacity 0.25s ease-out;
+            opacity: 0;
+
+            &.fade-in {
+                opacity: 1;
+            }
+        }
     }
 
-    .item-description-label {
-        margin: 25px;
-        font-size: 18px;
+    &.fade-in {
+        opacity: 1;
     }
 }
 
 QuickShopItem {
+    opacity: 1;
     flex-direction: column;
-    width: 125px;
-    height: 125px;
+    width: 90px;
+    height: 90px;
     margin: 15px;
     align-items: center;
     justify-content: center;
-    padding: 4px;
-    box-shadow: 0 0 10px black;
+    padding: 8px;
     transition: transform 0.1s ease-in;
+    box-shadow: 0 0 10px black;
+    white-space: nowrap;
+    overflow: auto;
 
     &:hover {
         transform: scale(1.05);
@@ -53,12 +79,22 @@ QuickShopItem {
     .item-icon {
         background-repeat: no-repeat;
         background-size: contain;
-        height: 64px;
-        width: 64px;
+        width: 100%;
+        height: 100%;
+    }
+
+    .item-name-label {
+        position: absolute;
+        bottom: -28px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
     }
 
     .item-price-label {
+        position: absolute;
+        top: -32px;
         font-weight: bold;
-        font-size: 18px;
+        font-size: 20px;
     }
 }
