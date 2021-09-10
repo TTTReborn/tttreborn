@@ -9,7 +9,6 @@ namespace TTTReborn.UI
 {
     public class ScoreboardEntry : Panel
     {
-        private PlayerScore.Entry _entry;
         public string ScoreboardGroupName;
         public ulong SteamId;
 
@@ -41,8 +40,6 @@ namespace TTTReborn.UI
 
         public virtual void UpdateFrom(PlayerScore.Entry entry)
         {
-            _entry = entry;
-
             _playerName.Text = entry.GetString("name");
             _karma.Text = entry.Get<int>("karma", 0).ToString();
             _ping.Text = entry.Get<int>("ping", 0).ToString();
@@ -56,6 +53,13 @@ namespace TTTReborn.UI
             {
                 return;
             }
+
+            if (player.Role is not NoneRole && player.Role is not InnocentRole)
+            {
+                Style.BackgroundColor = player.Role.Color.WithAlpha(0.15f);
+            }
+
+            Style.Dirty();
 
             _playerAvatar.SetTexture($"avatar:{SteamId}");
         }

@@ -46,7 +46,7 @@ namespace TTTReborn.UI
 
         public void UpdateServerInfo()
         {
-            _serverMapLabel.Text = $"{Sandbox.Global.MapName}";
+            _serverMapLabel.Text = $"{Global.MapName}";
             _serverPlayersLabel.Text = $"{Client.All.Count} Players";
         }
     }

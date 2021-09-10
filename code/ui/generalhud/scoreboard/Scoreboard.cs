@@ -57,7 +57,7 @@ namespace TTTReborn.UI
             _scoreboardContent = new(_scoreboardContainer);
             _scoreboardContent.AddClass("background-color-primary");
             _scoreboardContent.AddClass("scoreboard-content");
-            _scoreboardContent.AddClass("opacity-75");
+            _scoreboardContent.AddClass("opacity-90");
 
             _scoreboardFooter = new(_scoreboardContainer);
             _scoreboardFooter.AddClass("background-color-secondary");
