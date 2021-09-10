@@ -1,6 +1,8 @@
 $primary: #282828;
 $secondary: #1e1e1e;
-$player: #dedede;
+$alive: #009e07;
+$missing: #c6793a;
+$dead: #e12c3b;
 $spectator: #fcdb38;
 $info: #ffae00;
 
@@ -108,8 +110,8 @@ $info: #ffae00;
     height: 100%;
 }
 
-.text-color-player {
-    color: $player;
+.text-color-alive {
+    color: $alive;
 }
 
 .text-color-spectator {
@@ -124,8 +126,8 @@ $info: #ffae00;
     background-color: $primary;
 }
 
-.background-color-player {
-    background-color: $player;
+.background-color-alive {
+    background-color: $alive;
 }
 
 .background-color-spectator {
@@ -136,8 +138,8 @@ $info: #ffae00;
     background-color: $secondary;
 }
 
-.border-color-player {
-    border-color: $player;
+.border-color-alive {
+    border-color: $alive;
 }
 
 .border-color-spectator {

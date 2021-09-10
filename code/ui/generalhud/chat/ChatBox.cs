@@ -58,7 +58,6 @@ namespace TTTReborn.UI
             _inputField.AcceptsFocus = true;
             _inputField.AllowEmojiReplace = true;
             _inputField.AddClass("input-field");
-            _inputField.AddClass("text-color-player");
             _inputField.AddEventListener("onsubmit", Submit);
             _inputField.AddEventListener("onblur", Close);
 
@@ -85,9 +84,9 @@ namespace TTTReborn.UI
                 }
             }
 
-            _inputTeamIndicator.SetClass("background-color-player", isAlive);
+            _inputTeamIndicator.SetClass("background-color-alive", isAlive);
             _inputTeamIndicator.SetClass("background-color-spectator", !isAlive);
-            _inputPanel.SetClass("border-color-player", isAlive);
+            _inputPanel.SetClass("border-color-alive", isAlive);
             _inputPanel.SetClass("border-color-spectator", !isAlive);
 
             if (IsOpened)
@@ -196,7 +195,7 @@ namespace TTTReborn.UI
                     break;
 
                 case Channel.Player:
-                    chatEntry.Header.AddClass("text-color-player");
+                    chatEntry.Header.AddClass("text-color-alive");
                     break;
 
                 case Channel.Spectator:

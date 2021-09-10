@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
 
@@ -10,6 +11,14 @@ namespace TTTReborn.UI
 {
     public partial class Scoreboard : Panel
     {
+        public enum DefaultScoreboardGroup
+        {
+            Alive,
+            Missing,
+            Dead,
+            Spectator
+        }
+
         public static Scoreboard Instance;
 
         private readonly Dictionary<int, ScoreboardEntry> _entries = new();
@@ -18,24 +27,43 @@ namespace TTTReborn.UI
 
         private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
 
-        private readonly Header _header;
+        private readonly Panel _backgroundPanel;
+        private readonly Panel _scoreboardContainer;
+        private readonly ScoreboardHeader _scoreboardHeader;
+        private readonly Panel _scoreboardContent;
+        private readonly Panel _scoreboardFooter;
 
-        private readonly TableHeader _tableHeader;
-
-        private readonly Sandbox.UI.Panel _mainContent;
-
-        private readonly Sandbox.UI.Panel _footer;
-
-        public Scoreboard()
+        public Scoreboard() : base()
         {
             Instance = this;
 
             StyleSheet.Load("/ui/generalhud/scoreboard/Scoreboard.scss");
 
-            _header = new(this);
-            _tableHeader = new(this);
+            _backgroundPanel = new Panel(this);
+            _backgroundPanel.AddClass("background-color-secondary");
+            _backgroundPanel.AddClass("opacity-75");
+            _backgroundPanel.AddClass("centered");
+            _backgroundPanel.AddClass("fullscreen");    
 
-            _mainContent = Add.Panel("mainContent");
+            _scoreboardContainer = new(this);
+            _scoreboardContainer.AddClass("rounded");
+            _scoreboardContainer.AddClass("scoreboard-container");
+
+            _scoreboardHeader = new(_scoreboardContainer);
+            _scoreboardHeader.AddClass("background-color-secondary");
+            _scoreboardHeader.AddClass("opacity-90");
+            _scoreboardHeader.AddClass("rounded-top");
+
+            _scoreboardContent = new(_scoreboardContainer);
+            _scoreboardContent.AddClass("background-color-primary");
+            _scoreboardContent.AddClass("scoreboard-content");
+            _scoreboardContent.AddClass("opacity-75");
+
+            _scoreboardFooter = new(_scoreboardContainer);
+            _scoreboardFooter.AddClass("background-color-secondary");
+            _scoreboardFooter.AddClass("scoreboard-footer");
+            _scoreboardFooter.AddClass("rounded-bottom");
+            _scoreboardFooter.AddClass("opacity-90");
 
             foreach (DefaultScoreboardGroup defaultScoreboardGroup in Enum.GetValues(typeof(DefaultScoreboardGroup)))
             {
@@ -50,8 +78,6 @@ namespace TTTReborn.UI
 
                 UpdateScoreboardGroups();
             };
-
-            _footer = Add.Panel("footer");
 
             foreach (PlayerScore.Entry player in PlayerScore.All)
             {
@@ -77,7 +103,7 @@ namespace TTTReborn.UI
             _entries.Add(entry.Id, scoreboardEntry);
 
             scoreboardGroup.UpdateLabel();
-            _header.UpdateServerInfo();
+            _scoreboardHeader.UpdateServerInfo();
         }
 
         private void UpdatePlayer(PlayerScore.Entry entry)
@@ -146,7 +172,71 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            SetClass("open", Input.Down(InputButton.Score));
+            SetClass("fade-in", Input.Down(InputButton.Score));
+            _scoreboardContainer.SetClass("pop-in", Input.Down(InputButton.Score));
+        }
+
+        private ScoreboardGroup AddScoreboardGroup(string groupName)
+        {
+            if (_scoreboardGroups.ContainsKey(groupName))
+            {
+                return _scoreboardGroups[groupName];
+            }
+
+            ScoreboardGroup scoreboardGroup = new ScoreboardGroup(_scoreboardContent, groupName);
+            scoreboardGroup.UpdateLabel();
+
+            _scoreboardGroups.Add(groupName, scoreboardGroup);
+
+            return scoreboardGroup;
+        }
+
+        private ScoreboardGroup GetScoreboardGroup(PlayerScore.Entry entry)
+        {
+            string group = DefaultScoreboardGroup.Alive.ToString();
+            ulong steamId = entry.Get<ulong>("steamid", 0);
+
+            if (entry.Get<bool>("forcedspectator", false))
+            {
+                group = DefaultScoreboardGroup.Spectator.ToString();
+            }
+            else if (steamId != 0)
+            {
+                foreach (Client client in Client.All)
+                {
+                    if (client.SteamId == steamId && client.Pawn != null)
+                    {
+                        if (client.Pawn is not TTTPlayer player)
+                        {
+                            break;
+                        }
+
+                        if (player.IsConfirmed)
+                        {
+                            group = DefaultScoreboardGroup.Dead.ToString();
+                        }
+                        else if (player.IsMissingInAction)
+                        {
+                            group = DefaultScoreboardGroup.Missing.ToString();
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            _scoreboardGroups.TryGetValue(group, out ScoreboardGroup scoreboardGroup);
+
+            return scoreboardGroup ?? AddScoreboardGroup(group);
+        }
+
+        private void UpdateScoreboardGroups()
+        {
+            foreach (ScoreboardGroup value in _scoreboardGroups.Values)
+            {
+                value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
+                value.Style.Dirty();
+            }
         }
     }
 }

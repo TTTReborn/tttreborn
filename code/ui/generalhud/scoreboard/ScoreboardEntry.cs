@@ -13,22 +13,27 @@ namespace TTTReborn.UI
         public string ScoreboardGroupName;
         public ulong SteamId;
 
-        private readonly Label _roleColorLabel;
+        private Image _playerAvatar;
         private readonly Label _playerName;
+
         private readonly Label _karma;
-        private readonly Label _score;
         private readonly Label _ping;
 
         private Client _client;
 
         public ScoreboardEntry()
         {
+            AddClass("text-shadow");
             AddClass("entry");
 
-            _roleColorLabel = Add.Label("", "rolecolor");
-            _playerName = Add.Label("PlayerName", "name");
+            _playerAvatar = Add.Image();
+            _playerAvatar.AddClass("circular");
+            _playerAvatar.AddClass("avatar");
+
+            _playerName = Add.Label();
+            _playerName.AddClass("name-label");
+
             _karma = Add.Label("", "karma");
-            _score = Add.Label("", "score");
             _ping = Add.Label("", "ping");
 
             Initialize();
@@ -40,7 +45,6 @@ namespace TTTReborn.UI
 
             _playerName.Text = entry.GetString("name");
             _karma.Text = entry.Get<int>("karma", 0).ToString();
-            _score.Text = entry.Get<int>("score", 0).ToString();
             _ping.Text = entry.Get<int>("ping", 0).ToString();
 
             if (_client == null)
@@ -53,8 +57,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _roleColorLabel.Style.BackgroundColor = player.Role is NoneRole ? player.Role.Color : player.Role.Color.WithAlpha(0.75f);
-            _roleColorLabel.Style.Dirty();
+            _playerAvatar.SetTexture($"avatar:{SteamId}");
         }
 
         private void Initialize()
