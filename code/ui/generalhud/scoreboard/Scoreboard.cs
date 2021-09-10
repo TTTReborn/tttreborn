@@ -39,9 +39,9 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/generalhud/scoreboard/Scoreboard.scss");
 
-            _backgroundPanel = new Panel(this);
+            _backgroundPanel = new(this);
             _backgroundPanel.AddClass("background-color-secondary");
-            _backgroundPanel.AddClass("opacity-75");
+            _backgroundPanel.AddClass("opacity-medium");
             _backgroundPanel.AddClass("centered");
             _backgroundPanel.AddClass("fullscreen");    
 
@@ -51,19 +51,19 @@ namespace TTTReborn.UI
 
             _scoreboardHeader = new(_scoreboardContainer);
             _scoreboardHeader.AddClass("background-color-secondary");
-            _scoreboardHeader.AddClass("opacity-90");
+            _scoreboardHeader.AddClass("opacity-heavy");
             _scoreboardHeader.AddClass("rounded-top");
 
             _scoreboardContent = new(_scoreboardContainer);
             _scoreboardContent.AddClass("background-color-primary");
             _scoreboardContent.AddClass("scoreboard-content");
-            _scoreboardContent.AddClass("opacity-90");
+            _scoreboardContent.AddClass("opacity-heavy");
 
             _scoreboardFooter = new(_scoreboardContainer);
             _scoreboardFooter.AddClass("background-color-secondary");
             _scoreboardFooter.AddClass("scoreboard-footer");
             _scoreboardFooter.AddClass("rounded-bottom");
-            _scoreboardFooter.AddClass("opacity-90");
+            _scoreboardFooter.AddClass("opacity-heavy");
 
             foreach (DefaultScoreboardGroup defaultScoreboardGroup in Enum.GetValues(typeof(DefaultScoreboardGroup)))
             {

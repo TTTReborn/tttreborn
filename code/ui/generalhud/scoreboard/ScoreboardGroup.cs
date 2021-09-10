@@ -26,6 +26,8 @@ namespace TTTReborn.UI
 
             _groupTitlePanel = new(this);
             _groupTitlePanel.AddClass("group-title-panel");
+            _groupTitlePanel.AddClass("opacity-medium");
+            _groupTitlePanel.AddClass("rounded-top");
 
             _groupTitleLabel = _groupTitlePanel.Add.Label(groupName);
             _groupTitleLabel.AddClass("group-title-label");

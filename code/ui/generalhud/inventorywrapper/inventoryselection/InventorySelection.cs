@@ -32,7 +32,7 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/generalhud/inventorywrapper/inventoryselection/InventorySelection.scss");
 
-            AddClass("opacity-90");
+            AddClass("opacity-heavy");
             AddClass("text-shadow");
 
             if (Local.Pawn is not TTTPlayer player)
@@ -77,7 +77,7 @@ namespace TTTReborn.UI
                     slot.SetClass("rounded-bottom", child == Children.Last());
 
                     slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
-                    slot.SetClass("opacity-90", slot.Carriable.Name == activeItem?.Name);
+                    slot.SetClass("opacity-heavy", slot.Carriable.Name == activeItem?.Name);
 
                     if (slot.Carriable is TTTWeapon weapon && weapon.SlotType != SlotType.Melee)
                     {

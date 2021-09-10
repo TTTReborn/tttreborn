@@ -54,7 +54,7 @@ namespace TTTReborn.UI
 
             _backgroundPanel = new Panel(this);
             _backgroundPanel.AddClass("background-color-secondary");
-            _backgroundPanel.AddClass("opacity-75");
+            _backgroundPanel.AddClass("opacity-medium");
             _backgroundPanel.AddClass("centered");
             _backgroundPanel.AddClass("fullscreen");
 

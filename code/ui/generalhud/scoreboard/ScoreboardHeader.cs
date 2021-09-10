@@ -18,10 +18,10 @@ namespace TTTReborn.UI
         {
             AddClass("text-shadow");
 
-            _gameLogoPanel = new Panel(this);
+            _gameLogoPanel = new(this);
             _gameLogoPanel.AddClass("game-logo");
 
-            _serverInfoPanel = new Panel(this);
+            _serverInfoPanel = new(this);
             _serverInfoPanel.AddClass("server-information-panel");
 
             _serverNameLabel = _serverInfoPanel.Add.Label();
@@ -32,7 +32,7 @@ namespace TTTReborn.UI
             _serverDescriptionLabel.AddClass("server-description-label");
             _serverDescriptionLabel.Text = "Created by Neoxult";
 
-            _serverDataPanel = new Panel(this);
+            _serverDataPanel = new(this);
             _serverDataPanel.AddClass("server-data-panel");
 
             _serverMapLabel = _serverDataPanel.Add.Label();

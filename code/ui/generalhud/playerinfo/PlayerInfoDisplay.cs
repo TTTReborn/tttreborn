@@ -22,7 +22,7 @@ namespace TTTReborn.UI
 
             AddClass("background-color-primary");
             AddClass("rounded");
-            AddClass("opacity-90");
+            AddClass("opacity-heavy");
             AddClass("text-shadow");
 
             _healthPanel = new Panel(this);

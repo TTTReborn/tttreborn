@@ -16,7 +16,7 @@ namespace TTTReborn.UI
 
             AddClass("rounded");
             AddClass("centered-horizontal");
-            AddClass("opacity-90");
+            AddClass("opacity-heavy");
             AddClass("text-shadow");
 
             _roleLabel = Add.TranslationLabel();

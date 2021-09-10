@@ -16,7 +16,7 @@ namespace TTTReborn.UI
         {
             AddClass("background-color-primary");
             AddClass("text-shadow");
-            AddClass("opacity-90");
+            AddClass("opacity-heavy");
             AddClass("rounded");
         }
 
