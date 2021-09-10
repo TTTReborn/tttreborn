@@ -116,7 +116,7 @@ ScoreboardGroup {
         font-size: 14px;
         flex-grow: 1;
     }
-
+        
     .group-karma-label,
     .group-ping-label {
         text-align: center;
@@ -136,44 +136,24 @@ ScoreboardGroup {
     }
 
     &.alive {
-        border-color: $alive;
-        border-left: 2px solid;
-        border-right: 2px solid;
-        border-bottom: 2px solid;
-
         .group-title-panel {
             background-color: $alive;
         }
     }
 
     &.dead {
-        border-color: $dead;
-        border-left: 2px solid;
-        border-right: 2px solid;
-        border-bottom: 2px solid;
-
         .group-title-panel {
             background-color: $dead;
         }
     }
 
     &.missing {
-        border-color: $missing;
-        border-left: 2px solid;
-        border-right: 2px solid;
-        border-bottom: 2px solid;
-
         .group-title-panel {
             background-color: $missing;
         }
     }
 
     &.spectator {
-        border-color: $spectator;
-        border-left: 2px solid;
-        border-right: 2px solid;
-        border-bottom: 2px solid;
-
         .group-title-panel {
             background-color: $spectator;
         }
