@@ -3,7 +3,7 @@
 Scoreboard {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 100%;      
     opacity: 0;
     transition: all 0.15s ease-out;
     justify-content: center;
@@ -201,5 +201,10 @@ ScoreboardEntry {
 
     &.me:nth-child(1) {
         background-color: #f2b42d1a;
+    }
+
+    &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
     }
 }

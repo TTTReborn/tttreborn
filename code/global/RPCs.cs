@@ -147,7 +147,7 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientClosePostRoundMenu()
         {
-            PostRoundMenu.Instance.Enabled = false;
+            PostRoundMenu.Instance.ClosePostRoundMenu();
         }
 
         [ClientRpc]
