@@ -42,6 +42,13 @@ namespace TTTReborn.Roles
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
 
+            if (Host.IsServer)
+            {
+                player.Shop = null;
+
+                InitShop(player);
+            }
+
             Event.Run("tttreborn.player.role.onselect", player);
         }
 
@@ -50,7 +57,10 @@ namespace TTTReborn.Roles
 
         }
 
-        public virtual bool CanBuy() => false;
+        public virtual void InitShop(TTTPlayer player)
+        {
+            player.ServerUpdateShop();
+        }
 
         public string GetRoleTranslationKey(string key)
         {

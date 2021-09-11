@@ -24,19 +24,28 @@ namespace TTTReborn.UI
 
                 _wrapper = Add.Panel("wrapper");
 
-                foreach (Type type in Globals.Utils.GetTypes<IBuyableItem>())
+                Reload();
+            }
+
+            public void Reload()
+            {
+                _wrapper.DeleteChildren(true);
+
+                Shop shop = (Local.Pawn as TTTPlayer).Shop;
+
+                if (shop == null)
                 {
-                    IBuyableItem item = Globals.Utils.GetObjectByType<IBuyableItem>(type);
-                    ShopItemData itemData = item.CreateItemData();
+                    return;
+                }
 
-                    item.Delete();
-
+                foreach (ShopItemData shopItemData in shop.Items)
+                {
                     if (_selectedItemData == null)
                     {
-                        _selectedItemData = itemData;
+                        _selectedItemData = shopItemData;
                     }
 
-                    AddItem(itemData);
+                    AddItem(shopItemData);
                 }
             }
 

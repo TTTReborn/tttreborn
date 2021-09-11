@@ -6,9 +6,9 @@ namespace TTTReborn.Items
 {
     public struct ShopItemData
     {
-        public string Name;
+        public string Name { get; set; }
         public string Description;
-        public int Price;
+        public int Price { get; set; }
         public SlotType SlotType;
         public Type Type;
 

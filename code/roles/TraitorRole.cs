@@ -3,6 +3,7 @@ using System;
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Teams;
 
@@ -44,6 +45,19 @@ namespace TTTReborn.Roles
             base.OnSelect(player);
         }
 
-        public override bool CanBuy() => true;
+        public override void InitShop(TTTPlayer player)
+        {
+            player.Shop = new Shop();
+
+            foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
+            {
+                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
+                player.Shop.Items.Add(item.CreateItemData());
+
+                item.Delete();
+            }
+
+            base.InitShop(player);
+        }
     }
 }
