@@ -100,7 +100,7 @@ namespace TTTReborn.UI
 
             _perkEntries = new List<InspectEntry>();
 
-            foreach(InspectEntry entry in inspectionEntries)
+            foreach (InspectEntry entry in inspectionEntries)
             {
                 entry.AddEventListener("onmouseover", () =>
                 {
@@ -172,7 +172,7 @@ namespace TTTReborn.UI
             _weaponEntry.SetQuickInfo($"{killerWeapon}");
 
             // Clear and delete all perks
-            foreach(var perkEntry in _perkEntries)
+            foreach (var perkEntry in _perkEntries)
             {
                 perkEntry.Delete();
             }

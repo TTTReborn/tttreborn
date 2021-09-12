@@ -37,7 +37,7 @@ namespace TTTReborn.Player
             {
                 if (target.CanHint(player) && _currentHint == null)
                 {
-                    _currentHint = target.DisplayHint(player); 
+                    _currentHint = target.DisplayHint(player);
                     _currentHint.Parent = Hud.Current.RootPanel;
                     _currentHint.Enabled = true;
                     _currentHint.UpdateHintPanel();

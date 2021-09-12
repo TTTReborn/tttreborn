@@ -74,7 +74,7 @@ namespace TTTReborn.UI
             SetClass("fade-in", Enabled);
 
             // Network sync workaround
-            if (Player.Health == 0 && Player.LifeState == LifeState.Alive) 
+            if (Player.Health == 0 && Player.LifeState == LifeState.Alive)
             {
                 _damageIndicatorLabel.Text = "";
             }
