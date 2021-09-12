@@ -10,7 +10,7 @@ namespace TTTReborn.UI
     /// <summary>
     /// A horizontal slider. Can be float or whole number.
     /// </summary>
-    public class Slider : TTTPanel
+    public class Slider : Panel
     {
         public Panel Track { get; protected set; }
         public Panel TrackInner { get; protected set; }
@@ -39,10 +39,14 @@ namespace TTTReborn.UI
 
             AddClass("slider");
 
-            Track = Add.Panel("track");
-            TrackInner = Track.Add.Panel("inner");
+            Track = new();
+            Track.AddClass("track");
 
-            Thumb = Add.Panel("thumb");
+            TrackInner = new();
+            TrackInner.AddClass("inner");
+
+            Thumb = new();
+            Thumb.AddClass("thumb");
         }
 
         protected float _value = float.MaxValue;

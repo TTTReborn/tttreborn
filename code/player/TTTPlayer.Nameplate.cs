@@ -49,7 +49,7 @@ namespace TTTReborn.Player
             return true;
         }
 
-        public TTTPanel DisplayHint(TTTPlayer client)
+        public TTTReborn.UI.Panel DisplayHint(TTTPlayer client)
         {
             return new EntityHintPanel("Name", "Health")
                 .WithBackground()

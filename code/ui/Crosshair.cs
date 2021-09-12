@@ -67,9 +67,6 @@ namespace TTTReborn.UI
         private Panel _crosshairDot;
         private Panel[] _crosshairLines;
 
-        private Panel ChargeBar;
-        private float ChargeTime;
-
         public Crosshair()
         {
             Current = this;

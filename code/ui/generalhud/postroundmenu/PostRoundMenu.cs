@@ -21,7 +21,7 @@ namespace TTTReborn.UI
 
         private PostRoundStats _stats;
 
-        private readonly Panel _backgroundPanel;
+        private readonly Panel _backgroundBannerPanel;
         private readonly Panel _containerPanel;
 
         private readonly TranslationLabel _headerLabel;
@@ -35,13 +35,12 @@ namespace TTTReborn.UI
 
             AddClass("text-shadow");
 
-            _backgroundPanel = new(this);
-            _backgroundPanel.AddClass("background-color-secondary");
-            _backgroundPanel.AddClass("opacity-medium");
-            _backgroundPanel.AddClass("centered");
-            _backgroundPanel.AddClass("fullscreen");
+            _backgroundBannerPanel = new(this);
+            _backgroundBannerPanel.AddClass("background-color-secondary");
+            _backgroundBannerPanel.AddClass("background-banner-panel");
+            _backgroundBannerPanel.AddClass("opacity-medium");
 
-            _containerPanel = new(this);
+            _containerPanel = new(_backgroundBannerPanel);
             _containerPanel.AddClass("container-panel");
 
             _headerLabel = _containerPanel.Add.TranslationLabel("");

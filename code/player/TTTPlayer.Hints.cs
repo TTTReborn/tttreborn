@@ -9,7 +9,7 @@ namespace TTTReborn.Player
     {
         private const float MAX_HINT_DISTANCE = 100;
 
-        private TTTPanel _currentHint;
+        private Panel _currentHint;
 
         private void TickEntityHints()
         {
@@ -38,7 +38,7 @@ namespace TTTReborn.Player
                 {
                     _currentHint = target.DisplayHint(player); //Retrieves panel information from entity
                     _currentHint.Parent = Hud.Current.RootPanel;
-                    _currentHint.IsShowing = true;
+                    _currentHint.Enabled = true;
                 }
             }
             else

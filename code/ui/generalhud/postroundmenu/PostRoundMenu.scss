@@ -7,12 +7,19 @@ PostRoundMenu {
     text-align: center;
     opacity: 0;
 
+    .background-banner-panel {
+        position: absolute;
+        top: 100px;
+        width: 100%;
+        height: 150px;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 10px black;
+    }
+
     .container-panel {
         max-height: 250px;
-        top: 100px;
-        width: 50%;
         flex-direction: column;
-        justify-content: center;
         transition: transform 2s ease-in-out;
         transform: scale(0.75);
 
@@ -22,13 +29,13 @@ PostRoundMenu {
     }
 
     .header-label {
-        font-weight: bold;
-        font-size: 48px;
+        font-weight: bolder;
+        font-size: 50px;
         width: 100%;
     }
 
     .content-label {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 600;
     }
 

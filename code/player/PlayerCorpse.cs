@@ -124,7 +124,7 @@ namespace TTTReborn.Player
 
         public bool CanHint(TTTPlayer client) => !IsIdentified;
 
-        public TTTPanel DisplayHint(TTTPlayer client)
+        public Panel DisplayHint(TTTPlayer client)
         {
             return new EntityHintPanel("Press E to confirm body")
                 .WithStyle("font-color", "#ffae00")
