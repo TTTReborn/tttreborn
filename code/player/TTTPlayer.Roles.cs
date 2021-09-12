@@ -68,7 +68,7 @@ namespace TTTReborn.Player
 
             if (QuickShop.Instance != null)
             {
-                if (Shop == null)
+                if (Shop == null || !Shop.Accessable())
                 {
                     QuickShop.Instance.IsShowing = false;
                 }

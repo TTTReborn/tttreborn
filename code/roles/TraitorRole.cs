@@ -46,18 +46,8 @@ namespace TTTReborn.Roles
         }
 
         // serverside function
-        public override void InitShop()
+        public override void CreateShopSettings(string fileName)
         {
-            base.InitShop();
-
-            if (Shop != null)
-            {
-                return;
-            }
-
-            // init default shop
-            Shop = new Shop();
-
             foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
             {
                 IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
@@ -65,6 +55,8 @@ namespace TTTReborn.Roles
 
                 item.Delete();
             }
+
+            base.CreateShopSettings(fileName);
         }
     }
 }

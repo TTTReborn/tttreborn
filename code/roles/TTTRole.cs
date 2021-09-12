@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 using Sandbox;
 
@@ -84,14 +85,26 @@ namespace TTTReborn.Roles
         // serverside function
         public virtual void InitShop()
         {
-            Shop = null;
+            string fileName = $"settings/{Utils.GetTypeNameByType(typeof(Settings.ServerSettings)).ToLower()}/shop/{Name.ToLower()}.json";
 
-            string fileName = $"settings/server/shop/{Name.ToLower()}.json";
-
-            if (FileSystem.Data.FileExists(fileName))
+            if (!FileSystem.Data.FileExists(fileName))
             {
-                Shop = Shop.InitializeFromJSON(FileSystem.Data.ReadAllText(fileName));
+                Shop = new Shop();
+
+                CreateShopSettings(fileName);
             }
+
+            Shop = Shop.InitializeFromJSON(FileSystem.Data.ReadAllText(fileName));
+        }
+
+        public virtual void CreateShopSettings(string fileName)
+        {
+            Utils.CreateRecursiveDirectories(fileName);
+
+            FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize<Shop>(Shop, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            }));
         }
 
         public string GetRoleTranslationKey(string key)

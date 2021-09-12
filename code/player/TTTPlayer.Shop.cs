@@ -61,6 +61,11 @@ namespace TTTReborn.Player
 
             return shop;
         }
+
+        public bool Accessable()
+        {
+            return Items.Count > 0;
+        }
     }
 
     public partial class TTTPlayer
@@ -84,7 +89,7 @@ namespace TTTReborn.Player
 
         public BuyError CanBuy(ShopItemData itemData)
         {
-            if (Shop == null)
+            if (Shop == null || !Shop.Accessable())
             {
                 return BuyError.NoAccess;
             }

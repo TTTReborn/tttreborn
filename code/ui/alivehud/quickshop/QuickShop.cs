@@ -76,7 +76,14 @@ namespace TTTReborn.Player
         [ClientCmd("+ttt_quickshop")]
         public static void OpenQuickshop()
         {
-            if (QuickShop.Instance == null || (Local.Pawn as TTTPlayer).Shop == null)
+            if (QuickShop.Instance == null)
+            {
+                return;
+            }
+
+            Shop shop = (Local.Pawn as TTTPlayer).Shop;
+
+            if (shop == null || !shop.Accessable())
             {
                 return;
             }
