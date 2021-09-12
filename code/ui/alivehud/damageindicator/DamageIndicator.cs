@@ -15,7 +15,6 @@ namespace TTTReborn.UI
         private float _currentRemainingDamageIndicatorDuration = 0f;
         private TimeSince _timeSinceLastDamage = 0f;
         private float _lastDamage = 0f;
-        private float _additionalDamageIndicatorDuration = 0f;
 
         public DamageIndicator()
         {
@@ -36,8 +35,6 @@ namespace TTTReborn.UI
 
             _lastDamage = damage;
             _timeSinceLastDamage = 0f;
-            _additionalDamageIndicatorDuration += _currentRemainingDamageIndicatorDuration;
-            _currentRemainingDamageIndicatorDuration = 0f;
         }
 
         public override void Tick()
@@ -49,13 +46,15 @@ namespace TTTReborn.UI
                 return;
             }
 
-            float remainingDamageIndicatorTime = _maxDamageIndicatorDuration * (_lastDamage / player.MaxHealth);
+            float remainingDamageIndicatorTime = _lastDamage / player.MaxHealth * 20;
 
-            if (_additionalDamageIndicatorDuration != 0f)
+            if (_currentRemainingDamageIndicatorDuration != 0f)
             {
-                remainingDamageIndicatorTime += _additionalDamageIndicatorDuration;
-                _additionalDamageIndicatorDuration = 0f;
+                remainingDamageIndicatorTime += _currentRemainingDamageIndicatorDuration;
+                _currentRemainingDamageIndicatorDuration = 0f;
             }
+
+            remainingDamageIndicatorTime = Math.Min(remainingDamageIndicatorTime, _maxDamageIndicatorDuration);
 
             if (_lastDamage > 0f && _timeSinceLastDamage < remainingDamageIndicatorTime)
             {
@@ -63,7 +62,6 @@ namespace TTTReborn.UI
 
                 Style.Display = DisplayMode.Flex;
                 Style.Opacity = Math.Clamp((_currentRemainingDamageIndicatorDuration / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / _maxDamageIndicatorDuration), 0f, 1f);
-                Style.Dirty();
             }
             else
             {
@@ -71,6 +69,7 @@ namespace TTTReborn.UI
 
                 Style.Display = DisplayMode.None;
             }
+            Style.Dirty();
         }
     }
 }

@@ -7,17 +7,6 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    // public class WeaponAttribute : LibraryAttribute
-    // {
-    //     public WeaponType WeaponType;
-
-    //     public WeaponAttribute(string name) : base(name)
-    //     {
-
-    //     }
-    // }
-
     [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
@@ -287,8 +276,6 @@ namespace TTTReborn.Items
 
             foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
             {
-                tr.Surface.DoBulletImpact(tr);
-
                 if (!IsServer || !tr.Entity.IsValid())
                 {
                     continue;
@@ -296,6 +283,8 @@ namespace TTTReborn.Items
 
                 using (Prediction.Off())
                 {
+                    tr.Surface.DoBulletImpact(tr);
+
                     DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)

@@ -77,9 +77,13 @@ namespace TTTReborn.UI
                 Parent.AddChild<PlayerInfoDisplay>();
                 Parent.AddChild<InventoryWrapper>();
                 Parent.AddChild<ChatBox>();
+
                 Parent.AddChild<VoiceChatDisplay>();
                 Parent.AddChild<Nameplate>();
                 Parent.AddChild<GameTimerDisplay>();
+
+                Parent.AddChild<VoiceList>();
+
                 Parent.AddChild<InfoFeed>();
                 Parent.AddChild<InspectMenu>();
                 Parent.AddChild<PostRoundMenu>();
@@ -94,9 +98,9 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                Parent.AddChild<DamageIndicator>();
-                Parent.AddChild<QuickShop>();
                 Parent.AddChild<DrowningIndicator>();
+                Parent.AddChild<QuickShop>();
+                Parent.AddChild<DamageIndicator>();
             }
         }
     }
