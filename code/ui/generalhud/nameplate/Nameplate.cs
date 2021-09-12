@@ -7,11 +7,9 @@ using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
-    public class Nameplate : Panel
+    public class Nameplate : EntityHintPanel
     {
-        public static Nameplate Instance;
-
-        private const float MAX_DRAW_DISTANCE = 2048;
+        public TTTPlayer Player;
 
         private readonly Sandbox.UI.Panel _labelHolder;
         private readonly Sandbox.UI.Panel _nameHolder;
@@ -37,13 +35,12 @@ namespace TTTReborn.UI
         {
             new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 66),
             new HealthGroup("Injured", Color.FromBytes(233, 135, 44), 33),
-            new HealthGroup("Near death", Color.FromBytes(252, 42, 42), 0)
+            new HealthGroup("Near Death", Color.FromBytes(252, 42, 42), 0)
         };
 
-        public Nameplate()
+        public Nameplate(TTTPlayer player) : base()
         {
-            Instance = this;
-            Enabled = false;
+            Player = player;
 
             StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
 
@@ -55,6 +52,8 @@ namespace TTTReborn.UI
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damage-indicator");
+
+            Enabled = false;
         }
 
         private HealthGroup GetHealthGroup(float health)
@@ -70,43 +69,28 @@ namespace TTTReborn.UI
             return HealthGroupList[HealthGroupList.Length - 1];
         }
 
-        public override void Tick()
+        public override void UpdateHintPanel()
         {
-            base.Tick();
+            SetClass("fade-in", Enabled);
 
-            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
+            // Network sync workaround
+            if (Player.Health == 0 && Player.LifeState == LifeState.Alive) 
             {
-                Enabled = false;
+                _damageIndicatorLabel.Text = "";
+            }
+            else
+            {
+                float health = Player.Health / Player.MaxHealth * 100;
+                HealthGroup healthGroup = GetHealthGroup(health);
 
-                return;
+                _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
+                _damageIndicatorLabel.Text = healthGroup.Title;
+                _damageIndicatorLabel.Style.Dirty();
             }
 
-            TTTPlayer target = player.IsLookingAtType<TTTPlayer>(MAX_DRAW_DISTANCE);
+            _nameLabel.Text = Player.GetClientOwner()?.Name ?? "";
 
-            if (target != null)
-            {
-                Enabled = true;
-
-                if (target.Health == 0 && target.LifeState == LifeState.Alive) // network-sync workaround
-                {
-                    _damageIndicatorLabel.Text = "";
-                }
-                else
-                {
-                    float health = target.Health / target.MaxHealth * 100;
-                    HealthGroup healthGroup = GetHealthGroup(health);
-
-                    _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
-                    _damageIndicatorLabel.Text = healthGroup.Title;
-                    _damageIndicatorLabel.Style.Dirty();
-                }
-
-                _nameLabel.Text = target.GetClientOwner()?.Name ?? "";
-
-                Style.Dirty();
-            }
-
-            SetClass("fade", target == null);
+            Style.Dirty();
         }
     }
 }
