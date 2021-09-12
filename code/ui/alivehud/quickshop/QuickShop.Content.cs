@@ -24,19 +24,33 @@ namespace TTTReborn.UI
 
                 _wrapper = Add.Panel("wrapper");
 
-                foreach (Type type in Globals.Utils.GetTypes<IBuyableItem>())
+                Reload();
+            }
+
+            public void Reload()
+            {
+                _wrapper.DeleteChildren(true);
+
+                if (Local.Pawn is not TTTPlayer player)
                 {
-                    IBuyableItem item = Globals.Utils.GetObjectByType<IBuyableItem>(type);
-                    ShopItemData itemData = item.CreateItemData();
+                    return;
+                }
 
-                    item.Delete();
+                Shop shop = player.Shop;
 
+                if (shop == null)
+                {
+                    return;
+                }
+
+                foreach (ShopItemData shopItemData in shop.Items)
+                {
                     if (_selectedItemData == null)
                     {
-                        _selectedItemData = itemData;
+                        _selectedItemData = shopItemData;
                     }
 
-                    AddItem(itemData);
+                    AddItem(shopItemData);
                 }
             }
 
@@ -70,7 +84,7 @@ namespace TTTReborn.UI
 
             private class ItemPanel : TTTPanel
             {
-                private ShopItemData? _buyableItemData;
+                private ShopItemData _buyableItemData;
 
                 private readonly Panel _iconPanel;
 

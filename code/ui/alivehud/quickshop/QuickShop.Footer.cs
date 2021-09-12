@@ -13,7 +13,7 @@ namespace TTTReborn.UI
         {
             private Description _description;
             private BuyArea _buyArea;
-            private ShopItemData? _currentItemData;
+            private ShopItemData _currentItemData;
 
             public Footer(Panel parent)
             {
@@ -27,7 +27,7 @@ namespace TTTReborn.UI
             {
                 public Label EquipmentLabel;
                 public Label DescriptionLabel;
-                public ShopItemData? ItemData;
+                public ShopItemData ItemData;
 
                 public Description(Panel parent)
                 {
@@ -37,7 +37,7 @@ namespace TTTReborn.UI
                     DescriptionLabel = Add.Label("Some item description...", "description");
                 }
 
-                public void SetItem(ShopItemData? itemData)
+                public void SetItem(ShopItemData itemData)
                 {
                     ItemData = itemData;
 
@@ -52,7 +52,7 @@ namespace TTTReborn.UI
                 public Label DollarSignLabel;
                 public Label PriceLabel;
                 public Button BuyButton;
-                public ShopItemData? ItemData;
+                public ShopItemData ItemData;
 
                 public BuyArea(Panel parent)
                 {
@@ -71,7 +71,7 @@ namespace TTTReborn.UI
                     });
                 }
 
-                public void SetItem(ShopItemData? itemData)
+                public void SetItem(ShopItemData itemData)
                 {
                     ItemData = itemData;
                     PriceLabel.Text = itemData?.Price.ToString();

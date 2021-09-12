@@ -9,10 +9,10 @@ namespace TTTReborn.UI
     {
         public static QuickShop Instance;
 
-        private static ShopItemData? _selectedItemData;
+        private static ShopItemData _selectedItemData;
 
-        private Header _header;
-        private Footer _footer;
+        private readonly Header _header;
+        private readonly Footer _footer;
         private readonly Content _content;
 
         private int _credits = 0;
@@ -35,6 +35,17 @@ namespace TTTReborn.UI
             _content.Update();
         }
 
+        [Event("tttreborn.shop.change")]
+        public static void OnShopChanged()
+        {
+            QuickShop.Instance?.Reload();
+        }
+
+        public void Reload()
+        {
+            _content.Reload();
+        }
+
         public override void Tick()
         {
             base.Tick();
@@ -53,11 +64,6 @@ namespace TTTReborn.UI
                 Update();
             }
         }
-
-        public bool CheckAccess()
-        {
-            return (Local.Pawn as TTTPlayer).Role.CanBuy();
-        }
     }
 }
 
@@ -70,7 +76,14 @@ namespace TTTReborn.Player
         [ClientCmd("+ttt_quickshop")]
         public static void OpenQuickshop()
         {
-            if (QuickShop.Instance == null || !QuickShop.Instance.CheckAccess())
+            if (QuickShop.Instance == null)
+            {
+                return;
+            }
+
+            Shop shop = (Local.Pawn as TTTPlayer).Shop;
+
+            if (shop == null || !shop.Accessable())
             {
                 return;
             }

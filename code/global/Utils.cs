@@ -207,5 +207,23 @@ namespace TTTReborn.Globals
             Client,
             Server
         }
+
+        public static void CreateRecursiveDirectories(string fileName)
+        {
+            string[] splits = fileName.Split('/');
+            string currentDir = "";
+
+            for (int i = 0; i < splits.Length - 1; i++)
+            {
+                currentDir += splits[i];
+
+                if (!FileSystem.Data.DirectoryExists(currentDir))
+                {
+                    FileSystem.Data.CreateDirectory(currentDir);
+                }
+
+                currentDir += '/';
+            }
+        }
     }
 }
