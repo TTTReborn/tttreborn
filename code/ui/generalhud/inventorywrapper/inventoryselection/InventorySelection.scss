@@ -2,17 +2,10 @@ InventorySelection {
     min-width: 300px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     &.hide {
         display: none;
-    }
-
-    :first-child .slot-label {
-        border-top-left-radius: 8px;
-    }
-
-    :last-child .slot-label {
-        border-bottom-left-radius: 8px;
     }
 }
 

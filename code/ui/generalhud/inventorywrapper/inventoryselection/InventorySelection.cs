@@ -76,6 +76,9 @@ namespace TTTReborn.UI
                     slot.SetClass("rounded-top", child == Children.First());
                     slot.SetClass("rounded-bottom", child == Children.Last());
 
+                    slot.SlotLabel.SetClass("rounded-top-left", child == Children.First());
+                    slot.SlotLabel.SetClass("rounded-bottom-left", child == Children.Last());
+
                     slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
                     slot.SetClass("opacity-heavy", slot.Carriable.Name == activeItem?.Name);
 
@@ -262,8 +265,8 @@ namespace TTTReborn.UI
         private class InventorySlot : Panel
         {
             public ICarriableItem Carriable { get; init; }
+            public Label SlotLabel;
             private readonly Label _ammoLabel;
-            private Label _slotLabel;
             private Label _carriableLabel;
 
             public InventorySlot(Sandbox.UI.Panel parent, ICarriableItem carriable) : base(parent)
@@ -273,8 +276,8 @@ namespace TTTReborn.UI
 
                 AddClass("background-color-primary");
 
-                _slotLabel = Add.Label(((int) carriable.SlotType).ToString());
-                _slotLabel.AddClass("slot-label");
+                SlotLabel = Add.Label(((int) carriable.SlotType).ToString());
+                SlotLabel.AddClass("slot-label");
 
                 _carriableLabel = Add.Label(carriable.Name);
 
@@ -296,7 +299,7 @@ namespace TTTReborn.UI
 
                 if (Local.Pawn is TTTPlayer player)
                 {
-                    _slotLabel.Style.BackgroundColor = player.Team.Color;
+                    SlotLabel.Style.BackgroundColor = player.Team.Color;
                 }
             }
 
