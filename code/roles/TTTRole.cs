@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 
@@ -28,7 +29,21 @@ namespace TTTReborn.Roles
 
         public virtual int DefaultCredits => 0;
 
-        public Shop Shop { get; internal set; }
+        public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
+
+        public Shop Shop
+        {
+            get
+            {
+                ShopDict.TryGetValue(Name, out Shop shop);
+
+                return shop;
+            }
+            internal set
+            {
+                ShopDict[Name] = value;
+            }
+        }
 
         public TTTRole()
         {
@@ -41,7 +56,10 @@ namespace TTTReborn.Roles
 
             using (Prediction.Off())
             {
-                InitShop();
+                if (!ShopDict.ContainsKey(Name))
+                {
+                    InitShop();
+                }
             }
         }
 

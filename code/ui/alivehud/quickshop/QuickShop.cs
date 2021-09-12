@@ -36,7 +36,7 @@ namespace TTTReborn.UI
         }
 
         [Event("tttreborn.shop.change")]
-        public static void ShopChanged()
+        public static void OnShopChanged()
         {
             QuickShop.Instance?.Reload();
         }
