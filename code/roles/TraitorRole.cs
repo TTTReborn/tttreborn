@@ -45,19 +45,26 @@ namespace TTTReborn.Roles
             base.OnSelect(player);
         }
 
-        public override void InitShop(TTTPlayer player)
+        // serverside function
+        public override void InitShop()
         {
-            player.Shop = new Shop();
+            base.InitShop();
+
+            if (Shop != null)
+            {
+                return;
+            }
+
+            // init default shop
+            Shop = new Shop();
 
             foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
             {
                 IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
-                player.Shop.Items.Add(item.CreateItemData());
+                Shop.Items.Add(item.CreateItemData());
 
                 item.Delete();
             }
-
-            base.InitShop(player);
         }
     }
 }

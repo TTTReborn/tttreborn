@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -25,6 +26,41 @@ namespace TTTReborn.Player
         {
 
         }
+
+        public static Shop InitializeFromJSON(string json)
+        {
+            Shop shop = JsonSerializer.Deserialize<Shop>(json);
+
+            if (shop != null)
+            {
+                List<ShopItemData> items = new();
+
+                foreach (ShopItemData shopItemData in shop.Items)
+                {
+                    Type itemType = Utils.GetTypeByName<IBuyableItem>(shopItemData.Name);
+
+                    if (itemType == null)
+                    {
+                        continue;
+                    }
+
+                    IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
+                    ShopItemData itemData = item.CreateItemData();
+
+                    item.Delete();
+
+                    itemData.Price = shopItemData.Price;
+
+                    items.Add(itemData);
+                }
+
+                shop.Items = items;
+            }
+
+            // TODO add new items by default as well
+
+            return shop;
+        }
     }
 
     public partial class TTTPlayer
@@ -46,7 +82,7 @@ namespace TTTReborn.Player
         }
         private Shop _shop;
 
-        public BuyError CanBuy(ShopItemData? itemData)
+        public BuyError CanBuy(ShopItemData itemData)
         {
             if (Shop == null)
             {
@@ -102,28 +138,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public static void ClientUpdateShop(string shopJson)
         {
-            Shop shop = JsonSerializer.Deserialize<Shop>(shopJson);
-
-            if (shop != null)
-            {
-                List<ShopItemData> items = new();
-
-                foreach (ShopItemData shopItemData in shop.Items)
-                {
-                    IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(Utils.GetTypeByName<IBuyableItem>(shopItemData.Name));
-                    ShopItemData itemData = item.CreateItemData();
-
-                    item.Delete();
-
-                    itemData.Price = shopItemData.Price;
-
-                    items.Add(itemData);
-                }
-
-                shop.Items = items;
-            }
-
-            (Local.Pawn as TTTPlayer).Shop = shop;
+            (Local.Pawn as TTTPlayer).Shop = Shop.InitializeFromJSON(shopJson);
         }
     }
 }

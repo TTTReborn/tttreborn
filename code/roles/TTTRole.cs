@@ -28,6 +28,8 @@ namespace TTTReborn.Roles
 
         public virtual int DefaultCredits => 0;
 
+        public Shop Shop { get; internal set; }
+
         public TTTRole()
         {
             Name = Utils.GetTypeName(GetType());
@@ -35,6 +37,11 @@ namespace TTTReborn.Roles
             if (TeamFunctions.GetTeamByType(DefaultTeamType) == null)
             {
                 Utils.GetObjectByType<TTTTeam>(DefaultTeamType);
+            }
+
+            using (Prediction.Off())
+            {
+                InitShop();
             }
         }
 
@@ -44,9 +51,8 @@ namespace TTTReborn.Roles
 
             if (Host.IsServer)
             {
-                player.Shop = null;
-
-                InitShop(player);
+                player.Shop = Shop;
+                player.ServerUpdateShop();
             }
 
             Event.Run("tttreborn.player.role.onselect", player);
@@ -57,9 +63,17 @@ namespace TTTReborn.Roles
 
         }
 
-        public virtual void InitShop(TTTPlayer player)
+        // serverside function
+        public virtual void InitShop()
         {
-            player.ServerUpdateShop();
+            Shop = null;
+
+            string fileName = $"settings/server/shop/{Name.ToLower()}.json";
+
+            if (FileSystem.Data.FileExists(fileName))
+            {
+                Shop = Shop.InitializeFromJSON(FileSystem.Data.ReadAllText(fileName));
+            }
         }
 
         public string GetRoleTranslationKey(string key)

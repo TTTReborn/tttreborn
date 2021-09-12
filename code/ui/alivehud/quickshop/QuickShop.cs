@@ -9,7 +9,7 @@ namespace TTTReborn.UI
     {
         public static QuickShop Instance;
 
-        private static ShopItemData? _selectedItemData;
+        private static ShopItemData _selectedItemData;
 
         private readonly Header _header;
         private readonly Footer _footer;

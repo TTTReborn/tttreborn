@@ -54,28 +54,32 @@ namespace TTTReborn.Player
             return new EntityHintPanel("Name", "Health")
                 .WithBackground()
                 .WithTick((display) =>
-               {
-                   if (Health == 0 && LifeState == LifeState.Alive)
-                   {
-                       display.BottomLabel.SetText(""); // network-sync workaround
-                   }
-                   else
-                   {
-                       //Set health group related data on bottom label.
-                       float health = Health / MaxHealth * 100;
-                       HealthGroup healthGroup = GetHealthGroup(health);
+                {
+                    if (this == null || !IsValid)
+                    {
+                        return;
+                    }
 
-                       display.BottomLabel.Style.FontColor = healthGroup.Color;
-                       display.BottomLabel.Text = healthGroup.Title;
-                       display.BottomLabel.Style.FontSize = Length.Pixels(12);
-                       display.BottomLabel.Style.Dirty();
-                   }
+                    if (Health == 0 && LifeState == LifeState.Alive)
+                    {
+                        display.BottomLabel.SetText(""); // network-sync workaround
+                    }
+                    else
+                    {
+                        //Set health group related data on bottom label.
+                        HealthGroup healthGroup = GetHealthGroup(Health / MaxHealth * 100f);
 
-                   display.TopLabel.SetText(GetClientOwner()?.Name ?? "");
+                        display.BottomLabel.Text = healthGroup.Title;
+                        display.BottomLabel.Style.FontColor = healthGroup.Color;
+                        display.BottomLabel.Style.FontSize = Length.Pixels(12);
+                        display.BottomLabel.Style.Dirty();
+                    }
 
-                   display.Style.BorderColor = Role is not Roles.NoneRole ? Role.Color : BORDER_COLOR_NONE;
-                   display.Style.Dirty();
-               });
+                    display.TopLabel.SetText(GetClientOwner()?.Name ?? "");
+
+                    display.Style.BorderColor = Role is not Roles.NoneRole ? Role.Color : BORDER_COLOR_NONE;
+                    display.Style.Dirty();
+                });
         }
     }
 }

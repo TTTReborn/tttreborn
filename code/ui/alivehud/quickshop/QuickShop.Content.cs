@@ -31,7 +31,12 @@ namespace TTTReborn.UI
             {
                 _wrapper.DeleteChildren(true);
 
-                Shop shop = (Local.Pawn as TTTPlayer).Shop;
+                if (Local.Pawn is not TTTPlayer player)
+                {
+                    return;
+                }
+
+                Shop shop = player.Shop;
 
                 if (shop == null)
                 {
@@ -79,7 +84,7 @@ namespace TTTReborn.UI
 
             private class ItemPanel : TTTPanel
             {
-                private ShopItemData? _buyableItemData;
+                private ShopItemData _buyableItemData;
 
                 private readonly Panel _iconPanel;
 
