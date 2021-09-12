@@ -59,7 +59,7 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                if (IsServer && !playerCorpse.IsIdentified && LifeState == LifeState.Alive)
+                if (IsServer && !playerCorpse.IsIdentified && LifeState == LifeState.Alive && Input.Down(InputButton.Use))
                 {
                     playerCorpse.IsIdentified = true;
 
