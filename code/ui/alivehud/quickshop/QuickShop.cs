@@ -14,7 +14,7 @@ namespace TTTReborn.UI
     {
         public static QuickShop Instance;
 
-        public static ShopItemData? _selectedItemData;
+        public static ShopItemData _selectedItemData;
 
         private readonly List<QuickShopItem> _items = new();
         private Panel _backgroundPanel;
@@ -63,20 +63,29 @@ namespace TTTReborn.UI
             _itemDescriptionLabel = _quickshopContainer.Add.Label();
             _itemDescriptionLabel.AddClass("item-description-label");
 
-            PopulateItems();
+            Reload();
 
             Enabled = false;
         }
 
-        public void PopulateItems()
+        public void Reload()
         {
-            foreach (Type type in Globals.Utils.GetTypes<IBuyableItem>())
+            _itemPanel.DeleteChildren(true);
+
+            if (Local.Pawn is not TTTPlayer player)
             {
-                IBuyableItem item = Globals.Utils.GetObjectByType<IBuyableItem>(type);
-                ShopItemData itemData = item.CreateItemData();
+                return;
+            }
 
-                item.Delete();
+            Shop shop = player.Shop;
 
+            if (shop == null)
+            {
+                return;
+            }
+
+            foreach (ShopItemData itemData in shop.Items)
+            {
                 if (_selectedItemData == null)
                 {
                     _selectedItemData = itemData;
@@ -140,6 +149,12 @@ namespace TTTReborn.UI
             }
         }
 
+        [Event("tttreborn.shop.change")]
+        public static void OnShopChanged()
+        {
+            QuickShop.Instance?.Reload();
+        }
+
         public override void Tick()
         {
             base.Tick();
@@ -158,11 +173,6 @@ namespace TTTReborn.UI
                 Update();
             }
         }
-
-        public bool CheckAccess()
-        {
-            return (Local.Pawn as TTTPlayer).Role.CanBuy();
-        }
     }
 }
 
@@ -175,7 +185,14 @@ namespace TTTReborn.Player
         [ClientCmd("+ttt_quickshop")]
         public static void OpenQuickshop()
         {
-            if (QuickShop.Instance == null || !QuickShop.Instance.CheckAccess())
+            if (QuickShop.Instance == null)
+            {
+                return;
+            }
+
+            Shop shop = (Local.Pawn as TTTPlayer).Shop;
+
+            if (shop == null || !shop.Accessable())
             {
                 return;
             }

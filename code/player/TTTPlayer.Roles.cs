@@ -68,9 +68,11 @@ namespace TTTReborn.Player
 
             if (QuickShop.Instance != null)
             {
-                QuickShop.Instance.CheckAccess();
-
-                if (QuickShop.Instance.Enabled)
+                if (Shop == null || !Shop.Accessable())
+                {
+                    QuickShop.Instance.Enabled = false;
+                }
+                else if (QuickShop.Instance.Enabled)
                 {
                     QuickShop.Instance.Update();
                 }

@@ -4,13 +4,18 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    public struct ShopItemData
+    public class ShopItemData
     {
-        public string Name;
-        public string Description;
-        public int Price;
-        public SlotType SlotType;
-        public Type Type;
+        public string Name { get; set; }
+        public string Description = "";
+        public int Price { get; set; } = 0;
+        public SlotType? SlotType = null;
+        public Type Type = null;
+
+        public ShopItemData(string name)
+        {
+            Name = name;
+        }
 
         public bool IsBuyable(TTTPlayer player)
         {
@@ -21,7 +26,7 @@ namespace TTTReborn.Items
 
             if (Type.IsSubclassOf(typeof(TTTEquipment)) || Type.IsSubclassOf(typeof(TTTWeapon)))
             {
-                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType);
+                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot((SlotType) SlotType);
             }
 
             return false;
@@ -34,9 +39,8 @@ namespace TTTReborn.Items
 
         ShopItemData CreateItemData()
         {
-            ShopItemData itemData = new ShopItemData
+            ShopItemData itemData = new ShopItemData(Name)
             {
-                Name = Name,
                 Price = Price,
                 Type = GetType()
             };
