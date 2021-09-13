@@ -6,7 +6,7 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
-    public partial class PlayerCorpse : ModelEntity, IEntityHint
+    public partial class PlayerCorpse : ModelEntity
     {
         public TTTPlayer Player { get; set; }
         public List<Particles> Ropes = new();
@@ -123,10 +123,5 @@ namespace TTTReborn.Player
         }
 
         public bool CanHint(TTTPlayer client) => !IsIdentified;
-
-        EntityHintPanel IEntityHint.DisplayHint(TTTPlayer client)
-        {
-            return null;
-        }
     }
 }
