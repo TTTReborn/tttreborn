@@ -66,7 +66,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            return HealthGroupList[HealthGroupList.Length - 1];
+            return HealthGroupList[^1];
         }
 
         public override void UpdateHintPanel()
