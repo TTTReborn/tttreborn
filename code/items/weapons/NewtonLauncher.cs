@@ -109,7 +109,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            // Create a special HUD element for Newton Launcher
+            // TODO: Create a special HUD element for Newton Launcher
         }
 
         public override void Simulate(Client owner)

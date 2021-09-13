@@ -114,15 +114,6 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientEnableInspectMenu(PlayerCorpse playerCorpse)
-        {
-            if (!InspectMenu.Instance.Enabled)
-            {
-                InspectMenu.Instance.InspectCorpse(playerCorpse);
-            }
-        }
-
-        [ClientRpc]
         public static void ClientAddMissingInAction(TTTPlayer missingInActionPlayer)
         {
             if (!missingInActionPlayer.IsValid())

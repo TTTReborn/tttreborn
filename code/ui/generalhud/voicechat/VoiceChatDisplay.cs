@@ -7,11 +7,11 @@ namespace TTTReborn.UI
 {
     public class VoiceChatDisplay : Panel
     {
-        public static VoiceChatDisplay Current { get; internal set; }
+        public static VoiceChatDisplay Instance { get; internal set; }
 
         public VoiceChatDisplay() : base()
         {
-            Current = this;
+            Instance = this;
 
             StyleSheet.Load("/ui/generalhud/voicechat/VoiceChatDisplay.scss");
         }

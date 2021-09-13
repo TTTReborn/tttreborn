@@ -52,6 +52,8 @@ namespace TTTReborn.UI
 
             if (Client != null && Client.IsValid() && Client.Pawn is TTTPlayer player)
             {
+                SetClass("background-color-spectator", player.LifeState == LifeState.Dead);
+
                 if (player.IsTeamVoiceChatEnabled && player.Role is not NoneRole)
                 {
                     Style.BackgroundColor = player.Role.Color;

@@ -84,8 +84,16 @@ namespace TTTReborn.Player
 
                 if (Input.Down(InputButton.Use) && playerCorpse.IsIdentified)
                 {
-                    RPCs.ClientEnableInspectMenu(playerCorpse);
+                    ClientEnableInspectMenu(playerCorpse);
                 }
+            }
+        }
+
+        public static void ClientEnableInspectMenu(PlayerCorpse playerCorpse)
+        {
+            if (InspectMenu.Instance != null && !InspectMenu.Instance.Enabled)
+            {
+                InspectMenu.Instance.InspectCorpse(playerCorpse);
             }
         }
 

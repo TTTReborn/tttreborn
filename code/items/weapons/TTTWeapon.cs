@@ -7,6 +7,20 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
+    // DO NOT DELETE
+    // This should be added by sbox soonTM (so we gonna be able to fetch data without the need initializing and spawning such a weapon)
+    //
+    // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    // public class WeaponAttribute : LibraryAttribute
+    // {
+    //     public WeaponType WeaponType;
+
+    //     public WeaponAttribute(string name) : base(name)
+    //     {
+
+    //     }
+    // }
+
     [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {

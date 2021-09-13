@@ -19,7 +19,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/items/perks/radar/RadarPoint.scss");
 
             // Hud.Current.RootPanel.AddChild(this);
-            RadarDisplay.Current.AddChild(this);
+            RadarDisplay.Instance.AddChild(this);
 
             AddClass("circular");
 
@@ -53,11 +53,11 @@ namespace TTTReborn.UI
 
     public class RadarDisplay : Panel
     {
-        public static RadarDisplay Current { get; set; }
+        public static RadarDisplay Instance { get; set; }
 
         public RadarDisplay() : base()
         {
-            Current = this;
+            Instance = this;
             AddClass("fullscreen");
         }
     }
