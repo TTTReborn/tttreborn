@@ -163,7 +163,7 @@ namespace TTTReborn.Globals
         /// Returns seconds in the format mm:ss
         /// </summary>
         /// <param name="seconds"></param>
-        /// <returns>seconds as a string in the format "mm:ss"</returns>
+        /// <returns>Seconds as a string in the format "mm:ss"</returns>
         public static string TimerString(float seconds)
         {
             return TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss");
