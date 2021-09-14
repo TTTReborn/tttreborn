@@ -58,6 +58,10 @@ namespace TTTReborn.UI
             {
                 Style.BackgroundColor = player.Role.Color.WithAlpha(0.15f);
             }
+            else
+            {
+                Style.BackgroundColor = null;
+            }
 
             Style.Dirty();
 
