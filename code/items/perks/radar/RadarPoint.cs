@@ -18,7 +18,6 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/items/perks/radar/RadarPoint.scss");
 
-            // Hud.Current.RootPanel.AddChild(this);
             RadarDisplay.Instance.AddChild(this);
 
             AddClass("circular");

@@ -172,7 +172,7 @@ namespace TTTReborn.UI
             _weaponEntry.SetQuickInfo($"{killerWeapon}");
 
             // Clear and delete all perks
-            foreach (var perkEntry in _perkEntries)
+            foreach (InspectEntry perkEntry in _perkEntries)
             {
                 perkEntry.Delete();
             }
@@ -184,7 +184,7 @@ namespace TTTReborn.UI
             {
                 foreach (string perkName in perks)
                 {
-                    var perkEntry = new InspectEntry(this);
+                    InspectEntry perkEntry = new(this);
                     perkEntry.SetData($"/ui/weapons/{perkName}.png", $"They were carrying a {perkName}.");
 
                     _perkEntries.Add(perkEntry);
@@ -211,7 +211,7 @@ namespace TTTReborn.UI
                 Enabled = false;
             }
 
-            var timeSinceDeath = Globals.Utils.TimerString(Time.Now - _confirmationData.Time);
+            string timeSinceDeath = Globals.Utils.TimerString(Time.Now - _confirmationData.Time);
             _timeSinceDeathEntry.Description = $"They died roughly {timeSinceDeath} ago.";
             _timeSinceDeathEntry.SetQuickInfo($"{timeSinceDeath}");
 

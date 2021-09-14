@@ -26,7 +26,10 @@ namespace TTTReborn.UI
 
             CloseButton = Header.Add.Button("✕");
             CloseButton.AddClass("button");
-            CloseButton.AddEventListener("onclick", () => { Enabled = false; });
+            CloseButton.AddEventListener("onclick", () =>
+            {
+                Enabled = false;
+            });
 
             Content = new(this);
             Content.AddClass("background-color-primary");

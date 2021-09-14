@@ -46,11 +46,8 @@ namespace TTTReborn.UI
             _itemNameLabel.Text = $"{buyableItemData.Name}";
             _itemPriceLabel.Text = $"${buyableItemData.Price}";
 
-            var icon = Texture.Load($"/ui/weapons/{buyableItemData.Name}.png");
-            if (icon == null)
-            {
-                icon = Texture.Load($"/ui/none.png");
-            }
+            Texture icon = Texture.Load($"/ui/weapons/{buyableItemData.Name}.png");
+            icon ??= Texture.Load($"/ui/none.png");
 
             _itemIcon.Style.Background = new PanelBackground
             {

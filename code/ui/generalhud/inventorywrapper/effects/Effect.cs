@@ -33,7 +33,6 @@ namespace TTTReborn.UI
                 else
                 {
                     _countdownLabel?.Delete();
-                    _countdownLabel ??= null;
                 }
             }
         }

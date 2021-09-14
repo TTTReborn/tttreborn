@@ -32,11 +32,8 @@ namespace TTTReborn.UI
             ImagePath = imagePath;
             Description = description;
 
-            var icon = Texture.Load(imagePath);
-            if (icon == null)
-            {
-                icon = Texture.Load($"/ui/none.png");
-            }
+            Texture icon = Texture.Load(imagePath);
+            icon ??= Texture.Load($"/ui/none.png");
 
             _inspectIcon.Style.Background = new PanelBackground
             {

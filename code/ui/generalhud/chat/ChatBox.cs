@@ -162,10 +162,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (header == null)
-            {
-                header = "";
-            }
+            header ??= "";
 
             #region Cleanup Old Messages
             if (Messages.Count > MAX_MESSAGES_COUNT)
