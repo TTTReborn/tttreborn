@@ -84,8 +84,8 @@ namespace TTTReborn.UI
                 Parent.AddChild<VoiceList>();
 
                 Parent.AddChild<InfoFeed>();
-                Parent.AddChild<InspectMenu>();
                 Parent.AddChild<PostRoundMenu>();
+                Parent.AddChild<InspectMenu>();
                 Parent.AddChild<Scoreboard>();
                 Parent.AddChild<Menu.Menu>();
             }
