@@ -159,6 +159,7 @@ namespace TTTReborn.UI
             if (channel == Channel.Team && string.IsNullOrEmpty(teamName))
             {
                 Log.Error("Cannot add chat entry to Team channel without a team name.");
+
                 return;
             }
 
