@@ -12,55 +12,55 @@ namespace TTTReborn.UI
         private bool _showDot = true;
         public bool ShowDot
         {
-            get { return _showDot; }
+            get => _showDot;
             set { _showDot = value; UpdateCrosshair(); }
         }
         private bool _showTop = true;
         public bool ShowTop
         {
-            get { return _showTop; }
+            get => _showTop;
             set { _showTop = value; UpdateCrosshair(); }
         }
         private bool _showOutline = true;
         public bool ShowOutline
         {
-            get { return _showOutline; }
+            get => _showOutline;
             set { _showOutline = value; UpdateCrosshair(); }
         }
         private int _thickness = 4;
         public int Thickness
         {
-            get { return _thickness; }
+            get => _thickness;
             set { _thickness = value; UpdateCrosshair(); }
         }
         private int _size = 0;
         public int Size
         {
-            get { return _size; }
+            get => _size;
             set { _size = value; UpdateCrosshair(); }
         }
         private int _outlineThickness = 0;
         public int OutlineThickness
         {
-            get { return _outlineThickness; }
+            get => _outlineThickness;
             set { _outlineThickness = value; UpdateCrosshair(); }
         }
         private int _outlineBlur = 4;
         public int OutlineBlur
         {
-            get { return _outlineBlur; }
+            get => _outlineBlur;
             set { _outlineBlur = value; UpdateCrosshair(); }
         }
         private int _gap = 6;
         public int Gap
         {
-            get { return _gap; }
+            get => _gap;
             set { _gap = value; UpdateCrosshair(); }
         }
         private Color _color = Color.White;
         public Color Color
         {
-            get { return _color; }
+            get => _color;
             set { _color = value; UpdateCrosshair(); }
         }
 
