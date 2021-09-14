@@ -9,60 +9,60 @@ namespace TTTReborn.UI
     {
         public static Crosshair Current;
 
-        private bool _showDot = true;
         public bool ShowDot
         {
             get => _showDot;
             set { _showDot = value; UpdateCrosshair(); }
         }
-        private bool _showTop = true;
+        private bool _showDot = true;
         public bool ShowTop
         {
             get => _showTop;
             set { _showTop = value; UpdateCrosshair(); }
         }
-        private bool _showOutline = true;
+        private bool _showTop = true;
         public bool ShowOutline
         {
             get => _showOutline;
             set { _showOutline = value; UpdateCrosshair(); }
         }
-        private int _thickness = 4;
+        private bool _showOutline = true;
         public int Thickness
         {
             get => _thickness;
             set { _thickness = value; UpdateCrosshair(); }
         }
-        private int _size = 0;
+        private int _thickness = 4;
         public int Size
         {
             get => _size;
             set { _size = value; UpdateCrosshair(); }
         }
-        private int _outlineThickness = 0;
+        private int _size = 0;
         public int OutlineThickness
         {
             get => _outlineThickness;
             set { _outlineThickness = value; UpdateCrosshair(); }
         }
-        private int _outlineBlur = 4;
+        private int _outlineThickness = 0;
         public int OutlineBlur
         {
             get => _outlineBlur;
             set { _outlineBlur = value; UpdateCrosshair(); }
         }
-        private int _gap = 6;
+        private int _outlineBlur = 4;
         public int Gap
         {
             get => _gap;
             set { _gap = value; UpdateCrosshair(); }
         }
-        private Color _color = Color.White;
+        private int _gap = 6;
         public Color Color
         {
             get => _color;
             set { _color = value; UpdateCrosshair(); }
         }
+        private Color _color = Color.White;
 
         private Panel _crosshairDot;
         private Panel[] _crosshairLines;
