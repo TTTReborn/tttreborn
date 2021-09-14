@@ -5,6 +5,7 @@ PostRoundMenu {
     transition: all 2s ease-in-out;
     justify-content: center;
     text-align: center;
+    pointer-events:none;
     opacity: 0;
 
     .background-banner-panel {
