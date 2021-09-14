@@ -2,7 +2,6 @@ namespace TTTReborn.UI
 {
     public class Panel : Sandbox.UI.Panel
     {
-        protected bool _isEnabled = true;
         public bool Enabled
         {
             get => _isEnabled;
@@ -13,6 +12,7 @@ namespace TTTReborn.UI
                 SetClass("disabled", !_isEnabled);
             }
         }
+        protected bool _isEnabled = true;
 
         public Panel(Sandbox.UI.Panel parent = null) : base(parent)
         {
