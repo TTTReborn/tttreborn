@@ -7,11 +7,11 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public partial class DamageIndicator : TTTPanel
+    public partial class DamageIndicator : Panel
     {
         public static DamageIndicator Instance;
 
-        private float _maxDamageIndicatorDuration = 10f;
+        private float _maxDamageIndicatorDuration = 5f;
         private float _currentRemainingDamageIndicatorDuration = 0f;
         private TimeSince _timeSinceLastDamage = 0f;
         private float _lastDamage = 0f;
@@ -43,6 +43,7 @@ namespace TTTReborn.UI
 
             if (Local.Pawn is not TTTPlayer player)
             {
+                Style.Opacity = 0;
                 return;
             }
 
@@ -69,6 +70,7 @@ namespace TTTReborn.UI
 
                 Style.Display = DisplayMode.None;
             }
+
             Style.Dirty();
         }
     }

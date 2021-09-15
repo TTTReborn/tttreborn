@@ -83,7 +83,7 @@ namespace TTTReborn.Player
         {
             Menu menu = Menu.Instance;
 
-            if (menu == null || !menu.IsShowing || menu.ServerSettingsTabContent == null)
+            if (menu == null || !menu.Enabled || menu.ServerSettingsTabContent == null)
             {
                 return;
             }

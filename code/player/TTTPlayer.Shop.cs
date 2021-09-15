@@ -129,7 +129,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public static void ClientSendQuickshopUpdate()
         {
-            if (QuickShop.Instance?.IsShowing ?? false)
+            if (QuickShop.Instance?.Enabled ?? false)
             {
                 QuickShop.Instance.Update();
             }

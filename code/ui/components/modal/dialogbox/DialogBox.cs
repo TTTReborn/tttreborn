@@ -12,9 +12,9 @@ namespace TTTReborn.UI
 
         public readonly Drag HeaderPanel;
         public readonly Label TitleLabel;
-        public readonly Panel ContentPanel;
+        public readonly Sandbox.UI.Panel ContentPanel;
 
-        private Panel _footerPanel;
+        private Sandbox.UI.Panel _footerPanel;
         private Button _agreeButton;
         private Button _declineButton;
 

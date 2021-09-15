@@ -1,232 +1,100 @@
 QuickShop {
-    background-color: #000c;
-    border: 1px solid #1b1b1b;
-    border-radius: 8px;
-
-    font-family: Poppins;
-    min-width: 600px;
-    max-width: 800px;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    margin: auto;
     position: absolute;
-    flex-direction: column;
-
-    color: #fafafa;
-    font-family: Poppins;
-    font-weight: 500;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.15s ease-out;
     pointer-events: all;
+    text-align: center;
 
-    &.hide {
-        display: none;
-        pointer-events: none;
-    }
+    .quickshop-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease-out;
+        transform: scale(0.9);
 
-    Header {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        padding: 16px 30px;
-        background-color: #0007;
-        border-bottom: 1px solid #363636;
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-
-        Label {
-            &.title,
-            &.credits {
-                font-size: 20px;
-            }
-
-            &.dollarsign {
-                margin-top: 4px;
-            }
-        }
-    }
-
-    Content {
-        max-height: 400px;
-        padding: 16px;
-        text-align: center;
-
-        Panel.wrapper {
-            width:100%;
-            height: 100%;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-
-            ItemPanel {
-                flex-direction: column;
-                margin: 10px;
-                padding-right: 9px;
-
-                .priceholder {
-                    display: flex;
-                    justify-content: center;
-                    margin-top: 10px;
-
-                    Label.price {
-                        font-weight: 400;
-                        font-size: 16px;
-                        margin-right: 1px;
-                    }
-
-                    Label.dollarsign {
-                        font-size: 13px;
-                        height: 18px;
-                        width: 18px;
-                    }
-
-                }
-
-
-                Panel.icon {
-                    width: 80px;
-                    height: 80px;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: rgba(0, 0, 0, 0.7);
-                    border-radius: 4px;
-                    border: 1px solid #1b1b1b;
-                    transition: all 0.05s linear;
-
-                    background-size: cover;
-                    background-image-tint: white;
-                }
-
-                &:hover {
-                    cursor: pointer;
-
-                    Panel.icon {
-                        border: 1px solid #df2935;
-                    }
-
-                    &.active {
-                        cursor: default;
-
-                        Panel.icon {
-                            border: 2px solid #df2935;
-                        }
-                    }
-                }
-
-                &.active {
-                    Label.price {
-                        color: #df2935;
-                        font-weight: 600;
-                        margin-left: 0;
-                    }
-
-                    Panel.icon {
-                        border: 2px solid #df2935;
-                    }
-                }
-
-                &.disabled {
-                    Panel.icon, .priceholder {
-                        opacity: 0.6;
-                    }
-
-                    &:hover,
-                    &.active {
-                        cursor: default;
-                    }
-                }
-            }
-        }
-    }
-
-    Footer {
-        flex-direction: row;
-        justify-content: space-between;
-        background-color: #0007;
-        padding: 16px 30px;
-        border-top: 1px solid #363636;
-        border-bottom-left-radius: 7px;
-        border-bottom-right-radius: 7px;
-
-        Description {
-            flex-direction: column;
-
-            Label {
-                &.equipment {
-                    font-size: 20px;
-                    font-weight: 500;
-                }
-            }
+        &.pop-in {
+            transform: scale(1);
         }
 
-        BuyArea {
+        .credit-label {
+            margin: 25px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .item-panel {
+            max-width: 50%;
             display: flex;
-            font-size: 20px;
-            font-weight: 500;
-            margin-top: 5px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            margin: 25px;
+        }
 
-            .priceholder {
-                .price {
-                    margin-right: 15px;
-                    padding: 4px 0;
-                }
+        .item-description-label {
+            margin: 25px;
+            font-size: 18px;
+            transition: opacity 0.25s ease-out;
+            opacity: 0;
 
-                .dollarsign {
-                    margin-top: 8px;
-                }
-            }
-
-            Button {
-                &.buyButton {
-                    padding: 4px 50px;
-                    height: 38px;
-                    text-align: center;
-                    display: inline-block;
-                    border-radius: 2px;
-                    background-color: #df2935;
-                    opacity: 0.8;
-
-                    &:hover {
-                        cursor: pointer;
-                        opacity: 1;
-                    }
-                }
+            &.fade-in {
+                opacity: 1;
             }
         }
     }
 
-    ItemPanel {
-        margin-bottom: 25px;
+    &.fade-in {
+        opacity: 1;
+    }
+}
 
-        ImageWrapper {
-            transition: all 0.05s linear;
-            cursor: pointer;
+QuickShopItem {
+    opacity: 1;
+    flex-direction: column;
+    width: 90px;
+    height: 90px;
+    margin: 15px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: transform 0.1s ease-in;
+    box-shadow: 0 0 10px black;
+    white-space: nowrap;
+    overflow: auto;
 
-            &.active,
-            &:hover {
-                // border-width: 2px; This attribute is not supported yet
-                transform: scale(1.05);
-
-                Image {
-                    box-shadow: 0px 2px 5px 1px #0007;
-                    background-color: rgba(255, 255, 255, 0.6);
-                }
-            }
-
-            &.active {
-                cursor: default;
-            }
-        }
-
+    &:hover {
+        transform: scale(1.05);
+        cursor: pointer;
     }
 
-    .priceholder {
-        .dollarsign {
-            font-size: 16px;
-            width: 22px;
-            height: 22px;
-            background-color: #df2935;
-            text-align: center;
-            border-radius: 50%;
-            margin-right: 7px;
-        }
+    &:active {
+        transform: scale(1);
+    }
+
+    .item-icon {
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 100%;
+    }
+
+    .item-name-label {
+        position: absolute;
+        bottom: -28px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .item-price-label {
+        position: absolute;
+        top: -32px;
+        font-weight: bold;
+        font-size: 20px;
     }
 }

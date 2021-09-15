@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class RadarPoint : TTTPanel
+    public class RadarPoint : Panel
     {
         public Vector3 Position;
 
@@ -18,9 +18,13 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/items/perks/radar/RadarPoint.scss");
 
-            Hud.Current.RootPanel.AddChild(this);
+            RadarDisplay.Instance.AddChild(this);
 
-            DistanceLabel = Add.Label($"{(Local.Pawn as TTTPlayer)?.Position.Distance(Position):n0}", "distance");
+            AddClass("circular");
+
+            DistanceLabel = Add.Label();
+            DistanceLabel.AddClass("distance-label");
+            DistanceLabel.AddClass("text-shadow");
         }
 
         public override void Tick()
@@ -32,17 +36,28 @@ namespace TTTReborn.UI
                 return;
             }
 
-            DistanceLabel.Text = $"{player.Position.Distance(Position):n0}";
+            DistanceLabel.Text = $"{Globals.Utils.SourceUnitsToMeters(player.Position.Distance(Position)):n0}m";
 
             Vector3 screenPos = Position.ToScreen();
-            IsShowing = screenPos.z > 0f;
+            Enabled = screenPos.z > 0f;
 
-            if (IsShowing)
+            if (Enabled)
             {
                 Style.Left = Length.Fraction(screenPos.x);
                 Style.Top = Length.Fraction(screenPos.y);
                 Style.Dirty();
             }
+        }
+    }
+
+    public class RadarDisplay : Panel
+    {
+        public static RadarDisplay Instance { get; set; }
+
+        public RadarDisplay() : base()
+        {
+            Instance = this;
+            AddClass("fullscreen");
         }
     }
 }

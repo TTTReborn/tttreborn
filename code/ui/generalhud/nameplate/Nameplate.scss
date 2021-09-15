@@ -1,0 +1,33 @@
+Nameplate {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    transform: translateX(-50%) translateY(-50%);
+    transition: opacity 0.15s ease-out;
+    opacity: 0;
+
+    &.fade-in {
+        transition: opacity 0.15s ease-out;
+        opacity: 1;
+    }
+
+    .label-holder {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-weight: 600;
+
+        .name-holder {
+            justify-content: center;
+            width: 100%;
+
+            .name {
+                font-size: 14px;
+            }
+        }
+
+        .damage-indicator {
+            font-size: 12px;
+        }
+    }
+}

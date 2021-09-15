@@ -10,6 +10,7 @@ namespace TTTReborn.Items
     [Library("ttt_radar")]
     public partial class Radar : TTTCountdownPerk, IBuyableItem
     {
+        private Vector3 RADARPOINT_UI_OFFSET = Vector3.Up * 45;
         public override float Countdown { get; } = 20f;
 
         private Vector3[] _lastPositions;
@@ -55,7 +56,7 @@ namespace TTTReborn.Items
 
                 foreach (Vector3 vector3 in _lastPositions)
                 {
-                    _cachedPoints.Add(new RadarPoint(vector3));
+                    _cachedPoints.Add(new RadarPoint(vector3 + RADARPOINT_UI_OFFSET));
                 }
             }
         }

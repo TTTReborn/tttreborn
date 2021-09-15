@@ -7,9 +7,10 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
-        private const float MAX_HINT_DISTANCE = 100;
+        private const float MAX_HINT_DISTANCE = 2048;
 
-        private TTTPanel _currentHint;
+        private EntityHintPanel _currentHint;
+        private IEntityHint _currentTarget;
 
         private void TickEntityHints()
         {
@@ -21,29 +22,39 @@ namespace TTTReborn.Player
 
             IEntityHint target = player.IsLookingAtType<IEntityHint>(MAX_HINT_DISTANCE);
 
-            //If we're looking at a valid target and we currently have a hint displayed, double check that the entity still wants us to hint.
             if (target != null && _currentHint != null)
             {
-                if (!target.CanHint(player))
+                _currentHint.UpdateHintPanel();
+
+                if (!target.CanHint(player) || target != _currentTarget)
                 {
                     DeleteHint();
                     return;
                 }
             }
 
-            //If we are looking at a target and don't have a current hint, let's see if we can make one.
+            // If we are looking at a target and don't have a current hint, let's see if we can make one.
             if (target != null)
             {
                 if (target.CanHint(player) && _currentHint == null)
                 {
-                    _currentHint = target.DisplayHint(player); //Retrieves panel information from entity
+                    _currentHint = target.DisplayHint(player);
                     _currentHint.Parent = Hud.Current.RootPanel;
-                    _currentHint.IsShowing = true;
+                    _currentHint.Enabled = true;
+                    _currentHint.UpdateHintPanel();
+
+                    _currentTarget = target;
                 }
             }
             else
             {
-                //If no target, make sure we don't have a hint anymore.
+                // If we just looked away, disable and update the panel
+                if (_currentHint != null)
+                {
+                    _currentHint.Enabled = false;
+                    _currentHint.UpdateHintPanel();
+                }
+
                 DeleteHint();
             }
         }
@@ -52,6 +63,8 @@ namespace TTTReborn.Player
         {
             _currentHint?.Delete();
             _currentHint = null;
+
+            _currentTarget = null;
         }
     }
 }

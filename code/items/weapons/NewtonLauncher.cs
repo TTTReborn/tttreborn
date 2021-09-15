@@ -109,18 +109,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            // TODO: Give users a way to change their crosshair.
-            CrosshairPanel = new Crosshair().SetupCrosshair(new Crosshair.Properties(true,
-                false,
-                false,
-                10,
-                2,
-                0,
-                0,
-                NEWTON_CHARGE_TIME,
-                Color.Green));
-            CrosshairPanel.Parent = Local.Hud;
-            CrosshairPanel.AddClass(ClassInfo.Name);
+            // TODO: Create a special HUD element for Newton Launcher
         }
 
         public override void Simulate(Client owner)

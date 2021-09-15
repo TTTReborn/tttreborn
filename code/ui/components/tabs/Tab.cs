@@ -5,7 +5,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class Tab : TTTPanel
+    public partial class Tab : Panel
     {
         public readonly Label TitleLabel;
 
@@ -16,7 +16,7 @@ namespace TTTReborn.UI
 
         private readonly Tabs _parentTabs;
 
-        public Tab(Panel parent, Tabs parentTabs, string title, Action<PanelContent> createContent, object value = null, Action onSelectTab = null) : base(parent)
+        public Tab(Sandbox.UI.Panel parent, Tabs parentTabs, string title, Action<PanelContent> createContent, object value = null, Action onSelectTab = null) : base(parent)
         {
             Parent = parent;
             _parentTabs = parentTabs;

@@ -1,0 +1,155 @@
+$primary: #282828;
+$secondary: #1e1e1e;
+$alive: #009e07;
+$missing: #c6793a;
+$dead: #e12c3b;
+$spectator: #fcdb38;
+$info: #ffae00;
+
+.panel
+{
+    font-family: Poppins;
+    font-weight: 400;
+    color: #fafafa;
+    letter-spacing: 0.5px;
+}
+
+.window {
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: all;
+
+    .header {
+        width: 100%;
+        height: 50px;
+        top: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        font-weight: 500;
+    }
+
+    .content {
+        flex-grow: 1;
+    }
+
+    .footer {
+        width: 100%;
+        min-height: 40px;
+        bottom: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+    }
+}
+
+.disabled {
+    display: none;
+    pointer-events: none;
+}
+
+.rounded {
+    border-radius: 8px;
+}
+
+.rounded-top-left {
+    border-top-left-radius: 8px;
+}
+
+.rounded-bottom-left {
+    border-bottom-left-radius: 8px;
+}
+
+.rounded-top {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.rounded-bottom {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.circular {
+    border-radius: 50%;
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+
+.opacity-heavy {
+    opacity: 0.9;
+}
+
+.opacity-medium {
+    opacity: 0.75;
+}
+
+.centered {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.centered-horizontal {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.button {
+    cursor: pointer;
+}
+
+.text-shadow {
+    text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+}
+
+.box-shadow {
+    box-shadow: 0px 0px 10px black;
+}
+
+.fullscreen {
+    width: 100%;
+    height: 100%;
+}
+
+.text-color-alive {
+    color: $alive;
+}
+
+.text-color-spectator {
+    color: $spectator;
+}
+
+.text-color-info {
+    color: $info;
+}
+
+.background-color-primary {
+    background-color: $primary;
+}
+
+.background-color-alive {
+    background-color: $alive;
+}
+
+.background-color-spectator {
+    background-color: $spectator;
+}
+
+.background-color-secondary {
+    background-color: $secondary;
+}
+
+.border-color-alive {
+    border-color: $alive;
+}
+
+.border-color-spectator {
+    border-color: $spectator;
+}

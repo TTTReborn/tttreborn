@@ -5,6 +5,6 @@ namespace TTTReborn.UI
     public interface IEntityHint
     {
         bool CanHint(TTTPlayer client);
-        TTTPanel DisplayHint(TTTPlayer client);
+        EntityHintPanel DisplayHint(TTTPlayer client);
     }
 }

@@ -8,7 +8,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class Effects : TTTPanel
+    public class Effects : Panel
     {
         private readonly List<Effect> _effectList = new();
 
