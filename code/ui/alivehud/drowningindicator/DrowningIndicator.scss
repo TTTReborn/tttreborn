@@ -1,37 +1,29 @@
 DrowningIndicator {
-    background-color: #000c;
-    border: 1px solid #1b1b1b;
-    border-radius: 4px;
-    margin: auto;
-    color: #fafafa;
-    min-width: 300px;
-
     position: absolute;
-    display: flex;
-    flex-direction: column;
+    width: 200px;
+    height: 30px;
     left: 50%;
-    transform: translateX(-50%);
-    bottom: 30px;
+    bottom: 100px;
+    transform: translateX(-50%) translateY(-50%);
+    transition: opacity 1s ease-out;
+    justify-content: center;
+    opacity: 0;
 
-    font-family: Poppins;
-    font-weight: 500;
-    padding: 10px;
-
-    &.hide {
-        display: none;
+    &.fade-in {
+        opacity: 1;
     }
 
-    BarPanel {
-        padding: 3px;
-        border-radius: 2px;
-        white-space: nowrap;
+    .drowning-bar {
+        width: 200px;
+        height: 100%;
+        background-color: dodgerblue;
+    }
 
-        Label {
-            font-size: 18px;
-            font-weight: 500;
-            margin-left: 16px;
-        }
-
-        background-color: #3189ec;
+    .drowning-label {
+        position: absolute;
+        align-self: center;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
     }
 }

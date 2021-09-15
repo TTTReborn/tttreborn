@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
 
@@ -11,7 +12,8 @@ namespace TTTReborn.UI
     {
         public static DrowningIndicator Instance;
 
-        private BarPanel _drowningBar;
+        private Panel _drowningBar;
+        private Label _drowningLabel;
 
         public DrowningIndicator()
         {
@@ -19,31 +21,38 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/alivehud/drowningindicator/DrowningIndicator.scss");
 
-            _drowningBar = new(this, "100", "drowningbar");
+            AddClass("text-shadow");
 
-            Enabled = false;
+            _drowningBar = new(this);
+            _drowningBar.AddClass("drowning-bar");
+            _drowningBar.AddClass("center-horizontal");
+            _drowningBar.AddClass("rounded");
+
+            _drowningLabel = Add.Label();
+            _drowningLabel.AddClass("drowning-label");
+            _drowningLabel.Text = "O₂";
+
+            Enabled = true;
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player || player.Controller is not DefaultWalkController defaultWalkController)
+            if (Local.Pawn is not TTTPlayer player || player.Controller is not DefaultWalkController playerController)
             {
                 return;
             }
 
-            if (defaultWalkController.IsUnderwater)
+            float breathRemaining = playerController.UnderwaterBreathSeconds / DefaultWalkController.MAX_UNDERWATER_BREATH_SECONDS;
+
+            if (breathRemaining < 1f)
             {
-                float leftTimeUnderwater = MathF.Max(defaultWalkController.DurationUnderwaterUntilDamage - defaultWalkController.TimeSinceUnderwater, 0f);
-
-                _drowningBar.TextLabel.Text = $"{leftTimeUnderwater:n1}";
-
-                _drowningBar.Style.Width = Length.Percent(leftTimeUnderwater / defaultWalkController.DurationUnderwaterUntilDamage * 100f);
+                _drowningBar.Style.Width = Length.Percent(breathRemaining * 100f);
                 _drowningBar.Style.Dirty();
             }
 
-            Enabled = defaultWalkController.IsUnderwater;
+            SetClass("fade-in", breathRemaining < 1f);
         }
     }
 }

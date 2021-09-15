@@ -25,6 +25,8 @@ namespace TTTReborn.Player
 {
     public partial class DefaultWalkController : WalkController
     {
+        public const float MAX_UNDERWATER_BREATH_SECONDS = 10f;
+
         public static bool IsSprintEnabled = false;
 
         public float MaxSprintSpeed = 300f;
@@ -33,9 +35,8 @@ namespace TTTReborn.Player
         public float FallDamageVelocity = 550f;
         public float FallDamageScale = 0.25f;
         public bool IsUnderwater = false;
-        public float DurationUnderwaterUntilDamage = 15f;
+        public float UnderwaterBreathSeconds = 10f;
         public float DrownDamagePerSecond = 10f;
-        public TimeSince TimeSinceUnderwater = 0f;
 
         private float _fallVelocity;
 
@@ -53,6 +54,7 @@ namespace TTTReborn.Player
                 return;
             }
 
+            #region Sprinting
             SprintSpeed = DefaultSpeed;
 
             if (IsSprintEnabled && player.GroundEntity.IsValid())
@@ -68,14 +70,14 @@ namespace TTTReborn.Player
 
                 SprintSpeed = (MaxSprintSpeed - DefaultSpeed) / player.MaxStamina * player.Stamina + DefaultSpeed;
             }
+            #endregion
 
+            #region Drowning
             IsUnderwater = Pawn.WaterLevel.Fraction == 1f;
 
-            if (!IsUnderwater)
-            {
-                TimeSinceUnderwater = 0f;
-            }
-            else if (Host.IsServer && TimeSinceUnderwater > DurationUnderwaterUntilDamage)
+            UnderwaterBreathSeconds = Math.Clamp(UnderwaterBreathSeconds + Time.Delta * (IsUnderwater ? -1f : 1f), 0f, MAX_UNDERWATER_BREATH_SECONDS);
+
+            if (Host.IsServer && UnderwaterBreathSeconds <= 0f)
             {
                 using (Prediction.Off())
                 {
@@ -91,6 +93,7 @@ namespace TTTReborn.Player
                     Pawn.TakeDamage(damageInfo);
                 }
             }
+            #endregion
 
             OnPreTickMove();
 
