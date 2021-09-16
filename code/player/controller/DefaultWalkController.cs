@@ -77,7 +77,7 @@ namespace TTTReborn.Player
 
             UnderwaterBreathSeconds = Math.Clamp(UnderwaterBreathSeconds + Time.Delta * (IsUnderwater ? -1f : 1f), 0f, MAX_UNDERWATER_BREATH_SECONDS);
 
-            if (Host.IsServer && UnderwaterBreathSeconds <= 0f)
+            if (Host.IsServer && UnderwaterBreathSeconds == 0f)
             {
                 using (Prediction.Off())
                 {
