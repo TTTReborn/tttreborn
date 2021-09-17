@@ -173,7 +173,7 @@ namespace TTTReborn.Globals
         {
             rootPanel ??= UI.Hud.Current.RootPanel;
 
-            T highestPanel = default(T);
+            T highestPanel = default;
             int? zindex = null;
 
             foreach (Panel loopPanel in rootPanel.Children)
