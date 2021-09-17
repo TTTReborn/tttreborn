@@ -1,13 +1,14 @@
 using System;
 
+using Hammer;
+
 using Sandbox;
 
-using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
     [Library("ttt_newton_launcher")]
-    [Hammer.EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
+    [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
     partial class NewtonLauncher : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
