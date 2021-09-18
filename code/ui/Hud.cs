@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 
@@ -11,8 +9,8 @@ namespace TTTReborn.UI
     {
         public static Hud Current { set; get; }
 
-        public GeneralHud GeneralHudPanel;
         public AliveHud AliveHudPanel;
+        public GeneralHud GeneralHudPanel;
 
         public Hud()
         {
@@ -21,10 +19,9 @@ namespace TTTReborn.UI
                 return;
             }
 
+            AliveHudPanel = RootPanel.AddChild<AliveHud>();
+            GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
             Current = this;
-
-            GeneralHudPanel = new GeneralHud(RootPanel);
-            AliveHudPanel = new AliveHud(RootPanel);
         }
 
         [Event.Hotload]
@@ -51,55 +48,59 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Current.AliveHudPanel.Enabled = true;
+            AliveHudPanel.Enabled = true;
+            GeneralHudPanel.GetCrosshair().Enabled = true;
         }
 
         [Event("tttreborn.player.died")]
-        private void OnPlayerDied(TTTPlayer player)
+        private void OnPlayerDied(TTTPlayer deadPlayer)
         {
-            if (player != Local.Client.Pawn)
+            if (deadPlayer != Local.Client.Pawn)
             {
                 return;
             }
 
-            Current.AliveHudPanel.Enabled = false;
+            AliveHudPanel.Enabled = false;
+            GeneralHudPanel.GetCrosshair().Enabled = false;
         }
 
         public class GeneralHud : Panel
         {
-            public GeneralHud(Sandbox.UI.Panel parent) : base(parent)
+            public GeneralHud() : base()
             {
-                Parent = parent;
+                AddClass("fullscreen");
+                AddChild<Crosshair>();
+                AddChild<RadarDisplay>();
+                AddChild<PlayerRoleDisplay>();
+                AddChild<PlayerInfoDisplay>();
+                AddChild<InventoryWrapper>();
+                AddChild<ChatBox>();
 
-                Parent.AddChild<RadarDisplay>();
-                Parent.AddChild<Crosshair>();
-                Parent.AddChild<PlayerRoleDisplay>();
-                Parent.AddChild<PlayerInfoDisplay>();
-                Parent.AddChild<InventoryWrapper>();
-                Parent.AddChild<ChatBox>();
+                AddChild<VoiceChatDisplay>();
+                AddChild<GameTimerDisplay>();
 
-                Parent.AddChild<VoiceChatDisplay>();
-                Parent.AddChild<GameTimerDisplay>();
+                AddChild<VoiceList>();
 
-                Parent.AddChild<VoiceList>();
-
-                Parent.AddChild<InfoFeed>();
-                Parent.AddChild<InspectMenu>();
-                Parent.AddChild<PostRoundMenu>();
-                Parent.AddChild<Scoreboard>();
-                Parent.AddChild<Menu.Menu>();
+                AddChild<InfoFeed>();
+                AddChild<InspectMenu>();
+                AddChild<PostRoundMenu>();
+                AddChild<Scoreboard>();
+                AddChild<Menu.Menu>();
+            }
+            public Panel GetCrosshair()
+            {
+                return (Panel) GetChild(0);
             }
         }
 
         public class AliveHud : Panel
         {
-            public AliveHud(Sandbox.UI.Panel parent) : base(parent)
+            public AliveHud() : base()
             {
-                Parent = parent;
-
-                Parent.AddChild<DrowningIndicator>();
-                Parent.AddChild<QuickShop>();
-                Parent.AddChild<DamageIndicator>();
+                AddClass("fullscreen");
+                AddChild<DrowningIndicator>();
+                AddChild<QuickShop>();
+                AddChild<DamageIndicator>();
             }
         }
     }
