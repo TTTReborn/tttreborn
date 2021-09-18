@@ -4,6 +4,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Player.Camera;
+using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -41,9 +42,26 @@ namespace TTTReborn.Player
                 return;
             }
 
+            Crosshair.Current.Enabled = false;
+            DrowningIndicator.Instance.Enabled = false;
+
             if (player.IsSpectatingPlayer && player.CurrentPlayer == deadPlayer)
             {
                 player.UpdateObservatedPlayer();
+            }
+        }
+
+        [Event("tttreborn.player.spawned")]
+        private void OnPlayerSpawned(TTTPlayer spawnedPlayer)
+        {
+            if (!Host.IsClient)
+            {
+                return;
+            }
+
+            if (!spawnedPlayer.IsSpectator)
+            {
+                Crosshair.Current.Enabled = true;
             }
         }
 
