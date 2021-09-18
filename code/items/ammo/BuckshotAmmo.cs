@@ -1,9 +1,11 @@
+using Hammer;
+
 using Sandbox;
 
 namespace TTTReborn.Items
 {
     [Library("ttt_ammo_buckshot")]
-    [Hammer.EditorModel("models/ammo/ammo_buckshot.vmdl")]
+    [EditorModel("models/ammo/ammo_buckshot.vmdl")]
     partial class BuckshotAmmo : TTTAmmo
     {
         public override string Name => "buckshot";

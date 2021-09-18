@@ -19,7 +19,7 @@ namespace TTTReborn.Roles
         }
     }
 
-    [RoleAttribute("Base")]
+    [Role("Base")]
     public abstract class TTTRole
     {
         public readonly string Name;
@@ -101,7 +101,7 @@ namespace TTTReborn.Roles
         {
             Utils.CreateRecursiveDirectories(fileName);
 
-            FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize<Shop>(Shop, new JsonSerializerOptions
+            FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize(Shop, new JsonSerializerOptions
             {
                 WriteIndented = true
             }));

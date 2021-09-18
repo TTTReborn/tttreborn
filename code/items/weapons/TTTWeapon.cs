@@ -1,9 +1,9 @@
 using System;
 
 using Sandbox;
+using Sandbox.ScreenShake;
 
 using TTTReborn.Player;
-using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
@@ -276,7 +276,7 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                new Sandbox.ScreenShake.Perlin();
+                new Perlin();
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);

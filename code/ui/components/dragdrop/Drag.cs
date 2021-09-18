@@ -132,10 +132,11 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Vector2 position = new Vector2(
-                (Mouse.Position.x - _draggingMouseStartPosition.x) + _draggingStartPosition.x,
-                (Mouse.Position.y - _draggingMouseStartPosition.y) + _draggingStartPosition.y
-            );
+            Vector2 position = new()
+            {
+                x = (Mouse.Position.x - _draggingMouseStartPosition.x) + _draggingStartPosition.x,
+                y = (Mouse.Position.y - _draggingMouseStartPosition.y) + _draggingStartPosition.y
+            };
 
             float screenWidth = Screen.Width;
             float screenHeight = Screen.Height;
@@ -152,8 +153,8 @@ namespace TTTReborn.UI
             {
                 Matrix4x4 matrix4X4 = matrix.Value.Numerics;
 
-                position.x = position.x - matrix4X4.M41;
-                position.y = position.y - matrix4X4.M42;
+                position.x -= matrix4X4.M41;
+                position.y -= matrix4X4.M42;
             }
 
             if (IsFreeDraggable)

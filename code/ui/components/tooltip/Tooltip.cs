@@ -68,7 +68,7 @@ namespace Sandbox.UI
                     return;
                 }
 
-                Tooltip tooltip = new Tooltip(self);
+                Tooltip tooltip = new(self);
                 tooltip.SetText(text);
 
                 if (!string.IsNullOrEmpty(className))
