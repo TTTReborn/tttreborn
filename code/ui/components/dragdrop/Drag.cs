@@ -134,8 +134,8 @@ namespace TTTReborn.UI
 
             Vector2 position = new()
             {
-                x = (Mouse.Position.x - _draggingMouseStartPosition.x) +_draggingStartPosition.x,
-                y = (Mouse.Position.y - _draggingMouseStartPosition.y) +_draggingStartPosition.y
+                x = (Mouse.Position.x - _draggingMouseStartPosition.x) + _draggingStartPosition.x,
+                y = (Mouse.Position.y - _draggingMouseStartPosition.y) + _draggingStartPosition.y
             };
 
             float screenWidth = Screen.Width;
