@@ -4,6 +4,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.Settings;
 
 namespace TTTReborn.Rounds
 {
@@ -12,7 +13,7 @@ namespace TTTReborn.Rounds
         public override string RoundName => "Post";
         public override int RoundDuration
         {
-            get => Settings.ServerSettings.Instance.Round.PostRoundTime;
+            get => ServerSettings.Instance.Round.PostRoundTime;
         }
 
         protected override void OnTimeUp()
