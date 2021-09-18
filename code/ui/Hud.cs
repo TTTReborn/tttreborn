@@ -87,6 +87,7 @@ namespace TTTReborn.UI
                 AddChild<Scoreboard>();
                 AddChild<Menu.Menu>();
             }
+
             public Panel GetCrosshair()
             {
                 return (Panel) GetChild(0);
