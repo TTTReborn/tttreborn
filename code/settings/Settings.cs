@@ -100,11 +100,11 @@ namespace TTTReborn.Settings
         {
             if (Host.IsClient)
             {
-                SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
+                SettingFunctions.SaveSettings(ClientSettings.Instance);
             }
             else
             {
-                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+                SettingFunctions.SaveSettings(ServerSettings.Instance);
             }
         }
     }
@@ -115,17 +115,17 @@ namespace TTTReborn.Settings
 
         public static string GetJSON<T>(T settings, bool compressed = false) where T : Settings
         {
-            JsonSerializerOptions options = new JsonSerializerOptions
+            JsonSerializerOptions options = new()
             {
                 WriteIndented = !compressed
             };
 
-            return JsonSerializer.Serialize<T>(settings, options);
+            return JsonSerializer.Serialize(settings, options);
         }
 
         public static T GetSettings<T>(string json) where T : Settings
         {
-            JsonSerializerOptions options = new JsonSerializerOptions
+            JsonSerializerOptions options = new()
             {
                 WriteIndented = true
             };
@@ -208,7 +208,7 @@ namespace TTTReborn.Settings
 
             settings.JsonType = settingsName;
 
-            FileSystem.Data.WriteAllText(path + fileName + SETTINGS_FILE_EXTENSION, GetJSON<T>(settings));
+            FileSystem.Data.WriteAllText(path + fileName + SETTINGS_FILE_EXTENSION, GetJSON(settings));
         }
     }
 }
