@@ -44,7 +44,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            float breathRemaining = playerController.UnderwaterBreathSeconds / DefaultWalkController.MAX_UNDERWATER_BREATH_SECONDS;
+            float breathRemaining = playerController.Breath / DefaultWalkController.MAX_UNDERWATER_BREATH_TIME;
 
             if (breathRemaining < 1f)
             {

@@ -35,11 +35,6 @@ namespace TTTReborn.Globals
 
             player.SetRole(new NoneRole());
 
-            if (player.Controller is DefaultWalkController playerController)
-            {
-                playerController.UnderwaterBreathSeconds = DefaultWalkController.MAX_UNDERWATER_BREATH_SECONDS;
-            }
-
             Event.Run("tttreborn.player.spawned", player);
         }
 

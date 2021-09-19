@@ -25,7 +25,7 @@ namespace TTTReborn.Player
 {
     public partial class DefaultWalkController : WalkController
     {
-        public const float MAX_UNDERWATER_BREATH_SECONDS = 10f;
+        public const float MAX_UNDERWATER_BREATH_TIME = 10f;
 
         public static bool IsSprintEnabled = false;
 
@@ -35,8 +35,10 @@ namespace TTTReborn.Player
         public float FallDamageVelocity = 550f;
         public float FallDamageScale = 0.25f;
         public bool IsUnderwater = false;
-        public float UnderwaterBreathSeconds = 10f;
         public float DrownDamagePerSecond = 10f;
+
+        private float _breath;
+        [Net] public float Breath { get; set; }
 
         private float _fallVelocity;
 
@@ -75,9 +77,9 @@ namespace TTTReborn.Player
             #region Drowning
             IsUnderwater = Pawn.WaterLevel.Fraction == 1f;
 
-            UnderwaterBreathSeconds = Math.Clamp(UnderwaterBreathSeconds + Time.Delta * (IsUnderwater ? -1f : 1f), 0f, MAX_UNDERWATER_BREATH_SECONDS);
+            Breath = Math.Clamp(Breath + Time.Delta * (IsUnderwater ? -1f : 1f), 0f, MAX_UNDERWATER_BREATH_TIME);
 
-            if (Host.IsServer && UnderwaterBreathSeconds == 0f)
+            if (Host.IsServer && Breath == 0f)
             {
                 using (Prediction.Off())
                 {
