@@ -109,11 +109,6 @@ namespace TTTReborn.Player
                 MakeSpectator(false);
             }
 
-            if (Controller is DefaultWalkController defaultWalkController)
-            {
-                defaultWalkController.Breath = DefaultWalkController.MAX_UNDERWATER_BREATH_TIME;
-            }
-
             RemovePlayerCorpse();
             Inventory.DeleteContents();
             Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
