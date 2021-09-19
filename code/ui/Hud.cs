@@ -48,8 +48,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudPanel.Enabled = true;
-            GeneralHudPanel.GetCrosshair().Enabled = true;
+            AliveHudPanel.SetChildrenEnabled(true);
         }
 
         [Event("tttreborn.player.died")]
@@ -60,8 +59,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudPanel.Enabled = false;
-            GeneralHudPanel.GetCrosshair().Enabled = false;
+            AliveHudPanel.SetChildrenEnabled(false);
         }
 
         public class GeneralHud : Panel
@@ -69,7 +67,6 @@ namespace TTTReborn.UI
             public GeneralHud() : base()
             {
                 AddClass("fullscreen");
-                AddChild<Crosshair>();
                 AddChild<RadarDisplay>();
                 AddChild<PlayerRoleDisplay>();
                 AddChild<PlayerInfoDisplay>();
@@ -87,11 +84,6 @@ namespace TTTReborn.UI
                 AddChild<Scoreboard>();
                 AddChild<Menu.Menu>();
             }
-
-            public Panel GetCrosshair()
-            {
-                return (Panel) GetChild(0);
-            }
         }
 
         public class AliveHud : Panel
@@ -99,6 +91,7 @@ namespace TTTReborn.UI
             public AliveHud() : base()
             {
                 AddClass("fullscreen");
+                AddChild<Crosshair>();
                 AddChild<DrowningIndicator>();
                 AddChild<QuickShop>();
                 AddChild<DamageIndicator>();
