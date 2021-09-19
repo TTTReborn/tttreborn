@@ -35,7 +35,7 @@ namespace TTTReborn.UI
 
                 if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
                 {
-                    hud.AliveHudPanel.Enabled = true;
+                    hud.AliveHudPanel.SetChildrenEnabled(true);
                 }
             }
         }

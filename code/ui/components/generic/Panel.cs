@@ -25,9 +25,9 @@ namespace TTTReborn.UI
             SetClass("panel", true);
         }
 
-        public void SetChildrenEnabled(bool status)
+        public void SetChildrenEnabled(bool value)
         {
-            Children.ToList().ForEach(child => (child as Panel).Enabled = status);
+            Children.OfType<Panel>().ToList().ForEach(child => child.Enabled = value);
         }
     }
 }
