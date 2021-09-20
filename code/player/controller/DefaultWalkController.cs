@@ -73,7 +73,7 @@ namespace TTTReborn.Player
 
                     if (Input.Pressed(InputButton.Jump))
                     {
-                        Stamina = Stamina = MathF.Max(Stamina - STAMINA_LOSS_PER_SPRINT_JUMP, 0f);
+                        Stamina = MathF.Max(Stamina - STAMINA_LOSS_PER_SPRINT_JUMP, 0f);
                     }
                 }
                 else
