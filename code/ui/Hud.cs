@@ -92,10 +92,10 @@ namespace TTTReborn.UI
             {
                 AddClass("fullscreen");
 
-                Parent.AddChild<BreathIndicator>();
-                Parent.AddChild<StaminaIndicator>();
-                Parent.AddChild<QuickShop>();
-                Parent.AddChild<DamageIndicator>();
+                AddChild<BreathIndicator>();
+                AddChild<StaminaIndicator>();
+                AddChild<QuickShop>();
+                AddChild<DamageIndicator>();
             }
         }
     }
