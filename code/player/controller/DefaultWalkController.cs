@@ -41,7 +41,7 @@ namespace TTTReborn.Player
         public const float BREATH_GAIN_PER_SECOND = 50f;
         public const float DROWN_DAMAGE_PER_SECOND = 20f;
 
-        [Net] public float Stamina { get; set; } = 100f;
+        [Net, Predicted] public float Stamina { get; set; } = 100f;
         [Net] public float Breath { get; set; } = 100f;
         public bool IsUnderwater { get; set; } = false;
 
