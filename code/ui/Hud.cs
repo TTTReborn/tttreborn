@@ -97,7 +97,8 @@ namespace TTTReborn.UI
             {
                 Parent = parent;
 
-                Parent.AddChild<DrowningIndicator>();
+                Parent.AddChild<BreathIndicator>();
+                Parent.AddChild<StaminaIndicator>();
                 Parent.AddChild<QuickShop>();
                 Parent.AddChild<DamageIndicator>();
             }
