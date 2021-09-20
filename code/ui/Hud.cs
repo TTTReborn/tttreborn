@@ -9,8 +9,8 @@ namespace TTTReborn.UI
     {
         public static Hud Current { set; get; }
 
-        public AliveHud AliveHudPanel;
         public GeneralHud GeneralHudPanel;
+        public AliveHud AliveHudPanel;
 
         public Hud()
         {
