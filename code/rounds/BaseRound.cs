@@ -17,13 +17,7 @@ namespace TTTReborn.Rounds
 
         public float RoundEndTime { get; set; }
 
-        public float TimeLeft
-        {
-            get
-            {
-                return RoundEndTime - Sandbox.Time.Now;
-            }
-        }
+        public float TimeLeft => RoundEndTime - Time.Now;
 
         [Net]
         public string TimeLeftFormatted { get; set; }
@@ -32,7 +26,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer && RoundDuration > 0)
             {
-                RoundEndTime = Sandbox.Time.Now + RoundDuration;
+                RoundEndTime = Time.Now + RoundDuration;
                 TimeLeftFormatted = Globals.Utils.TimerString(TimeLeft);
             }
 
@@ -91,7 +85,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                if (RoundEndTime > 0 && Sandbox.Time.Now >= RoundEndTime)
+                if (RoundEndTime > 0 && Time.Now >= RoundEndTime)
                 {
                     RoundEndTime = 0f;
 

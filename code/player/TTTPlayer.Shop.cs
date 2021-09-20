@@ -137,7 +137,7 @@ namespace TTTReborn.Player
 
         public void ServerUpdateShop()
         {
-            ClientUpdateShop(To.Single(this), JsonSerializer.Serialize<Shop>(Shop));
+            ClientUpdateShop(To.Single(this), JsonSerializer.Serialize(Shop));
         }
 
         [ClientRpc]

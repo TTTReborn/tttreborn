@@ -100,7 +100,7 @@ namespace TTTReborn.Player
 
         private void BecomePlayerCorpseOnServer(Vector3 force, int forceBone)
         {
-            PlayerCorpse corpse = new PlayerCorpse
+            PlayerCorpse corpse = new()
             {
                 Position = Position,
                 Rotation = Rotation

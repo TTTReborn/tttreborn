@@ -4,6 +4,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Roles;
+using TTTReborn.Rounds;
 using TTTReborn.Teams;
 using TTTReborn.UI;
 
@@ -81,7 +82,7 @@ namespace TTTReborn.Player
 
         public void SyncMIA(TTTPlayer player = null)
         {
-            if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
+            if (Gamemode.Game.Instance.Round is not InProgressRound)
             {
                 return;
             }

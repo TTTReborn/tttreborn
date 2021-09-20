@@ -91,9 +91,11 @@ namespace TTTReborn.UI
             public AliveHud()
             {
                 AddClass("fullscreen");
-                AddChild<DrowningIndicator>();
-                AddChild<QuickShop>();
-                AddChild<Crosshair>();
+
+                Parent.AddChild<BreathIndicator>();
+                Parent.AddChild<StaminaIndicator>();
+                Parent.AddChild<QuickShop>();
+                Parent.AddChild<DamageIndicator>();
             }
         }
     }

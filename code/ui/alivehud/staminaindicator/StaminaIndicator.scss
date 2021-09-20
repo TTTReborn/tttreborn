@@ -1,0 +1,29 @@
+StaminaIndicator {
+    position: absolute;
+    width: 200px;
+    height: 25px;
+    left: 50%;
+    bottom: 100px;
+    transform: translateX(-50%) translateY(-50%);
+    transition: opacity 1s ease-out;
+    justify-content: center;
+    opacity: 0;
+
+    &.fade-in {
+        opacity: 1;
+    }
+
+    .stamina-bar {
+        width: 200px;
+        height: 100%;
+        background-color: cadetblue;
+    }
+
+    .stamina-label {
+        position: absolute;
+        align-self: center;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+    }
+}
