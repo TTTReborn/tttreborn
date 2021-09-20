@@ -96,7 +96,7 @@ namespace TTTReborn.Player
             {
                 Breath = MathF.Min(Breath + BREATH_GAIN_PER_SECOND * Time.Delta, MAX_BREATH);
             }
-            
+
             if (Host.IsServer && Breath == 0f)
             {
                 using (Prediction.Off())
