@@ -10,12 +10,6 @@ namespace TTTReborn.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;
 
-        [Net, Predicted]
-        public float Stamina { get; set; } = 100f;
-
-        [Net]
-        public float MaxStamina { get; set; } = 100f;
-
         [Net, Local]
         public int Credits { get; set; } = 0;
 
@@ -28,6 +22,12 @@ namespace TTTReborn.Player
         {
             get => (Inventory) base.Inventory;
             private init => base.Inventory = value;
+        }
+
+        public new DefaultWalkController Controller
+        {
+            get => (DefaultWalkController) base.Controller;
+            private set => base.Controller = value;
         }
 
         private DamageInfo _lastDamageInfo;
@@ -82,7 +82,6 @@ namespace TTTReborn.Player
             EnableShadowInFirstPerson = true;
 
             Credits = 0;
-            Stamina = MaxStamina;
 
             SetRole(new NoneRole());
 
