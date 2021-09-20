@@ -19,8 +19,8 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudPanel = RootPanel.AddChild<AliveHud>();
             GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
+            AliveHudPanel = RootPanel.AddChild<AliveHud>();
             Current = this;
         }
 
@@ -35,7 +35,7 @@ namespace TTTReborn.UI
 
                 if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
                 {
-                    hud.AliveHudPanel.SetChildrenEnabled(true);
+                    hud.AliveHudPanel.Enabled = true;
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudPanel.SetChildrenEnabled(true);
+            AliveHudPanel.Enabled = true;
         }
 
         [Event("tttreborn.player.died")]
@@ -59,12 +59,12 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudPanel.SetChildrenEnabled(false);
+            AliveHudPanel.Enabled = false;
         }
 
         public class GeneralHud : Panel
         {
-            public GeneralHud() : base()
+            public GeneralHud()
             {
                 AddClass("fullscreen");
                 AddChild<RadarDisplay>();
@@ -88,13 +88,12 @@ namespace TTTReborn.UI
 
         public class AliveHud : Panel
         {
-            public AliveHud() : base()
+            public AliveHud()
             {
                 AddClass("fullscreen");
-                AddChild<Crosshair>();
                 AddChild<DrowningIndicator>();
                 AddChild<QuickShop>();
-                AddChild<DamageIndicator>();
+                AddChild<Crosshair>();
             }
         }
     }

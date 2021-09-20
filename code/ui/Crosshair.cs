@@ -74,7 +74,6 @@ namespace TTTReborn.UI
             AddClass("centered");
 
             _crosshairDot = new Panel(this);
-            _crosshairDot.AddClass("centered");
             _crosshairDot.AddClass("circular");
 
             _crosshairLines = new Panel[4];

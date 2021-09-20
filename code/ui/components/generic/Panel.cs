@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace TTTReborn.UI
 {
     public class Panel : Sandbox.UI.Panel
@@ -23,11 +21,6 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/components/generic/Panel.scss");
 
             SetClass("panel", true);
-        }
-
-        public void SetChildrenEnabled(bool value)
-        {
-            Children.OfType<Panel>().ToList().ForEach(child => child.Enabled = value);
         }
     }
 }
