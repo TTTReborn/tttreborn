@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 
@@ -21,10 +19,9 @@ namespace TTTReborn.UI
                 return;
             }
 
+            GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
+            AliveHudPanel = RootPanel.AddChild<AliveHud>();
             Current = this;
-
-            GeneralHudPanel = new GeneralHud(RootPanel);
-            AliveHudPanel = new AliveHud(RootPanel);
         }
 
         [Event.Hotload]
@@ -51,51 +48,49 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Current.AliveHudPanel.Enabled = true;
+            AliveHudPanel.Enabled = true;
         }
 
         [Event("tttreborn.player.died")]
-        private void OnPlayerDied(TTTPlayer player)
+        private void OnPlayerDied(TTTPlayer deadPlayer)
         {
-            if (player != Local.Client.Pawn)
+            if (deadPlayer != Local.Client.Pawn)
             {
                 return;
             }
 
-            Current.AliveHudPanel.Enabled = false;
+            AliveHudPanel.Enabled = false;
         }
 
         public class GeneralHud : Panel
         {
-            public GeneralHud(Sandbox.UI.Panel parent) : base(parent)
+            public GeneralHud()
             {
-                Parent = parent;
+                AddClass("fullscreen");
+                AddChild<RadarDisplay>();
+                AddChild<PlayerRoleDisplay>();
+                AddChild<PlayerInfoDisplay>();
+                AddChild<InventoryWrapper>();
+                AddChild<ChatBox>();
 
-                Parent.AddChild<RadarDisplay>();
-                Parent.AddChild<Crosshair>();
-                Parent.AddChild<PlayerRoleDisplay>();
-                Parent.AddChild<PlayerInfoDisplay>();
-                Parent.AddChild<InventoryWrapper>();
-                Parent.AddChild<ChatBox>();
+                AddChild<VoiceChatDisplay>();
+                AddChild<GameTimerDisplay>();
 
-                Parent.AddChild<VoiceChatDisplay>();
-                Parent.AddChild<GameTimerDisplay>();
+                AddChild<VoiceList>();
 
-                Parent.AddChild<VoiceList>();
-
-                Parent.AddChild<InfoFeed>();
-                Parent.AddChild<InspectMenu>();
-                Parent.AddChild<PostRoundMenu>();
-                Parent.AddChild<Scoreboard>();
-                Parent.AddChild<Menu.Menu>();
+                AddChild<InfoFeed>();
+                AddChild<InspectMenu>();
+                AddChild<PostRoundMenu>();
+                AddChild<Scoreboard>();
+                AddChild<Menu.Menu>();
             }
         }
 
         public class AliveHud : Panel
         {
-            public AliveHud(Sandbox.UI.Panel parent) : base(parent)
+            public AliveHud()
             {
-                Parent = parent;
+                AddClass("fullscreen");
 
                 Parent.AddChild<BreathIndicator>();
                 Parent.AddChild<StaminaIndicator>();
