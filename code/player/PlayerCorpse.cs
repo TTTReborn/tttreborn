@@ -4,7 +4,9 @@ using Sandbox;
 
 namespace TTTReborn.Player
 {
-    public partial class PlayerCorpse : ModelEntity
+    using UI;
+
+    public partial class PlayerCorpse : ModelEntity, IEntityHint
     {
         public TTTPlayer Player { get; set; }
         public List<Particles> Ropes = new();
@@ -120,6 +122,11 @@ namespace TTTReborn.Player
             };
         }
 
-        public bool CanHint(TTTPlayer client) => !IsIdentified;
+        public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.Enabled ?? false;
+
+        public EntityHintPanel DisplayHint(TTTPlayer client)
+        {
+            return (IsIdentified) ? new InspectHint("CORPSE_INSPECT") : new InspectHint("CORPSE_IDENTIFY");
+        }
     }
 }

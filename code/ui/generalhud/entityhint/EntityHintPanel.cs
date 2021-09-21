@@ -8,6 +8,9 @@ namespace TTTReborn.UI
 {
     public abstract class EntityHintPanel : Panel
     {
-        public abstract void UpdateHintPanel();
+        public virtual void UpdateHintPanel()
+        {
+
+        }
     }
 }
