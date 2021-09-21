@@ -15,7 +15,7 @@ namespace TTTReborn.UI
             AddClass("text-color-info");
             AddClass("text-shadow");
 
-            var label = Add.TranslationLabel(translationKey, String.Empty, new object[] { $"{Input.GetKeyWithBinding("+iv_use").ToUpper()}" });
+            TranslationLabel label = Add.TranslationLabel(translationKey, String.Empty, new object[] { $"{Input.GetKeyWithBinding("+iv_use").ToUpper()}" });
             label.Style.Padding = 10;
 
             Enabled = false;
