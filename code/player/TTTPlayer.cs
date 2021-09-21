@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Sandbox;
 
 using TTTReborn.Globals;
@@ -8,6 +12,7 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer : Sandbox.Player
     {
+        private static List<InputButton> Buttons = Enum.GetValues(typeof(InputButton)).Cast<InputButton>().ToList();
         private static int CarriableDropVelocity { get; set; } = 300;
 
         [Net, Local]
