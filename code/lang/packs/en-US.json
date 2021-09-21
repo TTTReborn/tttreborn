@@ -24,6 +24,8 @@
     "PLAYER_STATUS_HEALTH_NEAR_DEATH": "Near Death",
     "PLAYER_STATUS_HEALTH_DEAD": "Dead",
 
+    "CORPSE_IDENTIFY": "Hold {0} to identify the corpse",
+    "CORPSE_INSPECT": "Hold {0} to inspect the corpse",
     "CORPSE_INFO_TIME": "Died {0} ago",
     "CORPSE_INFO_DISTANCE": "From {0} away",
     "CORPSE_INFO_HEADSHOT": "By a headshot",
