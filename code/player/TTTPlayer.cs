@@ -67,6 +67,7 @@ namespace TTTReborn.Player
 
             IsInitialSpawning = false;
             IsForcedSpectator = false;
+            _timeSinceLastAction = Time.Now;
         }
 
         // Important: Server-side only
@@ -163,6 +164,7 @@ namespace TTTReborn.Player
             {
                 TickPlayerVoiceChat();
                 TickMenu();
+                TickAFKSystem();
             }
 
             TickAttemptInspectPlayerCorpse();

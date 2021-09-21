@@ -3,11 +3,18 @@ namespace TTTReborn.Settings
     public partial class ServerSettings
     {
         public Categories.Round Round { get; set; } = new Categories.Round();
+        public Categories.AFK AFK { get; set; } = new Categories.AFK();
     }
 
 
     namespace Categories
     {
+        public partial class AFK
+        {
+            /// <value><c>MinutesTillKick</c> represents the amount of time in minutes before the player is kicked.</value>
+            public int MinutesTillKick { get; set; } = 1;
+        }
+
         public partial class Round
         {
             public int MinPlayers { get; set; } = 2; // The minimum players required to start.
