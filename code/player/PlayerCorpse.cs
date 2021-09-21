@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 
 using Sandbox;
+using TTTReborn.UI;
+
 
 namespace TTTReborn.Player
 {
-    using UI;
-
     public partial class PlayerCorpse : ModelEntity, IEntityHint
     {
         public TTTPlayer Player { get; set; }
