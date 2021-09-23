@@ -89,7 +89,7 @@ namespace TTTReborn.Player
 
             if (player == null)
             {
-                Log.Warning($"Server received call from null player to activate role button.");
+                Log.Warning("Server received call from null player to activate role button.");
                 return;
             }
 

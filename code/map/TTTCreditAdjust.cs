@@ -13,7 +13,6 @@ namespace TTTReborn.Map
         [Input]
         public void ExchangeCredits(Entity activator)
         {
-
             if (activator is TTTPlayer player)
             {
                 if (player.Credits >= Credits)
