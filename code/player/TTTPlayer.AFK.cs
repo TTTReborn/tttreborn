@@ -31,8 +31,12 @@ namespace TTTReborn.Player
             if (_timeSinceLastAction > SecondsTillKick)
             {
                 Client client = GetClientOwner();
-                Log.Warning($"{client.Name}-{client.SteamId} was kicked from the server for being AFK.");
-                client.Kick();
+
+                if (client != null && !client.IsBot)
+                {
+                    Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was kicked from the server for being AFK.");
+                    client.Kick();
+                }
             }
         }
     }
