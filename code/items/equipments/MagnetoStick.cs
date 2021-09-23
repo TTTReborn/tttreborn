@@ -35,7 +35,7 @@ namespace TTTReborn.Items
         {
             base.Spawn();
 
-            RenderAlpha = 0f;
+            RenderColor = Color.Transparent;
         }
 
         public override void Simulate(Client client)

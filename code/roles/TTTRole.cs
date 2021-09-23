@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text.Json;
 
 using Sandbox;
 
@@ -17,7 +19,7 @@ namespace TTTReborn.Roles
         }
     }
 
-    [RoleAttribute("Base")]
+    [Role("Base")]
     public abstract class TTTRole
     {
         public readonly string Name;
@@ -28,6 +30,22 @@ namespace TTTReborn.Roles
 
         public virtual int DefaultCredits => 0;
 
+        public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
+
+        public Shop Shop
+        {
+            get
+            {
+                ShopDict.TryGetValue(Name, out Shop shop);
+
+                return shop;
+            }
+            internal set
+            {
+                ShopDict[Name] = value;
+            }
+        }
+
         public TTTRole()
         {
             Name = Utils.GetTypeName(GetType());
@@ -36,11 +54,25 @@ namespace TTTReborn.Roles
             {
                 Utils.GetObjectByType<TTTTeam>(DefaultTeamType);
             }
+
+            using (Prediction.Off())
+            {
+                if (!ShopDict.ContainsKey(Name))
+                {
+                    InitShop();
+                }
+            }
         }
 
         public virtual void OnSelect(TTTPlayer player)
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
+
+            if (Host.IsServer)
+            {
+                player.Shop = Shop;
+                player.ServerUpdateShop();
+            }
 
             Event.Run("tttreborn.player.role.onselect", player);
         }
@@ -50,7 +82,30 @@ namespace TTTReborn.Roles
 
         }
 
-        public virtual bool CanBuy() => false;
+        // serverside function
+        public virtual void InitShop()
+        {
+            string fileName = $"settings/{Utils.GetTypeNameByType(typeof(Settings.ServerSettings)).ToLower()}/shop/{Name.ToLower()}.json";
+
+            if (!FileSystem.Data.FileExists(fileName))
+            {
+                Shop = new Shop();
+
+                CreateShopSettings(fileName);
+            }
+
+            Shop = Shop.InitializeFromJSON(FileSystem.Data.ReadAllText(fileName));
+        }
+
+        public virtual void CreateShopSettings(string fileName)
+        {
+            Utils.CreateRecursiveDirectories(fileName);
+
+            FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize(Shop, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            }));
+        }
 
         public string GetRoleTranslationKey(string key)
         {

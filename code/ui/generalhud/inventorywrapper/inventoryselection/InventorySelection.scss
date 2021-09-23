@@ -2,87 +2,35 @@ InventorySelection {
     min-width: 300px;
     display: flex;
     flex-direction: column;
-    border: 1px solid #1b1b1b;
-    border-radius: 4px;
-    font-family: Poppins;
+    overflow: hidden;
 
     &.hide {
         display: none;
     }
+}
 
-    InventorySlot {
-        height: 32px;
-        font-size: 22px;
-        color: #fafafa;
-        border-bottom: 1px solid #000e;
-        background-color: #000c;
-        font-size: 20px;
-        transition: height 0.1s linear;
+InventorySlot {
+    height: 34px;
+    font-size: 20px;
+    transition: height 0.15s linear;
+    opacity: 0.5;
+    align-items: center;
 
-        Label {
-            // font-size: 0.8em;
-            margin-right: 10px;
-            // padding-top: 4px;
-            font-weight: 400;
+    .slot-label {
+        height: 100%;
+        text-align: center;
+        margin-right: 10px;
+        width: 34px;
+        align-items: center;
+        font-weight: bold;
+    }
 
-            &.slotlabel {
-                font-size: 22px;
-                margin-right: 14px;
-                display: inline-block;
-                width: 32px;
-                text-align: center;
-                background-color: #ff7700;
-                font-weight: 500;
-            }
+    .ammo-label {
+        position: absolute;
+        right: 8px;
+    }
 
-            &.ammolabel {
-                right: 10px;
-                position: absolute;
-                font-size: 20px;
-                padding-top: 2px;
-            }
-            &.weaponlabel {
-                margin-top: 1px;
-            }
-        }
-
-        &.active {
-            background-color: rgba(0, 0, 0, 0.9);
-
-            Label {
-                font-weight: 500;
-            }
-            .slotlabel {
-                font-weight: 600;
-            }
-        }
-
-        &.Traitor {
-            Label.slotlabel {
-                background-color: #df2935;
-            }
-        }
-        &.Detective {
-            Label.slotlabel {
-                background-color: #2196f3;
-            }
-        }
-
-        &:first-child {
-            border-radius: 5px 5px 0px 0px;
-
-            Label.slotlabel {
-                border-top-left-radius: 4px;
-            }
-        }
-
-        &:last-child {
-            border-bottom: 0;
-            border-radius: 0px 0px 5px 5px;
-
-            Label.slotlabel {
-                border-bottom-left-radius: 4px;
-            }
-        }
+    &.active {
+        opacity: 1;
     }
 }

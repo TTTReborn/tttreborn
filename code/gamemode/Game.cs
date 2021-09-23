@@ -163,7 +163,7 @@ namespace TTTReborn.Gamemode
                 player.IsSpeaking = true;
             }
 
-            UI.VoiceList.Current?.OnVoicePlayed(client, level);
+            UI.VoiceChatDisplay.Instance?.OnVoicePlayed(client, level);
         }
 
         public override void PostLevelLoaded()

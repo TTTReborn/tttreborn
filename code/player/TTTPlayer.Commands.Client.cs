@@ -3,9 +3,6 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Globalization;
-using TTTReborn.UI.Menu;
-
 namespace TTTReborn.Player
 {
     public partial class TTTPlayer

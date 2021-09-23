@@ -57,7 +57,7 @@ namespace TTTReborn.Items
             }
 
             string ammoType = Name.ToLower();
-            Inventory inventory = (Inventory) player.Inventory;
+            Inventory inventory = player.Inventory;
 
             if (!inventory.GetAmmoTypes().Contains(ammoType))
             {

@@ -84,11 +84,7 @@ namespace TTTReborn.Globals
                 playerCorpse.Perks = perks;
 
                 playerCorpse.CopyConfirmationData(confirmationData);
-
-                if (InspectMenu.Instance?.PlayerCorpse == playerCorpse)
-                {
-                    InspectMenu.Instance.InspectCorpse(playerCorpse);
-                }
+                InspectMenu.Instance.SetPlayerData(playerCorpse);
             }
 
             Scoreboard.Instance.UpdatePlayer(deadPlayer.GetClientOwner());
@@ -142,7 +138,7 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientClosePostRoundMenu()
         {
-            PostRoundMenu.Instance.IsShowing = false;
+            PostRoundMenu.Instance.ClosePostRoundMenu();
         }
 
         [ClientRpc]

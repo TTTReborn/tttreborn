@@ -5,11 +5,11 @@ using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
-    public partial class Tabs : TTTPanel
+    public partial class Tabs : Panel
     {
         public readonly List<Tab> TabList = new();
 
-        public readonly Panel Header;
+        public readonly Sandbox.UI.Panel Header;
         public readonly PanelContent PanelContent;
 
         public Action<Tab> OnTabSelected { get; set; }

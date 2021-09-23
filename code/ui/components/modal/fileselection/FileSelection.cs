@@ -44,7 +44,7 @@ namespace TTTReborn.UI
 
         public string CurrentFolderPath = DEFAULT_SELECTION_PATH;
 
-        private readonly Panel _selectionPanel;
+        private readonly Sandbox.UI.Panel _selectionPanel;
         public readonly TextEntry FileNameEntry;
 
         public FileSelection() : base()

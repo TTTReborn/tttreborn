@@ -20,8 +20,8 @@ namespace TTTReborn.Player
 
         public Inventory(TTTPlayer player) : base(player)
         {
-            Ammo = new AmmoInventory(player);
-            Perks = new PerksInventory(player);
+            Ammo = new(player);
+            Perks = new(player);
         }
 
         public override void DeleteContents()

@@ -1,0 +1,44 @@
+.slider {
+    flex-grow: 1;
+    cursor: pointer;
+    min-height: 24px;
+    align-items: center;
+    padding-right: 24px;
+
+    > .thumb {
+        background-color: black;
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        border-radius: 1000px;
+        box-shadow: 2px 2px 10px black;
+        transition: all 0.2s ease-out;
+
+        &:hover {
+            background-color: white;
+        }
+    }
+
+    &:active {
+        > .thumb {
+            background-color: white;
+        }
+    }
+
+    > .track {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        height: 10px;
+        background-color: #000c;
+        border-radius: 5px;
+
+        > .inner {
+            border-radius: 4px;
+            background-color: black;
+            width: 200px;
+            height: 10px;
+            transition: all 0.2s ease-out;
+        }
+    }
+}

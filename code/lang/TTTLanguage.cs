@@ -45,7 +45,7 @@ namespace TTTReborn.Globalization
                 string name = Path.GetFileNameWithoutExtension(file);
                 string json = FileSystem.Mounted.ReadAllText($"/lang/packs/{file}");
 
-                Language language = new Language(name, json);
+                Language language = new(name, json);
 
                 Languages.Add(language.Data.Code ?? name, language);
 
@@ -77,7 +77,7 @@ namespace TTTReborn.Globalization
                 return;
             }
 
-            TTTLanguage.ActiveLanguage = language;
+            ActiveLanguage = language;
 
             if (Host.IsClient)
             {
@@ -88,7 +88,7 @@ namespace TTTReborn.Globalization
         [Event("tttreborn.settings.instance.change")]
         public static void OnChangeLanguageSettings()
         {
-            TTTLanguage.UpdateLanguage(TTTLanguage.GetLanguageByCode(Settings.SettingsManager.Instance.General.Language));
+            UpdateLanguage(GetLanguageByCode(Settings.SettingsManager.Instance.General.Language));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace TTTReborn.UI
         }
     }
 
-    public partial class PanelContent : TTTPanel
+    public partial class PanelContent : Panel
     {
         public string Title { get; private set; } = "";
 
@@ -47,7 +47,7 @@ namespace TTTReborn.UI
 
         private int _historyIndex = 0;
 
-        public PanelContent(Panel parent = null) : base()
+        public PanelContent(Sandbox.UI.Panel parent = null) : base()
         {
             Parent = parent ?? Parent;
         }

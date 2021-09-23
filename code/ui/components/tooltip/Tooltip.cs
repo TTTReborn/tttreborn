@@ -9,13 +9,13 @@ namespace TTTReborn.UI
     {
         public static List<Tooltip> Tooltips = new();
 
-        public readonly Panel RelatedPanel;
+        public readonly Sandbox.UI.Panel RelatedPanel;
 
         public float RequiredHoveringTime { get; set; } = 0.5f;
 
         private TimeSince _timeSinceMouseStopped = 0f;
 
-        public Tooltip(Panel relatedPanel) : base()
+        public Tooltip(Sandbox.UI.Panel relatedPanel) : base()
         {
             RelatedPanel = relatedPanel;
             Parent = Hud.Current.RootPanel;
@@ -68,7 +68,7 @@ namespace Sandbox.UI
                     return;
                 }
 
-                Tooltip tooltip = new Tooltip(self);
+                Tooltip tooltip = new(self);
                 tooltip.SetText(text);
 
                 if (!string.IsNullOrEmpty(className))

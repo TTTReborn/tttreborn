@@ -1,0 +1,37 @@
+VoiceChatDisplay {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    flex-direction: column;
+    width: 240px;
+
+    VoiceChatEntry {
+        flex-direction: row;
+        padding: 8px 8px;
+        margin-bottom: 5px;
+        align-items: center;
+        overflow: hidden;
+        transition: all 0.05s ease-out;
+
+        &:intro {
+            opacity: 0;
+            left: 10px;
+        }
+
+        &:outro {
+            opacity: 0;
+            left: 10px;
+        }
+
+        .avatar {
+            width: 25px;
+            height: 25px;
+        }
+
+        .name {
+            font-size: 16px;
+            margin-left: 10px;
+            font-weight: 500;
+        }
+    }
+}

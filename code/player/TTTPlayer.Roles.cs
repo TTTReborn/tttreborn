@@ -4,6 +4,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Roles;
+using TTTReborn.Rounds;
 using TTTReborn.Teams;
 using TTTReborn.UI;
 
@@ -68,9 +69,11 @@ namespace TTTReborn.Player
 
             if (QuickShop.Instance != null)
             {
-                QuickShop.Instance.CheckAccess();
-
-                if (QuickShop.Instance.IsShowing)
+                if (Shop == null || !Shop.Accessable())
+                {
+                    QuickShop.Instance.Enabled = false;
+                }
+                else if (QuickShop.Instance.Enabled)
                 {
                     QuickShop.Instance.Update();
                 }
@@ -79,7 +82,7 @@ namespace TTTReborn.Player
 
         public void SyncMIA(TTTPlayer player = null)
         {
-            if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
+            if (Gamemode.Game.Instance.Round is not InProgressRound)
             {
                 return;
             }
