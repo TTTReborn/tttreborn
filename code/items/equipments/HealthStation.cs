@@ -8,28 +8,23 @@ namespace TTTReborn.Items
     /// Healthkit equipment definition, for the physical entity, see items/equipments/entities/HealthstationEntity.cs
     /// </summary>
     [Library("ttt_healthstation"), Hammer.Skip]
-    public partial class HealthstationEquipment : TTTEquipment, IBuyableItem
+    public partial class HealthStation : TTTEquipment, IBuyableItem
     {
         public override string ViewModelPath => "";
         public override SlotType SlotType => SlotType.UtilityEquipment;
 
         public int Price => 0;
 
-        public HealthstationEquipment() : base()
-        {
-
-        }
-
         public override void Spawn()
         {
             base.Spawn();
 
-            RenderAlpha = 0f;
+            RenderColor = Color.Transparent;
         }
 
         public override void Simulate(Client client)
         {
-            if (Owner is not TTTPlayer owner && !IsServer)
+            if (Owner is not TTTPlayer owner || !IsServer)
             {
                 return;
             }

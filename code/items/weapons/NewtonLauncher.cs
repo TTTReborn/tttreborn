@@ -12,7 +12,7 @@ namespace TTTReborn.Items
     partial class NewtonLauncher : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        public override SlotType SlotType => SlotType.Equipment;
+        public override SlotType SlotType => SlotType.OffensiveEquipment;
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 1;
         public override float PrimaryRate => 1f;
