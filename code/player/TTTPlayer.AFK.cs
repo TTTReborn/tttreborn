@@ -18,6 +18,13 @@ namespace TTTReborn.Player
 
         private void TickAFKSystem()
         {
+            Client client = GetClientOwner();
+
+            if (client == null || client.IsBot)
+            {
+                return;
+            }
+
             bool shouldKick = ServerSettings.Instance.AFK.ShouldKickPlayers;
 
             if (!shouldKick && (IsForcedSpectator || IsSpectator))
@@ -32,13 +39,6 @@ namespace TTTReborn.Player
             {
                 _timeSinceLastAction = 0f;
                 _lastKnownRotation = Rotation;
-                return;
-            }
-
-            Client client = GetClientOwner();
-
-            if (client == null || client.IsBot)
-            {
                 return;
             }
 
