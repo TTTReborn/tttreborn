@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Sandbox;
@@ -8,34 +10,30 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
+        public readonly static List<InputButton> Buttons = Enum.GetValues(typeof(InputButton)).Cast<InputButton>().ToList();
         private static int SecondsTillKick => ServerSettings.Instance.AFK.MinutesTillKick * 60;
-        private float TimeToKick => _timeSinceLastAction + SecondsTillKick;
 
-        private float _timeSinceLastAction = 60.0f;
-        private Rotation? LastKnownRotation;
+        private TimeSince _timeSinceLastAction = 0f;
+        private Rotation? _lastKnownRotation;
 
         private void TickAFKSystem()
         {
             bool pressedAnyKeyPressed = Buttons.Any(button => Input.Pressed(button) || Input.Down(button));
 
-            if (pressedAnyKeyPressed || (LastKnownRotation.HasValue && LastKnownRotation != Rotation))
+            if (pressedAnyKeyPressed || (_lastKnownRotation.HasValue && _lastKnownRotation != Rotation))
             {
-                _timeSinceLastAction = Time.Now;
-                LastKnownRotation = Rotation;
+                _timeSinceLastAction = 0f;
+                _lastKnownRotation = Rotation;
             }
 
+            //Log.Warning($"Time: {_timeSinceLastAction}, Second to wait: {SecondsTillKick}, Bool: {_timeSinceLastAction > SecondsTillKick}");
 
-            if (TimeToKick < Time.Now)
+            if (_timeSinceLastAction > SecondsTillKick)
             {
-                KickClient();
+                Client client = GetClientOwner();
+                Log.Warning($"{client.Name}-{client.SteamId} was kicked from the server for being AFK.");
+                client.Kick();
             }
-        }
-
-        [ServerCmd]
-        public static void KickClient()
-        {
-            Log.Warning($"{ConsoleSystem.Caller.Name}-{ConsoleSystem.Caller.SteamId} was kicked from the server for being AFK.");
-            ConsoleSystem.Caller.Kick();
         }
     }
 }
