@@ -22,6 +22,22 @@ namespace TTTReborn.UI.Menu
             {
                 AddRoundSettings(panelContent, serverSettings);
             }, "rounds");
+
+            tabs.AddTab("AFK", (panelContent) =>
+            {
+                AddAFKSettings(panelContent, serverSettings);
+            }, "afk");
+        }
+
+        private void AddAFKSettings(PanelContent panelContent, ServerSettings serverSettings)
+        {
+            // TTTMinPlayers
+            CreateSettingsEntry(panelContent, "AFK Time", serverSettings.Round.MinPlayers, "The length of time in minutes before a player is marked AFK.", (value) =>
+            {
+                serverSettings.AFK.MinutesTillKick = value;
+
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+            });
         }
 
         private void AddSprintSettings(PanelContent tabContent, ServerSettings serverSettings)
