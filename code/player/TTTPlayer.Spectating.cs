@@ -83,5 +83,24 @@ namespace TTTReborn.Player
 
             ShowFlashlight(false, false);
         }
+
+        public static void ForceSpectator(TTTPlayer player)
+        {
+            player.IsForcedSpectator = !player.IsForcedSpectator;
+
+            if (player.IsForcedSpectator && player.LifeState == LifeState.Alive)
+            {
+                player.MakeSpectator(false);
+
+                if (!player.GetClientOwner().GetScore<bool>("forcedspectator", false))
+                {
+                    player.GetClientOwner().SetScore("forcedspectator", true);
+                }
+            }
+
+            string toggle = player.IsForcedSpectator ? "activated" : "deactivated";
+
+            Log.Info($"You {toggle} force spectator.");
+        }
     }
 }

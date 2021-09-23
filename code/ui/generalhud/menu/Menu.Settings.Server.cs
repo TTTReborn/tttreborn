@@ -25,6 +25,7 @@ namespace TTTReborn.UI.Menu
 
             tabs.AddTab("AFK", (panelContent) =>
             {
+                AddAFKSwitchSettings(panelContent, serverSettings);
                 AddAFKSettings(panelContent, serverSettings);
             }, "afk");
         }
@@ -38,12 +39,27 @@ namespace TTTReborn.UI.Menu
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
+
+
+        }
+        private void AddAFKSwitchSettings(PanelContent tabContent, ServerSettings serverSettings)
+        {
+            Sandbox.UI.Panel sprintPanel = tabContent.Add.Panel("sprint");
+            sprintPanel.Add.Label($"Should Kick Players?").AddTooltip("Wether or not a player should be kicked or moved to Spectators.");
+
+            Switch sw = sprintPanel.Add.Switch("afk", serverSettings.AFK.ShouldKickPlayers);
+            sw.AddEventListener("onchange", (panelEvent) =>
+            {
+                serverSettings.AFK.ShouldKickPlayers = !serverSettings.AFK.ShouldKickPlayers;
+
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+            });
         }
 
         private void AddSprintSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
             Sandbox.UI.Panel sprintPanel = tabContent.Add.Panel("sprint");
-            sprintPanel.Add.Label($"Sprint enabled?");
+            sprintPanel.Add.Label($"Sprint enabled?").AddTooltip("Wether or not sprint should be enabled on the server");
 
             Switch sw = sprintPanel.Add.Switch("sprint", serverSettings.Movement.IsSprintEnabled);
             sw.AddEventListener("onchange", (panelEvent) =>
