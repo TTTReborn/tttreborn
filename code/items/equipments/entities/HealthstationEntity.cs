@@ -16,9 +16,9 @@ namespace TTTReborn.Items
 
         private RealTimeUntil NextHeal = 0;
 
-        private const int HealAmount = 1;
-        private const int HealFrequency = 2; //seconds
-        private const int DelayIfFailed = 2; //Multiplied by HealFrequency if HealthPlayer returns false
+        private const int HEALAMOUNT = 1;
+        private const int HEALFREQUENCY = 2; //seconds
+        private const int DELAYIFFAILED = 2; //Multiplied by HealFrequency if HealthPlayer returns false
 
         public override void Spawn()
         {
@@ -30,23 +30,20 @@ namespace TTTReborn.Items
 
         private bool HealPlayer(TTTPlayer player)
         {
-            if (StoredHealth > 0)
+            float healthNeeded = player.MaxHealth - player.Health;
+
+            if (StoredHealth > 0 && healthNeeded > 0)
             {
-                float healthNeeded = player.MaxHealth - player.Health;
+                float healAmount = Math.Min(HEALAMOUNT, healthNeeded);
 
-                if (healthNeeded > 0)
-                {
-                    var healAmount = Math.Min(HealAmount, healthNeeded);
+                player.SetHealth(player.Health + healAmount);
+                StoredHealth -= healAmount;
 
-                    player.SetHealth(player.Health + healAmount);
-                    StoredHealth -= healAmount;
+                //Event.Run("tttreborn.healthstation.healed", player, healAmount); //Would have liked to pass `this` as well, but apparently events are capped at 2 parameters?
 
-                    //Event.Run("tttreborn.healthstation.healed", player, healAmount); //Would have liked to pass `this` as well, but apparently events are capped at 2 parameters?
-
-                    //Play sounds here
-                    //Store DNA data once that becomes a thing
-                    return true;
-                }
+                //Play sounds here
+                //Store DNA data once that becomes a thing
+                return true;
             }
             return false;
         }
@@ -55,20 +52,12 @@ namespace TTTReborn.Items
         {
             if (user is TTTPlayer player && NextHeal <= 0)
             {
-                NextHeal = HealPlayer(player) ? HealFrequency : HealFrequency * DelayIfFailed;
+                NextHeal = HealPlayer(player) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
             }
 
             return true;
         }
 
-        public bool IsUsable(Entity user)
-        {
-            if (user is TTTPlayer player && player.Health < player.MaxHealth)
-            {
-                return true;
-            }
-
-            return false;
-        }
+        public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
     }
 }

@@ -29,12 +29,7 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client client)
         {
-            if (!IsServer)
-            {
-                return;
-            }
-
-            if (Owner is not TTTPlayer owner)
+            if (Owner is not TTTPlayer owner && !IsServer)
             {
                 return;
             }
