@@ -166,7 +166,7 @@ namespace TTTReborn.Player
                 TickMenu();
             }
 
-            if(IsServer)
+            if (IsServer)
             {
                 TickAFKSystem();
             }
