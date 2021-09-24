@@ -4,6 +4,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Rounds;
 using TTTReborn.Settings;
 
 namespace TTTReborn.Player
@@ -25,9 +26,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            bool shouldKick = ServerSettings.Instance.AFK.ShouldKickPlayers;
-
-            if (!shouldKick && (IsForcedSpectator || IsSpectator))
+            if (IsForcedSpectator || IsSpectator)
             {
                 _timeSinceLastAction = 0;
                 return;
@@ -51,6 +50,8 @@ namespace TTTReborn.Player
 
             if (_timeSinceLastAction > SecondsTillKick)
             {
+                bool shouldKick = ServerSettings.Instance.AFK.ShouldKickPlayers;
+
                 if (shouldKick)
                 {
                     Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was kicked from the server for being AFK.");
@@ -60,7 +61,14 @@ namespace TTTReborn.Player
                 if (!shouldKick)
                 {
                     Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was to spectating for being AFK.");
+                    
+                    Gamemode.Game.Instance.Round.MoveToSpectator(this);
                     ForceSpectator(this);
+
+                    if (Gamemode.Game.Instance.Round is InProgressRound round)
+                    {
+                        round.ExecuteOnWinCondition();
+                    }
                 }
             }
         }

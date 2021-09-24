@@ -27,25 +27,13 @@ namespace TTTReborn.Rounds
             Spectators.Add(player);
 
             player.MakeSpectator();
-
-            TTTTeam result = IsRoundOver();
-
-            if (result != null)
-            {
-                LoadPostRound(result);
-            }
+            ExecuteOnWinCondition();
         }
 
         public override void OnPlayerLeave(TTTPlayer player)
         {
             base.OnPlayerLeave(player);
-
-            TTTTeam result = IsRoundOver();
-
-            if (result != null)
-            {
-                LoadPostRound(result);
-            }
+            ExecuteOnWinCondition();
         }
 
         protected override void OnStart()
@@ -208,6 +196,16 @@ namespace TTTReborn.Rounds
                 {
                     Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());
                 }
+            }
+        }
+
+        public void ExecuteOnWinCondition()
+        {
+            TTTTeam result = IsRoundOver();
+
+            if (result != null)
+            {
+                LoadPostRound(result);
             }
         }
     }
