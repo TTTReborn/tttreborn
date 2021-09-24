@@ -29,7 +29,7 @@ namespace TTTReborn.UI.Menu
             Sandbox.UI.Panel sprintPanel = panelContent.Add.Panel("sprint");
             sprintPanel.Add.Label($"Force Spectator?");
 
-            if(Local.Client.Pawn is TTTPlayer player)
+            if (Local.Client.Pawn is TTTPlayer player)
             {
                 Switch sw = sprintPanel.Add.Switch("forcespectator", player.IsForcedSpectator);
                 sw.AddEventListener("onchange", (panelEvent) =>

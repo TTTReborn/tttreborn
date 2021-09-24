@@ -61,7 +61,7 @@ namespace TTTReborn.Player
                 if (!shouldKick)
                 {
                     Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was to spectating for being AFK.");
-                    
+
                     Gamemode.Game.Instance.Round.MoveToSpectator(this);
                     ForceSpectator(this);
 

@@ -48,7 +48,7 @@ namespace TTTReborn.Rounds
 
         public void MoveToSpectator(TTTPlayer player)
         {
-            if(Players.Contains(player))
+            if (Players.Contains(player))
             {
                 Players.Remove(player);
             }
