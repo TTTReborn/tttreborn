@@ -19,8 +19,8 @@ namespace TTTReborn.UI
                 return;
             }
 
-            GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
             AliveHudPanel = RootPanel.AddChild<AliveHud>();
+            GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
             Current = this;
         }
 
