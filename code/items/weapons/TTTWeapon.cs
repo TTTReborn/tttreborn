@@ -57,16 +57,14 @@ namespace TTTReborn.Items
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        public string Name { get; }
+        public string ClassName { get; }
 
         private const int AmmoDropPositionOffset = 50;
         private const int AmmoDropVelocity = 500;
 
         public TTTWeapon() : base()
         {
-            LibraryAttribute attribute = Library.GetAttribute(GetType());
-
-            Name = attribute.Name;
+            ClassName = Library.GetAttribute(GetType()).Name;
         }
 
         public void Equip(TTTPlayer player)

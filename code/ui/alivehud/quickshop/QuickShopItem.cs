@@ -9,7 +9,7 @@ namespace TTTReborn.UI
 {
     public partial class QuickShopItem : Panel
     {
-        public ShopItemData? ItemData;
+        public ShopItemData ItemData;
 
         private Panel _itemIcon;
         private Label _itemNameLabel;
@@ -43,7 +43,7 @@ namespace TTTReborn.UI
             _itemNameLabel.Text = $"{buyableItemData.Name}";
             _itemPriceLabel.Text = $"${buyableItemData.Price}";
 
-            Texture icon = Texture.Load($"/ui/weapons/{buyableItemData.Name}.png");
+            Texture icon = Texture.Load($"/ui/weapons/{buyableItemData.Name}.png", false);
             icon ??= Texture.Load($"/ui/none.png");
 
             _itemIcon.Style.Background = new PanelBackground

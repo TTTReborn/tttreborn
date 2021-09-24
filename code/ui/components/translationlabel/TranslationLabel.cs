@@ -25,6 +25,8 @@ namespace TTTReborn.UI
         public override void OnDeleted()
         {
             _translationLabels.Remove(this);
+
+            base.OnDeleted();
         }
 
         public void SetTranslation(string translationKey, params object[] args)
@@ -32,7 +34,7 @@ namespace TTTReborn.UI
             _translationKey = translationKey;
             _translationParams = args;
 
-            if (_translationKey is null)
+            if (_translationKey == null)
             {
                 return;
             }
@@ -42,7 +44,7 @@ namespace TTTReborn.UI
 
         public void UpdateTranslation(Language language)
         {
-            if (_translationKey is null)
+            if (_translationKey == null)
             {
                 return;
             }
