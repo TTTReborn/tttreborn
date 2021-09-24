@@ -67,7 +67,6 @@ namespace TTTReborn.Player
 
             IsInitialSpawning = false;
             IsForcedSpectator = false;
-            _timeSinceLastAction = Time.Now;
         }
 
         // Important: Server-side only
