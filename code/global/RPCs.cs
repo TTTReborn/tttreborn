@@ -114,6 +114,12 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
+        public static void ClientOnMovedToForceSpectator(bool value)
+        {
+            Hud.Current.AliveHudPanel.Enabled = false;
+        }
+
+        [ClientRpc]
         public static void ClientAddMissingInAction(TTTPlayer missingInActionPlayer)
         {
             if (!missingInActionPlayer.IsValid())
