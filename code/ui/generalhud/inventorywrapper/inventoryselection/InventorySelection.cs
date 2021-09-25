@@ -79,8 +79,8 @@ namespace TTTReborn.UI
                     slot.SlotLabel.SetClass("rounded-top-left", child == Children.First());
                     slot.SlotLabel.SetClass("rounded-bottom-left", child == Children.Last());
 
-                    slot.SetClass("active", slot.Carriable.Name == activeItem?.Name);
-                    slot.SetClass("opacity-heavy", slot.Carriable.Name == activeItem?.Name);
+                    slot.SetClass("active", slot.Carriable.ClassName == activeItem?.ClassName);
+                    slot.SetClass("opacity-heavy", slot.Carriable.ClassName == activeItem?.ClassName);
 
                     if (slot.Carriable is TTTWeapon weapon && weapon.SlotType != SlotType.Melee)
                     {
@@ -118,7 +118,7 @@ namespace TTTReborn.UI
                 int result = s1.Carriable.SlotType.CompareTo(s2.Carriable.SlotType);
                 return result != 0
                     ? result
-                    : String.Compare(s1.Carriable.Name, s2.Carriable.Name, StringComparison.Ordinal);
+                    : String.Compare(s1.Carriable.ClassName, s2.Carriable.ClassName, StringComparison.Ordinal);
             });
 
             Enabled = Children.Any();
@@ -131,7 +131,7 @@ namespace TTTReborn.UI
             {
                 if (child is InventorySlot slot)
                 {
-                    if (slot.Carriable.Name == carriable.Name)
+                    if (slot.Carriable.ClassName == carriable.ClassName)
                     {
                         child.Delete();
                     }
@@ -193,7 +193,7 @@ namespace TTTReborn.UI
                             // Ex. "3" pressed, find all carriables with slot type "3".
                             weaponsOfSlotTypeSelected.Add(slot.Carriable);
 
-                            if (slot.Carriable.Name == activeCarriable?.Name)
+                            if (slot.Carriable.ClassName == activeCarriable?.ClassName)
                             {
                                 // If the current active carriable has the same slot type as
                                 // the keyboard index the user pressed
@@ -221,7 +221,7 @@ namespace TTTReborn.UI
             if (mouseWheelIndex != 0)
             {
                 int activeCarriableIndex = childrenList.FindIndex((p) =>
-                    p is InventorySlot slot && slot.Carriable.Name == activeCarriable?.Name);
+                    p is InventorySlot slot && slot.Carriable.ClassName == activeCarriable?.ClassName);
 
                 int newSelectedIndex = NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1);
                 input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
@@ -279,7 +279,7 @@ namespace TTTReborn.UI
                 SlotLabel = Add.Label(((int) carriable.SlotType).ToString());
                 SlotLabel.AddClass("slot-label");
 
-                _carriableLabel = Add.Label(carriable.Name);
+                _carriableLabel = Add.Label(carriable.ClassName);
 
                 _ammoLabel = Add.Label();
 

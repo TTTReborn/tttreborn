@@ -6,7 +6,7 @@ namespace TTTReborn.Items
 {
     public interface IItem
     {
-        string Name { get; }
+        string ClassName { get; }
 
         Entity Owner { get; }
 
