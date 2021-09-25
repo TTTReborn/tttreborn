@@ -84,23 +84,24 @@ namespace TTTReborn.Player
             ShowFlashlight(false, false);
         }
 
-        public static void ForceSpectator(TTTPlayer player)
+        public void ForceSpectator()
         {
-            player.IsForcedSpectator = !player.IsForcedSpectator;
+            IsForcedSpectator = !IsForcedSpectator;
 
-            if (player.IsForcedSpectator && player.LifeState == LifeState.Alive)
+            if (IsForcedSpectator && LifeState == LifeState.Alive)
             {
-                player.MakeSpectator(false);
+                MakeSpectator(false);
 
-                if (!player.GetClientOwner().GetScore<bool>("forcedspectator", false))
+                if (!GetClientOwner().GetScore("forcedspectator", false))
                 {
-                    player.GetClientOwner().SetScore("forcedspectator", true);
+                    GetClientOwner().SetScore("forcedspectator", true);
                 }
             }
 
-            string toggle = player.IsForcedSpectator ? "activated" : "deactivated";
-
+            string toggle = IsForcedSpectator ? "activated" : "deactivated";
             Log.Info($"You {toggle} force spectator.");
+
+            RPCs.ClientOnMovedToForceSpectator(To.Single(this), IsForcedSpectator);
         }
     }
 }
