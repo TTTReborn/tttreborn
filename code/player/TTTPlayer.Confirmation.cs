@@ -30,8 +30,6 @@ namespace TTTReborn.Player
 
         private const float INSPECT_CORPSE_DISTANCE = 80f;
 
-        private PlayerCorpse _inspectingPlayerCorpse = null;
-
         public void RemovePlayerCorpse()
         {
             if (PlayerCorpse == null || !PlayerCorpse.IsValid())
@@ -117,7 +115,7 @@ namespace TTTReborn.Player
 
             for (int i = 0; i < corpse.Perks.Length; i++)
             {
-                corpse.Perks[i] = perksInventory.Get(i).Name;
+                corpse.Perks[i] = perksInventory.Get(i).ClassName;
             }
 
             corpse.CopyFrom(this);

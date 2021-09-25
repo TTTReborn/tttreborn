@@ -17,14 +17,12 @@ namespace TTTReborn.Items
     [Library("ttt_perk")]
     public abstract class TTTPerk : IItem
     {
-        public string Name { get; }
+        public string ClassName { get; }
         public Entity Owner { get; private set; }
 
         protected TTTPerk()
         {
-            LibraryAttribute attribute = Library.GetAttribute(GetType());
-
-            Name = attribute.Name;
+            ClassName = Library.GetAttribute(GetType()).Name;
         }
 
         public void Equip(TTTPlayer player)

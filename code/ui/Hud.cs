@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 using Sandbox.UI;
 
@@ -10,7 +12,7 @@ namespace TTTReborn.UI
         public static Hud Current { set; get; }
 
         public GeneralHud GeneralHudPanel;
-        public AliveHud AliveHudPanel;
+        public AliveHud AliveHudInstance;
 
         public Hud()
         {
@@ -20,7 +22,7 @@ namespace TTTReborn.UI
             }
 
             GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
-            AliveHudPanel = RootPanel.AddChild<AliveHud>();
+            AliveHudInstance = new(RootPanel);
             Current = this;
         }
 
@@ -35,7 +37,7 @@ namespace TTTReborn.UI
 
                 if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
                 {
-                    hud.AliveHudPanel.Enabled = true;
+                    Current.AliveHudInstance.Enabled = true;
                 }
             }
         }
@@ -48,7 +50,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudPanel.Enabled = true;
+            AliveHudInstance.Enabled = true;
         }
 
         [Event("tttreborn.player.died")]
@@ -59,7 +61,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudPanel.Enabled = false;
+            AliveHudInstance.Enabled = false;
         }
 
         public class GeneralHud : Panel
@@ -86,16 +88,51 @@ namespace TTTReborn.UI
             }
         }
 
-        public class AliveHud : Panel
+        public class AliveHud
         {
-            public AliveHud()
+            public bool Enabled
             {
-                AddClass("fullscreen");
+                get => _enabled;
+                internal set
+                {
+                    _enabled = value;
 
-                AddChild<BreathIndicator>();
-                AddChild<StaminaIndicator>();
-                AddChild<QuickShop>();
-                AddChild<DamageIndicator>();
+                    if (value)
+                    {
+                        Create();
+                    }
+                    else
+                    {
+                        Destroy();
+                    }
+                }
+            }
+            private bool _enabled = false;
+
+            private RootPanel _rootPanel;
+
+            private List<Panel> _panelList = new();
+
+            public AliveHud(RootPanel rootPanel)
+            {
+                _rootPanel = rootPanel;
+            }
+
+            private void Create()
+            {
+                _panelList = new()
+                {
+                    _rootPanel.AddChild<BreathIndicator>(),
+                    _rootPanel.AddChild<StaminaIndicator>(),
+                    _rootPanel.AddChild<QuickShop>(),
+                    _rootPanel.AddChild<DamageIndicator>()
+                };
+            }
+
+            private void Destroy()
+            {
+                _panelList.ForEach((panel) => panel.Delete(true));
+                _panelList.Clear();
             }
         }
     }

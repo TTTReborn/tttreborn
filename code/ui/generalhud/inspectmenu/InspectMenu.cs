@@ -15,7 +15,7 @@ namespace TTTReborn.UI
 
         private PlayerCorpse _playerCorpse;
         private ConfirmationData _confirmationData;
-        private InspectEntry? _selectedInspectEntry;
+        private InspectEntry _selectedInspectEntry;
 
         private readonly InspectEntry _timeSinceDeathEntry;
         private readonly InspectEntry _suicideEntry;

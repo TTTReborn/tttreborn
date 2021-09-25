@@ -18,13 +18,11 @@ namespace TTTReborn.Items
     {
         public virtual SlotType SlotType => SlotType.UtilityEquipment;
 
-        public string Name { get; }
+        public string ClassName { get; }
 
         protected TTTEquipment()
         {
-            LibraryAttribute attribute = Library.GetAttribute(GetType());
-
-            Name = attribute.Name;
+            ClassName = Library.GetAttribute(GetType()).Name;
         }
 
         public void Equip(TTTPlayer player)
