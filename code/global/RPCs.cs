@@ -116,7 +116,7 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientOnMovedToForceSpectator(bool value)
         {
-            Hud.Current.AliveHudPanel.Enabled = false;
+            Hud.Current.AliveHudInstance.Enabled = false;
         }
 
         [ClientRpc]
