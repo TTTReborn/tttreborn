@@ -4,6 +4,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Player.Camera;
+using TTTReborn.Rounds;
 
 namespace TTTReborn.Player
 {
@@ -100,6 +101,11 @@ namespace TTTReborn.Player
 
             string toggle = IsForcedSpectator ? "activated" : "deactivated";
             Log.Info($"You {toggle} force spectator.");
+
+            if (Gamemode.Game.Instance.Round is InProgressRound round)
+            {
+                round.ExecuteOnWinCondition();
+            }
 
             RPCs.ClientOnMovedToForceSpectator(To.Single(this), IsForcedSpectator);
         }

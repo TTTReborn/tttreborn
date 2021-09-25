@@ -4,7 +4,6 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Rounds;
 using TTTReborn.Settings;
 
 namespace TTTReborn.Player
@@ -62,11 +61,6 @@ namespace TTTReborn.Player
 
                     Gamemode.Game.Instance.Round.MoveToSpectator(this);
                     ForceSpectator();
-
-                    if (Gamemode.Game.Instance.Round is InProgressRound round)
-                    {
-                        round.ExecuteOnWinCondition();
-                    }
                 }
             }
         }
