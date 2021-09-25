@@ -46,8 +46,6 @@ namespace TTTReborn.Player
                 _lastKnownRotation = Rotation;
             }
 
-            Log.Warning($"Time: {_timeSinceLastAction}, Second to wait: {SecondsTillKick}, Bool: {_timeSinceLastAction > SecondsTillKick}");
-
             if (_timeSinceLastAction > SecondsTillKick)
             {
                 bool shouldKick = ServerSettings.Instance.AFK.ShouldKickPlayers;
@@ -63,7 +61,7 @@ namespace TTTReborn.Player
                     Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was to spectating for being AFK.");
 
                     Gamemode.Game.Instance.Round.MoveToSpectator(this);
-                    ForceSpectator(this);
+                    ForceSpectator();
 
                     if (Gamemode.Game.Instance.Round is InProgressRound round)
                     {
