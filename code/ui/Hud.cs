@@ -70,12 +70,10 @@ namespace TTTReborn.UI
                 AddChild<RadarDisplay>();
                 AddChild<PlayerRoleDisplay>();
                 AddChild<PlayerInfoDisplay>();
-                AddChild<InventoryWrapper>();
                 AddChild<ChatBox>();
 
                 AddChild<VoiceChatDisplay>();
                 AddChild<GameTimerDisplay>();
-
                 AddChild<VoiceList>();
 
                 AddChild<InfoFeed>();
@@ -92,6 +90,8 @@ namespace TTTReborn.UI
             {
                 AddClass("fullscreen");
 
+                AddChild<Crosshair>();
+                AddChild<InventoryWrapper>();
                 AddChild<BreathIndicator>();
                 AddChild<StaminaIndicator>();
                 AddChild<QuickShop>();
