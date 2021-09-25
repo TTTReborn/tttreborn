@@ -3,8 +3,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
-using TTTReborn.Roles;
-using TTTReborn.Settings;
 
 namespace TTTReborn.UI
 {
@@ -14,7 +12,6 @@ namespace TTTReborn.UI
         private Label _healthLabel;
         private Panel _creditPanel;
         private Label _creditLabel;
-        private Panel _staminaPanel;
 
         public PlayerInfoDisplay() : base()
         {

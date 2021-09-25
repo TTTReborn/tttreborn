@@ -39,7 +39,7 @@ namespace TTTReborn.Items
 
         ShopItemData CreateItemData()
         {
-            ShopItemData itemData = new ShopItemData(Name)
+            ShopItemData itemData = new ShopItemData(ClassName)
             {
                 Price = Price,
                 Type = GetType()
