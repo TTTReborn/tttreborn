@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
 {
-    public abstract partial class BaseRound : Networked
+    public abstract partial class BaseRound : NetworkComponent
     {
         public virtual int RoundDuration => 0;
         public virtual string RoundName => "";
