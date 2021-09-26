@@ -11,7 +11,6 @@ namespace TTTReborn.Player
     public partial class TTTPlayer
     {
         public readonly static List<InputButton> Buttons = Enum.GetValues(typeof(InputButton)).Cast<InputButton>().ToList();
-        private static int SecondsTillKick => ServerSettings.Instance.AFK.MinutesTillKick * 60;
 
         private TimeSince _timeSinceLastAction = 0f;
         private Rotation? _lastKnownRotation;
@@ -45,7 +44,7 @@ namespace TTTReborn.Player
                 _lastKnownRotation = Rotation;
             }
 
-            if (_timeSinceLastAction > SecondsTillKick)
+            if (_timeSinceLastAction > ServerSettings.Instance.AFK.SecondsTillKick)
             {
                 bool shouldKick = ServerSettings.Instance.AFK.ShouldKickPlayers;
 
@@ -60,7 +59,7 @@ namespace TTTReborn.Player
                     Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was to spectating for being AFK.");
 
                     Gamemode.Game.Instance.Round.MoveToSpectator(this);
-                    ForceSpectator();
+                    ToggleForcedSpectator();
                 }
             }
         }
