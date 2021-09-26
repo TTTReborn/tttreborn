@@ -6,6 +6,8 @@ namespace TTTReborn.Items
 {
     public interface IItem
     {
+        static string ITEM_TAG = "TTT_ITEM";
+
         string ClassName { get; }
 
         Entity Owner { get; }

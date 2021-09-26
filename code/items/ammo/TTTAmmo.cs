@@ -46,6 +46,8 @@ namespace TTTReborn.Items
 
             AmmoEntMax = Amount;
             CurrentAmmo = Amount;
+
+            Tags.Add(IItem.ITEM_TAG);
         }
 
         public override void Touch(Entity other)

@@ -35,13 +35,9 @@ namespace TTTReborn.Rounds
 
                 foreach (Entity entity in Entity.All)
                 {
-                    if (entity is BaseCarriable carr)
+                    if (entity.Tags.Has(IItem.ITEM_TAG))
                     {
-                        carr.Delete();
-                    }
-                    if (entity is TTTAmmo ammo)
-                    {
-                        ammo.Delete();
+                        entity.Delete();
                     }
                     if (entity is TTTAmmoRandom rammo)
                     {

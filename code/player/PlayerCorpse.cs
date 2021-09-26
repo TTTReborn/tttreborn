@@ -127,7 +127,7 @@ namespace TTTReborn.Player
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return (IsIdentified) ? new InspectHint("CORPSE_INSPECT") : new InspectHint("CORPSE_IDENTIFY");
+            return (IsIdentified) ? new UsableHint("CORPSE_INSPECT") : new UsableHint("CORPSE_IDENTIFY");
         }
     }
 }
