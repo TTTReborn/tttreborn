@@ -39,9 +39,8 @@ namespace TTTReborn.UI.Menu
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
-
-
         }
+
         private void AddAFKSwitchSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
             Sandbox.UI.Panel sprintPanel = tabContent.Add.Panel("sprint");
