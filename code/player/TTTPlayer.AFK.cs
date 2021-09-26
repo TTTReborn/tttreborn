@@ -30,7 +30,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            bool pressedAnyKeyPressed = Buttons.Any(button => Input.Pressed(button) || Input.Down(button));
+            bool pressedAnyKeyPressed = Buttons.Any(button => Input.Down(button));
 
             if (pressedAnyKeyPressed || (_lastKnownRotation.HasValue && _lastKnownRotation != Rotation))
             {
