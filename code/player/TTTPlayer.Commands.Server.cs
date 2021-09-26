@@ -164,7 +164,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            player.ForceSpectator();
+            player.ToggleForcedSpectator();
         }
     }
 }
