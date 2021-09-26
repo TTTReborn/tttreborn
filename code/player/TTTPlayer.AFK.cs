@@ -13,7 +13,6 @@ namespace TTTReborn.Player
         public readonly static List<InputButton> Buttons = Enum.GetValues(typeof(InputButton)).Cast<InputButton>().ToList();
 
         private TimeSince _timeSinceLastAction = 0f;
-        private Rotation? _lastKnownRotation;
 
         private void TickAFKSystem()
         {
@@ -31,17 +30,12 @@ namespace TTTReborn.Player
             }
 
             bool pressedAnyKeyPressed = Buttons.Any(button => Input.Down(button));
+            bool isMouseMoving = Input.MouseDelta != Vector3.Zero;
 
-            if (pressedAnyKeyPressed || (_lastKnownRotation.HasValue && _lastKnownRotation != Rotation))
+            if (pressedAnyKeyPressed || isMouseMoving)
             {
                 _timeSinceLastAction = 0f;
-                _lastKnownRotation = Rotation;
                 return;
-            }
-
-            if (!_lastKnownRotation.HasValue)
-            {
-                _lastKnownRotation = Rotation;
             }
 
             if (_timeSinceLastAction > ServerSettings.Instance.AFK.SecondsTillKick)
