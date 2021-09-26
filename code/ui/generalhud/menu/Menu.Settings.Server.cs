@@ -33,9 +33,9 @@ namespace TTTReborn.UI.Menu
         private void AddAFKSettings(PanelContent panelContent, ServerSettings serverSettings)
         {
             // TTTMinPlayers
-            CreateSettingsEntry(panelContent, "AFK Time", serverSettings.Round.MinPlayers, "The length of time in minutes before a player is marked AFK.", (value) =>
+            CreateSettingsEntry(panelContent, "AFK Time", serverSettings.AFK.SecondsTillKick, "The length of time in minutes before a player is marked AFK.", (value) =>
             {
-                serverSettings.AFK.MinutesTillKick = value;
+                serverSettings.AFK.SecondsTillKick = value;
 
                 ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
@@ -45,7 +45,7 @@ namespace TTTReborn.UI.Menu
         private void AddAFKSwitchSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
             Sandbox.UI.Panel sprintPanel = tabContent.Add.Panel("sprint");
-            sprintPanel.Add.Label($"Should Kick Players?").AddTooltip("Wether or not a player should be kicked or moved to Spectators.");
+            sprintPanel.Add.Label($"Should Kick Players?").AddTooltip("Whether or not a player should be kicked or moved to Spectators.");
 
             Switch sw = sprintPanel.Add.Switch("afk", serverSettings.AFK.ShouldKickPlayers);
             sw.AddEventListener("onchange", (panelEvent) =>
@@ -59,57 +59,57 @@ namespace TTTReborn.UI.Menu
         private void AddSprintSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
             Sandbox.UI.Panel sprintPanel = tabContent.Add.Panel("sprint");
-            sprintPanel.Add.Label($"Sprint enabled?").AddTooltip("Wether or not sprint should be enabled on the server");
+            sprintPanel.Add.Label($"Sprint enabled?").AddTooltip("Whether or not sprint should be enabled on the server.");
 
             Switch sw = sprintPanel.Add.Switch("sprint", serverSettings.Movement.IsSprintEnabled);
             sw.AddEventListener("onchange", (panelEvent) =>
             {
                 serverSettings.Movement.IsSprintEnabled = !serverSettings.Movement.IsSprintEnabled;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
         }
 
         private void AddRoundSettings(PanelContent panelContent, ServerSettings serverSettings)
         {
             // TTTMinPlayers
-            CreateSettingsEntry<int>(panelContent, "Min Players", serverSettings.Round.MinPlayers, "The minimum players required to start.", (value) =>
+            CreateSettingsEntry(panelContent, "Min Players", serverSettings.Round.MinPlayers, "The minimum players required to start.", (value) =>
             {
                 serverSettings.Round.MinPlayers = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
 
             // TTTPreRoundTime
-            CreateSettingsEntry<int>(panelContent, "PreRound Time", serverSettings.Round.PreRoundTime, "The amount of time allowed for preparation.", (value) =>
+            CreateSettingsEntry(panelContent, "PreRound Time", serverSettings.Round.PreRoundTime, "The amount of time allowed for preparation.", (value) =>
             {
                 serverSettings.Round.PreRoundTime = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
 
             // TTTRoundTime
-            CreateSettingsEntry<int>(panelContent, "Round Time", serverSettings.Round.RoundTime, "The amount of time allowed for the main round.", (value) =>
+            CreateSettingsEntry(panelContent, "Round Time", serverSettings.Round.RoundTime, "The amount of time allowed for the main round.", (value) =>
             {
                 serverSettings.Round.RoundTime = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
 
             // TTTPostRoundTime
-            CreateSettingsEntry<int>(panelContent, "PostRound Time", serverSettings.Round.PostRoundTime, "The amount of time before the next round starts.", (value) =>
+            CreateSettingsEntry(panelContent, "PostRound Time", serverSettings.Round.PostRoundTime, "The amount of time before the next round starts.", (value) =>
             {
                 serverSettings.Round.PostRoundTime = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
 
             // TTTKillTimeReward
-            CreateSettingsEntry<int>(panelContent, "Kill Time Reward", serverSettings.Round.KillTimeReward, "The amount of extra time given to traitors for killing an innocent.", (value) =>
+            CreateSettingsEntry(panelContent, "Kill Time Reward", serverSettings.Round.KillTimeReward, "The amount of extra time given to traitors for killing an innocent.", (value) =>
             {
                 serverSettings.Round.KillTimeReward = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON<ServerSettings>(serverSettings, true));
+                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
             });
         }
 
