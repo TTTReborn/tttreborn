@@ -103,9 +103,9 @@ namespace TTTReborn.Player
         {
             if (List.Contains(item))
             {
+                RPCs.ClientOnPlayerCarriableItemDrop(To.Single(Owner), item);
                 item.Delete();
                 List.Remove(item);
-                RPCs.ClientOnPlayerCarriableItemDrop(To.Single(Owner), item);
 
                 return true;
             }

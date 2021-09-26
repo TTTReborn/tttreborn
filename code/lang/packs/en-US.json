@@ -42,5 +42,7 @@
     "SCOREBOARD_PLAYER_GROUP_ALIVE": "Alive",
     "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Confirmed Dead",
     "SCOREBOARD_PLAYER_GROUP_MIA": "Missing In Action",
-    "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Spectators"
+    "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Spectators",
+
+    "HEALTH_STATION": "Hold {0} to use the health station"
 }

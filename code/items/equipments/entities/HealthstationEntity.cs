@@ -6,11 +6,15 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    using Sandbox.UI.Construct;
+
+    using UI;
+
     [Library("ttt_healthstation_ent"), Hammer.Skip]
-    public partial class HealthstationEntity : Prop, IUse
+    public partial class HealthstationEntity : Prop, IUse, IEntityHint
     {
         [Net]
-        public float StoredHealth { get; set; } = 200; //This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
+        public float StoredHealth { get; set; } = 200f; //This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
 
         private string ModelPath => "models/entities/healthstation.vmdl";
 
@@ -38,11 +42,6 @@ namespace TTTReborn.Items
 
                 player.SetHealth(player.Health + healAmount);
                 StoredHealth -= healAmount;
-
-                //Event.Run("tttreborn.healthstation.healed", player, healAmount); //Would have liked to pass `this` as well, but apparently events are capped at 2 parameters?
-
-                //Play sounds here
-                //Store DNA data once that becomes a thing
                 return true;
             }
             return false;
@@ -59,5 +58,15 @@ namespace TTTReborn.Items
         }
 
         public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
+
+        public bool CanHint(TTTPlayer client)
+        {
+            return true;
+        }
+
+        public EntityHintPanel DisplayHint(TTTPlayer client)
+        {
+            return new UsableHint("HEALTH_STATION");
+        }
     }
 }
