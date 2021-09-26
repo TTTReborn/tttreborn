@@ -12,9 +12,9 @@ namespace TTTReborn.Settings
         public partial class AFK
         {
             /// <value><c>ShouldKickPlayers</c> is if the system should kick the player versus moving them to spectators.</value>
-            public bool ShouldKickPlayers { get; set; } = true;
+            public bool ShouldKickPlayers { get; set; } = false;
             /// <value><c>MinutesTillKick</c> represents the amount of time in minutes before the player is kicked.</value>
-            public int MinutesTillKick { get; set; } = 1;
+            public int SecondsTillKick { get; set; } = 60;
         }
 
         public partial class Round
