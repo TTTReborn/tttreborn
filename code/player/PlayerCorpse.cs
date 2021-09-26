@@ -123,6 +123,8 @@ namespace TTTReborn.Player
             };
         }
 
+        public float HintDistance => 80f;
+
         public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.Enabled ?? false;
 
         public EntityHintPanel DisplayHint(TTTPlayer client)

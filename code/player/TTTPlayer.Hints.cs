@@ -9,8 +9,8 @@ namespace TTTReborn.Player
     {
         private const float MAX_HINT_DISTANCE = 2048;
 
-        private EntityHintPanel _currentHint;
-        private IEntityHint _currentTarget;
+        private EntityHintPanel _currentHintPanel;
+        private IEntityHint _currentHint;
 
         private void TickEntityHints()
         {
@@ -21,38 +21,46 @@ namespace TTTReborn.Player
             }
 
             IEntityHint target = player.IsLookingAtType<IEntityHint>(MAX_HINT_DISTANCE);
-
-            if (target != null && _currentHint != null)
+            if (target == null)
             {
-                _currentHint.UpdateHintPanel();
+                DeleteHint();
+                return;
+            }
 
-                if (!target.CanHint(player) || target != _currentTarget)
+            // We now know target is a IEntityHint, let's use the HintDistance defined on the IEntityHint.
+            IEntityHint hint = player.IsLookingAtType<IEntityHint>(target.HintDistance);
+
+            if (hint != null && _currentHintPanel != null)
+            {
+                _currentHintPanel.UpdateHintPanel();
+
+                if (!hint.CanHint(player) || hint != _currentHint)
                 {
                     DeleteHint();
                     return;
                 }
             }
 
-            // If we are looking at a target and don't have a current hint, let's see if we can make one.
-            if (target != null)
+            // If we are looking at a hint and don't have a current hint, let's see if we can make one.
+            if (hint != null)
             {
-                if (target.CanHint(player) && _currentHint == null)
+                if (hint.CanHint(player) && _currentHintPanel == null)
                 {
-                    _currentHint = target.DisplayHint(player);
-                    _currentHint.Parent = Hud.Current.RootPanel;
-                    _currentHint.Enabled = true;
-                    _currentHint.UpdateHintPanel();
+                    _currentHintPanel = hint.DisplayHint(player);
+                    _currentHintPanel.Parent = Hud.Current.RootPanel;
+                    _currentHintPanel.Enabled = true;
+                    _currentHintPanel.UpdateHintPanel();
 
-                    _currentTarget = target;
+                    _currentHint = hint;
                 }
             }
             else
             {
                 // If we just looked away, disable and update the panel
-                if (_currentHint != null)
+                if (_currentHintPanel != null)
                 {
-                    _currentHint.Enabled = false;
-                    _currentHint.UpdateHintPanel();
+                    _currentHintPanel.Enabled = false;
+                    _currentHintPanel.UpdateHintPanel();
                 }
 
                 DeleteHint();
@@ -61,10 +69,9 @@ namespace TTTReborn.Player
 
         private void DeleteHint()
         {
-            _currentHint?.Delete();
+            _currentHintPanel?.Delete();
+            _currentHintPanel = null;
             _currentHint = null;
-
-            _currentTarget = null;
         }
     }
 }
