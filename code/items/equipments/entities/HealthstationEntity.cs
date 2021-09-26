@@ -3,13 +3,10 @@ using System;
 using Sandbox;
 
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    using Sandbox.UI.Construct;
-
-    using UI;
-
     [Library("ttt_healthstation_ent"), Hammer.Skip]
     public partial class HealthstationEntity : Prop, IUse, IEntityHint
     {
