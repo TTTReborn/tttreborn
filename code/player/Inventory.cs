@@ -163,6 +163,7 @@ namespace TTTReborn.Player
             droppedEntity.Position = Owner.EyePos + Owner.EyeRot.Forward * DROPPOSITIONOFFSET;
             droppedEntity.Rotation = Owner.EyeRot;
             droppedEntity.Velocity = Owner.EyeRot.Forward * DROPVELOCITY;
+            droppedEntity.Tags.Add(IItem.ITEM_TAG);
             return Remove(self);
         }
     }

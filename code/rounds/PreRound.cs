@@ -35,7 +35,7 @@ namespace TTTReborn.Rounds
 
                 foreach (Entity entity in Entity.All)
                 {
-                    if (entity is BaseCarriable carr || entity is TTTAmmo || (entity.ClassInfo.Name.StartsWith("ttt_") && entity is Prop))
+                    if (entity.Tags.Has(IItem.ITEM_TAG))
                     {
                         entity.Delete();
                     }

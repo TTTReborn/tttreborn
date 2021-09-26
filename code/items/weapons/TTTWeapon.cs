@@ -65,6 +65,7 @@ namespace TTTReborn.Items
         public TTTWeapon() : base()
         {
             ClassName = Library.GetAttribute(GetType()).Name;
+            Tags.Add(IItem.ITEM_TAG);
         }
 
         public void Equip(TTTPlayer player)
