@@ -3,7 +3,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class FileSelectionEntry : Panel
+    public partial class FileSelectionEntry : Sandbox.UI.Panel
     {
         public readonly Label FileNameLabel;
 

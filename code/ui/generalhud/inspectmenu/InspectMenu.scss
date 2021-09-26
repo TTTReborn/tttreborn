@@ -1,119 +1,97 @@
 InspectMenu {
-    border: 1px solid #1b1b1b;
-    background-color: #000c;
-    color: #fafafa;
-    font-family: Poppins;
-    font-weight: 500;
-    border-radius: 4px;
-    margin: auto;
-    top: 66%;
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%) translateY(-40%);
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.15s ease-out;
+    pointer-events: all;
+    text-align: center;
 
-    &.hide {
-        display: none;
-    }
-
-    ConfirmationPanel {
-        min-width: 600px;
-        max-width: 75%;
-        padding: 6px 12px;
-        text-align: center;
+    .inspect-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
         flex-direction: column;
-        border: 4px solid #031421;
-        border-radius: 4px;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease-out;
+        transform: scale(0.9);
 
-        &.hide {
-            display: none;
+        &.pop-in {
+            transform: scale(1);
         }
 
-        Header {
-            margin-bottom: 10px;
-
-            Label {
-                &.player {
-                    text-align: left;
-                    flex-grow: 1;
-                    font-size: 24px;
-                    font-weight: 500;
-                }
-
-                &.role {
-                    text-align: right;
-                    font-size: 18px;
-                    flex-shrink: 1;
-                    font-weight: 500;
-                    padding-top: 6px;
-                }
-            }
+        .avatar-image {
+            width: 80px;
+            height: 80px;
         }
 
-        Content {
+        .player-label {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .role-label {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .info-panel {
+            max-width: 50%;
             display: flex;
             flex-wrap: wrap;
-            margin-bottom: 25px;
-            margin-top: 15px;
-            justify-content: flex-start;
+            align-items: center;
+            justify-content: center;
+            margin: 25px;
+        }
 
-            InspectItem {
-                flex-direction: column;
-                margin-top: 5px;
-                margin-left: 30px;
-                text-align: center;
-                width: 75px;
-            }
+        .inspect-details-label {
+            margin: 25px;
+            font-size: 18px;
+            transition: opacity 0.25s ease-out;
+            opacity: 0;
 
-            ImageWrapper {
-                text-align: center;
-                height: 75px;
-                width: 75px;
-                background-color: rgba(0, 0, 0, 0.7);
-                border: 1px solid #031421;
-                border-radius: 4px;
-                text-align: center;
-                // transition: all 0.05s linear;
-                margin-right: 5px;
-
-                &.playericon {
-                    height: 95px;
-                    width: 95px;
-                    border-radius: 50%;
-                    border: 2px solid white;
-
-                    Image {
-                        padding: 2px;
-                        border-radius: 50%;
-                    }
-                }
-
-                Image {
-                    width: 100%;
-                    height: 100%;
-                }
+            &.fade-in {
+                opacity: 1;
             }
         }
     }
 
-    ConfirmationHintPanel {
-        &.hide {
-            display: none;
-        }
+    &.fade-in {
+        opacity: 1;
+    }
+}
 
-        padding: 5px 15px;
+InspectEntry {
+    flex-direction: column;
+    width: 100px;
+    height: 100px;
+    margin: 15px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    box-shadow: 0 0 10px black;
+    transition: transform 0.1s ease-in;
+
+    &:hover {
+        transform: scale(1.05);
+        cursor: pointer;
     }
 
-    Footer,
-    ConfirmationHintPanel {
-        Label.inspect {
-            width: 100%;
-            color: #ffae00;
-            font-size: 0.8em;
-            text-align: center;
+    .inspect-icon {
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 100%;
+        width: 100%;
+    }
 
-            &.hide {
-                display: none;
-            }
-        }
+    .quick-label {
+        position: absolute;
+        bottom: -28px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: auto;
     }
 }

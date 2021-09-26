@@ -25,7 +25,7 @@ namespace TTTReborn.Player
                 {
                     IsSpeaking = true;
 
-                    UI.VoiceList.Current?.OnVoicePlayed(GetClientOwner(), 1f);
+                    UI.VoiceChatDisplay.Instance?.OnVoicePlayed(GetClientOwner(), 1f);
                 }
             }
         }

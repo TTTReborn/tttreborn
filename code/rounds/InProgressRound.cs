@@ -9,6 +9,7 @@ using TTTReborn.Items;
 using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
+using TTTReborn.Settings;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
@@ -20,7 +21,7 @@ namespace TTTReborn.Rounds
 
         public override int RoundDuration
         {
-            get => Settings.ServerSettings.Instance.Round.RoundTime;
+            get => ServerSettings.Instance.Round.RoundTime;
         }
 
         public override void OnPlayerKilled(TTTPlayer player)
@@ -119,7 +120,7 @@ namespace TTTReborn.Rounds
             base.OnPlayerSpawn(player);
         }
 
-        private void SetLoadout(TTTPlayer player)
+        private static void SetLoadout(TTTPlayer player)
         {
             player.Inventory.TryAdd(new MagnetoStick(), true);
 

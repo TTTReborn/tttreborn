@@ -18,7 +18,7 @@ namespace TTTReborn.UI
         public Vector2? TransformRatio;
     }
 
-    public partial class RichPanel : TTTPanel
+    public partial class RichPanel : Panel
     {
         public bool IsDraggable { get; set; } = false;
 

@@ -2,7 +2,7 @@ using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
-    public partial class DropdownOptionHolder : TTTPanel
+    public partial class DropdownOptionHolder : Panel
     {
         public Dropdown RelatedPanel { get; private set; }
 
@@ -28,10 +28,10 @@ namespace TTTReborn.UI
 
             if (!RelatedPanel.IsVisible)
             {
-                IsShowing = false;
+                Enabled = false;
             }
 
-            if (!IsShowing)
+            if (!Enabled)
             {
                 return;
             }

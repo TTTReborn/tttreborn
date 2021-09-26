@@ -1,35 +1,32 @@
 Nameplate {
     position: absolute;
-    font-family: Poppins;
     left: 50%;
     top: 55%;
-    transform: translateX(-50%) translatey(-45%);
-    background-color: #000c;
-    border-radius: 4px;
-    border: 2px solid #000c;
+    transform: translateX(-50%) translateY(-50%);
+    transition: opacity 0.15s ease-out;
+    opacity: 0;
 
-    &.hide {
-        display: none;
+    &.fade-in {
+        transition: opacity 0.15s ease-out;
+        opacity: 1;
     }
 
-    .labelHolder {
+    .label-holder {
         display: flex;
         flex-direction: column;
         text-align: center;
-        padding: 2px 25px;
-        color: #fafafa;
         font-weight: 600;
-        border-radius: 4px;
 
-        .nameHolder {
+        .name-holder {
             justify-content: center;
             width: 100%;
 
             .name {
-                font-size: 16px;
+                font-size: 14px;
             }
         }
-        .damageIndicator {
+
+        .damage-indicator {
             font-size: 12px;
         }
     }

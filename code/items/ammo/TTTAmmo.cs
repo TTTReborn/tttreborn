@@ -12,7 +12,8 @@ namespace TTTReborn.Items
         /// <summary>
         /// String definition of ammo type, should match TTTWeapon.AmmoType
         /// </summary>
-        public virtual string Name { get; set; }
+        public virtual string ClassName { get; set; }
+
         /// <summary>
         /// Amount of Ammo within Entity.
         /// </summary>
@@ -57,7 +58,7 @@ namespace TTTReborn.Items
             }
 
             string ammoType = Name.ToLower();
-            Inventory inventory = (Inventory) player.Inventory;
+            Inventory inventory = player.Inventory;
 
             if (!inventory.GetAmmoTypes().Contains(ammoType))
             {

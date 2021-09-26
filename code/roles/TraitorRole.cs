@@ -3,12 +3,13 @@ using System;
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [RoleAttribute("traitor")]
+    [Role("Traitor")]
     public class TraitorRole : TTTRole
     {
         public override Color Color => Color.FromBytes(223, 41, 53);
@@ -44,6 +45,18 @@ namespace TTTReborn.Roles
             base.OnSelect(player);
         }
 
-        public override bool CanBuy() => true;
+        // serverside function
+        public override void CreateShopSettings(string fileName)
+        {
+            foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
+            {
+                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
+                Shop.Items.Add(item.CreateItemData());
+
+                item.Delete();
+            }
+
+            base.CreateShopSettings(fileName);
+        }
     }
 }

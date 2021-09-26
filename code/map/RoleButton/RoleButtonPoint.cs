@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class RoleButtonPoint : TTTPanel
+    public class RoleButtonPoint : Panel
     {
         //Our data we received initially from the server during creation.
         public TTTRoleButtonData Data { get; private set; }
@@ -52,7 +52,7 @@ namespace TTTReborn.UI
             }
 
             Vector3 screenPos = Position.ToScreen();
-            IsShowing = screenPos.z > 0f;
+            Enabled = screenPos.z > 0f;
 
             //If our entity is locked, delayed or removed, let's not show it.
             if (_entity.IsDisabled)
@@ -69,15 +69,15 @@ namespace TTTReborn.UI
                     TTTPlayer.FocusedButton = null;
                 }
 
-                IsShowing = false;
+                Enabled = false;
             }
 
-            if (IsShowing)
+            if (Enabled)
             {
                 Style.Left = Length.Fraction(screenPos.x);
                 Style.Top = Length.Fraction(screenPos.y);
 
-                Style.Opacity = MathX.Clamp(1.0f - (player.Position.Distance(Position) - MINVIEWDISTANCE) / (_maxViewDistance - MINVIEWDISTANCE), 0.0f, 1.0f);
+                Style.Opacity = MathX.Clamp(1.0f - (player.Position.Distance(Position) - MIN_VIEW_DISTANCE) / (_maxViewDistance - MIN_VIEW_DISTANCE), 0.0f, 1.0f);
 
                 //Update our 'focus' CSS look if our player currently is looking near this point.
                 SetClass("focus", TTTPlayer.FocusedButton == this);
@@ -106,7 +106,7 @@ namespace TTTReborn.UI
             //We have to adjust the top check by the screen's aspect ratio in order to compensate for screen size
             float topHeight = _focusSize * Screen.Aspect;
 
-            //I think we could alternatively use 
+            //I think we could alternatively use
             return Style.Left.Value.Value > _centerPercent - _focusSize && Style.Left.Value.Value < _centerPercent + _focusSize
                 && Style.Top.Value.Value > _centerPercent - topHeight && Style.Top.Value.Value < _centerPercent + topHeight;
         }

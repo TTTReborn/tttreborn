@@ -34,7 +34,7 @@ namespace TTTReborn.UI.Menu
 
         private void CreateSettingsButtons(PanelContent menuContent)
         {
-            Panel buttonsWrapperPanel = menuContent.Add.Panel("wrapper");
+            Sandbox.UI.Panel buttonsWrapperPanel = menuContent.Add.Panel("wrapper");
 
             buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
             {
@@ -244,7 +244,7 @@ namespace TTTReborn.Player
         {
             Menu menu = Menu.Instance;
 
-            if (menu != null && menu.IsShowing && menu.ServerSettingsTabContent != null)
+            if (menu != null && menu.Enabled && menu.ServerSettingsTabContent != null)
             {
                 // refresh settings
                 menu.MenuContent.SetPanelContent(menu.OpenSettings);

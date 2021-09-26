@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
 {
-    public abstract partial class BaseRound : Networked
+    public abstract partial class BaseRound : NetworkComponent
     {
         public virtual int RoundDuration => 0;
         public virtual string RoundName => "";
@@ -17,13 +17,7 @@ namespace TTTReborn.Rounds
 
         public float RoundEndTime { get; set; }
 
-        public float TimeLeft
-        {
-            get
-            {
-                return RoundEndTime - Sandbox.Time.Now;
-            }
-        }
+        public float TimeLeft => RoundEndTime - Time.Now;
 
         [Net]
         public string TimeLeftFormatted { get; set; }
@@ -32,8 +26,8 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer && RoundDuration > 0)
             {
-                RoundEndTime = Sandbox.Time.Now + RoundDuration;
-                TimeLeftFormatted = TimeSpan.FromSeconds(TimeLeft).ToString(@"mm\:ss");
+                RoundEndTime = Time.Now + RoundDuration;
+                TimeLeftFormatted = Globals.Utils.TimerString(TimeLeft);
             }
 
             OnStart();
@@ -91,7 +85,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                if (RoundEndTime > 0 && Sandbox.Time.Now >= RoundEndTime)
+                if (RoundEndTime > 0 && Time.Now >= RoundEndTime)
                 {
                     RoundEndTime = 0f;
 

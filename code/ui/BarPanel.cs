@@ -3,11 +3,11 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public class BarPanel : TTTPanel
+    public class BarPanel : Panel
     {
         public readonly Label TextLabel;
 
-        public BarPanel(Panel parent, string text, string name)
+        public BarPanel(Sandbox.UI.Panel parent, string text, string name)
         {
             Parent = parent;
 

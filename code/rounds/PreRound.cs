@@ -6,6 +6,7 @@ using Sandbox;
 using TTTReborn.Items;
 using TTTReborn.Map;
 using TTTReborn.Player;
+using TTTReborn.Settings;
 
 namespace TTTReborn.Rounds
 {
@@ -14,7 +15,7 @@ namespace TTTReborn.Rounds
         public override string RoundName => "Preparing";
         public override int RoundDuration
         {
-            get => Settings.ServerSettings.Instance.Round.PreRoundTime;
+            get => ServerSettings.Instance.Round.PreRoundTime;
         }
 
         public override void OnPlayerKilled(TTTPlayer player)

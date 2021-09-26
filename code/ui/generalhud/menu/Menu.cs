@@ -30,7 +30,7 @@ namespace TTTReborn.UI.Menu
             OpenHomepage();
 
             IsDraggable = true;
-            IsShowing = false;
+            Enabled = false;
         }
 
         internal void OpenHomepage()
@@ -123,7 +123,7 @@ namespace TTTReborn.Player
         {
             if (Input.Pressed(InputButton.Menu))
             {
-                Menu.Instance.IsShowing = !Menu.Instance.IsShowing;
+                Menu.Instance.Enabled = !Menu.Instance.Enabled;
             }
         }
     }

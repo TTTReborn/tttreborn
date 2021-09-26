@@ -22,7 +22,7 @@ namespace TTTReborn.Player.Camera
                 return;
             }
 
-            player.CurrentPlayer.RenderAlpha = 1f;
+            player.CurrentPlayer.RenderColor = Color.White;
             player.CurrentPlayer = null;
         }
 
@@ -51,12 +51,12 @@ namespace TTTReborn.Player.Camera
         {
             if (oldObservatedPlayer != null)
             {
-                oldObservatedPlayer.RenderAlpha = 1f;
+                oldObservatedPlayer.RenderColor = Color.White;
             }
 
             if (newObservatedPlayer != null)
             {
-                newObservatedPlayer.RenderAlpha = 0f;
+                newObservatedPlayer.RenderColor = Color.Transparent;
             }
         }
     }

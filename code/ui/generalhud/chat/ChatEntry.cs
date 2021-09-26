@@ -3,22 +3,29 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class ChatEntry : TTTPanel
+    public partial class ChatEntry : Panel
     {
-        public string Name;
-        public string Text;
-
-        public readonly Panel HeadHolder;
+        public readonly Sandbox.UI.Panel Message;
         public readonly Image Avatar;
-        public readonly Label NameLabel;
-        public readonly Label Message;
+        public readonly Label Header;
+        public readonly Label Content;
+        public ChatBox.Channel Channel;
 
-        public ChatEntry()
+        public ChatEntry() : base()
         {
-            HeadHolder = Add.Panel("head");
-            Avatar = HeadHolder.Add.Image();
-            NameLabel = HeadHolder.Add.Label("", "name");
-            Message = Add.Label("Message", "message");
+            Avatar = Add.Image();
+            Avatar.AddClass("avatar");
+            Avatar.AddClass("circular");
+
+            Message = Add.Panel("message");
+
+            Header = Message.Add.Label();
+            Header.AddClass("header");
+            Header.AddClass("text-shadow");
+
+            Content = Message.Add.Label();
+            Content.AddClass("content");
+            Content.AddClass("text-shadow");
         }
     }
 }

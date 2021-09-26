@@ -2,7 +2,7 @@ using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
-    public class InventoryWrapper : TTTPanel
+    public class InventoryWrapper : Panel
     {
         public static InventoryWrapper Instance;
 

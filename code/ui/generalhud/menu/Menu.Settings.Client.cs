@@ -20,7 +20,7 @@ namespace TTTReborn.UI.Menu
 
         private void AddLanguageSettings(PanelContent panelContent)
         {
-            Panel languagePanel = panelContent.Add.Panel("language");
+            Sandbox.UI.Panel languagePanel = panelContent.Add.Panel("language");
 
             languagePanel.Add.Label("Language:");
 

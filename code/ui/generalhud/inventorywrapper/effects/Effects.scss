@@ -1,47 +1,44 @@
 Effects {
     display: flex;
-    justify-content: flex-end;
-    font-size: 12px;
-    font-family: Poppins;
-    margin-bottom: 10px;
+    align-items: flex-end;
+    flex-direction: column-reverse;
+    margin-bottom: 25px;
+}
 
-    Effect {
-        border: 1px solid #031421;
-        background-color: rgba(0, 0, 0, 0.7);
-        border-radius: 4px;
-        width: 62px;
-        height: 62px;
-        margin-left: 10px;
-        margin-top: 10px;
+Effect {
+    flex-direction: column;
+    width: 72px;
+    height: 72px;
+    margin-top: 15px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 
-        align-items: center;
-        justify-content: center;
+    .name-label {
+        font-size: 10px;
+    }
 
-        Label {
-            color: #fafafa;
-            text-align: center;
+    .effect-icon-panel {
+        width: 60px;
+        height: 60px;
+    }
 
-            &:not(.countdown) {
-                width: 100%;
-            }
+    .effect-image {
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 100%;
+        width: 100%;
 
-            &.countdown {
-                position: absolute;
-                right: -10px;
-                bottom: -8px;
-                padding:1px;
-                background-color: rgba(0, 0, 0, 0.975);
-                border-radius: 4px;
-                width: inherit;
-                min-width: 30px;
-            }
+        &.cooldown {
+            opacity: 0.25;
         }
+    }
 
-        Image {
-            color: #fafafa;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-        }
+    .countdown {
+        position: absolute;
+        font-size: 24px;
+        font-weight: bold;
     }
 }
