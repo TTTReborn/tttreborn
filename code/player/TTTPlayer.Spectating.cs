@@ -95,11 +95,6 @@ namespace TTTReborn.Player
                 if (!GetClientOwner().GetScore("forcedspectator", false))
                 {
                     GetClientOwner().SetScore("forcedspectator", true);
-
-                    if (Gamemode.Game.Instance.Round is InProgressRound round)
-                    {
-                        round.ExecuteOnWinCondition();
-                    }
                 }
             }
         }
