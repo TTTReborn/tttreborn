@@ -71,13 +71,13 @@ namespace TTTReborn.Globals
             return players;
         }
 
-        public static List<TTTPlayer> GetForcedSpectatingPlayers()
+        public static List<TTTPlayer> GetNonForcedSpectatingPlayers()
         {
             List<TTTPlayer> players = new();
 
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer player && player.IsForcedSpectator)
+                if (client.Pawn is TTTPlayer player && !player.IsForcedSpectator)
                 {
                     players.Add(player);
                 }
@@ -103,7 +103,7 @@ namespace TTTReborn.Globals
 
         public static bool HasMinimumPlayers()
         {
-            return Client.All.Count - GetForcedSpectatingPlayers().Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
+            return GetNonForcedSpectatingPlayers().Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
         }
 
         /// <summary>
