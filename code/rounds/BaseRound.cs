@@ -46,16 +46,6 @@ namespace TTTReborn.Rounds
             OnFinish();
         }
 
-        public void MoveToSpectator(TTTPlayer player)
-        {
-            if (Players.Contains(player))
-            {
-                Players.Remove(player);
-            }
-
-            Spectators.Add(player);
-        }
-
         public void AddPlayer(TTTPlayer player)
         {
             Host.AssertServer();
