@@ -53,8 +53,7 @@ namespace TTTReborn.Player
                     Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was kicked from the server for being AFK.");
                     client.Kick();
                 }
-
-                if (!shouldKick)
+                else
                 {
                     Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was moved to spectating for being AFK.");
                     ToggleForcedSpectator();
