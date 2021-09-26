@@ -4,7 +4,6 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Player.Camera;
-using TTTReborn.Rounds;
 
 namespace TTTReborn.Player
 {
