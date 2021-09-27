@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -53,7 +54,7 @@ namespace TTTReborn.UI
             AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
         }
 
-        [Event("tttreborn.player.died")]
+        [Event(TTTEvent.Player.Died)]
         private void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (deadPlayer != Local.Client.Pawn)

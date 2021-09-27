@@ -18,7 +18,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Event.Run("tttreborn.player.died", player);
+            Event.Run(TTTEvent.Player.Died, player);
         }
 
         [ClientRpc]
