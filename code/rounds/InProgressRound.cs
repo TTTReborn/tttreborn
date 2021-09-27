@@ -27,13 +27,13 @@ namespace TTTReborn.Rounds
             Spectators.Add(player);
 
             player.MakeSpectator();
-            ExecuteOnWinCondition();
+            ChangeRoundIfOver();
         }
 
         public override void OnPlayerLeave(TTTPlayer player)
         {
             base.OnPlayerLeave(player);
-            ExecuteOnWinCondition();
+            ChangeRoundIfOver();
         }
 
         protected override void OnStart()
@@ -199,10 +199,9 @@ namespace TTTReborn.Rounds
             }
         }
 
-        public void ExecuteOnWinCondition()
+        private void ChangeRoundIfOver()
         {
             TTTTeam result = IsRoundOver();
-
             if (result != null)
             {
                 LoadPostRound(result);
