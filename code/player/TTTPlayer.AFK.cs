@@ -29,10 +29,10 @@ namespace TTTReborn.Player
                 return;
             }
 
-            bool pressedAnyKeyPressed = Buttons.Any(button => Input.Down(button));
+            bool isAnyKeyPressed = Buttons.Any(button => Input.Down(button));
             bool isMouseMoving = Input.MouseDelta != Vector3.Zero;
 
-            if (pressedAnyKeyPressed || isMouseMoving)
+            if (isAnyKeyPressed || isMouseMoving)
             {
                 _timeSinceLastAction = 0f;
                 return;
