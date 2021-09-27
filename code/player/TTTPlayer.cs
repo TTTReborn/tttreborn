@@ -165,6 +165,11 @@ namespace TTTReborn.Player
                 TickMenu();
             }
 
+            if (IsServer)
+            {
+                TickAFKSystem();
+            }
+
             TickAttemptInspectPlayerCorpse();
 
             if (LifeState != LifeState.Alive)

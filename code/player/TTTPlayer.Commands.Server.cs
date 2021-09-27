@@ -164,21 +164,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            player.IsForcedSpectator = !player.IsForcedSpectator;
-
-            if (player.IsForcedSpectator && player.LifeState == LifeState.Alive)
-            {
-                player.MakeSpectator(false);
-
-                if (!ConsoleSystem.Caller.GetScore<bool>("forcedspectator", false))
-                {
-                    ConsoleSystem.Caller.SetScore("forcedspectator", true);
-                }
-            }
-
-            string toggle = player.IsForcedSpectator ? "activated" : "deactivated";
-
-            Log.Info($"You {toggle} force spectator.");
+            player.ToggleForcedSpectator();
         }
     }
 }

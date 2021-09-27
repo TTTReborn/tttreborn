@@ -35,9 +35,9 @@ namespace TTTReborn.UI
 
                 Hud hud = new();
 
-                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+                if (Local.Client.Pawn is TTTPlayer player)
                 {
-                    Current.AliveHudInstance.Enabled = true;
+                    Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudInstance.Enabled = true;
+            AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
         }
 
         [Event("tttreborn.player.died")]
@@ -122,6 +122,7 @@ namespace TTTReborn.UI
             {
                 _panelList = new()
                 {
+                    _rootPanel.AddChild<Crosshair>(),
                     _rootPanel.AddChild<BreathIndicator>(),
                     _rootPanel.AddChild<StaminaIndicator>(),
                     _rootPanel.AddChild<QuickShop>(),
