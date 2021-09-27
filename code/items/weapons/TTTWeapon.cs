@@ -165,7 +165,7 @@ namespace TTTReborn.Items
                 }
             }
 
-            if (Input.Released(InputButton.View) && AmmoClip > 0)
+            if (Input.Released(InputButton.View) && AmmoClip > 0 && !UnlimitedAmmo)
             {
 
                 if (IsServer && AmmoEntity != null)
