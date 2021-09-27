@@ -33,7 +33,7 @@ namespace TTTReborn.Player
 
         private int _targetIdx = 0;
 
-        [Event(TTTEvent.Player.Died)]
+        [TTTEvent.Player.Died]
         private static void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (!Host.IsClient || Local.Pawn is not TTTPlayer player)

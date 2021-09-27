@@ -54,7 +54,7 @@ namespace TTTReborn.UI
             AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
         }
 
-        [Event(TTTEvent.Player.Died)]
+        [TTTEvent.Player.Died]
         private void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (deadPlayer != Local.Client.Pawn)
