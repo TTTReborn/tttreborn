@@ -77,11 +77,25 @@ namespace TTTReborn.Player
             EnableDrawing = false;
             Controller = null;
             Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
-
             LifeState = LifeState.Dead;
             Health = 0f;
-
             ShowFlashlight(false, false);
+        }
+
+        public void ToggleForcedSpectator()
+        {
+            IsForcedSpectator = !IsForcedSpectator;
+
+            if (IsForcedSpectator && LifeState == LifeState.Alive)
+            {
+                MakeSpectator(false);
+                OnKilled();
+
+                if (!GetClientOwner().GetScore("forcedspectator", false))
+                {
+                    GetClientOwner().SetScore("forcedspectator", true);
+                }
+            }
         }
     }
 }

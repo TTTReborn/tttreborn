@@ -13,7 +13,10 @@ namespace TTTReborn.Player
     {
         public readonly PerksInventory Perks;
         public readonly AmmoInventory Ammo;
-        public readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3 };
+        public readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
+
+        private const int DROPPOSITIONOFFSET = 50;
+        private const int DROPVELOCITY = 500;
 
         public Inventory(TTTPlayer player) : base(player)
         {
@@ -96,11 +99,24 @@ namespace TTTReborn.Player
             return true;
         }
 
+        public bool Remove(Entity item)
+        {
+            if (List.Contains(item))
+            {
+                RPCs.ClientOnPlayerCarriableItemDrop(To.Single(Owner), item);
+                item.Delete();
+                List.Remove(item);
+
+                return true;
+            }
+            return false;
+        }
+
         public bool HasEmptySlot(SlotType slotType)
         {
             int itemsInSlot = List.Count(x => ((ICarriableItem) x).SlotType == slotType);
 
-            return SlotCapacity[(int) slotType] - itemsInSlot > 0;
+            return SlotCapacity[(int) slotType - 1] - itemsInSlot > 0;
         }
 
         public bool IsCarryingType(Type t)
@@ -139,6 +155,16 @@ namespace TTTReborn.Player
             }
 
             return base.Drop(entity);
+        }
+
+        public bool DropEntity(Entity self, Type entity)
+        {
+            Entity droppedEntity = Utils.GetObjectByType<Entity>(entity);
+            droppedEntity.Position = Owner.EyePos + Owner.EyeRot.Forward * DROPPOSITIONOFFSET;
+            droppedEntity.Rotation = Owner.EyeRot;
+            droppedEntity.Velocity = Owner.EyeRot.Forward * DROPVELOCITY;
+            droppedEntity.Tags.Add(IItem.ITEM_TAG);
+            return Remove(self);
         }
     }
 }

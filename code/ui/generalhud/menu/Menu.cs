@@ -1,5 +1,6 @@
 namespace TTTReborn.UI.Menu
 {
+    using Sandbox;
     using Sandbox.UI.Construct;
 
     public partial class Menu : RichPanel
@@ -9,6 +10,20 @@ namespace TTTReborn.UI.Menu
         public readonly PanelContent MenuContent;
 
         private readonly MenuHeader _menuHeader;
+
+        public override bool Enabled
+        {
+            get => base.Enabled;
+            set
+            {
+                base.Enabled = value;
+
+                if (!_isEnabled)
+                {
+                    OpenHomepage();
+                }
+            }
+        }
 
         public Menu() : base()
         {

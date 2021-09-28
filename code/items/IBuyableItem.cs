@@ -24,9 +24,22 @@ namespace TTTReborn.Items
                 return !player.Inventory.Perks.Has(Name);
             }
 
+            if (SlotType == null)
+            {
+                return false;
+            }
+
             if (Type.IsSubclassOf(typeof(TTTEquipment)) || Type.IsSubclassOf(typeof(TTTWeapon)))
             {
-                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot((SlotType) SlotType);
+                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType.Value);
+            }
+            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
+            {
+                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType.Value);
+            }
+            else if (Type.IsSubclassOf(typeof(TTTEquipment)))
+            {
+                return player.Inventory.HasEmptySlot(SlotType.Value);
             }
 
             return false;
