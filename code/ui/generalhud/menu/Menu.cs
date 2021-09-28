@@ -72,6 +72,9 @@ namespace TTTReborn.UI.Menu
 
                 panelContent.Add.Label("Bind Quickshop:");
                 panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
+
+                panelContent.Add.Label("Bind Activate Role Button:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_activate_rb";
             }, "Keybindings", "keybindings");
         }
 

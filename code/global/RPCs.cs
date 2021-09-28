@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
@@ -53,6 +54,7 @@ namespace TTTReborn.Globals
             }
 
             player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+            player.SendRoleButtonsToClient();
 
             Client client = player.GetClientOwner();
 
@@ -157,6 +159,12 @@ namespace TTTReborn.Globals
         public static void ClientClearInventory()
         {
             Event.Run("tttreborn.player.inventory.clear");
+        }
+
+        [ClientRpc]
+        public static void ClientDisplayMessage(string message, Color color)
+        {
+            InfoFeed.Current?.AddEntry(message, color);
         }
     }
 }

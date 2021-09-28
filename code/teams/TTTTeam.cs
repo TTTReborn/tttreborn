@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Sandbox;
 
@@ -35,6 +36,11 @@ namespace TTTReborn.Teams
 
             Instance = this;
             Teams[Name] = this;
+        }
+
+        public IEnumerable<Client> GetClients()
+        {
+            return Members.Select(x => x.GetClientOwner());
         }
     }
 

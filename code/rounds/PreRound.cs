@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Sandbox;
 
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Settings;
 
@@ -47,6 +48,12 @@ namespace TTTReborn.Rounds
                     {
                         randomWeapons.Add(rwep); //See above comment.
                     }
+                    if (entity is TTTRoleButton button)
+                    {
+                        button.Cleanup();
+                    }
+
+                    entity.RemoveAllDecals();
                 }
 
                 randomAmmo.ForEach(x => x.Activate());
@@ -56,6 +63,7 @@ namespace TTTReborn.Rounds
                 {
                     if (client.Pawn is TTTPlayer player)
                     {
+                        player.RemoveRoleButtons();
                         player.Respawn();
                     }
                 }

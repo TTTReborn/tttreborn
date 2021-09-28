@@ -6,6 +6,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Settings;
@@ -16,6 +17,8 @@ namespace TTTReborn.Rounds
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
+        private List<TTTRoleButton> RoleButtons;
+
         public override int RoundDuration
         {
             get => ServerSettings.Instance.Round.RoundTime;
@@ -66,6 +69,8 @@ namespace TTTReborn.Rounds
                     }
                 }
 
+                //Cache buttons for OnSecond tick.
+                RoleButtons = Entity.All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton).ToList();
                 AssignRoles();
             }
         }
@@ -191,6 +196,8 @@ namespace TTTReborn.Rounds
             if (Host.IsServer)
             {
                 base.OnSecond();
+
+                RoleButtons.ForEach(x => x.OnSecond()); //Tick role button delay timer.
 
                 if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {
