@@ -15,6 +15,6 @@ namespace TTTReborn.Events
         /// <summary>
         /// Triggered when the player's inventory is cleared. <strong>No</strong> data is passed to this event.
         /// </summary>
-        public TTTEvents ClearInventory => new("tttreborn.player.inventory.clear");
+        public TTTEvents OnClear => new("tttreborn.player.inventory.clear");
     }
 }
