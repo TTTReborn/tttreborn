@@ -101,7 +101,7 @@ namespace TTTReborn.UI
             DeleteChildren(true);
         }
 
-        [Event("tttreborn.player.carriableitem.pickup")]
+        [Event("tttreborn.player.inventory.pickup")]
         private void OnCarriableItemPickup(ICarriableItem carriable)
         {
             if (carriable == null)
@@ -124,7 +124,7 @@ namespace TTTReborn.UI
             Enabled = Children.Any();
         }
 
-        [Event("tttreborn.player.carriableitem.drop")]
+        [Event("tttreborn.player.inventory.drop")]
         private void OnCarriableItemDrop(ICarriableItem carriable)
         {
             foreach (Sandbox.UI.Panel child in Children)
