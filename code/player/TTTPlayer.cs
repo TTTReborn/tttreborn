@@ -60,7 +60,7 @@ namespace TTTReborn.Player
                     }
                 }
 
-                Event.Run("tttreborn.player.initialspawn");
+                Event.Run(TTTEvent.Player.InitialSpawn);
             }
 
             GetClientOwner().SetScore("forcedspectator", IsForcedSpectator);

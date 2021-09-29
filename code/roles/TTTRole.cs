@@ -74,7 +74,7 @@ namespace TTTReborn.Roles
                 player.ServerUpdateShop();
             }
 
-            Event.Run("tttreborn.player.role.onselect", player);
+            Event.Run(TTTEvent.Player.Role.OnSelect, player);
         }
 
         public virtual void OnDeselect(TTTPlayer player)

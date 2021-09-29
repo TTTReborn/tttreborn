@@ -43,7 +43,7 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event("tttreborn.player.spawned")]
+        [Event(TTTEvent.Player.Spawned)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
             if (player != Local.Client.Pawn)
@@ -54,7 +54,7 @@ namespace TTTReborn.UI
             AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
         }
 
-        [TTTEvent.Player.Died]
+        [Event(TTTEvent.Player.Died)]
         private void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (deadPlayer != Local.Client.Pawn)

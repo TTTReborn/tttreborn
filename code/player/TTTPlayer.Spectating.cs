@@ -17,7 +17,7 @@ namespace TTTReborn.Player
             {
                 _spectatingPlayer = value == this ? null : value;
 
-                Event.Run("tttreborn.player.spectating.change", this);
+                Event.Run(TTTEvent.Player.Spectating.Change, this);
             }
         }
 
@@ -33,7 +33,7 @@ namespace TTTReborn.Player
 
         private int _targetIdx = 0;
 
-        [TTTEvent.Player.Died]
+        [Event(TTTEvent.Player.Died)]
         private static void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (!Host.IsClient || Local.Pawn is not TTTPlayer player)

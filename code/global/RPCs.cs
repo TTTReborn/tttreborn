@@ -35,7 +35,7 @@ namespace TTTReborn.Globals
 
             player.SetRole(new NoneRole());
 
-            Event.Run("tttreborn.player.spawned", player);
+            Event.Run(TTTEvent.Player.Spawned, player);
         }
 
         /// <summary>
@@ -144,19 +144,19 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.CarriableItem.PickUp, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.CarriableItem.Drop, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientClearInventory()
         {
-            Event.Run("tttreborn.player.inventory.clear");
+            Event.Run(TTTEvent.Player.Inventory.Clear);
         }
     }
 }

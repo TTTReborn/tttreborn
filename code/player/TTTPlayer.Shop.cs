@@ -82,7 +82,7 @@ namespace TTTReborn.Player
 
                 _shop = value;
 
-                Event.Run("tttreborn.shop.change");
+                Event.Run(TTTEvent.Shop.Change);
             }
         }
         private Shop _shop;

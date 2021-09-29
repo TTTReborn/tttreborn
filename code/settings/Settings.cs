@@ -69,7 +69,7 @@ namespace TTTReborn.Settings
 
                 _instance = value;
 
-                Event.Run("tttreborn.settings.instance.change");
+                Event.Run(TTTEvent.Settings.Instance.Change);
             }
         }
         private static Settings _instance;
