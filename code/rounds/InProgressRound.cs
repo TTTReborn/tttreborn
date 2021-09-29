@@ -6,6 +6,7 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Settings;
@@ -16,6 +17,8 @@ namespace TTTReborn.Rounds
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
+        private List<TTTRoleButton> RoleButtons;
+
         public override int RoundDuration
         {
             get => ServerSettings.Instance.Round.RoundTime;
@@ -27,25 +30,13 @@ namespace TTTReborn.Rounds
             Spectators.Add(player);
 
             player.MakeSpectator();
-
-            TTTTeam result = IsRoundOver();
-
-            if (result != null)
-            {
-                LoadPostRound(result);
-            }
+            ChangeRoundIfOver();
         }
 
         public override void OnPlayerLeave(TTTPlayer player)
         {
             base.OnPlayerLeave(player);
-
-            TTTTeam result = IsRoundOver();
-
-            if (result != null)
-            {
-                LoadPostRound(result);
-            }
+            ChangeRoundIfOver();
         }
 
         protected override void OnStart()
@@ -78,6 +69,8 @@ namespace TTTReborn.Rounds
                     }
                 }
 
+                //Cache buttons for OnSecond tick.
+                RoleButtons = Entity.All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton).ToList();
                 AssignRoles();
             }
         }
@@ -204,10 +197,21 @@ namespace TTTReborn.Rounds
             {
                 base.OnSecond();
 
+                RoleButtons.ForEach(x => x.OnSecond()); //Tick role button delay timer.
+
                 if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {
                     Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());
                 }
+            }
+        }
+
+        private void ChangeRoundIfOver()
+        {
+            TTTTeam result = IsRoundOver();
+            if (result != null)
+            {
+                LoadPostRound(result);
             }
         }
     }

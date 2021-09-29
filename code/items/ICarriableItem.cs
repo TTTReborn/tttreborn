@@ -5,7 +5,8 @@ namespace TTTReborn.Items
         Primary = 1,
         Secondary,
         Melee,
-        Equipment,
+        OffensiveEquipment,
+        UtilityEquipment,
         Grenade
     }
 

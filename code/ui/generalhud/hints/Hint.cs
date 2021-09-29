@@ -5,9 +5,9 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public class InspectHint : EntityHintPanel
+    public class UsableHint : EntityHintPanel
     {
-        public InspectHint(string translationKey)
+        public UsableHint(string translationKey)
         {
             AddClass("centered-vertical-75");
             AddClass("background-color-primary");

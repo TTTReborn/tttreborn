@@ -6,6 +6,7 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Globals
 {
@@ -71,6 +72,21 @@ namespace TTTReborn.Globals
             return players;
         }
 
+        public static List<TTTPlayer> GetNonForcedSpectatingPlayers()
+        {
+            List<TTTPlayer> players = new();
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer player && !player.IsForcedSpectator)
+                {
+                    players.Add(player);
+                }
+            }
+
+            return players;
+        }
+
         public static IEnumerable<Client> GetClientsSpectatingPlayer(TTTPlayer player)
         {
             List<Client> clients = new();
@@ -86,9 +102,24 @@ namespace TTTReborn.Globals
             return clients;
         }
 
+        public static List<TTTPlayer> GetAlivePlayersByRole(TTTRole role)
+        {
+            List<TTTPlayer> players = new();
+
+            foreach (Client client in Client.All)
+            {
+                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role.Name == role.Name)
+                {
+                    players.Add(player);
+                }
+            }
+
+            return players;
+        }
+
         public static bool HasMinimumPlayers()
         {
-            return Client.All.Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
+            return GetNonForcedSpectatingPlayers().Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
         }
 
         /// <summary>

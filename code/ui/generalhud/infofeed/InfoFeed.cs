@@ -33,6 +33,17 @@ namespace TTTReborn.UI
             return e;
         }
 
+        public virtual Panel AddEntry(string method, Color? color = null)
+        {
+            InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
+
+            Label label = e.AddLabel(method, "method");
+            label.Style.FontColor = color ?? Color.White;
+            label.Style.Dirty();
+
+            return e;
+        }
+
         public virtual Sandbox.UI.Panel AddEntry(Client leftClient, Client rightClient, string method, string postfix = "")
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();

@@ -11,6 +11,7 @@ namespace TTTReborn.Items
     partial class MagnetoStick : TTTEquipment
     {
         public override string ViewModelPath => "";
+        public override SlotType SlotType => SlotType.UtilityEquipment;
 
         private static int _grabbingDistance => 80;
         private static int _holdingDistance => 35;

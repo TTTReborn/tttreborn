@@ -1,5 +1,6 @@
 namespace TTTReborn.UI.Menu
 {
+    using Sandbox;
     using Sandbox.UI.Construct;
 
     public partial class Menu : RichPanel
@@ -9,6 +10,20 @@ namespace TTTReborn.UI.Menu
         public readonly PanelContent MenuContent;
 
         private readonly MenuHeader _menuHeader;
+
+        public override bool Enabled
+        {
+            get => base.Enabled;
+            set
+            {
+                base.Enabled = value;
+
+                if (!_isEnabled)
+                {
+                    OpenHomepage();
+                }
+            }
+        }
 
         public Menu() : base()
         {
@@ -57,6 +72,9 @@ namespace TTTReborn.UI.Menu
 
                 panelContent.Add.Label("Bind Quickshop:");
                 panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
+
+                panelContent.Add.Label("Bind Activate Role Button:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_activate_rb";
             }, "Keybindings", "keybindings");
         }
 
