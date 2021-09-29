@@ -7,14 +7,14 @@ namespace TTTReborn.Globals
         public static class Player
         {
             public const string Died = "tttreborn.player.died";
-            public const string Spawned = "tttreborn.player.spawned";
             public const string InitialSpawn = "tttreborn.player.initialspawn";
+            public const string Spawned = "tttreborn.player.spawned";
             public const string TakeDamage = "tttreborn.player.takedamage";
 
             public static class CarriableItem
             {
-                public const string PickUp = "tttreborn.player.carriableitem.pickup";
                 public const string Drop = "tttreborn.player.carriableitem.drop";
+                public const string PickUp = "tttreborn.player.carriableitem.pickup";
             }
 
             public static class Inventory
