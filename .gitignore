@@ -13,7 +13,7 @@ config/*
 *.fgd
 globals.json
 
-# Sandbox generated
+# s&box generated
 .intermediate
 
 # User-specific files
