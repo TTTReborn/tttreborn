@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
@@ -144,13 +145,13 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
-            Event.Run(TTTEvent.Player.CarriableItem.PickUp, carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.PickUp, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
-            Event.Run(TTTEvent.Player.CarriableItem.Drop, carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.Drop, carriable as ICarriableItem);
         }
 
         [ClientRpc]

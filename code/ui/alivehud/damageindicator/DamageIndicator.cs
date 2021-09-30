@@ -3,7 +3,7 @@ using System;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Globals;
+using TTTReborn.Events;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI

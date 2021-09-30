@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.Events;
 using TTTReborn.Player.Camera;
 
 namespace TTTReborn.Player
