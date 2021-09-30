@@ -13,6 +13,9 @@ config/*
 *.fgd
 globals.json
 
+# Sandbox generated
+.intermediate
+
 # User-specific files
 *.rsuser
 *.suo
