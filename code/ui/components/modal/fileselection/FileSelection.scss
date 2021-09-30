@@ -1,4 +1,22 @@
-FileSelection {
+FileSelection,
+.dialogbox {
+    background-color: #000c;
+    border: 1px solid #1b1b1b;
+    border-radius: 8px;
+
+    font-family: Poppins;
+    width: 600px;
+    left: 50%;
+    top: 50%;
+    //transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    flex-direction: column;
+
+    color: #fafafa;
+    font-family: Poppins;
+    font-weight: 500;
+    pointer-events: all;
+
     .content {
         flex-direction: column;
         justify-content: start;
@@ -57,5 +75,9 @@ FileSelection {
                 display: none;
             }
         }
+    }
+
+    .footer {
+        margin-top: 0px;
     }
 }

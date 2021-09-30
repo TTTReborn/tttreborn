@@ -69,6 +69,7 @@ namespace TTTReborn.UI
             public GeneralHud()
             {
                 AddClass("fullscreen");
+
                 AddChild<RadarDisplay>();
                 AddChild<PlayerRoleDisplay>();
                 AddChild<PlayerInfoDisplay>();
