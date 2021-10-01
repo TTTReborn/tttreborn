@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Map;
 using TTTReborn.Player;
@@ -19,7 +20,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Event.Run("tttreborn.player.died", player);
+            Event.Run(TTTEvent.Player.Died, player);
         }
 
         [ClientRpc]
@@ -36,7 +37,7 @@ namespace TTTReborn.Globals
 
             player.SetRole(new NoneRole());
 
-            Event.Run("tttreborn.player.spawned", player);
+            Event.Run(TTTEvent.Player.Spawned, player);
         }
 
         /// <summary>
@@ -146,19 +147,19 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.PickUp, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.Drop, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientClearInventory()
         {
-            Event.Run("tttreborn.player.inventory.clear");
+            Event.Run(TTTEvent.Player.Inventory.Clear);
         }
 
         [ClientRpc]

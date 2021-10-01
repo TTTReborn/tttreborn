@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Settings;
 
 namespace TTTReborn.Settings
@@ -161,8 +162,8 @@ namespace TTTReborn.Player
             }
         }
 
-        [Event("tttreborn.player.initialspawn")]
-        [Event("tttreborn.settings.instance.change")]
+        [Event(TTTEvent.Player.InitialSpawn)]
+        [Event(TTTEvent.Settings.Change)]
         public static void InitializeSprint()
         {
             if (Host.IsServer)

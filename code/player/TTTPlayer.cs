@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
@@ -60,7 +61,7 @@ namespace TTTReborn.Player
                     }
                 }
 
-                Event.Run("tttreborn.player.initialspawn");
+                Event.Run(TTTEvent.Player.InitialSpawn);
             }
 
             GetClientOwner().SetScore("forcedspectator", IsForcedSpectator);

@@ -4,6 +4,7 @@ using System.Text.Json;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Teams;
@@ -74,7 +75,7 @@ namespace TTTReborn.Roles
                 player.ServerUpdateShop();
             }
 
-            Event.Run("tttreborn.player.role.onselect", player);
+            Event.Run(TTTEvent.Player.Role.Select, player);
         }
 
         public virtual void OnDeselect(TTTPlayer player)

@@ -5,6 +5,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Events;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -86,7 +87,7 @@ namespace TTTReborn.UI
             UpdateScoreboardGroups();
         }
 
-        [Event("tttreborn.player.spawned")]
+        [Event(TTTEvent.Player.Spawned)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
             UpdatePlayer(player.GetClientOwner());

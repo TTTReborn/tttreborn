@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.UI;
@@ -69,7 +70,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientTookDamage(Vector3 position, float damage)
         {
-            Event.Run("tttreborn.player.takedamage", this, damage);
+            Event.Run(TTTEvent.Player.TakeDamage, this, damage);
         }
     }
 }
