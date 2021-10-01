@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
+using TTTReborn.Events;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -35,14 +36,14 @@ namespace TTTReborn.UI
 
                 Hud hud = new();
 
-                if (Local.Client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+                if (Local.Client.Pawn is TTTPlayer player)
                 {
-                    Current.AliveHudInstance.Enabled = true;
+                    Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
                 }
             }
         }
 
-        [Event("tttreborn.player.spawned")]
+        [Event(TTTEvent.Player.Spawned)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
             if (player != Local.Client.Pawn)
@@ -50,10 +51,10 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AliveHudInstance.Enabled = true;
+            AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
         }
 
-        [Event("tttreborn.player.died")]
+        [Event(TTTEvent.Player.Died)]
         private void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (deadPlayer != Local.Client.Pawn)
@@ -69,6 +70,7 @@ namespace TTTReborn.UI
             public GeneralHud()
             {
                 AddClass("fullscreen");
+
                 AddChild<RadarDisplay>();
                 AddChild<PlayerRoleDisplay>();
                 AddChild<PlayerInfoDisplay>();
@@ -122,6 +124,7 @@ namespace TTTReborn.UI
             {
                 _panelList = new()
                 {
+                    _rootPanel.AddChild<Crosshair>(),
                     _rootPanel.AddChild<BreathIndicator>(),
                     _rootPanel.AddChild<StaminaIndicator>(),
                     _rootPanel.AddChild<QuickShop>(),

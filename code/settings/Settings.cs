@@ -3,6 +3,7 @@ using System.Text.Json;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 
 namespace TTTReborn.Settings
@@ -69,7 +70,7 @@ namespace TTTReborn.Settings
 
                 _instance = value;
 
-                Event.Run("tttreborn.settings.instance.change");
+                Event.Run(TTTEvent.Settings.Change);
             }
         }
         private static Settings _instance;

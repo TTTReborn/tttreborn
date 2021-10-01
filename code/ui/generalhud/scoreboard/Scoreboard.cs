@@ -5,6 +5,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Events;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -42,7 +43,6 @@ namespace TTTReborn.UI
             _backgroundPanel = new(this);
             _backgroundPanel.AddClass("background-color-secondary");
             _backgroundPanel.AddClass("opacity-medium");
-            _backgroundPanel.AddClass("centered");
             _backgroundPanel.AddClass("fullscreen");
 
             _scoreboardContainer = new(this);
@@ -87,7 +87,7 @@ namespace TTTReborn.UI
             UpdateScoreboardGroups();
         }
 
-        [Event("tttreborn.player.spawned")]
+        [Event(TTTEvent.Player.Spawned)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
             UpdatePlayer(player.GetClientOwner());

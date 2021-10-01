@@ -1,7 +1,5 @@
 using System;
 
-using Sandbox.UI;
-
 namespace TTTReborn.UI
 {
     public partial class Modal : RichPanel

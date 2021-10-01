@@ -1,0 +1,28 @@
+RoleButtonPoint {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    margin-left: -40px;
+    margin-top: -40px;
+    border-radius: 25%;
+    border: 2px solid black;
+    padding: 4px;
+    text-align: center;
+    align-items: center;
+    font-size: 14;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.65);
+
+    &.focus {
+        border: 4px solid black;
+        background-color: rgba(0, 0, 0, 0.85);
+    }
+
+    &.hide {
+        opacity: 0;
+    }
+
+    Label {
+        color: #fafafa;
+    }
+}

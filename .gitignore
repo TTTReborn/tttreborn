@@ -13,6 +13,9 @@ config/*
 *.fgd
 globals.json
 
+# s&box generated
+.intermediate
+
 # User-specific files
 *.rsuser
 *.suo

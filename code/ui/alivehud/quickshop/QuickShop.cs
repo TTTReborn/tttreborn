@@ -4,6 +4,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
@@ -47,7 +48,6 @@ namespace TTTReborn.UI
             _backgroundPanel = new Panel(this);
             _backgroundPanel.AddClass("background-color-secondary");
             _backgroundPanel.AddClass("opacity-medium");
-            _backgroundPanel.AddClass("centered");
             _backgroundPanel.AddClass("fullscreen");
 
             _quickshopContainer = new Panel(this);
@@ -148,7 +148,7 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event("tttreborn.shop.change")]
+        [Event(TTTEvent.Shop.Change)]
         public static void OnShopChanged()
         {
             QuickShop.Instance?.Reload();

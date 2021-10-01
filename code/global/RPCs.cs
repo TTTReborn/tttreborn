@@ -1,6 +1,8 @@
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
@@ -18,7 +20,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Event.Run("tttreborn.player.died", player);
+            Event.Run(TTTEvent.Player.Died, player);
         }
 
         [ClientRpc]
@@ -35,7 +37,7 @@ namespace TTTReborn.Globals
 
             player.SetRole(new NoneRole());
 
-            Event.Run("tttreborn.player.spawned", player);
+            Event.Run(TTTEvent.Player.Spawned, player);
         }
 
         /// <summary>
@@ -53,6 +55,7 @@ namespace TTTReborn.Globals
             }
 
             player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+            player.SendRoleButtonsToClient();
 
             Client client = player.GetClientOwner();
 
@@ -144,19 +147,25 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.PickUp, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.Drop, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientClearInventory()
         {
-            Event.Run("tttreborn.player.inventory.clear");
+            Event.Run(TTTEvent.Player.Inventory.Clear);
+        }
+
+        [ClientRpc]
+        public static void ClientDisplayMessage(string message, Color color)
+        {
+            InfoFeed.Current?.AddEntry(message, color);
         }
     }
 }

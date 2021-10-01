@@ -3,6 +3,7 @@ using System;
 using Sandbox;
 using Sandbox.UI;
 
+using TTTReborn.Events;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -25,7 +26,7 @@ namespace TTTReborn.UI
             Style.SetBackgroundImage(Texture.Load("/ui/damageindicator/default.png"));
         }
 
-        [Event("tttreborn.player.takedamage")]
+        [Event(TTTEvent.Player.TakeDamage)]
         private void OnTakeDamage(TTTPlayer player, float damage)
         {
             if (Host.IsServer)

@@ -4,6 +4,8 @@ using System.IO;
 
 using Sandbox;
 
+using TTTReborn.Events;
+
 namespace TTTReborn.Settings
 {
     public partial class Settings
@@ -85,7 +87,7 @@ namespace TTTReborn.Globalization
             }
         }
 
-        [Event("tttreborn.settings.instance.change")]
+        [Event(TTTEvent.Settings.Change)]
         public static void OnChangeLanguageSettings()
         {
             UpdateLanguage(GetLanguageByCode(Settings.SettingsManager.Instance.General.Language));
