@@ -1,7 +1,5 @@
 using System;
-
 using Hammer;
-
 using Sandbox;
 
 
@@ -9,6 +7,7 @@ namespace TTTReborn.Items
 {
     [Library("ttt_newton_launcher")]
     [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
+    [NonSpawnable]
     partial class NewtonLauncher : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
@@ -20,7 +19,6 @@ namespace TTTReborn.Items
         public override float ReloadTime => 2.3f;
         public override float DeployTime => 0.4f;
         public override int BaseDamage => 3;
-
         public virtual int Price => 100;
 
         public const int NEWTON_FORCE_MIN = 300;

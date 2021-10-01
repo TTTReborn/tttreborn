@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-
 using Sandbox;
 
 namespace TTTReborn.Items
@@ -10,7 +9,7 @@ namespace TTTReborn.Items
     {
         public void Activate()
         {
-            List<Type> wepTypes = Globals.Utils.GetTypes<TTTWeapon>();
+            List<Type> wepTypes = Globals.Utils.GetTypes<TTTWeapon>(w => !w.IsDefined(typeof(NonSpawnableAttribute), true));
 
             if (wepTypes.Count > 0)
             {

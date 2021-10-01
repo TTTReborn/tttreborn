@@ -1,8 +1,6 @@
 using System;
-
 using Sandbox;
 using Sandbox.ScreenShake;
-
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -21,7 +19,7 @@ namespace TTTReborn.Items
     //     }
     // }
 
-    [Library("ttt_weapon")]
+    [Library("ttt_weapon"), Hammer.Skip]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public virtual SlotType SlotType => SlotType.Primary;
