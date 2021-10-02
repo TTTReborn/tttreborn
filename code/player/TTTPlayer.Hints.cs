@@ -20,16 +20,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IEntityHint target = player.IsLookingAtType<IEntityHint>(MAX_HINT_DISTANCE);
-            if (target == null)
-            {
-                DeleteHint();
-                return;
-            }
-
-            // We now know target is a IEntityHint, let's use the HintDistance defined on the IEntityHint.
-            IEntityHint hint = player.IsLookingAtType<IEntityHint>(target.HintDistance);
-
+            IEntityHint hint = player.IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
             if (hint != null && _currentHintPanel != null)
             {
                 _currentHintPanel.UpdateHintPanel();
@@ -72,6 +63,38 @@ namespace TTTReborn.Player
             _currentHintPanel?.Delete();
             _currentHintPanel = null;
             _currentHint = null;
+        }
+
+        private IEntityHint IsLookingAtHintableEntity(float maxHintDistance)
+        {
+            Trace trace;
+
+            if (IsClient)
+            {
+                Sandbox.Camera camera = Camera as Sandbox.Camera;
+
+                trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * maxHintDistance);
+            }
+            else
+            {
+                trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * maxHintDistance);
+            }
+
+            trace = trace.HitLayer(CollisionLayer.Debris).Ignore(this);
+
+            if (IsSpectatingPlayer)
+            {
+                trace.Ignore(CurrentPlayer);
+            }
+
+            TraceResult tr = trace.UseHitboxes().Run();
+
+            if (tr.Hit && tr.Entity is IEntityHint hint && tr.StartPos.Distance(tr.Entity.Position) <= hint.HintDistance)
+            {
+                return hint;
+            }
+
+            return null;
         }
     }
 }
