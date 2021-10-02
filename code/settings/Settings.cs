@@ -114,6 +114,10 @@ namespace TTTReborn.Settings
     {
         public const string SETTINGS_FILE_EXTENSION = ".settings.json";
 
+        private static int _currentPacketHash = -1;
+        private static int _packetCount;
+        private static string[] _packetData;
+
         public static string GetJSON<T>(T settings, bool compressed = false) where T : Settings
         {
             JsonSerializerOptions options = new()
@@ -210,6 +214,88 @@ namespace TTTReborn.Settings
             settings.JsonType = settingsName;
 
             FileSystem.Data.WriteAllText(path + fileName + SETTINGS_FILE_EXTENSION, GetJSON(settings));
+        }
+
+        public static void SendSettingsToServer(ServerSettings settings)
+        {
+            string settingsJson = GetJSON(settings, true);
+            int splitLength = 150;
+            int splitCount = (int) MathF.Ceiling((float) settingsJson.Length / splitLength);
+
+            for (int i = 0; i < splitCount; i++)
+            {
+                ServerSendPartialSettings(settingsJson.GetHashCode(), i, splitCount, settingsJson.Substring(splitLength * i, splitLength + Math.Min(0, settingsJson.Length - splitLength * (i + 1))));
+            }
+        }
+
+        [ServerCmd]
+        private static void ServerSendPartialSettings(int packetHash, int packetNum, int maxPackets, string partialSettings)
+        {
+            if (!ConsoleSystem.Caller?.HasPermission("serversettings") ?? true)
+            {
+                return;
+            }
+
+            ProceedPartialSettings(packetHash, packetNum, maxPackets, partialSettings);
+        }
+
+        private static void ProceedPartialSettings(int packetHash, int packetNum, int maxPackets, string partialSettings)
+        {
+            if (_currentPacketHash != packetHash)
+            {
+                _packetCount = 0;
+                _packetData = new string[maxPackets];
+
+                _currentPacketHash = packetHash;
+            }
+
+            if (_packetData[packetNum] != null && _packetData[packetNum].Equals(partialSettings))
+            {
+                return;
+            }
+
+            _packetData[packetNum] = partialSettings;
+            _packetCount++;
+
+            if (_packetCount == maxPackets)
+            {
+                _currentPacketHash = -1;
+
+                ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(string.Join("", _packetData));
+
+                if (serverSettings == null)
+                {
+                    return;
+                }
+
+                SettingsManager.Instance = serverSettings;
+
+                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+            }
+        }
+
+        [ServerCmd]
+        public static void RequestServerSettings()
+        {
+            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            {
+                return;
+            }
+
+            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), SettingFunctions.GetJSON<ServerSettings>(ServerSettings.Instance, true));
+        }
+
+        [ClientRpc]
+        public static void ClientSendServerSettings(string serverSettingsJson)
+        {
+            ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
+
+            if (serverSettings == null)
+            {
+                return;
+            }
+
+            UI.Menu.Menu.Instance?.ProceedServerSettings(serverSettings);
         }
     }
 }
