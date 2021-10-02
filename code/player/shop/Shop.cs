@@ -27,6 +27,11 @@ namespace TTTReborn.Player
 
         }
 
+        public bool Accessable()
+        {
+            return Items.Count > 0;
+        }
+
         public static Shop InitializeFromJSON(string json)
         {
             Shop shop = JsonSerializer.Deserialize<Shop>(json);
@@ -99,9 +104,53 @@ namespace TTTReborn.Player
             return $"settings/{Utils.GetTypeNameByType(typeof(Settings.ServerSettings)).ToLower()}/shop/{role.Name.ToLower()}.json";
         }
 
-        public bool Accessable()
+        internal void AddAllItems()
         {
-            return Items.Count > 0;
+            Items.Clear();
+
+            foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
+            {
+                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
+                Items.Add(item.CreateItemData());
+
+                item.Delete();
+            }
+        }
+
+        internal void AddNewItems(List<Type> newItemsList)
+        {
+            List<string> storedItemList = new();
+
+            foreach (ShopItemData shopItemData in Items)
+            {
+                storedItemList.Add(Utils.GetTypeNameByType(shopItemData.Type).ToLower());
+            }
+
+            foreach (Type type in newItemsList)
+            {
+                bool found = false;
+                string newItemName = Utils.GetTypeNameByType(type).ToLower();
+
+                foreach (string storedItemName in storedItemList)
+                {
+                    if (newItemName.Equals(storedItemName))
+                    {
+                        found = true;
+
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    continue;
+                }
+
+                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(type);
+                Items.Add(item.CreateItemData());
+
+                item.Delete();
+            }
         }
     }
 }

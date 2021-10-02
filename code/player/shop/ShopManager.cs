@@ -84,52 +84,5 @@ namespace TTTReborn.Player
 
             FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize(availableItems));
         }
-
-        internal static void AddAllItemsToShop(TTTRole role)
-        {
-            foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
-            {
-                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
-                role.Shop.Items.Add(item.CreateItemData());
-
-                item.Delete();
-            }
-        }
-
-        internal static void AddNewItemsToShop(TTTRole role, List<Type> newItemsList)
-        {
-            List<string> storedItemList = new();
-
-            foreach (ShopItemData shopItemData in role.Shop.Items)
-            {
-                storedItemList.Add(Utils.GetTypeNameByType(shopItemData.Type).ToLower());
-            }
-
-            foreach (Type type in newItemsList)
-            {
-                bool found = false;
-                string newItemName = Utils.GetTypeNameByType(type).ToLower();
-
-                foreach (string storedItemName in storedItemList)
-                {
-                    if (newItemName.Equals(storedItemName))
-                    {
-                        found = true;
-
-                        break;
-                    }
-                }
-
-                if (found)
-                {
-                    continue;
-                }
-
-                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(type);
-                role.Shop.Items.Add(item.CreateItemData());
-
-                item.Delete();
-            }
-        }
     }
 }

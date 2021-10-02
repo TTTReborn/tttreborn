@@ -49,7 +49,7 @@ namespace TTTReborn.Roles
         // serverside function
         public override void CreateDefaultShop()
         {
-            ShopManager.AddAllItemsToShop(this);
+            Shop.AddAllItems();
 
             base.CreateDefaultShop();
         }
@@ -57,7 +57,7 @@ namespace TTTReborn.Roles
         // serverside function
         public override void UpdateDefaultShop(List<Type> newItemsList)
         {
-            ShopManager.AddNewItemsToShop(this, newItemsList);
+            Shop.AddNewItems(newItemsList);
 
             base.UpdateDefaultShop(newItemsList);
         }
