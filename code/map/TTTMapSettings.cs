@@ -5,7 +5,6 @@ using TTTReborn.Rounds;
 namespace TTTReborn.Map
 {
     [Library("ttt_map_settings")]
-    [Hammer.EntityTool("Map Settings", "TTT Mapping", "Create a entity that holds map specific settings.")]
     public partial class TTTMapSettings : Entity
     {
         /// <summary>
