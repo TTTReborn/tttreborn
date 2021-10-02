@@ -37,7 +37,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.AFK.SecondsTillKick = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+                SettingFunctions.SendSettingsToServer(serverSettings);
             });
         }
 
@@ -51,7 +51,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.AFK.ShouldKickPlayers = !serverSettings.AFK.ShouldKickPlayers;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+                SettingFunctions.SendSettingsToServer(serverSettings);
             });
         }
 
@@ -65,7 +65,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.Movement.IsSprintEnabled = !serverSettings.Movement.IsSprintEnabled;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+                SettingFunctions.SendSettingsToServer(serverSettings);
             });
         }
 
@@ -76,7 +76,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.Round.MinPlayers = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+                SettingFunctions.SendSettingsToServer(serverSettings);
             });
 
             // TTTPreRoundTime
@@ -84,7 +84,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.Round.PreRoundTime = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+                SettingFunctions.SendSettingsToServer(serverSettings);
             });
 
             // TTTRoundTime
@@ -92,7 +92,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.Round.RoundTime = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+                SettingFunctions.SendSettingsToServer(serverSettings);
             });
 
             // TTTPostRoundTime
@@ -100,7 +100,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.Round.PostRoundTime = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+                SettingFunctions.SendSettingsToServer(serverSettings);
             });
 
             // TTTKillTimeReward
@@ -108,7 +108,7 @@ namespace TTTReborn.UI.Menu
             {
                 serverSettings.Round.KillTimeReward = value;
 
-                ConsoleSystem.Run("ttt_serversettings_send", SettingFunctions.GetJSON(serverSettings, true));
+                SettingFunctions.SendSettingsToServer(serverSettings);
             });
         }
 

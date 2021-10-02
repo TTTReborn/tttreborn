@@ -36,66 +36,17 @@ namespace TTTReborn.UI.Menu
 
             tabContent.Add.Label("Loading...");
 
-            ConsoleSystem.Run("ttt_serversettings_request");
-        }
-    }
-}
-
-namespace TTTReborn.Player
-{
-    using TTTReborn.UI.Menu;
-
-    public partial class TTTPlayer
-    {
-        [ServerCmd(Name = "ttt_serversettings_request")]
-        public static void RequestServerSettings()
-        {
-            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
-            {
-                return;
-            }
-
-            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), SettingFunctions.GetJSON<ServerSettings>(ServerSettings.Instance, true));
+            SettingFunctions.RequestServerSettings();
         }
 
-        [ServerCmd(Name = "ttt_serversettings_send")]
-        public static void SendServerSettings(string serverSettingsJson)
+        internal void ProceedServerSettings(ServerSettings serverSettings)
         {
-            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            if (!Enabled || ServerSettingsTabContent == null)
             {
                 return;
             }
 
-            ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
-
-            if (serverSettings == null)
-            {
-                return;
-            }
-
-            SettingsManager.Instance = serverSettings;
-
-            SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
-        }
-
-        [ClientRpc]
-        public static void ClientSendServerSettings(string serverSettingsJson)
-        {
-            Menu menu = Menu.Instance;
-
-            if (menu == null || !menu.Enabled || menu.ServerSettingsTabContent == null)
-            {
-                return;
-            }
-
-            ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
-
-            if (serverSettings == null)
-            {
-                return;
-            }
-
-            menu.ServerSettingsTabContent.SetPanelContent((menuContent) => menu.CreateServerSettings(menuContent, serverSettings));
+            ServerSettingsTabContent.SetPanelContent((menuContent) => CreateServerSettings(menuContent, serverSettings));
         }
     }
 }
