@@ -7,6 +7,7 @@ using TTTReborn.Player;
 namespace TTTReborn.Map
 {
     [Library("ttt_role_button", Description = "Used to provide an onscreen button for a role to activate.")]
+    [Hammer.EntityTool("Role Button", "TTT Mapping", "Create a role (Traitor) button.")]
     public partial class TTTRoleButton : Entity
     {
         //We don't want to touch these variables as they are the "reset" standard.

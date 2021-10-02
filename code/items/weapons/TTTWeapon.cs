@@ -21,7 +21,7 @@ namespace TTTReborn.Items
     //     }
     // }
 
-    [Library("ttt_weapon"), Hammer.Skip]
+    [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public virtual SlotType SlotType => SlotType.Primary;
