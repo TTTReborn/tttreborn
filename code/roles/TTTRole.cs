@@ -86,26 +86,17 @@ namespace TTTReborn.Roles
         // serverside function
         public virtual void InitShop()
         {
-            string fileName = $"settings/{Utils.GetTypeNameByType(typeof(Settings.ServerSettings)).ToLower()}/shop/{Name.ToLower()}.json";
-
-            if (!FileSystem.Data.FileExists(fileName))
-            {
-                Shop = new Shop();
-
-                CreateShopSettings(fileName);
-            }
-
-            Shop = Shop.InitializeFromJSON(FileSystem.Data.ReadAllText(fileName));
+            Shop.Load(this);
         }
 
-        public virtual void CreateShopSettings(string fileName)
+        public virtual void CreateDefaultShop()
         {
-            Utils.CreateRecursiveDirectories(fileName);
 
-            FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize(Shop, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            }));
+        }
+
+        public virtual void UpdateDefaultShop(List<Type> newItemsList)
+        {
+
         }
 
         public string GetRoleTranslationKey(string key)

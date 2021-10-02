@@ -1,74 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Text.Json;
 
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
-    public enum BuyError
-    {
-        None,
-        InventoryBlocked,
-        NotEnoughCredits,
-        NoAccess
-    }
-
-    public class Shop
-    {
-        public List<ShopItemData> Items { set; get; } = new();
-
-        public Shop()
-        {
-
-        }
-
-        public static Shop InitializeFromJSON(string json)
-        {
-            Shop shop = JsonSerializer.Deserialize<Shop>(json);
-
-            if (shop != null)
-            {
-                List<ShopItemData> items = new();
-
-                foreach (ShopItemData shopItemData in shop.Items)
-                {
-                    Type itemType = Utils.GetTypeByName<IBuyableItem>(shopItemData.Name);
-
-                    if (itemType == null)
-                    {
-                        continue;
-                    }
-
-                    IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
-                    ShopItemData itemData = item.CreateItemData();
-
-                    item.Delete();
-
-                    itemData.Price = shopItemData.Price;
-
-                    items.Add(itemData);
-                }
-
-                shop.Items = items;
-            }
-
-            // TODO add new items by default as well
-
-            return shop;
-        }
-
-        public bool Accessable()
-        {
-            return Items.Count > 0;
-        }
-    }
-
     public partial class TTTPlayer
     {
         public Shop Shop

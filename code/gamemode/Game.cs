@@ -34,6 +34,8 @@ namespace TTTReborn.Gamemode
 
             if (IsServer)
             {
+                ShopManager.Load();
+
                 new Hud();
             }
         }
