@@ -1,6 +1,8 @@
 using System;
+
 using Sandbox;
 using Sandbox.ScreenShake;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
