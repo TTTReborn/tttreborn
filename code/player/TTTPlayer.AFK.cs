@@ -16,9 +16,7 @@ namespace TTTReborn.Player
 
         private void TickAFKSystem()
         {
-            Client client = GetClientOwner();
-
-            if (client == null || client.IsBot)
+            if (Client == null || Client.IsBot)
             {
                 return;
             }
@@ -26,6 +24,7 @@ namespace TTTReborn.Player
             if (IsForcedSpectator || IsSpectator)
             {
                 _timeSinceLastAction = 0;
+
                 return;
             }
 
@@ -35,6 +34,7 @@ namespace TTTReborn.Player
             if (isAnyKeyPressed || isMouseMoving)
             {
                 _timeSinceLastAction = 0f;
+
                 return;
             }
 
@@ -44,12 +44,14 @@ namespace TTTReborn.Player
 
                 if (shouldKick)
                 {
-                    Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was kicked from the server for being AFK.");
-                    client.Kick();
+                    Log.Warning($"Steam ID: {Client.SteamId}, Name: {Client.Name} was kicked from the server for being AFK.");
+
+                    Client.Kick();
                 }
                 else
                 {
-                    Log.Warning($"Steam ID: {client.SteamId}, Name: {client.Name} was moved to spectating for being AFK.");
+                    Log.Warning($"Steam ID: {Client.SteamId}, Name: {Client.Name} was moved to spectating for being AFK.");
+
                     ToggleForcedSpectator();
                 }
             }

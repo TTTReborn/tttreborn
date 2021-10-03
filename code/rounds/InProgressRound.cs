@@ -50,7 +50,7 @@ namespace TTTReborn.Rounds
                         continue;
                     }
 
-                    client.SetScore("forcedspectator", player.IsForcedSpectator);
+                    player.UpdateClientScore("forcedspectator", player.IsForcedSpectator ? 1 : 0);
 
                     if (player.LifeState == LifeState.Dead)
                     {
@@ -69,8 +69,9 @@ namespace TTTReborn.Rounds
                     }
                 }
 
-                //Cache buttons for OnSecond tick.
+                // Cache buttons for OnSecond tick.
                 RoleButtons = Entity.All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton).ToList();
+
                 AssignRoles();
             }
         }

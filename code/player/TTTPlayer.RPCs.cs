@@ -72,5 +72,18 @@ namespace TTTReborn.Player
         {
             Event.Run(TTTEvent.Player.TakeDamage, this, damage);
         }
+
+        [ClientRpc]
+        public void ClientUpdateClientScore(string key, int value)
+        {
+            if (Client == null)
+            {
+                return;
+            }
+
+            Client.SetInt(key, value);
+
+            Scoreboard.Instance?.UpdateClient(Client);
+        }
     }
 }

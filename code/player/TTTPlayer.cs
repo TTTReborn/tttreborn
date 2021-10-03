@@ -41,7 +41,7 @@ namespace TTTReborn.Player
         }
 
         // Important: Server-side only
-        public void InitialRespawn()
+        public void InitialSpawn()
         {
             bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
 
@@ -61,13 +61,21 @@ namespace TTTReborn.Player
                     }
                 }
 
-                Event.Run(TTTEvent.Player.InitialSpawn);
-            }
+                UpdateClientScore("forcedspectator", IsForcedSpectator ? 1 : 0);
 
-            GetClientOwner().SetScore("forcedspectator", IsForcedSpectator);
+                Event.Run(TTTEvent.Player.InitialSpawn);
+
+                ClientInitialSpawn(Client);
+            }
 
             IsInitialSpawning = false;
             IsForcedSpectator = false;
+        }
+
+        [ClientRpc]
+        public static void ClientInitialSpawn(Client client)
+        {
+            Event.Run(TTTEvent.Player.InitialSpawn, client);
         }
 
         // Important: Server-side only
@@ -122,7 +130,7 @@ namespace TTTReborn.Player
                     IsConfirmed = false;
                     CorpseConfirmer = null;
 
-                    GetClientOwner().SetScore("forcedspectator", false);
+                    UpdateClientScore("forcedspectator", 0);
 
                     break;
             }
@@ -213,6 +221,18 @@ namespace TTTReborn.Player
             base.StartTouch(other);
         }
 
+        public void UpdateClientScore(string key, int value)
+        {
+            if (Client == null)
+            {
+                return;
+            }
+
+            Client.SetInt(key, value);
+
+            ClientUpdateClientScore(key, value);
+        }
+
         private void TickPlayerDropCarriable()
         {
             if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
@@ -253,9 +273,7 @@ namespace TTTReborn.Player
 
         private void TickItemSimulate()
         {
-            Client client = GetClientOwner();
-
-            if (client == null)
+            if (Client == null)
             {
                 return;
             }
@@ -264,7 +282,7 @@ namespace TTTReborn.Player
 
             for (int i = 0; i < perks.Count(); i++)
             {
-                perks.Get(i).Simulate(client);
+                perks.Get(i).Simulate(Client);
             }
         }
 

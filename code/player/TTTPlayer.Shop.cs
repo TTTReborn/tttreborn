@@ -115,7 +115,7 @@ namespace TTTReborn.Player
 
             if (buyError != BuyError.None)
             {
-                Log.Warning($"{GetClientOwner().Name} tried to buy '{itemData.Name}'. (Error: {buyError})");
+                Log.Warning($"{Client.Name} tried to buy '{itemData.Name}'. (Error: {buyError})");
 
                 return;
             }
