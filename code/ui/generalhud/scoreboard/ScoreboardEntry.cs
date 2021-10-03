@@ -44,7 +44,7 @@ namespace TTTReborn.UI
             _playerName.Text = Client.Name;
             _karma.Text = Client.GetInt("karma").ToString();
 
-            SetClass("me", Client.SteamId == Local.Client?.SteamId);
+            SetClass("me", Client == Local.Client);
 
             if (Client.Pawn is not TTTPlayer player)
             {
