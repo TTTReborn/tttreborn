@@ -103,6 +103,10 @@ namespace TTTReborn.Gamemode
             }
             */
 
+            Event.Run(TTTEvent.Player.Connected, client);
+
+            RPCs.ClientOnPlayerConnected(client);
+
             TTTPlayer player = new();
             client.Pawn = player;
             player.InitialSpawn();
@@ -118,15 +122,9 @@ namespace TTTReborn.Gamemode
 
             Event.Run(TTTEvent.Player.Disconnected, client.SteamId, reason);
 
-            ClientClientDisconnect(client.SteamId, reason);
+            RPCs.ClientOnPlayerDisconnect(client.SteamId, reason);
 
             base.ClientDisconnect(client, reason);
-        }
-
-        [ClientRpc]
-        public static void ClientClientDisconnect(ulong steamId, NetworkDisconnectionReason reason)
-        {
-            Event.Run(TTTEvent.Player.Disconnected, steamId, reason);
         }
 
         public override bool CanHearPlayerVoice(Client source, Client dest)

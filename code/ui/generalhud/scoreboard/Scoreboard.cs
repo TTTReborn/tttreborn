@@ -82,8 +82,8 @@ namespace TTTReborn.UI
             UpdateClient(player.Client);
         }
 
-        [Event(TTTEvent.Player.InitialSpawn)]
-        public void OnPlayerInitialSpawn(Client client)
+        [Event(TTTEvent.Player.Connected)]
+        public void OnPlayerConnected(Client client)
         {
             AddClient(client);
             UpdateScoreboardGroups();
