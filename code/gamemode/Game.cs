@@ -103,11 +103,13 @@ namespace TTTReborn.Gamemode
             }
             */
 
+            Event.Run(TTTEvent.Player.Connected, client);
+
+            RPCs.ClientOnPlayerConnected(client);
+
             TTTPlayer player = new();
             client.Pawn = player;
             player.InitialSpawn();
-
-            RPCs.ClientOnPlayerConnected(client);
 
             base.ClientJoined(client);
         }
