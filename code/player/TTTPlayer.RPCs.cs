@@ -81,8 +81,6 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Client.SetInt(key, value);
-
             Scoreboard.Instance?.UpdateClient(Client);
         }
     }
