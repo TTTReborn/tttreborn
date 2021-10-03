@@ -98,7 +98,6 @@ namespace TTTReborn.UI
 
         public void AddClient(Client client)
         {
-            Log.Info(client.Name);
             if (_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
             {
                 return;
