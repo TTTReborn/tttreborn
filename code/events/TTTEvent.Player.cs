@@ -25,7 +25,6 @@ namespace TTTReborn.Events
             /// <summary>
             /// Occurs when a player connects.
             /// <para>The <strong><see cref="Sandbox.Client"/></strong> instance of the player who connected.</para>
-            /// <para>The <strong><see cref="Sandbox.NetworkDisconnectionReason"/></strong>.</para>
             /// </summary>
             public const string Connected = "tttreborn.player.connected";
 
