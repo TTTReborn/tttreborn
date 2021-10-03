@@ -49,8 +49,8 @@ namespace TTTReborn.Items
                     }
                 }
 
-                IEnumerable<Vector3> decoyPositions = Entity.All.Where(x => x.GetType() == typeof(DecoyEntity))?.Select(x => x.Position);
-                if (decoyPositions.Any())
+                List<Vector3> decoyPositions = Entity.All.Where(x => x.GetType() == typeof(DecoyEntity))?.Select(x => x.Position).ToList();
+                if (decoyPositions.Count > 0)
                 {
                     positions.AddRange(decoyPositions);
                 }
