@@ -94,7 +94,7 @@ namespace TTTReborn.Player
 
                 if (!Client.GetValue<bool>("forcedspectator", false))
                 {
-                    UpdateClientScore("forcedspectator", true);
+                    Client.SetValue("forcedspectator", true);
                 }
             }
         }

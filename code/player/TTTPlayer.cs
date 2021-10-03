@@ -61,7 +61,7 @@ namespace TTTReborn.Player
                     }
                 }
 
-                UpdateClientScore("forcedspectator", IsForcedSpectator);
+                Client.SetValue("forcedspectator", IsForcedSpectator);
 
                 Event.Run(TTTEvent.Player.InitialSpawn, Client);
 
@@ -124,7 +124,7 @@ namespace TTTReborn.Player
                     IsConfirmed = false;
                     CorpseConfirmer = null;
 
-                    UpdateClientScore("forcedspectator", false);
+                    Client.SetValue("forcedspectator", false);
 
                     break;
             }
@@ -213,18 +213,6 @@ namespace TTTReborn.Player
             }
 
             base.StartTouch(other);
-        }
-
-        public void UpdateClientScore(string key, object value)
-        {
-            if (Client == null)
-            {
-                return;
-            }
-
-            Client.SetValue(key, value);
-
-            ClientUpdateClientScore(key, value);
         }
 
         private void TickPlayerDropCarriable()

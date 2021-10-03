@@ -23,10 +23,8 @@ namespace TTTReborn.UI
         public static Scoreboard Instance;
 
         private readonly Dictionary<ulong, ScoreboardEntry> _entries = new();
-        //TODO: Event on start of PreRound =>
-        //Make all Entries trigger the Entry.UpdateForm()
-
         private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
+        private readonly Dictionary<ulong, bool> _forcedSpecList = new();
 
         private readonly Panel _backgroundPanel;
         private readonly Panel _scoreboardContainer;
@@ -170,6 +168,23 @@ namespace TTTReborn.UI
         public override void Tick()
         {
             base.Tick();
+
+            // Due to not having a `client.GetValue` change callback, we have to handle it differently
+            foreach (Client client in Client.All)
+            {
+                bool newIsForcedSpectator = client.GetValue<bool>("forcedspectator");
+
+                if (!_forcedSpecList.TryGetValue(client.SteamId, out bool isForcedSpectator))
+                {
+                    _forcedSpecList.Add(client.SteamId, newIsForcedSpectator);
+                }
+                else if (isForcedSpectator != newIsForcedSpectator)
+                {
+                    _forcedSpecList[client.SteamId] = newIsForcedSpectator;
+
+                    UpdateClient(client);
+                }
+            }
 
             SetClass("fade-in", Input.Down(InputButton.Score));
 

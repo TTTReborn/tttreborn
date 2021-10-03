@@ -79,16 +79,5 @@ namespace TTTReborn.Player
         {
             Event.Run(TTTEvent.Player.InitialSpawn, Client);
         }
-
-        [ClientRpc]
-        public void ClientUpdateClientScore(string key, object value)
-        {
-            if (Client == null)
-            {
-                return;
-            }
-
-            Scoreboard.Instance?.UpdateClient(Client);
-        }
     }
 }
