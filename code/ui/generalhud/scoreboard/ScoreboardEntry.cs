@@ -10,15 +10,13 @@ namespace TTTReborn.UI
     public class ScoreboardEntry : Panel
     {
         public string ScoreboardGroupName;
-        public ulong SteamId;
+        public Client Client;
 
         private Image _playerAvatar;
         private readonly Label _playerName;
 
         private readonly Label _karma;
         private readonly Label _ping;
-
-        private Client _client;
 
         public ScoreboardEntry()
         {
@@ -34,22 +32,21 @@ namespace TTTReborn.UI
 
             _karma = Add.Label("", "karma");
             _ping = Add.Label("", "ping");
-
-            Initialize();
         }
 
-        public virtual void UpdateFrom(PlayerScore.Entry entry)
+        public virtual void Update()
         {
-            _playerName.Text = entry.GetString("name");
-            _karma.Text = entry.Get<int>("karma", 0).ToString();
-            _ping.Text = entry.Get<int>("ping", 0).ToString();
-
-            if (_client == null)
+            if (Client == null)
             {
-                Initialize();
+                return;
             }
 
-            if (_client?.Pawn is not TTTPlayer player)
+            _playerName.Text = Client.Name;
+            _karma.Text = Client.GetInt("karma").ToString();
+
+            SetClass("me", Client == Local.Client);
+
+            if (Client.Pawn is not TTTPlayer player)
             {
                 return;
             }
@@ -65,22 +62,17 @@ namespace TTTReborn.UI
 
             Style.Dirty();
 
-            _playerAvatar.SetTexture($"avatar:{SteamId}");
+            _playerAvatar.SetTexture($"avatar:{Client.SteamId}");
         }
 
-        private void Initialize()
+        public override void Tick()
         {
-            foreach (Client loopClient in Client.All)
+            base.Tick();
+
+            if (Client != null)
             {
-                if (loopClient.SteamId == SteamId)
-                {
-                    _client = loopClient;
-
-                    break;
-                }
+                _ping.Text = Client.Ping.ToString();
             }
-
-            SetClass("me", SteamId == Local.Client?.SteamId);
         }
     }
 }

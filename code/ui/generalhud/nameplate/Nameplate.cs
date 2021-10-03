@@ -88,7 +88,7 @@ namespace TTTReborn.UI
                 _damageIndicatorLabel.Style.Dirty();
             }
 
-            _nameLabel.Text = Player.GetClientOwner()?.Name ?? "";
+            _nameLabel.Text = Player.Client?.Name ?? "";
 
             Style.Dirty();
         }

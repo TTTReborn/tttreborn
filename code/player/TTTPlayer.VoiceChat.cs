@@ -26,7 +26,7 @@ namespace TTTReborn.Player
                 {
                     IsSpeaking = true;
 
-                    UI.VoiceChatDisplay.Instance?.OnVoicePlayed(GetClientOwner(), 1f);
+                    UI.VoiceChatDisplay.Instance?.OnVoicePlayed(Client, 1f);
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace TTTReborn.Player
                 ToggleTeamChat(player, false);
             }
 
-            Client playerClient = player.GetClientOwner();
+            Client playerClient = player.Client;
 
             // sync already talking other players with the current player
             foreach (Client client in Client.All)

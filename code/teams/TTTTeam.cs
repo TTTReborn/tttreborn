@@ -40,7 +40,7 @@ namespace TTTReborn.Teams
 
         public IEnumerable<Client> GetClients()
         {
-            return Members.Select(x => x.GetClientOwner());
+            return Members.Select(x => x.Client);
         }
     }
 

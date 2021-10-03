@@ -2,8 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.UI
 {
     public partial class ScoreboardGroup : Panel
@@ -42,13 +40,13 @@ namespace TTTReborn.UI
             _groupContent.AddClass("group-content-panel");
         }
 
-        public ScoreboardEntry AddEntry(PlayerScore.Entry entry)
+        public ScoreboardEntry AddEntry(Client client)
         {
             ScoreboardEntry scoreboardEntry = _groupContent.AddChild<ScoreboardEntry>();
             scoreboardEntry.ScoreboardGroupName = GroupTitle;
-            scoreboardEntry.SteamId = entry.Get<ulong>("steamid");
+            scoreboardEntry.Client = client;
 
-            scoreboardEntry.UpdateFrom(entry);
+            scoreboardEntry.Update();
 
             return scoreboardEntry;
         }

@@ -22,11 +22,9 @@ namespace TTTReborn.UI
 
         public static Scoreboard Instance;
 
-        private readonly Dictionary<int, ScoreboardEntry> _entries = new();
-        //TODO: Event on start of PreRound =>
-        //Make all Entries trigger the Entry.UpdateForm()
-
+        private readonly Dictionary<ulong, ScoreboardEntry> _entries = new();
         private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
+        private readonly Dictionary<ulong, bool> _forcedSpecList = new();
 
         private readonly Panel _backgroundPanel;
         private readonly Panel _scoreboardContainer;
@@ -70,18 +68,9 @@ namespace TTTReborn.UI
                 AddScoreboardGroup(defaultScoreboardGroup.ToString());
             }
 
-            PlayerScore.OnPlayerAdded += AddPlayer;
-            PlayerScore.OnPlayerUpdated += UpdatePlayer;
-            PlayerScore.OnPlayerRemoved += (entry) =>
+            foreach (Client client in Client.All)
             {
-                RemovePlayer(entry);
-
-                UpdateScoreboardGroups();
-            };
-
-            foreach (PlayerScore.Entry player in PlayerScore.All)
-            {
-                AddPlayer(player);
+                AddClient(client);
             }
 
             UpdateScoreboardGroups();
@@ -90,67 +79,75 @@ namespace TTTReborn.UI
         [Event(TTTEvent.Player.Spawned)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
-            UpdatePlayer(player.GetClientOwner());
+            UpdateClient(player.Client);
         }
 
-        private void AddPlayer(PlayerScore.Entry entry)
+        [Event(TTTEvent.Player.InitialSpawn)]
+        public void OnPlayerInitialSpawn(Client client)
         {
-            ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
-            ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry(entry);
+            AddClient(client);
+            UpdateScoreboardGroups();
+        }
+
+        [Event(TTTEvent.Player.Disconnected)]
+        private void OnPlayerDisconnected(ulong steamId, NetworkDisconnectionReason reason)
+        {
+            RemoveClient(steamId);
+            UpdateScoreboardGroups();
+        }
+
+        public void AddClient(Client client)
+        {
+            if (_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
+            {
+                return;
+            }
+
+            ScoreboardGroup scoreboardGroup = GetScoreboardGroup(client);
+            ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry(client);
 
             scoreboardGroup.GroupMembers++;
 
-            _entries.Add(entry.Id, scoreboardEntry);
+            _entries.Add(client.SteamId, scoreboardEntry);
 
             scoreboardGroup.UpdateLabel();
             _scoreboardHeader.UpdateServerInfo();
         }
 
-        private void UpdatePlayer(PlayerScore.Entry entry)
+        public void UpdateClient(Client client)
         {
-            if (!_entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
+            if (!_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
             {
                 return;
             }
 
-            ScoreboardGroup scoreboardGroup = GetScoreboardGroup(entry);
+            ScoreboardGroup scoreboardGroup = GetScoreboardGroup(client);
 
             if (scoreboardGroup.GroupTitle != panel.ScoreboardGroupName)
             {
                 // instead of remove and add, move the panel into the right parent
-                RemovePlayer(entry);
-                AddPlayer(entry);
+                RemoveClient(client.SteamId);
+                AddClient(client);
             }
             else
             {
-                panel.UpdateFrom(entry);
+                panel.Update();
             }
 
             UpdateScoreboardGroups();
         }
 
-        public void UpdatePlayer(Client client)
-        {
-            foreach (PlayerScore.Entry entry in PlayerScore.All)
-            {
-                if (entry.Get<ulong>("steamid", 0) == client.SteamId)
-                {
-                    UpdatePlayer(entry);
-                }
-            }
-        }
-
         public void Update()
         {
-            foreach (PlayerScore.Entry entry in PlayerScore.All)
+            foreach (Client client in Client.All)
             {
-                UpdatePlayer(entry);
+                UpdateClient(client);
             }
         }
 
-        private void RemovePlayer(PlayerScore.Entry entry)
+        public void RemoveClient(ulong steamId)
         {
-            if (!_entries.TryGetValue(entry.Id, out ScoreboardEntry panel))
+            if (!_entries.TryGetValue(steamId, out ScoreboardEntry panel))
             {
                 return;
             }
@@ -165,14 +162,32 @@ namespace TTTReborn.UI
             scoreboardGroup.UpdateLabel();
 
             panel.Delete();
-            _entries.Remove(entry.Id);
+            _entries.Remove(steamId);
         }
 
         public override void Tick()
         {
             base.Tick();
 
+            // Due to not having a `client.GetValue` change callback, we have to handle it differently
+            foreach (Client client in Client.All)
+            {
+                bool newIsForcedSpectator = client.GetValue<bool>("forcedspectator");
+
+                if (!_forcedSpecList.TryGetValue(client.SteamId, out bool isForcedSpectator))
+                {
+                    _forcedSpecList.Add(client.SteamId, newIsForcedSpectator);
+                }
+                else if (isForcedSpectator != newIsForcedSpectator)
+                {
+                    _forcedSpecList[client.SteamId] = newIsForcedSpectator;
+
+                    UpdateClient(client);
+                }
+            }
+
             SetClass("fade-in", Input.Down(InputButton.Score));
+
             _scoreboardContainer.SetClass("pop-in", Input.Down(InputButton.Score));
         }
 
@@ -191,37 +206,23 @@ namespace TTTReborn.UI
             return scoreboardGroup;
         }
 
-        private ScoreboardGroup GetScoreboardGroup(PlayerScore.Entry entry)
+        private ScoreboardGroup GetScoreboardGroup(Client client)
         {
             string group = DefaultScoreboardGroup.Alive.ToString();
-            ulong steamId = entry.Get<ulong>("steamid", 0);
 
-            if (entry.Get<bool>("forcedspectator", false))
+            if (client.GetValue<bool>("forcedspectator"))
             {
                 group = DefaultScoreboardGroup.Spectator.ToString();
             }
-            else if (steamId != 0)
+            else if (client.SteamId != 0 && client.Pawn is TTTPlayer player)
             {
-                foreach (Client client in Client.All)
+                if (player.IsConfirmed)
                 {
-                    if (client.SteamId == steamId && client.Pawn != null)
-                    {
-                        if (client.Pawn is not TTTPlayer player)
-                        {
-                            break;
-                        }
-
-                        if (player.IsConfirmed)
-                        {
-                            group = DefaultScoreboardGroup.Dead.ToString();
-                        }
-                        else if (player.IsMissingInAction)
-                        {
-                            group = DefaultScoreboardGroup.Missing.ToString();
-                        }
-
-                        break;
-                    }
+                    group = DefaultScoreboardGroup.Dead.ToString();
+                }
+                else if (player.IsMissingInAction)
+                {
+                    group = DefaultScoreboardGroup.Missing.ToString();
                 }
             }
 

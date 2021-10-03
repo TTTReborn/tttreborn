@@ -12,7 +12,7 @@ namespace TTTReborn.Events
 
             /// <summary>
             /// Occurs when a player initializes.
-            /// <para>No data is passed to this event.</para>
+            /// <para>The <strong><see cref="Sandbox.Client"/></strong> instance of the player who spawned initially.</para>
             /// </summary>
             public const string InitialSpawn = "tttreborn.player.initialspawn";
 
@@ -21,6 +21,13 @@ namespace TTTReborn.Events
             /// <para>Event is passed the <strong><see cref="TTTReborn.Player.TTTPlayer"/></strong> instance of the player spawned.</para>
             /// </summary>
             public const string Spawned = "tttreborn.player.spawned";
+
+            /// <summary>
+            /// Occurs when a player disconnects.
+            /// <para>The <strong><see cref="ulong"/></strong> of the player's SteamId who disconnected.</para>
+            /// <para>The <strong><see cref="Sandbox.NetworkDisconnectionReason"/></strong>.</para>
+            /// </summary>
+            public const string Disconnected = "tttreborn.player.disconnected";
 
             /// <summary>
             /// Occurs when a player takes damage.
