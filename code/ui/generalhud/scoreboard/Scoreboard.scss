@@ -1,184 +1,210 @@
+@import "../../components/generic/Panel.scss";
+
 Scoreboard {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    font-family: Poppins;
-    border-radius: 8px;
-    width: 1200px;
-    transform: translateX(-50%) translateY(-60%);
-    border: 1px solid #1b1b1b;
-    color: #fafafa;
+    width: 100%;
+    height: 100%;      
     opacity: 0;
-    z-index: 100;
-    transition: opacity 0.05s linear;
-    display: flex;
-    flex-direction: column;
-    background-color: #000c;
+    transition: all 0.15s ease-out;
+    justify-content: center;
+    pointer-events: all;
 
-    &.open {
+    .scoreboard-container {
+        width: 50%;
+        flex-direction: column;
+        justify-content: center;
+        transition: transform 0.25s ease-out;
+        transform: scale(0.9);
+
+        &.pop-in {
+            transform: scale(1);
+        }
+
+        .column-label-panel {
+            flex-direction: row;
+            justify-content: flex-end;
+            padding: 4px;
+        }
+
+        .scoreboard-content {
+            flex-direction: column;
+            padding: 8px;
+            max-height: 66%;
+            overflow: scroll;
+        }
+
+        .scoreboard-footer {
+            height: 25px;
+        }
+    }
+
+    &.fade-in {
         opacity: 1;
     }
+}
 
-    Header {
-        padding: 16px 30px;
-        padding-bottom: 25px;
-        border-bottom: #363636 1px solid;
-        background-color: #0007;
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-        display: flex;
+ScoreboardHeader {
+    flex-direction: row;
+    max-height: 100px;
+    justify-content: space-between;
+    padding: 16px;
 
-        .scoreboardLogo {
-            background-image: url("/assets/TTT-Reborn-Logo.png");
-            background-size: cover;
-            width: 100px;
-            height: 100px;
-            margin-right: 20px;
-        }
-
-        .informationHolder {
-            display: flex;
-            flex-direction: column;
-
-            .serverName {
-                font-size: 24px;
-                font-weight: 500;
-            }
-
-            .serverInfo {
-                font-weight: 400;
-                font-size: 18px;
-            }
-
-            .serverDescription {
-                font-weight: 300;
-                font-size: 0.9em;
-                margin-top: 10px;
-                margin-bottom: 0;
-                padding-right: 75px;
-            }
-        }
+    .game-logo {
+        background-image: url("/assets/TTT-Reborn-Logo.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 75px;
+        height: 75px;
     }
 
-    TableHeader {
-        background-color: #0007;
+    .server-information-panel {
         display: flex;
-        flex-direction: row;
-        font-weight: 500;
-        font-size: 20px;
-        padding-bottom: 8px;
-
-        .name {
-            padding-left: 20px;
-        }
-    }
-
-    .mainContent {
+        flex-grow: 1;
         flex-direction: column;
+        justify-content: center;
+        margin-left: 12px;
+        margin-right: 12px;
+    }
 
-        ScoreboardGroup {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            margin-top: 5px;
+    .server-name-label {
+        font-size: 20px;
+        font-weight: 600;
+    }
 
-            .scoreboardGroup__title-wrapper {
+    .server-description-label {
+        font-weight: 400;
+    }
 
-                .scoreboardGroup__title {
-                    background-color: #3f7e51;
-                    font-size: 14px;
-                    font-weight: 300;
-                    border-top-right-radius: 4px;
-                    padding: 0 20px;
-                }
-            }
+    .server-data-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: right;
+    }
 
-            .scoreboardGroup__content {
-                // border-image: linear-gradient(to bottom, #3f7e51, #3f7e51, #3f7e51, rgba(0, 0, 0, 0)) 1 1%;
-                border: 2px solid #3f7e51;
-                border-right-width: 0;
-                border-left-width: 2px;
-                border-bottom-width: 0;
-                display: flex;
-                flex-direction: column;
-                box-shadow: 0px 3px 5px -1px #00000040;
+    .server-map-label {
+        font-size: 16px;
+        font-weight: 500;
+    }
 
-                ScoreboardEntry {
-                    width: 100%;
+    .server-players-label {
+        font-weight: 500;
+    }
+}
 
-                    Label {
-                        &.rolecolor {
-                            width: 10px;
-                            height: 10px;
-                            border-radius: 100%;
-                            margin: 5px 7.5px 0px 7.5px;
-                        }
-                    }
+ScoreboardGroup {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    flex-shrink: 0;
+    flex-grow: 0;
 
-                    &:nth-child( odd ) {
-                        background-color: #0a0a0a66;
-                    }
+    &:first-child {
+        margin-top: 0;
+    }
 
-                    &:nth-child( even ) {
-                        background-color: #4b4b4b15;
-                    }
+    .group-title-panel {
+        height: 25px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+        align-items: center;
+        padding: 8px;
+    }
 
-                    &.me:nth-child(1) {
-                        background-color: #f2b42d1a;
-                    }
-                }
+    .group-title-label {
+        font-size: 14px;
+        flex-grow: 1;
+    }
+        
+    .group-karma-label,
+    .group-ping-label {
+        text-align: center;
+        width: 125px;
+    }
 
-            }
-
-            &.dead {
-                .scoreboardGroup__title {
-                    background-color: #e12c3b;
-                }
-
-                .scoreboardGroup__content {
-                    border: #e12c3b;
-                }
-            }
-
-            &.mia {
-                .scoreboardGroup__title {
-                    background-color: #c6793a;
-                }
-
-                .scoreboardGroup__content {
-                    border: #c6793a;
-                }
-            }
-
-            &.spectator {
-                .scoreboardGroup__title {
-                    background-color: #d6af02;
-                }
-
-                .scoreboardGroup__content {
-                    border: #d6af02;
-                }
-            }
+    &:not(:first-child) {
+        .group-karma-label,
+        .group-ping-label {
+            display: none;
         }
     }
 
-    .name {
+    .group-content-panel {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &.alive {
+        .group-title-panel {
+            background-color: $alive;
+        }
+    }
+
+    &.dead {
+        .group-title-panel {
+            background-color: $dead;
+        }
+    }
+
+    &.missing {
+        .group-title-panel {
+            background-color: $missing;
+        }
+    }
+
+    &.spectator {
+        .group-title-panel {
+            background-color: $spectator;
+        }
+    }
+}
+
+ScoreboardEntry {
+    width: 100%;
+    height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    padding: 8px;
+
+    .avatar {
+        height: 25px;
+        width: 25px;
+    }
+
+    .name-label {
+        margin-left: 8px;
+        font-size: 16px;
+        font-weight: 600;
         flex-grow: 1;
     }
 
-    .score,
     .karma,
     .ping {
-        width: 90px;
+        width: 125px;
         text-align: center;
+        font-weight: 700;
+        padding-left: 25px;
+        padding-right: 25px;
     }
 
-    .footer {
-        margin-top: 10px;
-        border-bottom-left-radius: 7px;
-        border-bottom-right-radius: 7px;
-        border-top: #363636 1px solid;
-        background-color: #0007;
-        padding: 16px 30px;
+    &:nth-child( odd ) {
+        background-color: #0a0a0a66;
+    }
+
+    &:nth-child( even ) {
+        background-color: #4b4b4b15;
+    }
+
+    &.me:nth-child(1) {
+        background-color: #f2b42d1a;
+    }
+
+    &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
     }
 }

@@ -18,7 +18,7 @@ namespace TTTReborn.UI
         public Vector2? TransformRatio;
     }
 
-    public partial class RichPanel : TTTPanel
+    public partial class RichPanel : Panel
     {
         public bool IsDraggable { get; set; } = false;
 
@@ -298,6 +298,8 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
+            base.Tick();
+
             if (!IsVisible || ComputedStyle == null || IsDragging || !IsDraggable)
             {
                 return;

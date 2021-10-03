@@ -5,25 +5,29 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class DropdownOption : TTTPanel
+    public partial class DropdownOption : Panel
     {
-        public Dropdown Dropdown { get; set; }
+        public readonly Dropdown Dropdown;
 
-        public Label TextLabel { get; private set; }
+        public readonly Label TextLabel;
 
-        public Action<TTTPanel> OnSelect { get; set; }
+        public object Data { get; set; }
 
-        public DropdownOption(Panel parent = null, string text = "") : base(parent)
+        public Action<Panel> OnSelect { get; set; }
+
+        public DropdownOption(Dropdown dropdown, Sandbox.UI.Panel parent = null, string text = "", object data = null) : base(parent)
         {
             Parent = parent ?? Parent;
 
+            Dropdown = dropdown;
             TextLabel = Add.Label(text, "optiontext");
+            Data = data;
         }
 
         protected override void OnClick(MousePanelEvent e)
         {
             OnSelect?.Invoke(this);
-            Dropdown?.OnSelectOption(this);
+            Dropdown.OnSelectDropdownOption(this);
         }
     }
 }

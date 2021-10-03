@@ -1,34 +1,48 @@
 using System;
 
-using Sandbox;
-
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    public struct ShopItemData
+    public class ShopItemData
     {
-        public string Name;
-        public string Description;
-        public int Price;
-        public SlotType SlotType;
-        public Type Type;
+        public string Name { get; set; }
+        public string Description = "";
+        public int Price { get; set; } = 0;
+        public SlotType? SlotType = null;
+        public Type Type = null;
+
+        public ShopItemData(string name)
+        {
+            Name = name;
+        }
 
         public bool IsBuyable(TTTPlayer player)
         {
-            Inventory inventory = player.Inventory as Inventory;
-
             if (Type.IsSubclassOf(typeof(TTTPerk)))
             {
-                return !inventory.Perks.Has(Name);
+                return !player.Inventory.Perks.Has(Name);
+            }
+
+            if (SlotType == null)
+            {
+                return false;
             }
             else if (Type.IsSubclassOf(typeof(TTTWeapon)))
             {
-                return !inventory.IsCarryingType(Type) && inventory.HasEmptySlot(SlotType);
+                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType.Value);
+            }
+            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
+            {
+                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType.Value);
+            }
+            else if (Type.IsSubclassOf(typeof(TTTEquipment)))
+            {
+                return player.Inventory.HasEmptySlot(SlotType.Value);
             }
             else if (Type.IsSubclassOf(typeof(TTTEquipment))) //This was previously apart of the TTTWeapon if statement. We don't have to remove it, but I'd rather not interfere with IsCarryingType
             {
-                return inventory.HasEmptySlot(SlotType);
+                return player.Inventory.HasEmptySlot(SlotType.Value);
             }
 
             return false;
@@ -41,9 +55,8 @@ namespace TTTReborn.Items
 
         ShopItemData CreateItemData()
         {
-            ShopItemData itemData = new ShopItemData
+            ShopItemData itemData = new ShopItemData(ClassName)
             {
-                Name = Name,
                 Price = Price,
                 Type = GetType()
             };
@@ -59,7 +72,7 @@ namespace TTTReborn.Items
 
         void OnPurchase(TTTPlayer player)
         {
-            (player.Inventory as Inventory).TryAdd(this);
+            player.Inventory.TryAdd(this);
         }
     }
 }

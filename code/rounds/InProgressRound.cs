@@ -6,8 +6,10 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
+using TTTReborn.Settings;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
@@ -15,7 +17,12 @@ namespace TTTReborn.Rounds
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
-        public override int RoundDuration => Gamemode.Game.TTTRoundTime;
+        private List<TTTRoleButton> RoleButtons;
+
+        public override int RoundDuration
+        {
+            get => ServerSettings.Instance.Round.RoundTime;
+        }
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
@@ -23,25 +30,13 @@ namespace TTTReborn.Rounds
             Spectators.Add(player);
 
             player.MakeSpectator();
-
-            TTTTeam result = IsRoundOver();
-
-            if (result != null)
-            {
-                LoadPostRound(result);
-            }
+            ChangeRoundIfOver();
         }
 
         public override void OnPlayerLeave(TTTPlayer player)
         {
             base.OnPlayerLeave(player);
-
-            TTTTeam result = IsRoundOver();
-
-            if (result != null)
-            {
-                LoadPostRound(result);
-            }
+            ChangeRoundIfOver();
         }
 
         protected override void OnStart()
@@ -55,7 +50,7 @@ namespace TTTReborn.Rounds
                         continue;
                     }
 
-                    client.SetScore("forcedspectator", player.IsForcedSpectator);
+                    player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
 
                     if (player.LifeState == LifeState.Dead)
                     {
@@ -73,6 +68,9 @@ namespace TTTReborn.Rounds
                         SetLoadout(player);
                     }
                 }
+
+                // Cache buttons for OnSecond tick.
+                RoleButtons = Entity.All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton).ToList();
 
                 AssignRoles();
             }
@@ -111,31 +109,29 @@ namespace TTTReborn.Rounds
             base.OnPlayerSpawn(player);
         }
 
-        private void SetLoadout(TTTPlayer player)
+        private static void SetLoadout(TTTPlayer player)
         {
-            Inventory inventory = player.Inventory as Inventory;
-
-            inventory.TryAdd(new MagnetoStick(), true);
+            player.Inventory.TryAdd(new MagnetoStick(), true);
 
             // Randomize between SMG and shotgun
             if (new Random().Next() % 2 == 0)
             {
-                if (inventory.TryAdd(new Shotgun(), false))
+                if (player.Inventory.TryAdd(new Shotgun(), false))
                 {
-                    inventory.Ammo.Give("buckshot", 16);
+                    player.Inventory.Ammo.Give("buckshot", 16);
                 }
             }
             else
             {
-                if (inventory.TryAdd(new SMG(), false))
+                if (player.Inventory.TryAdd(new SMG(), false))
                 {
-                    inventory.Ammo.Give("smg", 60);
+                    player.Inventory.Ammo.Give("smg", 60);
                 }
             }
 
-            if (inventory.TryAdd(new Pistol(), false))
+            if (player.Inventory.TryAdd(new Pistol(), false))
             {
-                inventory.Ammo.Give("pistol", 30);
+                player.Inventory.Ammo.Give("pistol", 30);
             }
         }
 
@@ -202,10 +198,21 @@ namespace TTTReborn.Rounds
             {
                 base.OnSecond();
 
+                RoleButtons.ForEach(x => x.OnSecond()); //Tick role button delay timer.
+
                 if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {
                     Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());
                 }
+            }
+        }
+
+        private void ChangeRoundIfOver()
+        {
+            TTTTeam result = IsRoundOver();
+            if (result != null)
+            {
+                LoadPostRound(result);
             }
         }
     }

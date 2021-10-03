@@ -2,6 +2,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Player.Camera;
@@ -13,12 +14,6 @@ namespace TTTReborn.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;
 
-        [Net, Predicted]
-        public float Stamina { get; set; } = 100f;
-
-        [Net]
-        public float MaxStamina { get; set; } = 100f;
-
         [Net, Local]
         public int Credits { get; set; } = 0;
 
@@ -26,6 +21,18 @@ namespace TTTReborn.Player
         public bool IsForcedSpectator { get; set; } = false;
 
         public bool IsInitialSpawning { get; set; } = false;
+
+        public new Inventory Inventory
+        {
+            get => (Inventory) base.Inventory;
+            private init => base.Inventory = value;
+        }
+
+        public new DefaultWalkController Controller
+        {
+            get => (DefaultWalkController) base.Controller;
+            private set => base.Controller = value;
+        }
 
         private DamageInfo _lastDamageInfo;
 
@@ -36,21 +43,8 @@ namespace TTTReborn.Player
             Inventory = new Inventory(this);
         }
 
-        public void MakeSpectator(bool useRagdollCamera = true)
-        {
-            EnableAllCollisions = false;
-            EnableDrawing = false;
-            Controller = null;
-            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
-
-            LifeState = LifeState.Dead;
-            Health = 0f;
-
-            ShowFlashlight(false, false);
-        }
-
         // Important: Server-side only
-        public void InitialRespawn()
+        public void InitialSpawn()
         {
             bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
 
@@ -69,9 +63,13 @@ namespace TTTReborn.Player
                         RPCs.ClientSetRole(To.Single(this), player, player.Role.Name);
                     }
                 }
-            }
 
-            GetClientOwner().SetScore("forcedspectator", IsForcedSpectator);
+                Client.SetValue("forcedspectator", IsForcedSpectator);
+
+                Event.Run(TTTEvent.Player.InitialSpawn, Client);
+
+                ClientInitialSpawn();
+            }
 
             IsInitialSpawning = false;
             IsForcedSpectator = false;
@@ -90,7 +88,6 @@ namespace TTTReborn.Player
             EnableShadowInFirstPerson = true;
 
             Credits = 0;
-            Stamina = MaxStamina;
 
             SetRole(new NoneRole());
 
@@ -130,7 +127,7 @@ namespace TTTReborn.Player
                     IsConfirmed = false;
                     CorpseConfirmer = null;
 
-                    GetClientOwner().SetScore("forcedspectator", false);
+                    Client.SetValue("forcedspectator", false);
 
                     break;
             }
@@ -171,6 +168,12 @@ namespace TTTReborn.Player
             if (IsClient)
             {
                 TickPlayerVoiceChat();
+                TickMenu();
+            }
+
+            if (IsServer)
+            {
+                TickAFKSystem();
             }
 
             TickAttemptInspectPlayerCorpse();
@@ -195,6 +198,7 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
+            TickEntityHints();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -255,18 +259,16 @@ namespace TTTReborn.Player
 
         private void TickItemSimulate()
         {
-            Client client = GetClientOwner();
-
-            if (client == null)
+            if (Client == null)
             {
                 return;
             }
 
-            PerksInventory perks = (Inventory as Inventory).Perks;
+            PerksInventory perks = Inventory.Perks;
 
             for (int i = 0; i < perks.Count(); i++)
             {
-                perks.Get(i).Simulate(client);
+                perks.Get(i).Simulate(Client);
             }
         }
 

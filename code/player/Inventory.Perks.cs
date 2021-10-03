@@ -8,38 +8,36 @@ namespace TTTReborn.Player
 {
     public partial class PerksInventory
     {
-        private List<TTTPerk> PerkList { get; set; } = new();
-        private Inventory Inventory;
+        private List<TTTPerk> PerkList { get; } = new();
+        private readonly TTTPlayer _owner;
 
-        public PerksInventory(Inventory inventory) : base()
+        public PerksInventory(TTTPlayer owner)
         {
-            Inventory = inventory;
+            _owner = owner;
         }
 
         public bool Give(TTTPerk perk)
         {
-            if (Has(perk.Name))
+            if (Has(perk.ClassName))
             {
                 return false;
             }
 
             PerkList.Add(perk);
 
-            TTTPlayer player = Inventory.Owner as TTTPlayer;
-
             if (Host.IsServer)
             {
-                player.ClientAddPerk(To.Single(player), perk.Name);
+                _owner.ClientAddPerk(To.Single(_owner), perk.ClassName);
             }
 
-            perk.Equip(player);
+            perk.Equip(_owner);
 
             return true;
         }
 
         public bool Take(TTTPerk perk)
         {
-            if (!Has(perk.Name))
+            if (!Has(perk.ClassName))
             {
                 return false;
             }
@@ -51,9 +49,7 @@ namespace TTTReborn.Player
 
             if (Host.IsServer)
             {
-                TTTPlayer player = Inventory.Owner as TTTPlayer;
-
-                player.ClientRemovePerk(To.Single(player), perk.Name);
+                _owner.ClientRemovePerk(To.Single(_owner), perk.ClassName);
             }
 
             return true;
@@ -68,17 +64,18 @@ namespace TTTReborn.Player
                     continue;
                 }
 
-                if (perkName == loopPerk.Name)
+                if (perkName == t.ClassName)
                 {
-                    return (T) loopPerk;
+                    return t;
                 }
-                else if (perkName == null)
+
+                if (perkName == null)
                 {
                     return t;
                 }
             }
 
-            return default(T);
+            return default;
         }
 
         public TTTPerk Find(string perkName)
@@ -98,8 +95,6 @@ namespace TTTReborn.Player
 
         public void Clear()
         {
-            TTTPlayer player = Inventory.Owner as TTTPlayer;
-
             foreach (TTTPerk perk in PerkList)
             {
                 perk.Remove();
@@ -110,7 +105,7 @@ namespace TTTReborn.Player
 
             if (Host.IsServer)
             {
-                player.ClientClearPerks(To.Single(player));
+                _owner.ClientClearPerks(To.Single(_owner));
             }
         }
 

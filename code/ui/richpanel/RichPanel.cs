@@ -1,6 +1,6 @@
 namespace TTTReborn.UI
 {
-    public partial class RichPanel : TTTPanel
+    public partial class RichPanel : Panel
     {
         public RichPanel() : base()
         {

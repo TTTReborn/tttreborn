@@ -1,7 +1,5 @@
 using System;
 
-using Sandbox.UI;
-
 namespace TTTReborn.UI
 {
     public partial class Modal : RichPanel
@@ -16,16 +14,23 @@ namespace TTTReborn.UI
 
         public virtual void Display()
         {
-            IsShowing = true;
+            Enabled = true;
 
             OnDisplay?.Invoke(this);
         }
 
-        public virtual void Close()
+        public virtual void Close(bool deleteOnClose = false)
         {
             OnClose?.Invoke(this);
 
-            IsShowing = false;
+            if (deleteOnClose)
+            {
+                Delete(true);
+            }
+            else
+            {
+                Enabled = false;
+            }
         }
     }
 }

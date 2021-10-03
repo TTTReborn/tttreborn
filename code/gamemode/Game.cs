@@ -1,16 +1,20 @@
 using System;
+using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globalization;
 using TTTReborn.Globals;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
+using TTTReborn.Settings;
 using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
 {
-    [Library("tttreborn", Title = "Trouble in Terry's Town")]
+    [Library("tttreborn", Title = "Trouble in Terry's Town"), Hammer.Skip]
     partial class Game : Sandbox.Game
     {
         public static Game Instance { get; private set; }
@@ -20,16 +24,28 @@ namespace TTTReborn.Gamemode
 
         public KarmaSystem Karma { get; private set; } = new();
 
+        public TTTMapSettings MapSettings { get; private set; }
+
         public Game()
         {
             Instance = this;
 
             TTTLanguage.LoadLanguages();
+            SettingsManager.Load();
 
             if (IsServer)
             {
+                ShopManager.Load();
+
                 new Hud();
             }
+        }
+
+        public override void Shutdown()
+        {
+            SettingsManager.Unload();
+
+            base.Shutdown();
         }
 
         /// <summary>
@@ -51,6 +67,7 @@ namespace TTTReborn.Gamemode
         {
             Round.Finish();
             Round = round;
+            Event.Run("tttreborn.round.changed", round);
             Round.Start();
         }
 
@@ -88,9 +105,13 @@ namespace TTTReborn.Gamemode
             }
             */
 
+            Event.Run(TTTEvent.Player.Connected, client);
+
+            RPCs.ClientOnPlayerConnected(client);
+
             TTTPlayer player = new();
             client.Pawn = player;
-            player.InitialRespawn();
+            player.InitialSpawn();
 
             base.ClientJoined(client);
         }
@@ -100,6 +121,10 @@ namespace TTTReborn.Gamemode
             Log.Info(client.Name + " left, checking minimum player count...");
 
             Round.OnPlayerLeave(client.Pawn as TTTPlayer);
+
+            Event.Run(TTTEvent.Player.Disconnected, client.SteamId, reason);
+
+            RPCs.ClientOnPlayerDisconnect(client.SteamId, reason);
 
             base.ClientDisconnect(client, reason);
         }
@@ -154,12 +179,15 @@ namespace TTTReborn.Gamemode
                 player.IsSpeaking = true;
             }
 
-            UI.VoiceList.Current?.OnVoicePlayed(client, level);
+            UI.VoiceChatDisplay.Instance?.OnVoicePlayed(client, level);
         }
 
         public override void PostLevelLoaded()
         {
             StartGameTimer();
+
+            MapSettings = (TTTMapSettings) All.FirstOrDefault(x => x.GetType().Equals(typeof(TTTMapSettings)));
+            MapSettings?.FireSettingsSpawn();
 
             base.PostLevelLoaded();
         }

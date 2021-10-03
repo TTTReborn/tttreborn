@@ -7,69 +7,72 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
-    public class ScoreboardEntry : TTTPanel
+    public class ScoreboardEntry : Panel
     {
-        private PlayerScore.Entry _entry;
         public string ScoreboardGroupName;
-        public ulong SteamId;
+        public Client Client;
 
-        private readonly Label _roleColorLabel;
+        private Image _playerAvatar;
         private readonly Label _playerName;
-        private readonly Label _karma;
-        private readonly Label _score;
-        private readonly Label _ping;
 
-        private Client _client;
+        private readonly Label _karma;
+        private readonly Label _ping;
 
         public ScoreboardEntry()
         {
+            AddClass("text-shadow");
             AddClass("entry");
 
-            _roleColorLabel = Add.Label("", "rolecolor");
-            _playerName = Add.Label("PlayerName", "name");
-            _karma = Add.Label("", "karma");
-            _score = Add.Label("", "score");
-            _ping = Add.Label("", "ping");
+            _playerAvatar = Add.Image();
+            _playerAvatar.AddClass("circular");
+            _playerAvatar.AddClass("avatar");
 
-            Initialize();
+            _playerName = Add.Label();
+            _playerName.AddClass("name-label");
+
+            _karma = Add.Label("", "karma");
+            _ping = Add.Label("", "ping");
         }
 
-        public virtual void UpdateFrom(PlayerScore.Entry entry)
+        public virtual void Update()
         {
-            _entry = entry;
-
-            _playerName.Text = entry.GetString("name");
-            _karma.Text = entry.Get<int>("karma", 0).ToString();
-            _score.Text = entry.Get<int>("score", 0).ToString();
-            _ping.Text = entry.Get<int>("ping", 0).ToString();
-
-            if (_client == null)
-            {
-                Initialize();
-            }
-
-            if (_client?.Pawn is not TTTPlayer player)
+            if (Client == null)
             {
                 return;
             }
 
-            _roleColorLabel.Style.BackgroundColor = player.Role is NoneRole ? player.Role.Color : player.Role.Color.WithAlpha(0.75f);
-            _roleColorLabel.Style.Dirty();
-        }
+            _playerName.Text = Client.Name;
+            _karma.Text = Client.GetInt("karma").ToString();
 
-        private void Initialize()
-        {
-            foreach (Client loopClient in Client.All)
+            SetClass("me", Client == Local.Client);
+
+            if (Client.Pawn is not TTTPlayer player)
             {
-                if (loopClient.SteamId == SteamId)
-                {
-                    _client = loopClient;
-
-                    break;
-                }
+                return;
             }
 
-            SetClass("me", SteamId == Local.Client?.SteamId);
+            if (player.Role is not NoneRole && player.Role is not InnocentRole)
+            {
+                Style.BackgroundColor = player.Role.Color.WithAlpha(0.15f);
+            }
+            else
+            {
+                Style.BackgroundColor = null;
+            }
+
+            Style.Dirty();
+
+            _playerAvatar.SetTexture($"avatar:{Client.SteamId}");
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            if (Client != null)
+            {
+                _ping.Text = Client.Ping.ToString();
+            }
         }
     }
 }

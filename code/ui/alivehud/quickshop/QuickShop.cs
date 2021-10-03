@@ -1,259 +1,215 @@
-using System;
 using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class QuickShop : TTTPanel
+    public partial class QuickShop : Panel
     {
-        private static ShopItemData? _selectedItemData;
-        private static bool _isOpen = false;
+        public static QuickShop Instance;
 
-        private Header _header;
-        private Footer _footer;
-        private bool _wasOpened = false;
-        private readonly Content _content;
+        public static ShopItemData _selectedItemData;
 
-        public QuickShop()
+        private readonly List<QuickShopItem> _items = new();
+        private Panel _backgroundPanel;
+        private Panel _quickshopContainer;
+        private Label _creditLabel;
+        private Panel _itemPanel;
+        private Label _itemDescriptionLabel;
+
+        private int _credits = 0;
+
+        public new bool Enabled
         {
+            get => base.IsEnabled;
+            set
+            {
+                base.IsEnabled = value;
+
+                SetClass("fade-in", base.IsEnabled);
+                _quickshopContainer.SetClass("pop-in", base.IsEnabled);
+            }
+        }
+
+        public QuickShop() : base()
+        {
+            Instance = this;
+
             StyleSheet.Load("/ui/alivehud/quickshop/QuickShop.scss");
 
-            _header = new(this);
-            _content = new(this);
-            _footer = new(this);
+            AddClass("text-shadow");
+
+            _backgroundPanel = new Panel(this);
+            _backgroundPanel.AddClass("background-color-secondary");
+            _backgroundPanel.AddClass("opacity-medium");
+            _backgroundPanel.AddClass("fullscreen");
+
+            _quickshopContainer = new Panel(this);
+            _quickshopContainer.AddClass("quickshop-container");
+
+            _creditLabel = _quickshopContainer.Add.Label();
+            _creditLabel.AddClass("credit-label");
+
+            _itemPanel = new Panel(_quickshopContainer);
+            _itemPanel.AddClass("item-panel");
+
+            _itemDescriptionLabel = _quickshopContainer.Add.Label();
+            _itemDescriptionLabel.AddClass("item-description-label");
+
+            Reload();
+
+            Enabled = false;
+        }
+
+        public void Reload()
+        {
+            _itemPanel.DeleteChildren(true);
+
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            Shop shop = player.Shop;
+
+            if (shop == null)
+            {
+                return;
+            }
+
+            foreach (ShopItemData itemData in shop.Items)
+            {
+                if (_selectedItemData == null)
+                {
+                    _selectedItemData = itemData;
+                }
+
+                AddItem(itemData);
+            }
+        }
+
+        private void AddItem(ShopItemData itemData)
+        {
+            QuickShopItem item = new(_itemPanel);
+            item.SetItem(itemData);
+
+            item.AddEventListener("onmouseover", () =>
+            {
+                _selectedItemData = itemData;
+
+                Update();
+            });
+
+            item.AddEventListener("onmouseout", () =>
+            {
+                _selectedItemData = null;
+
+                Update();
+            });
+
+            item.AddEventListener("onclick", () =>
+            {
+                if (item.IsDisabled)
+                {
+                    return;
+                }
+
+                if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
+                {
+                    ConsoleSystem.Run("ttt_requestitem", item.ItemData?.Name);
+                }
+
+                Update();
+            });
+
+            _items.Add(item);
         }
 
         public void Update()
         {
-            _content.Update();
+            _creditLabel.Text = $"You have ${_credits}";
+
+            foreach (QuickShopItem item in _items)
+            {
+                item.Update();
+            }
+
+            _itemDescriptionLabel.SetClass("fade-in", _selectedItemData != null);
+
+            if (_selectedItemData != null)
+            {
+                _itemDescriptionLabel.Text = $"The description for {_selectedItemData?.Name} will go here";
+            }
+        }
+
+        [Event(TTTEvent.Shop.Change)]
+        public static void OnShopChanged()
+        {
+            QuickShop.Instance?.Reload();
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            _wasOpened = _isOpen;
-            _isOpen = !HasClass("hide");
-
-            Update();
-
-            IsShowing = Input.Down(InputButton.Menu) && (Local.Pawn as TTTPlayer).Role.CanBuy();
-        }
-
-        private class Header : TTTPanel
-        {
-            public Panel PriceHolder { get; set; }
-            public Label DollarSignLabel;
-            private Label _titleLabel;
-            private readonly Label _creditsLabel;
-
-            public Header(Panel parent)
+            if (!Enabled)
             {
-                Parent = parent;
-
-                _titleLabel = Add.Label("Shop", "title");
-                PriceHolder = Add.Panel("priceholder");
-                DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
-                _creditsLabel = PriceHolder.Add.Label("0", "credits");
+                return;
             }
 
-            public override void Tick()
+            int newCredits = (Local.Pawn as TTTPlayer).Credits;
+
+            if (_credits != newCredits)
             {
-                _creditsLabel.Text = $"{(Local.Pawn as TTTPlayer).Credits}";
+                _credits = newCredits;
+
+                Update();
             }
         }
+    }
+}
 
-        private class Content : TTTPanel
+namespace TTTReborn.Player
+{
+    using UI;
+
+    public partial class TTTPlayer
+    {
+        [ClientCmd("+ttt_quickshop")]
+        public static void OpenQuickshop()
         {
-            private readonly List<ItemPanel> _itemPanels = new();
-
-            private readonly Panel _wrapper;
-
-            public Content(Panel parent)
+            if (QuickShop.Instance == null)
             {
-                Parent = parent;
-
-                _wrapper = Add.Panel("wrapper");
-
-                foreach (Type type in Globals.Utils.GetTypes<IBuyableItem>())
-                {
-                    IBuyableItem item = Globals.Utils.GetObjectByType<IBuyableItem>(type);
-                    ShopItemData itemData = item.CreateItemData();
-
-                    item.Delete();
-
-                    if (_selectedItemData == null)
-                    {
-                        _selectedItemData = itemData;
-                    }
-
-                    AddItem(itemData);
-                }
+                return;
             }
 
-            public void Update()
+            Shop shop = (Local.Pawn as TTTPlayer).Shop;
+
+            if (shop == null || !shop.Accessable())
             {
-                foreach (ItemPanel itemPanel in _itemPanels)
-                {
-                    itemPanel.Update();
-                }
+                return;
             }
 
-            public void AddItem(ShopItemData itemData)
-            {
-                ItemPanel itemPanel = new(_wrapper);
-                itemPanel.SetItem(itemData);
-
-                itemPanel.AddEventListener("onclick", () =>
-                {
-                    if (itemPanel.IsDisabled)
-                    {
-                        return;
-                    }
-
-                    _selectedItemData = itemData;
-
-                    Update();
-                });
-
-                _itemPanels.Add(itemPanel);
-            }
-
-            private class ItemPanel : TTTPanel
-            {
-                private ShopItemData? _buyableItemData;
-
-                private readonly Panel _iconPanel;
-
-                public Panel PriceHolder;
-                public Label DollarSignLabel;
-
-                private readonly Label _priceLabel;
-
-                public bool IsDisabled = false;
-
-                public ItemPanel(Panel parent)
-                {
-                    Parent = parent;
-
-                    _iconPanel = Add.Panel("icon");
-                    PriceHolder = Add.Panel("priceholder");
-                    DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
-                    _priceLabel = PriceHolder.Add.Label("", "price");
-                }
-
-                public void SetItem(ShopItemData buyableItemData)
-                {
-                    _buyableItemData = buyableItemData;
-
-                    _priceLabel.Text = $"{buyableItemData.Price}";
-
-                    _iconPanel.Style.Background = new PanelBackground
-                    {
-                        Texture = Texture.Load($"/ui/weapons/{buyableItemData.Name}.png")
-                    };
-                    _iconPanel.Style.Dirty();
-                }
-
-                public void Update()
-                {
-                    IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(_buyableItemData) != BuyError.None;
-
-                    SetClass("disabled", IsDisabled);
-                    SetClass("active", _selectedItemData?.Name == _buyableItemData?.Name);
-                }
-            }
+            QuickShop.Instance.Enabled = true;
+            QuickShop.Instance.Update();
         }
 
-        private class Footer : TTTPanel
+        [ClientCmd("-ttt_quickshop")]
+        public static void CloseQuickshop()
         {
-            private Description _description;
-            private BuyArea _buyArea;
-            private ShopItemData? _currentItemData;
-
-            public Footer(Panel parent)
+            if (QuickShop.Instance == null)
             {
-                Parent = parent;
-
-                _description = new(this);
-                _buyArea = new(this);
+                return;
             }
 
-            private class Description : TTTPanel
-            {
-                public Label EquipmentLabel;
-                public Label DescriptionLabel;
-                public ShopItemData? ItemData;
-
-                public Description(Panel parent)
-                {
-                    Parent = parent;
-
-                    EquipmentLabel = Add.Label("ItemName", "equipment");
-                    DescriptionLabel = Add.Label("Some item description...", "description");
-                }
-
-                public void SetItem(ShopItemData? itemData)
-                {
-                    ItemData = itemData;
-
-                    EquipmentLabel.Text = itemData?.Name;
-                    DescriptionLabel.Text = itemData?.Description ?? "";
-                }
-            }
-
-            private class BuyArea : TTTPanel
-            {
-                public Panel PriceHolder;
-                public Label DollarSignLabel;
-                public Label PriceLabel;
-                public Button BuyButton;
-                public ShopItemData? ItemData;
-
-                public BuyArea(Panel parent)
-                {
-                    Parent = parent;
-                    PriceHolder = Add.Panel("priceholder");
-                    DollarSignLabel = PriceHolder.Add.Label("$", "dollarsign");
-                    PriceLabel = PriceHolder.Add.Label("100", "price");
-
-                    BuyButton = Add.Button("Buy", "buyButton");
-                    BuyButton.AddEventListener("onclick", () =>
-                    {
-                        if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
-                        {
-                            ConsoleSystem.Run("ttt_requestitem", ItemData?.Name);
-                        }
-                    });
-                }
-
-                public void SetItem(ShopItemData? itemData)
-                {
-                    ItemData = itemData;
-                    PriceLabel.Text = itemData?.Price.ToString();
-                }
-            }
-
-            public override void Tick()
-            {
-                base.Tick();
-
-                if (_currentItemData?.Name == _selectedItemData?.Name)
-                {
-                    return;
-                }
-
-                _currentItemData = _selectedItemData;
-
-                _description.SetItem(_currentItemData);
-                _buyArea.SetItem(_currentItemData);
-            }
+            QuickShop.Instance.Enabled = false;
+            QuickShop.Instance.Update();
         }
     }
 }

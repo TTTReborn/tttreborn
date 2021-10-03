@@ -22,7 +22,7 @@ namespace TTTReborn.Player
 
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
 
-            if (!player.IsValid() || ConsoleSystem.Caller.GetScore<bool>("forcedspectator", false))
+            if (!player.IsValid() || ConsoleSystem.Caller.GetValue<bool>("forcedspectator", false))
             {
                 Log.Info($"You tried to respawn yourself while you've been a forced spectator this round.");
 
@@ -54,7 +54,7 @@ namespace TTTReborn.Player
                     {
                         if (player.IsValid())
                         {
-                            if (playerList[i].GetScore<bool>("forcedspectator", false))
+                            if (playerList[i].GetValue<bool>("forcedspectator", false))
                             {
                                 Log.Info($"You tried to spawn the player '{playerList[i].Name}' who have been a forced spectator this round.");
 
@@ -79,6 +79,11 @@ namespace TTTReborn.Player
         [ServerCmd(Name = "ttt_requestitem")]
         public static void RequestItem(string itemName)
         {
+            if (itemName == null)
+            {
+                return;
+            }
+
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
 
             if (!player.IsValid())
@@ -159,21 +164,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            player.IsForcedSpectator = !player.IsForcedSpectator;
-
-            if (player.IsForcedSpectator && player.LifeState == LifeState.Alive)
-            {
-                player.MakeSpectator(false);
-
-                if (!ConsoleSystem.Caller.GetScore<bool>("forcedspectator", false))
-                {
-                    ConsoleSystem.Caller.SetScore("forcedspectator", true);
-                }
-            }
-
-            string toggle = player.IsForcedSpectator ? "activated" : "deactivated";
-
-            Log.Info($"You {toggle} force spectator.");
+            player.ToggleForcedSpectator();
         }
     }
 }

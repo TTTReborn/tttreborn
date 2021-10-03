@@ -30,8 +30,6 @@ namespace TTTReborn.Player
 
         private const float INSPECT_CORPSE_DISTANCE = 80f;
 
-        private PlayerCorpse _inspectingPlayerCorpse = null;
-
         public void RemovePlayerCorpse()
         {
             if (PlayerCorpse == null || !PlayerCorpse.IsValid())
@@ -47,58 +45,60 @@ namespace TTTReborn.Player
         {
             using (Prediction.Off())
             {
+                if (IsClient && !Input.Down(InputButton.Use))
+                {
+                    InspectMenu.Instance.Enabled = false;
+
+                    return;
+                }
+
                 PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>(INSPECT_CORPSE_DISTANCE);
-
-                if (playerCorpse != null)
+                if (playerCorpse == null)
                 {
-                    if (IsServer && !playerCorpse.IsIdentified && Input.Pressed(InputButton.Use) && LifeState == LifeState.Alive)
+                    return;
+                }
+
+                if (IsServer && !playerCorpse.IsIdentified && LifeState == LifeState.Alive && Input.Down(InputButton.Use))
+                {
+                    playerCorpse.IsIdentified = true;
+
+                    // TODO: Handle player disconnects.
+                    if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
                     {
-                        playerCorpse.IsIdentified = true;
+                        playerCorpse.Player.IsConfirmed = true;
+                        playerCorpse.Player.CorpseConfirmer = this;
 
-                        // TODO Handling if a player disconnects!
-                        if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
+                        int credits = playerCorpse.Player.Credits;
+
+                        if (credits > 0)
                         {
-                            playerCorpse.Player.IsConfirmed = true;
-                            playerCorpse.Player.CorpseConfirmer = this;
-
-                            int credits = playerCorpse.Player.Credits;
-
-                            if (credits > 0)
-                            {
-                                Credits += credits;
-                                playerCorpse.Player.Credits = 0;
-                                playerCorpse.Player.CorpseCredits = credits;
-                            }
-
-                            RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name, playerCorpse.Player.Team.Name, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
+                            Credits += credits;
+                            playerCorpse.Player.Credits = 0;
+                            playerCorpse.Player.CorpseCredits = credits;
                         }
-                    }
 
-                    if (_inspectingPlayerCorpse != playerCorpse)
-                    {
-                        _inspectingPlayerCorpse = playerCorpse;
-
-                        if (IsClient)
-                        {
-                            InspectMenu.Instance.InspectCorpse(playerCorpse);
-                        }
+                        RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name, playerCorpse.Player.Team.Name, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
                     }
                 }
-                else if (_inspectingPlayerCorpse != null)
-                {
-                    if (IsClient && InspectMenu.Instance.IsShowing)
-                    {
-                        InspectMenu.Instance.IsShowing = false;
-                    }
 
-                    _inspectingPlayerCorpse = null;
+                if (Input.Down(InputButton.Use) && playerCorpse.IsIdentified)
+                {
+                    ClientEnableInspectMenu(playerCorpse);
                 }
+            }
+        }
+
+        public static void ClientEnableInspectMenu(PlayerCorpse playerCorpse)
+        {
+            if (InspectMenu.Instance != null && !InspectMenu.Instance.Enabled)
+            {
+                InspectMenu.Instance.InspectCorpse(playerCorpse);
             }
         }
 
         private void BecomePlayerCorpseOnServer(Vector3 force, int forceBone)
         {
-            PlayerCorpse corpse = new PlayerCorpse
+            PlayerCorpse corpse = new()
             {
                 Position = Position,
                 Rotation = Rotation
@@ -109,13 +109,13 @@ namespace TTTReborn.Player
             corpse.Distance = LastDistanceToAttacker;
             corpse.Suicide = LastAttacker == this;
 
-            PerksInventory perksInventory = (Inventory as Inventory).Perks;
+            PerksInventory perksInventory = Inventory.Perks;
 
             corpse.Perks = new string[perksInventory.Count()];
 
             for (int i = 0; i < corpse.Perks.Length; i++)
             {
-                corpse.Perks[i] = perksInventory.Get(i).Name;
+                corpse.Perks[i] = perksInventory.Get(i).ClassName;
             }
 
             corpse.CopyFrom(this);

@@ -11,8 +11,9 @@ using TTTReborn.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public class C4ArmControl : TTTPanel
+    public class C4ArmControl : Panel
     {
+        public static C4ArmControl Current;
         public TTTPlayer User { get; set; }
         public C4Entity Entity { get; set; }
         public bool IsPresetSelected { get; set; } = false;
@@ -29,12 +30,15 @@ namespace TTTReborn.UI
 
         public C4ArmControl()
         {
-            IsShowing = false;
+            Current = this;
+
             StyleSheet.Load("/ui/alivehud/c4/C4ArmControl.scss");
 
             _header = new(this);
             _content = new(this);
             _footer = new(this);
+
+            Enabled = false;
         }
 
         public void Open(C4Entity entity, TTTPlayer user)
@@ -42,7 +46,7 @@ namespace TTTReborn.UI
             Entity = entity;
             User = user;
 
-            Open();
+            Enabled = true;
         }
 
         public void SetTimer(C4Preset preset)
@@ -59,19 +63,19 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            if (IsShowing && User != null && Entity != null)
+            if (Enabled && User != null && Entity != null)
             {
                 // If the player moves away from the bomb or the bomb becomes armed, close the UI
                 if (!Entity.IsValid() || Vector3.DistanceBetween(User.Position, Entity.Position) > 100 || Entity.IsArmed)
                 {
-                    Close();
+                    Enabled = false;
                 }
             }
 
             base.Tick();
         }
 
-        private class Header : TTTPanel
+        private class Header : Panel
         {
             private Label _title;
             private Button _closeButton;
@@ -81,11 +85,11 @@ namespace TTTReborn.UI
                 Parent = parent;
 
                 _title = Add.Label("C4 Control", "title");
-                _closeButton = Add.Button("Close", () => { ((C4ArmControl) Parent).Close(); });
+                _closeButton = Add.Button("Close", () => { ((C4ArmControl) Parent).Enabled = false; });
             }
         }
 
-        private class Content : TTTPanel
+        private class Content : Panel
         {
             private Display _display;
 
@@ -106,7 +110,7 @@ namespace TTTReborn.UI
                 _display.UpdatePresetInfo(infoString);
             }
 
-            public class Display : TTTPanel
+            public class Display : Panel
             {
                 private Label _timer;
                 private Presets _presets;
@@ -129,7 +133,7 @@ namespace TTTReborn.UI
                     _presets.UpdatePresetInfo(infoString);
                 }
 
-                public class Presets : TTTPanel
+                public class Presets : Panel
                 {
                     private PresetButtons _presetButtons;
                     private Label _presetInfo;
@@ -147,7 +151,7 @@ namespace TTTReborn.UI
                         _presetInfo.Text = infoString;
                     }
 
-                    public class PresetButtons : TTTPanel
+                    public class PresetButtons : Panel
                     {
                         private List<Button> _presetButtons;
 
@@ -181,7 +185,7 @@ namespace TTTReborn.UI
             }
         }
 
-        public class Footer : TTTPanel
+        public class Footer : Panel
         {
             private Button _pickUpButton;
             private Button _destroyButton;
@@ -200,13 +204,13 @@ namespace TTTReborn.UI
                 _pickUpButton.AddEventListener("onclick", () =>
                 {
                     C4Entity.PickUp(armControl.Entity.NetworkIdent, armControl.User.NetworkIdent);
-                    armControl.Close();
+                    armControl.Enabled = false;
                 });
 
                 _destroyButton.AddEventListener("onclick", () =>
                 {
                     C4Entity.Delete(armControl.Entity.NetworkIdent);
-                    armControl.Close();
+                    armControl.Enabled = false;
                 });
 
                 _armButton.AddEventListener("onclick", () =>
@@ -214,7 +218,7 @@ namespace TTTReborn.UI
                     if (armControl.IsPresetSelected)
                     {
                         C4Entity.Arm(armControl.Entity.NetworkIdent);
-                        armControl.Close();
+                        armControl.Enabled = false;
                     }
                 });
 

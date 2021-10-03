@@ -4,7 +4,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Gamemode
 {
-    public partial class KarmaSystem : NetworkComponent
+    public partial class KarmaSystem : BaseNetworkable
     {
         [ServerVar("ttt_karma_default", Help = "The default amount of karma given to a player.")]
         public static int TTTKarmaDefault { get; set; } = 1000;
@@ -63,7 +63,7 @@ namespace TTTReborn.Gamemode
 
         public void UpdatePlayerKarma(TTTPlayer player, int delta)
         {
-            UpdateSteamIdKarma(player.GetClientOwner().SteamId, delta);
+            UpdateSteamIdKarma(player.Client.SteamId, delta);
         }
 
         public void UpdateSteamIdKarma(ulong steamId, int delta)

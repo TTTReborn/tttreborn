@@ -1,7 +1,8 @@
-using Sandbox.UI.Construct;
-
 namespace TTTReborn.UI.Menu
 {
+    using Sandbox;
+    using Sandbox.UI.Construct;
+
     public partial class Menu : RichPanel
     {
         public static Menu Instance;
@@ -9,6 +10,20 @@ namespace TTTReborn.UI.Menu
         public readonly PanelContent MenuContent;
 
         private readonly MenuHeader _menuHeader;
+
+        public override bool Enabled
+        {
+            get => base.Enabled;
+            set
+            {
+                base.Enabled = value;
+
+                if (!IsEnabled)
+                {
+                    OpenHomepage();
+                }
+            }
+        }
 
         public Menu() : base()
         {
@@ -30,9 +45,10 @@ namespace TTTReborn.UI.Menu
             OpenHomepage();
 
             IsDraggable = true;
+            Enabled = false;
         }
 
-        public void OpenHomepage()
+        internal void OpenHomepage()
         {
             if (MenuContent.CurrentPanelContentData?.ClassName == "home")
             {
@@ -42,39 +58,27 @@ namespace TTTReborn.UI.Menu
             MenuContent.SetPanelContent((panelContent) =>
             {
                 panelContent.Add.ButtonWithIcon("settings", "", "menuButton", () => OpenSettings(panelContent));
-                panelContent.Add.ButtonWithIcon("published_with_changes", "", "menuButton", () => OpenChanges(panelContent));
+                panelContent.Add.ButtonWithIcon("keyboard", "", "menuButton", () => OpenKeybindings(panelContent));
                 panelContent.Add.ButtonWithIcon("science", "", "menuButton", () => OpenTesting(panelContent));
             }, "", "home");
         }
 
-        public void OpenSettings(PanelContent menuContent)
+        private void OpenKeybindings(PanelContent menuContent)
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-                panelContent.Add.Label("Test");
-            }, "Settings", "settings");
+                panelContent.Add.Label("Bind TeamVoiceChat:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
+
+                panelContent.Add.Label("Bind Quickshop:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
+
+                panelContent.Add.Label("Bind Activate Role Button:");
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_activate_rb";
+            }, "Keybindings", "keybindings");
         }
 
-        public void OpenChanges(PanelContent menuContent)
-        {
-            menuContent.SetPanelContent((panelContent) =>
-            {
-                Sandbox.UI.Label textLabel = panelContent.Add.Label("Loading...");
-
-                Sandbox.Internal.Http http = new Sandbox.Internal.Http(new System.Uri("https://commits.facepunch.com/r/sbox"));
-                http.GetStringAsync().ContinueWith(result =>
-                {
-                    textLabel.Text = result.Result;
-                });
-            }, "Http", "http");
-        }
-
-        public void OpenTesting(PanelContent menuContent)
+        private void OpenTesting(PanelContent menuContent)
         {
             menuContent.SetPanelContent((panelContent) =>
             {
@@ -98,7 +102,7 @@ namespace TTTReborn.UI.Menu
 
                 panelContent.Add.Label("Dropdown:");
 
-                Dropdown dropdown = new Dropdown(panelContent);
+                Dropdown dropdown = panelContent.Add.Dropdown();
                 dropdown.TextLabel.Text = "Choose entry...";
 
                 dropdown.AddOption("Test One");
@@ -107,13 +111,35 @@ namespace TTTReborn.UI.Menu
                 panelContent.AddChild(dropdown);
 
                 panelContent.Add.Label("Keybind & DialogBox:");
-
-                panelContent.Add.Keybind("Press a key...").BoundCommand = "+teamvoicechat";
+                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
 
                 panelContent.Add.Label("FileSelection:");
-
                 panelContent.Add.Button("Open FileSelection...", "fileselectionbutton", () => FindRootPanel().Add.FileSelection().Display());
+
+                panelContent.Add.Label("Tabs:");
+
+                Tabs tabs = panelContent.Add.Tabs();
+                tabs.AddTab("Test1", (contentPanel) => contentPanel.Add.Label("Test1"));
+                tabs.AddTab("Test2", (contentPanel) => contentPanel.Add.Label("Test2"));
             }, "Testing", "testing");
+        }
+    }
+}
+
+namespace TTTReborn.Player
+{
+    using Sandbox;
+
+    using UI.Menu;
+
+    public partial class TTTPlayer
+    {
+        private void TickMenu()
+        {
+            if (Input.Pressed(InputButton.Menu))
+            {
+                Menu.Instance.Enabled = !Menu.Instance.Enabled;
+            }
         }
     }
 }

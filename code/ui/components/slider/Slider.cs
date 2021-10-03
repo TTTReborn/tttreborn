@@ -10,7 +10,7 @@ namespace TTTReborn.UI
     /// <summary>
     /// A horizontal slider. Can be float or whole number.
     /// </summary>
-    public class Slider : TTTPanel
+    public class Slider : Panel
     {
         public Panel Track { get; protected set; }
         public Panel TrackInner { get; protected set; }
@@ -39,10 +39,14 @@ namespace TTTReborn.UI
 
             AddClass("slider");
 
-            Track = Add.Panel("track");
-            TrackInner = Track.Add.Panel("inner");
+            Track = new();
+            Track.AddClass("track");
 
-            Thumb = Add.Panel("thumb");
+            TrackInner = new();
+            TrackInner.AddClass("inner");
+
+            Thumb = new();
+            Thumb.AddClass("thumb");
         }
 
         protected float _value = float.MaxValue;
@@ -55,7 +59,7 @@ namespace TTTReborn.UI
             get => _value.Clamp(MinValue, MaxValue);
             set
             {
-                var snapped = Step > 0 ? value.SnapToGrid(Step) : value;
+                float snapped = Step > 0 ? value.SnapToGrid(Step) : value;
                 snapped = snapped.Clamp(MinValue, MaxValue);
 
                 if (_value == snapped) return;
@@ -69,7 +73,7 @@ namespace TTTReborn.UI
 
         public override void SetProperty(string name, string value)
         {
-            if (name == "min" && float.TryParse(value, out var floatValue))
+            if (name == "min" && float.TryParse(value, out float floatValue))
             {
                 MinValue = floatValue;
                 UpdateSliderPositions();
@@ -104,10 +108,10 @@ namespace TTTReborn.UI
         /// </summary>
         public virtual float ScreenPosToValue(Vector2 pos)
         {
-            var localPos = ScreenPositionToPanelPosition(pos);
-            var thumbSize = Thumb.Box.Rect.width * 0.5f;
-            var normalized = MathX.LerpInverse(localPos.x, thumbSize, Box.Rect.width - thumbSize, true);
-            var scaled = MathX.LerpTo(MinValue, MaxValue, normalized, true);
+            Vector2 localPos = ScreenPositionToPanelPosition(pos);
+            float thumbSize = Thumb.Box.Rect.width * 0.5f;
+            float normalized = MathX.LerpInverse(localPos.x, thumbSize, Box.Rect.width - thumbSize, true);
+            float scaled = MathX.LerpTo(MinValue, MaxValue, normalized, true);
             return Step > 0 ? scaled.SnapToGrid(Step) : scaled;
         }
 
@@ -148,12 +152,12 @@ namespace TTTReborn.UI
         /// </summary>
         void UpdateSliderPositions()
         {
-            var hash = HashCode.Combine(Value, MinValue, MaxValue);
+            int hash = HashCode.Combine(Value, MinValue, MaxValue);
             if (hash == positionHash) return;
 
             positionHash = hash;
 
-            var pos = MathX.LerpInverse(Value, MinValue, MaxValue, true);
+            float pos = MathX.LerpInverse(Value, MinValue, MaxValue, true);
 
             TrackInner.Style.Width = Length.Fraction(pos);
             Thumb.Style.Left = Length.Fraction(pos);
@@ -170,7 +174,7 @@ namespace TTTReborn.UI
         {
             public static Slider Slider(this PanelCreator self, float min, float max, float step)
             {
-                var control = self.panel.AddChild<Slider>();
+                Slider control = self.panel.AddChild<Slider>();
                 control.MinValue = min;
                 control.MaxValue = max;
                 control.Step = step;

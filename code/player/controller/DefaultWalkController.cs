@@ -2,29 +2,56 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Events;
+using TTTReborn.Settings;
+
+namespace TTTReborn.Settings
+{
+    public partial class ServerSettings
+    {
+        public Categories.Movement Movement { get; set; } = new Categories.Movement();
+    }
+
+
+    namespace Categories
+    {
+        public partial class Movement
+        {
+            public bool IsSprintEnabled { get; set; } = false;
+        }
+    }
+}
+
 namespace TTTReborn.Player
 {
     public partial class DefaultWalkController : WalkController
     {
-        [ServerVar]
-        public static bool IsSprintEnabled { get; set; } = false;
+        public static bool IsSprintEnabled = false;
 
-        public float MaxSprintSpeed = 300f;
-        public float StaminaLossPerSecond = 30f;
-        public float StaminaGainPerSecond = 25f;
-        public float FallDamageVelocity = 550f;
-        public float FallDamageScale = 0.25f;
-        public bool IsUnderwater = false;
-        public float DurationUnderwaterUntilDamage = 15f;
-        public float DrownDamagePerSecond = 10f;
-        public TimeSince TimeSinceUnderwater = 0f;
+        public const float MAX_STAMINA = 100f;
+        public const float MAX_SPRINT_SPEED = 400f;
+        public const float STAMINA_LOSS_PER_SECOND = 25f;
+        public const float STAMINA_LOSS_PER_SPRINT_JUMP = 30f;
+        public const float STAMINA_GAIN_PER_SECOND = 10f;
+
+        public const float FALL_DAMAGE_VELOCITY = 550f;
+        public const float FALL_DAMAGE_SCALE = 0.25f;
+
+        public const float MAX_BREATH = 100f;
+        public const float BREATH_LOSS_PER_SECOND = 10f;
+        public const float BREATH_GAIN_PER_SECOND = 50f;
+        public const float DROWN_DAMAGE_PER_SECOND = 20f;
+
+        [Net, Predicted] public float Stamina { get; set; } = 100f;
+        [Net] public float Breath { get; set; } = 100f;
+        public bool IsUnderwater { get; set; } = false;
 
         private float _fallVelocity;
-
 
         public DefaultWalkController() : base()
         {
             GroundFriction = 8f;
+            DefaultSpeed = 175f;
         }
 
         public override void Simulate()
@@ -36,29 +63,42 @@ namespace TTTReborn.Player
                 return;
             }
 
+            #region Sprinting
             SprintSpeed = DefaultSpeed;
 
-            if (IsSprintEnabled && player.GroundEntity.IsValid())
+            if (IsSprintEnabled)
             {
-                if (Input.Down(InputButton.Run) && Velocity.Length >= SprintSpeed * 0.8f)
+                if (Input.Down(InputButton.Run) && Velocity.Length >= SprintSpeed * 0.8f && player.GroundEntity.IsValid())
                 {
-                    player.Stamina = MathF.Max(player.Stamina - StaminaLossPerSecond * Time.Delta, 0f);
+                    Stamina = MathF.Max(Stamina - STAMINA_LOSS_PER_SECOND * Time.Delta, 0f);
+
+                    if (Input.Pressed(InputButton.Jump))
+                    {
+                        Stamina = MathF.Max(Stamina - STAMINA_LOSS_PER_SPRINT_JUMP, 0f);
+                    }
                 }
                 else
                 {
-                    player.Stamina = MathF.Min(player.Stamina + StaminaGainPerSecond * Time.Delta, player.MaxStamina);
+                    Stamina = MathF.Min(Stamina + STAMINA_GAIN_PER_SECOND * Time.Delta, MAX_STAMINA);
                 }
 
-                SprintSpeed = (MaxSprintSpeed - DefaultSpeed) / player.MaxStamina * player.Stamina + DefaultSpeed;
+                SprintSpeed = (MAX_SPRINT_SPEED - DefaultSpeed) / MAX_STAMINA * Stamina + DefaultSpeed;
             }
+            #endregion
 
+            #region Drowning
             IsUnderwater = Pawn.WaterLevel.Fraction == 1f;
 
-            if (!IsUnderwater)
+            if (IsUnderwater)
             {
-                TimeSinceUnderwater = 0f;
+                Breath = MathF.Max(Breath - BREATH_LOSS_PER_SECOND * Time.Delta, 0f);
             }
-            else if (Host.IsServer && TimeSinceUnderwater > DurationUnderwaterUntilDamage)
+            else
+            {
+                Breath = MathF.Min(Breath + BREATH_GAIN_PER_SECOND * Time.Delta, MAX_BREATH);
+            }
+
+            if (Host.IsServer && Breath == 0f)
             {
                 using (Prediction.Off())
                 {
@@ -68,12 +108,13 @@ namespace TTTReborn.Player
                         Flags = DamageFlags.Drown,
                         HitboxIndex = (int) HitboxIndex.Head,
                         Position = Position,
-                        Damage = MathF.Max(DrownDamagePerSecond * Time.Delta, 0f)
+                        Damage = MathF.Max(DROWN_DAMAGE_PER_SECOND * Time.Delta, 0f)
                     };
 
                     Pawn.TakeDamage(damageInfo);
                 }
             }
+            #endregion
 
             OnPreTickMove();
 
@@ -103,17 +144,17 @@ namespace TTTReborn.Player
 
         public virtual void OnPostCategorizePosition(bool stayOnGround, TraceResult trace)
         {
-            if (Host.IsServer && trace.Hit && _fallVelocity < -FallDamageVelocity)
+            if (Host.IsServer && trace.Hit && _fallVelocity < -FALL_DAMAGE_VELOCITY)
             {
                 using (Prediction.Off())
                 {
-                    DamageInfo damageInfo = new DamageInfo
+                    DamageInfo damageInfo = new()
                     {
                         Attacker = Pawn,
                         Flags = DamageFlags.Fall,
                         HitboxIndex = (int) HitboxIndex.LeftFoot,
                         Position = Position,
-                        Damage = (MathF.Abs(_fallVelocity) - FallDamageVelocity) * FallDamageScale
+                        Damage = (MathF.Abs(_fallVelocity) - FALL_DAMAGE_VELOCITY) * FALL_DAMAGE_SCALE
                     };
 
                     Pawn.TakeDamage(damageInfo);
@@ -121,6 +162,23 @@ namespace TTTReborn.Player
             }
         }
 
+        [Event(TTTEvent.Player.InitialSpawn)]
+        [Event(TTTEvent.Settings.Change)]
+        public static void InitializeSprint()
+        {
+            if (Host.IsServer)
+            {
+                bool enabled = ServerSettings.Instance.Movement.IsSprintEnabled;
+
+                IsSprintEnabled = enabled;
+
+                TTTPlayer.ClientSendToggleSprint(enabled);
+            }
+        }
+    }
+
+    public partial class TTTPlayer
+    {
         [ServerCmd(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
         public static void ToggleSprinting()
         {
@@ -129,11 +187,9 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IsSprintEnabled = !IsSprintEnabled;
+            DefaultWalkController.IsSprintEnabled = !DefaultWalkController.IsSprintEnabled;
 
-            ClientSendToggleSprint(IsSprintEnabled);
-
-            string text = IsSprintEnabled ? "enabled" : "disabled";
+            string text = DefaultWalkController.IsSprintEnabled ? "enabled" : "disabled";
 
             Log.Info($"You {text} sprinting.");
 
@@ -143,7 +199,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public static void ClientSendToggleSprint(bool toggle)
         {
-            IsSprintEnabled = toggle;
+            DefaultWalkController.IsSprintEnabled = toggle;
         }
     }
 }

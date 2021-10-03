@@ -6,16 +6,20 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class Dropdown : TTTPanel
+    public partial class Dropdown : Panel
     {
         public readonly Label TextLabel;
 
+        public Action<DropdownOption> OnSelectOption { get; set; }
+
+        public bool IsDeleted { get; private set; } = false;
+
         public bool IsOpen
         {
-            get => OptionHolder.IsShowing;
+            get => OptionHolder.Enabled;
             private set
             {
-                OptionHolder.IsShowing = value;
+                OptionHolder.Enabled = value;
 
                 _openLabel.SetClass("opened", value);
             }
@@ -25,7 +29,7 @@ namespace TTTReborn.UI
 
         public readonly List<DropdownOption> Options = new();
 
-        public readonly TTTPanel OptionHolder;
+        public readonly DropdownOptionHolder OptionHolder;
 
         public DropdownOption SelectedOption
         {
@@ -39,24 +43,22 @@ namespace TTTReborn.UI
         }
         private DropdownOption _selectedOption;
 
-        public Dropdown(Panel parent = null) : base(parent)
+        public Dropdown() : base()
         {
-            Parent = parent ?? Parent;
-
             StyleSheet.Load("/ui/components/dropdown/Dropdown.scss");
 
             TextLabel = Add.Label("Select...", "textLabel");
             _openLabel = Add.Label("expand_more", "openLabel");
 
-            OptionHolder = new TTTPanel(this);
-            OptionHolder.AddClass("optionholder");
+            OptionHolder = new DropdownOptionHolder(this);
+
+            IsOpen = false;
         }
 
-        public DropdownOption AddOption(string text, Action<TTTPanel> onSelect = null)
+        public DropdownOption AddOption(string text, object data = null, Action<Panel> onSelect = null)
         {
-            DropdownOption dropdownOption = new DropdownOption(OptionHolder, text)
+            DropdownOption dropdownOption = new DropdownOption(this, OptionHolder, text, data)
             {
-                Dropdown = this,
                 OnSelect = onSelect
             };
 
@@ -65,14 +67,73 @@ namespace TTTReborn.UI
             return dropdownOption;
         }
 
-        public virtual void OnSelectOption(DropdownOption option)
+        public void SelectByName(string optionName)
+        {
+            foreach (DropdownOption option in Options)
+            {
+                if (option.TextLabel.Text.Equals(optionName))
+                {
+                    SelectedOption = option;
+
+                    return;
+                }
+            }
+        }
+
+        public void SelectByData(object data)
+        {
+            foreach (DropdownOption option in Options)
+            {
+                if (option.Data.Equals(data))
+                {
+                    SelectedOption = option;
+
+                    return;
+                }
+            }
+        }
+
+        public virtual void OnSelectDropdownOption(DropdownOption option)
         {
             SelectedOption = option;
+
+            OnSelectOption?.Invoke(SelectedOption);
+
+            IsOpen = false;
         }
 
         protected override void OnClick(MousePanelEvent e)
         {
+            base.OnClick(e);
+
             IsOpen = !IsOpen;
+        }
+
+        public override void OnDeleted()
+        {
+            base.OnDeleted();
+
+            IsDeleted = true;
+        }
+    }
+}
+
+namespace Sandbox.UI.Construct
+{
+    using TTTReborn.UI;
+
+    public static class DropdownConstructor
+    {
+        public static Dropdown Dropdown(this PanelCreator self, string className = null)
+        {
+            Dropdown dropdown = self.panel.AddChild<Dropdown>();
+
+            if (className is not null)
+            {
+                dropdown.AddClass(className);
+            }
+
+            return dropdown;
         }
     }
 }

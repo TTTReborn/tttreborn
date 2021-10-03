@@ -6,7 +6,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class InfoFeedEntry : TTTPanel
+    public partial class InfoFeedEntry : Panel
     {
         private readonly List<Label> _labels = new();
 
@@ -14,7 +14,10 @@ namespace TTTReborn.UI
 
         public InfoFeedEntry()
         {
-
+            AddClass("background-color-primary");
+            AddClass("text-shadow");
+            AddClass("opacity-heavy");
+            AddClass("rounded");
         }
 
         public Label AddLabel(string text, string classname)

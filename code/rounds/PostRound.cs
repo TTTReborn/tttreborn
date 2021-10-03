@@ -4,13 +4,17 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.Settings;
 
 namespace TTTReborn.Rounds
 {
     public class PostRound : BaseRound
     {
         public override string RoundName => "Post";
-        public override int RoundDuration => Gamemode.Game.TTTPostRoundTime;
+        public override int RoundDuration
+        {
+            get => ServerSettings.Instance.Round.PostRoundTime;
+        }
 
         protected override void OnTimeUp()
         {

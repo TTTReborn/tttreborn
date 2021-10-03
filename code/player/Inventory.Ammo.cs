@@ -3,18 +3,16 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Items;
-
 namespace TTTReborn.Player
 {
     public partial class AmmoInventory
     {
-        private Dictionary<string, int> AmmoList { get; set; } = new();
-        private Inventory Inventory;
+        private Dictionary<string, int> AmmoList { get; } = new();
+        private readonly TTTPlayer _owner;
 
-        public AmmoInventory(Inventory inventory) : base()
+        public AmmoInventory(TTTPlayer owner)
         {
-            Inventory = inventory;
+            _owner = owner;
         }
 
         public int Count(string ammoType)
@@ -48,9 +46,7 @@ namespace TTTReborn.Player
 
             if (Host.IsServer)
             {
-                TTTPlayer player = Inventory.Owner as TTTPlayer;
-
-                player.ClientSetAmmo(To.Single(player), ammo, amount);
+                _owner.ClientSetAmmo(To.Single(_owner), ammo, amount);
             }
 
             return true;
@@ -72,8 +68,6 @@ namespace TTTReborn.Player
 
         public int Take(string ammoType, int amount)
         {
-            string ammo = ammoType.ToLower();
-
             if (AmmoList == null)
             {
                 return 0;
@@ -93,9 +87,7 @@ namespace TTTReborn.Player
 
             if (Host.IsServer)
             {
-                TTTPlayer player = Inventory.Owner as TTTPlayer;
-
-                player.ClientClearAmmo(To.Single(player));
+                _owner.ClientClearAmmo(To.Single(_owner));
             }
         }
     }

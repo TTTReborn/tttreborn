@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.UI;
@@ -17,13 +18,13 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientSetAmmo(string ammoType, int amount)
         {
-            (Inventory as Inventory).Ammo.Set(ammoType, amount);
+            Inventory.Ammo.Set(ammoType, amount);
         }
 
         [ClientRpc]
         public void ClientClearAmmo()
         {
-            (Inventory as Inventory).Ammo.Clear();
+            Inventory.Ammo.Clear();
         }
 
         [ClientRpc]
@@ -36,7 +37,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            (Inventory as Inventory).TryAdd(perk);
+            Inventory.TryAdd(perk);
         }
 
         [ClientRpc]
@@ -49,13 +50,13 @@ namespace TTTReborn.Player
                 return;
             }
 
-            (Inventory as Inventory).Perks.Take(perk);
+            Inventory.Perks.Take(perk);
         }
 
         [ClientRpc]
         public void ClientClearPerks()
         {
-            (Inventory as Inventory).Perks.Clear();
+            Inventory.Perks.Clear();
         }
 
         [ClientRpc]
@@ -69,19 +70,26 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientTookDamage(Vector3 position, float damage)
         {
-            Event.Run("tttreborn.player.takedamage", this, damage);
+            Event.Run(TTTEvent.Player.TakeDamage, this, damage);
+        }
+
+
+        [ClientRpc]
+        public void ClientInitialSpawn()
+        {
+            Event.Run(TTTEvent.Player.InitialSpawn, Client);
         }
 
         [ClientRpc]
         public void ClientOpenC4Menu(C4Entity c4Entity)
         {
-            Hud.Current.AliveHudPanel?.C4ArmControl?.Open(c4Entity, this);
+            C4ArmControl.Current.Open(c4Entity, this);
         }
 
         [ClientRpc]
         public void ClientCloseC4Menu()
         {
-            Hud.Current.AliveHudPanel?.C4ArmControl?.Close();
+            C4ArmControl.Current.Enabled = false;
         }
     }
 }

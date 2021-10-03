@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Player
@@ -25,12 +26,12 @@ namespace TTTReborn.Player
                 {
                     IsSpeaking = true;
 
-                    UI.VoiceList.Current?.OnVoicePlayed(GetClientOwner(), 1f);
+                    UI.VoiceChatDisplay.Instance?.OnVoicePlayed(Client, 1f);
                 }
             }
         }
 
-        [ClientCmd(Name = "+teamvoicechat")]
+        [ClientCmd(Name = "+ttt_teamvoicechat")]
         public static void StartTeamVoiceChat()
         {
             if (Local.Pawn is not TTTPlayer player || !CanUseTeamVoiceChat(player))
@@ -38,10 +39,10 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ConsoleSystem.Run("requestteamchat", true);
+            ConsoleSystem.Run("ttt_requestteamchat", true);
         }
 
-        [ClientCmd(Name = "-teamvoicechat")]
+        [ClientCmd(Name = "-ttt_teamvoicechat")]
         public static void StopTeamVoiceChat()
         {
             if (Local.Pawn is not TTTPlayer player)
@@ -49,10 +50,10 @@ namespace TTTReborn.Player
                 return;
             }
 
-            ConsoleSystem.Run("requestteamchat", false);
+            ConsoleSystem.Run("ttt_requestteamchat", false);
         }
 
-        [ServerCmd(Name = "requestteamchat")]
+        [ServerCmd(Name = "ttt_requestteamchat")]
         public static void RequestTeamChat(bool toggle)
         {
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
@@ -130,7 +131,7 @@ namespace TTTReborn.Player
             ConsoleSystem.Run((toggle ? "+" : "-") + "iv_voice");
         }
 
-        [Event("tttreborn.player.role.onselect")]
+        [Event(TTTEvent.Player.Role.Select)]
         private static void OnSelectRole(TTTPlayer player)
         {
             if (!Host.IsServer)
@@ -144,7 +145,7 @@ namespace TTTReborn.Player
                 ToggleTeamChat(player, false);
             }
 
-            Client playerClient = player.GetClientOwner();
+            Client playerClient = player.Client;
 
             // sync already talking other players with the current player
             foreach (Client client in Client.All)

@@ -4,14 +4,19 @@ using System.Threading.Tasks;
 using Sandbox;
 
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
+using TTTReborn.Settings;
 
 namespace TTTReborn.Rounds
 {
     public class PreRound : BaseRound
     {
         public override string RoundName => "Preparing";
-        public override int RoundDuration => Gamemode.Game.TTTPreRoundTime;
+        public override int RoundDuration
+        {
+            get => ServerSettings.Instance.Round.PreRoundTime;
+        }
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
@@ -31,7 +36,7 @@ namespace TTTReborn.Rounds
 
                 foreach (Entity entity in Entity.All)
                 {
-                    if (entity is BaseCarriable || entity is TTTAmmo || (entity.ClassInfo.Name.StartsWith("ttt_") && entity is Prop))
+                    if (entity.Tags.Has(IItem.ITEM_TAG))
                     {
                         entity.Delete();
                     }
@@ -43,6 +48,12 @@ namespace TTTReborn.Rounds
                     {
                         randomWeapons.Add(rwep); //See above comment.
                     }
+                    if (entity is TTTRoleButton button)
+                    {
+                        button.Cleanup();
+                    }
+
+                    entity.RemoveAllDecals();
                 }
 
                 randomAmmo.ForEach(x => x.Activate());
@@ -52,6 +63,7 @@ namespace TTTReborn.Rounds
                 {
                     if (client.Pawn is TTTPlayer player)
                     {
+                        player.RemoveRoleButtons();
                         player.Respawn();
                     }
                 }

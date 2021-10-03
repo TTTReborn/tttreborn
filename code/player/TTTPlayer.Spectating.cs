@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Player.Camera;
 
@@ -17,7 +18,7 @@ namespace TTTReborn.Player
             {
                 _spectatingPlayer = value == this ? null : value;
 
-                Event.Run("tttreborn.player.spectating.change", this);
+                Event.Run(TTTEvent.Player.Spectating.Change, this);
             }
         }
 
@@ -33,7 +34,7 @@ namespace TTTReborn.Player
 
         private int _targetIdx = 0;
 
-        [Event("tttreborn.player.died")]
+        [Event(TTTEvent.Player.Died)]
         private static void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (!Host.IsClient || Local.Pawn is not TTTPlayer player)
@@ -68,6 +69,33 @@ namespace TTTReborn.Player
             if (Camera is IObservationCamera camera)
             {
                 camera.OnUpdateObservatedPlayer(oldObservatedPlayer, CurrentPlayer);
+            }
+        }
+
+        public void MakeSpectator(bool useRagdollCamera = true)
+        {
+            EnableAllCollisions = false;
+            EnableDrawing = false;
+            Controller = null;
+            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+            LifeState = LifeState.Dead;
+            Health = 0f;
+            ShowFlashlight(false, false);
+        }
+
+        public void ToggleForcedSpectator()
+        {
+            IsForcedSpectator = !IsForcedSpectator;
+
+            if (IsForcedSpectator && LifeState == LifeState.Alive)
+            {
+                MakeSpectator(false);
+                OnKilled();
+
+                if (!Client.GetValue<bool>("forcedspectator", false))
+                {
+                    Client.SetValue("forcedspectator", true);
+                }
             }
         }
     }

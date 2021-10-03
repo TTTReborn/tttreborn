@@ -1,12 +1,15 @@
 using System;
 
 using Sandbox;
+using Sandbox.ScreenShake;
 
 using TTTReborn.Player;
-using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
+    // DO NOT DELETE
+    // This should be added by sbox soonTM (so we gonna be able to fetch data without the need initializing and spawning such a weapon)
+    //
     // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     // public class WeaponAttribute : LibraryAttribute
     // {
@@ -54,16 +57,15 @@ namespace TTTReborn.Items
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        public string Name { get; }
+        public string ClassName { get; }
 
         private const int AmmoDropPositionOffset = 50;
         private const int AmmoDropVelocity = 500;
 
         public TTTWeapon() : base()
         {
-            LibraryAttribute attribute = Library.GetAttribute(GetType());
-
-            Name = attribute.Name;
+            ClassName = Library.GetAttribute(GetType()).Name;
+            Tags.Add(IItem.ITEM_TAG);
         }
 
         public void Equip(TTTPlayer player)
@@ -93,7 +95,7 @@ namespace TTTReborn.Items
                 return 0;
             }
 
-            return (owner.Inventory as Inventory).Ammo.Count(AmmoType);
+            return owner.Inventory.Ammo.Count(AmmoType);
         }
 
         public override void ActiveStart(Entity owner)
@@ -127,7 +129,7 @@ namespace TTTReborn.Items
 
             TimeSinceReload = 0;
 
-            if (Owner is TTTPlayer player && !UnlimitedAmmo && (player.Inventory as Inventory).Ammo.Count(AmmoType) <= 0)
+            if (Owner is TTTPlayer player && !UnlimitedAmmo && player.Inventory.Ammo.Count(AmmoType) <= 0)
             {
                 return;
             }
@@ -163,7 +165,7 @@ namespace TTTReborn.Items
                 }
             }
 
-            if (Input.Released(InputButton.View) && AmmoClip > 0)
+            if (Input.Released(InputButton.View) && AmmoClip > 0 && !UnlimitedAmmo)
             {
 
                 if (IsServer && AmmoEntity != null)
@@ -230,7 +232,7 @@ namespace TTTReborn.Items
 
             if (!UnlimitedAmmo)
             {
-                int ammo = (player.Inventory as Inventory).Ammo.Take(AmmoType, ClipSize - AmmoClip);
+                int ammo = player.Inventory.Ammo.Take(AmmoType, ClipSize - AmmoClip);
 
                 if (ammo == 0)
                 {
@@ -273,11 +275,10 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                new Sandbox.ScreenShake.Perlin();
+                new Perlin();
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);
-            CrosshairPanel?.CreateEvent("fire");
         }
 
         public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
@@ -288,8 +289,6 @@ namespace TTTReborn.Items
 
             foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
             {
-                tr.Surface.DoBulletImpact(tr);
-
                 if (!IsServer || !tr.Entity.IsValid())
                 {
                     continue;
@@ -297,6 +296,8 @@ namespace TTTReborn.Items
 
                 using (Prediction.Off())
                 {
+                    tr.Surface.DoBulletImpact(tr);
+
                     DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)
@@ -344,18 +345,6 @@ namespace TTTReborn.Items
             {
                 return;
             }
-
-            // TODO: Give users a way to change their crosshair.
-            CrosshairPanel = new Crosshair().SetupCrosshair(new Crosshair.Properties(true,
-                false,
-                false,
-                10,
-                2,
-                0,
-                0,
-                Color.Green));
-            CrosshairPanel.Parent = Local.Hud;
-            CrosshairPanel.AddClass(ClassInfo.Name);
         }
 
         public bool IsUsable()

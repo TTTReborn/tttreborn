@@ -1,6 +1,8 @@
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Items;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
@@ -18,7 +20,19 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Event.Run("tttreborn.player.died", player);
+            Event.Run(TTTEvent.Player.Died, player);
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerConnected(Client client)
+        {
+            Event.Run(TTTEvent.Player.Connected, client);
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerDisconnect(ulong steamId, NetworkDisconnectionReason reason)
+        {
+            Event.Run(TTTEvent.Player.Disconnected, steamId, reason);
         }
 
         [ClientRpc]
@@ -35,7 +49,7 @@ namespace TTTReborn.Globals
 
             player.SetRole(new NoneRole());
 
-            Event.Run("tttreborn.player.spawned", player);
+            Event.Run(TTTEvent.Player.Spawned, player);
         }
 
         /// <summary>
@@ -53,8 +67,16 @@ namespace TTTReborn.Globals
             }
 
             player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+            player.SendRoleButtonsToClient();
 
-            Scoreboard.Instance.UpdatePlayer(player.GetClientOwner());
+            Client client = player.Client;
+
+            if (client == null || !client.IsValid())
+            {
+                return;
+            }
+
+            Scoreboard.Instance.UpdateClient(client);
         }
 
         [ClientRpc]
@@ -77,22 +99,19 @@ namespace TTTReborn.Globals
                 playerCorpse.Perks = perks;
 
                 playerCorpse.CopyConfirmationData(confirmationData);
-
-                if (InspectMenu.Instance?.PlayerCorpse == playerCorpse)
-                {
-                    InspectMenu.Instance.InspectCorpse(playerCorpse);
-                }
+                InspectMenu.Instance.SetPlayerData(playerCorpse);
             }
 
-            Scoreboard.Instance.UpdatePlayer(deadPlayer.GetClientOwner());
+            Client deadClient = deadPlayer.Client;
+
+            Scoreboard.Instance.UpdateClient(deadClient);
 
             if (!confirmPlayer.IsValid())
             {
                 return;
             }
 
-            Client confirmClient = confirmPlayer.GetClientOwner();
-            Client deadClient = deadPlayer.GetClientOwner();
+            Client confirmClient = confirmPlayer.Client;
 
             InfoFeed.Current?.AddEntry(
                 confirmClient,
@@ -120,7 +139,7 @@ namespace TTTReborn.Globals
 
             missingInActionPlayer.IsMissingInAction = true;
 
-            Scoreboard.Instance.UpdatePlayer(missingInActionPlayer.GetClientOwner());
+            Scoreboard.Instance.UpdateClient(missingInActionPlayer.Client);
         }
 
         [ClientRpc]
@@ -135,25 +154,31 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientClosePostRoundMenu()
         {
-            PostRoundMenu.Instance.IsShowing = false;
+            PostRoundMenu.Instance.ClosePostRoundMenu();
         }
 
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.pickup", carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.PickUp, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
-            Event.Run("tttreborn.player.carriableitem.drop", carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.Drop, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientClearInventory()
         {
-            Event.Run("tttreborn.player.inventory.clear");
+            Event.Run(TTTEvent.Player.Inventory.Clear);
+        }
+
+        [ClientRpc]
+        public static void ClientDisplayMessage(string message, Color color)
+        {
+            InfoFeed.Current?.AddEntry(message, color);
         }
     }
 }

@@ -2,11 +2,12 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.UI;
 using TTTReborn.Items;
 
 namespace TTTReborn.Player
 {
-    public partial class PlayerCorpse : ModelEntity
+    public partial class PlayerCorpse : ModelEntity, IEntityHint
     {
         public TTTPlayer Player { get; set; }
         public List<Particles> Ropes = new();
@@ -26,7 +27,7 @@ namespace TTTReborn.Player
 
             SetInteractsAs(CollisionLayer.Debris);
             SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
-            SetInteractsExclude(CollisionLayer.Player | CollisionLayer.Debris);
+            SetInteractsExclude(CollisionLayer.Player);
 
             KilledTime = Time.Now;
         }
@@ -131,6 +132,15 @@ namespace TTTReborn.Player
                 Distance = Distance,
                 Suicide = Suicide
             };
+        }
+
+        public float HintDistance => 90f;
+
+        public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.Enabled ?? false;
+
+        public EntityHintPanel DisplayHint(TTTPlayer client)
+        {
+            return (IsIdentified) ? new UsableHint("CORPSE_INSPECT") : new UsableHint("CORPSE_IDENTIFY");
         }
     }
 }

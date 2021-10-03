@@ -9,7 +9,17 @@ namespace TTTReborn.UI
 {
     public partial class Drag : DragDrop
     {
-        public bool IsLocked = false;
+        public bool IsLocked
+        {
+            get => _isLocked;
+            set
+            {
+                _isLocked = value;
+
+                SetClass("locked", _isLocked);
+            }
+        }
+        private bool _isLocked = false;
 
         public bool IsDragging
         {
@@ -50,7 +60,7 @@ namespace TTTReborn.UI
         }
         private bool _isFreeDraggable = false;
 
-        public Panel DragBasePanel
+        public Sandbox.UI.Panel DragBasePanel
         {
             get => _dragBasePanel ?? this;
             set
@@ -58,7 +68,7 @@ namespace TTTReborn.UI
                 _dragBasePanel = value;
             }
         }
-        private Panel _dragBasePanel;
+        private Sandbox.UI.Panel _dragBasePanel;
 
         private Vector2 _draggingMouseStartPosition;
         private Vector2 _draggingStartPosition;
@@ -66,11 +76,13 @@ namespace TTTReborn.UI
         private Length? _oldPositionTop;
         private PositionMode? _oldPositionMode;
 
-        public Drag(Panel parent = null) : base(parent)
+        public Drag(Sandbox.UI.Panel parent = null) : base(parent)
         {
             Parent = parent ?? Parent;
 
             StyleSheet.Load("/ui/components/dragdrop/Drag.scss");
+
+            IsLocked = false;
         }
 
         protected override void OnMouseDown(MousePanelEvent e)
@@ -120,10 +132,11 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Vector2 position = new Vector2(
-                (Mouse.Position.x - _draggingMouseStartPosition.x) + _draggingStartPosition.x,
-                (Mouse.Position.y - _draggingMouseStartPosition.y) + _draggingStartPosition.y
-            );
+            Vector2 position = new()
+            {
+                x = (Mouse.Position.x - _draggingMouseStartPosition.x) + _draggingStartPosition.x,
+                y = (Mouse.Position.y - _draggingMouseStartPosition.y) + _draggingStartPosition.y
+            };
 
             float screenWidth = Screen.Width;
             float screenHeight = Screen.Height;
@@ -140,8 +153,8 @@ namespace TTTReborn.UI
             {
                 Matrix4x4 matrix4X4 = matrix.Value.Numerics;
 
-                position.x = position.x - matrix4X4.M41;
-                position.y = position.y - matrix4X4.M42;
+                position.x -= matrix4X4.M41;
+                position.y -= matrix4X4.M42;
             }
 
             if (IsFreeDraggable)
@@ -205,7 +218,7 @@ namespace TTTReborn.UI
         {
             if (targetDrop != null)
             {
-                targetDrop.AddChild(this, index ?? targetDrop.ChildCount - 1);
+                targetDrop.AddChild(this);
 
                 if (!IsFreeDraggable)
                 {

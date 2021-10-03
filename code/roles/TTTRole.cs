@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Text.Json;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Teams;
@@ -17,7 +20,7 @@ namespace TTTReborn.Roles
         }
     }
 
-    [RoleAttribute("Base")]
+    [Role("Base")]
     public abstract class TTTRole
     {
         public readonly string Name;
@@ -28,6 +31,22 @@ namespace TTTReborn.Roles
 
         public virtual int DefaultCredits => 0;
 
+        public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
+
+        public Shop Shop
+        {
+            get
+            {
+                ShopDict.TryGetValue(Name, out Shop shop);
+
+                return shop;
+            }
+            internal set
+            {
+                ShopDict[Name] = value;
+            }
+        }
+
         public TTTRole()
         {
             Name = Utils.GetTypeName(GetType());
@@ -36,13 +55,27 @@ namespace TTTReborn.Roles
             {
                 Utils.GetObjectByType<TTTTeam>(DefaultTeamType);
             }
+
+            using (Prediction.Off())
+            {
+                if (!ShopDict.ContainsKey(Name))
+                {
+                    InitShop();
+                }
+            }
         }
 
         public virtual void OnSelect(TTTPlayer player)
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
 
-            Event.Run("tttreborn.player.role.onselect", player);
+            if (Host.IsServer)
+            {
+                player.Shop = Shop;
+                player.ServerUpdateShop();
+            }
+
+            Event.Run(TTTEvent.Player.Role.Select, player);
         }
 
         public virtual void OnDeselect(TTTPlayer player)
@@ -50,7 +83,21 @@ namespace TTTReborn.Roles
 
         }
 
-        public virtual bool CanBuy() => false;
+        // serverside function
+        public virtual void InitShop()
+        {
+            Shop.Load(this);
+        }
+
+        public virtual void CreateDefaultShop()
+        {
+
+        }
+
+        public virtual void UpdateDefaultShop(List<Type> newItemsList)
+        {
+
+        }
 
         public string GetRoleTranslationKey(string key)
         {

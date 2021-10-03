@@ -1,13 +1,16 @@
 using System;
 
+using Hammer;
+
 using Sandbox;
+using Sandbox.ScreenShake;
 
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
     [Library("ttt_shotgun")]
-    [Hammer.EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
+    [EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
     partial class Shotgun : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
@@ -64,7 +67,7 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                new Sandbox.ScreenShake.Perlin(1.0f, 1.5f, 2.0f);
+                new Perlin(1.0f, 1.5f, 2.0f);
             }
         }
 
@@ -82,7 +85,7 @@ namespace TTTReborn.Items
 
             if (Owner is TTTPlayer player)
             {
-                int ammo = (player.Inventory as Inventory).Ammo.Take(AmmoType, 1);
+                int ammo = player.Inventory.Ammo.Take(AmmoType, 1);
 
                 if (ammo == 0)
                 {
