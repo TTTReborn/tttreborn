@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     [EditorModel("models/ammo/ammo_buckshot.vmdl")]
     partial class BuckshotAmmo : TTTAmmo
     {
-        public override string ClassName => "buckshot";
+        public override string AmmoName => "buckshot";
         public override int Amount => 12;
         public override int Max => 36;
         public override string ModelPath => "models/ammo/ammo_buckshot.vmdl";

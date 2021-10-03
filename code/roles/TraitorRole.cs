@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 
@@ -46,17 +47,19 @@ namespace TTTReborn.Roles
         }
 
         // serverside function
-        public override void CreateShopSettings(string fileName)
+        public override void CreateDefaultShop()
         {
-            foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
-            {
-                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
-                Shop.Items.Add(item.CreateItemData());
+            Shop.AddAllItems();
 
-                item.Delete();
-            }
+            base.CreateDefaultShop();
+        }
 
-            base.CreateShopSettings(fileName);
+        // serverside function
+        public override void UpdateDefaultShop(List<Type> newItemsList)
+        {
+            Shop.AddNewItems(newItemsList);
+
+            base.UpdateDefaultShop(newItemsList);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace TTTReborn.Items
         /// <summary>
         /// String definition of ammo type, should match TTTWeapon.AmmoType
         /// </summary>
-        public virtual string ClassName { get; set; }
+        public virtual string AmmoName { get; set; }
 
         /// <summary>
         /// Amount of Ammo within Entity.
