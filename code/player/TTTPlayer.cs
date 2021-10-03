@@ -61,7 +61,7 @@ namespace TTTReborn.Player
                     }
                 }
 
-                UpdateClientScore("forcedspectator", IsForcedSpectator ? 1 : 0);
+                UpdateClientScore("forcedspectator", IsForcedSpectator);
 
                 Event.Run(TTTEvent.Player.InitialSpawn, Client);
 
@@ -124,7 +124,7 @@ namespace TTTReborn.Player
                     IsConfirmed = false;
                     CorpseConfirmer = null;
 
-                    UpdateClientScore("forcedspectator", 0);
+                    UpdateClientScore("forcedspectator", false);
 
                     break;
             }
@@ -215,14 +215,14 @@ namespace TTTReborn.Player
             base.StartTouch(other);
         }
 
-        public void UpdateClientScore(string key, int value)
+        public void UpdateClientScore(string key, object value)
         {
             if (Client == null)
             {
                 return;
             }
 
-            Client.SetInt(key, value);
+            Client.SetValue(key, value);
 
             ClientUpdateClientScore(key, value);
         }

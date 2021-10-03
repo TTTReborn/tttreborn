@@ -81,7 +81,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientUpdateClientScore(string key, int value)
+        public void ClientUpdateClientScore(string key, object value)
         {
             if (Client == null)
             {

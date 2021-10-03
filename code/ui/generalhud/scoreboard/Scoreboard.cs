@@ -195,7 +195,7 @@ namespace TTTReborn.UI
         {
             string group = DefaultScoreboardGroup.Alive.ToString();
 
-            if (client.GetInt("forcedspectator") == 1)
+            if (client.GetValue<bool>("forcedspectator"))
             {
                 group = DefaultScoreboardGroup.Spectator.ToString();
             }

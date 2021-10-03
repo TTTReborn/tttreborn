@@ -22,7 +22,7 @@ namespace TTTReborn.Player
 
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
 
-            if (!player.IsValid() || ConsoleSystem.Caller.GetInt("forcedspectator") == 1)
+            if (!player.IsValid() || ConsoleSystem.Caller.GetValue<bool>("forcedspectator", false))
             {
                 Log.Info($"You tried to respawn yourself while you've been a forced spectator this round.");
 
@@ -54,7 +54,7 @@ namespace TTTReborn.Player
                     {
                         if (player.IsValid())
                         {
-                            if (playerList[i].GetInt("forcedspectator") == 1)
+                            if (playerList[i].GetValue<bool>("forcedspectator", false))
                             {
                                 Log.Info($"You tried to spawn the player '{playerList[i].Name}' who have been a forced spectator this round.");
 

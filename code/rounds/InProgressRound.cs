@@ -50,7 +50,7 @@ namespace TTTReborn.Rounds
                         continue;
                     }
 
-                    player.UpdateClientScore("forcedspectator", player.IsForcedSpectator ? 1 : 0);
+                    player.UpdateClientScore("forcedspectator", player.IsForcedSpectator);
 
                     if (player.LifeState == LifeState.Dead)
                     {
