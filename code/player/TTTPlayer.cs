@@ -63,19 +63,13 @@ namespace TTTReborn.Player
 
                 UpdateClientScore("forcedspectator", IsForcedSpectator ? 1 : 0);
 
-                Event.Run(TTTEvent.Player.InitialSpawn);
+                Event.Run(TTTEvent.Player.InitialSpawn, Client);
 
-                ClientInitialSpawn(Client);
+                ClientInitialSpawn();
             }
 
             IsInitialSpawning = false;
             IsForcedSpectator = false;
-        }
-
-        [ClientRpc]
-        public static void ClientInitialSpawn(Client client)
-        {
-            Event.Run(TTTEvent.Player.InitialSpawn, client);
         }
 
         // Important: Server-side only
