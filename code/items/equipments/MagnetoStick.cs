@@ -145,11 +145,9 @@ namespace TTTReborn.Items
                 _heldBody.EnableAutoSleeping = true;
             }
 
-            Client client = GetClientOwner();
-
-            if (client != null && GrabbedEntity.IsValid())
+            if (Client != null && GrabbedEntity.IsValid())
             {
-                client.Pvs.Remove(GrabbedEntity);
+                Client.Pvs.Remove(GrabbedEntity);
             }
 
             _heldBody = null;
@@ -215,7 +213,7 @@ namespace TTTReborn.Items
 
             GrabbedEntity = rootEnt;
 
-            GetClientOwner()?.Pvs.Add(GrabbedEntity);
+            Client?.Pvs.Add(GrabbedEntity);
         }
 
         private void BindEntity()

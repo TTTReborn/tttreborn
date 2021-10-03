@@ -63,7 +63,7 @@ namespace TTTReborn.Gamemode
 
         public void UpdatePlayerKarma(TTTPlayer player, int delta)
         {
-            UpdateSteamIdKarma(player.GetClientOwner().SteamId, delta);
+            UpdateSteamIdKarma(player.Client.SteamId, delta);
         }
 
         public void UpdateSteamIdKarma(ulong steamId, int delta)

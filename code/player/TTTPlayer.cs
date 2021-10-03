@@ -41,7 +41,7 @@ namespace TTTReborn.Player
         }
 
         // Important: Server-side only
-        public void InitialRespawn()
+        public void InitialSpawn()
         {
             bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
 
@@ -61,10 +61,12 @@ namespace TTTReborn.Player
                     }
                 }
 
-                Event.Run(TTTEvent.Player.InitialSpawn);
-            }
+                Client.SetValue("forcedspectator", IsForcedSpectator);
 
-            GetClientOwner().SetScore("forcedspectator", IsForcedSpectator);
+                Event.Run(TTTEvent.Player.InitialSpawn, Client);
+
+                ClientInitialSpawn();
+            }
 
             IsInitialSpawning = false;
             IsForcedSpectator = false;
@@ -122,7 +124,7 @@ namespace TTTReborn.Player
                     IsConfirmed = false;
                     CorpseConfirmer = null;
 
-                    GetClientOwner().SetScore("forcedspectator", false);
+                    Client.SetValue("forcedspectator", false);
 
                     break;
             }
@@ -253,9 +255,7 @@ namespace TTTReborn.Player
 
         private void TickItemSimulate()
         {
-            Client client = GetClientOwner();
-
-            if (client == null)
+            if (Client == null)
             {
                 return;
             }
@@ -264,7 +264,7 @@ namespace TTTReborn.Player
 
             for (int i = 0; i < perks.Count(); i++)
             {
-                perks.Get(i).Simulate(client);
+                perks.Get(i).Simulate(Client);
             }
         }
 

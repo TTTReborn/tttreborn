@@ -293,7 +293,7 @@ namespace TTTReborn.UI
 
             List<Client> clients = new();
 
-            player.Team.Members.ForEach(member => clients.Add(member.GetClientOwner()));
+            player.Team.Members.ForEach(member => clients.Add(member.Client));
 
             AddChatEntry(To.Multiple(clients), ConsoleSystem.Caller.Name, message, Channel.Team, $"avatar:{ConsoleSystem.Caller.SteamId}", player.Team.Name);
         }

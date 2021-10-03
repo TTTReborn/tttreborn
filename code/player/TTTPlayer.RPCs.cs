@@ -72,5 +72,12 @@ namespace TTTReborn.Player
         {
             Event.Run(TTTEvent.Player.TakeDamage, this, damage);
         }
+
+
+        [ClientRpc]
+        public void ClientInitialSpawn()
+        {
+            Event.Run(TTTEvent.Player.InitialSpawn, Client);
+        }
     }
 }

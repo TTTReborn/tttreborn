@@ -130,9 +130,9 @@ namespace TTTReborn.UI
 
             _playerCorpse = playerCorpse;
 
-            _avatarImage.SetTexture($"avatar:{_playerCorpse.Player?.GetClientOwner().SteamId}");
+            _avatarImage.SetTexture($"avatar:{_playerCorpse.Player?.Client.SteamId}");
 
-            _playerLabel.Text = _playerCorpse.Player?.GetClientOwner().Name;
+            _playerLabel.Text = _playerCorpse.Player?.Client.Name;
 
             _roleLabel.Text = _playerCorpse.Player?.Role.Name;
             _roleLabel.Style.FontColor = _playerCorpse.Player?.Role.Color;

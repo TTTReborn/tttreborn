@@ -3,6 +3,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globalization;
 using TTTReborn.Globals;
 using TTTReborn.Map;
@@ -106,7 +107,7 @@ namespace TTTReborn.Gamemode
 
             TTTPlayer player = new();
             client.Pawn = player;
-            player.InitialRespawn();
+            player.InitialSpawn();
 
             base.ClientJoined(client);
         }
@@ -117,7 +118,17 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerLeave(client.Pawn as TTTPlayer);
 
+            Event.Run(TTTEvent.Player.Disconnected, client.SteamId, reason);
+
+            ClientClientDisconnect(client.SteamId, reason);
+
             base.ClientDisconnect(client, reason);
+        }
+
+        [ClientRpc]
+        public static void ClientClientDisconnect(ulong steamId, NetworkDisconnectionReason reason)
+        {
+            Event.Run(TTTEvent.Player.Disconnected, steamId, reason);
         }
 
         public override bool CanHearPlayerVoice(Client source, Client dest)

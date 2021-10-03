@@ -92,9 +92,9 @@ namespace TTTReborn.Player
                 MakeSpectator(false);
                 OnKilled();
 
-                if (!GetClientOwner().GetScore("forcedspectator", false))
+                if (!Client.GetValue<bool>("forcedspectator", false))
                 {
-                    GetClientOwner().SetScore("forcedspectator", true);
+                    Client.SetValue("forcedspectator", true);
                 }
             }
         }
