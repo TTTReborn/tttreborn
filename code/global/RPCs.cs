@@ -24,6 +24,18 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
+        public static void ClientOnPlayerConnected(Client client)
+        {
+            Event.Run(TTTEvent.Player.Connected, client);
+        }
+
+        [ClientRpc]
+        public static void ClientOnPlayerDisconnect(ulong steamId, NetworkDisconnectionReason reason)
+        {
+            Event.Run(TTTEvent.Player.Disconnected, steamId, reason);
+        }
+
+        [ClientRpc]
         public static void ClientOnPlayerSpawned(TTTPlayer player)
         {
             if (!player.IsValid())
