@@ -13,7 +13,7 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "";
         public override SlotType SlotType => SlotType.OffensiveEquipment;
 
-        private const int PlaceDistance = 200;
+        private const int PLACE_DISTANCE = 200;
 
         public int Price => 0;
 
@@ -29,7 +29,7 @@ namespace TTTReborn.Items
         {
             base.Spawn();
 
-            RenderAlpha = 0f;
+            RenderColor = Color.Transparent;
         }
 
         public override void Simulate(Client client)
@@ -48,7 +48,7 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Attack1))
                 {
-                    TraceResult placementTrace = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * PlaceDistance)
+                    TraceResult placementTrace = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * PLACE_DISTANCE)
                        .Ignore(owner)
                        .UseHitboxes()
                        .Run();
@@ -59,18 +59,17 @@ namespace TTTReborn.Items
                     }
 
                     C4Entity bomb = new C4Entity();
-
                     bomb.PhysicsEnabled = false;
                     bomb.Position = placementTrace.EndPos;
-                    bomb.WorldAng = placementTrace.Normal.EulerAngles;
+                    bomb.Rotation = Rotation.From(placementTrace.Normal.EulerAngles);
                     bomb.Rotation = bomb.Rotation.RotateAroundAxis(Vector3.Right, -90);
                     bomb.Rotation = bomb.Rotation.RotateAroundAxis(Vector3.Up, 90);
 
-                    (owner.Inventory as Inventory).Remove(this);
+                    owner.Inventory.Remove(this);
                 }
                 if (Input.Pressed(InputButton.Attack2) && TTTC4CanDrop)
                 {
-                    (owner.Inventory as Inventory).DropEntity(this, typeof(C4Entity));
+                    owner.Inventory.DropEntity(this, typeof(C4Entity));
                 }
             }
         }

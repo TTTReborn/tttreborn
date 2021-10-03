@@ -40,7 +40,7 @@ namespace TTTReborn.Items
             {
                 return player.Inventory.HasEmptySlot(SlotType.Value);
             }
-            else if (Type.IsSubclassOf(typeof(TTTEquipment))) //This was previously apart of the TTTWeapon if statement. We don't have to remove it, but I'd rather not interfere with IsCarryingType
+            else if (Type.IsSubclassOf(typeof(TTTEquipment)))
             {
                 return player.Inventory.HasEmptySlot(SlotType.Value);
             }

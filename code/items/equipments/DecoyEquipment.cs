@@ -24,7 +24,7 @@ namespace TTTReborn.Items
         {
             base.Spawn();
 
-            RenderAlpha = 0f;
+            RenderColor = Color.Transparent;
         }
 
         public override void Simulate(Client client)
@@ -43,7 +43,7 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Attack1))
                 {
-                    (owner.Inventory as Inventory).DropEntity(this, typeof(DecoyEntity));
+                    owner.Inventory.DropEntity(this, typeof(DecoyEntity));
                 }
             }
         }

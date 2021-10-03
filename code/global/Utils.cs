@@ -169,17 +169,6 @@ namespace TTTReborn.Globals
             return Library.Create<T>(type);
         }
 
-
-        /// <summary>
-        /// Returns an instance of the given type by the given type `Type`.
-        /// </summary>
-        /// <param name="type">A derived `Type` of the given type</param>
-        /// <returns>Instance of the given type object</returns>
-        public static Entity GetObjectByType(Type type)
-        {
-            return Library.Create<Entity>(type);
-        }
-
         /// <summary>
         /// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `Type`.
         /// </summary>
