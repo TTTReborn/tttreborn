@@ -53,9 +53,6 @@ namespace TTTReborn.UI
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damage-indicator");
 
             Enabled = false;
-
-            Style.ZIndex = -1;
-            Style.Dirty();
         }
 
         private HealthGroup GetHealthGroup(float health)
