@@ -72,7 +72,7 @@ namespace TTTReborn.Player
             }
 
             //If player has bodyarmor, was not shot in the head, and was shot by a bullet, reduce damage by 30%.
-            if ((Inventory as Inventory).Perks.Has("ttt_bodyarmor") && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
+            if (Inventory.Perks.Has("ttt_bodyarmor") && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
             {
                 info.Damage *= ArmorReductionPercentage;
             }
@@ -90,7 +90,7 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                ClientAnotherPlayerDidDamage(client, info.Position, ((float) Health).LerpInverse(100, 0));
+                ClientAnotherPlayerDidDamage(client, info.Position, Health.LerpInverse(100, 0));
             }
             else
             {
