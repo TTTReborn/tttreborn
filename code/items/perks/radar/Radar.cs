@@ -5,18 +5,25 @@ using Sandbox;
 
 using TTTReborn.Player;
 using TTTReborn.UI;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Items
 {
     [Library("ttt_radar")]
     public partial class Radar : TTTCountdownPerk, IBuyableItem
     {
-        private Vector3 RADARPOINT_UI_OFFSET = Vector3.Up * 45;
+        public struct RadarPointData
+        {
+            public Color Color;
+            public Vector3 Position;
+        }
+
         public override float Countdown { get; } = 20f;
 
-        private Vector3[] _lastPositions;
-
-        private List<RadarPoint> _cachedPoints = new();
+        private RadarPointData[] _lastPositions;
+        private readonly List<RadarPoint> _cachedPoints = new();
+        private readonly Color _defaultRadarColor = Color.FromBytes(124, 252, 0);
+        private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
         public int Price => 0;
 
@@ -39,31 +46,51 @@ namespace TTTReborn.Items
         {
             if (Host.IsServer)
             {
-                List<Vector3> positions = new();
+                if (Owner is not TTTPlayer owner)
+                {
+                    return;
+                }
+
+                List<RadarPointData> pointData = new();
 
                 foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
                 {
-                    if (player != Owner)
+                    if (player.Client.UserId == owner.Client.UserId)
                     {
-                        positions.Add(player.Position);
+                        continue;
+                    }
+
+                    RadarPointData point = new RadarPointData
+                    {
+                        Position = player.Position + _radarPointOffset,
+                        Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
+                    };
+                    pointData.Add(point);
+                }
+
+                if (owner.Team is not TraitorTeam)
+                {
+                    List<Vector3> decoyPositions = Entity.All.Where(x => x.GetType() == typeof(DecoyEntity))?.Select(x => x.Position).ToList();
+                    foreach (Vector3 decoyPosition in decoyPositions)
+                    {
+                        RadarPointData point = new RadarPointData
+                        {
+                            Position = decoyPosition + _radarPointOffset,
+                            Color = _defaultRadarColor
+                        };
+                        pointData.Add(point);
                     }
                 }
 
-                List<Vector3> decoyPositions = Entity.All.Where(x => x.GetType() == typeof(DecoyEntity))?.Select(x => x.Position).ToList();
-                if (decoyPositions.Count > 0)
-                {
-                    positions.AddRange(decoyPositions);
-                }
-
-                ClientSendRadarPositions(To.Single(Owner), Owner as TTTPlayer, positions.ToArray());
+                ClientSendRadarPositions(To.Single(Owner), owner, pointData.ToArray());
             }
             else
             {
                 ClearRadarPoints();
 
-                foreach (Vector3 vector3 in _lastPositions)
+                foreach (RadarPointData pointData in _lastPositions)
                 {
-                    _cachedPoints.Add(new RadarPoint(vector3 + RADARPOINT_UI_OFFSET));
+                    _cachedPoints.Add(new RadarPoint(pointData));
                 }
             }
         }
@@ -97,7 +124,7 @@ namespace TTTReborn.Items
         }
 
         [ClientRpc]
-        public static void ClientSendRadarPositions(TTTPlayer player, Vector3[] positions)
+        public static void ClientSendRadarPositions(TTTPlayer player, RadarPointData[] points)
         {
             if (!player.IsValid() || player != Local.Pawn)
             {
@@ -111,8 +138,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            radar._lastPositions = positions;
-
+            radar._lastPositions = points;
             radar.UpdatePositions();
         }
     }
