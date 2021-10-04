@@ -89,7 +89,7 @@ namespace TTTReborn.Player
 
             TraceResult tr = trace.UseHitboxes().Run();
 
-            if (tr.Hit && tr.Entity is IEntityHint hint && tr.StartPos.Distance(tr.Entity.Position) <= hint.HintDistance)
+            if (tr.Hit && tr.Entity is IEntityHint hint && tr.StartPos.Distance(tr.EndPos) <= hint.HintDistance)
             {
                 return hint;
             }
