@@ -4,8 +4,8 @@ using System.Linq;
 using Sandbox;
 
 using TTTReborn.Player;
-using TTTReborn.UI;
 using TTTReborn.Teams;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {

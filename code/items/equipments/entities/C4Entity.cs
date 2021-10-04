@@ -92,7 +92,7 @@ namespace TTTReborn.Items
             if (IsClient)
             {
                 if (!CreatedDisplay)
-                { 
+                {
                     TimerDisplay = new WorldPanel();
                     CreatedDisplay = true;
 

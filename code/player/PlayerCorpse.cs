@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.UI;
 using TTTReborn.Items;
+using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
