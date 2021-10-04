@@ -67,14 +67,11 @@ namespace TTTReborn.UI
 
         public class GeneralHud : Panel
         {
-            public Panel HintPanel;
-
             public GeneralHud()
             {
                 AddClass("fullscreen");
 
-                HintPanel = new(this);
-
+                AddChild<HintDisplay>();
                 AddChild<RadarDisplay>();
                 AddChild<PlayerRoleDisplay>();
                 AddChild<PlayerInfoDisplay>();

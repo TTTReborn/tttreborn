@@ -41,7 +41,7 @@ namespace TTTReborn.Player
                 if (hint.CanHint(player) && _currentHintPanel == null)
                 {
                     _currentHintPanel = hint.DisplayHint(player);
-                    _currentHintPanel.Parent = Hud.Current.GeneralHudPanel.HintPanel;
+                    _currentHintPanel.Parent = HintDisplay.Instance;
                     _currentHintPanel.Enabled = true;
                     _currentHintPanel.UpdateHintPanel();
 
