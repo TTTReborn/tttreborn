@@ -68,11 +68,6 @@ namespace TTTReborn.UI
                 AddScoreboardGroup(defaultScoreboardGroup.ToString());
             }
 
-            foreach (Client client in Client.All)
-            {
-                AddClient(client);
-            }
-
             UpdateScoreboardGroups();
         }
 
@@ -85,7 +80,18 @@ namespace TTTReborn.UI
         [Event(TTTEvent.Player.Connected)]
         public void OnPlayerConnected(Client client)
         {
-            AddClient(client);
+            if (client == Local.Client)
+            {
+                foreach (Client loopClient in Client.All)
+                {
+                    AddClient(loopClient);
+                }
+            }
+            else
+            {
+                AddClient(client);
+            }
+
             UpdateScoreboardGroups();
         }
 
