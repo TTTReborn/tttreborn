@@ -154,7 +154,7 @@ namespace TTTReborn.Settings
                 {
                     settings = GetSettings<T>(FileSystem.Data.ReadAllText(path + fileName + SETTINGS_FILE_EXTENSION));
 
-                    if (settings is null)
+                    if (settings == null)
                     {
                         settingsLoadingError = SettingsLoadingError.Empty;
                     }
@@ -178,7 +178,7 @@ namespace TTTReborn.Settings
                 settingsLoadingError = SettingsLoadingError.NotExist;
             }
 
-            if (settings is null)
+            if (settings == null)
             {
                 settingsLoadingError = SettingsLoadingError.Empty;
 
@@ -197,7 +197,7 @@ namespace TTTReborn.Settings
                 FileSystem.Data.CreateDirectory("settings");
             }
 
-            if (settings is null)
+            if (settings == null)
             {
                 return;
             }
