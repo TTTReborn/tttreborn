@@ -62,6 +62,14 @@ namespace TTTReborn.UI.Menu
                     item.SetClass("selected", !item.HasClass("selected"));
                 });
             }
+
+            // loop through all items and check whether is in shop, then set selected
+            // send update on change to server
+            // save on server if send
+            // add a toggle to activate shop
+            // just show shop if items are greater than 0
+            // auto select first role
+            // don't show role None
         }
     }
 }
