@@ -32,6 +32,9 @@ namespace TTTReborn.UI
             _staminaLabel.AddClass("stamina-label");
 
             Enabled = true;
+
+            Style.ZIndex = -1;
+            Style.Dirty();
         }
 
         public override void Tick()

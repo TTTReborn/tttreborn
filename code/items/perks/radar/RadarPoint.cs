@@ -58,6 +58,9 @@ namespace TTTReborn.UI
         {
             Instance = this;
             AddClass("fullscreen");
+
+            Style.ZIndex = -1;
+            Style.Dirty();
         }
     }
 }
