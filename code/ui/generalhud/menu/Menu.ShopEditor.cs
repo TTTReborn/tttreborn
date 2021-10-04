@@ -42,7 +42,7 @@ namespace TTTReborn.UI.Menu
 
             TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
 
-            if (role == null)
+            if (role == null || !role.IsSelectable)
             {
                 return;
             }

@@ -11,6 +11,8 @@ namespace TTTReborn.Roles
 
         public override Type DefaultTeamType => typeof(NoneTeam);
 
+        public override bool IsSelectable => false;
+
         public NoneRole() : base()
         {
 
