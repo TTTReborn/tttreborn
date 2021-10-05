@@ -157,15 +157,25 @@ Menu {
 }
 
 PanelContent.shopeditor {
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: start;
+
+    > Label {
+        margin-top: 12px;
+    }
+
+    Dropdown {
+        flex-grow: 1;
+        margin-left: 10px;
+    }
 
     .wrapper {
         margin-top: 10px;
         background-color: #000c;
         border-radius: 8px;
-        padding: 20px 10px;
+        padding: 10px;
+        width: 100%;
 
         flex-wrap: wrap;
         justify-content: center;
@@ -173,9 +183,9 @@ PanelContent.shopeditor {
         QuickShopItem {
             opacity: 1;
             flex-direction: column;
-            width: 90px;
-            height: 90px;
-            margin: 40px;
+            width: 100%;
+            height: 60px;
+            margin: 10px;
             align-items: center;
             justify-content: center;
             padding: 8px;
@@ -185,7 +195,7 @@ PanelContent.shopeditor {
             overflow: auto;
 
             &:hover {
-                transform: scale(1.05);
+                transform: scale(1.02);
                 cursor: pointer;
             }
 
@@ -194,15 +204,16 @@ PanelContent.shopeditor {
             }
 
             .item-icon {
+                position: absolute;
                 background-repeat: no-repeat;
                 background-size: contain;
                 width: 100%;
                 height: 100%;
+                left: 20px;
             }
 
             .item-name-label {
                 position: absolute;
-                bottom: -28px;
                 text-align: center;
                 font-weight: 600;
                 font-size: 14px;
@@ -210,13 +221,14 @@ PanelContent.shopeditor {
 
             .item-price-label {
                 position: absolute;
-                top: -32px;
                 font-weight: bold;
                 font-size: 20px;
+                right: 20px;
             }
 
             &.selected {
-                box-shadow: 0 0 15px white;
+                box-shadow: 0 0 15px #ffae00;
+                background-color: #222;
             }
         }
     }

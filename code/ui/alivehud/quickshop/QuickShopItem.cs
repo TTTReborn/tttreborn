@@ -10,12 +10,11 @@ namespace TTTReborn.UI
     public partial class QuickShopItem : Panel
     {
         public ShopItemData ItemData;
+        public bool IsDisabled = false;
 
         private Panel _itemIcon;
         private Label _itemNameLabel;
         private Label _itemPriceLabel;
-
-        public bool IsDisabled = false;
 
         public QuickShopItem(Sandbox.UI.Panel parent) : base(parent)
         {

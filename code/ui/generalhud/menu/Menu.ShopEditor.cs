@@ -52,14 +52,14 @@ namespace TTTReborn.UI.Menu
                 QuickShopItem item = new(_shopEditorWrapper);
                 item.SetItem(shopItemData);
 
-                item.AddEventListener("onclick", () =>
+                item.AddEventListener("onclick", (e) =>
                 {
-                    if (item.IsDisabled)
-                    {
-                        return;
-                    }
-
                     item.SetClass("selected", !item.HasClass("selected"));
+                });
+
+                item.AddEventListener("onrightclick", (e) =>
+                {
+                    Sandbox.Log.Error("Right clicked");
                 });
             }
 
