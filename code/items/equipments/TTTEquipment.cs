@@ -13,16 +13,12 @@ namespace TTTReborn.Items
     //     }
     // }
 
-    [Library("ttt_equipment")]
+    [Carriable("ttt_equipment", SlotType = SlotType.UtilityEquipment)]
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
-        public virtual SlotType SlotType => SlotType.UtilityEquipment;
-
-        public string ClassName { get; }
-
         protected TTTEquipment()
         {
-            ClassName = Library.GetAttribute(GetType()).Name;
+
         }
 
         public void Equip(TTTPlayer player)

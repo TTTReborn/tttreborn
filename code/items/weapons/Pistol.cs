@@ -4,12 +4,11 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_pistol")]
+    [Weapon("ttt_pistol", SlotType = SlotType.Secondary, AmmoType = "pistol")]
     [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
     partial class Pistol : TTTWeapon, IBuyableItem
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        public override SlotType SlotType => SlotType.Secondary;
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 15;
         public override float PrimaryRate => 15.0f;

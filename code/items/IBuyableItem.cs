@@ -1,5 +1,7 @@
 using System;
 
+using Sandbox;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -15,6 +17,29 @@ namespace TTTReborn.Items
         public ShopItemData(string name)
         {
             Name = name;
+        }
+
+        public static ShopItemData CreateItemData(Type type)
+        {
+            LibraryAttribute attribute = Library.GetAttribute(type);
+
+            if (attribute is not BuyableAttribute buyableAttribute)
+            {
+                return null;
+            }
+
+            ShopItemData shopItemData = new ShopItemData(attribute.Name)
+            {
+                Price = buyableAttribute.Price,
+                Type = type
+            };
+
+            if (attribute is CarriableAttribute carriableAttribute)
+            {
+                shopItemData.SlotType = carriableAttribute.SlotType;
+            }
+
+            return shopItemData;
         }
 
         public bool IsBuyable(TTTPlayer player)
@@ -46,25 +71,22 @@ namespace TTTReborn.Items
         }
     }
 
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class BuyableAttribute : ItemAttribute
+    {
+        public int Price = 100;
+
+        public BuyableAttribute(string name) : base(name)
+        {
+
+        }
+    }
+
     public interface IBuyableItem : IItem
     {
-        int Price { get; }
-
-        ShopItemData CreateItemData()
+        int Price
         {
-            ShopItemData itemData = new ShopItemData(ClassName)
-            {
-                Price = Price,
-                Type = GetType()
-            };
-
-            if (this is ICarriableItem carriableItem)
-            {
-                itemData.Description = $"Slot: { carriableItem.SlotType }";
-                itemData.SlotType = carriableItem.SlotType;
-            }
-
-            return itemData;
+            get => (Library.GetAttribute(GetType()) as BuyableAttribute).Price;
         }
 
         void OnPurchase(TTTPlayer player)

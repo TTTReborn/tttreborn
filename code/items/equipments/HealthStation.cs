@@ -7,11 +7,10 @@ namespace TTTReborn.Items
     /// <summary>
     /// Healthkit equipment definition, for the physical entity, see items/equipments/entities/HealthstationEntity.cs
     /// </summary>
-    [Library("ttt_healthstation"), Hammer.Skip]
+    [Carriable("ttt_healthstation", SlotType = SlotType.UtilityEquipment), Hammer.Skip]
     public partial class HealthStation : TTTEquipment, IBuyableItem
     {
         public override string ViewModelPath => "";
-        public override SlotType SlotType => SlotType.UtilityEquipment;
 
         public int Price => 0;
 

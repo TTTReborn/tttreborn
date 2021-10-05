@@ -49,11 +49,10 @@ namespace TTTReborn.Player
                         continue;
                     }
 
-                    IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
-                    ShopItemData itemData = item.CreateItemData();
+                    // create clean instance
+                    ShopItemData itemData = ShopItemData.CreateItemData(itemType);
 
-                    item.Delete();
-
+                    // override with settings data
                     itemData.Price = shopItemData.Price;
 
                     items.Add(itemData);
@@ -110,10 +109,7 @@ namespace TTTReborn.Player
 
             foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
             {
-                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
-                Items.Add(item.CreateItemData());
-
-                item.Delete();
+                Items.Add(ShopItemData.CreateItemData(itemType));
             }
         }
 
@@ -146,10 +142,7 @@ namespace TTTReborn.Player
                     continue;
                 }
 
-                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(type);
-                Items.Add(item.CreateItemData());
-
-                item.Delete();
+                Items.Add(ShopItemData.CreateItemData(type));
             }
         }
     }

@@ -14,15 +14,19 @@ namespace TTTReborn.Items
     //     }
     // }
 
-    [Library("ttt_perk")]
+    [Item("ttt_perk")]
     public abstract class TTTPerk : IItem
     {
-        public string ClassName { get; }
+        public string LibraryName
+        {
+            get => this.LibraryName;
+        }
+
         public Entity Owner { get; private set; }
 
         protected TTTPerk()
         {
-            ClassName = Library.GetAttribute(GetType()).Name;
+
         }
 
         public void Equip(TTTPlayer player)

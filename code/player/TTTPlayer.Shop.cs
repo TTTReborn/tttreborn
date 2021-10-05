@@ -49,7 +49,7 @@ namespace TTTReborn.Player
 
         public void RequestPurchase(IBuyableItem buyableItem)
         {
-            ShopItemData itemData = buyableItem.CreateItemData();
+            ShopItemData itemData = ShopItemData.CreateItemData(buyableItem.GetType());
             BuyError buyError = CanBuy(itemData);
 
             if (buyError != BuyError.None)

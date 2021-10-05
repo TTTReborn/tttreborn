@@ -1,8 +1,6 @@
-using Sandbox;
-
 namespace TTTReborn.Items
 {
-    [Library("ttt_test1")]
+    [Item("ttt_test1")]
     public class Test1 : TTTPerk, IBuyableItem
     {
         public Test1() : base()
