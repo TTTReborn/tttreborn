@@ -12,18 +12,18 @@ namespace TTTReborn.Items
     {
         public string AmmoType = "pistol";
 
-        public WeaponAttribute(string name) : base(name)
+        public WeaponAttribute() : base()
         {
 
         }
     }
 
-    [Weapon("ttt_weapon")]
+    [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public string LibraryName { get; }
-        public SlotType SlotType { get; }
-        public string AmmoType { get; }
+        public SlotType SlotType { get; } = SlotType.Secondary;
+        public string AmmoType { get; } = "pistol";
 
         public virtual Type AmmoEntity => null;
         public virtual int ClipSize => 16;
@@ -61,11 +61,16 @@ namespace TTTReborn.Items
 
         public TTTWeapon() : base()
         {
-            WeaponAttribute weaponAttribute = Library.GetAttribute(GetType()) as WeaponAttribute;
+            LibraryName = Library.GetAttribute(GetType()).Name;
 
-            LibraryName = weaponAttribute.Name;
-            SlotType = weaponAttribute.SlotType;
-            AmmoType = weaponAttribute.AmmoType;
+            foreach (object obj in GetType().GetCustomAttributes(false))
+            {
+                if (obj is WeaponAttribute weaponAttribute)
+                {
+                    SlotType = weaponAttribute.SlotType;
+                    AmmoType = weaponAttribute.AmmoType;
+                }
+            }
 
             Tags.Add(IItem.ITEM_TAG);
         }

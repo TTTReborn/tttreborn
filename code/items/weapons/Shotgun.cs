@@ -9,7 +9,9 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Weapon("ttt_shotgun", SlotType = SlotType.Primary, AmmoType = "buckshot", Price = 100)]
+    [Weapon(SlotType = SlotType.Primary, AmmoType = "buckshot")]
+    [Buyable(Price = 100)]
+    [Library("ttt_shotgun")]
     [EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
     partial class Shotgun : TTTWeapon, IBuyableItem
     {

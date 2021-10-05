@@ -7,7 +7,8 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    [Perk("ttt_radar", Price = 0)]
+    [Buyable(Price = 0)]
+    [Library("ttt_radar")]
     public partial class Radar : TTTCountdownPerk, IBuyableItem
     {
         private Vector3 RADARPOINT_UI_OFFSET = Vector3.Up * 45;

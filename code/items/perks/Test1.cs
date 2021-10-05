@@ -1,6 +1,9 @@
+using Sandbox;
+
 namespace TTTReborn.Items
 {
-    [Perk("ttt_test1", Price = 0)]
+    [Buyable(Price = 0)]
+    [Library("ttt_test1")]
     public class Test1 : TTTPerk, IBuyableItem
     {
         public Test1() : base()

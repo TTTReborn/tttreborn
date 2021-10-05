@@ -15,11 +15,11 @@ namespace TTTReborn.Items
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class CarriableAttribute : BuyableItemAttribute
+    public class CarriableAttribute : ItemAttribute
     {
         public SlotType SlotType = SlotType.Primary;
 
-        public CarriableAttribute(string name) : base(name)
+        public CarriableAttribute() : base()
         {
 
         }

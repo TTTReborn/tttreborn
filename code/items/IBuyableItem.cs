@@ -22,23 +22,31 @@ namespace TTTReborn.Items
         public static ShopItemData CreateItemData(Type type)
         {
             LibraryAttribute attribute = Library.GetAttribute(type);
+            bool buyable = false;
 
-            if (attribute is not BuyableItemAttribute buyableAttribute)
+            ShopItemData shopItemData = new ShopItemData(attribute.Name)
+            {
+                Type = type
+            };
+
+            foreach (object obj in type.GetCustomAttributes(false))
+            {
+                if (obj is BuyableAttribute buyableAttribute)
+                {
+                    shopItemData.Price = buyableAttribute.Price;
+                    buyable = true;
+                }
+                else if (obj is CarriableAttribute carriableAttribute)
+                {
+                    shopItemData.SlotType = carriableAttribute.SlotType;
+                }
+            }
+
+            if (!buyable)
             {
                 Log.Warning($"'{type}' is missing the 'BuyableAttribute'");
 
                 return null;
-            }
-
-            ShopItemData shopItemData = new ShopItemData(attribute.Name)
-            {
-                Price = buyableAttribute.Price,
-                Type = type
-            };
-
-            if (attribute is CarriableAttribute carriableAttribute)
-            {
-                shopItemData.SlotType = carriableAttribute.SlotType;
             }
 
             return shopItemData;
@@ -74,11 +82,11 @@ namespace TTTReborn.Items
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class BuyableItemAttribute : ItemAttribute
+    public class BuyableAttribute : Attribute
     {
         public int Price = 100;
 
-        public BuyableItemAttribute(string name) : base(name)
+        public BuyableAttribute() : base()
         {
 
         }

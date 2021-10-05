@@ -7,7 +7,8 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Equipment("ttt_magnetostick", SlotType = SlotType.UtilityEquipment)]
+    [Equipment(SlotType = SlotType.UtilityEquipment)]
+    [Library("ttt_magnetostick")]
     partial class MagnetoStick : TTTEquipment
     {
         public override string ViewModelPath => "";

@@ -7,9 +7,9 @@ using TTTReborn.Player;
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class ItemAttribute : LibraryAttribute
+    public class ItemAttribute : Attribute
     {
-        public ItemAttribute(string name) : base(name)
+        public ItemAttribute() : base()
         {
 
         }

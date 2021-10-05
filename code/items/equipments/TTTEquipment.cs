@@ -9,24 +9,29 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class EquipmentAttribute : CarriableAttribute
     {
-        public EquipmentAttribute(string name) : base(name)
+        public EquipmentAttribute() : base()
         {
 
         }
     }
 
-    [Equipment("ttt_equipment", SlotType = SlotType.UtilityEquipment)]
+    [Library("ttt_equipment")]
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
         public string LibraryName { get; }
-        public SlotType SlotType { get; }
+        public SlotType SlotType { get; } = SlotType.UtilityEquipment;
 
         protected TTTEquipment()
         {
-            EquipmentAttribute equipmentAttribute = Library.GetAttribute(GetType()) as EquipmentAttribute;
+            LibraryName = Library.GetAttribute(GetType()).Name;
 
-            LibraryName = equipmentAttribute.Name;
-            SlotType = equipmentAttribute.SlotType;
+            foreach (object obj in GetType().GetCustomAttributes(false))
+            {
+                if (obj is EquipmentAttribute equipmentAttribute)
+                {
+                    SlotType = equipmentAttribute.SlotType;
+                }
+            }
         }
 
         public void Equip(TTTPlayer player)

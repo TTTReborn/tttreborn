@@ -8,15 +8,15 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class PerkAttribute : BuyableItemAttribute
+    public class PerkAttribute : ItemAttribute
     {
-        public PerkAttribute(string name) : base(name)
+        public PerkAttribute() : base()
         {
 
         }
     }
 
-    [Perk("ttt_perk")]
+    [Library("ttt_perk")]
     public abstract class TTTPerk : IItem
     {
         public string LibraryName { get; }
@@ -24,9 +24,7 @@ namespace TTTReborn.Items
 
         protected TTTPerk()
         {
-            PerkAttribute perkAttribute = Library.GetAttribute(GetType()) as PerkAttribute;
-
-            LibraryName = perkAttribute.Name;
+            LibraryName = Library.GetAttribute(GetType()).Name;
         }
 
         public void Equip(TTTPlayer player)

@@ -4,7 +4,9 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Weapon("ttt_knife", SlotType = SlotType.Melee, Price = 100)]
+    [Weapon(SlotType = SlotType.Melee)]
+    [Buyable(Price = 100)]
+    [Library("ttt_knife")]
     [EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
     partial class Knife : TTTWeapon, IBuyableItem
     {
