@@ -83,13 +83,13 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientOpenC4Menu(C4Entity c4Entity)
         {
-            C4ArmControl.Current.Open(c4Entity, this);
+            // C4ArmControl.Current.Open(c4Entity, this);
         }
 
         [ClientRpc]
         public void ClientCloseC4Menu()
         {
-            C4ArmControl.Current.Enabled = false;
+            C4Arm.Instance.Enabled = false;
         }
     }
 }

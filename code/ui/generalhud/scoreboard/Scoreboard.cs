@@ -85,7 +85,18 @@ namespace TTTReborn.UI
         [Event(TTTEvent.Player.Connected)]
         public void OnPlayerConnected(Client client)
         {
-            AddClient(client);
+            if (client == Local.Client)
+            {
+                foreach (Client loopClient in Client.All)
+                {
+                    AddClient(loopClient);
+                }
+            }
+            else
+            {
+                AddClient(client);
+            }
+
             UpdateScoreboardGroups();
         }
 

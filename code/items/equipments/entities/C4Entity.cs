@@ -13,24 +13,30 @@ namespace TTTReborn.Items
     [Library("ttt_c4_ent"), Hammer.Skip]
     public partial class C4Entity : Prop, IUse
     {
-        public static C4Preset[] TimerPresets =
+        public struct C4Preset
+        {
+            public int Timer;
+            public int Wires;
+        }
+
+        public static readonly C4Preset[] TimerPresets =
         {
             new C4Preset
             {
-                timer = 60,
-                wires = 1
+                Timer = 60,
+                Wires = 1
             },
 
             new C4Preset
             {
-                timer = 150,
-                wires = 2
+                Timer = 150,
+                Wires = 2
             },
 
             new C4Preset
             {
-                timer = 300,
-                wires = 4
+                Timer = 300,
+                Wires = 4
             }
         };
 
@@ -125,7 +131,7 @@ namespace TTTReborn.Items
         {
             // Add a wire minigame in here later
             // For now, if you randomly roll the wrong wire the bomb explodes
-            int disarmRoll = new Random().Next(1, CurrentPreset.wires + 1);
+            int disarmRoll = new Random().Next(1, CurrentPreset.Wires + 1);
             if (disarmRoll != 1)
             {
                 _ = Explode();
@@ -141,7 +147,7 @@ namespace TTTReborn.Items
         {
             IsArmed = true;
 
-            var timeRemaining = CurrentPreset.timer + 1;
+            var timeRemaining = CurrentPreset.Timer + 1;
 
             while (timeRemaining > 0 && IsArmed)
             {
@@ -283,11 +289,5 @@ namespace TTTReborn.Items
                 c4Entity.CurrentPreset = TimerPresets[preset];
             }
         }
-    }
-
-    public struct C4Preset
-    {
-        public int timer;
-        public int wires;
     }
 }
