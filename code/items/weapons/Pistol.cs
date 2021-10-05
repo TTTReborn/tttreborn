@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Weapon("ttt_pistol", SlotType = SlotType.Secondary, AmmoType = "pistol")]
+    [Weapon("ttt_pistol", SlotType = SlotType.Secondary, AmmoType = "pistol", Price = 100)]
     [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
     partial class Pistol : TTTWeapon, IBuyableItem
     {
@@ -16,8 +16,6 @@ namespace TTTReborn.Items
         public override float ReloadTime => 2.3f;
         public override float DeployTime => 0.4f;
         public override int BaseDamage => 8;
-
-        public virtual int Price => 100;
 
         public override void Spawn()
         {

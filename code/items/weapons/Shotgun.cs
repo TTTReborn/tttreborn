@@ -9,7 +9,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Weapon("ttt_shotgun", SlotType = SlotType.Primary, AmmoType = "buckshot")]
+    [Weapon("ttt_shotgun", SlotType = SlotType.Primary, AmmoType = "buckshot", Price = 100)]
     [EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
     partial class Shotgun : TTTWeapon, IBuyableItem
     {
@@ -21,8 +21,6 @@ namespace TTTReborn.Items
         public override float ReloadTime => 0.5f;
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
-
-        public virtual int Price => 100;
 
         public override void Spawn()
         {
