@@ -15,7 +15,7 @@ namespace TTTReborn.Items
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class CarriableAttribute : BuyableAttribute
+    public class CarriableAttribute : BuyableItemAttribute
     {
         public SlotType SlotType = SlotType.Primary;
 
@@ -27,10 +27,7 @@ namespace TTTReborn.Items
 
     public interface ICarriableItem : IItem
     {
-        SlotType SlotType
-        {
-            get => (Library.GetAttribute(GetType()) as CarriableAttribute).SlotType;
-        }
+        SlotType SlotType { get; }
 
         bool CanDrop();
     }

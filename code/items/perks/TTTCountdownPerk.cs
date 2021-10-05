@@ -5,7 +5,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Item("ttt_countdownperk")]
+    [Perk("ttt_countdownperk")]
     public abstract class TTTCountdownPerk : TTTPerk
     {
         public abstract float Countdown { get; }

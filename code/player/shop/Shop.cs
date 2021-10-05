@@ -52,6 +52,11 @@ namespace TTTReborn.Player
                     // create clean instance
                     ShopItemData itemData = ShopItemData.CreateItemData(itemType);
 
+                    if (itemData == null)
+                    {
+                        continue;
+                    }
+
                     // override with settings data
                     itemData.Price = shopItemData.Price;
 

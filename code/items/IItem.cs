@@ -19,10 +19,7 @@ namespace TTTReborn.Items
     {
         static string ITEM_TAG => "TTT_ITEM";
 
-        string LibraryName
-        {
-            get => Library.GetAttribute(GetType()).Name;
-        }
+        string LibraryName { get; }
 
         Entity Owner { get; }
 

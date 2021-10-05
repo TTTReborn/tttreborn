@@ -23,8 +23,10 @@ namespace TTTReborn.Items
         {
             LibraryAttribute attribute = Library.GetAttribute(type);
 
-            if (attribute is not BuyableAttribute buyableAttribute)
+            if (attribute is not BuyableItemAttribute buyableAttribute)
             {
+                Log.Warning($"'{type}' is missing the 'BuyableAttribute'");
+
                 return null;
             }
 
@@ -72,11 +74,11 @@ namespace TTTReborn.Items
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class BuyableAttribute : ItemAttribute
+    public class BuyableItemAttribute : ItemAttribute
     {
         public int Price = 100;
 
-        public BuyableAttribute(string name) : base(name)
+        public BuyableItemAttribute(string name) : base(name)
         {
 
         }
@@ -84,11 +86,6 @@ namespace TTTReborn.Items
 
     public interface IBuyableItem : IItem
     {
-        int Price
-        {
-            get => (Library.GetAttribute(GetType()) as BuyableAttribute).Price;
-        }
-
         void OnPurchase(TTTPlayer player)
         {
             player.Inventory.TryAdd(this);

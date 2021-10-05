@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 using TTTReborn.Player;
@@ -5,28 +7,26 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    // public class PerkAttribute : LibraryAttribute
-    // {
-    //     public PerkAttribute(string name) : base(name)
-    //     {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class PerkAttribute : BuyableItemAttribute
+    {
+        public PerkAttribute(string name) : base(name)
+        {
 
-    //     }
-    // }
+        }
+    }
 
-    [Item("ttt_perk")]
+    [Perk("ttt_perk")]
     public abstract class TTTPerk : IItem
     {
-        public string LibraryName
-        {
-            get => this.LibraryName;
-        }
-
+        public string LibraryName { get; }
         public Entity Owner { get; private set; }
 
         protected TTTPerk()
         {
+            PerkAttribute perkAttribute = Library.GetAttribute(GetType()) as PerkAttribute;
 
+            LibraryName = perkAttribute.Name;
         }
 
         public void Equip(TTTPlayer player)
