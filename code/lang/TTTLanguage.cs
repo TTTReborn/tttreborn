@@ -104,7 +104,7 @@ namespace TTTReborn.Player
         [ClientCmd("ttt_language")]
         public static void ChangeLanguage(string name = null)
         {
-            if (name is null)
+            if (name == null)
             {
                 Log.Info($"Your current language is set to '{TTTLanguage.ActiveLanguage.Data.Name}' ('{TTTLanguage.ActiveLanguage.Data.Code}').");
 
@@ -113,7 +113,7 @@ namespace TTTReborn.Player
 
             Language language = TTTLanguage.GetLanguageByCode(name);
 
-            if (language is null)
+            if (language == null)
             {
                 Log.Warning($"Language '{name}' does not exist. Please enter an ISO (tag) code (http://www.lingoes.net/en/translator/langcode.htm).");
 
