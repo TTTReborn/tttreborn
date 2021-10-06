@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
@@ -66,13 +65,13 @@ namespace TTTReborn.UI
 
             Panel actionButtons = new Panel(contentPanel);
             actionButtons.AddClass("action-button-panel");
-            actionButtons.Add.Button("Pick Up", "button", () =>
+            actionButtons.Add.Button("Pick Up", "button action-button", () =>
             {
                 C4Entity.PickUp(Entity.NetworkIdent, User.NetworkIdent);
                 Enabled = false;
             });
 
-            actionButtons.Add.Button("Destroy", "button", () =>
+            actionButtons.Add.Button("Destroy", "button action-button", () =>
             {
                 C4Entity.Delete(Entity.NetworkIdent);
                 Enabled = false;

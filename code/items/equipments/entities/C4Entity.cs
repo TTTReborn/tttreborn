@@ -29,15 +29,33 @@ namespace TTTReborn.Items
 
             new C4Preset
             {
-                Timer = 150,
+                Timer = 120,
                 Wires = 2
             },
 
             new C4Preset
             {
-                Timer = 300,
+                Timer = 180,
+                Wires = 3
+            },
+
+            new C4Preset
+            {
+                Timer = 220,
                 Wires = 4
-            }
+            },
+
+            new C4Preset
+            {
+                Timer = 250,
+                Wires = 6
+            },
+
+            new C4Preset
+            {
+                Timer = 300,
+                Wires = 8
+            },
         };
 
         private string ModelPath => "models/entities/c4.vmdl";

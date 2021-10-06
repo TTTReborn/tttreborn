@@ -30,6 +30,10 @@ C4Arm {
 
         .timer-button-panel {
             flex-direction: row;
+            max-width: 300px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
         }
 
         .action-button-panel {
@@ -40,8 +44,8 @@ C4Arm {
 
         .button {
             flex-direction: column;
-            width: 90px;
-            height: 40px;
+            width: 70px;
+            height: 70px;
             margin: 10px;
             align-items: center;
             justify-content: center;
@@ -61,6 +65,10 @@ C4Arm {
 
         .arm-button {
             background-color: rgb(101, 27, 27);
+        }
+
+        .action-button {
+            background-color: #282828;
         }
     }
 
