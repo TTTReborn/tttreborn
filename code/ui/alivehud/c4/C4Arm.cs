@@ -69,6 +69,7 @@ namespace TTTReborn.UI
             actionButtons.Add.Button("Pick Up", "button", () =>
             {
                 C4Entity.PickUp(Entity.NetworkIdent, User.NetworkIdent);
+                Enabled = false;
             });
 
             actionButtons.Add.Button("Destroy", "button", () =>
@@ -82,6 +83,8 @@ namespace TTTReborn.UI
                 C4Entity.Arm(Entity.NetworkIdent);
                 Enabled = false;
             });
+
+            Enabled = false;
         }
 
         public void Open(C4Entity entity, TTTPlayer user)
