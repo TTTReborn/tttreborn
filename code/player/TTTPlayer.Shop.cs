@@ -44,6 +44,23 @@ namespace TTTReborn.Player
                 return BuyError.NotEnoughCredits;
             }
 
+            bool found = false;
+
+            foreach (ShopItemData shopItemData in Shop.Items)
+            {
+                if (shopItemData.Name.Equals(itemData.Name))
+                {
+                    found = true;
+
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                return BuyError.NotAvailable;
+            }
+
             return BuyError.None;
         }
 

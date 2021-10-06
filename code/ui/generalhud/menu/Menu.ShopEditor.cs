@@ -90,7 +90,9 @@ namespace TTTReborn.UI.Menu
             }
 
             // add a toggle to activate shop
-            // auto select first role
+            // link shops together
+            // edit items
+            // live update QuickShop
         }
 
         private static void ToggleItem(QuickShopItem item, TTTRole role)
@@ -126,25 +128,11 @@ namespace TTTReborn.UI.Menu
                 return false;
             }
 
-            Type itemType = Utils.GetTypeByName<IItem>(itemName);
-
-            if (itemType == null)
-            {
-                return false;
-            }
-
-            ShopItemData itemData = ShopItemData.CreateItemData(itemType);
-
-            if (itemData == null)
-            {
-                return false;
-            }
-
             ShopItemData storedItem = null;
 
             foreach (ShopItemData loopItem in role.Shop.Items)
             {
-                if (loopItem.Name.Equals(itemData.Name))
+                if (loopItem.Name.Equals(itemName))
                 {
                     storedItem = loopItem;
 
@@ -152,31 +140,56 @@ namespace TTTReborn.UI.Menu
                 }
             }
 
+            ShopItemData shopItemData = null;
+
             if (toggle)
             {
-                ShopItemData shopItemData = JsonSerializer.Deserialize<ShopItemData>(shopItemDataJson);
+                shopItemData = JsonSerializer.Deserialize<ShopItemData>(shopItemDataJson);
 
                 if (shopItemDataJson == null)
                 {
                     return false;
                 }
+            }
 
+            UpdateShop(role.Shop, toggle, storedItem, shopItemData);
+
+            if (Host.IsServer)
+            {
+                foreach (Client client in Client.All)
+                {
+                    if (client.Pawn is TTTPlayer player && player.Role == role)
+                    {
+                        UpdateShop(player.Shop, toggle, storedItem, shopItemData);
+                    }
+                }
+            }
+            else if (Local.Client?.Pawn is TTTPlayer player && player.Role == role)
+            {
+                UpdateShop(player.Shop, toggle, storedItem, shopItemData);
+            }
+
+            return true;
+        }
+
+        private static void UpdateShop(Shop shop, bool toggle, ShopItemData storedItem, ShopItemData shopItemData)
+        {
+            if (toggle)
+            {
                 if (storedItem == null)
                 {
-                    role.Shop.Items.Add(itemData);
+                    shop.Items.Add(shopItemData);
                 }
                 else
                 {
-                    role.Shop.Items.Remove(storedItem);
-                    role.Shop.Items.Add(itemData);
+                    shop.Items.Remove(storedItem);
+                    shop.Items.Add(shopItemData);
                 }
             }
             else if (storedItem != null)
             {
-                role.Shop.Items.Remove(storedItem);
+                shop.Items.Remove(storedItem);
             }
-
-            return true;
         }
 
         [ServerCmd]

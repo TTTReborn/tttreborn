@@ -15,12 +15,14 @@ namespace TTTReborn.Player
         None,
         InventoryBlocked,
         NotEnoughCredits,
-        NoAccess
+        NoAccess,
+        NotAvailable
     }
 
     public class Shop
     {
         public List<ShopItemData> Items { set; get; } = new();
+        public bool Enabled { get; set; } = true;
 
         public Shop()
         {
@@ -29,7 +31,7 @@ namespace TTTReborn.Player
 
         public bool Accessable()
         {
-            return Items.Count > 0;
+            return Items.Count > 0 && Enabled;
         }
 
         public static Shop InitializeFromJSON(string json)
