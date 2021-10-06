@@ -38,31 +38,31 @@ namespace TTTReborn.UI
 
                 if (Local.Client.Pawn is TTTPlayer player)
                 {
-                    hud.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
+                    Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
                 }
             }
         }
 
         [Event(TTTEvent.Player.Spawned)]
-        private static void OnPlayerSpawned(TTTPlayer player)
+        private void OnPlayerSpawned(TTTPlayer player)
         {
-            if (Host.IsServer || player != Local.Client.Pawn)
+            if (player != Local.Client.Pawn)
             {
                 return;
             }
 
-            Current.AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
+            AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
         }
 
         [Event(TTTEvent.Player.Died)]
-        private static void OnPlayerDied(TTTPlayer deadPlayer)
+        private void OnPlayerDied(TTTPlayer deadPlayer)
         {
-            if (Host.IsServer || deadPlayer != Local.Client.Pawn)
+            if (deadPlayer != Local.Client.Pawn)
             {
                 return;
             }
 
-            Current.AliveHudInstance.Enabled = false;
+            AliveHudInstance.Enabled = false;
         }
 
         public class GeneralHud : Panel
@@ -85,7 +85,7 @@ namespace TTTReborn.UI
                 AddChild<InfoFeed>();
                 AddChild<InspectMenu>();
                 AddChild<PostRoundMenu>();
-                // AddChild<Scoreboard>();
+                AddChild<Scoreboard>();
                 AddChild<Menu.Menu>();
             }
         }
@@ -122,7 +122,7 @@ namespace TTTReborn.UI
 
             private void Create()
             {
-                _panelList = new List<Panel>
+                _panelList = new()
                 {
                     _rootPanel.AddChild<Crosshair>(),
                     _rootPanel.AddChild<BreathIndicator>(),

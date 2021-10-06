@@ -82,7 +82,12 @@ namespace TTTReborn.UI
                 C4Entity.Arm(Entity.NetworkIdent);
                 Enabled = false;
             });
+        }
 
+        public void Open(C4Entity entity, TTTPlayer user)
+        {
+            Entity = entity;
+            User = user;
             Enabled = true;
         }
 
