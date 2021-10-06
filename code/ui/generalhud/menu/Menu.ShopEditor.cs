@@ -47,29 +47,49 @@ namespace TTTReborn.UI.Menu
                 return;
             }
 
-            foreach (ShopItemData shopItemData in role.Shop.Items)
+            foreach (Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>())
             {
+                ShopItemData shopItemData = ShopItemData.CreateItemData(itemType);
+
+                if (shopItemData == null)
+                {
+                    continue;
+                }
+
                 QuickShopItem item = new(_shopEditorWrapper);
                 item.SetItem(shopItemData);
 
                 item.AddEventListener("onclick", (e) =>
                 {
-                    item.SetClass("selected", !item.HasClass("selected"));
+                    ToggleItem(item);
                 });
 
                 item.AddEventListener("onrightclick", (e) =>
                 {
                     Sandbox.Log.Error("Right clicked");
                 });
+
+                foreach (ShopItemData loopItemData in role.Shop.Items)
+                {
+                    if (loopItemData.Name.Equals(shopItemData.Name))
+                    {
+                        item.SetClass("selected", true);
+                    }
+                }
             }
 
-            // loop through all items and check whether is in shop, then set selected
             // send update on change to server
             // save on server if send
             // add a toggle to activate shop
             // just show shop if items are greater than 0
             // auto select first role
-            // don't show role None
+        }
+
+        private static void ToggleItem(QuickShopItem item)
+        {
+            bool toggle = !item.HasClass("selected");
+
+            item.SetClass("selected", toggle);
         }
     }
 }
