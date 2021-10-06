@@ -16,8 +16,6 @@ namespace TTTReborn.UI
         public TTTPlayer User { get; set; }
         public C4Entity Entity { get; set; }
 
-        private const string EMPTY_TIMER = "--:--";
-
         private readonly Label _timer;
         private readonly Label _defuseChance;
 
@@ -41,42 +39,60 @@ namespace TTTReborn.UI
             backgroundPanel.AddClass("fullscreen");
 
             Panel contentPanel = new Panel(this);
-            contentPanel.AddClass("background-color-primary");
             contentPanel.AddClass("content-container");
-            contentPanel.AddClass("opacity-heavy");
-            contentPanel.AddClass("rounded");
 
             Panel timerPanel = new Panel(contentPanel);
             timerPanel.AddClass("timer-panel");
+            timerPanel.AddClass("opacity-heavy");
             _timer = timerPanel.Add.Label("00:00", "timer-label");
 
-            _defuseChance = contentPanel.Add.Label("WIP Text Please remove this.", "defuse-label");
+            _defuseChance = contentPanel.Add.Label("", "defuse-label");
 
             Panel timerButtons = new Panel(contentPanel);
             timerButtons.AddClass("timer-button-panel");
-            foreach (C4Entity.C4Preset timerPreset in C4Entity.TimerPresets)
+            for (int i = 0; i < C4Entity.TimerPresets.Length; ++i)
             {
+                C4Entity.C4Preset timerPreset = C4Entity.TimerPresets[i];
+                if (i == 0)
+                {
+                    SetTimer(timerPreset);
+                }
+
                 timerButtons.Add.Button(TimerString(timerPreset.Timer), "button", () =>
                 {
-                    Log.Info("Timer button clicked.");
+                    SetTimer(timerPreset);
                 });
             }
 
             Panel actionButtons = new Panel(contentPanel);
             actionButtons.AddClass("action-button-panel");
-            actionButtons.Add.Button("Pick Up", "button", () => { });
-            actionButtons.Add.Button("Destroy", "button", () => { });
-            actionButtons.Add.Button("Arm", "button", () => { });
+            actionButtons.Add.Button("Pick Up", "button", () =>
+            {
+                C4Entity.PickUp(Entity.NetworkIdent, User.NetworkIdent);
+            });
+
+            actionButtons.Add.Button("Destroy", "button", () =>
+            {
+                C4Entity.Delete(Entity.NetworkIdent);
+                Enabled = false;
+            });
+
+            actionButtons.Add.Button("Arm", "button arm-button", () =>
+            {
+                C4Entity.Arm(Entity.NetworkIdent);
+                Enabled = false;
+            });
 
             Enabled = true;
         }
 
-        public void SetTimer(C4Entity.C4Preset preset)
+        private void SetTimer(C4Entity.C4Preset preset)
         {
             _timer.Text = TimerString(preset.Timer);
 
             int wires = preset.Wires;
             int defuseChance = (1f / wires * 100f).FloorToInt();
+            _defuseChance.Text = $"{defuseChance}% chance to defuse";
         }
     }
 }

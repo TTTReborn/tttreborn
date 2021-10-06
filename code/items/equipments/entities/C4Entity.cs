@@ -259,7 +259,7 @@ namespace TTTReborn.Items
         {
             Entity entity = FindByIndex(c4EntityIdent);
 
-            if (entity != null && entity is C4Entity c4Entity)
+            if (entity is C4Entity c4Entity)
             {
                 c4Entity.Delete();
             }
@@ -270,9 +270,9 @@ namespace TTTReborn.Items
         {
             Entity player = FindByIndex(playerIdent);
 
-            if (player != null && player is TTTPlayer)
+            if (player is TTTPlayer)
             {
-                if ((player.Inventory as Inventory).TryAdd(new C4Equipment()))
+                if (((Inventory) player.Inventory).TryAdd(new C4Equipment()))
                 {
                     Delete(c4EntityIdent);
                 }
@@ -284,7 +284,7 @@ namespace TTTReborn.Items
         {
             Entity entity = FindByIndex(c4EntityIdent);
 
-            if (entity != null && entity is C4Entity c4Entity)
+            if (entity is C4Entity c4Entity)
             {
                 c4Entity.CurrentPreset = TimerPresets[preset];
             }

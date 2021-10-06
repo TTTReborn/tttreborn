@@ -28,8 +28,14 @@ C4Arm {
             font-family: RobotoMono;
         }
 
-        .timer-button-panel, .action-button-panel {
+        .timer-button-panel {
             flex-direction: row;
+        }
+
+        .action-button-panel {
+            flex-direction: row;
+            justify-content: end;
+            align-items: end;
         }
 
         .button {
@@ -39,12 +45,10 @@ C4Arm {
             margin: 10px;
             align-items: center;
             justify-content: center;
-            padding: 8px;
             transition: transform 0.1s ease-in;
-            box-shadow: 0 0 10px black;
-            white-space: nowrap;
             overflow: auto;
             background-color: #1e1e1e;
+            border-radius: 5px;
 
             &:hover {
                 transform: scale(1.05);
@@ -53,6 +57,10 @@ C4Arm {
             &:active {
                 transform: scale(1);
             }
+        }
+
+        .arm-button {
+            background-color: rgb(101, 27, 27);
         }
     }
 
