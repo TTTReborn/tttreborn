@@ -15,6 +15,7 @@ namespace TTTReborn.UI
         public TTTPlayer User { get; set; }
         public C4Entity Entity { get; set; }
 
+        private int _selectedPresetIndex;
         private readonly Label _timer;
         private readonly Label _defuseChance;
 
@@ -51,15 +52,16 @@ namespace TTTReborn.UI
             timerButtons.AddClass("timer-button-panel");
             for (int i = 0; i < C4Entity.TimerPresets.Length; ++i)
             {
-                C4Entity.C4Preset timerPreset = C4Entity.TimerPresets[i];
+                int selectedPresetIndex = i;
+                C4Entity.C4Preset timerPreset = C4Entity.TimerPresets[selectedPresetIndex];
                 if (i == 0)
                 {
-                    SetTimer(timerPreset);
+                    SetTimer(selectedPresetIndex);
                 }
 
                 timerButtons.Add.Button(TimerString(timerPreset.Timer), "button", () =>
                 {
-                    SetTimer(timerPreset);
+                    SetTimer(selectedPresetIndex);
                 });
             }
 
@@ -79,7 +81,7 @@ namespace TTTReborn.UI
 
             actionButtons.Add.Button("Arm", "button arm-button", () =>
             {
-                C4Entity.Arm(Entity.NetworkIdent);
+                C4Entity.Arm(Entity.NetworkIdent, _selectedPresetIndex);
                 Enabled = false;
             });
 
@@ -93,10 +95,12 @@ namespace TTTReborn.UI
             Enabled = true;
         }
 
-        private void SetTimer(C4Entity.C4Preset preset)
+        private void SetTimer(int presetIndex)
         {
-            _timer.Text = TimerString(preset.Timer);
+            _selectedPresetIndex = presetIndex;
+            C4Entity.C4Preset preset = C4Entity.TimerPresets[_selectedPresetIndex];
 
+            _timer.Text = TimerString(preset.Timer);
             int wires = preset.Wires;
             int defuseChance = (1f / wires * 100f).FloorToInt();
             _defuseChance.Text = $"{defuseChance}% chance to defuse";

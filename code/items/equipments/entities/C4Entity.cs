@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Sandbox;
@@ -90,7 +89,10 @@ namespace TTTReborn.Items
 
         public bool OnUse(Entity user)
         {
-            TTTPlayer player = user as TTTPlayer;
+            if (user is not TTTPlayer player)
+            {
+                return false;
+            }
 
             if (IsArmed)
             {
@@ -102,11 +104,6 @@ namespace TTTReborn.Items
             }
 
             return false;
-        }
-
-        public void UpdateTimerDisplay(string timerString)
-        {
-            TimerDisplayLabel.Text = timerString;
         }
 
         public bool IsUsable(Entity user) => user is TTTPlayer;
@@ -123,7 +120,7 @@ namespace TTTReborn.Items
                     TimerDisplay.AddClass("c4worldtimer");
                     TimerDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
 
-                    TimerDisplay.PanelBounds = new Rect(0, 0, 140, 80);
+                    TimerDisplay.PanelBounds = new Rect(-120, 0, 140, 80);
 
                     TimerDisplayLabel = TimerDisplay.AddChild<Label>();
                     TimerDisplayLabel.Text = EMPTY_TIMER;
@@ -136,13 +133,13 @@ namespace TTTReborn.Items
         [Event.Frame]
         private void UpdateDisplayTransform()
         {
-            if (CreatedDisplay)
+            if (!CreatedDisplay)
             {
-                TimerDisplay.Transform = GetAttachment("timer") ?? Transform;
-                TimerDisplay.WorldScale = 0.5f;
-
                 return;
             }
+
+            TimerDisplay.Transform = GetAttachment("timer") ?? Transform;
+            TimerDisplay.WorldScale = 0.5f;
         }
 
         public void TryDisarm()
@@ -161,11 +158,11 @@ namespace TTTReborn.Items
             ClientUpdateTimer(EMPTY_TIMER);
         }
 
-        public async void StartTimer()
+        private async void StartTimer()
         {
             IsArmed = true;
 
-            var timeRemaining = CurrentPreset.Timer + 1;
+            int timeRemaining = CurrentPreset.Timer + 1;
 
             while (timeRemaining > 0 && IsArmed)
             {
@@ -262,14 +259,17 @@ namespace TTTReborn.Items
         }
 
         [ServerCmd]
-        public static void Arm(int c4EntityIdent)
+        public static void Arm(int c4EntityIdent, int presetIndex)
         {
             Entity entity = FindByIndex(c4EntityIdent);
 
-            if (entity != null && entity is C4Entity c4Entity && !c4Entity.IsArmed)
+            if (entity is not C4Entity {IsArmed: false} c4Entity)
             {
-                c4Entity.StartTimer();
+                return;
             }
+
+            c4Entity.CurrentPreset = TimerPresets[presetIndex];
+            c4Entity.StartTimer();
         }
 
         [ServerCmd]
@@ -288,23 +288,14 @@ namespace TTTReborn.Items
         {
             Entity player = FindByIndex(playerIdent);
 
-            if (player is TTTPlayer)
+            if (player is not TTTPlayer)
             {
-                if (((Inventory) player.Inventory).TryAdd(new C4Equipment()))
-                {
-                    Delete(c4EntityIdent);
-                }
+                return;
             }
-        }
 
-        [ServerCmd]
-        public static void SetPreset(int c4EntityIdent, int preset)
-        {
-            Entity entity = FindByIndex(c4EntityIdent);
-
-            if (entity is C4Entity c4Entity)
+            if (((Inventory) player.Inventory).TryAdd(new C4Equipment()))
             {
-                c4Entity.CurrentPreset = TimerPresets[preset];
+                Delete(c4EntityIdent);
             }
         }
     }
