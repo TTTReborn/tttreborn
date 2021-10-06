@@ -80,7 +80,7 @@ namespace TTTReborn.Player
                 role.CreateDefaultShop();
                 Utils.CreateRecursiveDirectories(fileName);
 
-                Save(fileName, role);
+                Save(role);
 
                 return;
             }
@@ -91,13 +91,13 @@ namespace TTTReborn.Player
             {
                 role.UpdateDefaultShop(ShopManager.NewItemsList);
 
-                Save(fileName, role);
+                Save(role);
             }
         }
 
-        public static void Save(string fileName, TTTRole role)
+        public static void Save(TTTRole role)
         {
-            FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize(role.Shop, new JsonSerializerOptions
+            FileSystem.Data.WriteAllText(GetSettingsFile(role), JsonSerializer.Serialize(role.Shop, new JsonSerializerOptions
             {
                 WriteIndented = true
             }));
