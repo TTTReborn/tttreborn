@@ -30,6 +30,11 @@ namespace TTTReborn.Items
             Name = name;
         }
 
+        public void CopyFrom(ShopItemData shopItemData)
+        {
+            Price = shopItemData.Price;
+        }
+
         public static ShopItemData CreateItemData(Type type)
         {
             LibraryAttribute attribute = Library.GetAttribute(type);

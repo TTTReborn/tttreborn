@@ -60,7 +60,7 @@ namespace TTTReborn.Player
                     }
 
                     // override with settings data
-                    itemData.Price = shopItemData.Price;
+                    itemData.CopyFrom(shopItemData);
 
                     items.Add(itemData);
                 }
