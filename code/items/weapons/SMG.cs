@@ -10,7 +10,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Library("ttt_smg")]
     [EditorModel("weapons/rust_smg/rust_smg.vmdl")]
-    partial class SMG : TTTWeapon, IBuyableItem
+    partial class SMG : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
         public override float PrimaryRate => 10.0f;

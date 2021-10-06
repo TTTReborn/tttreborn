@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Library("ttt_pistol")]
     [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
-    partial class Pistol : TTTWeapon, IBuyableItem
+    partial class Pistol : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override bool UnlimitedAmmo => true;

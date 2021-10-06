@@ -9,7 +9,7 @@ namespace TTTReborn.Items
 {
     [Buyable(Price = 0)]
     [Library("ttt_radar")]
-    public partial class Radar : TTTCountdownPerk, IBuyableItem
+    public partial class Radar : TTTCountdownPerk
     {
         private Vector3 RADARPOINT_UI_OFFSET = Vector3.Up * 45;
         public override float Countdown { get; } = 20f;

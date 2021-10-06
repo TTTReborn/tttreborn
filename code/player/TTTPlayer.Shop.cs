@@ -47,9 +47,9 @@ namespace TTTReborn.Player
             return BuyError.None;
         }
 
-        public void RequestPurchase(IBuyableItem buyableItem)
+        public void RequestPurchase(IItem item)
         {
-            ShopItemData itemData = ShopItemData.CreateItemData(buyableItem.GetType());
+            ShopItemData itemData = ShopItemData.CreateItemData(item.GetType());
             BuyError buyError = CanBuy(itemData);
 
             if (buyError != BuyError.None)
@@ -61,7 +61,7 @@ namespace TTTReborn.Player
 
             Credits -= itemData.Price;
 
-            buyableItem.OnPurchase(this);
+            item.OnPurchase(this);
 
             ClientSendQuickshopUpdate(To.Single(this));
         }

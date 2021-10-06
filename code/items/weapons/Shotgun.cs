@@ -13,7 +13,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Library("ttt_shotgun")]
     [EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
-    partial class Shotgun : TTTWeapon, IBuyableItem
+    partial class Shotgun : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
         public override float PrimaryRate => 1;

@@ -141,6 +141,22 @@ namespace TTTReborn.Globals
             return types;
         }
 
+        public static List<Type> GetTypesWithAttribute<T, U>() where U : Attribute
+        {
+            List<Type> typeList = GetTypes<T>();
+            List<Type> finalList = new();
+
+            foreach (Type type in typeList)
+            {
+                if (HasAttribute<U>(type))
+                {
+                    finalList.Add(type);
+                }
+            }
+
+            return finalList;
+        }
+
         /// <summary>
         /// Get a derived `Type` of the given type by it's name (`Sandbox.LibraryAttribute`).
         /// </summary>
@@ -177,6 +193,24 @@ namespace TTTReborn.Globals
         public static string GetTypeName(Type type)
         {
             return Library.GetAttribute(type).Name;
+        }
+
+        public static T GetAttribute<T>(Type type) where T : Attribute
+        {
+            foreach (object obj in type.GetCustomAttributes(false))
+            {
+                if (obj is T t)
+                {
+                    return t;
+                }
+            }
+
+            return default;
+        }
+
+        public static bool HasAttribute<T>(Type type) where T : Attribute
+        {
+            return GetAttribute<T>(type) != default;
         }
 
         /// <summary>

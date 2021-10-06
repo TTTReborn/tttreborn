@@ -6,6 +6,17 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class BuyableAttribute : Attribute
+    {
+        public int Price = 100;
+
+        public BuyableAttribute() : base()
+        {
+
+        }
+    }
+
     public class ShopItemData
     {
         public string Name { get; set; }
@@ -78,25 +89,6 @@ namespace TTTReborn.Items
             }
 
             return false;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class BuyableAttribute : Attribute
-    {
-        public int Price = 100;
-
-        public BuyableAttribute() : base()
-        {
-
-        }
-    }
-
-    public interface IBuyableItem : IItem
-    {
-        void OnPurchase(TTTPlayer player)
-        {
-            player.Inventory.TryAdd(this);
         }
     }
 }

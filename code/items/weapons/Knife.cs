@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Library("ttt_knife")]
     [EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
-    partial class Knife : TTTWeapon, IBuyableItem
+    partial class Knife : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override float PrimaryRate => 1.0f;

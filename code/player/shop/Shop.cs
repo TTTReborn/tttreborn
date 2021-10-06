@@ -42,9 +42,9 @@ namespace TTTReborn.Player
 
                 foreach (ShopItemData shopItemData in shop.Items)
                 {
-                    Type itemType = Utils.GetTypeByName<IBuyableItem>(shopItemData.Name);
+                    Type itemType = Utils.GetTypeByName<IItem>(shopItemData.Name);
 
-                    if (itemType == null)
+                    if (itemType == null || !Utils.HasAttribute<BuyableAttribute>(itemType))
                     {
                         continue;
                     }
@@ -112,7 +112,7 @@ namespace TTTReborn.Player
         {
             Items.Clear();
 
-            foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
+            foreach (Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>())
             {
                 Items.Add(ShopItemData.CreateItemData(itemType));
             }

@@ -34,5 +34,10 @@ namespace TTTReborn.Items
         void Delete();
 
         void Simulate(Client owner);
+
+        void OnPurchase(TTTPlayer player)
+        {
+            player.Inventory.TryAdd(this);
+        }
     }
 }

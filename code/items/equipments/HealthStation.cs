@@ -11,7 +11,7 @@ namespace TTTReborn.Items
     [Equipment(SlotType = SlotType.UtilityEquipment)]
     [Buyable(Price = 0)]
     [Library("ttt_healthstation")]
-    public partial class HealthStation : TTTEquipment, IBuyableItem
+    public partial class HealthStation : TTTEquipment
     {
         public override string ViewModelPath => "";
 
