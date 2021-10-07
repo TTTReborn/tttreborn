@@ -39,7 +39,7 @@ namespace TTTReborn.Items
             {
                 List<Vector3> positions = new();
 
-                foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
+                foreach (TTTPlayer player in Globals.Utils.GetPlayers((pl) => pl.LifeState == LifeState.Alive))
                 {
                     if (player != Owner)
                     {
