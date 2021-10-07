@@ -10,6 +10,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Library("ttt_newton_launcher")]
     [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
+    [NonSpawnable]
     partial class NewtonLauncher : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";

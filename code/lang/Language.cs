@@ -54,7 +54,7 @@ namespace TTTReborn.Globalization
         {
             object translation = GetRawTranslation(key);
 
-            if (translation is not null)
+            if (translation != null)
             {
                 return translation.ToString();
             }
@@ -76,7 +76,7 @@ namespace TTTReborn.Globalization
         {
             string translation = GetTranslation(key);
 
-            return args is null ? translation : String.Format(translation, args);
+            return args == null ? translation : String.Format(translation, args);
         }
 
         public void AddTranslationString(string key, string translation)

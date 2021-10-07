@@ -128,7 +128,7 @@ namespace Sandbox.UI.Construct
         {
             Dropdown dropdown = self.panel.AddChild<Dropdown>();
 
-            if (className is not null)
+            if (className != null)
             {
                 dropdown.AddClass(className);
             }

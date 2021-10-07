@@ -176,7 +176,7 @@ namespace TTTReborn.UI
 
         public override void OnClickAgree()
         {
-            if (SelectedEntry is not null)
+            if (SelectedEntry != null)
             {
                 if (!FolderOnly && SelectedEntry.IsFolder)
                 {
