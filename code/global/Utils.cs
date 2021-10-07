@@ -128,17 +128,24 @@ namespace TTTReborn.Globals
         /// <returns>List of all available types of the given type</returns>
         public static List<Type> GetTypes<T>()
         {
-            List<Type> types = new();
+            return GetTypes<T>(null);
+        }
 
-            Library.GetAll<T>().ToList().ForEach(t =>
+        /// <summary>
+        /// Loops through every type derived from the given type and collects non-abstract types that matches the given predicate.
+        /// </summary>
+        /// <param name="predicate">a filter function to limit the scope</param>
+        /// <returns>List of all available and matching types of the given type</returns>
+        public static List<Type> GetTypes<T>(Func<Type, bool> predicate)
+        {
+            IEnumerable<Type> types = Library.GetAll<T>().Where(t => { return !t.IsAbstract && !t.ContainsGenericParameters; });
+
+            if (predicate != null)
             {
-                if (!t.IsAbstract && !t.ContainsGenericParameters)
-                {
-                    types.Add(t);
-                }
-            });
+                types = types.Where(predicate);
+            }
 
-            return types;
+            return types.ToList();
         }
 
         /// <summary>
