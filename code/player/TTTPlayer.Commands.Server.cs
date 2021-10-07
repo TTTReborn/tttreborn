@@ -91,18 +91,14 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IBuyableItem item = null;
+            Type itemType = Utils.GetTypeByName<IItem>(itemName);
 
-            Library.GetAll<IBuyableItem>().ToList().ForEach(t =>
+            if (itemType == null || !Utils.HasAttribute<BuyableAttribute>(itemType))
             {
-                if (!t.IsAbstract && !t.ContainsGenericParameters)
-                {
-                    if (Library.GetAttribute(t).Name == itemName)
-                    {
-                        item = Library.Create<IBuyableItem>(t);
-                    }
-                }
-            });
+                return;
+            }
+
+            IItem item = Utils.GetObjectByType<IItem>(itemType);
 
             if (item == null)
             {

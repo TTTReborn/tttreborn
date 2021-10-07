@@ -3,7 +3,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
-using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {

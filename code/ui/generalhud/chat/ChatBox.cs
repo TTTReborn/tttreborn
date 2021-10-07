@@ -270,7 +270,7 @@ namespace TTTReborn.UI
 
             if (Gamemode.Game.Instance?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead)
             {
-                AddChatEntry(To.Multiple(Utils.GetDeadClients()), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.SteamId}");
+                AddChatEntry(To.Multiple(Utils.GetClients((pl) => pl.LifeState == LifeState.Dead)), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.SteamId}");
             }
             else
             {

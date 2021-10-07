@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using Sandbox.UI;
-
 namespace TTTReborn.UI
 {
     public struct PanelContentData

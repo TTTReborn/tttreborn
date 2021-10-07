@@ -17,7 +17,7 @@ namespace TTTReborn.Player
         // serverside-only
         internal static void Load()
         {
-            List<Type> itemList = Utils.GetTypes<IBuyableItem>();
+            List<Type> itemList = Utils.GetTypesWithAttribute<IItem, BuyableAttribute>();
             string fileName = $"settings/{Utils.GetTypeNameByType(typeof(Settings.ServerSettings)).ToLower()}/internal/shopitems.json";
 
             if (FileSystem.Data.FileExists(fileName))

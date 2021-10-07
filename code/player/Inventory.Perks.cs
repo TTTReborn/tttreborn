@@ -18,7 +18,7 @@ namespace TTTReborn.Player
 
         public bool Give(TTTPerk perk)
         {
-            if (Has(perk.ClassName))
+            if (Has(perk.LibraryName))
             {
                 return false;
             }
@@ -27,7 +27,7 @@ namespace TTTReborn.Player
 
             if (Host.IsServer)
             {
-                _owner.ClientAddPerk(To.Single(_owner), perk.ClassName);
+                _owner.ClientAddPerk(To.Single(_owner), perk.LibraryName);
             }
 
             perk.Equip(_owner);
@@ -37,7 +37,7 @@ namespace TTTReborn.Player
 
         public bool Take(TTTPerk perk)
         {
-            if (!Has(perk.ClassName))
+            if (!Has(perk.LibraryName))
             {
                 return false;
             }
@@ -49,7 +49,7 @@ namespace TTTReborn.Player
 
             if (Host.IsServer)
             {
-                _owner.ClientRemovePerk(To.Single(_owner), perk.ClassName);
+                _owner.ClientRemovePerk(To.Single(_owner), perk.LibraryName);
             }
 
             return true;
@@ -64,7 +64,7 @@ namespace TTTReborn.Player
                     continue;
                 }
 
-                if (perkName == t.ClassName)
+                if (perkName == t.LibraryName)
                 {
                     return t;
                 }

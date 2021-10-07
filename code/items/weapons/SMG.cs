@@ -6,22 +6,20 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
+    [Weapon(SlotType = SlotType.Primary, AmmoType = "smg")]
+    [Buyable(Price = 100)]
     [Library("ttt_smg")]
     [EditorModel("weapons/rust_smg/rust_smg.vmdl")]
-    partial class SMG : TTTWeapon, IBuyableItem
+    partial class SMG : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
-        public override SlotType SlotType => SlotType.Primary;
         public override float PrimaryRate => 10.0f;
         public override float SecondaryRate => 1.0f;
         public override int ClipSize => 30;
         public override float ReloadTime => 2.8f;
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 8;
-        public override string AmmoType => "smg";
         public override Type AmmoEntity => typeof(SMGAmmo);
-
-        public virtual int Price => 100;
 
         public override void Spawn()
         {
