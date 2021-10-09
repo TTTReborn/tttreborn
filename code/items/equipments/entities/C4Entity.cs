@@ -265,7 +265,7 @@ namespace TTTReborn.Items
         {
             Entity entity = FindByIndex(c4EntityIdent);
 
-            if (entity is not C4Entity {IsArmed: false} c4Entity)
+            if (entity is not C4Entity { IsArmed: false } c4Entity)
             {
                 return;
             }
