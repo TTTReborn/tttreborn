@@ -86,7 +86,7 @@ namespace TTTReborn.UI.Menu
 
                 item.AddEventListener("onrightclick", (e) =>
                 {
-                    // EditItem(item, role);
+                    EditItem(item, role);
                 });
 
                 foreach (ShopItemData loopItemData in role.Shop.Items)
@@ -96,6 +96,18 @@ namespace TTTReborn.UI.Menu
                         item.SetClass("selected", true);
                     }
                 }
+
+                item.AddTooltip("", "itemtooltip", null, null, (tooltip) =>
+                {
+                    if (item.HasClass("selected"))
+                    {
+                        tooltip.SetText($"Left Click: Deactivate this item in the {role.Name} shop.\nRight Click: Edit this item.");
+                    }
+                    else
+                    {
+                        tooltip.SetText($"Left Click: Activate this item in the {role.Name} shop.");
+                    }
+                });
 
                 _shopItems.Add(item);
             }

@@ -19,16 +19,6 @@ namespace TTTReborn.UI.Menu
             ServerUpdateItem(item.ItemData.Name, toggle, toggle ? JsonSerializer.Serialize(item.ItemData) : "", role.Name);
         }
 
-        private static void EditItem(QuickShopItem item, TTTRole role)
-        {
-            if (!item.HasClass("selected"))
-            {
-                return;
-            }
-
-            ServerUpdateItem(item.ItemData.Name, true, JsonSerializer.Serialize(item.ItemData), role.Name);
-        }
-
         private static bool ProcessItemUpdate(string itemName, bool toggle, string shopItemDataJson, string roleName)
         {
             Type roleType = Utils.GetTypeByName<TTTRole>(roleName);
