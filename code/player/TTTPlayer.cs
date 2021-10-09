@@ -10,6 +10,8 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.Player
 {
+    using System.Collections.Generic;
+
     public partial class TTTPlayer : Sandbox.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;
@@ -274,8 +276,8 @@ namespace TTTReborn.Player
 
         private void TickC4Simulate()
         {
-            var props = All.Where(x => x is C4Entity).ToList();
-            props.ForEach(x => x.Simulate(GetClientOwner()));
+            List<Entity> props = All.Where(x => x is C4Entity).ToList();
+            props.ForEach(x => x.Simulate(Client));
         }
 
         protected override void OnDestroy()

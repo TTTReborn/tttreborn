@@ -9,8 +9,10 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    using UI;
+
     [Library("ttt_c4_ent"), Hammer.Skip]
-    public partial class C4Entity : Prop, IUse
+    public partial class C4Entity : Prop, IUse, IEntityHint
     {
         public struct C4Preset
         {
@@ -297,6 +299,16 @@ namespace TTTReborn.Items
             {
                 Delete(c4EntityIdent);
             }
+        }
+
+        public bool CanHint(TTTPlayer client)
+        {
+            return true;
+        }
+
+        public EntityHintPanel DisplayHint(TTTPlayer client)
+        {
+            return IsArmed ? new UsableHint("C4_DEFUSE") : new UsableHint("C4_ARM");
         }
     }
 }
