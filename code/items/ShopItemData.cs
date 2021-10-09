@@ -1,9 +1,22 @@
 using System;
 
+using Sandbox;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class BuyableAttribute : Attribute
+    {
+        public int Price = 100;
+
+        public BuyableAttribute() : base()
+        {
+
+        }
+    }
+
     public class ShopItemData
     {
         public string Name { get; set; }
@@ -15,6 +28,44 @@ namespace TTTReborn.Items
         public ShopItemData(string name)
         {
             Name = name;
+        }
+
+        public void CopyFrom(ShopItemData shopItemData)
+        {
+            Price = shopItemData.Price;
+        }
+
+        public static ShopItemData CreateItemData(Type type)
+        {
+            LibraryAttribute attribute = Library.GetAttribute(type);
+            bool buyable = false;
+
+            ShopItemData shopItemData = new ShopItemData(attribute.Name)
+            {
+                Type = type
+            };
+
+            foreach (object obj in type.GetCustomAttributes(false))
+            {
+                if (obj is BuyableAttribute buyableAttribute)
+                {
+                    shopItemData.Price = buyableAttribute.Price;
+                    buyable = true;
+                }
+                else if (obj is CarriableAttribute carriableAttribute)
+                {
+                    shopItemData.SlotType = carriableAttribute.SlotType;
+                }
+            }
+
+            if (!buyable)
+            {
+                Log.Warning($"'{type}' is missing the 'BuyableAttribute'");
+
+                return null;
+            }
+
+            return shopItemData;
         }
 
         public bool IsBuyable(TTTPlayer player)
@@ -46,33 +97,6 @@ namespace TTTReborn.Items
             }
 
             return false;
-        }
-    }
-
-    public interface IBuyableItem : IItem
-    {
-        int Price { get; }
-
-        ShopItemData CreateItemData()
-        {
-            ShopItemData itemData = new ShopItemData(ClassName)
-            {
-                Price = Price,
-                Type = GetType()
-            };
-
-            if (this is ICarriableItem carriableItem)
-            {
-                itemData.Description = $"Slot: { carriableItem.SlotType }";
-                itemData.SlotType = carriableItem.SlotType;
-            }
-
-            return itemData;
-        }
-
-        void OnPurchase(TTTPlayer player)
-        {
-            player.Inventory.TryAdd(this);
         }
     }
 }

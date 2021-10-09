@@ -4,17 +4,17 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
+    [Weapon(SlotType = SlotType.Melee)]
+    [Buyable(Price = 100)]
     [Library("ttt_knife")]
     [EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
-    partial class Knife : TTTWeapon, IBuyableItem
+    partial class Knife : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
-        public override SlotType SlotType => SlotType.Melee;
         public override float PrimaryRate => 1.0f;
         public override float DeployTime => 0.2f;
         public override int BaseDamage => 45;
         public virtual int MeleeDistance => 80;
-        public virtual int Price => 100;
 
         public override void Spawn()
         {

@@ -18,8 +18,8 @@ namespace TTTReborn.UI
             {
                 _item = value;
 
-                _nameLabel.Text = _item?.ClassName ?? "";
-                _effectImage.Texture = (_item != null ? Texture.Load($"/ui/weapons/{_item.ClassName}.png", false) : null);
+                _nameLabel.Text = _item?.LibraryName ?? "";
+                _effectImage.Texture = (_item != null ? Texture.Load($"/ui/weapons/{_item.LibraryName}.png", false) : null);
 
                 if (_effectImage.Texture == null)
                 {

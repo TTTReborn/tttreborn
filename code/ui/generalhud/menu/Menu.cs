@@ -1,6 +1,5 @@
 namespace TTTReborn.UI.Menu
 {
-    using Sandbox;
     using Sandbox.UI.Construct;
 
     public partial class Menu : RichPanel
@@ -60,6 +59,7 @@ namespace TTTReborn.UI.Menu
                 panelContent.Add.ButtonWithIcon("settings", "", "menuButton", () => OpenSettings(panelContent));
                 panelContent.Add.ButtonWithIcon("keyboard", "", "menuButton", () => OpenKeybindings(panelContent));
                 panelContent.Add.ButtonWithIcon("science", "", "menuButton", () => OpenTesting(panelContent));
+                panelContent.Add.ButtonWithIcon("shopping_cart", "", "menuButton", () => OpenShopEditor(panelContent));
             }, "", "home");
         }
 
@@ -67,14 +67,14 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                panelContent.Add.Label("Bind TeamVoiceChat:");
-                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
+                panelContent.Add.Label("Bind TeamVoiceChat: '+ttt_teamvoicechat'");
+                // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
 
-                panelContent.Add.Label("Bind Quickshop:");
-                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
+                panelContent.Add.Label("Bind Quickshop: '+ttt_quickshop'");
+                // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
 
-                panelContent.Add.Label("Bind Activate Role Button:");
-                panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_activate_rb";
+                panelContent.Add.Label("Bind Activate Role Button: '+ttt_activate_rb'");
+                // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_activate_rb";
             }, "Keybindings", "keybindings");
         }
 
@@ -107,8 +107,6 @@ namespace TTTReborn.UI.Menu
 
                 dropdown.AddOption("Test One");
                 dropdown.AddOption("Test Two");
-
-                panelContent.AddChild(dropdown);
 
                 panelContent.Add.Label("Keybind & DialogBox:");
                 panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";

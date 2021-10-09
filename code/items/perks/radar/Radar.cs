@@ -9,8 +9,9 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
+    [Buyable(Price = 0)]
     [Library("ttt_radar")]
-    public partial class Radar : TTTCountdownPerk, IBuyableItem
+    public partial class Radar : TTTCountdownPerk
     {
         public struct RadarPointData
         {
@@ -24,8 +25,6 @@ namespace TTTReborn.Items
         private readonly List<RadarPoint> _cachedPoints = new();
         private readonly Color _defaultRadarColor = Color.FromBytes(124, 252, 0);
         private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
-
-        public int Price => 0;
 
         public Radar() : base()
         {
@@ -53,7 +52,7 @@ namespace TTTReborn.Items
 
                 List<RadarPointData> pointData = new();
 
-                foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
+                foreach (TTTPlayer player in Globals.Utils.GetPlayers((pl) => pl.LifeState == LifeState.Alive))
                 {
                     if (player.Client.UserId == owner.Client.UserId)
                     {

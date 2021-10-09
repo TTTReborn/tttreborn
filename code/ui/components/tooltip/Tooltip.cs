@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -53,13 +54,13 @@ namespace TTTReborn.UI
     }
 }
 
-namespace Sandbox.UI
+namespace Sandbox.UI.Construct
 {
     using TTTReborn.UI;
 
     public static class TooltipConstructor
     {
-        public static void AddTooltip(this Panel self, string text = "", string className = null)
+        public static void AddTooltip(this Sandbox.UI.Panel self, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null)
         {
             self.AddEventListener("onmouseover", (panelEvent) =>
             {
@@ -75,6 +76,8 @@ namespace Sandbox.UI
                 {
                     tooltip.AddClass(className);
                 }
+
+                onCreate?.Invoke(tooltip);
             });
 
             self.AddEventListener("onmouseout", (panelEvent) =>
@@ -90,6 +93,8 @@ namespace Sandbox.UI
                     {
                         tooltip.Delete();
                     }
+
+                    onDelete?.Invoke(tooltip);
                 }
             });
         }

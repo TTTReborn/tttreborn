@@ -15,12 +15,14 @@ namespace TTTReborn.Player
         None,
         InventoryBlocked,
         NotEnoughCredits,
-        NoAccess
+        NoAccess,
+        NotAvailable
     }
 
     public class Shop
     {
         public List<ShopItemData> Items { set; get; } = new();
+        public bool Enabled { get; set; } = true;
 
         public Shop()
         {
@@ -29,7 +31,7 @@ namespace TTTReborn.Player
 
         public bool Accessable()
         {
-            return Items.Count > 0;
+            return Items.Count > 0 && Enabled;
         }
 
         public static Shop InitializeFromJSON(string json)
@@ -42,19 +44,23 @@ namespace TTTReborn.Player
 
                 foreach (ShopItemData shopItemData in shop.Items)
                 {
-                    Type itemType = Utils.GetTypeByName<IBuyableItem>(shopItemData.Name);
+                    Type itemType = Utils.GetTypeByName<IItem>(shopItemData.Name);
 
-                    if (itemType == null)
+                    if (itemType == null || !Utils.HasAttribute<BuyableAttribute>(itemType))
                     {
                         continue;
                     }
 
-                    IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
-                    ShopItemData itemData = item.CreateItemData();
+                    // create clean instance
+                    ShopItemData itemData = ShopItemData.CreateItemData(itemType);
 
-                    item.Delete();
+                    if (itemData == null)
+                    {
+                        continue;
+                    }
 
-                    itemData.Price = shopItemData.Price;
+                    // override with settings data
+                    itemData.CopyFrom(shopItemData);
 
                     items.Add(itemData);
                 }
@@ -76,7 +82,7 @@ namespace TTTReborn.Player
                 role.CreateDefaultShop();
                 Utils.CreateRecursiveDirectories(fileName);
 
-                Save(fileName, role);
+                Save(role);
 
                 return;
             }
@@ -87,13 +93,13 @@ namespace TTTReborn.Player
             {
                 role.UpdateDefaultShop(ShopManager.NewItemsList);
 
-                Save(fileName, role);
+                Save(role);
             }
         }
 
-        public static void Save(string fileName, TTTRole role)
+        public static void Save(TTTRole role)
         {
-            FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize(role.Shop, new JsonSerializerOptions
+            FileSystem.Data.WriteAllText(GetSettingsFile(role), JsonSerializer.Serialize(role.Shop, new JsonSerializerOptions
             {
                 WriteIndented = true
             }));
@@ -108,12 +114,9 @@ namespace TTTReborn.Player
         {
             Items.Clear();
 
-            foreach (Type itemType in Utils.GetTypes<IBuyableItem>())
+            foreach (Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>())
             {
-                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(itemType);
-                Items.Add(item.CreateItemData());
-
-                item.Delete();
+                Items.Add(ShopItemData.CreateItemData(itemType));
             }
         }
 
@@ -146,10 +149,7 @@ namespace TTTReborn.Player
                     continue;
                 }
 
-                IBuyableItem item = Utils.GetObjectByType<IBuyableItem>(type);
-                Items.Add(item.CreateItemData());
-
-                item.Delete();
+                Items.Add(ShopItemData.CreateItemData(type));
             }
         }
     }

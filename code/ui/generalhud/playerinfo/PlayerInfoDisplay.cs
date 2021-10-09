@@ -30,7 +30,6 @@ namespace TTTReborn.UI
 
             _creditLabel = _creditPanel.Add.Label();
             _creditLabel.AddClass("info");
-
         }
 
         public override void Tick()

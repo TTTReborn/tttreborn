@@ -69,7 +69,11 @@ namespace TTTReborn.UI
         public RadarDisplay() : base()
         {
             Instance = this;
+
             AddClass("fullscreen");
+
+            Style.ZIndex = -1;
+            Style.Dirty();
         }
     }
 }

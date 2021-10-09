@@ -34,7 +34,7 @@ namespace TTTReborn.Player
                 }
             }
 
-            RPCs.ClientClearInventory(To.Multiple(Utils.GetClientsSpectatingPlayer(Owner as TTTPlayer)));
+            RPCs.ClientClearInventory(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as TTTPlayer)));
 
             Perks.Clear();
             Ammo.Clear();
@@ -53,7 +53,7 @@ namespace TTTReborn.Player
                     return false;
                 }
 
-                RPCs.ClientOnPlayerCarriableItemPickup(To.Multiple(Utils.GetClientsSpectatingPlayer(player)), entity);
+                RPCs.ClientOnPlayerCarriableItemPickup(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == player)), entity);
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
@@ -150,7 +150,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerCarriableItemDrop(To.Multiple(Utils.GetClientsSpectatingPlayer(Owner as TTTPlayer)), entity);
+                RPCs.ClientOnPlayerCarriableItemDrop(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as TTTPlayer)), entity);
             }
 
             return base.Drop(entity);

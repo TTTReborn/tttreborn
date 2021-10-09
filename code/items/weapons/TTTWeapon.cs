@@ -7,25 +7,24 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    // DO NOT DELETE
-    // This should be added by sbox soonTM (so we gonna be able to fetch data without the need initializing and spawning such a weapon)
-    //
-    // [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    // public class WeaponAttribute : LibraryAttribute
-    // {
-    //     public WeaponType WeaponType;
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class WeaponAttribute : CarriableAttribute
+    {
+        public string AmmoType = "pistol";
 
-    //     public WeaponAttribute(string name) : base(name)
-    //     {
+        public WeaponAttribute() : base()
+        {
 
-    //     }
-    // }
+        }
+    }
 
     [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
-        public virtual SlotType SlotType => SlotType.Primary;
-        public virtual string AmmoType => "pistol";
+        public string LibraryName { get; }
+        public SlotType SlotType { get; } = SlotType.Secondary;
+        public string AmmoType { get; } = "pistol";
+
         public virtual Type AmmoEntity => null;
         public virtual int ClipSize => 16;
         public virtual float ReloadTime => 3.0f;
@@ -57,14 +56,22 @@ namespace TTTReborn.Items
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        public string ClassName { get; }
-
         private const int AmmoDropPositionOffset = 50;
         private const int AmmoDropVelocity = 500;
 
         public TTTWeapon() : base()
         {
-            ClassName = Library.GetAttribute(GetType()).Name;
+            LibraryName = Library.GetAttribute(GetType()).Name;
+
+            foreach (object obj in GetType().GetCustomAttributes(false))
+            {
+                if (obj is WeaponAttribute weaponAttribute)
+                {
+                    SlotType = weaponAttribute.SlotType;
+                    AmmoType = weaponAttribute.AmmoType;
+                }
+            }
+
             Tags.Add(IItem.ITEM_TAG);
         }
 

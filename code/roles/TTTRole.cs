@@ -33,6 +33,8 @@ namespace TTTReborn.Roles
 
         public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
 
+        public virtual bool IsSelectable => true;
+
         public Shop Shop
         {
             get
