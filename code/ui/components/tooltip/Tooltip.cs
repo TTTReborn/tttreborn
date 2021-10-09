@@ -8,19 +8,25 @@ namespace TTTReborn.UI
 {
     public partial class Tooltip : Label
     {
-        public static List<Tooltip> Tooltips = new();
+        public static Tooltip Instance;
 
         public float RequiredHoveringTime { get; set; } = 0.5f;
 
+        public readonly Action<Tooltip> OnCreate;
+        public readonly Action<Tooltip> OnDelete;
         public readonly Action<Tooltip> OnTick;
         public readonly Sandbox.UI.Panel RelatedPanel;
 
+        internal static Panel _cachedTarget;
+
         private TimeSince _timeSinceMouseStopped = 0f;
 
-        public Tooltip(Sandbox.UI.Panel relatedPanel, Action<Tooltip> onTick = null) : base()
+        public Tooltip(Sandbox.UI.Panel relatedPanel, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null) : base()
         {
             RelatedPanel = relatedPanel;
             Parent = Hud.Current.RootPanel;
+            OnCreate = onCreate;
+            OnDelete = onDelete;
             OnTick = onTick;
 
             StyleSheet.Load("/ui/components/tooltip/Tooltip.scss");
@@ -35,12 +41,12 @@ namespace TTTReborn.UI
             Style.MaxWidth = Length.Pixels(Math.Max(rect.width, 200f));
             Style.Dirty();
 
-            Tooltips.Add(this);
+            Instance = this;
         }
 
         public override void OnDeleted()
         {
-            Tooltips.Remove(this);
+            Instance = null;
         }
 
         public override void Tick()
@@ -74,7 +80,7 @@ namespace Sandbox.UI.Construct
                     return;
                 }
 
-                CreateTooltip(self, text, className, onCreate, onTick);
+                CreateTooltip(self, text, className, onCreate, onDelete, onTick);
             });
 
             self.AddEventListener("onmouseout", (panelEvent) =>
@@ -84,19 +90,20 @@ namespace Sandbox.UI.Construct
                     return;
                 }
 
-                DeleteTooltips(self, onDelete);
+                DeleteTooltip();
             });
 
             self.AddEventListener("onclick", (panelEvent) =>
             {
-                DeleteTooltips(self, onDelete);
                 CreateTooltip(self, text, className, onCreate, onTick);
             });
         }
 
-        private static void CreateTooltip(Sandbox.UI.Panel panel, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onTick = null)
+        private static Tooltip CreateTooltip(Sandbox.UI.Panel panel, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
         {
-            Tooltip tooltip = new(panel, onTick);
+            DeleteTooltip();
+
+            Tooltip tooltip = new(panel, onCreate, onDelete, onTick);
             tooltip.SetText(text);
 
             if (!string.IsNullOrEmpty(className))
@@ -105,19 +112,14 @@ namespace Sandbox.UI.Construct
             }
 
             onCreate?.Invoke(tooltip);
+
+            return tooltip;
         }
 
-        private static void DeleteTooltips(Sandbox.UI.Panel panel, Action<Tooltip> onDelete = null)
+        private static void DeleteTooltip()
         {
-            foreach (Tooltip tooltip in Tooltip.Tooltips)
-            {
-                if (tooltip.RelatedPanel == panel)
-                {
-                    tooltip.Delete();
-                }
-
-                onDelete?.Invoke(tooltip);
-            }
+            Tooltip.Instance?.OnDelete?.Invoke(Tooltip.Instance);
+            Tooltip.Instance?.Delete(true);
         }
     }
 }
