@@ -49,9 +49,9 @@ namespace TTTReborn.UI.Menu
             PreviousButton = Add.Button("<", "previous", () => Menu.MenuContent.Previous());
             NextButton = Add.Button(">", "next", () => Menu.MenuContent.Next());
 
-            HomeButton.SetClass("disabled", true);
-            PreviousButton.SetClass("disabled", true);
-            NextButton.SetClass("disabled", true);
+            HomeButton.SetClass("disable", true);
+            PreviousButton.SetClass("disable", true);
+            NextButton.SetClass("disable", true);
         }
     }
 

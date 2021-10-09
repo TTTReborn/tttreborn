@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 
-using Sandbox;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
-using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI.Menu
@@ -35,6 +32,8 @@ namespace TTTReborn.UI.Menu
                 _shopEditorWrapper = new(panelContent);
                 _shopEditorWrapper.AddClass("wrapper");
 
+                _shopEditorWrapper.Add.Label("Please select a role to modify the connected shop.");
+
                 foreach (Type roleType in Utils.GetTypes<TTTRole>())
                 {
                     TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
@@ -49,8 +48,6 @@ namespace TTTReborn.UI.Menu
                         CreateShopContent(role);
                     });
                 }
-
-                // on select, populate
             }, "ShopEditor", "shopeditor");
         }
 
