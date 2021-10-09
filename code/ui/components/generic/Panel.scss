@@ -14,6 +14,12 @@ $info: #ffae00;
     letter-spacing: 0.5px;
 }
 
+.iconpanel,
+.icon {
+    font-size: 21px;
+    font-family: MaterialIcons;
+}
+
 .window {
     flex-direction: column;
     justify-content: space-between;

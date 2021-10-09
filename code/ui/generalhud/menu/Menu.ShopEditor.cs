@@ -97,15 +97,42 @@ namespace TTTReborn.UI.Menu
                     }
                 }
 
-                item.AddTooltip("", "itemtooltip", null, null, (tooltip) =>
+                item.AddTooltip("", "buttons", null, (tooltip) =>
+                {
+                    item.SetClass("tooltip-right", false);
+                    item.SetClass("tooltip-left", false);
+                }, (tooltip) =>
                 {
                     if (item.HasClass("selected"))
                     {
-                        tooltip.SetText($"Left Click: Deactivate this item in the {role.Name} shop.\nRight Click: Edit this item.");
+                        if (item.HasClass("tooltip-left"))
+                        {
+                            return;
+                        }
+
+                        item.SetClass("tooltip-right", false);
+                        item.SetClass("tooltip-left", true);
+
+                        tooltip.DeleteChildren(true);
+
+                        Sandbox.UI.Panel panel = tooltip.Add.Panel("span");
+                        panel.Add.Label("keyboard_arrow_left", "icon");
+                        panel.Add.Label($"Deactivate this item in the {role.Name} shop.");
+
+                        panel = tooltip.Add.Panel("span");
+                        panel.Add.Icon("keyboard_arrow_right", "icon");
+                        panel.Add.Label("Edit this item.");
                     }
-                    else
+                    else if (!item.HasClass("tooltip-right"))
                     {
-                        tooltip.SetText($"Left Click: Activate this item in the {role.Name} shop.");
+                        item.SetClass("tooltip-right", true);
+                        item.SetClass("tooltip-left", false);
+
+                        tooltip.DeleteChildren(true);
+
+                        Sandbox.UI.Panel panel = tooltip.Add.Panel("span");
+                        panel.Add.Label("keyboard_arrow_left", "icon");
+                        panel.Add.Label($"Activate this item in the {role.Name} shop.");
                     }
                 });
 

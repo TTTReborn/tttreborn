@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
@@ -95,7 +94,7 @@ namespace Sandbox.UI.Construct
 
             self.AddEventListener("onclick", (panelEvent) =>
             {
-                CreateTooltip(self, text, className, onCreate, onTick);
+                CreateTooltip(self, text, className, onCreate, onDelete, onTick);
             });
         }
 
