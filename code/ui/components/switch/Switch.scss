@@ -35,4 +35,12 @@ Switch {
         margin-left: 10px;
         background-color: rgb(83, 83, 83);
     }
+
+    &.disable .checkmark {
+        cursor: default;
+
+        .handle {
+            background-color: rgb(75, 75, 75);
+        }
+    }
 }

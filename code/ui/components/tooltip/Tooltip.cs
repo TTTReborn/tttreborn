@@ -29,7 +29,8 @@ namespace TTTReborn.UI
 
             Style.Left = Length.Pixels(rect.left);
             Style.Top = Length.Pixels(rect.top);
-            Style.Width = Length.Pixels(rect.width);
+            Style.MinWidth = Length.Pixels(200f);
+            Style.MaxWidth = Length.Pixels(Math.Max(rect.width, 200f));
             Style.Dirty();
 
             Tooltips.Add(this);
