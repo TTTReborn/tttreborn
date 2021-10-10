@@ -21,15 +21,15 @@ namespace TTTReborn.UI.Menu
             {
                 if (realm == Utils.Realm.Client)
                 {
-                    return $"/settings/{Utils.GetTypeNameByType(typeof(ClientSettings)).ToLower()}/";
+                    return $"/settings/{Utils.GetTypeName(typeof(ClientSettings)).ToLower()}/";
                 }
                 else
                 {
-                    return $"/settings/{Utils.GetTypeNameByType(typeof(ServerSettings)).ToLower()}/";
+                    return $"/settings/{Utils.GetTypeName(typeof(ServerSettings)).ToLower()}/";
                 }
             }
 
-            return $"/settings/{Utils.GetTypeNameByType(SettingsManager.Instance.GetType()).ToLower()}/";
+            return $"/settings/{Utils.GetTypeName(SettingsManager.Instance.GetType()).ToLower()}/";
         }
 
         private void CreateSettingsButtons(PanelContent menuContent)

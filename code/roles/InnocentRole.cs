@@ -15,5 +15,13 @@ namespace TTTReborn.Roles
         {
 
         }
+
+        // serverside function
+        public override void CreateDefaultShop()
+        {
+            Shop.Enabled = false;
+
+            base.CreateDefaultShop();
+        }
     }
 }

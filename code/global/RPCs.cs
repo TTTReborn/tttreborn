@@ -2,7 +2,6 @@ using Sandbox;
 
 using TTTReborn.Events;
 using TTTReborn.Items;
-using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
@@ -66,7 +65,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+            player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
             player.SendRoleButtonsToClient();
 
             Client client = player.Client;
@@ -87,7 +86,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
 
             deadPlayer.IsConfirmed = true;
             deadPlayer.CorpseConfirmer = confirmPlayer;

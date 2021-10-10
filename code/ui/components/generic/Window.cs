@@ -1,8 +1,10 @@
+using System;
+
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public class Window : Panel
+    public class Window : RichPanel
     {
         public Panel Header { get; set; }
         public Sandbox.UI.Label WindowLabel { get; set; }
@@ -39,6 +41,8 @@ namespace TTTReborn.UI
             Footer.AddClass("footer");
             Footer.AddClass("rounded-bottom");
             Footer.AddClass("background-color-secondary");
+
+            IsDraggable = true;
         }
     }
 }

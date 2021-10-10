@@ -17,10 +17,24 @@ Tooltip {
     font-family: Poppins;
     font-weight: 500;
 
+    .iconpanel,
+    .icon {
+        font-size: 21px;
+        font-family: MaterialIcons;
+    }
+
     &.hide,
     &:outro {
         opacity: 0;
 
         transition: opacity 0s linear;
+    }
+
+    &.buttons {
+        flex-direction: column;
+
+        .span {
+            flex-direction: row;
+        }
     }
 }

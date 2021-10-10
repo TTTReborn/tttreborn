@@ -1,10 +1,36 @@
+using System;
+
 namespace TTTReborn.UI
 {
     public partial class Switch : Sandbox.UI.Switch
     {
+        public bool Disabled
+        {
+            get => _disabled;
+            set
+            {
+                _disabled = value;
+
+                SetClass("disable", _disabled);
+            }
+        }
+        private bool _disabled = false;
+
+        public Func<Sandbox.UI.MousePanelEvent, bool> OnCheck;
+
         public Switch() : base()
         {
             StyleSheet.Load("/ui/components/switch/Switch.scss");
+        }
+
+        protected override void OnClick(Sandbox.UI.MousePanelEvent e)
+        {
+            if (!Disabled && (OnCheck == null || OnCheck.Invoke(e)))
+            {
+                base.OnClick(e);
+            }
+
+            e.StopPropagation();
         }
     }
 }

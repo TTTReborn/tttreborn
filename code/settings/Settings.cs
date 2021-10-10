@@ -142,7 +142,7 @@ namespace TTTReborn.Settings
         {
             SettingsLoadingError settingsLoadingError = SettingsLoadingError.None;
 
-            string settingsName = Utils.GetTypeNameByType(typeof(T));
+            string settingsName = Utils.GetTypeName(typeof(T));
 
             path ??= $"/settings/{settingsName.ToLower()}/";
 
@@ -202,7 +202,7 @@ namespace TTTReborn.Settings
                 return;
             }
 
-            string settingsName = Utils.GetTypeNameByType(typeof(T));
+            string settingsName = Utils.GetTypeName(typeof(T));
 
             path ??= $"/settings/{settingsName.ToLower()}/";
 

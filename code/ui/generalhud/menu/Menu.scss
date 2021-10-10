@@ -3,15 +3,15 @@ Menu {
     border: 1px solid #1b1b1b;
     border-radius: 8px;
 
-    min-width: 600px;
-    width: 600px;
-    max-width: 800px;
-    min-height: 200px;
-    height: 800px;
+    left: 40%;
+    top: 15%;
+
+    min-width: 400px;
+    width: 20%;
+    max-width: 1200px;
+    min-height: 400px;
+    height: 70%;
     max-height: 800px;
-    left: 50%;
-    top: 50%;
-    //transform: translateX(-50%) translateY(-50%); // waiting for https://github.com/Facepunch/sbox-issues/issues/551
     position: absolute;
 
     color: #fafafa;
@@ -42,11 +42,12 @@ Menu {
         &.home {
             flex-direction: row;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
 
             .menuButton {
                 width: 160px;
                 height: 160px;
+                margin: 10px;
 
                 justify-content: center;
                 flex-direction: column;
@@ -161,8 +162,8 @@ PanelContent.shopeditor {
     flex-wrap: wrap;
     justify-content: start;
 
-    > Label {
-        margin-top: 12px;
+    > Switch {
+        margin-top: 4px;
     }
 
     Dropdown {

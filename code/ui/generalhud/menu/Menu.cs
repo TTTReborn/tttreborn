@@ -36,9 +36,9 @@ namespace TTTReborn.UI.Menu
             MenuContent.OnPanelContentUpdated = (panelContentData) =>
             {
                 _menuHeader.NavigationHeader.SetTitle(panelContentData.Title ?? "");
-                _menuHeader.NavigationHeader.HomeButton.SetClass("disabled", panelContentData.ClassName == "home");
-                _menuHeader.NavigationHeader.PreviousButton.SetClass("disabled", !MenuContent.CanPrevious);
-                _menuHeader.NavigationHeader.NextButton.SetClass("disabled", !MenuContent.CanNext);
+                _menuHeader.NavigationHeader.HomeButton.SetClass("disable", panelContentData.ClassName == "home");
+                _menuHeader.NavigationHeader.PreviousButton.SetClass("disable", !MenuContent.CanPrevious);
+                _menuHeader.NavigationHeader.NextButton.SetClass("disable", !MenuContent.CanNext);
             };
 
             OpenHomepage();

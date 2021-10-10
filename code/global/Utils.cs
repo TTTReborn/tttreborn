@@ -56,7 +56,7 @@ namespace TTTReborn.Globals
         /// <returns>List of all available and matching types of the given type</returns>
         public static List<Type> GetTypes<T>(Func<Type, bool> predicate)
         {
-            IEnumerable<Type> types = Library.GetAll<T>().Where(t => { return !t.IsAbstract && !t.ContainsGenericParameters; });
+            IEnumerable<Type> types = Library.GetAll<T>().Where(t => !t.IsAbstract && !t.ContainsGenericParameters);
 
             if (predicate != null)
             {
@@ -73,11 +73,13 @@ namespace TTTReborn.Globals
         /// </summary>
         /// <param name="name">The name of the `Sandbox.LibraryAttribute`</param>
         /// <returns>Derived `Type` of given type</returns>
-        public static Type GetTypeByName<T>(string name)
+        public static Type GetTypeByLibraryName<T>(string name)
         {
+            name = name.ToLower();
+
             foreach (Type type in GetTypes<T>())
             {
-                if (GetTypeName(type) == name)
+                if (GetLibraryName(type).Equals(name))
                 {
                     return type;
                 }
@@ -98,7 +100,7 @@ namespace TTTReborn.Globals
         /// </summary>
         /// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
         /// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-        public static string GetTypeName(Type type) => Library.GetAttribute(type).Name;
+        public static string GetLibraryName(Type type) => Library.GetAttribute(type).Name.ToLower();
 
         public static T GetAttribute<T>(Type type) where T : Attribute
         {
@@ -168,7 +170,7 @@ namespace TTTReborn.Globals
             return highestPanel;
         }
 
-        public static string GetTypeNameByType(Type type) => type.FullName.Replace(type.Namespace, "").TrimStart('.');
+        public static string GetTypeName(Type type) => type.FullName.Replace(type.Namespace, "").TrimStart('.');
 
         public enum Realm
         {

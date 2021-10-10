@@ -6,10 +6,8 @@ Switch {
 
     .checkmark {
         background-color: #000c;
-        left: 50%;
-        top: 50%;
+        right: 0px;
         width: 100%;
-        transform: translateX(-50%) translateY(-50%);
         cursor: pointer;
 
         border-radius: 100%;
@@ -20,7 +18,7 @@ Switch {
             height: 25px;
             top: 50%;
             transform: translateX(-50%) translateY(-50%);
-            transition: all 1s ease-in-out;
+            transition: all 0.2s linear;
 
             border-radius: 100%;
         }
@@ -35,6 +33,14 @@ Switch {
     &:not(.checked) .checkmark .handle {
         left: 0%;
         margin-left: 10px;
-        background-color: black;
+        background-color: rgb(83, 83, 83);
+    }
+
+    &.disable .checkmark {
+        cursor: default;
+
+        .handle {
+            background-color: rgb(75, 75, 75);
+        }
     }
 }
