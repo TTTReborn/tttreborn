@@ -44,7 +44,7 @@ namespace TTTReborn.Player
 
                 foreach (ShopItemData shopItemData in shop.Items)
                 {
-                    Type itemType = Utils.GetTypeByName<IItem>(shopItemData.Name);
+                    Type itemType = Utils.GetTypeByLibraryName<IItem>(shopItemData.Name);
 
                     if (itemType == null || !Utils.HasAttribute<BuyableAttribute>(itemType))
                     {
@@ -107,7 +107,7 @@ namespace TTTReborn.Player
 
         public static string GetSettingsFile(TTTRole role)
         {
-            return $"settings/{Utils.GetTypeNameByType(typeof(Settings.ServerSettings)).ToLower()}/shop/{role.Name.ToLower()}.json";
+            return $"settings/{Utils.GetTypeName(typeof(Settings.ServerSettings)).ToLower()}/shop/{role.Name.ToLower()}.json";
         }
 
         internal void AddAllItems()
@@ -126,13 +126,13 @@ namespace TTTReborn.Player
 
             foreach (ShopItemData shopItemData in Items)
             {
-                storedItemList.Add(Utils.GetTypeNameByType(shopItemData.Type).ToLower());
+                storedItemList.Add(Utils.GetLibraryName(shopItemData.Type).ToLower());
             }
 
             foreach (Type type in newItemsList)
             {
                 bool found = false;
-                string newItemName = Utils.GetTypeNameByType(type).ToLower();
+                string newItemName = Utils.GetLibraryName(type).ToLower();
 
                 foreach (string storedItemName in storedItemList)
                 {

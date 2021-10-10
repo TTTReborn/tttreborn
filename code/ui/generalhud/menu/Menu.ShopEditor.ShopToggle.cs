@@ -12,7 +12,7 @@ namespace TTTReborn.UI.Menu
     {
         private static bool ProcessShopToggle(string roleName, bool toggle)
         {
-            Type roleType = Utils.GetTypeByName<TTTRole>(roleName);
+            Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
 
             if (roleType == null)
             {
@@ -56,7 +56,7 @@ namespace TTTReborn.UI.Menu
 
             if (ProcessShopToggle(roleName, toggle))
             {
-                Shop.Save(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)));
+                Shop.Save(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)));
 
                 ClientToggleShop(roleName, toggle);
             }

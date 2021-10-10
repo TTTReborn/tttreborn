@@ -21,7 +21,7 @@ namespace TTTReborn.UI.Menu
 
         private static bool ProcessItemUpdate(string itemName, bool toggle, string shopItemDataJson, string roleName)
         {
-            Type roleType = Utils.GetTypeByName<TTTRole>(roleName);
+            Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
 
             if (roleType == null)
             {
@@ -46,7 +46,7 @@ namespace TTTReborn.UI.Menu
                     return false;
                 }
 
-                Type itemType = Utils.GetTypeByName<IItem>(itemName);
+                Type itemType = Utils.GetTypeByLibraryName<IItem>(itemName);
 
                 if (itemType == null)
                 {
@@ -127,7 +127,7 @@ namespace TTTReborn.UI.Menu
 
             if (ProcessItemUpdate(itemName, toggle, shopItemDataJson, roleName))
             {
-                Shop.Save(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByName<TTTRole>(roleName)));
+                Shop.Save(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)));
 
                 ClientUpdateItem(itemName, toggle, shopItemDataJson, roleName);
             }

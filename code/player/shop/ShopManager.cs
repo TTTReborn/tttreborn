@@ -18,7 +18,7 @@ namespace TTTReborn.Player
         internal static void Load()
         {
             List<Type> itemList = Utils.GetTypesWithAttribute<IItem, BuyableAttribute>();
-            string fileName = $"settings/{Utils.GetTypeNameByType(typeof(Settings.ServerSettings)).ToLower()}/internal/shopitems.json";
+            string fileName = $"settings/{Utils.GetTypeName(typeof(Settings.ServerSettings)).ToLower()}/internal/shopitems.json";
 
             if (FileSystem.Data.FileExists(fileName))
             {
@@ -37,7 +37,7 @@ namespace TTTReborn.Player
                     if (loaded)
                     {
                         bool found = false;
-                        string availableItemName = Utils.GetTypeNameByType(type).ToLower();
+                        string availableItemName = Utils.GetLibraryName(type).ToLower();
 
                         foreach (string loadedItemName in loadedItems)
                         {
@@ -71,7 +71,7 @@ namespace TTTReborn.Player
 
             foreach (Type type in itemList)
             {
-                availableItems.Add(Utils.GetTypeNameByType(type).ToLower());
+                availableItems.Add(Utils.GetLibraryName(type).ToLower());
             }
 
             Utils.CreateRecursiveDirectories(fileName);
