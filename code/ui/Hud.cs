@@ -129,7 +129,8 @@ namespace TTTReborn.UI
                     _rootPanel.AddChild<BreathIndicator>(),
                     _rootPanel.AddChild<StaminaIndicator>(),
                     _rootPanel.AddChild<QuickShop>(),
-                    _rootPanel.AddChild<DamageIndicator>()
+                    _rootPanel.AddChild<DamageIndicator>(),
+                    _rootPanel.AddChild<C4Arm>()
                 };
             }
 
