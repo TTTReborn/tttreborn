@@ -61,7 +61,7 @@ namespace TTTReborn.UI.Menu
 
                 if (SettingsTabs.SelectedTab.Value is Utils.Realm realm && realm == Utils.Realm.Server)
                 {
-                    fileSelection.OnClose = (modal) =>
+                    fileSelection.WindowHeader.NavigationHeader.OnClose = (modal) =>
                     {
                         if (ServerSettingsFileSelection != fileSelection)
                         {
@@ -124,7 +124,7 @@ namespace TTTReborn.UI.Menu
             string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
             DialogBox dialogBox = new DialogBox();
-            dialogBox.TitleLabel.Text = $"Overwrite '{fullFilePath}'";
+            dialogBox.WindowHeader.NavigationHeader.SetTitle($"Overwrite '{fullFilePath}'");
             dialogBox.AddText($"Do you want to overwrite '{fullFilePath}' with the current settings? (If you agree, the settings defined in this file will be lost!)");
             dialogBox.OnAgree = () =>
             {
@@ -247,7 +247,7 @@ namespace TTTReborn.Player
             if (menu != null && menu.Enabled && menu.ServerSettingsTabContent != null)
             {
                 // refresh settings
-                menu.MenuContent.SetPanelContent(menu.OpenSettings);
+                menu.WindowContent.SetPanelContent(menu.OpenSettings);
                 menu.SettingsTabs?.SelectByValue(Utils.Realm.Server);
 
                 menu.ServerSettingsFileSelection?.Close();
