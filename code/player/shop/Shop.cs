@@ -126,13 +126,13 @@ namespace TTTReborn.Player
 
             foreach (ShopItemData shopItemData in Items)
             {
-                storedItemList.Add(Utils.GetLibraryName(shopItemData.Type).ToLower());
+                storedItemList.Add(Utils.GetLibraryName(shopItemData.Type));
             }
 
             foreach (Type type in newItemsList)
             {
                 bool found = false;
-                string newItemName = Utils.GetLibraryName(type).ToLower();
+                string newItemName = Utils.GetLibraryName(type);
 
                 foreach (string storedItemName in storedItemList)
                 {

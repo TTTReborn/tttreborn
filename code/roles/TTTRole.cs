@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 
 using Sandbox;
 
@@ -56,14 +55,6 @@ namespace TTTReborn.Roles
             if (TeamFunctions.GetTeamByType(DefaultTeamType) == null)
             {
                 Utils.GetObjectByType<TTTTeam>(DefaultTeamType);
-            }
-
-            using (Prediction.Off())
-            {
-                if (!ShopDict.ContainsKey(Name))
-                {
-                    InitShop();
-                }
             }
         }
 

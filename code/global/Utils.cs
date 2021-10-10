@@ -75,6 +75,8 @@ namespace TTTReborn.Globals
         /// <returns>Derived `Type` of given type</returns>
         public static Type GetTypeByLibraryName<T>(string name)
         {
+            name = name.ToLower();
+
             foreach (Type type in GetTypes<T>())
             {
                 if (GetLibraryName(type).Equals(name))
@@ -98,7 +100,7 @@ namespace TTTReborn.Globals
         /// </summary>
         /// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
         /// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-        public static string GetLibraryName(Type type) => Library.GetAttribute(type).Name;
+        public static string GetLibraryName(Type type) => Library.GetAttribute(type).Name.ToLower();
 
         public static T GetAttribute<T>(Type type) where T : Attribute
         {

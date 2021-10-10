@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
+using Sandbox;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
+using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI.Menu
@@ -20,19 +23,91 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                _shopToggle = panelContent.Add.Switch("shoptoggle", false);
+                ServerRequestShopEditorAccess();
+            }, "ShopEditor", "shopeditor");
+        }
+
+        [ServerCmd]
+        public static void ServerRequestShopEditorAccess()
+        {
+            if (ConsoleSystem.Caller == null)
+            {
+                return;
+            }
+
+            To to = To.Single(ConsoleSystem.Caller);
+
+            if (!ConsoleSystem.Caller.HasPermission("shopeditor"))
+            {
+                ClientReceiveShopEditorAccess(to, false);
+
+                return;
+            }
+
+            foreach (Type roleType in Utils.GetTypes<TTTRole>())
+            {
+                TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+
+                ClientUpdateShop(to, role.Name, JsonSerializer.Serialize(role.Shop));
+            }
+
+            ClientReceiveShopEditorAccess(to, true);
+        }
+
+        [ClientRpc]
+        public static void ClientUpdateShop(string roleName, string shopJson)
+        {
+            Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
+
+            if (roleType == null)
+            {
+                return;
+            }
+
+            TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+
+            if (role == null)
+            {
+                return;
+            }
+
+            role.Shop = Shop.InitializeFromJSON(shopJson);
+        }
+
+        [ClientRpc]
+        public static void ClientReceiveShopEditorAccess(bool access)
+        {
+            Menu menu = Menu.Instance;
+
+            if (menu == null || !menu.Enabled)
+            {
+                return;
+            }
+
+            PanelContent menuContent = menu.MenuContent;
+
+            if (menuContent == null || !menuContent.Title.Equals("ShopEditor"))
+            {
+                return;
+            }
+
+            menu.CreateShopEditorContent(access);
+        }
+
+        private void CreateShopEditorContent(bool access)
+        {
+            MenuContent.DeleteChildren(true);
+
+            if (access)
+            {
+                _shopToggle = MenuContent.Add.Switch("shoptoggle", false);
                 _shopToggle.Disabled = true;
 
                 _shopToggle.AddTooltip("Toggle to de-/activate the shop for the currently selected role.", "togglehint");
 
-                Dropdown dropdown = panelContent.Add.Dropdown();
+                Dropdown dropdown = MenuContent.Add.Dropdown();
                 dropdown.TextLabel.Text = "Choose role...";
                 dropdown.AddTooltip("Select a role to modify the connected shop.", "roleselection");
-
-                _shopEditorWrapper = new(panelContent);
-                _shopEditorWrapper.AddClass("wrapper");
-
-                _shopEditorWrapper.Add.Label("Please select a role to modify the connected shop.");
 
                 foreach (Type roleType in Utils.GetTypes<TTTRole>())
                 {
@@ -48,7 +123,19 @@ namespace TTTReborn.UI.Menu
                         CreateShopContent(role);
                     });
                 }
-            }, "ShopEditor", "shopeditor");
+            }
+
+            _shopEditorWrapper = new(MenuContent);
+            _shopEditorWrapper.AddClass("wrapper");
+
+            if (!access)
+            {
+                _shopEditorWrapper.Add.Label("You don't have permissions to access the ShopEditor.");
+
+                return;
+            }
+
+            _shopEditorWrapper.Add.Label("Please select a role to modify the connected shop.");
         }
 
         private void CreateShopContent(TTTRole role)
