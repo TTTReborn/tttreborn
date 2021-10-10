@@ -48,14 +48,14 @@ namespace TTTReborn.UI.Menu
             {
                 TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
 
-                ClientUpdateShop(to, role.Name, JsonSerializer.Serialize(role.Shop));
+                ClientUpdateRoleShop(to, role.Name, JsonSerializer.Serialize(role.Shop));
             }
 
             ClientReceiveShopEditorAccess(to, true);
         }
 
         [ClientRpc]
-        public static void ClientUpdateShop(string roleName, string shopJson)
+        public static void ClientUpdateRoleShop(string roleName, string shopJson)
         {
             Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
 
@@ -180,6 +180,9 @@ namespace TTTReborn.UI.Menu
                 {
                     if (loopItemData.Name.Equals(shopItemData.Name))
                     {
+                        shopItemData.CopyFrom(loopItemData);
+
+                        item.SetItem(shopItemData);
                         item.SetClass("selected", true);
                     }
                 }

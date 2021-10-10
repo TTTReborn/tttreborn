@@ -78,6 +78,7 @@ Menu {
 
                     Label {
                         flex-grow: 1;
+                        margin-top: 7px;
                     }
 
                     TextEntry,
@@ -86,12 +87,9 @@ Menu {
                         min-width: 200px;
                     }
 
-                    TextEntry {
+                    .setting {
                         padding: 5px;
-
-                        background-color: #000c;
-                        border: 1px solid #1b1b1b;
-                        border-radius: 8px;
+                        margin: 2px;
                     }
                 }
             }

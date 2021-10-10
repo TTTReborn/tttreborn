@@ -33,6 +33,17 @@ namespace TTTReborn.Items
         public void CopyFrom(ShopItemData shopItemData)
         {
             Price = shopItemData.Price;
+            Description = shopItemData.Description ?? Description;
+            SlotType = shopItemData.SlotType ?? SlotType;
+            Type = shopItemData.Type ?? Type;
+        }
+
+        public ShopItemData Clone()
+        {
+            ShopItemData shopItemData = new ShopItemData(Name);
+            shopItemData.CopyFrom(this);
+
+            return shopItemData;
         }
 
         public static ShopItemData CreateItemData(Type type)

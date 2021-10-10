@@ -167,3 +167,30 @@ $info: #ffae00;
 .border-color-spectator {
     border-color: $spectator;
 }
+
+// TODO this should be moved somewhere else
+.itemeditwindow {
+    PanelContent {
+        flex-grow: 1;
+        overflow: scroll;
+        justify-content: start;
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        Label {
+            flex-grow: 1;
+            margin-top: 7px;
+        }
+
+        TextEntry,
+        Dropdown {
+            flex-shrink: 1;
+            min-width: 200px;
+        }
+
+        .setting {
+            padding: 5px;
+            margin: 2px;
+        }
+    }
+}

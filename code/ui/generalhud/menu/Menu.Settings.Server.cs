@@ -1,7 +1,3 @@
-using System;
-
-using Sandbox;
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Settings;
@@ -110,37 +106,6 @@ namespace TTTReborn.UI.Menu
 
                 SettingFunctions.SendSettingsToServer(serverSettings);
             });
-        }
-
-        private TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnChange = null)
-        {
-            Sandbox.UI.Panel wrapper = parent.Add.Panel();
-            Label textLabel = wrapper.Add.Label(title);
-            textLabel.AddTooltip(description, "");
-
-            TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
-
-            textEntry.AddEventListener("onsubmit", (panelEvent) =>
-            {
-                try
-                {
-                    textEntry.Text.TryToType(typeof(T), out object value);
-
-                    if (value.ToString().Equals(textEntry.Text))
-                    {
-                        T newValue = (T) value;
-
-                        OnChange?.Invoke(newValue);
-
-                        defaultValue = newValue;
-                    }
-                }
-                catch (Exception) { }
-
-                textEntry.Text = defaultValue.ToString();
-            });
-
-            return textEntry;
         }
     }
 }
