@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Sandbox;
-using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    using UI;
-
-    [Library("ttt_c4_ent"), Hammer.Skip]
+    [Hammer.Skip]
+    [Library("ttt_c4_ent")]
     public partial class C4Entity : Prop, IUse, IEntityHint
     {
         public struct C4Preset
@@ -71,8 +71,8 @@ namespace TTTReborn.Items
         public C4Preset CurrentPreset { get; set; } = TimerPresets[0];
 
         //Timer display on C4 entity.
-        private WorldPanel TimerDisplay;
-        private Label TimerDisplayLabel;
+        private Sandbox.UI.WorldPanel TimerDisplay;
+        private Sandbox.UI.Label TimerDisplayLabel;
         private bool CreatedDisplay = false;
 
         private const int BOMB_RADIUS = 1024;
@@ -116,15 +116,15 @@ namespace TTTReborn.Items
             {
                 if (!CreatedDisplay)
                 {
-                    TimerDisplay = new WorldPanel();
+                    TimerDisplay = new();
                     CreatedDisplay = true;
 
                     TimerDisplay.AddClass("c4worldtimer");
-                    TimerDisplay.StyleSheet.Add(StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
+                    TimerDisplay.StyleSheet.Add(Sandbox.UI.StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
 
                     TimerDisplay.PanelBounds = new Rect(-120, 0, 140, 80);
 
-                    TimerDisplayLabel = TimerDisplay.AddChild<Label>();
+                    TimerDisplayLabel = TimerDisplay.Add.Label();
                     TimerDisplayLabel.Text = EMPTY_TIMER;
                 }
             }
@@ -148,10 +148,10 @@ namespace TTTReborn.Items
         {
             // Add a wire minigame in here later
             // For now, if you randomly roll the wrong wire the bomb explodes
-            int disarmRoll = new Random().Next(1, CurrentPreset.Wires + 1);
-            if (disarmRoll != 1)
+            if (new Random().Next(1, CurrentPreset.Wires + 1) != 1)
             {
                 _ = Explode();
+
                 return;
             }
 
@@ -214,23 +214,18 @@ namespace TTTReborn.Items
 
             foreach (Entity overlap in overlaps)
             {
-                if (overlap is not ModelEntity ent || !ent.IsValid())
+                if (overlap is not ModelEntity ent || !ent.IsValid() || ent.LifeState != LifeState.Alive || !ent.PhysicsBody.IsValid() || ent.IsWorld)
+                {
                     continue;
-
-                if (ent.LifeState != LifeState.Alive)
-                    continue;
-
-                if (!ent.PhysicsBody.IsValid())
-                    continue;
-
-                if (ent.IsWorld)
-                    continue;
+                }
 
                 Vector3 targetPos = ent.PhysicsBody.MassCenter;
-
                 float dist = Vector3.DistanceBetween(sourcePos, targetPos);
+
                 if (dist > BOMB_RADIUS)
+                {
                     continue;
+                }
 
                 TraceResult tr = Trace.Ray(sourcePos, targetPos)
                     .Ignore(this)
@@ -290,12 +285,7 @@ namespace TTTReborn.Items
         {
             Entity player = FindByIndex(playerIdent);
 
-            if (player is not TTTPlayer)
-            {
-                return;
-            }
-
-            if (((Inventory) player.Inventory).TryAdd(new C4Equipment()))
+            if (player is TTTPlayer pl && pl.Inventory.TryAdd(new C4Equipment()))
             {
                 Delete(c4EntityIdent);
             }

@@ -7,23 +7,25 @@ namespace TTTReborn.Items
     /// <summary>
     /// C4 equipment definition, for the physical entity, see items/equipments/entities/C4Entity.cs
     /// </summary>
-    [Library("ttt_c4"), Hammer.Skip]
-    public partial class C4Equipment : TTTEquipment, IBuyableItem
+    [Hammer.Skip]
+    [Buyable(Price = 0)]
+    [Equipment(SlotType = SlotType.OffensiveEquipment)]
+    [Library("ttt_c4")]
+    public partial class C4Equipment : TTTEquipment
     {
-        public override string ViewModelPath => "";
-        public override SlotType SlotType => SlotType.OffensiveEquipment;
-
-        private const int PLACE_DISTANCE = 200;
-
-        public int Price => 0;
-
         [ServerVar("ttt_c4_can_drop", Help = "If enabled, allows players to drop the C4 as a physics item with Attack2.")]
         public static bool TTTC4CanDrop { get; set; } = false;
+
+        public override string ViewModelPath => "";
+
+        private const int PLACE_DISTANCE = 200;
 
         public C4Equipment() : base()
         {
 
         }
+
+        public override bool CanDrop() => false;
 
         public override void Spawn()
         {
@@ -34,12 +36,7 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client client)
         {
-            if (!IsServer)
-            {
-                return;
-            }
-
-            if (Owner is not TTTPlayer owner)
+            if (!IsServer || Owner is not TTTPlayer owner)
             {
                 return;
             }
@@ -67,13 +64,11 @@ namespace TTTReborn.Items
 
                     owner.Inventory.Remove(this);
                 }
-                if (Input.Pressed(InputButton.Attack2) && TTTC4CanDrop)
+                else if (Input.Pressed(InputButton.Attack2) && TTTC4CanDrop)
                 {
                     owner.Inventory.DropEntity(this, typeof(C4Entity));
                 }
             }
         }
-
-        public override bool CanDrop() => false;
     }
 }

@@ -55,7 +55,7 @@ namespace TTTReborn.Player
 
         public float LastDistanceToAttacker { get; private set; } = 0f;
 
-        private const float ArmorReductionPercentage = 0.7f; //- Move ArmorReductionPercentage to read off a cvar for added customization
+        public float ArmorReductionPercentage { get; private set; } = 0.7f; // TODO Move ArmorReductionPercentage to read off a cvar for added customization
 
         public void SetHealth(float health)
         {
@@ -71,7 +71,8 @@ namespace TTTReborn.Player
                 info.Damage *= 2.0f;
             }
 
-            //If player has bodyarmor, was not shot in the head, and was shot by a bullet, reduce damage by 30%.
+            // TODO this should be handled by hooks and in the item itself
+            // If player has bodyarmor, was not shot in the head, and was shot by a bullet, reduce damage by 30%.
             if (Inventory.Perks.Has("ttt_bodyarmor") && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
             {
                 info.Damage *= ArmorReductionPercentage;

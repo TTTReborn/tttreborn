@@ -59,25 +59,24 @@ namespace TTTReborn.Items
                         continue;
                     }
 
-                    RadarPointData point = new RadarPointData
+                    pointData.Add(new RadarPointData
                     {
                         Position = player.Position + _radarPointOffset,
                         Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
-                    };
-                    pointData.Add(point);
+                    });
                 }
 
                 if (owner.Team is not TraitorTeam)
                 {
                     List<Vector3> decoyPositions = Entity.All.Where(x => x.GetType() == typeof(DecoyEntity))?.Select(x => x.Position).ToList();
+
                     foreach (Vector3 decoyPosition in decoyPositions)
                     {
-                        RadarPointData point = new RadarPointData
+                        pointData.Add(new RadarPointData
                         {
                             Position = decoyPosition + _radarPointOffset,
                             Color = _defaultRadarColor
-                        };
-                        pointData.Add(point);
+                        });
                     }
                 }
 

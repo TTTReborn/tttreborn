@@ -276,8 +276,10 @@ namespace TTTReborn.Player
 
         private void TickC4Simulate()
         {
-            List<Entity> props = All.Where(x => x is C4Entity).ToList();
-            props.ForEach(x => x.Simulate(Client));
+            foreach (C4Entity c4 in All.Where(x => x is C4Entity))
+            {
+                c4.Simulate(Client);
+            }
         }
 
         protected override void OnDestroy()

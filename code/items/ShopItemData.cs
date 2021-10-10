@@ -91,10 +91,6 @@ namespace TTTReborn.Items
             {
                 return player.Inventory.HasEmptySlot(SlotType.Value);
             }
-            else if (Type.IsSubclassOf(typeof(TTTEquipment)))
-            {
-                return player.Inventory.HasEmptySlot(SlotType.Value);
-            }
 
             return false;
         }

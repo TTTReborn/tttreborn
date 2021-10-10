@@ -50,6 +50,7 @@ namespace TTTReborn.Player
                 {
                     attachedC4s.Add(c4);
                 }
+
                 if (child is ModelEntity e)
                 {
                     string model = e.GetModelName();

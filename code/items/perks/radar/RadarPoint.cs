@@ -26,6 +26,7 @@ namespace TTTReborn.UI
             _distanceLabel = Add.Label();
             _distanceLabel.AddClass("distance-label");
             _distanceLabel.AddClass("text-shadow");
+
             Style.BackgroundColor = data.Color;
             Style.BoxShadow = new ShadowList()
             {

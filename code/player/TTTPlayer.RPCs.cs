@@ -83,12 +83,22 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientOpenC4Menu(C4Entity c4Entity)
         {
-            C4Arm.Instance.Open(c4Entity, this);
+            if (c4Entity == null || !c4Entity.IsValid)
+            {
+                return;
+            }
+
+            C4Arm.Instance?.Open(c4Entity, this);
         }
 
         [ClientRpc]
         public void ClientCloseC4Menu()
         {
+            if (C4Arm.Instance == null)
+            {
+                return;
+            }
+
             C4Arm.Instance.Enabled = false;
         }
     }

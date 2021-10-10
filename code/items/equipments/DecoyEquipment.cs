@@ -7,18 +7,20 @@ namespace TTTReborn.Items
     /// <summary>
     /// Decoy equipment definition, for the physical entity, see items/equipments/entities/DecoyEntity.cs
     /// </summary>
-    [Library("ttt_decoy"), Hammer.Skip]
-    public partial class DecoyEquipment : TTTEquipment, IBuyableItem
+    [Weapon(SlotType = SlotType.UtilityEquipment)]
+    [Buyable(Price = 0)]
+    [Hammer.Skip]
+    [Library("ttt_decoy")]
+    public partial class DecoyEquipment : TTTEquipment
     {
         public override string ViewModelPath => "";
-        public override SlotType SlotType => SlotType.UtilityEquipment;
-
-        public int Price => 0;
 
         public DecoyEquipment() : base()
         {
 
         }
+
+        public override bool CanDrop() => false;
 
         public override void Spawn()
         {
@@ -29,12 +31,7 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client client)
         {
-            if (!IsServer)
-            {
-                return;
-            }
-
-            if (Owner is not TTTPlayer owner)
+            if (!IsServer || Owner is not TTTPlayer owner)
             {
                 return;
             }
@@ -47,7 +44,5 @@ namespace TTTReborn.Items
                 }
             }
         }
-
-        public override bool CanDrop() => false;
     }
 }
