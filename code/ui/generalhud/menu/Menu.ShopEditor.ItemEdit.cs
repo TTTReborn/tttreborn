@@ -15,7 +15,7 @@ namespace TTTReborn.UI.Menu
                 return;
             }
 
-            Log.Error($"Edit {item.ItemData.Name}");
+            Hud.Current.RootPanel.AddChild(new Window());
 
             // ServerUpdateItem(item.ItemData.Name, true, JsonSerializer.Serialize(item.ItemData), role.Name);
         }
