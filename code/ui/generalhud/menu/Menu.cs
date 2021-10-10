@@ -10,14 +10,14 @@ namespace TTTReborn.UI.Menu
 
         private readonly MenuHeader _menuHeader;
 
-        public override bool Enabled
+        public new bool Enabled
         {
             get => base.Enabled;
             set
             {
                 base.Enabled = value;
 
-                if (!_isEnabled)
+                if (!IsEnabled)
                 {
                     OpenHomepage();
                 }

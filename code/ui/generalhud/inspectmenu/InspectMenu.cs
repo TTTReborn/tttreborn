@@ -34,13 +34,13 @@ namespace TTTReborn.UI
 
         public new bool Enabled
         {
-            get => base._isEnabled;
+            get => base.IsEnabled;
             set
             {
-                base._isEnabled = value;
+                base.IsEnabled = value;
 
-                SetClass("fade-in", base._isEnabled);
-                _inspectContainer.SetClass("pop-in", base._isEnabled);
+                SetClass("fade-in", base.IsEnabled);
+                _inspectContainer.SetClass("pop-in", base.IsEnabled);
             }
         }
         public InspectMenu()

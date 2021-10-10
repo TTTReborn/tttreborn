@@ -57,9 +57,7 @@ namespace TTTReborn.Player
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
-            bool added = base.Add(entity, makeActive);
-
-            return added;
+            return base.Add(entity, makeActive);
         }
 
         public bool Add(TTTPerk perk)
@@ -109,6 +107,7 @@ namespace TTTReborn.Player
 
                 return true;
             }
+
             return false;
         }
 
@@ -164,6 +163,7 @@ namespace TTTReborn.Player
             droppedEntity.Rotation = Owner.EyeRot;
             droppedEntity.Velocity = Owner.EyeRot.Forward * DROPVELOCITY;
             droppedEntity.Tags.Add(IItem.ITEM_TAG);
+
             return Remove(self);
         }
     }

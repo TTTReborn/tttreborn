@@ -79,8 +79,7 @@ namespace TTTReborn.Items
             {
                 return false;
             }
-
-            if (Type.IsSubclassOf(typeof(TTTEquipment)) || Type.IsSubclassOf(typeof(TTTWeapon)))
+            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
             {
                 return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType.Value);
             }

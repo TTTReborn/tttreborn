@@ -11,15 +11,15 @@ namespace TTTReborn.Items
     public partial class HealthstationEntity : Prop, IUse, IEntityHint
     {
         [Net]
-        public float StoredHealth { get; set; } = 200f; //This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
+        public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
 
         private string ModelPath => "models/entities/healthstation.vmdl";
 
         private RealTimeUntil NextHeal = 0;
 
         private const int HEALAMOUNT = 1;
-        private const int HEALFREQUENCY = 2; //seconds
-        private const int DELAYIFFAILED = 2; //Multiplied by HealFrequency if HealthPlayer returns false
+        private const int HEALFREQUENCY = 2; // seconds
+        private const int DELAYIFFAILED = 2; // Multiplied by HealFrequency if HealthPlayer returns false
 
         public override void Spawn()
         {
@@ -38,9 +38,12 @@ namespace TTTReborn.Items
                 float healAmount = Math.Min(HEALAMOUNT, healthNeeded);
 
                 player.SetHealth(player.Health + healAmount);
+
                 StoredHealth -= healAmount;
+
                 return true;
             }
+
             return false;
         }
 
