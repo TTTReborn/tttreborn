@@ -9,7 +9,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [Role("Detective")]
+    [Role("detective")]
     public class DetectiveRole : TTTRole
     {
         public override Color Color => Color.FromBytes(25, 102, 255);
