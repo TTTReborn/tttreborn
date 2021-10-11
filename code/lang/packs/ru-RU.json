@@ -4,8 +4,10 @@
         "CODE": "ru-RU"
     },
 
+    "ROLE_NAME_NONE": "Незнакомец",
     "ROLE_NAME_INNOCENT": "Невиновный",
     "ROLE_NAME_TRAITOR": "Предатель",
+    "ROLE_NAME_DETECTIVE": "детектив",
 
     "ROUND_STATE_WAITING": "Ожидание",
     "ROUND_STATE_PREPARING": "Подготовка",
