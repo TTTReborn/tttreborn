@@ -161,7 +161,7 @@ namespace TTTReborn.UI.Menu
 
         private void OpenRoleSelectionEditor(PanelContent menuContent)
         {
-            Hud.Current.RootPanel.AddChild(new VisualProgramming.VisualProgrammingWindow());
+            new VisualProgramming.VisualProgrammingWindow(Hud.Current.RootPanel);
         }
     }
 }

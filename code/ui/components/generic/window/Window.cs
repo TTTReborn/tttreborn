@@ -13,19 +13,20 @@ namespace TTTReborn.UI
             AddClass("text-shadow");
 
             Header = new(this);
+            Header.AddClass("header");
             Header.AddClass("rounded-top");
             Header.AddClass("background-color-secondary");
 
             Content = new(this);
-            Content.AddClass("background-color-primary");
             Content.AddClass("content");
+            Content.AddClass("background-color-primary");
 
             Footer = new(this);
             Footer.AddClass("footer");
             Footer.AddClass("rounded-bottom");
             Footer.AddClass("background-color-secondary");
 
-            IsDraggable = true;
+            IsDraggable = false;
         }
     }
 }

@@ -4,9 +4,8 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public Node(Sandbox.UI.Panel parent = null) : base(parent)
         {
-            // WindowHeader.DragHeaderWrapper
+            Header.DragHeader.IsFreeDraggable = true;
+            Header.DragHeader.IsLocked = false;
         }
-
-
     }
 }

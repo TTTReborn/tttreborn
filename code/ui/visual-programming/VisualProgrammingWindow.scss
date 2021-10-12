@@ -1,3 +1,26 @@
 VisualProgrammingWindow {
+    Node {
+        width: 200px;
+        height: 150px;
 
+        .panel {
+            &.header {
+                padding: 4px;
+                min-height: 30px;
+
+                Button.closebutton {
+                    display: none;
+                }
+
+                Label.title {
+                    display: none;
+                }
+            }
+
+            &.footer {
+                min-height: 20px;
+                padding: 4px;
+            }
+        }
+    }
 }

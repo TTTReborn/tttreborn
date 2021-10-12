@@ -80,6 +80,8 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/components/dragdrop/Drag.scss");
 
+            AddClass("drag");
+
             IsLocked = false;
         }
 

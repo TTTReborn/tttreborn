@@ -13,6 +13,11 @@ Menu {
     pointer-events: all;
     flex-direction: column;
 
+    .panel.header {
+        min-height: 50px;
+        height: 60px;
+    }
+
     &.hide {
         display: none;
         pointer-events: none;
