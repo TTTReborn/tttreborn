@@ -19,8 +19,10 @@ namespace TTTReborn.UI.Menu
             ServerUpdateItem(item.ItemData.Name, toggle, toggle ? JsonSerializer.Serialize(item.ItemData) : "", role.Name);
         }
 
-        private static bool ProcessItemUpdate(string itemName, bool toggle, string shopItemDataJson, string roleName)
+        private static bool ProcessItemUpdate(string itemName, bool toggle, string shopItemDataJson, string roleName, out ShopItemData shopItemData)
         {
+            shopItemData = null;
+
             Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
 
             if (roleType == null)
@@ -34,8 +36,6 @@ namespace TTTReborn.UI.Menu
             {
                 return false;
             }
-
-            ShopItemData shopItemData = null;
 
             if (toggle)
             {
@@ -125,7 +125,7 @@ namespace TTTReborn.UI.Menu
                 return;
             }
 
-            if (ProcessItemUpdate(itemName, toggle, shopItemDataJson, roleName))
+            if (ProcessItemUpdate(itemName, toggle, shopItemDataJson, roleName, out _))
             {
                 Shop.Save(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)));
 
@@ -136,30 +136,37 @@ namespace TTTReborn.UI.Menu
         [ClientRpc]
         public static void ClientUpdateItem(string itemName, bool toggle, string shopItemDataJson, string roleName)
         {
-            if (ProcessItemUpdate(itemName, toggle, shopItemDataJson, roleName))
+            if (!ProcessItemUpdate(itemName, toggle, shopItemDataJson, roleName, out ShopItemData shopItemData))
             {
-                Menu menu = Menu.Instance;
+                return;
+            }
 
-                if (menu == null || !menu.Enabled)
+            Menu menu = Menu.Instance;
+
+            if (menu == null || !menu.Enabled)
+            {
+                return;
+            }
+
+            PanelContent menuContent = menu.WindowContent;
+
+            if (menuContent == null || !menuContent.Title.Equals("ShopEditor") || !roleName.Equals(menu._selectedRole?.Name) || menu._shopItems.Count < 1)
+            {
+                return;
+            }
+
+            foreach (QuickShopItem shopItem in menu._shopItems)
+            {
+                if (shopItem.ItemData.Name.Equals(itemName))
                 {
-                    return;
-                }
-
-                PanelContent menuContent = menu.MenuContent;
-
-                if (menuContent == null || !menuContent.Title.Equals("ShopEditor") || !roleName.Equals(menu._selectedRole?.Name) || menu._shopItems.Count < 1)
-                {
-                    return;
-                }
-
-                foreach (QuickShopItem shopItem in menu._shopItems)
-                {
-                    if (shopItem.ItemData.Name.Equals(itemName))
+                    if (shopItemData != null)
                     {
-                        shopItem.SetClass("selected", toggle);
-
-                        break;
+                        shopItem.SetItem(shopItemData);
                     }
+
+                    shopItem.SetClass("selected", toggle);
+
+                    break;
                 }
             }
         }

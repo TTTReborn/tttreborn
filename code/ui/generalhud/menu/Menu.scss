@@ -1,8 +1,4 @@
 Menu {
-    background-color: #000c;
-    border: 1px solid #1b1b1b;
-    border-radius: 8px;
-
     left: 40%;
     top: 15%;
 
@@ -14,9 +10,6 @@ Menu {
     max-height: 800px;
     position: absolute;
 
-    color: #fafafa;
-    font-family: Poppins;
-    font-weight: 500;
     pointer-events: all;
     flex-direction: column;
 
@@ -53,10 +46,6 @@ Menu {
                 flex-direction: column;
                 text-align: center;
 
-                background-color: #000c;
-                border: 1px solid #1b1b1b;
-                border-radius: 8px;
-
                 font-size: 42px;
                 font-family: MaterialIcons;
                 color: white;
@@ -89,6 +78,7 @@ Menu {
 
                     Label {
                         flex-grow: 1;
+                        margin-top: 7px;
                     }
 
                     TextEntry,
@@ -97,12 +87,9 @@ Menu {
                         min-width: 200px;
                     }
 
-                    TextEntry {
+                    .setting {
                         padding: 5px;
-
-                        background-color: #000c;
-                        border: 1px solid #1b1b1b;
-                        border-radius: 8px;
+                        margin: 2px;
                     }
                 }
             }

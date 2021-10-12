@@ -48,14 +48,14 @@ namespace TTTReborn.UI.Menu
             {
                 TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
 
-                ClientUpdateShop(to, role.Name, JsonSerializer.Serialize(role.Shop));
+                ClientUpdateRoleShop(to, role.Name, JsonSerializer.Serialize(role.Shop));
             }
 
             ClientReceiveShopEditorAccess(to, true);
         }
 
         [ClientRpc]
-        public static void ClientUpdateShop(string roleName, string shopJson)
+        public static void ClientUpdateRoleShop(string roleName, string shopJson)
         {
             Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
 
@@ -84,7 +84,7 @@ namespace TTTReborn.UI.Menu
                 return;
             }
 
-            PanelContent menuContent = menu.MenuContent;
+            PanelContent menuContent = menu.WindowContent;
 
             if (menuContent == null || !menuContent.Title.Equals("ShopEditor"))
             {
@@ -96,16 +96,16 @@ namespace TTTReborn.UI.Menu
 
         private void CreateShopEditorContent(bool access)
         {
-            MenuContent.DeleteChildren(true);
+            WindowContent.DeleteChildren(true);
 
             if (access)
             {
-                _shopToggle = MenuContent.Add.Switch("shoptoggle", false);
+                _shopToggle = WindowContent.Add.Switch("shoptoggle", false);
                 _shopToggle.Disabled = true;
 
                 _shopToggle.AddTooltip("Toggle to de-/activate the shop for the currently selected role.", "togglehint");
 
-                Dropdown dropdown = MenuContent.Add.Dropdown();
+                Dropdown dropdown = WindowContent.Add.Dropdown();
                 dropdown.TextLabel.Text = "Choose role...";
                 dropdown.AddTooltip("Select a role to modify the connected shop.", "roleselection");
 
@@ -125,7 +125,7 @@ namespace TTTReborn.UI.Menu
                 }
             }
 
-            _shopEditorWrapper = new(MenuContent);
+            _shopEditorWrapper = new(WindowContent);
             _shopEditorWrapper.AddClass("wrapper");
 
             if (!access)
@@ -180,6 +180,9 @@ namespace TTTReborn.UI.Menu
                 {
                     if (loopItemData.Name.Equals(shopItemData.Name))
                     {
+                        shopItemData.CopyFrom(loopItemData);
+
+                        item.SetItem(shopItemData);
                         item.SetClass("selected", true);
                     }
                 }

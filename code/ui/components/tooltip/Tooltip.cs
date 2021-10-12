@@ -16,8 +16,6 @@ namespace TTTReborn.UI
         public readonly Action<Tooltip> OnTick;
         public readonly Sandbox.UI.Panel RelatedPanel;
 
-        internal static Panel _cachedTarget;
-
         private TimeSince _timeSinceMouseStopped = 0f;
 
         public Tooltip(Sandbox.UI.Panel relatedPanel, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null) : base()

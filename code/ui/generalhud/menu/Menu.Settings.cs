@@ -1,4 +1,7 @@
+using System;
+
 using Sandbox;
+using Sandbox.UI;
 
 using TTTReborn.Settings;
 
@@ -47,6 +50,66 @@ namespace TTTReborn.UI.Menu
             }
 
             ServerSettingsTabContent.SetPanelContent((menuContent) => CreateServerSettings(menuContent, serverSettings));
+        }
+
+        internal static TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null)
+        {
+            Sandbox.UI.Panel wrapper = parent.Add.Panel();
+            Label textLabel = wrapper.Add.Label(title);
+            textLabel.AddTooltip(description, "");
+
+            TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
+            textEntry.AddClass("setting");
+            textEntry.AddClass("rounded");
+            textEntry.AddClass("box-shadow");
+            textEntry.AddClass("background-color-secondary");
+
+            textEntry.AddEventListener("onsubmit", (panelEvent) =>
+            {
+                try
+                {
+                    textEntry.Text.TryToType(typeof(T), out object value);
+
+                    if (value.ToString().Equals(textEntry.Text))
+                    {
+                        T newValue = (T) value;
+
+                        OnSubmit?.Invoke(newValue);
+
+                        defaultValue = newValue;
+                    }
+                }
+                catch (Exception) { }
+
+                textEntry.Text = defaultValue.ToString();
+            });
+
+            textEntry.AddEventListener("onchange", (panelEvent) =>
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(textEntry.Text))
+                    {
+                        return;
+                    }
+
+                    textEntry.Text.TryToType(typeof(T), out object value);
+
+                    if (value.ToString().Equals(textEntry.Text))
+                    {
+                        T newValue = (T) value;
+
+                        OnChange?.Invoke(newValue);
+
+                        defaultValue = newValue;
+                    }
+                }
+                catch (Exception) { }
+
+                textEntry.Text = defaultValue.ToString();
+            });
+
+            return textEntry;
         }
     }
 }
