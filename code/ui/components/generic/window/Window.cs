@@ -28,5 +28,10 @@ namespace TTTReborn.UI
 
             IsDraggable = false;
         }
+
+        public void SetTitle(string title)
+        {
+            Header.NavigationHeader.SetTitle(title);
+        }
     }
 }

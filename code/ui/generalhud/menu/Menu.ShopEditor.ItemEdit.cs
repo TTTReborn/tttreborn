@@ -33,8 +33,7 @@ namespace TTTReborn.UI.Menu
 
             DialogBox dialogBox = new DialogBox();
             dialogBox.Header.DragHeader.IsLocked = false;
-            dialogBox.Header.NavigationHeader.SetTitle($"Edit item '{item.ItemData.Name}'");
-
+            dialogBox.SetTitle($"Edit item '{item.ItemData.Name}'");
             dialogBox.AddClass("itemeditwindow");
 
             dialogBox.OnAgree = () =>

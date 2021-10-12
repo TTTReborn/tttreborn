@@ -53,7 +53,7 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/components/modal/fileselection/FileSelection.scss");
 
-            Header.NavigationHeader.SetTitle(DefaultSelectionPath);
+            SetTitle(DefaultSelectionPath);
 
             OnDecline = () => Close();
 
@@ -79,7 +79,7 @@ namespace TTTReborn.UI
         public void CreateTreeView(string path)
         {
             CurrentFolderPath = path;
-            Header.NavigationHeader.SetTitle(path);
+            SetTitle(path);
             SelectedEntry = null;
 
             Content.SetPanelContent((panelContent) =>

@@ -2,6 +2,8 @@ namespace TTTReborn.UI.VisualProgramming
 {
     public class VisualProgrammingWindow : Window
     {
+        public MainNode MainNode;
+
         public VisualProgrammingWindow(Sandbox.UI.Panel parent = null) : base(parent)
         {
             StyleSheet.Load("/ui/visual-programming/VisualProgrammingWindow.scss");
@@ -10,10 +12,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             Content.SetPanelContent((panelContent) =>
             {
-                for (int i = 0; i < 10; i++)
-                {
-                    new Node(panelContent).Display();
-                }
+                new MainNode(panelContent).Display();
             });
         }
     }

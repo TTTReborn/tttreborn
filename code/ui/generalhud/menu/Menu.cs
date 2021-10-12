@@ -46,7 +46,7 @@ namespace TTTReborn.UI.Menu
 
             Content.OnPanelContentUpdated = (panelContentData) =>
             {
-                Header.NavigationHeader.SetTitle(panelContentData.Title ?? "");
+                SetTitle(panelContentData.Title ?? "");
 
                 foreach (Sandbox.UI.Panel panel in Header.NavigationHeader.Children)
                 {

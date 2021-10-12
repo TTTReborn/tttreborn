@@ -124,7 +124,7 @@ namespace TTTReborn.UI.Menu
             string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
             DialogBox dialogBox = new DialogBox();
-            dialogBox.Header.NavigationHeader.SetTitle($"Overwrite '{fullFilePath}'");
+            dialogBox.SetTitle($"Overwrite '{fullFilePath}'");
             dialogBox.AddText($"Do you want to overwrite '{fullFilePath}' with the current settings? (If you agree, the settings defined in this file will be lost!)");
             dialogBox.OnAgree = () =>
             {
