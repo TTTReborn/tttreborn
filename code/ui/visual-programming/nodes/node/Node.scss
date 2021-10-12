@@ -18,12 +18,13 @@
             Label.title {
                 height: 20px;
                 top: -5px;
+
+                font-size: 10px;
             }
         }
 
         &.content {
             background-color: rgb(61, 118, 243);
-            padding: 5px;
         }
 
         &.footer {
@@ -36,8 +37,6 @@
 
     .nodesetting {
         flex-grow: 1;
-
-        padding: 2px;
 
         > NodeConnectionPanel {
             flex-shrink: 1;
@@ -62,6 +61,8 @@
 
         > PanelContent {
             flex-grow: 1;
+
+            padding: 8px;
         }
     }
 }

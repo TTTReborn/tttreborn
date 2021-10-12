@@ -19,7 +19,7 @@ namespace TTTReborn.UI.VisualProgramming
         public string LibraryName { get; set; }
         public List<NodeSetting> NodeSettings { get; set; } = new();
 
-        public Node(Sandbox.UI.Panel parent = null) : base(parent)
+        public Node() : base()
         {
             LibraryName = GetAttribute().Name;
 

@@ -20,4 +20,10 @@ VisualProgrammingWindow {
             display: none;
         }
     }
+
+    NodeConnectionWire {
+        background-color: black;
+
+        z-index: -1;
+    }
 }
