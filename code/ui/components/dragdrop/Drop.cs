@@ -12,8 +12,6 @@ namespace TTTReborn.UI
 
         public Drop(Sandbox.UI.Panel parent = null) : base(parent)
         {
-            Parent = parent ?? Parent;
-
             List.Add(this);
 
             StyleSheet.Load("/ui/components/dragdrop/Drop.scss");

@@ -18,8 +18,6 @@ namespace TTTReborn.UI
 
         public QuickShopItem(Sandbox.UI.Panel parent) : base(parent)
         {
-            Parent = parent;
-
             AddClass("rounded");
             AddClass("text-shadow");
             AddClass("background-color-secondary");

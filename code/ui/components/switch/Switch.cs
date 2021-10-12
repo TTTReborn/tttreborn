@@ -18,8 +18,10 @@ namespace TTTReborn.UI
 
         public Func<Sandbox.UI.MousePanelEvent, bool> OnCheck;
 
-        public Switch() : base()
+        public Switch(Sandbox.UI.Panel parent = null) : base()
         {
+            Parent = parent ?? Parent;
+
             StyleSheet.Load("/ui/components/switch/Switch.scss");
         }
 
@@ -43,7 +45,7 @@ namespace Sandbox.UI.Construct
     {
         public static Switch Switch(this PanelCreator self, string className = null, bool enabled = false)
         {
-            Switch sw = self.panel.AddChild<Switch>();
+            Switch sw = new(self.panel);
 
             if (!string.IsNullOrEmpty(className))
             {

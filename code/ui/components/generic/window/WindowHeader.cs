@@ -6,7 +6,7 @@ namespace TTTReborn.UI
     {
         public readonly WindowNavigationHeader NavigationHeader;
 
-        public WindowDragHeader DragHeaderWrapper;
+        public WindowDragHeader DragHeader;
 
         public WindowHeader(Window parent) : base(parent)
         {
@@ -16,8 +16,8 @@ namespace TTTReborn.UI
 
             AddClass("windowheader");
 
-            DragHeaderWrapper = new WindowDragHeader(this, Parent as Window);
-            NavigationHeader = new WindowNavigationHeader(DragHeaderWrapper, Parent as Window);
+            DragHeader = new WindowDragHeader(this, Parent as Window);
+            NavigationHeader = new WindowNavigationHeader(DragHeader, Parent as Window);
         }
     }
 

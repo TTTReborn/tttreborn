@@ -13,7 +13,7 @@ namespace TTTReborn.UI
         private Panel _breathBar;
         private Label _breathLabel;
 
-        public BreathIndicator()
+        public BreathIndicator() : base()
         {
             Instance = this;
 

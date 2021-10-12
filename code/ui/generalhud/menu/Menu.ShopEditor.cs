@@ -84,7 +84,7 @@ namespace TTTReborn.UI.Menu
                 return;
             }
 
-            PanelContent menuContent = menu.WindowContent;
+            PanelContent menuContent = menu.Content;
 
             if (menuContent == null || !menuContent.Title.Equals("ShopEditor"))
             {
@@ -96,46 +96,52 @@ namespace TTTReborn.UI.Menu
 
         private void CreateShopEditorContent(bool access)
         {
-            WindowContent.DeleteChildren(true);
-
             if (access)
             {
-                _shopToggle = WindowContent.Add.Switch("shoptoggle", false);
-                _shopToggle.Disabled = true;
-
-                _shopToggle.AddTooltip("Toggle to de-/activate the shop for the currently selected role.", "togglehint");
-
-                Dropdown dropdown = WindowContent.Add.Dropdown();
-                dropdown.TextLabel.Text = "Choose role...";
-                dropdown.AddTooltip("Select a role to modify the connected shop.", "roleselection");
-
-                foreach (Type roleType in Utils.GetTypes<TTTRole>())
+                Content.SetPanelContent((panelContent) =>
                 {
-                    TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+                    _shopToggle = panelContent.Add.Switch("shoptoggle", false);
+                    _shopToggle.Disabled = true;
 
-                    if (role == null)
+                    _shopToggle.AddTooltip("Toggle to de-/activate the shop for the currently selected role.", "togglehint");
+
+                    Dropdown dropdown = panelContent.Add.Dropdown();
+                    dropdown.TextLabel.Text = "Choose role...";
+                    dropdown.AddTooltip("Select a role to modify the connected shop.", "roleselection");
+
+                    foreach (Type roleType in Utils.GetTypes<TTTRole>())
                     {
-                        continue;
+                        TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+
+                        if (role == null)
+                        {
+                            continue;
+                        }
+
+                        dropdown.AddOption(role.Name, role, (panel) =>
+                        {
+                            CreateShopContent(role);
+                        });
                     }
 
-                    dropdown.AddOption(role.Name, role, (panel) =>
-                    {
-                        CreateShopContent(role);
-                    });
-                }
+                    _shopEditorWrapper = new(panelContent);
+                    _shopEditorWrapper.AddClass("wrapper");
+
+                    _shopEditorWrapper.Add.Label("Please select a role to modify the connected shop.");
+                }, "ShopEditor", "shopeditor");
             }
-
-            _shopEditorWrapper = new(WindowContent);
-            _shopEditorWrapper.AddClass("wrapper");
-
-            if (!access)
+            else
             {
-                _shopEditorWrapper.Add.Label("You don't have permissions to access the ShopEditor.");
+                Content.SetPanelContent((panelContent) =>
+                {
+                    _shopEditorWrapper = new(panelContent);
+                    _shopEditorWrapper.AddClass("wrapper");
+
+                    _shopEditorWrapper.Add.Label("You don't have permissions to access the ShopEditor.");
+                }, "ShopEditor", "shopeditor");
 
                 return;
             }
-
-            _shopEditorWrapper.Add.Label("Please select a role to modify the connected shop.");
         }
 
         private void CreateShopContent(TTTRole role)

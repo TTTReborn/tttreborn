@@ -148,7 +148,7 @@ namespace TTTReborn.UI.Menu
                 return;
             }
 
-            PanelContent menuContent = menu.WindowContent;
+            PanelContent menuContent = menu.Content;
 
             if (menuContent == null || !menuContent.Title.Equals("ShopEditor") || !roleName.Equals(menu._selectedRole?.Name) || menu._shopItems.Count < 1)
             {
