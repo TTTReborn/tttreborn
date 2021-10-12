@@ -17,10 +17,12 @@ namespace TTTReborn.UI.VisualProgramming
     public abstract class Node : Modal
     {
         public string LibraryName { get; set; }
-        public List<NodeSettingPanel> NodeSettingPanels { get; set; } = new();
+        public List<NodeSetting> NodeSettings { get; set; } = new();
 
         public Node(Sandbox.UI.Panel parent = null) : base(parent)
         {
+            LibraryName = GetAttribute().Name;
+
             Header.DragHeader.IsFreeDraggable = true;
             Header.DragHeader.IsLocked = false;
 
@@ -28,13 +30,6 @@ namespace TTTReborn.UI.VisualProgramming
 
             AddClass("node");
             AddClass("box-shadow");
-
-            Content.SetPanelContent((panelContent) =>
-            {
-                NodeSettingPanels.Add(new NodeSettingPanel(panelContent));
-            });
-
-            LibraryName = GetAttribute().Name;
         }
 
         public static NodeAttribute GetAttribute<T>() where T : Node
@@ -45,6 +40,16 @@ namespace TTTReborn.UI.VisualProgramming
         public NodeAttribute GetAttribute()
         {
             return Library.GetAttribute(GetType()) as NodeAttribute;
+        }
+
+        public T AddSetting<T>() where T : NodeSetting, new()
+        {
+            T nodeSetting = new T();
+
+            Content.AddChild(nodeSetting);
+            NodeSettings.Add(nodeSetting);
+
+            return nodeSetting;
         }
     }
 }

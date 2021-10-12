@@ -6,6 +6,9 @@ namespace TTTReborn.UI.VisualProgramming
         public MainNode(Sandbox.UI.Panel parent = null) : base(parent)
         {
             SetTitle("MainNode");
+
+            NodeAllPlayersSetting settingPanel = AddSetting<NodeAllPlayersSetting>();
+            settingPanel.ToggleInput(false);
         }
     }
 }
