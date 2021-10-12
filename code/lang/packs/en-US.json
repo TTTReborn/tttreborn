@@ -4,9 +4,10 @@
         "CODE": "en-US"
     },
 
-    "ROLE_UNKNOWN": "Unknown",
+    "ROLE_NAME_NONE": "Unknown",
     "ROLE_NAME_INNOCENT": "Innocent",
     "ROLE_NAME_TRAITOR": "Traitor",
+    "ROLE_NAME_DETECTIVE": "Detective",
 
     "ROUND_STATE_WAITING": "Waiting",
     "ROUND_STATE_PREPARING": "Preparing",

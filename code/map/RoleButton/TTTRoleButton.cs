@@ -12,7 +12,15 @@ namespace TTTReborn.Map
         //We don't want to touch these variables as they are the "reset" standard.
         //Exposed to Hammer, so change them there.
         [Property("Role", "Role which this button is exposed to. Please don't give innocents buttons.")]
-        public string Role { get; private set; } = "Traitor";
+        public string Role
+        {
+            get => _role;
+            private set
+            {
+                _role = value?.ToLower();
+            }
+        }
+        private string _role = "traitor";
 
         [Property("Description", "On screen tooltip shown on button")]
         [Net]
@@ -108,8 +116,7 @@ namespace TTTReborn.Map
             }
         }
 
-
-        //Hammer IO 
+        //Hammer IO
         [Input]
         public void Lock()
         {

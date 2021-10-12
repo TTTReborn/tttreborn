@@ -9,16 +9,16 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [Role("traitor")]
-    public class TraitorRole : TTTRole
+    [Role("detective")]
+    public class DetectiveRole : TTTRole
     {
-        public override Color Color => Color.FromBytes(223, 41, 53);
+        public override Color Color => Color.FromBytes(25, 102, 255);
 
         public override int DefaultCredits => 100;
 
-        public override Type DefaultTeamType => typeof(TraitorTeam);
+        public override Type DefaultTeamType => typeof(InnocentTeam);
 
-        public TraitorRole() : base()
+        public DetectiveRole() : base()
         {
 
         }
@@ -27,18 +27,9 @@ namespace TTTReborn.Roles
         {
             if (Host.IsServer && player.Team.GetType() == DefaultTeamType)
             {
-                foreach (TTTPlayer otherPlayer in player.Team.Members)
+                foreach (TTTPlayer otherPlayer in Utils.GetPlayers((pl) => pl != player))
                 {
                     RPCs.ClientSetRole(To.Single(otherPlayer), player, player.Role.Name);
-                    RPCs.ClientSetRole(To.Single(player), otherPlayer, otherPlayer.Role.Name);
-                }
-
-                foreach (TTTPlayer otherPlayer in Utils.GetPlayers())
-                {
-                    if (otherPlayer.IsMissingInAction)
-                    {
-                        otherPlayer.SyncMIA(player);
-                    }
                 }
             }
 
