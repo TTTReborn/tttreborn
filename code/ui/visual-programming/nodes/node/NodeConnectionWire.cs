@@ -2,9 +2,11 @@ namespace TTTReborn.UI.VisualProgramming
 {
     public class NodeConnectionWire : Panel
     {
-        public NodeConnectionPoint StartPoint;
+        public NodeConnectionStartPoint StartPoint;
+        public NodeConnectionEndPoint EndPoint;
 
-        public NodeConnectionPoint EndPoint;
+        private Vector2 _startPos;
+        private Vector2 _endPos;
 
         public NodeConnectionWire(Sandbox.UI.Panel parent = null) : base(parent)
         {
@@ -17,10 +19,15 @@ namespace TTTReborn.UI.VisualProgramming
         {
             base.OnRightClick(e);
 
+            if (StartPoint.IsDragging)
+            {
+                return;
+            }
+
             Delete(true);
         }
 
-        public override void OnDeleted()
+        public override void Delete(bool immediate = false)
         {
             if (StartPoint != null)
             {
@@ -32,7 +39,7 @@ namespace TTTReborn.UI.VisualProgramming
                 EndPoint.ConnectionWire = null;
             }
 
-            base.OnDeleted();
+            base.Delete(immediate);
         }
 
         public static NodeConnectionWire Create()
@@ -40,18 +47,34 @@ namespace TTTReborn.UI.VisualProgramming
             return new NodeConnectionWire(VisualProgrammingWindow.Instance.Content);
         }
 
-        public void SetPos(Vector2 vector2)
+        public void UpdateMousePosition(Vector2 vector2)
         {
-            Style.Left = Sandbox.UI.Length.Pixels(vector2.x);
-            Style.Top = Sandbox.UI.Length.Pixels(vector2.y);
+            Style.Left = Sandbox.UI.Length.Pixels(StartPoint.Box.Rect.left);
+            Style.Top = Sandbox.UI.Length.Pixels(StartPoint.Box.Rect.top);
+            Style.Width = Sandbox.UI.Length.Pixels(vector2.x - StartPoint.Box.Rect.left);
+            Style.Height = Sandbox.UI.Length.Pixels(vector2.y - StartPoint.Box.Rect.top);
             Style.Dirty();
         }
 
-        public void SetSize(Vector2 vector2)
+        public override void Tick()
         {
-            Style.Width = Sandbox.UI.Length.Pixels(vector2.x);
-            Style.Height = Sandbox.UI.Length.Pixels(vector2.y);
-            Style.Dirty();
+            base.Tick();
+
+            if (StartPoint == null || EndPoint == null)
+            {
+                return;
+            }
+
+            Vector2 startPos = StartPoint.Position;
+            Vector2 endPos = EndPoint.Position;
+
+            if (startPos != _startPos || endPos != _endPos)
+            {
+                UpdateMousePosition(endPos);
+
+                _startPos = startPos;
+                _endPos = endPos;
+            }
         }
     }
 }

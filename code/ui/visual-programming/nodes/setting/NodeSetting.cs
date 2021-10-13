@@ -26,8 +26,11 @@ namespace TTTReborn.UI.VisualProgramming
             LibraryName = GetAttribute().Name;
 
             Input = new(this);
+            Input.AddConnectionPoint<NodeConnectionEndPoint>();
+
             Content = new(this);
             Output = new(this);
+            Output.AddConnectionPoint<NodeConnectionStartPoint>();
 
             AddClass("nodesetting");
         }

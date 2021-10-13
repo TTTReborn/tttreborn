@@ -20,13 +20,14 @@ namespace TTTReborn.UI.VisualProgramming
 
         public NodeConnectionPanel(Sandbox.UI.Panel parent = null) : base(parent)
         {
-            AddConnectionPoint();
+
         }
 
-        public NodeConnectionPoint AddConnectionPoint()
+        public T AddConnectionPoint<T>() where T : NodeConnectionPoint, new()
         {
-            NodeConnectionPoint connectionPoint = new(this);
+            T connectionPoint = new();
 
+            AddChild(connectionPoint);
             ConnectionPoints.Add(connectionPoint);
 
             return connectionPoint;
