@@ -16,20 +16,18 @@ namespace TTTReborn.UI.VisualProgramming
             AddClass("connectionwire");
 
             _startLine = new(this);
-            _startLine.AddClass("horizontal");
             _startLine.AddClass("start");
 
             _startMidLine = new(this);
-            _startMidLine.AddClass("horizontal");
+            _startMidLine.AddClass("startmid");
 
             _midLine = new(this);
-            _midLine.AddClass("horizontal");
+            _midLine.AddClass("mid");
 
             _endMidLine = new(this);
-            _endMidLine.AddClass("horizontal");
+            _endMidLine.AddClass("endmid");
 
             _endLine = new(this);
-            _endLine.AddClass("horizontal");
             _endLine.AddClass("end");
 
             Style.Position = Sandbox.UI.PositionMode.Absolute;
@@ -78,6 +76,8 @@ namespace TTTReborn.UI.VisualProgramming
             Vector2 finalPos = new Vector2(pos);
             Vector2 finalSize = new Vector2(delta);
 
+            float halfLineThickness = LINE_THICKNESS * 0.5f;
+
             bool lessY = delta.y < 0f;
 
             if (lessY)
@@ -88,25 +88,25 @@ namespace TTTReborn.UI.VisualProgramming
 
             if (delta.x < MIN_OVERLAP_WIDTH * 2f)
             {
-                finalPos.x += delta.x - MIN_OVERLAP_WIDTH + 2f;
-                finalSize.x = MIN_OVERLAP_WIDTH * 2f - finalSize.x + LINE_THICKNESS;
+                finalPos.x += delta.x - MIN_OVERLAP_WIDTH - halfLineThickness;
+                finalSize.x = MIN_OVERLAP_WIDTH * 2f - finalSize.x + halfLineThickness;
 
-                SetPanelMatrix(_startLine, new Vector2(finalSize.x - MIN_OVERLAP_WIDTH - (lessY ? 0f : LINE_THICKNESS * 0.5f), (lessY ? finalSize.y : 0f) - LINE_THICKNESS * 0.5f), new Vector2(MIN_OVERLAP_WIDTH, LINE_THICKNESS));
-                SetPanelMatrix(_endLine, new Vector2(0f, (lessY ? 0f : finalSize.y) - LINE_THICKNESS * 0.5f), new Vector2(MIN_OVERLAP_WIDTH, LINE_THICKNESS));
+                SetPanelMatrix(_startLine, new Vector2(finalSize.x - MIN_OVERLAP_WIDTH - halfLineThickness, (lessY ? finalSize.y : 0f) - halfLineThickness), new Vector2(MIN_OVERLAP_WIDTH, LINE_THICKNESS));
+                SetPanelMatrix(_endLine, new Vector2(0f, (lessY ? 0f : finalSize.y) - halfLineThickness), new Vector2(MIN_OVERLAP_WIDTH, LINE_THICKNESS));
 
-                SetPanelMatrix(_midLine, new Vector2(0f, finalSize.y * 0.5f - LINE_THICKNESS * 0.5f), new Vector2(finalSize.x, LINE_THICKNESS));
+                SetPanelMatrix(_midLine, new Vector2(0f, finalSize.y * 0.5f - halfLineThickness), new Vector2(finalSize.x + halfLineThickness, LINE_THICKNESS));
 
-                SetPanelMatrix(_startMidLine, new Vector2(finalSize.x - LINE_THICKNESS, (lessY ? finalSize.y * 0.5f : 0f) - LINE_THICKNESS * 0.5f), new Vector2(LINE_THICKNESS, finalSize.y * 0.5f + LINE_THICKNESS));
-                SetPanelMatrix(_endMidLine, new Vector2(0f, (lessY ? 0f : finalSize.y * 0.5f) - LINE_THICKNESS * 0.5f), new Vector2(LINE_THICKNESS, finalSize.y * 0.5f + LINE_THICKNESS));
+                SetPanelMatrix(_startMidLine, new Vector2(finalSize.x - halfLineThickness, (lessY ? finalSize.y * 0.5f : 0f) - halfLineThickness), new Vector2(LINE_THICKNESS, finalSize.y * 0.5f + LINE_THICKNESS));
+                SetPanelMatrix(_endMidLine, new Vector2(0f, (lessY ? 0f : finalSize.y * 0.5f) - halfLineThickness), new Vector2(LINE_THICKNESS, finalSize.y * 0.5f + halfLineThickness));
             }
             else
             {
                 float halfWidth = finalSize.x * 0.5f;
 
-                SetPanelMatrix(_startLine, new Vector2(0f, (lessY ? finalSize.y : 0f) - LINE_THICKNESS * 0.5f), new Vector2(halfWidth, LINE_THICKNESS));
-                SetPanelMatrix(_endLine, new Vector2(halfWidth, (lessY ? 0f : finalSize.y) - LINE_THICKNESS * 0.5f), new Vector2(halfWidth, LINE_THICKNESS));
+                SetPanelMatrix(_startLine, new Vector2(0f, (lessY ? finalSize.y : 0f) - halfLineThickness), new Vector2(halfWidth, LINE_THICKNESS));
+                SetPanelMatrix(_endLine, new Vector2(halfWidth, (lessY ? 0f : finalSize.y) - halfLineThickness), new Vector2(halfWidth, LINE_THICKNESS));
 
-                SetPanelMatrix(_midLine, new Vector2(halfWidth - LINE_THICKNESS * 0.5f, -LINE_THICKNESS * 0.5f), new Vector2(LINE_THICKNESS, finalSize.y + LINE_THICKNESS));
+                SetPanelMatrix(_midLine, new Vector2(halfWidth - halfLineThickness, -halfLineThickness), new Vector2(LINE_THICKNESS, finalSize.y + LINE_THICKNESS));
             }
 
             SetPanelMatrix(this, finalPos, finalSize);
