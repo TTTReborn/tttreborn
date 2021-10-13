@@ -5,12 +5,32 @@ namespace TTTReborn.UI.VisualProgramming
         public NodeConnectionStartPoint StartPoint;
         public NodeConnectionEndPoint EndPoint;
 
-        private Vector2 _startPos;
-        private Vector2 _endPos;
+        private Vector2 _startPos, _endPos;
+        private Panel _startLine, _endLine, _midLine, _startMidLine, _endMidLine;
+
+        private const float MIN_OVERLAP_WIDTH = 60f;
+        private const float LINE_THICKNESS = 10f;
 
         public NodeConnectionWire(Sandbox.UI.Panel parent = null) : base(parent)
         {
             AddClass("connectionwire");
+
+            _startLine = new(this);
+            _startLine.AddClass("horizontal");
+            _startLine.AddClass("start");
+
+            _startMidLine = new(this);
+            _startMidLine.AddClass("horizontal");
+
+            _midLine = new(this);
+            _midLine.AddClass("horizontal");
+
+            _endMidLine = new(this);
+            _endMidLine.AddClass("horizontal");
+
+            _endLine = new(this);
+            _endLine.AddClass("horizontal");
+            _endLine.AddClass("end");
 
             Style.Position = Sandbox.UI.PositionMode.Absolute;
         }
@@ -49,11 +69,61 @@ namespace TTTReborn.UI.VisualProgramming
 
         public void UpdateMousePosition(Vector2 vector2)
         {
-            Style.Left = Sandbox.UI.Length.Pixels(StartPoint.Box.Rect.left);
-            Style.Top = Sandbox.UI.Length.Pixels(StartPoint.Box.Rect.top);
-            Style.Width = Sandbox.UI.Length.Pixels(vector2.x - StartPoint.Box.Rect.left);
-            Style.Height = Sandbox.UI.Length.Pixels(vector2.y - StartPoint.Box.Rect.top);
-            Style.Dirty();
+            _startMidLine.Style.Display = Sandbox.UI.DisplayMode.None;
+            _midLine.Style.Display = Sandbox.UI.DisplayMode.None;
+            _endMidLine.Style.Display = Sandbox.UI.DisplayMode.None;
+
+            Vector2 pos = StartPoint.Position;
+            Vector2 delta = vector2 - pos;
+            Vector2 finalPos = new Vector2(pos);
+            Vector2 finalSize = new Vector2(delta);
+
+            bool lessY = delta.y < 0f;
+
+            if (lessY)
+            {
+                finalPos.y = vector2.y;
+                finalSize.y = -delta.y;
+            }
+
+            if (delta.x < MIN_OVERLAP_WIDTH * 2f)
+            {
+                finalPos.x += delta.x - MIN_OVERLAP_WIDTH + 2f;
+                finalSize.x = MIN_OVERLAP_WIDTH * 2f - finalSize.x + LINE_THICKNESS;
+
+                SetPanelMatrix(_startLine, new Vector2(finalSize.x - MIN_OVERLAP_WIDTH - (lessY ? 0f : LINE_THICKNESS * 0.5f), (lessY ? finalSize.y : 0f) - LINE_THICKNESS * 0.5f), new Vector2(MIN_OVERLAP_WIDTH, LINE_THICKNESS));
+                SetPanelMatrix(_endLine, new Vector2(0f, (lessY ? 0f : finalSize.y) - LINE_THICKNESS * 0.5f), new Vector2(MIN_OVERLAP_WIDTH, LINE_THICKNESS));
+
+                SetPanelMatrix(_midLine, new Vector2(0f, finalSize.y * 0.5f - LINE_THICKNESS * 0.5f), new Vector2(finalSize.x, LINE_THICKNESS));
+
+                SetPanelMatrix(_startMidLine, new Vector2(finalSize.x - LINE_THICKNESS, (lessY ? finalSize.y * 0.5f : 0f) - LINE_THICKNESS * 0.5f), new Vector2(LINE_THICKNESS, finalSize.y * 0.5f + LINE_THICKNESS));
+                SetPanelMatrix(_endMidLine, new Vector2(0f, (lessY ? 0f : finalSize.y * 0.5f) - LINE_THICKNESS * 0.5f), new Vector2(LINE_THICKNESS, finalSize.y * 0.5f + LINE_THICKNESS));
+            }
+            else
+            {
+                float halfWidth = finalSize.x * 0.5f;
+
+                SetPanelMatrix(_startLine, new Vector2(0f, (lessY ? finalSize.y : 0f) - LINE_THICKNESS * 0.5f), new Vector2(halfWidth, LINE_THICKNESS));
+                SetPanelMatrix(_endLine, new Vector2(halfWidth, (lessY ? 0f : finalSize.y) - LINE_THICKNESS * 0.5f), new Vector2(halfWidth, LINE_THICKNESS));
+
+                SetPanelMatrix(_midLine, new Vector2(halfWidth - LINE_THICKNESS * 0.5f, -LINE_THICKNESS * 0.5f), new Vector2(LINE_THICKNESS, finalSize.y + LINE_THICKNESS));
+            }
+
+            SetPanelMatrix(this, finalPos, finalSize);
+
+            _startMidLine.Style.Dirty();
+            _midLine.Style.Dirty();
+            _endMidLine.Style.Dirty();
+        }
+
+        public static void SetPanelMatrix(Sandbox.UI.Panel panel, Vector2 pos, Vector2 size)
+        {
+            panel.Style.Display = Sandbox.UI.DisplayMode.Flex;
+            panel.Style.Left = Sandbox.UI.Length.Pixels(pos.x);
+            panel.Style.Top = Sandbox.UI.Length.Pixels(pos.y);
+            panel.Style.Width = Sandbox.UI.Length.Pixels(size.x);
+            panel.Style.Height = Sandbox.UI.Length.Pixels(size.y);
+            panel.Style.Dirty();
         }
 
         public override void Tick()
