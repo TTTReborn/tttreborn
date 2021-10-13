@@ -2,7 +2,17 @@ namespace TTTReborn.UI.VisualProgramming
 {
     public class NodeConnectionPoint : Panel
     {
-        public NodeConnectionWire ConnectionWire { get; set; }
+        public NodeConnectionWire ConnectionWire
+        {
+            get => _connectionWire;
+            internal set
+            {
+                _connectionWire = value;
+
+                SetClass("connected", _connectionWire != null);
+            }
+        }
+        private NodeConnectionWire _connectionWire;
 
         public Vector2 Position
         {

@@ -21,10 +21,10 @@ VisualProgrammingWindow {
         }
     }
 
-    NodeConnectionWire {
+    .nodeconnectionwire {
         z-index: -1;
 
-        > .panel {
+        > .nodeconnectionwirepart {
             position: absolute;
             background-color: rgb(61, 118, 243);
         }

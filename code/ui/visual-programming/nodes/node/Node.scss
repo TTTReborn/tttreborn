@@ -53,9 +53,13 @@
                 height: 10px;
                 margin-left: 4px;
 
-                background-color: black;
+                background-color: rgb(207, 57, 57);
 
                 border-radius: 100%;
+
+                &.connected {
+                    background-color: rgb(30, 194, 30);
+                }
             }
         }
 

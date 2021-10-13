@@ -6,14 +6,14 @@ namespace TTTReborn.UI.VisualProgramming
         public NodeConnectionEndPoint EndPoint;
 
         private Vector2 _startPos, _endPos;
-        private Panel _startLine, _endLine, _midLine, _startMidLine, _endMidLine;
+        private NodeConnectionWirePart _startLine, _endLine, _midLine, _startMidLine, _endMidLine;
 
         private const float MIN_OVERLAP_WIDTH = 60f;
         private const float LINE_THICKNESS = 10f;
 
         public NodeConnectionWire(Sandbox.UI.Panel parent = null) : base(parent)
         {
-            AddClass("connectionwire");
+            AddClass("nodeconnectionwire");
 
             _startLine = new(this);
             _startLine.AddClass("start");
@@ -31,18 +31,6 @@ namespace TTTReborn.UI.VisualProgramming
             _endLine.AddClass("end");
 
             Style.Position = Sandbox.UI.PositionMode.Absolute;
-        }
-
-        protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
-        {
-            base.OnRightClick(e);
-
-            if (StartPoint.IsDragging)
-            {
-                return;
-            }
-
-            Delete(true);
         }
 
         public override void Delete(bool immediate = false)
@@ -145,6 +133,28 @@ namespace TTTReborn.UI.VisualProgramming
                 _startPos = startPos;
                 _endPos = endPos;
             }
+        }
+    }
+
+    public class NodeConnectionWirePart : Panel
+    {
+        public NodeConnectionWirePart(NodeConnectionWire parent) : base(parent)
+        {
+            AddClass("nodeconnectionwirepart");
+        }
+
+        protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
+        {
+            base.OnRightClick(e);
+
+            NodeConnectionWire connectionWire = Parent as NodeConnectionWire;
+
+            if (connectionWire.StartPoint.IsDragging)
+            {
+                return;
+            }
+
+            connectionWire.Delete(true);
         }
     }
 }
