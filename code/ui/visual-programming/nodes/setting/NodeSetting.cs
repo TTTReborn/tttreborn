@@ -17,6 +17,26 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public string LibraryName { get; set; }
 
+        public Node Node
+        {
+            get => _node;
+            set
+            {
+                _node = value;
+
+                if (Input != null)
+                {
+                    Input.Node = _node;
+                }
+
+                if (Output != null)
+                {
+                    Output.Node = _node;
+                }
+            }
+        }
+        private Node _node;
+
         public NodeConnectionPanel Input { get; set; }
         public NodeConnectionPanel Output { get; set; }
         public PanelContent Content { get; set; }
@@ -25,14 +45,23 @@ namespace TTTReborn.UI.VisualProgramming
         {
             LibraryName = GetAttribute().Name;
 
-            Input = new(this);
+            Input = AddConnectionPanel();
             Input.AddConnectionPoint<NodeConnectionEndPoint>();
 
             Content = new(this);
-            Output = new(this);
+
+            Output = AddConnectionPanel();
             Output.AddConnectionPoint<NodeConnectionStartPoint>();
 
             AddClass("nodesetting");
+        }
+
+        public NodeConnectionPanel AddConnectionPanel()
+        {
+            NodeConnectionPanel nodeConnectionPanel = new(this);
+            nodeConnectionPanel.Node = Node;
+
+            return nodeConnectionPanel;
         }
 
         public static NodeSettingAttribute GetAttribute<T>() where T : NodeSetting

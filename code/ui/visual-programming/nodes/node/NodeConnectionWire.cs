@@ -138,8 +138,12 @@ namespace TTTReborn.UI.VisualProgramming
 
     public class NodeConnectionWirePart : Panel
     {
-        public NodeConnectionWirePart(NodeConnectionWire parent) : base(parent)
+        public NodeConnectionWire NodeConnectionWire { get; set; }
+
+        public NodeConnectionWirePart(NodeConnectionWire nodeConnectionWire) : base(nodeConnectionWire)
         {
+            NodeConnectionWire = nodeConnectionWire;
+
             AddClass("nodeconnectionwirepart");
         }
 
@@ -147,14 +151,12 @@ namespace TTTReborn.UI.VisualProgramming
         {
             base.OnRightClick(e);
 
-            NodeConnectionWire connectionWire = Parent as NodeConnectionWire;
-
-            if (connectionWire.StartPoint.IsDragging)
+            if (NodeConnectionWire.StartPoint.IsDragging)
             {
                 return;
             }
 
-            connectionWire.Delete(true);
+            NodeConnectionWire.Delete(true);
         }
     }
 }

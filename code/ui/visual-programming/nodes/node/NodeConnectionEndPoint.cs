@@ -11,7 +11,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             NodeConnectionWire currentConnectionWire = VisualProgrammingWindow.Instance.ActiveNodeConnectionWire;
 
-            if (ConnectionWire != null || currentConnectionWire == null)
+            if (ConnectionWire != null || currentConnectionWire == null || currentConnectionWire.StartPoint.Node == Node)
             {
                 return;
             }

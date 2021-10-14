@@ -2,6 +2,8 @@ namespace TTTReborn.UI.VisualProgramming
 {
     public class NodeConnectionPoint : Panel
     {
+        public Node Node { get; set; }
+
         public NodeConnectionWire ConnectionWire
         {
             get => _connectionWire;
