@@ -16,6 +16,8 @@ namespace TTTReborn.Items
         private static int _grabbingDistance => 80;
         private static int _holdingDistance => 35;
         private static float _maxPropSpeed => 10f;
+        private static float _pushingForce => 600f;
+        private static int _pushingDistance => 50;
 
         private PhysicsBody _holdBody;
         private WeldJoint _holdJoint;
@@ -54,6 +56,11 @@ namespace TTTReborn.Items
                 if (!_holdBody.IsValid())
                 {
                     return;
+                }
+
+                if (Input.Pressed(InputButton.Attack2) && _heldBody == null && _isAttaching == false)
+                {
+                    PushPlayer();
                 }
 
                 if (Input.Down(InputButton.Attack1))
@@ -99,6 +106,21 @@ namespace TTTReborn.Items
                     GrabEnd();
                 }
             }
+        }
+
+        private void PushPlayer()
+        {
+            // Siasur [16.10.2021] Maybe add a delay here?
+            TraceResult tr = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * _pushingDistance)
+                    .Ignore(Owner)
+                    .Run();
+
+            if (!tr.Hit || !(tr.Entity is TTTPlayer) || !tr.Entity.IsValid())
+            {
+                return;
+            }
+
+            tr.Entity.Velocity += Owner.EyeRot.Forward * _pushingForce;
         }
 
         private void GrabInit(PhysicsBody body, int bone, Vector3 startPos, Vector3 grabPos, Rotation rot)
