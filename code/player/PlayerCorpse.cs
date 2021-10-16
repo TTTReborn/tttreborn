@@ -141,7 +141,7 @@ namespace TTTReborn.Player
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return (IsIdentified) ? new UsableHint("CORPSE_INSPECT") : new UsableHint("CORPSE_IDENTIFY");
+            return (IsIdentified) ? new UsableHint("Hold E to inspect this corpse") : new UsableHint("Hold E to identify this corpse");
         }
     }
 }

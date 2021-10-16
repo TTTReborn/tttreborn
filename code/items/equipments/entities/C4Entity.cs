@@ -291,6 +291,8 @@ namespace TTTReborn.Items
             }
         }
 
+        public string CurrentHint => IsArmed ? "Press E to defuse the C4" : "Hold E to defuse the C4";
+
         public bool CanHint(TTTPlayer client)
         {
             return true;
@@ -298,7 +300,7 @@ namespace TTTReborn.Items
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return IsArmed ? new UsableHint("C4_DEFUSE") : new UsableHint("C4_ARM");
+            return IsArmed ? new UsableHint("Press E to defuse the C4") : new UsableHint("Hold E to defuse the C4");
         }
     }
 }

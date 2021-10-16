@@ -59,6 +59,8 @@ namespace TTTReborn.Items
 
         public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
 
+        public string CurrentHint => $"Hold E to use the health station ({StoredHealth})";
+
         public bool CanHint(TTTPlayer client)
         {
             return true;
@@ -66,7 +68,7 @@ namespace TTTReborn.Items
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return new UsableHint("HEALTH_STATION");
+            return new UsableHint($"Hold E to use the health station ({StoredHealth})");
         }
     }
 }
