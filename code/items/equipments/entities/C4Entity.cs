@@ -291,8 +291,8 @@ namespace TTTReborn.Items
             }
         }
 
-        public TranslationLabel CurrentTranslationLabel => IsArmed ? new TranslationLabel("C4_DEFUSE", String.Empty, new object[] {Input.GetKeyWithBinding("+iv_use").ToUpper()})
-                                                                   : new TranslationLabel("C4_ARM", String.Empty, new object[] {Input.GetKeyWithBinding("+iv_use").ToUpper()});
+        public TranslationLabel CurrentTranslationLabel => IsArmed ? new TranslationLabel("C4_DEFUSE", String.Empty, new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() })
+                                                                   : new TranslationLabel("C4_ARM", String.Empty, new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 
         public bool CanHint(TTTPlayer client)
         {

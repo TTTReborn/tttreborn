@@ -138,8 +138,8 @@ namespace TTTReborn.Player
 
         public float HintDistance => 80f;
 
-        public TranslationLabel CurrentTranslationLabel => IsIdentified ? new TranslationLabel("CORPSE_INSPECT", String.Empty, new object[] {Input.GetKeyWithBinding("+iv_use").ToUpper()})
-                                                                        : new TranslationLabel("CORPSE_IDENTIFY", String.Empty, new object[] {Input.GetKeyWithBinding("+iv_use").ToUpper()});
+        public TranslationLabel CurrentTranslationLabel => IsIdentified ? new TranslationLabel("CORPSE_INSPECT", String.Empty, new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() })
+                                                                        : new TranslationLabel("CORPSE_IDENTIFY", String.Empty, new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 
         public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.Enabled ?? false;
 

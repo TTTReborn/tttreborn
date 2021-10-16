@@ -60,7 +60,7 @@ namespace TTTReborn.Items
         public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
 
         public TranslationLabel CurrentTranslationLabel => new TranslationLabel("HEALTH_STATION", String.Empty,
-                                                                                new object[] {Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}"});
+                                                                                new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
 
         public bool CanHint(TTTPlayer client)
         {
