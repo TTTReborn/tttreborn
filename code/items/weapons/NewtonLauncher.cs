@@ -4,15 +4,16 @@ using Hammer;
 
 using Sandbox;
 
-
 namespace TTTReborn.Items
 {
+    [Weapon(SlotType = SlotType.OffensiveEquipment, AmmoType = "pistol")]
+    [Buyable(Price = 100)]
     [Library("ttt_newton_launcher")]
     [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
-    partial class NewtonLauncher : TTTWeapon, IBuyableItem
+    [NonSpawnable]
+    partial class NewtonLauncher : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        public override SlotType SlotType => SlotType.OffensiveEquipment;
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 1;
         public override float PrimaryRate => 1f;
@@ -20,8 +21,6 @@ namespace TTTReborn.Items
         public override float ReloadTime => 2.3f;
         public override float DeployTime => 0.4f;
         public override int BaseDamage => 3;
-
-        public virtual int Price => 100;
 
         public const int NEWTON_FORCE_MIN = 300;
         public const int NEWTON_FORCE_MAX = 700;

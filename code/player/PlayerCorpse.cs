@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Items;
 using TTTReborn.UI;
-
 
 namespace TTTReborn.Player
 {
@@ -42,8 +43,15 @@ namespace TTTReborn.Player
             this.CopyBonesFrom(player);
             this.SetRagdollVelocityFrom(player);
 
+            List<C4Entity> attachedC4s = new();
+
             foreach (Entity child in player.Children)
             {
+                if (child is C4Entity c4 && c4.AttachedBone > -1)
+                {
+                    attachedC4s.Add(c4);
+                }
+
                 if (child is ModelEntity e)
                 {
                     string model = e.GetModelName();
@@ -57,6 +65,11 @@ namespace TTTReborn.Player
                     clothing.SetModel(model);
                     clothing.SetParent(this, true);
                 }
+            }
+
+            foreach (C4Entity c4 in attachedC4s)
+            {
+                c4.SetParent(this, c4.AttachedBone);
             }
         }
 
@@ -125,11 +138,14 @@ namespace TTTReborn.Player
 
         public float HintDistance => 80f;
 
+        public TranslationLabel CurrentTranslationLabel => IsIdentified ? new TranslationLabel("CORPSE_INSPECT", String.Empty, new object[] {Input.GetKeyWithBinding("+iv_use").ToUpper()})
+                                                                        : new TranslationLabel("CORPSE_IDENTIFY", String.Empty, new object[] {Input.GetKeyWithBinding("+iv_use").ToUpper()});
+
         public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.Enabled ?? false;
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return (IsIdentified) ? new UsableHint("CORPSE_INSPECT") : new UsableHint("CORPSE_IDENTIFY");
+            return new Hint(CurrentTranslationLabel);
         }
     }
 }

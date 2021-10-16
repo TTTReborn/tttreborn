@@ -1,3 +1,7 @@
+using System;
+
+using Sandbox;
+
 namespace TTTReborn.Items
 {
     public enum SlotType
@@ -8,6 +12,17 @@ namespace TTTReborn.Items
         OffensiveEquipment,
         UtilityEquipment,
         Grenade
+    }
+
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class CarriableAttribute : ItemAttribute
+    {
+        public SlotType SlotType = SlotType.Primary;
+
+        public CarriableAttribute() : base()
+        {
+
+        }
     }
 
     public interface ICarriableItem : IItem

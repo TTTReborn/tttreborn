@@ -12,51 +12,59 @@ namespace TTTReborn.Player
 {
     public partial class ShopManager
     {
-        public static readonly List<Type> NewItemsList = new();
+        public static List<Type> NewItemsList { get; private set; } = new();
 
         // serverside-only
         internal static void Load()
         {
-            List<Type> itemList = Utils.GetTypes<IBuyableItem>();
-            string fileName = $"settings/{Utils.GetTypeNameByType(typeof(Settings.ServerSettings)).ToLower()}/internal/shopitems.json";
+            CheckNewItems();
+
+            InitializeShops();
+        }
+
+        private static void CheckNewItems()
+        {
+            List<Type> itemList = Utils.GetTypesWithAttribute<IItem, BuyableAttribute>();
+            List<string> loadedItems = null;
+            string fileName = $"settings/{Utils.GetTypeName(typeof(Settings.ServerSettings)).ToLower()}/internal/shopitems.json";
 
             if (FileSystem.Data.FileExists(fileName))
             {
-                List<string> loadedItems = null;
-
                 try
                 {
                     loadedItems = JsonSerializer.Deserialize<List<string>>(FileSystem.Data.ReadAllText(fileName));
                 }
                 catch (Exception) { }
+            }
 
-                bool loaded = loadedItems != null && loadedItems.Count > 0;
-
+            if (loadedItems != null && loadedItems.Count > 0)
+            {
                 foreach (Type type in itemList)
                 {
-                    if (loaded)
+                    bool found = false;
+                    string availableItemName = Utils.GetLibraryName(type);
+
+                    foreach (string loadedItemName in loadedItems)
                     {
-                        bool found = false;
-                        string availableItemName = Utils.GetTypeNameByType(type).ToLower();
-
-                        foreach (string loadedItemName in loadedItems)
+                        if (loadedItemName.Equals(availableItemName))
                         {
-                            if (loadedItemName.Equals(availableItemName))
-                            {
-                                found = true;
+                            found = true;
 
-                                break;
-                            }
+                            break;
                         }
+                    }
 
-                        if (found)
-                        {
-                            continue;
-                        }
+                    if (found)
+                    {
+                        continue;
                     }
 
                     NewItemsList.Add(type);
                 }
+            }
+            else
+            {
+                NewItemsList = itemList;
             }
 
             if (NewItemsList.Count > 0)
@@ -71,7 +79,7 @@ namespace TTTReborn.Player
 
             foreach (Type type in itemList)
             {
-                availableItems.Add(Utils.GetTypeNameByType(type).ToLower());
+                availableItems.Add(Utils.GetLibraryName(type));
             }
 
             Utils.CreateRecursiveDirectories(fileName);
@@ -83,6 +91,14 @@ namespace TTTReborn.Player
             catch (Exception) { }
 
             FileSystem.Data.WriteAllText(fileName, JsonSerializer.Serialize(availableItems));
+        }
+
+        private static void InitializeShops()
+        {
+            foreach (Type roleType in Utils.GetTypes<TTTRole>())
+            {
+                Utils.GetObjectByType<TTTRole>(roleType).InitShop();
+            }
         }
     }
 }

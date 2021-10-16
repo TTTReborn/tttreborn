@@ -5,6 +5,12 @@ using TTTReborn.Rounds;
 
 namespace TTTReborn.Map
 {
+    public enum Check
+    {
+        Role,
+        Team
+    }
+
     [Library("ttt_logic_assigned", Description = "Used to test the assigned team or role of the activator.")]
     public partial class TTTLogicAssigned : Entity
     {
@@ -12,7 +18,15 @@ namespace TTTReborn.Map
         public Check CheckType { get; set; } = Check.Role;
 
         [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `Traitor`, but check the `Team` for `Traitors`.")]
-        public string CheckValue { get; set; } = "Traitor";
+        public string CheckValue
+        {
+            get => _checkValue;
+            set
+            {
+                _checkValue = value?.ToLower();
+            }
+        }
+        private string _checkValue = "traitor";
 
         /// <summary>
         /// Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass().
@@ -31,19 +45,18 @@ namespace TTTReborn.Map
             {
                 if (CheckType == Check.Role)
                 {
-                    if (player.Role.Name.ToLower() == CheckValue.ToLower())
+                    if (player.Role.Name.Equals(CheckValue))
                     {
                         OnPass.Fire(this);
+
                         return;
                     }
                 }
-                else //CheckType == Check.Team
+                else if (player.Team.Name.Equals(CheckValue)) // CheckType == Check.Team
                 {
-                    if (player.Team.Name.ToLower() == CheckValue.ToLower())
-                    {
-                        OnPass.Fire(this);
-                        return;
-                    }
+                    OnPass.Fire(this);
+
+                    return;
                 }
 
                 OnFail.Fire(this);
@@ -54,11 +67,5 @@ namespace TTTReborn.Map
                 OnFail.Fire(this);
             }
         }
-    }
-
-    public enum Check
-    {
-        Role,
-        Team
     }
 }

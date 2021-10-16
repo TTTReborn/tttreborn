@@ -4,8 +4,10 @@
         "CODE": "ru-RU"
     },
 
+    "ROLE_NAME_NONE": "Незнакомец",
     "ROLE_NAME_INNOCENT": "Невиновный",
     "ROLE_NAME_TRAITOR": "Предатель",
+    "ROLE_NAME_DETECTIVE": "детектив",
 
     "ROUND_STATE_WAITING": "Ожидание",
     "ROUND_STATE_PREPARING": "Подготовка",
@@ -30,12 +32,10 @@
 
     "SCOREBOARD_SERVER_INFO": "{0} игроков. Карта: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "Осталось игроков: {0}",
-
     "SCOREBOARD_PLAYER_STATUS_KARMA": "Карма",
     "SCOREBOARD_PLAYER_STATUS_DEATHS": "Смерти",
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Счёт",
     "SCOREBOARD_PLAYER_STATUS_PING": "Пинг",
-
     "SCOREBOARD_PLAYER_GROUP_ALIVE": "Живые",
     "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Мёртвые",
     "SCOREBOARD_PLAYER_GROUP_MIA": "Пропавшие без вести",

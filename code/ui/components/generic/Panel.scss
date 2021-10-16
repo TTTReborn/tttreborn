@@ -14,6 +14,12 @@ $info: #ffae00;
     letter-spacing: 0.5px;
 }
 
+.iconpanel,
+.icon {
+    font-size: 21px;
+    font-family: MaterialIcons;
+}
+
 .window {
     flex-direction: column;
     justify-content: space-between;
@@ -160,4 +166,31 @@ $info: #ffae00;
 
 .border-color-spectator {
     border-color: $spectator;
+}
+
+// TODO this should be moved somewhere else
+.itemeditwindow {
+    PanelContent {
+        flex-grow: 1;
+        overflow: scroll;
+        justify-content: start;
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        Label {
+            flex-grow: 1;
+            margin-top: 7px;
+        }
+
+        TextEntry,
+        Dropdown {
+            flex-shrink: 1;
+            min-width: 200px;
+        }
+
+        .setting {
+            padding: 5px;
+            margin: 2px;
+        }
+    }
 }

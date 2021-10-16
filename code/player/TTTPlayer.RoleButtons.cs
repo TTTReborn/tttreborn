@@ -3,7 +3,9 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Map;
+using TTTReborn.Roles;
 using TTTReborn.UI;
 
 namespace TTTReborn.Player
@@ -28,7 +30,7 @@ namespace TTTReborn.Player
             IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
 
             //Find specific role buttons to current player's role.
-            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role.ToLower() == Role.Name.ToLower());
+            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role == Role.Name);
 
             //Network a small amount of data for each button within the player's scope.
             ClientStoreRoleButton(To.Single(Owner), applicableButtons.Select(x => x.PackageData()).ToArray());
@@ -55,26 +57,24 @@ namespace TTTReborn.Player
         }
 
         //Debug method
-        /*
-        [ServerCmd("ttt_sendrb")]
-        public static void ForceRBSend() 
+        [ServerCmd("ttt_debug_sendrb")]
+        public static void ForceRBSend()
         {
             TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-        
+
             if (!player.IsValid())
             {
                 return;
             }
-        
-            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
-        
-            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role.ToLower() == "traitor");
-        
-            player.ClientStoreRoleButton(To.Single(ConsoleSystem.Caller), applicableButtons.Select(x => x.PackageData()).ToArray(), );
-        }
-        */
 
-        //Handle client telling server to activate a specific button
+            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
+
+            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role == Utils.GetLibraryName(typeof(TraitorRole)));
+
+            player.ClientStoreRoleButton(To.Single(ConsoleSystem.Caller), applicableButtons.Select(x => x.PackageData()).ToArray());
+        }
+
+        // Handle client telling server to activate a specific button
         [ServerCmd]
         public static void ActivateRoleButton(int networkIdent)
         {
@@ -84,12 +84,14 @@ namespace TTTReborn.Player
             if (button == null)
             {
                 Log.Warning($"Server received call for null role button with network id `{networkIdent}`.");
+
                 return;
             }
 
             if (player == null)
             {
                 Log.Warning("Server received call from null player to activate role button.");
+
                 return;
             }
 
@@ -118,6 +120,7 @@ namespace TTTReborn.Player
         [ClientCmd("-ttt_activate_rb")]
         public static void EndRoleButtonActivate()
         {
+
         }
     }
 }

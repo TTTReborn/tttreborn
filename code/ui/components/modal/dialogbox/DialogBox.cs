@@ -10,11 +10,6 @@ namespace TTTReborn.UI
         public Action OnAgree { get; set; }
         public Action OnDecline { get; set; }
 
-        public readonly Drag HeaderPanel;
-        public readonly Label TitleLabel;
-        public readonly Sandbox.UI.Panel ContentPanel;
-
-        private Sandbox.UI.Panel _footerPanel;
         private Button _agreeButton;
         private Button _declineButton;
 
@@ -24,18 +19,10 @@ namespace TTTReborn.UI
 
             AddClass("dialogbox");
 
-            HeaderPanel = new Drag(this);
-            HeaderPanel.AddClass("header");
-            HeaderPanel.DragBasePanel = this;
-            HeaderPanel.IsLocked = true;
+            WindowHeader.DragHeaderWrapper.IsLocked = true;
 
-            TitleLabel = HeaderPanel.Add.Label("", "title");
-
-            ContentPanel = Add.Panel("content");
-
-            _footerPanel = Add.Panel("footer");
-            _agreeButton = _footerPanel.Add.ButtonWithIcon("done", "", "agree", OnClickAgree);
-            _declineButton = _footerPanel.Add.ButtonWithIcon("close", "", "decline", OnClickDecline);
+            _agreeButton = WindowFooter.Add.ButtonWithIcon("done", "", "agree", OnClickAgree);
+            _declineButton = WindowFooter.Add.ButtonWithIcon("close", "", "decline", OnClickDecline);
         }
 
         public virtual void OnClickAgree()
@@ -50,7 +37,7 @@ namespace TTTReborn.UI
 
         public Label AddText(string text)
         {
-            return ContentPanel.Add.Label(text, "text");
+            return WindowContent.Add.Label(text, "text");
         }
     }
 }

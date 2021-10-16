@@ -4,9 +4,10 @@
         "CODE": "en-US"
     },
 
-    "ROLE_UNKNOWN": "Unknown",
+    "ROLE_NAME_NONE": "Unknown",
     "ROLE_NAME_INNOCENT": "Innocent",
     "ROLE_NAME_TRAITOR": "Traitor",
+    "ROLE_NAME_DETECTIVE": "Detective",
 
     "ROUND_STATE_WAITING": "Waiting",
     "ROUND_STATE_PREPARING": "Preparing",
@@ -33,16 +34,17 @@
 
     "SCOREBOARD_SERVER_INFO": "{0} players. Map: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} players left",
-
     "SCOREBOARD_PLAYER_STATUS_KARMA": "Karma",
     "SCOREBOARD_PLAYER_STATUS_DEATHS": "Deaths",
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Score",
     "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
-
     "SCOREBOARD_PLAYER_GROUP_ALIVE": "Alive",
     "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Confirmed Dead",
     "SCOREBOARD_PLAYER_GROUP_MIA": "Missing In Action",
     "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Spectators",
 
-    "HEALTH_STATION": "Hold {0} to use the health station"
+    "HEALTH_STATION": "Hold {0} to use the health station ({1} charges)",
+
+    "C4_ARM": "Hold {0} to arm the C4",
+    "C4_DEFUSE": "Press {0} to defuse the C4"
 }

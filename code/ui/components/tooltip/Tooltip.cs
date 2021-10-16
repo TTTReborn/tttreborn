@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 
 using Sandbox;
 using Sandbox.UI;
@@ -7,18 +7,24 @@ namespace TTTReborn.UI
 {
     public partial class Tooltip : Label
     {
-        public static List<Tooltip> Tooltips = new();
-
-        public readonly Sandbox.UI.Panel RelatedPanel;
+        public static Tooltip Instance;
 
         public float RequiredHoveringTime { get; set; } = 0.5f;
 
+        public readonly Action<Tooltip> OnCreate;
+        public readonly Action<Tooltip> OnDelete;
+        public readonly Action<Tooltip> OnTick;
+        public readonly Sandbox.UI.Panel RelatedPanel;
+
         private TimeSince _timeSinceMouseStopped = 0f;
 
-        public Tooltip(Sandbox.UI.Panel relatedPanel) : base()
+        public Tooltip(Sandbox.UI.Panel relatedPanel, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null) : base()
         {
             RelatedPanel = relatedPanel;
             Parent = Hud.Current.RootPanel;
+            OnCreate = onCreate;
+            OnDelete = onDelete;
+            OnTick = onTick;
 
             StyleSheet.Load("/ui/components/tooltip/Tooltip.scss");
 
@@ -28,15 +34,16 @@ namespace TTTReborn.UI
 
             Style.Left = Length.Pixels(rect.left);
             Style.Top = Length.Pixels(rect.top);
-            Style.Width = Length.Pixels(rect.width);
+            Style.MinWidth = Length.Pixels(200f);
+            Style.MaxWidth = Length.Pixels(Math.Max(rect.width, 200f));
             Style.Dirty();
 
-            Tooltips.Add(this);
+            Instance = this;
         }
 
         public override void OnDeleted()
         {
-            Tooltips.Remove(this);
+            Instance = null;
         }
 
         public override void Tick()
@@ -49,17 +56,19 @@ namespace TTTReborn.UI
             }
 
             SetClass("hide", _timeSinceMouseStopped < RequiredHoveringTime);
+
+            OnTick?.Invoke(this);
         }
     }
 }
 
-namespace Sandbox.UI
+namespace Sandbox.UI.Construct
 {
     using TTTReborn.UI;
 
     public static class TooltipConstructor
     {
-        public static void AddTooltip(this Panel self, string text = "", string className = null)
+        public static void AddTooltip(this Sandbox.UI.Panel self, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
         {
             self.AddEventListener("onmouseover", (panelEvent) =>
             {
@@ -68,13 +77,7 @@ namespace Sandbox.UI
                     return;
                 }
 
-                Tooltip tooltip = new(self);
-                tooltip.SetText(text);
-
-                if (!string.IsNullOrEmpty(className))
-                {
-                    tooltip.AddClass(className);
-                }
+                CreateTooltip(self, text, className, onCreate, onDelete, onTick);
             });
 
             self.AddEventListener("onmouseout", (panelEvent) =>
@@ -84,14 +87,36 @@ namespace Sandbox.UI
                     return;
                 }
 
-                foreach (Tooltip tooltip in Tooltip.Tooltips)
-                {
-                    if (tooltip.RelatedPanel == self)
-                    {
-                        tooltip.Delete();
-                    }
-                }
+                DeleteTooltip();
             });
+
+            self.AddEventListener("onclick", (panelEvent) =>
+            {
+                CreateTooltip(self, text, className, onCreate, onDelete, onTick);
+            });
+        }
+
+        private static Tooltip CreateTooltip(Sandbox.UI.Panel panel, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
+        {
+            DeleteTooltip();
+
+            Tooltip tooltip = new(panel, onCreate, onDelete, onTick);
+            tooltip.SetText(text);
+
+            if (!string.IsNullOrEmpty(className))
+            {
+                tooltip.AddClass(className);
+            }
+
+            onCreate?.Invoke(tooltip);
+
+            return tooltip;
+        }
+
+        private static void DeleteTooltip()
+        {
+            Tooltip.Instance?.OnDelete?.Invoke(Tooltip.Instance);
+            Tooltip.Instance?.Delete(true);
         }
     }
 }

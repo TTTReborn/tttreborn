@@ -2,10 +2,9 @@ using System;
 
 namespace TTTReborn.UI
 {
-    public partial class Modal : RichPanel
+    public partial class Modal : Window
     {
         public Action<Modal> OnDisplay { get; set; }
-        public Action<Modal> OnClose { get; set; }
 
         public Modal() : base()
         {
@@ -21,7 +20,7 @@ namespace TTTReborn.UI
 
         public virtual void Close(bool deleteOnClose = false)
         {
-            OnClose?.Invoke(this);
+            WindowHeader.NavigationHeader.OnClose?.Invoke(WindowHeader.NavigationHeader);
 
             if (deleteOnClose)
             {

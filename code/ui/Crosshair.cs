@@ -1,6 +1,3 @@
-using System;
-
-using Sandbox;
 using Sandbox.UI;
 
 namespace TTTReborn.UI
@@ -77,11 +74,15 @@ namespace TTTReborn.UI
             _crosshairDot.AddClass("circular");
 
             _crosshairLines = new Panel[4];
+
             for (int i = 0; i < _crosshairLines.Length; i++)
             {
                 _crosshairLines[i] = new Panel(this);
                 _crosshairLines[i].AddClass("centered");
             }
+
+            Style.ZIndex = -1;
+            Style.Dirty();
 
             UpdateCrosshair();
         }

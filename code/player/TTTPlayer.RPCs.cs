@@ -30,7 +30,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientAddPerk(string perkName)
         {
-            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByName<TTTPerk>(perkName));
+            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByLibraryName<TTTPerk>(perkName));
 
             if (perk == null)
             {
@@ -43,7 +43,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientRemovePerk(string perkName)
         {
-            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByName<TTTPerk>(perkName));
+            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByLibraryName<TTTPerk>(perkName));
 
             if (perk == null)
             {
@@ -78,6 +78,28 @@ namespace TTTReborn.Player
         public void ClientInitialSpawn()
         {
             Event.Run(TTTEvent.Player.InitialSpawn, Client);
+        }
+
+        [ClientRpc]
+        public void ClientOpenC4Menu(C4Entity c4Entity)
+        {
+            if (c4Entity == null || !c4Entity.IsValid)
+            {
+                return;
+            }
+
+            C4Arm.Instance?.Open(c4Entity, this);
+        }
+
+        [ClientRpc]
+        public void ClientCloseC4Menu()
+        {
+            if (C4Arm.Instance == null)
+            {
+                return;
+            }
+
+            C4Arm.Instance.Enabled = false;
         }
     }
 }

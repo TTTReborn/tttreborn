@@ -34,7 +34,7 @@ namespace TTTReborn.Player
                 }
             }
 
-            RPCs.ClientClearInventory(To.Multiple(Utils.GetClientsSpectatingPlayer(Owner as TTTPlayer)));
+            RPCs.ClientClearInventory(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as TTTPlayer)));
 
             Perks.Clear();
             Ammo.Clear();
@@ -53,13 +53,11 @@ namespace TTTReborn.Player
                     return false;
                 }
 
-                RPCs.ClientOnPlayerCarriableItemPickup(To.Multiple(Utils.GetClientsSpectatingPlayer(player)), entity);
+                RPCs.ClientOnPlayerCarriableItemPickup(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == player)), entity);
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
-            bool added = base.Add(entity, makeActive);
-
-            return added;
+            return base.Add(entity, makeActive);
         }
 
         public bool Add(TTTPerk perk)
@@ -109,6 +107,7 @@ namespace TTTReborn.Player
 
                 return true;
             }
+
             return false;
         }
 
@@ -151,7 +150,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerCarriableItemDrop(To.Multiple(Utils.GetClientsSpectatingPlayer(Owner as TTTPlayer)), entity);
+                RPCs.ClientOnPlayerCarriableItemDrop(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as TTTPlayer)), entity);
             }
 
             return base.Drop(entity);
@@ -164,6 +163,7 @@ namespace TTTReborn.Player
             droppedEntity.Rotation = Owner.EyeRot;
             droppedEntity.Velocity = Owner.EyeRot.Forward * DROPVELOCITY;
             droppedEntity.Tags.Add(IItem.ITEM_TAG);
+
             return Remove(self);
         }
     }

@@ -3,7 +3,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
-using TTTReborn.Player.Camera;
 
 namespace TTTReborn.UI
 {
@@ -69,7 +68,7 @@ namespace TTTReborn.UI
             return HealthGroupList[^1];
         }
 
-        public override void UpdateHintPanel()
+        public override void UpdateHintPanel(TranslationLabel translationLabel)
         {
             SetClass("fade-in", Enabled);
 

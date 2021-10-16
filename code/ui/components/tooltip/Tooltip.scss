@@ -9,7 +9,7 @@ Tooltip {
     border: 1px solid #1b1b1b;
     border-radius: 8px;
 
-    transition: opacity 0.2s linear;
+    transition: opacity 0.1s linear;
 
     z-index: 9999;
 
@@ -17,8 +17,24 @@ Tooltip {
     font-family: Poppins;
     font-weight: 500;
 
+    .iconpanel,
+    .icon {
+        font-size: 21px;
+        font-family: MaterialIcons;
+    }
+
     &.hide,
     &:outro {
         opacity: 0;
+
+        transition: opacity 0s linear;
+    }
+
+    &.buttons {
+        flex-direction: column;
+
+        .span {
+            flex-direction: row;
+        }
     }
 }

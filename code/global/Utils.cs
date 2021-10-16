@@ -6,49 +6,18 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Player;
-using TTTReborn.Roles;
 
 namespace TTTReborn.Globals
 {
     public static partial class Utils
     {
-        public static List<TTTPlayer> GetPlayers()
-        {
-            List<TTTPlayer> players = new();
-
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player)
-                {
-                    players.Add(player);
-                }
-            }
-
-            return players;
-        }
-
-        public static List<TTTPlayer> GetAlivePlayers()
-        {
-            List<TTTPlayer> players = new();
-
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
-                {
-                    players.Add(player);
-                }
-            }
-
-            return players;
-        }
-
-        public static List<Client> GetDeadClients()
+        public static List<Client> GetClients(Func<TTTPlayer, bool> predicate = null)
         {
             List<Client> clients = new();
 
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Dead)
+                if (client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke(player)))
                 {
                     clients.Add(client);
                 }
@@ -57,13 +26,13 @@ namespace TTTReborn.Globals
             return clients;
         }
 
-        public static List<TTTPlayer> GetConfirmedPlayers()
+        public static List<TTTPlayer> GetPlayers(Func<TTTPlayer, bool> predicate = null)
         {
             List<TTTPlayer> players = new();
 
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer player && player.IsConfirmed)
+                if (client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke(player)))
                 {
                     players.Add(player);
                 }
@@ -72,85 +41,45 @@ namespace TTTReborn.Globals
             return players;
         }
 
-        public static List<TTTPlayer> GetNonForcedSpectatingPlayers()
-        {
-            List<TTTPlayer> players = new();
-
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player && !player.IsForcedSpectator)
-                {
-                    players.Add(player);
-                }
-            }
-
-            return players;
-        }
-
-        public static IEnumerable<Client> GetClientsSpectatingPlayer(TTTPlayer player)
-        {
-            List<Client> clients = new();
-
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer p && p.CurrentPlayer == player)
-                {
-                    clients.Add(client);
-                }
-            }
-
-            return clients;
-        }
-
-        public static List<TTTPlayer> GetAlivePlayersByRole(TTTRole role)
-        {
-            List<TTTPlayer> players = new();
-
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role.Name == role.Name)
-                {
-                    players.Add(player);
-                }
-            }
-
-            return players;
-        }
-
-        public static bool HasMinimumPlayers()
-        {
-            return GetNonForcedSpectatingPlayers().Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
-        }
+        public static bool HasMinimumPlayers() => GetPlayers((pl) => !pl.IsForcedSpectator).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
 
         /// <summary>
         /// Loops through every type derived from the given type and collects non-abstract types.
         /// </summary>
         /// <returns>List of all available types of the given type</returns>
-        public static List<Type> GetTypes<T>()
+        public static List<Type> GetTypes<T>() => GetTypes<T>(null);
+
+        /// <summary>
+        /// Loops through every type derived from the given type and collects non-abstract types that matches the given predicate.
+        /// </summary>
+        /// <param name="predicate">a filter function to limit the scope</param>
+        /// <returns>List of all available and matching types of the given type</returns>
+        public static List<Type> GetTypes<T>(Func<Type, bool> predicate)
         {
-            List<Type> types = new();
+            IEnumerable<Type> types = Library.GetAll<T>().Where(t => !t.IsAbstract && !t.ContainsGenericParameters);
 
-            Library.GetAll<T>().ToList().ForEach(t =>
+            if (predicate != null)
             {
-                if (!t.IsAbstract && !t.ContainsGenericParameters)
-                {
-                    types.Add(t);
-                }
-            });
+                types = types.Where(predicate);
+            }
 
-            return types;
+            return types.ToList();
         }
+
+        public static List<Type> GetTypesWithAttribute<T, U>() where U : Attribute => GetTypes<T>((t) => HasAttribute<U>(t));
 
         /// <summary>
         /// Get a derived `Type` of the given type by it's name (`Sandbox.LibraryAttribute`).
         /// </summary>
         /// <param name="name">The name of the `Sandbox.LibraryAttribute`</param>
         /// <returns>Derived `Type` of given type</returns>
-        public static Type GetTypeByName<T>(string name)
+        public static Type GetTypeByLibraryName<T>(string name)
         {
+            name = name.ToLower();
+
             foreach (Type type in GetTypes<T>())
             {
-                if (GetTypeName(type) == name)
+                if (GetLibraryName(type).Equals(name))
                 {
                     return type;
                 }
@@ -164,20 +93,29 @@ namespace TTTReborn.Globals
         /// </summary>
         /// <param name="type">A derived `Type` of the given type</param>
         /// <returns>Instance of the given type object</returns>
-        public static T GetObjectByType<T>(Type type)
-        {
-            return Library.Create<T>(type);
-        }
+        public static T GetObjectByType<T>(Type type) => Library.Create<T>(type);
 
         /// <summary>
         /// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `Type`.
         /// </summary>
         /// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
         /// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-        public static string GetTypeName(Type type)
+        public static string GetLibraryName(Type type) => Library.GetAttribute(type).Name.ToLower();
+
+        public static T GetAttribute<T>(Type type) where T : Attribute
         {
-            return Library.GetAttribute(type).Name;
+            foreach (object obj in type.GetCustomAttributes(false))
+            {
+                if (obj is T t)
+                {
+                    return t;
+                }
+            }
+
+            return default;
         }
+
+        public static bool HasAttribute<T>(Type type) where T : Attribute => type.IsDefined(typeof(T), false);
 
         /// <summary>
         /// Returns an approximate value for meters given the Source engine units (for distances)
@@ -185,20 +123,14 @@ namespace TTTReborn.Globals
         /// </summary>
         /// <param name="sourceUnits"></param>
         /// <returns>sourceUnits in meters</returns>
-        public static float SourceUnitsToMeters(float sourceUnits)
-        {
-            return sourceUnits / 39.37f;
-        }
+        public static float SourceUnitsToMeters(float sourceUnits) => sourceUnits / 39.37f;
 
         /// <summary>
         /// Returns seconds in the format mm:ss
         /// </summary>
         /// <param name="seconds"></param>
         /// <returns>Seconds as a string in the format "mm:ss"</returns>
-        public static string TimerString(float seconds)
-        {
-            return TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss");
-        }
+        public static string TimerString(float seconds) => TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss");
 
         public static T GetHoveringPanel<T>(Panel excludePanel, Panel rootPanel = null) where T : Panel
         {
@@ -238,10 +170,7 @@ namespace TTTReborn.Globals
             return highestPanel;
         }
 
-        public static string GetTypeNameByType(Type type)
-        {
-            return type.FullName.Replace(type.Namespace, "").TrimStart('.');
-        }
+        public static string GetTypeName(Type type) => type.FullName.Replace(type.Namespace, "").TrimStart('.');
 
         public enum Realm
         {

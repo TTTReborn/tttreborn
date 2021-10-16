@@ -44,12 +44,29 @@ namespace TTTReborn.Player
                 return BuyError.NotEnoughCredits;
             }
 
+            bool found = false;
+
+            foreach (ShopItemData shopItemData in Shop.Items)
+            {
+                if (shopItemData.Name.Equals(itemData.Name))
+                {
+                    found = true;
+
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                return BuyError.NotAvailable;
+            }
+
             return BuyError.None;
         }
 
-        public void RequestPurchase(IBuyableItem buyableItem)
+        public void RequestPurchase(IItem item)
         {
-            ShopItemData itemData = buyableItem.CreateItemData();
+            ShopItemData itemData = ShopItemData.CreateItemData(item.GetType());
             BuyError buyError = CanBuy(itemData);
 
             if (buyError != BuyError.None)
@@ -61,7 +78,7 @@ namespace TTTReborn.Player
 
             Credits -= itemData.Price;
 
-            buyableItem.OnPurchase(this);
+            item.OnPurchase(this);
 
             ClientSendQuickshopUpdate(To.Single(this));
         }

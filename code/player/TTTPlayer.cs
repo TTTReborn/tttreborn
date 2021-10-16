@@ -1,12 +1,17 @@
+using System.Linq;
+
 using Sandbox;
 
 using TTTReborn.Events;
 using TTTReborn.Globals;
+using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
 
 namespace TTTReborn.Player
 {
+    using System.Collections.Generic;
+
     public partial class TTTPlayer : Sandbox.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;
@@ -190,6 +195,7 @@ namespace TTTReborn.Player
 
             SimulateActiveChild(client, ActiveChild);
 
+            TickC4Simulate();
             TickItemSimulate();
             TickPlayerUse();
             TickPlayerDropCarriable();
@@ -265,6 +271,14 @@ namespace TTTReborn.Player
             for (int i = 0; i < perks.Count(); i++)
             {
                 perks.Get(i).Simulate(Client);
+            }
+        }
+
+        private void TickC4Simulate()
+        {
+            foreach (C4Entity c4 in All.Where(x => x is C4Entity))
+            {
+                c4.Simulate(Client);
             }
         }
 

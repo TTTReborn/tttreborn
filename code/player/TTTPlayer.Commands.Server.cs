@@ -91,18 +91,14 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IBuyableItem item = null;
+            Type itemType = Utils.GetTypeByLibraryName<IItem>(itemName);
 
-            Library.GetAll<IBuyableItem>().ToList().ForEach(t =>
+            if (itemType == null || !Utils.HasAttribute<BuyableAttribute>(itemType))
             {
-                if (!t.IsAbstract && !t.ContainsGenericParameters)
-                {
-                    if (Library.GetAttribute(t).Name == itemName)
-                    {
-                        item = Library.Create<IBuyableItem>(t);
-                    }
-                }
-            });
+                return;
+            }
+
+            IItem item = Utils.GetObjectByType<IItem>(itemType);
 
             if (item == null)
             {
@@ -127,7 +123,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Type type = Utils.GetTypeByName<TTTRole>(roleName);
+            Type type = Utils.GetTypeByLibraryName<TTTRole>(roleName);
 
             if (type == null)
             {

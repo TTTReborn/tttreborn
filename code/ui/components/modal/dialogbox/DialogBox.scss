@@ -1,20 +1,11 @@
 DialogBox,
 .dialogbox {
-    background-color: #000c;
-    border: 1px solid #1b1b1b;
-    border-radius: 8px;
-
-    font-family: Poppins;
     width: 600px;
     left: 50%;
     top: 50%;
-    //transform: translateX(-50%) translateY(-50%);
     position: absolute;
     flex-direction: column;
 
-    color: #fafafa;
-    font-family: Poppins;
-    font-weight: 500;
     pointer-events: all;
 
     &.hide {
@@ -25,12 +16,11 @@ DialogBox,
     .header,
     .footer {
         flex-direction: row;
-        background-color: #000c;
         padding: 5px;
     }
 
     .content {
-        padding: 5px;
+        padding: 10px;
     }
 
     .header {
@@ -41,7 +31,6 @@ DialogBox,
 
     .footer {
         border-radius: 0px 0px 8px 8px;
-        margin-top: 10px;
 
         Button {
             border: 1px solid #1b1b1b;

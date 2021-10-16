@@ -49,18 +49,18 @@ namespace TTTReborn.UI
 
         public FileSelection() : base()
         {
-            HeaderPanel.IsLocked = false;
-            HeaderPanel.IsFreeDraggable = true;
+            WindowHeader.DragHeaderWrapper.IsLocked = false;
+            WindowHeader.DragHeaderWrapper.IsFreeDraggable = true;
 
             StyleSheet.Load("/ui/components/modal/fileselection/FileSelection.scss");
 
-            TitleLabel.Text = DefaultSelectionPath;
+            WindowHeader.NavigationHeader.SetTitle(DefaultSelectionPath);
 
             OnDecline = () => Close();
 
-            _selectionPanel = ContentPanel.Add.Panel("selection");
+            _selectionPanel = WindowContent.Add.Panel("selection");
 
-            FileNameEntry = ContentPanel.Add.TextEntry("");
+            FileNameEntry = WindowContent.Add.TextEntry("");
             FileNameEntry.AddClass("filename");
             FileNameEntry.AddClass("hide");
         }
@@ -80,7 +80,7 @@ namespace TTTReborn.UI
         public void CreateTreeView(string path)
         {
             CurrentFolderPath = path;
-            TitleLabel.Text = path;
+            WindowHeader.NavigationHeader.SetTitle(path);
             SelectedEntry = null;
 
             _selectionPanel.DeleteChildren(true);

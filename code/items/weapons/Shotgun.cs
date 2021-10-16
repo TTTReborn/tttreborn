@@ -9,22 +9,20 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    [Weapon(SlotType = SlotType.Primary, AmmoType = "buckshot")]
+    [Buyable(Price = 100)]
     [Library("ttt_shotgun")]
     [EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
-    partial class Shotgun : TTTWeapon, IBuyableItem
+    partial class Shotgun : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
-        public override SlotType SlotType => SlotType.Primary;
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
-        public override string AmmoType => "buckshot";
         public override Type AmmoEntity => typeof(BuckshotAmmo);
         public override int ClipSize => 8;
         public override float ReloadTime => 0.5f;
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
-
-        public virtual int Price => 100;
 
         public override void Spawn()
         {

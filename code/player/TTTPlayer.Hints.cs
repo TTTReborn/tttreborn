@@ -17,17 +17,20 @@ namespace TTTReborn.Player
             if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
             {
                 DeleteHint();
+
                 return;
             }
 
             IEntityHint hint = player.IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
+
             if (hint != null && _currentHintPanel != null)
             {
-                _currentHintPanel.UpdateHintPanel();
+                _currentHintPanel.UpdateHintPanel(hint.CurrentTranslationLabel);
 
                 if (!hint.CanHint(player) || hint != _currentHint)
                 {
                     DeleteHint();
+
                     return;
                 }
             }
@@ -38,20 +41,19 @@ namespace TTTReborn.Player
                 if (hint.CanHint(player) && _currentHintPanel == null)
                 {
                     _currentHintPanel = hint.DisplayHint(player);
-                    _currentHintPanel.Parent = Hud.Current.RootPanel;
+                    _currentHintPanel.Parent = HintDisplay.Instance;
                     _currentHintPanel.Enabled = true;
-                    _currentHintPanel.UpdateHintPanel();
+                    _currentHintPanel.UpdateHintPanel(hint.CurrentTranslationLabel);
 
                     _currentHint = hint;
                 }
             }
             else
             {
-                // If we just looked away, disable and update the panel
+                // If we just looked away, disable the panel.
                 if (_currentHintPanel != null)
                 {
                     _currentHintPanel.Enabled = false;
-                    _currentHintPanel.UpdateHintPanel();
                 }
 
                 DeleteHint();

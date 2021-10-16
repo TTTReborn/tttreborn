@@ -1,23 +1,30 @@
 using System.Collections.Generic;
+using System.Linq;
 
 using Sandbox;
 
 using TTTReborn.Player;
+using TTTReborn.Teams;
 using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
+    [Buyable(Price = 0)]
     [Library("ttt_radar")]
-    public partial class Radar : TTTCountdownPerk, IBuyableItem
+    public partial class Radar : TTTCountdownPerk
     {
-        private Vector3 RADARPOINT_UI_OFFSET = Vector3.Up * 45;
+        public struct RadarPointData
+        {
+            public Color Color;
+            public Vector3 Position;
+        }
+
         public override float Countdown { get; } = 20f;
 
-        private Vector3[] _lastPositions;
-
-        private List<RadarPoint> _cachedPoints = new();
-
-        public int Price => 0;
+        private RadarPointData[] _lastPositions;
+        private readonly List<RadarPoint> _cachedPoints = new();
+        private readonly Color _defaultRadarColor = Color.FromBytes(124, 252, 0);
+        private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
         public Radar() : base()
         {
@@ -38,25 +45,50 @@ namespace TTTReborn.Items
         {
             if (Host.IsServer)
             {
-                List<Vector3> positions = new();
-
-                foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
+                if (Owner is not TTTPlayer owner)
                 {
-                    if (player != Owner)
+                    return;
+                }
+
+                List<RadarPointData> pointData = new();
+
+                foreach (TTTPlayer player in Globals.Utils.GetPlayers((pl) => pl.LifeState == LifeState.Alive))
+                {
+                    if (player.Client.UserId == owner.Client.UserId)
                     {
-                        positions.Add(player.Position);
+                        continue;
+                    }
+
+                    pointData.Add(new RadarPointData
+                    {
+                        Position = player.Position + _radarPointOffset,
+                        Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
+                    });
+                }
+
+                if (owner.Team is not TraitorTeam)
+                {
+                    List<Vector3> decoyPositions = Entity.All.Where(x => x.GetType() == typeof(DecoyEntity))?.Select(x => x.Position).ToList();
+
+                    foreach (Vector3 decoyPosition in decoyPositions)
+                    {
+                        pointData.Add(new RadarPointData
+                        {
+                            Position = decoyPosition + _radarPointOffset,
+                            Color = _defaultRadarColor
+                        });
                     }
                 }
 
-                ClientSendRadarPositions(To.Single(Owner), Owner as TTTPlayer, positions.ToArray());
+                ClientSendRadarPositions(To.Single(Owner), owner, pointData.ToArray());
             }
             else
             {
                 ClearRadarPoints();
 
-                foreach (Vector3 vector3 in _lastPositions)
+                foreach (RadarPointData pointData in _lastPositions)
                 {
-                    _cachedPoints.Add(new RadarPoint(vector3 + RADARPOINT_UI_OFFSET));
+                    _cachedPoints.Add(new RadarPoint(pointData));
                 }
             }
         }
@@ -90,7 +122,7 @@ namespace TTTReborn.Items
         }
 
         [ClientRpc]
-        public static void ClientSendRadarPositions(TTTPlayer player, Vector3[] positions)
+        public static void ClientSendRadarPositions(TTTPlayer player, RadarPointData[] points)
         {
             if (!player.IsValid() || player != Local.Pawn)
             {
@@ -104,8 +136,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            radar._lastPositions = positions;
-
+            radar._lastPositions = points;
             radar.UpdatePositions();
         }
     }

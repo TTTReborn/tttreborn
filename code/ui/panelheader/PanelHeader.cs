@@ -19,6 +19,13 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/panelheader/PanelHeader.scss");
 
+            Reload();
+        }
+
+        public void Reload()
+        {
+            DeleteChildren(true);
+
             _title = Add.Label("", "title");
 
             OnCreateHeader();
