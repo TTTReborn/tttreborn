@@ -1,10 +1,10 @@
+using System;
+
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    using System;
-
     public class UsableHint : EntityHintPanel
     {
         private readonly Label _label;
