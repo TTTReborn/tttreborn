@@ -19,6 +19,8 @@ namespace TTTReborn.Items
         private static float _pushingForce => 600f;
         private static int _pushingDistance => 50;
 
+        private bool IsUsingMagnetoStick => _heldBody != null || _isAttaching;
+
         private PhysicsBody _holdBody;
         private WeldJoint _holdJoint;
 
@@ -58,7 +60,7 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                if (Input.Pressed(InputButton.Attack2) && _heldBody == null && _isAttaching == false)
+                if (Input.Pressed(InputButton.Attack2) && !IsUsingMagnetoStick)
                 {
                     PushPlayer();
                 }
