@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Extensions;
+
 namespace TTTReborn.Items
 {
     [Library("ttt_weapon_random")]
@@ -15,12 +17,11 @@ namespace TTTReborn.Items
         /// Defines the amount of matching ammo entities that should be spawned near the weapons.
         /// </summary>
         [Property(Title = "Amount of Ammo")]
-        [Range(0, 5, 1)]
         public int AmmoToSpawn { get; set; } = 0;
 
         public void Activate()
         {
-            List<Type> wepTypes = Globals.Utils.GetTypes<TTTWeapon>(w => !w.IsDefined(typeof(NonSpawnableAttribute), true));
+            List<Type> wepTypes = Globals.Utils.GetTypes<TTTWeapon>(w => !w.HasAttribute<NonSpawnableAttribute>(true));
 
             if (wepTypes.Count < 1)
             {
@@ -28,7 +29,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            Type weaponTypeToSpawn = wepTypes[new Random().Next(wepTypes.Count)];
+            Type weaponTypeToSpawn = Globals.Utils.RNG.FromList(wepTypes);
             TTTWeapon weapon = Globals.Utils.GetObjectByType<TTTWeapon>(weaponTypeToSpawn);
             weapon.Position = Position;
             weapon.Rotation = Rotation;

@@ -5,12 +5,16 @@ using System.Linq;
 using Sandbox;
 using Sandbox.UI;
 
+using TTTReborn.Extensions;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.Globals
 {
     public static partial class Utils
     {
+        public static Random RNG { get; } = new Random();
+
         public static List<Client> GetClients(Func<TTTPlayer, bool> predicate = null)
         {
             List<Client> clients = new();
@@ -66,7 +70,7 @@ namespace TTTReborn.Globals
             return types.ToList();
         }
 
-        public static List<Type> GetTypesWithAttribute<T, U>() where U : Attribute => GetTypes<T>((t) => HasAttribute<U>(t));
+        public static List<Type> GetTypesWithAttribute<T, U>() where U : Attribute => GetTypes<T>((t) => t.HasAttribute<U>());
 
         /// <summary>
         /// Get a derived `Type` of the given type by it's name (`Sandbox.LibraryAttribute`).
@@ -115,7 +119,8 @@ namespace TTTReborn.Globals
             return default;
         }
 
-        public static bool HasAttribute<T>(Type type) where T : Attribute => type.IsDefined(typeof(T), false);
+        [Obsolete("Use the new extension method. 'Type:HasAttribute<T>()'")]
+        public static bool HasAttribute<T>(Type type) where T : Attribute => type.HasAttribute<T>();
 
         /// <summary>
         /// Returns an approximate value for meters given the Source engine units (for distances)
