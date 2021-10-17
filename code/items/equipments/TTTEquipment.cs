@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Extensions;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -19,7 +20,7 @@ namespace TTTReborn.Items
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
         public string LibraryName { get; }
-        public virtual string DisplayName => LibraryName;
+        public string DisplayName { get; }
 
         public SlotType SlotType { get; } = SlotType.UtilityEquipment;
 
@@ -27,12 +28,12 @@ namespace TTTReborn.Items
         {
             LibraryName = Library.GetAttribute(GetType()).Name;
 
-            foreach (object obj in GetType().GetCustomAttributes(false))
+            EquipmentAttribute equipAttribute = GetType().GetAttribute<EquipmentAttribute>();
+            DisplayName = equipAttribute?.DisplayName ?? LibraryName;
+
+            if (equipAttribute is not null)
             {
-                if (obj is EquipmentAttribute equipmentAttribute)
-                {
-                    SlotType = equipmentAttribute.SlotType;
-                }
+                SlotType = equipAttribute.SlotType;
             }
         }
 

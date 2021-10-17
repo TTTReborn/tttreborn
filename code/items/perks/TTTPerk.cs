@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Extensions;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -20,12 +21,15 @@ namespace TTTReborn.Items
     public abstract class TTTPerk : IItem
     {
         public string LibraryName { get; }
-        public virtual string DisplayName => LibraryName;
+        public string DisplayName { get; }
         public Entity Owner { get; private set; }
 
         protected TTTPerk()
         {
             LibraryName = Library.GetAttribute(GetType()).Name;
+
+            PerkAttribute perkAttribute = GetType().GetAttribute<PerkAttribute>();
+            DisplayName = perkAttribute?.DisplayName ?? LibraryName;
         }
 
         public void Equip(TTTPlayer player)

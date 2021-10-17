@@ -6,13 +6,12 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Weapon(SlotType = SlotType.Primary, AmmoType = "smg")]
+    [Weapon(SlotType = SlotType.Primary, AmmoType = "smg", DisplayName = "SMG")]
     [Buyable(Price = 100)]
     [Library("ttt_smg")]
     [EditorModel("weapons/rust_smg/rust_smg.vmdl")]
     partial class SMG : TTTWeapon
     {
-        public override string DisplayName => nameof(SMG);
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
         public override float PrimaryRate => 10.0f;
         public override float SecondaryRate => 1.0f;

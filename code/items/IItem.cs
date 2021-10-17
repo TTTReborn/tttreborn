@@ -9,9 +9,10 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class ItemAttribute : Attribute
     {
+        public string DisplayName = null;
+
         public ItemAttribute() : base()
         {
-
         }
     }
 

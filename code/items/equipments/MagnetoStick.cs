@@ -7,11 +7,10 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Equipment(SlotType = SlotType.UtilityEquipment)]
+    [Equipment(SlotType = SlotType.UtilityEquipment, DisplayName = "Magneto Stick")]
     [Library("ttt_magnetostick")]
     partial class MagnetoStick : TTTEquipment
     {
-        public override string DisplayName => "Magneto Stick";
         public override string ViewModelPath => "";
 
         private static int _grabbingDistance => 80;

@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 
 using Sandbox;
 using Sandbox.ScreenShake;
 
+using TTTReborn.Extensions;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -22,7 +24,7 @@ namespace TTTReborn.Items
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public string LibraryName { get; }
-        public virtual string DisplayName => LibraryName;
+        public string DisplayName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
         public string AmmoType { get; } = "pistol";
 
@@ -64,13 +66,13 @@ namespace TTTReborn.Items
         {
             LibraryName = Library.GetAttribute(GetType()).Name;
 
-            foreach (object obj in GetType().GetCustomAttributes(false))
+            WeaponAttribute weaponAttribute = GetType().GetAttribute<WeaponAttribute>();
+            DisplayName = weaponAttribute?.DisplayName ?? LibraryName;
+
+            if (weaponAttribute is not null)
             {
-                if (obj is WeaponAttribute weaponAttribute)
-                {
-                    SlotType = weaponAttribute.SlotType;
-                    AmmoType = weaponAttribute.AmmoType;
-                }
+                SlotType = weaponAttribute.SlotType;
+                AmmoType = weaponAttribute.AmmoType;
             }
 
             Tags.Add(IItem.ITEM_TAG);

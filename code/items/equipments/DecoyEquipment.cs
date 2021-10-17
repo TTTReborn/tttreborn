@@ -7,13 +7,12 @@ namespace TTTReborn.Items
     /// <summary>
     /// Decoy equipment definition, for the physical entity, see items/equipments/entities/DecoyEntity.cs
     /// </summary>
-    [Weapon(SlotType = SlotType.UtilityEquipment)]
+    [Equipment(SlotType = SlotType.UtilityEquipment, DisplayName = "Decoy")]
     [Buyable(Price = 0)]
     [Hammer.Skip]
     [Library("ttt_decoy")]
     public partial class DecoyEquipment : TTTEquipment
     {
-        public override string DisplayName => "Decoy";
         public override string ViewModelPath => "";
 
         public DecoyEquipment() : base()
