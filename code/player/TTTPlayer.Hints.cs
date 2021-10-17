@@ -25,7 +25,7 @@ namespace TTTReborn.Player
 
             if (hint != null && _currentHintPanel != null)
             {
-                _currentHintPanel.UpdateHintPanel(hint.CurrentTranslationLabel);
+                _currentHintPanel.UpdateHintPanel(hint.CurrentHintText);
 
                 if (!hint.CanHint(player) || hint != _currentHint)
                 {
@@ -43,7 +43,7 @@ namespace TTTReborn.Player
                     _currentHintPanel = hint.DisplayHint(player);
                     _currentHintPanel.Parent = HintDisplay.Instance;
                     _currentHintPanel.Enabled = true;
-                    _currentHintPanel.UpdateHintPanel(hint.CurrentTranslationLabel);
+                    _currentHintPanel.UpdateHintPanel(hint.CurrentHintText);
 
                     _currentHint = hint;
                 }

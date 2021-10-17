@@ -2,7 +2,7 @@ namespace TTTReborn.UI
 {
     public abstract class EntityHintPanel : Panel
     {
-        public virtual void UpdateHintPanel(TranslationLabel translationLabel)
+        public virtual void UpdateHintPanel(string hintText)
         {
 
         }

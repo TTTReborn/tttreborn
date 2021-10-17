@@ -7,6 +7,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Player;
 using TTTReborn.UI;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.Items
 {
@@ -291,8 +292,7 @@ namespace TTTReborn.Items
             }
         }
 
-        public TranslationLabel CurrentTranslationLabel => IsArmed ? new TranslationLabel("C4_DEFUSE", String.Empty, new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() })
-                                                                   : new TranslationLabel("C4_ARM", String.Empty, new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
+        public string CurrentHintText => TTTLanguage.ActiveLanguage.GetFormattedTranslation(IsArmed ? "C4_DEFUSE" : "C4_ARM", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 
         public bool CanHint(TTTPlayer client)
         {
@@ -301,7 +301,7 @@ namespace TTTReborn.Items
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return new Hint(CurrentTranslationLabel);
+            return new Hint(CurrentHintText);
         }
     }
 }

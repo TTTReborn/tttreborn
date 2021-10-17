@@ -1,3 +1,5 @@
+using System;
+
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -9,9 +11,9 @@ namespace TTTReborn.UI
         /// </summary>
         public virtual float HintDistance => 2048f;
         /// <summary>
-        /// The current translation label to display.
+        /// The current string to display.
         /// </summary>
-        public virtual TranslationLabel CurrentTranslationLabel => null;
+        public virtual string CurrentHintText => String.Empty;
 
         bool CanHint(TTTPlayer client);
         EntityHintPanel DisplayHint(TTTPlayer client);

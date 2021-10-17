@@ -68,7 +68,7 @@ namespace TTTReborn.UI
             return HealthGroupList[^1];
         }
 
-        public override void UpdateHintPanel(TranslationLabel translationLabel)
+        public override void UpdateHintPanel(string hintText)
         {
             SetClass("fade-in", Enabled);
 

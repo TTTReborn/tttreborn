@@ -4,6 +4,7 @@ using Sandbox;
 
 using TTTReborn.Player;
 using TTTReborn.UI;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.Items
 {
@@ -59,8 +60,7 @@ namespace TTTReborn.Items
 
         public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
 
-        public TranslationLabel CurrentTranslationLabel => new TranslationLabel("HEALTH_STATION", String.Empty,
-                                                                                new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
+        public string CurrentHintText => TTTLanguage.ActiveLanguage.GetFormattedTranslation("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
 
         public bool CanHint(TTTPlayer client)
         {
@@ -69,7 +69,7 @@ namespace TTTReborn.Items
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return new Hint(CurrentTranslationLabel);
+            return new Hint(CurrentHintText);
         }
     }
 }
