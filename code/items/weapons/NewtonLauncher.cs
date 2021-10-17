@@ -13,6 +13,7 @@ namespace TTTReborn.Items
     [NonSpawnable]
     partial class NewtonLauncher : TTTWeapon
     {
+        public override string DisplayName => "Newton Launcher";
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 1;

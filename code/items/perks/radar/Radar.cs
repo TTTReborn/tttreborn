@@ -19,6 +19,7 @@ namespace TTTReborn.Items
             public Vector3 Position;
         }
 
+        public override string DisplayName => nameof(Radar);
         public override float Countdown { get; } = 20f;
 
         private RadarPointData[] _lastPositions;

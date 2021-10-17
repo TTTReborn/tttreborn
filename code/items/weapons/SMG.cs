@@ -12,6 +12,7 @@ namespace TTTReborn.Items
     [EditorModel("weapons/rust_smg/rust_smg.vmdl")]
     partial class SMG : TTTWeapon
     {
+        public override string DisplayName => nameof(SMG);
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
         public override float PrimaryRate => 10.0f;
         public override float SecondaryRate => 1.0f;

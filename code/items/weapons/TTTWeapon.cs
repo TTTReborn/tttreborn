@@ -22,6 +22,7 @@ namespace TTTReborn.Items
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public string LibraryName { get; }
+        public virtual string DisplayName => LibraryName;
         public SlotType SlotType { get; } = SlotType.Secondary;
         public string AmmoType { get; } = "pistol";
 

@@ -21,6 +21,8 @@ namespace TTTReborn.Items
 
         string LibraryName { get; }
 
+        string DisplayName { get; }
+
         Entity Owner { get; }
 
         void Equip(TTTPlayer player);

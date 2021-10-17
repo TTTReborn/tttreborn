@@ -19,6 +19,8 @@ namespace TTTReborn.Items
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
         public string LibraryName { get; }
+        public virtual string DisplayName => LibraryName;
+
         public SlotType SlotType { get; } = SlotType.UtilityEquipment;
 
         protected TTTEquipment()

@@ -11,6 +11,7 @@ namespace TTTReborn.Items
     [Library("ttt_magnetostick")]
     partial class MagnetoStick : TTTEquipment
     {
+        public override string DisplayName => "Magneto Stick";
         public override string ViewModelPath => "";
 
         private static int _grabbingDistance => 80;

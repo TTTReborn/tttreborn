@@ -13,6 +13,7 @@ namespace TTTReborn.Items
     [Library("ttt_decoy")]
     public partial class DecoyEquipment : TTTEquipment
     {
+        public override string DisplayName => "Decoy";
         public override string ViewModelPath => "";
 
         public DecoyEquipment() : base()

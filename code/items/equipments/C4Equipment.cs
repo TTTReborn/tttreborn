@@ -16,6 +16,7 @@ namespace TTTReborn.Items
         [ServerVar("ttt_c4_can_drop", Help = "If enabled, allows players to drop the C4 as a physics item with Attack2.")]
         public static bool TTTC4CanDrop { get; set; } = false;
 
+        public override string DisplayName => "C4 Explosive";
         public override string ViewModelPath => "";
 
         private const int PLACE_DISTANCE = 200;

@@ -10,6 +10,7 @@ namespace TTTReborn.Items
     [EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
     partial class Knife : TTTWeapon
     {
+        public override string DisplayName => nameof(Knife);
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override float PrimaryRate => 1.0f;
         public override float DeployTime => 0.2f;

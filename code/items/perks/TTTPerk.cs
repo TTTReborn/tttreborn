@@ -20,6 +20,7 @@ namespace TTTReborn.Items
     public abstract class TTTPerk : IItem
     {
         public string LibraryName { get; }
+        public virtual string DisplayName => LibraryName;
         public Entity Owner { get; private set; }
 
         protected TTTPerk()

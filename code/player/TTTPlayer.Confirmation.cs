@@ -104,7 +104,7 @@ namespace TTTReborn.Player
                 Rotation = Rotation
             };
 
-            corpse.KillerWeapon = LastDamageWeapon?.Name;
+            corpse.KillerWeapon = LastDamageWeapon?.DisplayName;
             corpse.WasHeadshot = LastDamageWasHeadshot;
             corpse.Distance = LastDistanceToAttacker;
             corpse.Suicide = LastAttacker == this;
@@ -115,7 +115,7 @@ namespace TTTReborn.Player
 
             for (int i = 0; i < corpse.Perks.Length; i++)
             {
-                corpse.Perks[i] = perksInventory.Get(i).LibraryName;
+                corpse.Perks[i] = perksInventory.Get(i).DisplayName;
             }
 
             corpse.CopyFrom(this);

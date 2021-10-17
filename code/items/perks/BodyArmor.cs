@@ -6,6 +6,7 @@ namespace TTTReborn.Items
     [Library("ttt_bodyarmor")]
     public partial class BodyArmor : TTTPerk
     {
+        public override string DisplayName => "Body Armor";
         public BodyArmor() : base()
         {
 

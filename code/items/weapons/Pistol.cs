@@ -10,6 +10,7 @@ namespace TTTReborn.Items
     [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
     partial class Pistol : TTTWeapon
     {
+        public override string DisplayName => nameof(Pistol);
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 15;

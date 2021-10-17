@@ -15,6 +15,7 @@ namespace TTTReborn.Items
     [EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
     partial class Shotgun : TTTWeapon
     {
+        public override string DisplayName => nameof(Shotgun);
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;

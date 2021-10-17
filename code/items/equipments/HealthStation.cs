@@ -13,6 +13,7 @@ namespace TTTReborn.Items
     [Library("ttt_healthstation")]
     public partial class HealthStation : TTTEquipment
     {
+        public override string DisplayName => "Health Station";
         public override string ViewModelPath => "";
 
         public override void Spawn()
