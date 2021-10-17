@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.UI;
-using TTTReborn.Globalization;
 
 namespace TTTReborn.Player
 {

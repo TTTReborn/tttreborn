@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
 using TTTReborn.Player;
 using TTTReborn.UI;
-using TTTReborn.Globalization;
 
 namespace TTTReborn.Items
 {
