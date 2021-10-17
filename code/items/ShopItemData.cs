@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Extensions;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -20,14 +21,20 @@ namespace TTTReborn.Items
     public class ShopItemData
     {
         public string Name { get; set; }
+        public string DisplayName { get; set; }
         public string Description = "";
         public int Price { get; set; } = 0;
         public SlotType? SlotType = null;
         public Type Type = null;
 
+        /// <summary>
+        /// <b>Do not call directly! Use <see cref="CreateItemData(Type)"/> instead.</b>
+        /// </summary>
+        /// <remarks>public due to (de)serialization.</remarks>
         public ShopItemData(string name)
         {
             Name = name;
+            DisplayName = name;
         }
 
         public void CopyFrom(ShopItemData shopItemData)
@@ -63,9 +70,15 @@ namespace TTTReborn.Items
                     shopItemData.Price = buyableAttribute.Price;
                     buyable = true;
                 }
-                else if (obj is CarriableAttribute carriableAttribute)
+
+                if (obj is CarriableAttribute carriableAttribute)
                 {
                     shopItemData.SlotType = carriableAttribute.SlotType;
+                }
+
+                if (obj is ItemAttribute itemAttribute)
+                {
+                    shopItemData.DisplayName = itemAttribute.DisplayName;
                 }
             }
 

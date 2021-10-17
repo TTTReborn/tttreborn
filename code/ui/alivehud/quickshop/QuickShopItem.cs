@@ -39,7 +39,7 @@ namespace TTTReborn.UI
         {
             ItemData = shopItemData;
 
-            _itemNameLabel.Text = $"{shopItemData.Name}";
+            _itemNameLabel.Text = $"{shopItemData.DisplayName}";
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
             Texture icon = Texture.Load($"/ui/weapons/{shopItemData.Name}.png", false);
