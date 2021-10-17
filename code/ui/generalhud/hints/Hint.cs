@@ -20,8 +20,6 @@ namespace TTTReborn.UI
             _label = Add.Label(hintText);
             _label.Style.Padding = 10;
 
-            AddChild(_label);
-
             Enabled = false;
         }
 
