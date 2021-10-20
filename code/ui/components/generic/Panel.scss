@@ -108,6 +108,13 @@ $info: #ffae00;
     transform: translateX(-50%) translateY(-50%);
 }
 
+.centered-vertical-10 {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
 .centered-horizontal {
     position: absolute;
     left: 50%;
