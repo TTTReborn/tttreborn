@@ -14,7 +14,7 @@ namespace TTTReborn.Player
 
         private void TickEntityHints()
         {
-            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
+            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera or FirstPersonSpectatorCamera)
             {
                 DeleteHint();
 
