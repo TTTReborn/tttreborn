@@ -9,7 +9,7 @@ namespace TTTReborn.Player
 
         public bool CanHint(TTTPlayer client)
         {
-            return true;
+            return client.Camera is not FirstPersonSpectatorCamera;
         }
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
