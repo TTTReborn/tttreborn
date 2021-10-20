@@ -179,6 +179,7 @@ namespace TTTReborn.Player
             }
 
             TickAttemptInspectPlayerCorpse();
+            TickEntityHints();
 
             if (LifeState != LifeState.Alive)
             {
@@ -200,7 +201,6 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
-            TickEntityHints();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
