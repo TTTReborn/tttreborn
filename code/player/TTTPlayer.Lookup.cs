@@ -23,7 +23,7 @@ namespace TTTReborn.Player
 
             if (IsSpectatingPlayer)
             {
-                trace.Ignore(CurrentPlayer);
+                trace = trace.Ignore(CurrentPlayer);
             }
 
             TraceResult tr = trace.UseHitboxes().Run();
