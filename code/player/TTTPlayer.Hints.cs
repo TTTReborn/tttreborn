@@ -67,37 +67,5 @@ namespace TTTReborn.Player
             _currentHintPanel = null;
             _currentHint = null;
         }
-
-        private IEntityHint IsLookingAtHintableEntity(float maxHintDistance)
-        {
-            Trace trace;
-
-            if (IsClient)
-            {
-                Sandbox.Camera camera = Camera as Sandbox.Camera;
-
-                trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * maxHintDistance);
-            }
-            else
-            {
-                trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * maxHintDistance);
-            }
-
-            trace = trace.HitLayer(CollisionLayer.Debris).Ignore(this);
-
-            if (IsSpectatingPlayer)
-            {
-                trace = trace.Ignore(CurrentPlayer);
-            }
-
-            TraceResult tr = trace.UseHitboxes().Run();
-
-            if (tr.Hit && tr.Entity is IEntityHint hint && tr.StartPos.Distance(tr.EndPos) <= hint.HintDistance)
-            {
-                return hint;
-            }
-
-            return null;
-        }
     }
 }
