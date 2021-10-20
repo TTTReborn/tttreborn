@@ -1,9 +1,8 @@
 ﻿using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    using Sandbox.UI.Construct;
-
     public class WIPDisclaimer : Panel
     {
         public static WIPDisclaimer Instance { get; set; }
