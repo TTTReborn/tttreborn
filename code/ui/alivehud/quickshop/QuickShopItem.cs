@@ -18,8 +18,6 @@ namespace TTTReborn.UI
 
         public QuickShopItem(Sandbox.UI.Panel parent) : base(parent)
         {
-            Parent = parent;
-
             AddClass("rounded");
             AddClass("text-shadow");
             AddClass("background-color-secondary");
@@ -42,14 +40,7 @@ namespace TTTReborn.UI
             _itemNameLabel.Text = $"{shopItemData.Name}";
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
-            Texture icon = Texture.Load($"/ui/weapons/{shopItemData.Name}.png", false);
-            icon ??= Texture.Load($"/ui/none.png");
-
-            _itemIcon.Style.Background = new PanelBackground
-            {
-                Texture = icon
-            };
-
+            _itemIcon.Style.BackgroundImage = Texture.Load($"/ui/weapons/{shopItemData.Name}.png", false) ?? Texture.Load($"/ui/none.png");
             _itemIcon.Style.Dirty();
         }
 

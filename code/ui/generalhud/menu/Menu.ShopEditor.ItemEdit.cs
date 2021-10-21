@@ -17,10 +17,14 @@ namespace TTTReborn.UI.Menu
                 return;
             }
 
-            Hud.Current.RootPanel.AddChild(CreateItemEditWindow(item, role));
+            Modal itemEditModal = CreateItemEditModal(item, role);
+
+            Hud.Current.RootPanel.AddChild(itemEditModal);
+
+            itemEditModal.Display();
         }
 
-        private static Window CreateItemEditWindow(QuickShopItem item, TTTRole role)
+        private static Modal CreateItemEditModal(QuickShopItem item, TTTRole role)
         {
             if (Menu.Instance._currentDialogBox != null)
             {
@@ -28,9 +32,8 @@ namespace TTTReborn.UI.Menu
             }
 
             DialogBox dialogBox = new DialogBox();
-            dialogBox.WindowHeader.DragHeaderWrapper.IsLocked = false;
-            dialogBox.WindowHeader.NavigationHeader.SetTitle($"Edit item '{item.ItemData.Name}'");
-
+            dialogBox.Header.DragHeader.IsLocked = false;
+            dialogBox.SetTitle($"Edit item '{item.ItemData.Name}'");
             dialogBox.AddClass("itemeditwindow");
 
             dialogBox.OnAgree = () =>
@@ -39,14 +42,14 @@ namespace TTTReborn.UI.Menu
 
                 ServerUpdateItem(shopItemData.Name, true, JsonSerializer.Serialize(shopItemData), role.Name);
 
-                dialogBox.Close(true);
+                dialogBox.Close();
             };
 
             dialogBox.OnDecline = () =>
             {
                 Menu.Instance._shopItemData = item.ItemData;
 
-                dialogBox.Close(true);
+                dialogBox.Close();
             };
 
             Menu.Instance._currentDialogBox = dialogBox;
@@ -59,7 +62,7 @@ namespace TTTReborn.UI.Menu
 
         private static void PopulateEditWindowWithSettings()
         {
-            Menu.Instance._currentDialogBox.WindowContent.SetPanelContent((panelContent) =>
+            Menu.Instance._currentDialogBox.Content.SetPanelContent((panelContent) =>
             {
                 ShopItemData shopItemData = Menu.Instance._shopItemData;
 

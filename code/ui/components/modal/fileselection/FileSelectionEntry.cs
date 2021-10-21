@@ -3,7 +3,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public partial class FileSelectionEntry : Sandbox.UI.Panel
+    public partial class FileSelectionEntry : Panel
     {
         public readonly Label FileNameLabel;
 
@@ -13,7 +13,7 @@ namespace TTTReborn.UI
 
         private FileSelection _fileSelection;
 
-        public FileSelectionEntry() : base()
+        public FileSelectionEntry(Sandbox.UI.Panel parent) : base(parent)
         {
             FileTypeIcon = Add.Icon(null, "filetype");
             FileNameLabel = Add.Label("", "filename");
@@ -44,7 +44,7 @@ namespace Sandbox.UI.Construct
     {
         public static FileSelectionEntry FileSelectionEntry(this PanelCreator self, string text = "", string icon = null)
         {
-            FileSelectionEntry fileSelectionEntry = self.panel.AddChild<FileSelectionEntry>();
+            FileSelectionEntry fileSelectionEntry = new(self.panel);
             fileSelectionEntry.FileNameLabel.Text = text;
             fileSelectionEntry.FileTypeIcon.Text = icon;
 

@@ -15,7 +15,7 @@ namespace TTTReborn.UI
         private Panel _staminaBar;
         private Label _staminaLabel;
 
-        public StaminaIndicator()
+        public StaminaIndicator() : base()
         {
             Instance = this;
 

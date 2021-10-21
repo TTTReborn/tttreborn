@@ -6,7 +6,7 @@ namespace TTTReborn.UI
 
         public DragDrop(Sandbox.UI.Panel parent = null) : base(parent)
         {
-            Parent = parent ?? Parent;
+            AddClass("dragdrop");
         }
     }
 }

@@ -45,9 +45,9 @@ namespace TTTReborn.UI
 
         private int _historyIndex = 0;
 
-        public PanelContent(Sandbox.UI.Panel parent = null) : base()
+        public PanelContent(Sandbox.UI.Panel parent = null) : base(parent)
         {
-            Parent = parent ?? Parent;
+
         }
 
         public void Reset()

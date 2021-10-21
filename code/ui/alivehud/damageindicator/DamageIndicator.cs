@@ -17,7 +17,7 @@ namespace TTTReborn.UI
         private TimeSince _timeSinceLastDamage = 0f;
         private float _lastDamage = 0f;
 
-        public DamageIndicator()
+        public DamageIndicator() : base()
         {
             Instance = this;
 

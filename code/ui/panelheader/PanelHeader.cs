@@ -13,10 +13,8 @@ namespace TTTReborn.UI
 
         private Button _closeButton;
 
-        public PanelHeader(Sandbox.UI.Panel parent = null) : base()
+        public PanelHeader(Sandbox.UI.Panel parent = null) : base(parent)
         {
-            Parent = parent ?? Parent;
-
             StyleSheet.Load("/ui/panelheader/PanelHeader.scss");
 
             Reload();

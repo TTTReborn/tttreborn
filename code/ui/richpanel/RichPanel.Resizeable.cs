@@ -38,10 +38,7 @@ namespace TTTReborn.UI
 
         public bool CanStartDragging
         {
-            get
-            {
-                return _canStartDragging && IsDraggable;
-            }
+            get => _canStartDragging && IsDraggable;
             private set
             {
                 _canStartDragging = value;
@@ -53,10 +50,7 @@ namespace TTTReborn.UI
 
         public DragAnchor? CurrentDragAnchor
         {
-            get
-            {
-                return _currentDragAnchor;
-            }
+            get => _currentDragAnchor;
             private set
             {
                 _currentDragAnchor = value;
@@ -68,10 +62,7 @@ namespace TTTReborn.UI
 
         public DragAnchor? CurrentHorizontalDragAnchor
         {
-            get
-            {
-                return _currentHorizontalDragAnchor;
-            }
+            get => _currentHorizontalDragAnchor;
             private set
             {
                 _currentHorizontalDragAnchor = value;
@@ -101,10 +92,7 @@ namespace TTTReborn.UI
 
         public DragAnchor? CurrentVerticalDragAnchor
         {
-            get
-            {
-                return _currentVerticalDragAnchor;
-            }
+            get => _currentVerticalDragAnchor;
             private set
             {
                 _currentVerticalDragAnchor = value;

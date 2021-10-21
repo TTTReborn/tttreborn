@@ -27,28 +27,28 @@ namespace TTTReborn.UI.Menu
 
             StyleSheet.Load("/ui/generalhud/menu/Menu.scss");
 
-            WindowHeader.NavigationHeader.OnCreateWindowHeader = (header) =>
+            Header.NavigationHeader.OnCreateWindowHeader = (header) =>
             {
                 Sandbox.UI.Button homeButton = new("home", "", () => OpenHomepage());
                 homeButton.AddClass("home");
 
                 header.AddChild(homeButton);
 
-                Sandbox.UI.Button previousButton = header.Add.Button("<", "previous", () => WindowContent.Previous());
-                Sandbox.UI.Button nextButton = header.Add.Button(">", "next", () => WindowContent.Next());
+                Sandbox.UI.Button previousButton = header.Add.Button("<", "previous", () => Content.Previous());
+                Sandbox.UI.Button nextButton = header.Add.Button(">", "next", () => Content.Next());
 
                 homeButton.SetClass("disable", true);
                 previousButton.SetClass("disable", true);
                 nextButton.SetClass("disable", true);
             };
 
-            WindowHeader.NavigationHeader.Reload();
+            Header.NavigationHeader.Reload();
 
-            WindowContent.OnPanelContentUpdated = (panelContentData) =>
+            Content.OnPanelContentUpdated = (panelContentData) =>
             {
-                WindowHeader.NavigationHeader.SetTitle(panelContentData.Title ?? "");
+                SetTitle(panelContentData.Title ?? "");
 
-                foreach (Sandbox.UI.Panel panel in WindowHeader.NavigationHeader.Children)
+                foreach (Sandbox.UI.Panel panel in Header.NavigationHeader.Children)
                 {
                     if (panel is not Sandbox.UI.Button button)
                     {
@@ -61,11 +61,11 @@ namespace TTTReborn.UI.Menu
                     }
                     else if (button.HasClass("previous"))
                     {
-                        button.SetClass("disable", !WindowContent.CanPrevious);
+                        button.SetClass("disable", !Content.CanPrevious);
                     }
                     else if (button.HasClass("next"))
                     {
-                        button.SetClass("disable", !WindowContent.CanNext);
+                        button.SetClass("disable", !Content.CanNext);
                     }
                 }
             };
@@ -78,17 +78,18 @@ namespace TTTReborn.UI.Menu
 
         internal void OpenHomepage()
         {
-            if (WindowContent.CurrentPanelContentData?.ClassName == "home")
+            if (Content.CurrentPanelContentData?.ClassName == "home")
             {
                 return;
             }
 
-            WindowContent.SetPanelContent((panelContent) =>
+            Content.SetPanelContent((panelContent) =>
             {
                 CreateMenuButton(panelContent, "settings", () => OpenSettings(panelContent));
                 CreateMenuButton(panelContent, "keyboard", () => OpenKeybindings(panelContent));
                 CreateMenuButton(panelContent, "science", () => OpenTesting(panelContent));
                 CreateMenuButton(panelContent, "shopping_cart", () => OpenShopEditor(panelContent));
+                CreateMenuButton(panelContent, "share", () => OpenRoleSelectionEditor(panelContent));
             }, "", "home");
         }
 
@@ -156,6 +157,11 @@ namespace TTTReborn.UI.Menu
                 tabs.AddTab("Test1", (contentPanel) => contentPanel.Add.Label("Test1"));
                 tabs.AddTab("Test2", (contentPanel) => contentPanel.Add.Label("Test2"));
             }, "Testing", "testing");
+        }
+
+        private void OpenRoleSelectionEditor(PanelContent menuContent)
+        {
+            new VisualProgramming.VisualProgrammingWindow(Hud.Current.RootPanel);
         }
     }
 }
