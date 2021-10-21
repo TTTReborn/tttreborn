@@ -7,8 +7,12 @@ namespace TTTReborn.UI.VisualProgramming
         {
             SetTitle("MainNode");
 
-            NodeAllPlayersSetting settingPanel = AddSetting<NodeAllPlayersSetting>();
-            settingPanel.ToggleInput(false);
+            AddSetting<NodeAllPlayersSetting>().ToggleInput(false);
+        }
+
+        public override void Evaluate(params object[] input)
+        {
+            base.Evaluate(Globals.Utils.GetPlayers());
         }
     }
 }

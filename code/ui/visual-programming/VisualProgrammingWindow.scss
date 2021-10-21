@@ -6,13 +6,20 @@ VisualProgrammingWindow {
             position: absolute;
             border-radius: 0px;
             z-index: 1;
-            width: 50px;
-            right: -5px;
+            width: 100px;
+            right: 0px;
             top: -5px;
             padding: 0px;
 
             Label.title {
                 display: none;
+            }
+
+            .play {
+                font-family: MaterialIcons;
+                font-size: 28px;
+                margin: 10px;
+                padding: 2px;
             }
         }
 

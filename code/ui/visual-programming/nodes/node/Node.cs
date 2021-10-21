@@ -54,5 +54,42 @@ namespace TTTReborn.UI.VisualProgramming
 
             return nodeSetting;
         }
+
+        public virtual void Evaluate(params object[] input)
+        {
+            foreach (NodeSetting setting in NodeSettings)
+            {
+                if (setting.Output == null)
+                {
+                    continue;
+                }
+
+                foreach (NodeConnectionPoint connectionPoint in setting.Output.ConnectionPoints)
+                {
+                    NodeConnectionWire connectionWire = connectionPoint.ConnectionWire;
+
+                    if (connectionWire == null)
+                    {
+                        continue;
+                    }
+
+                    NodeConnectionPoint connectedPoint = connectionWire.EndPoint;
+
+                    if (connectedPoint == null)
+                    {
+                        continue;
+                    }
+
+                    Node connectedNode = connectedPoint.Node;
+
+                    if (connectedNode == null)
+                    {
+                        continue;
+                    }
+
+                    connectedNode.Evaluate(input);
+                }
+            }
+        }
     }
 }

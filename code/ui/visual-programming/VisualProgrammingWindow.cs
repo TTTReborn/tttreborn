@@ -18,6 +18,16 @@ namespace TTTReborn.UI.VisualProgramming
 
             AddClass("fullscreen");
 
+            Header.NavigationHeader.OnCreateWindowHeader = (header) =>
+            {
+                Sandbox.UI.Button playButton = new("play_arrow", "", () => Evaluate());
+                playButton.AddClass("play");
+
+                header.AddChild(playButton);
+            };
+
+            Header.NavigationHeader.Reload();
+
             MainNode = AddNode<MainNode>();
             MainNode.Display();
 
@@ -32,6 +42,11 @@ namespace TTTReborn.UI.VisualProgramming
             Nodes.Add(node);
 
             return node;
+        }
+
+        public void Evaluate()
+        {
+            MainNode.Evaluate();
         }
     }
 }
