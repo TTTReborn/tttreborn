@@ -70,6 +70,7 @@ namespace TTTReborn.UI
             public GeneralHud()
             {
                 AddClass("fullscreen");
+                AddChild<WIPDisclaimer>();
 
                 AddChild<HintDisplay>();
                 AddChild<RadarDisplay>();
@@ -88,7 +89,6 @@ namespace TTTReborn.UI
                 AddChild<PostRoundMenu>();
                 AddChild<Scoreboard>();
                 AddChild<Menu.Menu>();
-                AddChild<WIPDisclaimer>();
             }
         }
 
