@@ -193,11 +193,9 @@ namespace TTTReborn.Player
                 QuickShop.Instance.Enabled = false;
                 QuickShop.Instance.Update();
             }
-            else if (Input.Pressed(InputButton.View))
+            else if (Input.Pressed(InputButton.View) && Local.Pawn is TTTPlayer player)
             {
-                Shop shop = (Local.Pawn as TTTPlayer).Shop;
-
-                if (shop == null || !shop.Accessable())
+                if (!(player.Shop?.Accessable() ?? false))
                 {
                     return;
                 }
