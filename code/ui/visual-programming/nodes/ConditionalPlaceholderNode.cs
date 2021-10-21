@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI.VisualProgramming
@@ -7,11 +8,13 @@ namespace TTTReborn.UI.VisualProgramming
     [Node("conditional_placeholder")]
     public class ConditionalPlaceholderNode : Node
     {
+        public NodeRoleSelectionSetting RoleSelectionSetting;
+
         public ConditionalPlaceholderNode() : base()
         {
             SetTitle("Conditional Placeholder Node");
 
-            NodeAllPlayersSetting settingPanel = AddSetting<NodeAllPlayersSetting>();
+            RoleSelectionSetting = AddSetting<NodeRoleSelectionSetting>();
         }
 
         public override void Evaluate(params object[] input)
@@ -23,7 +26,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             foreach (TTTPlayer player in playerList)
             {
-                Sandbox.Log.Error($"Selected '{player.Client.Name}'");
+                Sandbox.Log.Error($"Selected '{player.Client.Name}' with role '{Utils.GetLibraryName(RoleSelectionSetting.SelectedRoleType)}'");
             }
         }
     }
