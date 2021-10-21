@@ -190,12 +190,6 @@ namespace TTTReborn.Player
                 return;
             }
 
-            if (IsClient)
-            {
-                TickPlayerShop();
-                TickRoleButtonActivate();
-            }
-
             // Input requested a carriable entity switch
             if (Input.ActiveChild != null)
             {
@@ -209,6 +203,8 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
+            TickPlayerShop();
+            TickRoleButtonActivate();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());

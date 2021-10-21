@@ -183,7 +183,7 @@ namespace TTTReborn.Player
     {
         public void TickPlayerShop()
         {
-            if (QuickShop.Instance == null)
+            if (IsClient || QuickShop.Instance == null)
             {
                 return;
             }
