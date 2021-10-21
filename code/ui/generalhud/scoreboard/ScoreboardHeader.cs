@@ -46,8 +46,10 @@ namespace TTTReborn.UI
 
         public void UpdateServerInfo()
         {
+            int maxPlayers = ConsoleSystem.GetValue("maxplayers").ToInt(0);
+
             _serverMapLabel.Text = $"{Global.MapName}";
-            _serverPlayersLabel.Text = $"{Client.All.Count} Players";
+            _serverPlayersLabel.Text = $"{Client.All.Count} / {maxPlayers} Players";
         }
     }
 }
