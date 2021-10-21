@@ -141,7 +141,7 @@ namespace TTTReborn.Player
 
             BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
 
-            Inventory.DropActive();
+            Inventory.DropAll();
             Inventory.DeleteContents();
 
             ShowFlashlight(false, false);
