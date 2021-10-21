@@ -227,7 +227,7 @@ namespace TTTReborn.Player
 
         private void TickPlayerDropCarriable()
         {
-            if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
+            if (Input.Pressed(InputButton.Drop) && !Input.Down(InputButton.Run) && ActiveChild != null && Inventory != null)
             {
                 Entity droppedEntity = Inventory.DropActive();
 

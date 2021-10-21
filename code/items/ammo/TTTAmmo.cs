@@ -83,7 +83,6 @@ namespace TTTReborn.Items
             {
                 Delete();
             }
-
         }
 
         public void SetCurrentAmmo(int ammo)
@@ -94,6 +93,7 @@ namespace TTTReborn.Items
         public override void TakeDamage(DamageInfo info)
         {
             PhysicsBody body = info.Body;
+
             if (!body.IsValid())
             {
                 body = PhysicsBody;
@@ -103,7 +103,6 @@ namespace TTTReborn.Items
             {
                 body.ApplyImpulseAt(info.Position, info.Force * 100);
             }
-            return;
         }
     }
 }
