@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -24,7 +25,7 @@ namespace TTTReborn.Items
 
         protected TTTPerk()
         {
-            LibraryName = Library.GetAttribute(GetType()).Name;
+            LibraryName = Utils.GetLibraryName(GetType());
         }
 
         public void Equip(TTTPlayer player)

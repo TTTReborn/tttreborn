@@ -3,6 +3,7 @@ using System;
 using Sandbox;
 using Sandbox.ScreenShake;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -61,7 +62,7 @@ namespace TTTReborn.Items
 
         public TTTWeapon() : base()
         {
-            LibraryName = Library.GetAttribute(GetType()).Name;
+            LibraryName = Utils.GetLibraryName(GetType());
 
             foreach (object obj in GetType().GetCustomAttributes(false))
             {

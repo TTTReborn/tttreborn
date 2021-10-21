@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.UI.VisualProgramming
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
@@ -21,7 +23,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public Node() : base()
         {
-            LibraryName = GetAttribute().Name;
+            LibraryName = Utils.GetLibraryName(GetType());
 
             Header.DragHeader.IsFreeDraggable = true;
             Header.DragHeader.IsLocked = false;

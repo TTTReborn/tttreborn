@@ -2,6 +2,8 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.UI.VisualProgramming
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
@@ -43,7 +45,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public NodeSetting() : base()
         {
-            LibraryName = GetAttribute().Name;
+            LibraryName = Utils.GetLibraryName(GetType());
 
             Input = AddConnectionPanel();
             Input.AddConnectionPoint<NodeConnectionEndPoint>();
