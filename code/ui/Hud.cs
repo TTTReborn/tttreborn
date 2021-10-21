@@ -88,6 +88,7 @@ namespace TTTReborn.UI
                 AddChild<PostRoundMenu>();
                 AddChild<Scoreboard>();
                 AddChild<Menu.Menu>();
+                AddChild<WIPDisclaimer>();
             }
         }
 
