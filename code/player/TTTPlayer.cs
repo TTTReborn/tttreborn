@@ -191,6 +191,7 @@ namespace TTTReborn.Player
             if (IsClient)
             {
                 TickPlayerShop();
+                TickRoleButtonActivate();
             }
 
             // Input requested a carriable entity switch
