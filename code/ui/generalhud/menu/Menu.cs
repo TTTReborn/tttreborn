@@ -110,9 +110,6 @@ namespace TTTReborn.UI.Menu
                 panelContent.Add.Label("Bind TeamVoiceChat: '+ttt_teamvoicechat'");
                 // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
 
-                panelContent.Add.Label("Bind Quickshop: '+ttt_quickshop'");
-                // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
-
                 panelContent.Add.Label("Bind Activate Role Button: '+ttt_activate_rb'");
                 // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_activate_rb";
             }, "Keybindings", "keybindings");

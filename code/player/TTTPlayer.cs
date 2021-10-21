@@ -188,6 +188,11 @@ namespace TTTReborn.Player
                 return;
             }
 
+            if (IsClient)
+            {
+                TickPlayerShop();
+            }
+
             // Input requested a carriable entity switch
             if (Input.ActiveChild != null)
             {

@@ -181,35 +181,30 @@ namespace TTTReborn.Player
 
     public partial class TTTPlayer
     {
-        [ClientCmd("+ttt_quickshop")]
-        public static void OpenQuickshop()
+        public void TickPlayerShop()
         {
             if (QuickShop.Instance == null)
             {
                 return;
             }
 
-            Shop shop = (Local.Pawn as TTTPlayer).Shop;
-
-            if (shop == null || !shop.Accessable())
+            if (Input.Released(InputButton.View))
             {
-                return;
+                QuickShop.Instance.Enabled = false;
+                QuickShop.Instance.Update();
             }
-
-            QuickShop.Instance.Enabled = true;
-            QuickShop.Instance.Update();
-        }
-
-        [ClientCmd("-ttt_quickshop")]
-        public static void CloseQuickshop()
-        {
-            if (QuickShop.Instance == null)
+            else if (Input.Pressed(InputButton.View))
             {
-                return;
-            }
+                Shop shop = (Local.Pawn as TTTPlayer).Shop;
 
-            QuickShop.Instance.Enabled = false;
-            QuickShop.Instance.Update();
+                if (shop == null || !shop.Accessable())
+                {
+                    return;
+                }
+
+                QuickShop.Instance.Enabled = true;
+                QuickShop.Instance.Update();
+            }
         }
     }
 }
