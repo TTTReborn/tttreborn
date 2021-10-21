@@ -5,10 +5,12 @@ namespace TTTReborn.UI
     public partial class Modal : Window
     {
         public Action<Modal> OnDisplay { get; set; }
-        public bool IsDeletedOnClose { get; set; } = true;
+        public bool IsDeletedOnClose { get; set; }
 
-        public Modal(Sandbox.UI.Panel parent = null) : base(parent)
+        public Modal(Sandbox.UI.Panel parent = null, bool isDeletedOnClose = true) : base(parent)
         {
+            IsDeletedOnClose = isDeletedOnClose;
+
             Action<PanelHeader> action = Header.NavigationHeader.OnClose;
 
             Header.NavigationHeader.OnClose = (panelHeader) =>
