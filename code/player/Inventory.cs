@@ -99,7 +99,7 @@ namespace TTTReborn.Player
 
         public bool Remove(Entity item)
         {
-            if (List.Contains(item))
+            if (Contains(item))
             {
                 RPCs.ClientOnPlayerCarriableItemDrop(To.Single(Owner), item);
                 item.Delete();
@@ -154,6 +154,16 @@ namespace TTTReborn.Player
             }
 
             return base.Drop(entity);
+        }
+
+        public void DropAll()
+        {
+            List<Entity> cache = new(List);
+
+            foreach (Entity entity in cache)
+            {
+                Drop(entity);
+            }
         }
 
         public bool DropEntity(Entity self, Type entity)

@@ -46,7 +46,7 @@ namespace TTTReborn.UI
         [Event(TTTEvent.Player.Spawned)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
-            if (player != Local.Client.Pawn)
+            if (IsServer || player != Local.Client.Pawn)
             {
                 return;
             }
@@ -70,6 +70,7 @@ namespace TTTReborn.UI
             public GeneralHud()
             {
                 AddClass("fullscreen");
+                AddChild<WIPDisclaimer>();
 
                 AddChild<HintDisplay>();
                 AddChild<RadarDisplay>();
@@ -88,7 +89,6 @@ namespace TTTReborn.UI
                 AddChild<PostRoundMenu>();
                 AddChild<Scoreboard>();
                 AddChild<Menu.Menu>();
-                AddChild<WIPDisclaimer>();
             }
         }
 

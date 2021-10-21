@@ -86,7 +86,6 @@ namespace TTTReborn.UI.Menu
             Content.SetPanelContent((panelContent) =>
             {
                 CreateMenuButton(panelContent, "settings", () => OpenSettings(panelContent));
-                CreateMenuButton(panelContent, "keyboard", () => OpenKeybindings(panelContent));
                 CreateMenuButton(panelContent, "science", () => OpenTesting(panelContent));
                 CreateMenuButton(panelContent, "shopping_cart", () => OpenShopEditor(panelContent));
                 CreateMenuButton(panelContent, "share", () => OpenRoleSelectionEditor(panelContent));
@@ -101,21 +100,6 @@ namespace TTTReborn.UI.Menu
             button.AddClass("rounded");
 
             return button;
-        }
-
-        private void OpenKeybindings(PanelContent menuContent)
-        {
-            menuContent.SetPanelContent((panelContent) =>
-            {
-                panelContent.Add.Label("Bind TeamVoiceChat: '+ttt_teamvoicechat'");
-                // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_teamvoicechat";
-
-                panelContent.Add.Label("Bind Quickshop: '+ttt_quickshop'");
-                // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_quickshop";
-
-                panelContent.Add.Label("Bind Activate Role Button: '+ttt_activate_rb'");
-                // panelContent.Add.Keybind("Press a key...").BoundCommand = "+ttt_activate_rb";
-            }, "Keybindings", "keybindings");
         }
 
         private void OpenTesting(PanelContent menuContent)

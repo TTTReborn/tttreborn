@@ -97,6 +97,8 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
+                Event.Run(TTTEvent.Player.Spawned, this);
+
                 RPCs.ClientOnPlayerSpawned(this);
                 RPCs.ClientSetRole(To.Single(this), this, Role.Name);
             }
@@ -141,7 +143,7 @@ namespace TTTReborn.Player
 
             BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
 
-            Inventory.DropActive();
+            Inventory.DropAll();
             Inventory.DeleteContents();
 
             ShowFlashlight(false, false);
@@ -201,6 +203,8 @@ namespace TTTReborn.Player
             TickPlayerUse();
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
+            TickPlayerShop();
+            TickRoleButtonActivate();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -223,7 +227,7 @@ namespace TTTReborn.Player
 
         private void TickPlayerDropCarriable()
         {
-            if (Input.Pressed(InputButton.Drop) && ActiveChild != null && Inventory != null)
+            if (Input.Pressed(InputButton.Drop) && !Input.Down(InputButton.Run) && ActiveChild != null && Inventory != null)
             {
                 Entity droppedEntity = Inventory.DropActive();
 
