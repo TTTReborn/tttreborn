@@ -20,14 +20,21 @@ namespace TTTReborn.UI.VisualProgramming
 
                 foreach (Type roleType in Utils.GetTypes<TTTRole>())
                 {
-                    string name = Utils.GetLibraryName(roleType);
-
-                    dropdown.AddOption(name, roleType, (panel) =>
-                    {
-                        SelectedRoleType = roleType;
-                    });
+                    dropdown.AddOption(Utils.GetLibraryName(roleType), roleType, (panel) => OnSelectRole(roleType));
                 }
             });
+        }
+
+        private void OnSelectRole(Type roleType)
+        {
+            SelectedRoleType = roleType;
+
+            if (Node is RoleSelectionNode roleSelectionNode)
+            {
+                roleSelectionNode.OnSelectRole(roleType);
+            }
+
+            Node?.RemoveHighlights();
         }
     }
 }

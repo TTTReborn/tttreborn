@@ -9,6 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
         public MainNode MainNode;
         public List<Node> Nodes = new();
         public NodeConnectionWire ActiveNodeConnectionWire;
+        public bool IsTesting { get; private set; } = false;
 
         public VisualProgrammingWindow(Sandbox.UI.Panel parent = null) : base(parent)
         {
@@ -20,7 +21,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             Header.NavigationHeader.OnCreateWindowHeader = (header) =>
             {
-                Sandbox.UI.Button playButton = new("play_arrow", "", () => Evaluate());
+                Sandbox.UI.Button playButton = new("play_arrow", "", () => Test());
                 playButton.AddClass("play");
 
                 header.AddChild(playButton);
@@ -31,7 +32,7 @@ namespace TTTReborn.UI.VisualProgramming
             MainNode = AddNode<MainNode>();
             MainNode.Display();
 
-            AddNode<ConditionalPlaceholderNode>().Display();
+            AddNode<RoleSelectionNode>().Display();
         }
 
         public T AddNode<T>() where T : Node, new()
@@ -47,6 +48,52 @@ namespace TTTReborn.UI.VisualProgramming
         public void Evaluate()
         {
             MainNode.Evaluate();
+        }
+
+        public void Test()
+        {
+            foreach (Node node in Nodes)
+            {
+                node.RemoveHighlights();
+
+                bool hasInput = false;
+
+                foreach (NodeSetting nodeSetting in node.NodeSettings)
+                {
+                    if (!nodeSetting.Input.Enabled)
+                    {
+                        hasInput = true;
+
+                        break;
+                    }
+
+                    foreach (NodeConnectionPoint nodeConnectionPoint in nodeSetting.Input.ConnectionPoints)
+                    {
+                        if (nodeConnectionPoint.ConnectionWire != null)
+                        {
+                            hasInput = true;
+
+                            break;
+                        }
+                    }
+
+                    if (hasInput)
+                    {
+                        break;
+                    }
+                }
+
+                if (!hasInput)
+                {
+                    node.HighlightError();
+                }
+            }
+
+            IsTesting = true;
+
+            Evaluate();
+
+            IsTesting = false;
         }
     }
 }

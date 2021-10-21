@@ -66,21 +66,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 foreach (NodeConnectionPoint connectionPoint in setting.Output.ConnectionPoints)
                 {
-                    NodeConnectionWire connectionWire = connectionPoint.ConnectionWire;
-
-                    if (connectionWire == null)
-                    {
-                        continue;
-                    }
-
-                    NodeConnectionPoint connectedPoint = connectionWire.EndPoint;
-
-                    if (connectedPoint == null)
-                    {
-                        continue;
-                    }
-
-                    Node connectedNode = connectedPoint.Node;
+                    Node connectedNode = GetConnectedNode(connectionPoint);
 
                     if (connectedNode == null)
                     {
@@ -90,6 +76,35 @@ namespace TTTReborn.UI.VisualProgramming
                     connectedNode.Evaluate(input);
                 }
             }
+        }
+
+        private Node GetConnectedNode(NodeConnectionPoint connectionPoint)
+        {
+            NodeConnectionWire connectionWire = connectionPoint.ConnectionWire;
+
+            if (connectionWire == null)
+            {
+                return null;
+            }
+
+            NodeConnectionPoint connectedPoint = connectionWire.EndPoint;
+
+            if (connectedPoint == null)
+            {
+                return null;
+            }
+
+            return connectedPoint.Node;
+        }
+
+        public virtual void HighlightError()
+        {
+            AddClass("error");
+        }
+
+        public virtual void RemoveHighlights()
+        {
+            RemoveClass("error");
         }
     }
 }

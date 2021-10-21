@@ -4,6 +4,10 @@
 
     background-color: rgb(61, 118, 243);
 
+    &.error {
+        box-shadow: 0px 0px 20px red;
+    }
+
     > .panel {
         &.header {
             padding: 4px;
