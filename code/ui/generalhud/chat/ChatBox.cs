@@ -56,6 +56,7 @@ namespace TTTReborn.UI
             _inputField.CaretColor = Color.White;
             _inputField.AcceptsFocus = true;
             _inputField.AllowEmojiReplace = true;
+            _inputField.Text = "";
             _inputField.AddClass("input-field");
             _inputField.AddEventListener("onsubmit", Submit);
             _inputField.AddEventListener("onblur", Close);
