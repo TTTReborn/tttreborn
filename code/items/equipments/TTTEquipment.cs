@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -23,7 +24,7 @@ namespace TTTReborn.Items
 
         protected TTTEquipment()
         {
-            LibraryName = Library.GetAttribute(GetType()).Name;
+            LibraryName = Utils.GetLibraryName(GetType());
 
             foreach (object obj in GetType().GetCustomAttributes(false))
             {

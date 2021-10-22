@@ -78,9 +78,9 @@ namespace TTTReborn.UI
 
         public Drag(Sandbox.UI.Panel parent = null) : base(parent)
         {
-            Parent = parent ?? Parent;
-
             StyleSheet.Load("/ui/components/dragdrop/Drag.scss");
+
+            AddClass("drag");
 
             IsLocked = false;
         }

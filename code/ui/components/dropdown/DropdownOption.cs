@@ -17,8 +17,6 @@ namespace TTTReborn.UI
 
         public DropdownOption(Dropdown dropdown, Sandbox.UI.Panel parent = null, string text = "", object data = null) : base(parent)
         {
-            Parent = parent ?? Parent;
-
             Dropdown = dropdown;
             TextLabel = Add.Label(text, "optiontext");
             Data = data;

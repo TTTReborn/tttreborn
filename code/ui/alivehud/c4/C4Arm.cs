@@ -18,7 +18,7 @@ namespace TTTReborn.UI
         private readonly Label _timer;
         private readonly Label _defuseChance;
 
-        public C4Arm()
+        public C4Arm() : base()
         {
             Instance = this;
 

@@ -2,30 +2,36 @@ namespace TTTReborn.UI
 {
     public class Window : RichPanel
     {
-        public WindowHeader WindowHeader { get; set; }
-        public PanelContent WindowContent { get; set; }
-        public Panel WindowFooter { get; set; }
+        public WindowHeader Header { get; set; }
+        public PanelContent Content { get; set; }
+        public Panel Footer { get; set; }
 
-        public Window() : base()
+        public Window(Sandbox.UI.Panel parent = null) : base(parent)
         {
             AddClass("window");
             AddClass("rounded");
             AddClass("text-shadow");
 
-            WindowHeader = new(this);
-            WindowHeader.AddClass("rounded-top");
-            WindowHeader.AddClass("background-color-secondary");
+            Header = new(this);
+            Header.AddClass("header");
+            Header.AddClass("rounded-top");
+            Header.AddClass("background-color-secondary");
 
-            WindowContent = new(this);
-            WindowContent.AddClass("background-color-primary");
-            WindowContent.AddClass("content");
+            Content = new(this);
+            Content.AddClass("content");
+            Content.AddClass("background-color-primary");
 
-            WindowFooter = new(this);
-            WindowFooter.AddClass("footer");
-            WindowFooter.AddClass("rounded-bottom");
-            WindowFooter.AddClass("background-color-secondary");
+            Footer = new(this);
+            Footer.AddClass("footer");
+            Footer.AddClass("rounded-bottom");
+            Footer.AddClass("background-color-secondary");
 
-            IsDraggable = true;
+            IsDraggable = false;
+        }
+
+        public void SetTitle(string title)
+        {
+            Header.NavigationHeader.SetTitle(title);
         }
     }
 }

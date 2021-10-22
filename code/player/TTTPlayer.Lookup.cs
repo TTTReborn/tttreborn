@@ -1,10 +1,12 @@
 using Sandbox;
 
+using TTTReborn.UI;
+
 namespace TTTReborn.Player
 {
     partial class TTTPlayer
     {
-        public T IsLookingAtType<T>(float distance)
+        private T IsLookingAtType<T>(float distance)
         {
             Trace trace;
 
@@ -23,7 +25,7 @@ namespace TTTReborn.Player
 
             if (IsSpectatingPlayer)
             {
-                trace.Ignore(CurrentPlayer);
+                trace = trace.Ignore(CurrentPlayer);
             }
 
             TraceResult tr = trace.UseHitboxes().Run();
@@ -34,6 +36,40 @@ namespace TTTReborn.Player
             }
 
             return default;
+        }
+
+        // Similar to "IsLookingAtType" but with an extra check ensuring we are within the range
+        // of the "HintDistance".
+        private IEntityHint IsLookingAtHintableEntity(float maxHintDistance)
+        {
+            Trace trace;
+
+            if (IsClient)
+            {
+                Sandbox.Camera camera = Camera as Sandbox.Camera;
+
+                trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * maxHintDistance);
+            }
+            else
+            {
+                trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * maxHintDistance);
+            }
+
+            trace = trace.HitLayer(CollisionLayer.Debris).Ignore(this);
+
+            if (IsSpectatingPlayer)
+            {
+                trace = trace.Ignore(CurrentPlayer);
+            }
+
+            TraceResult tr = trace.UseHitboxes().Run();
+
+            if (tr.Hit && tr.Entity is IEntityHint hint && tr.StartPos.Distance(tr.EndPos) <= hint.HintDistance)
+            {
+                return hint;
+            }
+
+            return null;
         }
     }
 }

@@ -5,31 +5,39 @@ namespace TTTReborn.UI
     public partial class Modal : Window
     {
         public Action<Modal> OnDisplay { get; set; }
+        public bool IsDeletedOnClose { get; set; }
 
-        public Modal() : base()
+        public Modal(Sandbox.UI.Panel parent = null, bool isDeletedOnClose = true) : base(parent)
         {
+            IsDeletedOnClose = isDeletedOnClose;
 
+            Action<PanelHeader> action = Header.NavigationHeader.OnClose;
+
+            Header.NavigationHeader.OnClose = (panelHeader) =>
+            {
+                action?.Invoke(panelHeader);
+
+                if (IsDeletedOnClose)
+                {
+                    Delete(true);
+                }
+            };
+
+            Enabled = false;
         }
 
         public virtual void Display()
         {
-            Enabled = true;
-
             OnDisplay?.Invoke(this);
+
+            Enabled = true;
         }
 
-        public virtual void Close(bool deleteOnClose = false)
+        public virtual void Close()
         {
-            WindowHeader.NavigationHeader.OnClose?.Invoke(WindowHeader.NavigationHeader);
+            Enabled = false;
 
-            if (deleteOnClose)
-            {
-                Delete(true);
-            }
-            else
-            {
-                Enabled = false;
-            }
+            Header.NavigationHeader.OnClose?.Invoke(Header.NavigationHeader);
         }
     }
 }

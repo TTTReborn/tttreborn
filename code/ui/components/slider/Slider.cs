@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 
 using Sandbox;
 using Sandbox.UI;
@@ -33,7 +32,7 @@ namespace TTTReborn.UI
         /// </summary>
         public float Step { get; set; } = 1.0f;
 
-        public Slider()
+        public Slider(Sandbox.UI.Panel parent) : base(parent)
         {
             StyleSheet.Load("ui/components/slider/Slider.scss");
 
@@ -174,7 +173,7 @@ namespace TTTReborn.UI
         {
             public static Slider Slider(this PanelCreator self, float min, float max, float step)
             {
-                Slider control = self.panel.AddChild<Slider>();
+                Slider control = new(self.panel);
                 control.MinValue = min;
                 control.MaxValue = max;
                 control.Step = step;

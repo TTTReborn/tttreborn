@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using Sandbox.UI;
-
 namespace TTTReborn.UI
 {
     public partial class Tabs : Panel
@@ -16,7 +14,7 @@ namespace TTTReborn.UI
 
         public Tab SelectedTab { get; private set; }
 
-        public Tabs() : base()
+        public Tabs(Sandbox.UI.Panel parent = null) : base(parent)
         {
             StyleSheet.Load("/ui/components/tabs/Tabs.scss");
 
@@ -81,7 +79,7 @@ namespace Sandbox.UI.Construct
     {
         public static Tabs Tabs(this PanelCreator self)
         {
-            return self.panel.AddChild<Tabs>();
+            return new(self.panel);
         }
     }
 }

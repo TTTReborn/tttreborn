@@ -43,7 +43,7 @@ namespace TTTReborn.UI
         }
         private DropdownOption _selectedOption;
 
-        public Dropdown() : base()
+        public Dropdown(Sandbox.UI.Panel parent = null) : base(parent)
         {
             StyleSheet.Load("/ui/components/dropdown/Dropdown.scss");
 
@@ -126,7 +126,7 @@ namespace Sandbox.UI.Construct
     {
         public static Dropdown Dropdown(this PanelCreator self, string className = null)
         {
-            Dropdown dropdown = self.panel.AddChild<Dropdown>();
+            Dropdown dropdown = new(self.panel);
 
             if (className != null)
             {
