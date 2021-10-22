@@ -103,7 +103,7 @@ namespace TTTReborn.Player
         // Client keybinding for activating button within focus.
         public void TickRoleButtonActivate()
         {
-            if (IsClient || Local.Pawn is not TTTPlayer player || FocusedButton == null || !Input.Pressed(InputButton.Use))
+            if (!IsClient || Local.Pawn is not TTTPlayer player || FocusedButton == null || !Input.Pressed(InputButton.Use))
             {
                 return;
             }

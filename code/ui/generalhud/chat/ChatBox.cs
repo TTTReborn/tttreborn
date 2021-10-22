@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
 using Sandbox;
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globals;
@@ -28,7 +27,7 @@ namespace TTTReborn.UI
         private readonly Panel _canvas;
         private readonly Panel _inputPanel;
         private readonly Panel _inputTeamIndicator;
-        private readonly TextEntry _inputField;
+        private readonly ChatBoxTextEntry _inputField;
 
         public ChatBox() : base()
         {
@@ -53,7 +52,7 @@ namespace TTTReborn.UI
             _inputTeamIndicator.AddClass("input-team-indicator");
             _inputTeamIndicator.AddClass("circular");
 
-            _inputField = _inputPanel.Add.TextEntry("");
+            _inputField = new(_inputPanel);
             _inputField.CaretColor = Color.White;
             _inputField.AcceptsFocus = true;
             _inputField.AllowEmojiReplace = true;
@@ -64,24 +63,34 @@ namespace TTTReborn.UI
             Sandbox.Hooks.Chat.OnOpenChat += Open;
         }
 
+        public void OnTab()
+        {
+            if (Local.Pawn is not TTTPlayer player || player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
+
+            if (CanUseTeamChat(player))
+            {
+                IsTeamChatting = !IsTeamChatting;
+            }
+        }
+
         public override void Tick()
         {
             base.Tick();
 
             bool isAlive = Local.Pawn.LifeState == LifeState.Alive;
 
-            if (isAlive)
+            if (isAlive && Local.Pawn is TTTPlayer player && IsTeamChatting)
             {
-                if (IsTeamChatting && Local.Pawn is TTTPlayer player)
-                {
-                    _inputTeamIndicator.Style.BackgroundColor = player.Team.Color;
-                    _inputPanel.Style.BorderColor = player.Team.Color;
-                }
-                else
-                {
-                    _inputTeamIndicator.Style.BackgroundColor = null;
-                    _inputPanel.Style.BorderColor = null;
-                }
+                _inputTeamIndicator.Style.BackgroundColor = player.Team.Color;
+                _inputPanel.Style.BorderColor = player.Team.Color;
+            }
+            else
+            {
+                _inputTeamIndicator.Style.BackgroundColor = null;
+                _inputPanel.Style.BorderColor = null;
             }
 
             _inputTeamIndicator.SetClass("background-color-alive", isAlive);
@@ -107,16 +116,6 @@ namespace TTTReborn.UI
             _inputPanel.Style.Dirty();
 
             _inputField.Focus();
-        }
-
-        private void TryOpenTeamChat()
-        {
-            if (Local.Pawn is TTTPlayer player && CanUseTeamChat(player))
-            {
-                IsTeamChatting = true;
-
-                Open();
-            }
         }
 
         private void Close()
@@ -224,15 +223,6 @@ namespace TTTReborn.UI
         public static bool CanUseTeamChat(TTTPlayer player)
         {
             return player.LifeState == LifeState.Alive && player.Team.GetType() == typeof(TraitorTeam);
-        }
-
-        [ClientCmd("openteamchat")]
-        public static void OpenTeamChat()
-        {
-            if (Local.Pawn is TTTPlayer player && CanUseTeamChat(player))
-            {
-                Instance?.TryOpenTeamChat();
-            }
         }
 
         [ClientCmd("chat_add", CanBeCalledFromServer = true)]
