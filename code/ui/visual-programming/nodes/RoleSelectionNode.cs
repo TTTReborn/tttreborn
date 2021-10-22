@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-
-using Sandbox;
 
 using TTTReborn.Globals;
-using TTTReborn.Player;
 using TTTReborn.Roles;
+using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
@@ -14,47 +11,13 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public NodeRoleSelectionSetting RoleSelectionSetting;
 
-        public RoleSelectionNode() : base()
+        public RoleSelectionNode() : base(new RoleSelectionStackNode())
         {
             SetTitle("RoleSelection Node");
 
             RoleSelectionSetting = AddSetting<NodeRoleSelectionSetting>();
 
             HighlightError();
-        }
-
-        public override void Evaluate(params object[] input)
-        {
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
-            {
-                return;
-            }
-
-            if (RoleSelectionSetting.SelectedRoleType == null)
-            {
-                if (VisualProgrammingWindow.Instance?.IsTesting ?? false)
-                {
-                    HighlightError();
-
-                    Log.Warning("No selected role in RoleSelectionNode.");
-                }
-                else
-                {
-                    Log.Error("No selected role in RoleSelectionNode.");
-                }
-
-                return;
-            }
-
-            if (!VisualProgrammingWindow.Instance?.IsTesting ?? true)
-            {
-                foreach (TTTPlayer player in playerList)
-                {
-                    Log.Error($"Selected '{player.Client.Name}' with role '{Utils.GetLibraryName(RoleSelectionSetting.SelectedRoleType)}'");
-                }
-            }
-
-            base.Evaluate();
         }
 
         internal void OnSelectRole(Type roleType)
@@ -65,6 +28,8 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 return;
             }
+
+            (StackNode as RoleSelectionStackNode).SelectedRole = role;
 
             Style.BackgroundColor = role.Color;
             Style.Dirty();

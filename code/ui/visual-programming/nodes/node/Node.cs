@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
@@ -18,11 +19,13 @@ namespace TTTReborn.UI.VisualProgramming
 
     public abstract class Node : Modal
     {
+        public StackNode StackNode;
         public string LibraryName { get; set; }
         public List<NodeSetting> NodeSettings { get; set; } = new();
 
-        public Node() : base()
+        public Node(StackNode stackNode) : base()
         {
+            StackNode = stackNode;
             LibraryName = Utils.GetLibraryName(GetType());
 
             Header.DragHeader.IsFreeDraggable = true;
@@ -34,15 +37,9 @@ namespace TTTReborn.UI.VisualProgramming
             AddClass("box-shadow");
         }
 
-        public static NodeAttribute GetAttribute<T>() where T : Node
-        {
-            return Library.GetAttribute(typeof(T)) as NodeAttribute;
-        }
+        public static NodeAttribute GetAttribute<T>() where T : Node => Library.GetAttribute(typeof(T)) as NodeAttribute;
 
-        public NodeAttribute GetAttribute()
-        {
-            return Library.GetAttribute(GetType()) as NodeAttribute;
-        }
+        public NodeAttribute GetAttribute() => Library.GetAttribute(GetType()) as NodeAttribute;
 
         public T AddSetting<T>() where T : NodeSetting, new()
         {
@@ -53,29 +50,6 @@ namespace TTTReborn.UI.VisualProgramming
             NodeSettings.Add(nodeSetting);
 
             return nodeSetting;
-        }
-
-        public virtual void Evaluate(params object[] input)
-        {
-            foreach (NodeSetting setting in NodeSettings)
-            {
-                if (setting.Output == null)
-                {
-                    continue;
-                }
-
-                foreach (NodeConnectionPoint connectionPoint in setting.Output.ConnectionPoints)
-                {
-                    Node connectedNode = GetConnectedNode(connectionPoint);
-
-                    if (connectedNode == null)
-                    {
-                        continue;
-                    }
-
-                    connectedNode.Evaluate(input);
-                }
-            }
         }
 
         private Node GetConnectedNode(NodeConnectionPoint connectionPoint)
@@ -95,6 +69,57 @@ namespace TTTReborn.UI.VisualProgramming
             }
 
             return connectedPoint.Node;
+        }
+
+        public virtual void Build(params object[] input)
+        {
+            List<Node> Nodes = new();
+
+            foreach (NodeSetting nodeSetting in NodeSettings)
+            {
+                if (nodeSetting.Output == null)
+                {
+                    continue;
+                }
+
+                foreach (NodeConnectionPoint nodeConnectionPoint in nodeSetting.Output.ConnectionPoints)
+                {
+                    Node connectedNode = GetConnectedNode(nodeConnectionPoint);
+
+                    if (connectedNode == null)
+                    {
+                        continue;
+                    }
+
+                    Nodes.Add(connectedNode);
+                    StackNode.NextNodes.Add(connectedNode.StackNode);
+                }
+            }
+
+            object[] arr = null;
+
+            try
+            {
+                arr = StackNode.Build(input);
+            }
+            catch (Exception e)
+            {
+                HighlightError();
+
+                if (e is NodeStackException)
+                {
+                    Log.Warning($"Error in note '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
+
+                    return;
+                }
+
+                Log.Error(e);
+            }
+
+            for (int i = 0; i < Nodes.Count; i++)
+            {
+                Nodes[i].Build(arr.Length > i ? arr[i] : null);
+            }
         }
 
         public virtual void HighlightError()

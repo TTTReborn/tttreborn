@@ -10,8 +10,6 @@ namespace TTTReborn.UI.VisualProgramming
     [NodeSetting("role_selection")]
     public class NodeRoleSelectionSetting : NodeSetting
     {
-        public Type SelectedRoleType { get; set; }
-
         public NodeRoleSelectionSetting() : base()
         {
             Content.SetPanelContent((panelContent) =>
@@ -27,8 +25,6 @@ namespace TTTReborn.UI.VisualProgramming
 
         private void OnSelectRole(Type roleType)
         {
-            SelectedRoleType = roleType;
-
             if (Node is RoleSelectionNode roleSelectionNode)
             {
                 roleSelectionNode.OnSelectRole(roleType);
