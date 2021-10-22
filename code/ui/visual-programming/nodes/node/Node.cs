@@ -109,11 +109,13 @@ namespace TTTReborn.UI.VisualProgramming
                 if (e is NodeStackException)
                 {
                     Log.Warning($"Error in note '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
-
-                    return;
+                }
+                else
+                {
+                    Log.Error(e);
                 }
 
-                Log.Error(e);
+                throw e;
             }
 
             for (int i = 0; i < Nodes.Count; i++)

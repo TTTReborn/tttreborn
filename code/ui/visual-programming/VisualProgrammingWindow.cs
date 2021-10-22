@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using TTTReborn.VisualProgramming;
@@ -11,6 +12,8 @@ namespace TTTReborn.UI.VisualProgramming
         public MainNode MainNode;
         public List<Node> Nodes = new();
         public NodeConnectionWire ActiveNodeConnectionWire;
+
+        private NodeStack _nodeStack;
 
         public VisualProgrammingWindow(Sandbox.UI.Panel parent = null) : base(parent)
         {
@@ -36,7 +39,7 @@ namespace TTTReborn.UI.VisualProgramming
             AddNode<RoleSelectionNode>().Display();
             AddNode<RoleSelectionNode>().Display();
 
-            new NodeStack(); // TODO move to server later
+            _nodeStack = new NodeStack(); // TODO move to server later
         }
 
         public T AddNode<T>() where T : Node, new()
@@ -51,7 +54,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public void Build()
         {
-            NodeStack.Instance.Reset();
+            _nodeStack.Reset();
 
             bool hasError = false;
 
@@ -99,7 +102,13 @@ namespace TTTReborn.UI.VisualProgramming
                 return;
             }
 
-            MainNode.Build();
+            try
+            {
+                MainNode.Build();
+
+                // sync _nodeStack to server and save
+            }
+            catch (Exception) { }
         }
     }
 }

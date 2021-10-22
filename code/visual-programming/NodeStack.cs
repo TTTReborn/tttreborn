@@ -4,13 +4,11 @@ namespace TTTReborn.VisualProgramming
 {
     public partial class NodeStack
     {
-        public static NodeStack Instance;
-
         private List<StackNode> _stackNodes = new();
 
         public NodeStack()
         {
-            Instance = this;
+
         }
 
         public void Reset()
