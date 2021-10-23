@@ -78,7 +78,10 @@ namespace TTTReborn.Gamemode
 
         public override void DoPlayerSuicide(Client client)
         {
-            base.DoPlayerSuicide(client);
+            if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+            {
+                base.DoPlayerSuicide(client);
+            }
         }
 
         public override void OnKilled(Entity entity)

@@ -12,7 +12,7 @@ namespace TTTReborn.UI
     {
         public static DamageIndicator Instance;
 
-        private float _maxDamageIndicatorDuration = 5f;
+        private const float MAX_DAMAGE_INDICATOR_DURATION = 5f;
         private float _currentRemainingDamageIndicatorDuration = 0f;
         private TimeSince _timeSinceLastDamage = 0f;
         private float _lastDamage = 0f;
@@ -41,6 +41,18 @@ namespace TTTReborn.UI
             _timeSinceLastDamage = 0f;
         }
 
+        [Event(TTTEvent.Player.Spawned)]
+        private void OnPlayerSpawned(TTTPlayer player)
+        {
+            if (Host.IsServer || player != Local.Client.Pawn)
+            {
+                return;
+            }
+
+            // Reset damage indicator on spawn.
+            _lastDamage = 0f;
+        }
+
         public override void Tick()
         {
             base.Tick();
@@ -59,14 +71,14 @@ namespace TTTReborn.UI
                 _currentRemainingDamageIndicatorDuration = 0f;
             }
 
-            remainingDamageIndicatorTime = Math.Min(remainingDamageIndicatorTime, _maxDamageIndicatorDuration);
+            remainingDamageIndicatorTime = Math.Min(remainingDamageIndicatorTime, MAX_DAMAGE_INDICATOR_DURATION);
 
             if (_lastDamage > 0f && _timeSinceLastDamage < remainingDamageIndicatorTime)
             {
                 _currentRemainingDamageIndicatorDuration = remainingDamageIndicatorTime - _timeSinceLastDamage;
 
                 Style.Display = DisplayMode.Flex;
-                Style.Opacity = Math.Clamp((_currentRemainingDamageIndicatorDuration / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / _maxDamageIndicatorDuration), 0f, 1f);
+                Style.Opacity = Math.Clamp((_currentRemainingDamageIndicatorDuration / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / MAX_DAMAGE_INDICATOR_DURATION), 0f, 0.3f);
             }
             else
             {
