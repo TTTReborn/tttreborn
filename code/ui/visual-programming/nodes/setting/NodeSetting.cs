@@ -39,31 +39,23 @@ namespace TTTReborn.UI.VisualProgramming
         }
         private Node _node;
 
-        public NodeConnectionPanel Input;
-        public NodeConnectionPanel Output;
+        public NodeConnectionPanel<NodeConnectionEndPoint> Input;
+        public NodeConnectionPanel<NodeConnectionStartPoint> Output;
         public PanelContent Content;
 
         public NodeSetting() : base()
         {
             LibraryName = Utils.GetLibraryName(GetType());
 
-            Input = AddConnectionPanel();
-            Input.AddConnectionPoint<NodeConnectionEndPoint>();
+            Input = new(this);
+            Input.Node = Node;
 
             Content = new(this);
 
-            Output = AddConnectionPanel();
-            Output.AddConnectionPoint<NodeConnectionStartPoint>();
+            Output = new(this);
+            Output.Node = Node;
 
             AddClass("nodesetting");
-        }
-
-        public NodeConnectionPanel AddConnectionPanel()
-        {
-            NodeConnectionPanel nodeConnectionPanel = new(this);
-            nodeConnectionPanel.Node = Node;
-
-            return nodeConnectionPanel;
         }
 
         public static NodeSettingAttribute GetAttribute<T>() where T : NodeSetting

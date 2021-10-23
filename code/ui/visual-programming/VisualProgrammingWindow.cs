@@ -71,25 +71,10 @@ namespace TTTReborn.UI.VisualProgramming
 
                 foreach (NodeSetting nodeSetting in node.NodeSettings)
                 {
-                    if (!nodeSetting.Input.Enabled)
+                    if (!nodeSetting.Input.Enabled || nodeSetting.Input.ConnectionPoint.ConnectionWire != null)
                     {
                         hasInput = true;
 
-                        break;
-                    }
-
-                    foreach (NodeConnectionPoint nodeConnectionPoint in nodeSetting.Input.ConnectionPoints)
-                    {
-                        if (nodeConnectionPoint.ConnectionWire != null)
-                        {
-                            hasInput = true;
-
-                            break;
-                        }
-                    }
-
-                    if (hasInput)
-                    {
                         break;
                     }
                 }
@@ -117,7 +102,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 Dictionary<string, object> jsonDict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(System.Text.Json.JsonSerializer.Serialize(MainNode.GetJsonData()));
 
-                Node.GetNodeFromJsonData(jsonDict);
+                Node.GetNodeFromJsonData<MainNode>(jsonDict);
 
                 foreach (Node node in Nodes)
                 {

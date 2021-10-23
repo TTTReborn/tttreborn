@@ -85,18 +85,15 @@ namespace TTTReborn.UI.VisualProgramming
                     continue;
                 }
 
-                foreach (NodeConnectionPoint nodeConnectionPoint in nodeSetting.Output.ConnectionPoints)
+                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint);
+
+                if (connectedNode == null)
                 {
-                    Node connectedNode = GetConnectedNode(nodeConnectionPoint);
-
-                    if (connectedNode == null)
-                    {
-                        continue;
-                    }
-
-                    NextNodes.Add(connectedNode);
-                    StackNode.NextNodes.Add(connectedNode.StackNode);
+                    continue;
                 }
+
+                NextNodes.Add(connectedNode);
+                StackNode.NextNodes.Add(connectedNode.StackNode);
             }
 
             object[] arr = null;
@@ -123,10 +120,10 @@ namespace TTTReborn.UI.VisualProgramming
 
             for (int i = 0; i < NextNodes.Count; i++)
             {
-                NextNodes[i].Build(arr.Length > i ? arr[i] : null);
-            }
+                Node node = NextNodes[i];
 
-            // TODO connect with next nodes
+                node.Build(arr.Length > i ? arr[i] : null);
+            }
         }
 
         public virtual void HighlightError()
@@ -137,6 +134,26 @@ namespace TTTReborn.UI.VisualProgramming
         public virtual void RemoveHighlights()
         {
             RemoveClass("error");
+        }
+
+        public void ConnectWithNode(Node node, int index)
+        {
+            if (node == this)
+            {
+                return;
+            }
+
+            NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
+
+            NodeConnectionStartPoint startPoint = this.NodeSettings[index].Output.ConnectionPoint as NodeConnectionStartPoint;
+            startPoint.ConnectionWire = nodeConnectionWire;
+            nodeConnectionWire.StartPoint = startPoint;
+
+            NodeConnectionEndPoint endPoint = node.NodeSettings[index].Input.ConnectionPoint as NodeConnectionEndPoint;
+            endPoint.ConnectionWire = nodeConnectionWire;
+            nodeConnectionWire.EndPoint = endPoint;
+
+            // TODO get the right index (if multiple settings e.g.)
         }
 
         public virtual Dictionary<string, object> GetJsonData()
@@ -169,9 +186,9 @@ namespace TTTReborn.UI.VisualProgramming
             JsonElement nextNodesElement = (JsonElement) nextNodes;
             List<Dictionary<string, object>> nextNodesList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(nextNodesElement.GetRawText());
 
-            foreach (Dictionary<string, object> nodeJsonData in nextNodesList)
+            for (int i = 0; i < nextNodesList.Count; i++)
             {
-                Node node = GetNodeFromJsonData(nodeJsonData);
+                Node node = GetNodeFromJsonData<Node>(nextNodesList[i]);
 
                 if (node == null)
                 {
@@ -179,10 +196,11 @@ namespace TTTReborn.UI.VisualProgramming
                 }
 
                 NextNodes.Add(node);
+                ConnectWithNode(node, i); // TODO get correct connection points
             }
         }
 
-        public static Node GetNodeFromJsonData(Dictionary<string, object> jsonData)
+        public static T GetNodeFromJsonData<T>(Dictionary<string, object> jsonData) where T : Node
         {
             jsonData.TryGetValue("LibraryName", out object libraryName);
 
@@ -191,9 +209,7 @@ namespace TTTReborn.UI.VisualProgramming
                 return null;
             }
 
-            Log.Error($"Got node {libraryName.ToString()}");
-
-            Type type = Utils.GetTypeByLibraryName<Node>(libraryName.ToString());
+            Type type = Utils.GetTypeByLibraryName<T>(libraryName.ToString());
 
             jsonData.Remove("LibraryName");
 
@@ -202,16 +218,12 @@ namespace TTTReborn.UI.VisualProgramming
                 return null;
             }
 
-            Log.Error("Got type");
-
-            Node node = Utils.GetObjectByType<Node>(type);
+            T node = Utils.GetObjectByType<T>(type);
 
             if (node == null)
             {
                 return null;
             }
-
-            Log.Error("Got node");
 
             node.LoadFromJsonData(jsonData);
 
