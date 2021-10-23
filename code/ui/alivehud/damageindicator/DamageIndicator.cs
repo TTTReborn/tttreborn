@@ -66,7 +66,7 @@ namespace TTTReborn.UI
                 _currentRemainingDamageIndicatorDuration = remainingDamageIndicatorTime - _timeSinceLastDamage;
 
                 Style.Display = DisplayMode.Flex;
-                Style.Opacity = Math.Clamp((_currentRemainingDamageIndicatorDuration / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / _maxDamageIndicatorDuration), 0f, 1f);
+                Style.Opacity = Math.Clamp((_currentRemainingDamageIndicatorDuration / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / _maxDamageIndicatorDuration), 0f, 0.3f);
             }
             else
             {
