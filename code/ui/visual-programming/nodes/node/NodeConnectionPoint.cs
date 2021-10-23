@@ -30,5 +30,20 @@ namespace TTTReborn.UI.VisualProgramming
         {
             AddClass("nodeconnectionpoint");
         }
+
+        public int GetSettingsIndex()
+        {
+            int index = 0;
+
+            for (int i = 0; i < Node.NodeSettings.Count; i++)
+            {
+                if (Node.NodeSettings[i].Input.ConnectionPoint == this)
+                {
+                    return i;
+                }
+            }
+
+            return index;
+        }
     }
 }

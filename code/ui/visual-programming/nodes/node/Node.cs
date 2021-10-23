@@ -22,6 +22,7 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public string LibraryName { get; set; }
         public List<Node> NextNodes { get; set; } = new();
+        public List<int> ConnectPositions { get; set; } = new();
 
         public List<NodeSetting> NodeSettings = new();
         public StackNode StackNode;
@@ -55,8 +56,10 @@ namespace TTTReborn.UI.VisualProgramming
             return nodeSetting;
         }
 
-        private Node GetConnectedNode(NodeConnectionPoint connectionPoint)
+        private Node GetConnectedNode(NodeConnectionPoint connectionPoint, out int index)
         {
+            index = 0;
+
             NodeConnectionWire connectionWire = connectionPoint.ConnectionWire;
 
             if (connectionWire == null)
@@ -71,6 +74,8 @@ namespace TTTReborn.UI.VisualProgramming
                 return null;
             }
 
+            index = connectedPoint.GetSettingsIndex();
+
             return connectedPoint.Node;
         }
 
@@ -78,14 +83,16 @@ namespace TTTReborn.UI.VisualProgramming
         {
             NextNodes.Clear();
 
-            foreach (NodeSetting nodeSetting in NodeSettings)
+            for (int i = 0; i < NodeSettings.Count; i++)
             {
+                NodeSetting nodeSetting = NodeSettings[i];
+
                 if (nodeSetting.Output == null)
                 {
                     continue;
                 }
 
-                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint);
+                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
 
                 if (connectedNode == null)
                 {
@@ -93,6 +100,7 @@ namespace TTTReborn.UI.VisualProgramming
                 }
 
                 NextNodes.Add(connectedNode);
+                ConnectPositions.Add(connectPositionIndex);
                 StackNode.NextNodes.Add(connectedNode.StackNode);
             }
 
@@ -149,11 +157,9 @@ namespace TTTReborn.UI.VisualProgramming
             startPoint.ConnectionWire = nodeConnectionWire;
             nodeConnectionWire.StartPoint = startPoint;
 
-            NodeConnectionEndPoint endPoint = node.NodeSettings[index].Input.ConnectionPoint as NodeConnectionEndPoint;
+            NodeConnectionEndPoint endPoint = node.NodeSettings[ConnectPositions[index]].Input.ConnectionPoint as NodeConnectionEndPoint;
             endPoint.ConnectionWire = nodeConnectionWire;
             nodeConnectionWire.EndPoint = endPoint;
-
-            // TODO get the right index (if multiple settings e.g.)
         }
 
         public virtual Dictionary<string, object> GetJsonData()
@@ -168,6 +174,7 @@ namespace TTTReborn.UI.VisualProgramming
             return new Dictionary<string, object>()
             {
                 ["LibraryName"] = LibraryName,
+                ["ConnectPositions"] = ConnectPositions,
                 ["NextNodes"] = nextNodesJsonList
             };
         }
@@ -176,27 +183,32 @@ namespace TTTReborn.UI.VisualProgramming
         {
             VisualProgrammingWindow.Instance.AddNode(this);
 
-            jsonData.TryGetValue("NextNodes", out object nextNodes);
+            jsonData.TryGetValue("ConnectPositions", out object connectPosition);
 
-            if (nextNodes == null)
+            if (connectPosition != null)
             {
-                return;
+                ConnectPositions = JsonSerializer.Deserialize<List<int>>(((JsonElement) connectPosition).GetRawText());
             }
 
-            JsonElement nextNodesElement = (JsonElement) nextNodes;
-            List<Dictionary<string, object>> nextNodesList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(nextNodesElement.GetRawText());
+            jsonData.TryGetValue("NextNodes", out object nextNodes);
 
-            for (int i = 0; i < nextNodesList.Count; i++)
+            if (nextNodes != null)
             {
-                Node node = GetNodeFromJsonData<Node>(nextNodesList[i]);
+                JsonElement nextNodesElement = (JsonElement) nextNodes;
+                List<Dictionary<string, object>> nextNodesList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(nextNodesElement.GetRawText());
 
-                if (node == null)
+                for (int i = 0; i < nextNodesList.Count; i++)
                 {
-                    continue;
-                }
+                    Node node = GetNodeFromJsonData<Node>(nextNodesList[i]);
 
-                NextNodes.Add(node);
-                ConnectWithNode(node, i); // TODO get correct connection points
+                    if (node == null)
+                    {
+                        continue;
+                    }
+
+                    NextNodes.Add(node);
+                    ConnectWithNode(node, i);
+                }
             }
         }
 
@@ -210,8 +222,6 @@ namespace TTTReborn.UI.VisualProgramming
             }
 
             Type type = Utils.GetTypeByLibraryName<T>(libraryName.ToString());
-
-            jsonData.Remove("LibraryName");
 
             if (type == null)
             {
