@@ -10,20 +10,22 @@ namespace TTTReborn.UI.VisualProgramming
     [NodeSetting("role_selection")]
     public class NodeRoleSelectionSetting : NodeSetting
     {
+        public Dropdown Dropdown;
+
         public NodeRoleSelectionSetting() : base()
         {
             Content.SetPanelContent((panelContent) =>
             {
-                Dropdown dropdown = panelContent.Add.Dropdown("roleselection");
+                Dropdown = panelContent.Add.Dropdown("roleselection");
 
                 foreach (Type roleType in Utils.GetTypes<TTTRole>())
                 {
-                    dropdown.AddOption(Utils.GetLibraryName(roleType), roleType, (panel) => OnSelectRole(roleType));
+                    Dropdown.AddOption(Utils.GetLibraryName(roleType), roleType, (panel) => OnSelectRole(roleType));
                 }
             });
         }
 
-        private void OnSelectRole(Type roleType)
+        public void OnSelectRole(Type roleType)
         {
             if (Node is RoleSelectionNode roleSelectionNode)
             {

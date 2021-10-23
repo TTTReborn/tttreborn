@@ -125,6 +125,8 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 NextNodes[i].Build(arr.Length > i ? arr[i] : null);
             }
+
+            // TODO connect with next nodes
         }
 
         public virtual void HighlightError()

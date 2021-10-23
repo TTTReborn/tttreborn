@@ -61,7 +61,11 @@ namespace TTTReborn.UI.VisualProgramming
 
                 if (roleType != null)
                 {
-                    SelectedRole = Utils.GetObjectByType<TTTRole>(roleType);
+                    if (NodeSettings[0] is NodeRoleSelectionSetting nodeRoleSelectionSetting)
+                    {
+                        nodeRoleSelectionSetting.Dropdown?.SelectByData(roleType);
+                        nodeRoleSelectionSetting.OnSelectRole(roleType);
+                    }
                 }
             }
 
