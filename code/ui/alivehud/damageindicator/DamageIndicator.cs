@@ -44,7 +44,7 @@ namespace TTTReborn.UI
         [Event(TTTEvent.Player.Spawned)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
-            if (player != Local.Client.Pawn)
+            if (Host.IsServer || player != Local.Client.Pawn)
             {
                 return;
             }
