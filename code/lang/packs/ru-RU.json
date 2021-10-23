@@ -4,18 +4,18 @@
         "CODE": "ru-RU"
     },
 
-    "ROLE_NAME_NONE": "Незнакомец",
-    "ROLE_NAME_INNOCENT": "Невиновный",
-    "ROLE_NAME_TRAITOR": "Предатель",
-    "ROLE_NAME_DETECTIVE": "детектив",
+    "ROLE_NONE_NAME": "Незнакомец",
+    "ROLE_INNOCENT_NAME": "Невиновный",
+    "ROLE_TRAITOR_NAME": "Предатель",
+    "ROLE_DETECTIVE_NAME": "детектив",
 
     "ROUND_STATE_WAITING": "Ожидание",
     "ROUND_STATE_PREPARING": "Подготовка",
     "ROUND_STATE_IN_PROGRESS": "В процессе",
     "ROUND_STATE_POST": "Конец",
 
-    "POST_ROUND_WIN_INNOCENTS": "ПОБЕДА НЕВИНОВНЫХ!",
-    "POST_ROUND_WIN_TRAITORS": "ПОБЕДА ПРЕДАТЕЛЕЙ!",
+    "POST_ROUND_WIN_TEAM_INNOCENTS": "ПОБЕДА НЕВИНОВНЫХ!",
+    "POST_ROUND_WIN_TEAM_TRAITORS": "ПОБЕДА ПРЕДАТЕЛЕЙ!",
     "POST_ROUND_TEXT": "Спасибо, что играете в TTT Reborn!",
 
     "PLAYER_STATUS_HEALTH_HEALTHY": "Здоров",
