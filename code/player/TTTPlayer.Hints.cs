@@ -11,6 +11,7 @@ namespace TTTReborn.Player
 
         private EntityHintPanel _currentHintPanel;
         private IEntityHint _currentHint;
+        private string _cachedHintText;
 
         private void TickEntityHints()
         {
@@ -25,7 +26,12 @@ namespace TTTReborn.Player
 
             if (hint != null && _currentHintPanel != null)
             {
-                _currentHintPanel.UpdateHintPanel(hint.CurrentHintText);
+                string currentHintText = hint.CurrentHintText;
+                if (_cachedHintText != currentHintText)
+                {
+                    _cachedHintText = currentHintText;
+                    _currentHintPanel.UpdateHintPanel(_cachedHintText);
+                }
 
                 if (!hint.CanHint(player) || hint != _currentHint)
                 {
@@ -46,6 +52,7 @@ namespace TTTReborn.Player
                     _currentHintPanel.UpdateHintPanel(hint.CurrentHintText);
 
                     _currentHint = hint;
+                    _cachedHintText = hint.CurrentHintText;
                 }
             }
             else
