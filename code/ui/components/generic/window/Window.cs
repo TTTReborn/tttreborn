@@ -2,9 +2,9 @@ namespace TTTReborn.UI
 {
     public class Window : RichPanel
     {
-        public WindowHeader Header { get; set; }
-        public PanelContent Content { get; set; }
-        public Panel Footer { get; set; }
+        public WindowHeader Header;
+        public PanelContent Content;
+        public Panel Footer;
 
         public Window(Sandbox.UI.Panel parent = null) : base(parent)
         {

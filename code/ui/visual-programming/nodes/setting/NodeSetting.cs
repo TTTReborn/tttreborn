@@ -9,7 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeSettingAttribute : LibraryAttribute
     {
-        public NodeSettingAttribute(string name) : base(name)
+        public NodeSettingAttribute(string name) : base("node_setting_" + name)
         {
 
         }
@@ -39,9 +39,9 @@ namespace TTTReborn.UI.VisualProgramming
         }
         private Node _node;
 
-        public NodeConnectionPanel Input { get; set; }
-        public NodeConnectionPanel Output { get; set; }
-        public PanelContent Content { get; set; }
+        public NodeConnectionPanel Input;
+        public NodeConnectionPanel Output;
+        public PanelContent Content;
 
         public NodeSetting() : base()
         {

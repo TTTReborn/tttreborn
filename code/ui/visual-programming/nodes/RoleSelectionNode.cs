@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using TTTReborn.Globals;
 using TTTReborn.Roles;
@@ -9,13 +10,13 @@ namespace TTTReborn.UI.VisualProgramming
     [Node("role_selection")]
     public class RoleSelectionNode : Node
     {
-        public NodeRoleSelectionSetting RoleSelectionSetting;
+        public TTTRole SelectedRole { get; set; }
 
         public RoleSelectionNode() : base(new RoleSelectionStackNode())
         {
             SetTitle("RoleSelection Node");
 
-            RoleSelectionSetting = AddSetting<NodeRoleSelectionSetting>();
+            AddSetting<NodeRoleSelectionSetting>();
 
             HighlightError();
         }
@@ -29,10 +30,42 @@ namespace TTTReborn.UI.VisualProgramming
                 return;
             }
 
-            (StackNode as RoleSelectionStackNode).SelectedRole = role;
+            SelectedRole = role;
 
             Style.BackgroundColor = role.Color;
             Style.Dirty();
+        }
+
+        public override void Build(params object[] input)
+        {
+            (StackNode as RoleSelectionStackNode).SelectedRole = SelectedRole;
+
+            base.Build(input);
+        }
+
+        public override Dictionary<string, object> GetJsonData()
+        {
+            Dictionary<string, object> dict = base.GetJsonData();
+            dict.Add("SelectedRole", SelectedRole?.Name);
+
+            return dict;
+        }
+
+        public override void LoadFromJsonData(Dictionary<string, object> jsonData)
+        {
+            jsonData.TryGetValue("SelectedRole", out object selectedRoleName);
+
+            if (selectedRoleName != null)
+            {
+                Type roleType = Utils.GetTypeByLibraryName<TTTRole>(selectedRoleName.ToString());
+
+                if (roleType != null)
+                {
+                    SelectedRole = Utils.GetObjectByType<TTTRole>(roleType);
+                }
+            }
+
+            base.LoadFromJsonData(jsonData);
         }
     }
 }

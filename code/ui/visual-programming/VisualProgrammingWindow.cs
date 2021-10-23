@@ -46,10 +46,15 @@ namespace TTTReborn.UI.VisualProgramming
         {
             T node = new T();
 
-            Content.AddChild(node);
-            Nodes.Add(node);
+            AddNode(node);
 
             return node;
+        }
+
+        public void AddNode(Node node)
+        {
+            Content.AddChild(node);
+            Nodes.Add(node);
         }
 
         public void Build()
@@ -107,8 +112,22 @@ namespace TTTReborn.UI.VisualProgramming
                 MainNode.Build();
 
                 // sync _nodeStack to server and save
+
+                Sandbox.Log.Error(System.Text.Json.JsonSerializer.Serialize(MainNode.GetJsonData()));
+
+                Dictionary<string, object> jsonDict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(System.Text.Json.JsonSerializer.Serialize(MainNode.GetJsonData()));
+
+                Node.GetNodeFromJsonData(jsonDict);
+
+                foreach (Node node in Nodes)
+                {
+                    node.Display();
+                }
             }
-            catch (Exception) { }
+            catch (Exception e)
+            {
+                Sandbox.Log.Error(e);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 using Sandbox;
 
@@ -11,7 +12,7 @@ namespace TTTReborn.UI.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeAttribute : LibraryAttribute
     {
-        public NodeAttribute(string name) : base(name)
+        public NodeAttribute(string name) : base("node_" + name)
         {
 
         }
@@ -19,9 +20,11 @@ namespace TTTReborn.UI.VisualProgramming
 
     public abstract class Node : Modal
     {
-        public StackNode StackNode;
         public string LibraryName { get; set; }
-        public List<NodeSetting> NodeSettings { get; set; } = new();
+        public List<Node> NextNodes { get; set; } = new();
+
+        public List<NodeSetting> NodeSettings = new();
+        public StackNode StackNode;
 
         public Node(StackNode stackNode) : base()
         {
@@ -73,7 +76,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public virtual void Build(params object[] input)
         {
-            List<Node> Nodes = new();
+            NextNodes.Clear();
 
             foreach (NodeSetting nodeSetting in NodeSettings)
             {
@@ -91,7 +94,7 @@ namespace TTTReborn.UI.VisualProgramming
                         continue;
                     }
 
-                    Nodes.Add(connectedNode);
+                    NextNodes.Add(connectedNode);
                     StackNode.NextNodes.Add(connectedNode.StackNode);
                 }
             }
@@ -118,9 +121,9 @@ namespace TTTReborn.UI.VisualProgramming
                 throw e;
             }
 
-            for (int i = 0; i < Nodes.Count; i++)
+            for (int i = 0; i < NextNodes.Count; i++)
             {
-                Nodes[i].Build(arr.Length > i ? arr[i] : null);
+                NextNodes[i].Build(arr.Length > i ? arr[i] : null);
             }
         }
 
@@ -132,6 +135,85 @@ namespace TTTReborn.UI.VisualProgramming
         public virtual void RemoveHighlights()
         {
             RemoveClass("error");
+        }
+
+        public virtual Dictionary<string, object> GetJsonData()
+        {
+            List<Dictionary<string, object>> nextNodesJsonList = new();
+
+            foreach (Node node in NextNodes)
+            {
+                nextNodesJsonList.Add(node.GetJsonData());
+            }
+
+            return new Dictionary<string, object>()
+            {
+                ["LibraryName"] = LibraryName,
+                ["NextNodes"] = nextNodesJsonList
+            };
+        }
+
+        public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
+        {
+            VisualProgrammingWindow.Instance.AddNode(this);
+
+            jsonData.TryGetValue("NextNodes", out object nextNodes);
+
+            if (nextNodes == null)
+            {
+                return;
+            }
+
+            JsonElement nextNodesElement = (JsonElement) nextNodes;
+            List<Dictionary<string, object>> nextNodesList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(nextNodesElement.GetRawText());
+
+            foreach (Dictionary<string, object> nodeJsonData in nextNodesList)
+            {
+                Node node = GetNodeFromJsonData(nodeJsonData);
+
+                if (node == null)
+                {
+                    continue;
+                }
+
+                NextNodes.Add(node);
+            }
+        }
+
+        public static Node GetNodeFromJsonData(Dictionary<string, object> jsonData)
+        {
+            jsonData.TryGetValue("LibraryName", out object libraryName);
+
+            if (libraryName == null)
+            {
+                return null;
+            }
+
+            Log.Error($"Got node {libraryName.ToString()}");
+
+            Type type = Utils.GetTypeByLibraryName<Node>(libraryName.ToString());
+
+            jsonData.Remove("LibraryName");
+
+            if (type == null)
+            {
+                return null;
+            }
+
+            Log.Error("Got type");
+
+            Node node = Utils.GetObjectByType<Node>(type);
+
+            if (node == null)
+            {
+                return null;
+            }
+
+            Log.Error("Got node");
+
+            node.LoadFromJsonData(jsonData);
+
+            return node;
         }
     }
 }
