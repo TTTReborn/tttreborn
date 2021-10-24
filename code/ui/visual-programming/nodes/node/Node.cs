@@ -82,6 +82,7 @@ namespace TTTReborn.UI.VisualProgramming
         public virtual void Build(params object[] input)
         {
             NextNodes.Clear();
+            ConnectPositions.Clear();
 
             for (int i = 0; i < NodeSettings.Count; i++)
             {
