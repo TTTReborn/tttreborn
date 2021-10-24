@@ -244,7 +244,9 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 ["LibraryName"] = LibraryName,
                 ["ConnectPositions"] = ConnectPositions,
-                ["NextNodes"] = nextNodesJsonList
+                ["NextNodes"] = nextNodesJsonList,
+                ["PosX"] = Box.Rect.left,
+                ["PosY"] = Box.Rect.top
             };
         }
 
@@ -279,6 +281,22 @@ namespace TTTReborn.UI.VisualProgramming
                     ConnectWithNode(node, i);
                 }
             }
+
+            jsonData.TryGetValue("PosX", out object posX);
+
+            if (posX != null)
+            {
+                Style.Left = Sandbox.UI.Length.Pixels(float.Parse(posX.ToString()));
+            }
+
+            jsonData.TryGetValue("PosY", out object posY);
+
+            if (posY != null)
+            {
+                Style.Top = Sandbox.UI.Length.Pixels(float.Parse(posY.ToString()));
+            }
+
+            Style.Dirty();
         }
 
         public static T GetNodeFromJsonData<T>(Dictionary<string, object> jsonData) where T : Node
