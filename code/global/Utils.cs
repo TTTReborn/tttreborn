@@ -195,5 +195,24 @@ namespace TTTReborn.Globals
                 currentDir += '/';
             }
         }
+
+        public static string GetSettingsFolderPath(Realm realm, string path = null)
+        {
+            if (!FileSystem.Data.DirectoryExists("settings"))
+            {
+                FileSystem.Data.CreateDirectory("settings");
+            }
+
+            string settingsName = Utils.GetTypeName(realm == Realm.Client ? typeof(Settings.ClientSettings) : typeof(Settings.ServerSettings));
+
+            path = $"/settings/{settingsName.ToLower()}/{path}";
+
+            if (!FileSystem.Data.DirectoryExists(path))
+            {
+                CreateRecursiveDirectories(path);
+            }
+
+            return path;
+        }
     }
 }

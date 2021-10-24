@@ -1,7 +1,6 @@
 using System;
 
 using Sandbox;
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globals;
@@ -115,7 +114,7 @@ namespace TTTReborn.UI.Menu
             }
             else if (realm == Utils.Realm.Server)
             {
-                ConsoleSystem.Run("ttt_serversettings_saveas_request", fileSelection.CurrentFolderPath, fileName);
+                Player.TTTPlayer.RequestSaveServerSettingsAs(fileSelection.CurrentFolderPath, fileName);
             }
         }
 
@@ -178,7 +177,7 @@ namespace TTTReborn.UI.Menu
             }
             else if (realm == Utils.Realm.Server)
             {
-                ConsoleSystem.Run("ttt_serversettings_loadfrom_request", fileSelection.CurrentFolderPath, fileName);
+                Player.TTTPlayer.RequestLoadFrom(fileSelection.CurrentFolderPath, fileName);
             }
         }
     }
@@ -191,7 +190,7 @@ namespace TTTReborn.Player
     public partial class TTTPlayer
     {
         [ServerCmd(Name = "ttt_serversettings_saveas_request")]
-        public static void RequestSaveAs(string filePath, string fileName, bool overwrite = false)
+        public static void RequestSaveServerSettingsAs(string filePath, string fileName, bool overwrite = false)
         {
             if (!ConsoleSystem.Caller.HasPermission("serversettings"))
             {
@@ -213,7 +212,7 @@ namespace TTTReborn.Player
         {
             Menu.AskOverwriteSelectedSettings(filePath, fileName, () =>
             {
-                ConsoleSystem.Run("ttt_serversettings_saveas_request", filePath, fileName, true);
+                RequestSaveServerSettingsAs(filePath, fileName, true);
             });
         }
 
