@@ -2,14 +2,13 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Hints;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
     public class Nameplate : EntityHintPanel
     {
-        public TTTPlayer Player;
-
         private readonly Sandbox.UI.Panel _labelHolder;
         private readonly Sandbox.UI.Panel _nameHolder;
         private readonly Label _nameLabel;
@@ -37,11 +36,9 @@ namespace TTTReborn.UI
             new HealthGroup("Near Death", Color.FromBytes(252, 42, 42), 0)
         };
 
-        public Nameplate(TTTPlayer player) : base()
+        public Nameplate() : base()
         {
-            Player = player;
-
-            StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
+            StyleSheet.Load("/ui/generalhud/hints/nameplate/Nameplate.scss");
 
             AddClass("text-shadow");
 
@@ -68,18 +65,23 @@ namespace TTTReborn.UI
             return HealthGroupList[^1];
         }
 
-        public override void UpdateHintPanel(string hintText)
+        public override void UpdateHintPanel(IEntityHint hint)
         {
+            if (hint is not TTTPlayer player)
+            {
+                return;
+            }
+
             SetClass("fade-in", Enabled);
 
             // Network sync workaround
-            if (Player.Health == 0 && Player.LifeState == LifeState.Alive)
+            if (player.Health == 0 && player.LifeState == LifeState.Alive)
             {
                 _damageIndicatorLabel.Text = "";
             }
             else
             {
-                float health = Player.Health / Player.MaxHealth * 100;
+                float health = player.Health / player.MaxHealth * 100;
                 HealthGroup healthGroup = GetHealthGroup(health);
 
                 _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
@@ -87,9 +89,11 @@ namespace TTTReborn.UI
                 _damageIndicatorLabel.Style.Dirty();
             }
 
-            _nameLabel.Text = Player.Client?.Name ?? "";
+            _nameLabel.Text = player.Client?.Name ?? "";
 
             Style.Dirty();
+
+            base.UpdateHintPanel(hint);
         }
     }
 }

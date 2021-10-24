@@ -1,6 +1,6 @@
 using Sandbox;
 
-using TTTReborn.UI;
+using TTTReborn.Hints;
 
 namespace TTTReborn.Player
 {

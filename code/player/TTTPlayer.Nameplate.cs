@@ -1,3 +1,4 @@
+using TTTReborn.Hints;
 using TTTReborn.UI;
 
 namespace TTTReborn.Player
@@ -6,14 +7,19 @@ namespace TTTReborn.Player
     {
         public float HintDistance => 400f;
 
-        public bool CanHint(TTTPlayer client)
+        public bool CanHint(TTTPlayer player)
         {
             return true;
         }
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
+        public EntityHintPanel DisplayHintPanel(TTTPlayer player)
         {
-            return new Nameplate(this);
+            return new Nameplate();
+        }
+
+        public void UpdateHintPanel(EntityHintPanel entityHintPanel)
+        {
+
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
+using TTTReborn.Hints;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -292,16 +292,30 @@ namespace TTTReborn.Items
             }
         }
 
-        public string CurrentHintText => TTTLanguage.ActiveLanguage.GetFormattedTranslation(IsArmed ? "C4_DEFUSE" : "C4_ARM", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
-
-        public bool CanHint(TTTPlayer client)
+        public bool CanHint(TTTPlayer player)
         {
             return true;
         }
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
+        private string GetTranslationKey()
         {
-            return new Hint(CurrentHintText);
+            return IsArmed ? "C4_DEFUSE" : "C4_ARM";
+        }
+
+        public EntityHintPanel DisplayHintPanel(TTTPlayer player)
+        {
+            return new TranslationLabelHintPanel(GetTranslationKey(), Input.GetKeyWithBinding("+iv_use").ToUpper());
+        }
+
+        public void UpdateHintPanel(EntityHintPanel entityHintPanel)
+        {
+            TranslationLabel translationLabel = (entityHintPanel as TranslationLabelHintPanel).TranslationLabel;
+            string translationKey = GetTranslationKey();
+
+            if (!translationLabel.TranslationKey.Equals(translationKey))
+            {
+                translationLabel.SetTranslation(translationKey, Input.GetKeyWithBinding("+iv_use").ToUpper());
+            }
         }
     }
 }

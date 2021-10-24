@@ -2,7 +2,7 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Globalization;
+using TTTReborn.Hints;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -13,6 +13,8 @@ namespace TTTReborn.Items
     {
         [Net]
         public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
+
+        private float _oldStoredHealth;
 
         private string ModelPath => "models/entities/healthstation.vmdl";
 
@@ -60,16 +62,28 @@ namespace TTTReborn.Items
 
         public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
 
-        public string CurrentHintText => TTTLanguage.ActiveLanguage.GetFormattedTranslation("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
-
-        public bool CanHint(TTTPlayer client)
+        public bool CanHint(TTTPlayer player)
         {
             return true;
         }
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
+        public EntityHintPanel DisplayHintPanel(TTTPlayer player)
         {
-            return new Hint(CurrentHintText);
+            _oldStoredHealth = StoredHealth;
+
+            return new TranslationLabelHintPanel("HEALTH_STATION", Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{_oldStoredHealth}");
+        }
+
+        public void UpdateHintPanel(EntityHintPanel entityHintPanel)
+        {
+            if (StoredHealth == _oldStoredHealth)
+            {
+                return;
+            }
+
+            _oldStoredHealth = StoredHealth;
+
+            (entityHintPanel as TranslationLabelHintPanel).TranslationLabel.SetTranslation("HEALTH_STATION", Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{_oldStoredHealth}");
         }
     }
 }

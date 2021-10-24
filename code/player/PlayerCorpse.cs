@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globalization;
+using TTTReborn.Hints;
 using TTTReborn.Items;
 using TTTReborn.UI;
 
@@ -138,13 +139,27 @@ namespace TTTReborn.Player
 
         public float HintDistance => 80f;
 
-        public string CurrentHintText => TTTLanguage.ActiveLanguage.GetFormattedTranslation(IsIdentified ? "CORPSE_INSPECT" : "CORPSE_IDENTIFY", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
-
-        public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.Enabled ?? false;
-
-        public EntityHintPanel DisplayHint(TTTPlayer client)
+        private string GetTranslationKey()
         {
-            return new Hint(CurrentHintText);
+            return IsIdentified ? "CORPSE_INSPECT" : "CORPSE_IDENTIFY";
+        }
+
+        public bool CanHint(TTTPlayer player) => !InspectMenu.Instance?.Enabled ?? false;
+
+        public EntityHintPanel DisplayHintPanel(TTTPlayer player)
+        {
+            return new TranslationLabelHintPanel(GetTranslationKey(), Input.GetKeyWithBinding("+iv_use").ToUpper());
+        }
+
+        public void UpdateHintPanel(EntityHintPanel entityHintPanel)
+        {
+            TranslationLabel translationLabel = (entityHintPanel as TranslationLabelHintPanel).TranslationLabel;
+            string translationKey = GetTranslationKey();
+
+            if (!translationLabel.TranslationKey.Equals(translationKey))
+            {
+                translationLabel.SetTranslation(translationKey, Input.GetKeyWithBinding("+iv_use").ToUpper());
+            }
         }
     }
 }

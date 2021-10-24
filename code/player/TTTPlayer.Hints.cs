@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Hints;
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
 
@@ -11,7 +12,6 @@ namespace TTTReborn.Player
 
         private EntityHintPanel _currentHintPanel;
         private IEntityHint _currentHint;
-        private string _cachedHintText;
 
         private void TickEntityHints()
         {
@@ -24,52 +24,32 @@ namespace TTTReborn.Player
 
             IEntityHint hint = player.IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
 
-            if (hint != null && _currentHintPanel != null)
+            if (hint == null || !hint.CanHint(player))
             {
-                string currentHintText = hint.CurrentHintText;
-                if (_cachedHintText != currentHintText)
-                {
-                    _cachedHintText = currentHintText;
-                    _currentHintPanel.UpdateHintPanel(_cachedHintText);
-                }
-
-                if (!hint.CanHint(player) || hint != _currentHint)
-                {
-                    DeleteHint();
-
-                    return;
-                }
-            }
-
-            // If we are looking at a hint and don't have a current hint, let's see if we can make one.
-            if (hint != null)
-            {
-                if (hint.CanHint(player) && _currentHintPanel == null)
-                {
-                    _currentHintPanel = hint.DisplayHint(player);
-                    _currentHintPanel.Parent = HintDisplay.Instance;
-                    _currentHintPanel.Enabled = true;
-                    _currentHintPanel.UpdateHintPanel(hint.CurrentHintText);
-
-                    _currentHint = hint;
-                    _cachedHintText = hint.CurrentHintText;
-                }
-            }
-            else
-            {
-                // If we just looked away, disable the panel.
-                if (_currentHintPanel != null)
-                {
-                    _currentHintPanel.Enabled = false;
-                }
-
                 DeleteHint();
+
+                return;
             }
+
+            if (hint == _currentHint)
+            {
+                _currentHintPanel.UpdateHintPanel(hint);
+
+                return;
+            }
+
+            DeleteHint();
+
+            _currentHintPanel = hint.DisplayHintPanel(player);
+            _currentHintPanel.Parent = HintDisplay.Instance;
+            _currentHintPanel.Enabled = true;
+
+            _currentHint = hint;
         }
 
         private void DeleteHint()
         {
-            _currentHintPanel?.Delete();
+            _currentHintPanel?.Delete(true);
             _currentHintPanel = null;
             _currentHint = null;
         }

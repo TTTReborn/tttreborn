@@ -1,15 +1,12 @@
-using System;
-
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
-    public class Hint : EntityHintPanel
+    public class LabelHintPanel : EntityHintPanel
     {
-        private readonly Label _label;
+        private readonly Sandbox.UI.Label _label;
 
-        public Hint(string hintText)
+        public LabelHintPanel(string hintText) : base()
         {
             AddClass("centered-vertical-75");
             AddClass("background-color-primary");
@@ -21,16 +18,6 @@ namespace TTTReborn.UI
             _label.Style.Padding = 10;
 
             Enabled = false;
-        }
-
-        public override void UpdateHintPanel(string hintText)
-        {
-            if (String.IsNullOrEmpty(hintText))
-            {
-                return;
-            }
-
-            _label.Text = hintText;
         }
     }
 }

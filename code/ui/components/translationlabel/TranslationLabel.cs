@@ -10,9 +10,8 @@ namespace TTTReborn.UI
     {
         private readonly static List<TranslationLabel> _translationLabels = new();
 
-        private string _translationKey;
-
-        private object[] _translationParams;
+        public string TranslationKey { get; private set; }
+        public object[] TranslationParams { get; private set; }
 
         public TranslationLabel(string translationKey = null, string classname = null, params object[] args) : base()
         {
@@ -31,25 +30,25 @@ namespace TTTReborn.UI
 
         public void SetTranslation(string translationKey, params object[] args)
         {
-            _translationKey = translationKey;
-            _translationParams = args;
+            TranslationKey = translationKey;
+            TranslationParams = args;
 
-            if (_translationKey == null)
+            if (TranslationKey == null)
             {
                 return;
             }
 
-            Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationKey, _translationParams);
+            Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(TranslationKey, TranslationParams);
         }
 
         public void UpdateTranslation(Language language)
         {
-            if (_translationKey == null)
+            if (TranslationKey == null)
             {
                 return;
             }
 
-            Text = language.GetFormattedTranslation(_translationKey, _translationParams);
+            Text = language.GetFormattedTranslation(TranslationKey, TranslationParams);
         }
 
         public static void UpdateLanguage(Language language)
