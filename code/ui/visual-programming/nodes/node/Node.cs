@@ -130,7 +130,21 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Node node = NextNodes[i];
 
-                node.Build(arr.Length > i ? arr[i] : null);
+                try
+                {
+                    node.Build(arr.Length > i ? arr[i] : null);
+                }
+                catch (Exception e)
+                {
+                    if (e is not NodeStackException)
+                    {
+                        node.HighlightError();
+
+                        Log.Error(e);
+                    }
+
+                    throw e;
+                }
             }
         }
 
@@ -236,6 +250,7 @@ namespace TTTReborn.UI.VisualProgramming
             }
 
             node.LoadFromJsonData(jsonData);
+            node.RemoveHighlights();
 
             return node;
         }

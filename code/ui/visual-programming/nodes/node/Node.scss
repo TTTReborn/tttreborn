@@ -29,6 +29,7 @@
 
         &.content {
             background-color: rgb(61, 118, 243);
+            flex-direction: column;
         }
 
         &.footer {
@@ -41,6 +42,7 @@
 
     .nodesetting {
         flex-grow: 1;
+        flex-direction: row;
 
         > .nodeconnectionpanel {
             flex-shrink: 1;
@@ -71,6 +73,14 @@
             flex-grow: 1;
 
             padding: 8px;
+
+            .textentry {
+                background-color: #000c;
+                width: 100%;
+                padding: 4px 12px;
+
+                border-radius: 16px;
+            }
         }
     }
 }

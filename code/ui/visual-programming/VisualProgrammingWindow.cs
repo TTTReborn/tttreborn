@@ -38,6 +38,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             AddNode<RoleSelectionNode>().Display();
             AddNode<RoleSelectionNode>().Display();
+            AddNode<PercentageSelectionNode>().Display();
 
             _nodeStack = new NodeStack(); // TODO move to server later
         }
