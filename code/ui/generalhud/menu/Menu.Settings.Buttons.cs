@@ -143,6 +143,11 @@ namespace TTTReborn.UI.Menu
 
         private void OnAgreeLoadFrom(FileSelection fileSelection, PanelContent menuContent)
         {
+            if (fileSelection.SelectedEntry == null)
+            {
+                return;
+            }
+
             string fileName = fileSelection.SelectedEntry.FileNameLabel.Text;
 
             if (string.IsNullOrEmpty(fileName) || SettingsTabs == null)

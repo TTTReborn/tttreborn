@@ -64,6 +64,11 @@ namespace TTTReborn.UI
             FileNameEntry = Content.Add.TextEntry("");
             FileNameEntry.AddClass("filename");
             FileNameEntry.AddClass("hide");
+            FileNameEntry.AddEventListener("onfocus", (panelEvent) =>
+            {
+                SelectedEntry?.SetClass("selected", false);
+                SelectedEntry = null;
+            });
         }
 
         public void EnableFileNameEntry(bool enable = true)
@@ -151,7 +156,7 @@ namespace TTTReborn.UI
 
         public void OnConfirm(FileSelectionEntry fileSelectionEntry)
         {
-            if (!fileSelectionEntry.IsFolder || FolderOnly)
+            if (fileSelectionEntry == null || !fileSelectionEntry.IsFolder || FolderOnly)
             {
                 OnSelectEntry?.Invoke(fileSelectionEntry);
 
@@ -179,10 +184,7 @@ namespace TTTReborn.UI
 
         public override void OnClickAgree()
         {
-            if (SelectedEntry != null)
-            {
-                OnConfirm(SelectedEntry);
-            }
+            OnConfirm(SelectedEntry);
         }
 
         public static string GetIconByFileType(string fileType)
