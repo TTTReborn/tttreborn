@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    public class VisualProgrammingWindow : Window
+    public partial class VisualProgrammingWindow : Window
     {
         public static VisualProgrammingWindow Instance;
 
@@ -25,6 +26,16 @@ namespace TTTReborn.UI.VisualProgramming
 
             Header.NavigationHeader.OnCreateWindowHeader = (header) =>
             {
+                Sandbox.UI.Button saveButton = new("save_as", "", () => Save());
+                saveButton.AddClass("save");
+
+                header.AddChild(saveButton);
+
+                Sandbox.UI.Button loadButton = new("folder_open", "", () => Load());
+                loadButton.AddClass("load");
+
+                header.AddChild(loadButton);
+
                 Sandbox.UI.Button playButton = new("play_arrow", "", () => Build());
                 playButton.AddClass("play");
 
@@ -56,64 +67,6 @@ namespace TTTReborn.UI.VisualProgramming
         {
             Content.AddChild(node);
             Nodes.Add(node);
-        }
-
-        public void Build()
-        {
-            _nodeStack.Reset();
-
-            bool hasError = false;
-
-            foreach (Node node in Nodes)
-            {
-                node.RemoveHighlights();
-
-                bool hasInput = false;
-
-                foreach (NodeSetting nodeSetting in node.NodeSettings)
-                {
-                    if (!nodeSetting.Input.Enabled || nodeSetting.Input.ConnectionPoint.ConnectionWire != null)
-                    {
-                        hasInput = true;
-
-                        break;
-                    }
-                }
-
-                if (!hasInput)
-                {
-                    node.HighlightError();
-
-                    hasError = true;
-                }
-            }
-
-            if (hasError)
-            {
-                return;
-            }
-
-            try
-            {
-                MainNode.Build();
-
-                // sync _nodeStack to server and save
-
-                Sandbox.Log.Error(System.Text.Json.JsonSerializer.Serialize(MainNode.GetJsonData()));
-
-                Dictionary<string, object> jsonDict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(System.Text.Json.JsonSerializer.Serialize(MainNode.GetJsonData()));
-
-                Node.GetNodeFromJsonData<MainNode>(jsonDict);
-
-                foreach (Node node in Nodes)
-                {
-                    node.Display();
-                }
-            }
-            catch (Exception e)
-            {
-                Sandbox.Log.Error(e);
-            }
         }
     }
 }

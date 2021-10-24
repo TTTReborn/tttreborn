@@ -56,6 +56,21 @@ namespace TTTReborn.UI.VisualProgramming
             return nodeSetting;
         }
 
+        public override void Delete(bool immediate = false)
+        {
+            foreach (NodeSetting nodeSetting in NodeSettings)
+            {
+                if (nodeSetting.Output == null)
+                {
+                    continue;
+                }
+
+                nodeSetting.Output.ConnectionPoint.ConnectionWire?.Delete(true);
+            }
+
+            base.Delete(immediate);
+        }
+
         private Node GetConnectedNode(NodeConnectionPoint connectionPoint, out int index)
         {
             index = 0;
@@ -79,10 +94,22 @@ namespace TTTReborn.UI.VisualProgramming
             return connectedPoint.Node;
         }
 
+        public bool HasInput()
+        {
+            foreach (NodeSetting nodeSetting in NodeSettings)
+            {
+                if (nodeSetting.Input.ConnectionPoint.ConnectionWire != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public virtual void Build(params object[] input)
         {
             NextNodes.Clear();
-            ConnectPositions.Clear();
 
             for (int i = 0; i < NodeSettings.Count; i++)
             {
@@ -101,7 +128,6 @@ namespace TTTReborn.UI.VisualProgramming
                 }
 
                 NextNodes.Add(connectedNode);
-                ConnectPositions.Add(connectPositionIndex);
                 StackNode.NextNodes.Add(connectedNode.StackNode);
             }
 
@@ -177,13 +203,41 @@ namespace TTTReborn.UI.VisualProgramming
             nodeConnectionWire.EndPoint = endPoint;
         }
 
-        public virtual Dictionary<string, object> GetJsonData()
+        public virtual Dictionary<string, object> GetJsonData(List<Node> proceedNodes = null)
         {
+            if (proceedNodes != null)
+            {
+                proceedNodes.Add(this);
+            }
+
             List<Dictionary<string, object>> nextNodesJsonList = new();
+
+            NextNodes.Clear();
+            ConnectPositions.Clear();
+
+            for (int i = 0; i < NodeSettings.Count; i++)
+            {
+                NodeSetting nodeSetting = NodeSettings[i];
+
+                if (nodeSetting.Output == null)
+                {
+                    continue;
+                }
+
+                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
+
+                if (connectedNode == null)
+                {
+                    continue;
+                }
+
+                NextNodes.Add(connectedNode);
+                ConnectPositions.Add(connectPositionIndex);
+            }
 
             foreach (Node node in NextNodes)
             {
-                nextNodesJsonList.Add(node.GetJsonData());
+                nextNodesJsonList.Add(node.GetJsonData(proceedNodes));
             }
 
             return new Dictionary<string, object>()

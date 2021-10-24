@@ -39,9 +39,9 @@ namespace TTTReborn.UI.VisualProgramming
             base.Build(input);
         }
 
-        public override Dictionary<string, object> GetJsonData()
+        public override Dictionary<string, object> GetJsonData(List<Node> proceedNodes = null)
         {
-            Dictionary<string, object> dict = base.GetJsonData();
+            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
             dict.Add("PercentList", PercentList);
 
             return dict;
@@ -65,7 +65,14 @@ namespace TTTReborn.UI.VisualProgramming
 
                 for (int i = 0; i < NodeSettings.Count; i++)
                 {
-                    (NodeSettings[i] as NodePercentSetting).PercentEntry.Text = PercentList[i].ToString();
+                    string text = "";
+
+                    if (PercentList.Count > i)
+                    {
+                        text = PercentList[i].ToString();
+                    }
+
+                    (NodeSettings[i] as NodePercentSetting).PercentEntry.Text = text;
                 }
             }
 

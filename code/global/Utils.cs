@@ -196,7 +196,7 @@ namespace TTTReborn.Globals
             }
         }
 
-        public static string GetSettingsFolderPath(Realm realm, string path = null)
+        public static string GetSettingsFolderPath(Realm realm, string path = null, string pathAddition = null)
         {
             if (!FileSystem.Data.DirectoryExists("settings"))
             {
@@ -205,7 +205,7 @@ namespace TTTReborn.Globals
 
             string settingsName = Utils.GetTypeName(realm == Realm.Client ? typeof(Settings.ClientSettings) : typeof(Settings.ServerSettings));
 
-            path = $"/settings/{settingsName.ToLower()}/{path}";
+            path ??= $"/settings/{settingsName.ToLower()}/{pathAddition}";
 
             if (!FileSystem.Data.DirectoryExists(path))
             {

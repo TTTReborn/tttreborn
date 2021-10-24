@@ -6,20 +6,27 @@ VisualProgrammingWindow {
             position: absolute;
             border-radius: 0px;
             z-index: 1;
-            width: 100px;
+            width: 210px;
             right: 0px;
             top: -5px;
-            padding: 0px;
+            padding: 5px;
 
             Label.title {
                 display: none;
             }
 
-            .play {
+            .play, .save, .load {
                 font-family: MaterialIcons;
                 font-size: 28px;
                 margin: 10px;
                 padding: 2px;
+
+                width: 28px;
+                height: 28px;
+            }
+
+            .closebutton {
+                margin: 10px 20px;
             }
         }
 
