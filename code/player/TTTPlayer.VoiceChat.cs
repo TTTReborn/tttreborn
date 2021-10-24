@@ -22,6 +22,18 @@ namespace TTTReborn.Player
             {
                 IsSpeaking = false;
 
+                if (Input.Pressed(InputButton.Walk))
+                {
+                    if (Local.Pawn is TTTPlayer player && CanUseTeamVoiceChat(player))
+                    {
+                        RequestTeamChat(true);
+                    }
+                }
+                else if (Input.Released(InputButton.Walk))
+                {
+                    RequestTeamChat(false);
+                }
+
                 if (Input.Down(InputButton.Voice) || IsTeamVoiceChatEnabled)
                 {
                     IsSpeaking = true;
@@ -29,28 +41,6 @@ namespace TTTReborn.Player
                     UI.VoiceChatDisplay.Instance?.OnVoicePlayed(Client, 1f);
                 }
             }
-        }
-
-        [ClientCmd(Name = "+ttt_teamvoicechat")]
-        public static void StartTeamVoiceChat()
-        {
-            if (Local.Pawn is not TTTPlayer player || !CanUseTeamVoiceChat(player))
-            {
-                return;
-            }
-
-            ConsoleSystem.Run("ttt_requestteamchat", true);
-        }
-
-        [ClientCmd(Name = "-ttt_teamvoicechat")]
-        public static void StopTeamVoiceChat()
-        {
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                return;
-            }
-
-            ConsoleSystem.Run("ttt_requestteamchat", false);
         }
 
         [ServerCmd(Name = "ttt_requestteamchat")]
