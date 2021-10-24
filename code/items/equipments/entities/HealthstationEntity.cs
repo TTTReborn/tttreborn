@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -59,6 +60,8 @@ namespace TTTReborn.Items
 
         public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
 
+        public string TextOnTick => TTTLanguage.ActiveLanguage.GetFormattedTranslation("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
+
         public bool CanHint(TTTPlayer client)
         {
             return true;
@@ -66,7 +69,7 @@ namespace TTTReborn.Items
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return new UsableHint("HEALTH_STATION");
+            return new Hint(TextOnTick);
         }
     }
 }
