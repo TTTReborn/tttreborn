@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Extensions;
+using TTTReborn.Globals;
 
 namespace TTTReborn.Items
 {
@@ -11,7 +11,7 @@ namespace TTTReborn.Items
     public class TTTWeaponRandom : Entity
     {
 
-        private static int AMMO_DISTANCE_UP = 24;
+        private static readonly int AMMO_DISTANCE_UP = 24;
 
         /// <summary>
         /// Defines the amount of matching ammo entities that should be spawned near the weapons.
@@ -26,11 +26,12 @@ namespace TTTReborn.Items
             if (wepTypes.Count < 1)
             {
                 Log.Error("No spawnable weapon entity found!");
+
                 return;
             }
 
-            Type weaponTypeToSpawn = Globals.Utils.RNG.FromList(wepTypes);
-            TTTWeapon weapon = Globals.Utils.GetObjectByType<TTTWeapon>(weaponTypeToSpawn);
+            Type weaponTypeToSpawn = Utils.RNG.FromList(wepTypes);
+            TTTWeapon weapon = Utils.GetObjectByType<TTTWeapon>(weaponTypeToSpawn);
             weapon.Position = Position;
             weapon.Rotation = Rotation;
             weapon.Spawn();
@@ -48,12 +49,9 @@ namespace TTTReborn.Items
 
             for (int i = 0; i < AmmoToSpawn; i++)
             {
-                TTTAmmo ammo = Globals.Utils.GetObjectByType<TTTAmmo>(weapon.AmmoEntity);
+                TTTAmmo ammo = Utils.GetObjectByType<TTTAmmo>(weapon.AmmoEntity);
 
-                // Siasur [15.10.2021]: Tried to bring in some variance when spawning ammo, couldn't really achieve the desired effect but will keep this for now.
                 ammo.Position = weapon.Position + (Vector3.Up * AMMO_DISTANCE_UP);
-                ammo.Velocity = Vector3.Random * AMMO_DISTANCE_UP;
-                ammo.Rotation = Rotation.From(Angles.Random * 16);
                 ammo.Spawn();
             }
 

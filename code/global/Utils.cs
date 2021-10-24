@@ -119,9 +119,6 @@ namespace TTTReborn.Globals
             return default;
         }
 
-        [Obsolete("Use the new extension method. 'Type:HasAttribute<T>()'")]
-        public static bool HasAttribute<T>(Type type) where T : Attribute => type.HasAttribute<T>();
-
         /// <summary>
         /// Returns an approximate value for meters given the Source engine units (for distances)
         /// based on https://developer.valvesoftware.com/wiki/Dimensions

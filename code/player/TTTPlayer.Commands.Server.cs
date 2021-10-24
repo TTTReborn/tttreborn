@@ -93,7 +93,7 @@ namespace TTTReborn.Player
 
             Type itemType = Utils.GetTypeByLibraryName<IItem>(itemName);
 
-            if (itemType == null || !Utils.HasAttribute<BuyableAttribute>(itemType))
+            if (itemType == null || !itemType.HasAttribute<BuyableAttribute>())
             {
                 return;
             }
