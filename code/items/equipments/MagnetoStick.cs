@@ -112,12 +112,11 @@ namespace TTTReborn.Items
 
         private void PushPlayer()
         {
-            // Siasur [16.10.2021] Maybe add a delay here?
             TraceResult tr = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * _pushingDistance)
                     .Ignore(Owner)
                     .Run();
 
-            if (!tr.Hit || !(tr.Entity is TTTPlayer) || !tr.Entity.IsValid())
+            if (!tr.Hit || tr.Entity is not TTTPlayer || !tr.Entity.IsValid())
             {
                 return;
             }
