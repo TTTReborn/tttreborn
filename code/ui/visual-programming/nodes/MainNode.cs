@@ -11,5 +11,10 @@ namespace TTTReborn.UI.VisualProgramming
 
             AddSetting<NodeAllPlayersSetting>().ToggleInput(false);
         }
+
+        protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
+        {
+
+        }
     }
 }

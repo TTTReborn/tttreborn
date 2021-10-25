@@ -9,7 +9,7 @@ using TTTReborn.Globals;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    public partial class VisualProgrammingWindow
+    public partial class Window
     {
         public static string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
 
@@ -35,7 +35,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             string fileName = fileSelection.FileNameEntry.Text;
 
-            if (string.IsNullOrEmpty(fileName) || VisualProgrammingWindow.Instance == null)
+            if (string.IsNullOrEmpty(fileName) || Window.Instance == null)
             {
                 return;
             }
@@ -136,7 +136,7 @@ namespace TTTReborn.Player
 
             path = Utils.GetSettingsFolderPath(realm, path);
 
-            FileSystem.Data.WriteAllText(path + fileName + VisualProgrammingWindow.VISUALPROGRAMMING_FILE_EXTENSION, jsonData);
+            FileSystem.Data.WriteAllText(path + fileName + Window.VISUALPROGRAMMING_FILE_EXTENSION, jsonData);
         }
     }
 }

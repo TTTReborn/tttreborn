@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text.Json;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    public partial class VisualProgrammingWindow
+    public partial class Window
     {
         public void Build()
         {

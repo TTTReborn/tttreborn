@@ -7,6 +7,7 @@ using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
+    [Spawnable]
     [Node("role_selection")]
     public class RoleSelectionNode : Node
     {

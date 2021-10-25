@@ -18,6 +18,17 @@ namespace TTTReborn.UI.VisualProgramming
         }
     }
 
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class SpawnableAttribute : Attribute
+    {
+        public string Categorie = "General";
+
+        public SpawnableAttribute(string categorie = null) : base()
+        {
+            Categorie = categorie ?? Categorie;
+        }
+    }
+
     public abstract class Node : Modal
     {
         public string LibraryName { get; set; }
@@ -69,6 +80,13 @@ namespace TTTReborn.UI.VisualProgramming
             }
 
             base.Delete(immediate);
+        }
+
+        protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
+        {
+            Delete(true);
+
+            base.OnRightClick(e);
         }
 
         private Node GetConnectedNode(NodeConnectionPoint connectionPoint, out int index)
@@ -252,7 +270,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            VisualProgrammingWindow.Instance.AddNode(this);
+            Window.Instance.AddNode(this);
 
             jsonData.TryGetValue("ConnectPositions", out object connectPosition);
 

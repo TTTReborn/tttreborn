@@ -1,26 +1,26 @@
-using System;
 using System.Collections.Generic;
-using System.Text.Json;
 
 using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    public partial class VisualProgrammingWindow : Window
+    public partial class Window : UI.Window
     {
-        public static VisualProgrammingWindow Instance;
+        public static Window Instance;
 
         public MainNode MainNode;
         public List<Node> Nodes = new();
         public NodeConnectionWire ActiveNodeConnectionWire;
+        public WindowSidebar Sidebar;
+        public PanelContent Workspace;
 
         private NodeStack _nodeStack;
 
-        public VisualProgrammingWindow(Sandbox.UI.Panel parent = null) : base(parent)
+        public Window(Sandbox.UI.Panel parent = null) : base(parent)
         {
             Instance = this;
 
-            StyleSheet.Load("/ui/visual-programming/VisualProgrammingWindow.scss");
+            StyleSheet.Load("/ui/visual-programming/Window.scss");
 
             AddClass("fullscreen");
 
@@ -44,12 +44,18 @@ namespace TTTReborn.UI.VisualProgramming
 
             Header.NavigationHeader.Reload();
 
-            MainNode = AddNode<MainNode>();
-            MainNode.Display();
+            Content.SetPanelContent((panelContent) =>
+            {
+                Workspace = new(panelContent);
+                Sidebar = new(panelContent);
 
-            AddNode<RoleSelectionNode>().Display();
-            AddNode<RoleSelectionNode>().Display();
-            AddNode<PercentageSelectionNode>().Display();
+                MainNode = AddNode<MainNode>();
+                MainNode.Display();
+
+                AddNode<RoleSelectionNode>().Display();
+                AddNode<RoleSelectionNode>().Display();
+                AddNode<PercentageSelectionNode>().Display();
+            });
 
             _nodeStack = new NodeStack(); // TODO move to server later
         }
@@ -65,7 +71,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public void AddNode(Node node)
         {
-            Content.AddChild(node);
+            Workspace.AddChild(node);
             Nodes.Add(node);
         }
     }

@@ -5,6 +5,7 @@ using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
+    [Spawnable]
     [Node("percentage_selection")]
     public class PercentageSelectionNode : Node
     {

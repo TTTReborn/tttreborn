@@ -50,7 +50,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public static NodeConnectionWire Create()
         {
-            return new NodeConnectionWire(VisualProgrammingWindow.Instance.Content);
+            return new NodeConnectionWire(Window.Instance.Content);
         }
 
         public void UpdateMousePosition(Vector2 vector2)

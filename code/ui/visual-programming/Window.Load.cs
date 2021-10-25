@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -9,7 +8,7 @@ using TTTReborn.Globals;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    public partial class VisualProgrammingWindow
+    public partial class Window
     {
         public void Load()
         {
@@ -40,7 +39,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             fileName = fileName.Split('/')[^1].Split('.')[0];
 
-            if (VisualProgrammingWindow.Instance == null)
+            if (Window.Instance == null)
             {
                 fileSelection.Close();
 
@@ -104,9 +103,9 @@ namespace TTTReborn.Player
         {
             path = Utils.GetSettingsFolderPath(realm, path);
 
-            if (FileSystem.Data.FileExists(path + fileName + VisualProgrammingWindow.VISUALPROGRAMMING_FILE_EXTENSION))
+            if (FileSystem.Data.FileExists(path + fileName + Window.VISUALPROGRAMMING_FILE_EXTENSION))
             {
-                string jsonData = FileSystem.Data.ReadAllText(path + fileName + VisualProgrammingWindow.VISUALPROGRAMMING_FILE_EXTENSION);
+                string jsonData = FileSystem.Data.ReadAllText(path + fileName + Window.VISUALPROGRAMMING_FILE_EXTENSION);
 
                 if (jsonData == null || string.IsNullOrEmpty(jsonData))
                 {
