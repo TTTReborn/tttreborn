@@ -30,13 +30,15 @@ namespace TTTReborn.Gamemode
         {
             Instance = this;
 
-            TTTLanguage.LoadLanguages();
+            TTTLanguage.Load();
             SettingsManager.Load();
 
             if (IsServer)
             {
                 ShopManager.Load();
-
+            }
+            else
+            {
                 new Hud();
             }
         }
