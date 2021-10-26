@@ -62,7 +62,7 @@ namespace TTTReborn.Player
                 {
                     if (isPostRound || player.IsConfirmed)
                     {
-                        RPCs.ClientSetRole(To.Single(this), player, player.Role.Name);
+                        player.SendClientRole(To.Single(this));
                     }
                 }
 
@@ -100,7 +100,7 @@ namespace TTTReborn.Player
                 Event.Run(TTTEvent.Player.Spawned, this);
 
                 RPCs.ClientOnPlayerSpawned(this);
-                RPCs.ClientSetRole(To.Single(this), this, Role.Name);
+                SendClientRole();
             }
 
             base.Respawn();

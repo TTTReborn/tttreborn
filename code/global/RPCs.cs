@@ -66,7 +66,6 @@ namespace TTTReborn.Globals
             }
 
             player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
-            player.SendRoleButtonsToClient();
 
             Client client = player.Client;
 

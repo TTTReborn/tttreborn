@@ -57,7 +57,7 @@ namespace TTTReborn.Rounds
                         }
                         else
                         {
-                            RPCs.ClientSetRole(player, player.Role.Name);
+                            player.SendClientRole(To.Everyone);
                         }
                     }
                 }

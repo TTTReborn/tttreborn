@@ -66,18 +66,12 @@ namespace TTTReborn.Player
             }
 
             Role.OnSelect(this);
+        }
 
-            if (QuickShop.Instance != null)
-            {
-                if (Shop == null || !Shop.Accessable())
-                {
-                    QuickShop.Instance.Enabled = false;
-                }
-                else if (QuickShop.Instance.Enabled)
-                {
-                    QuickShop.Instance.Update();
-                }
-            }
+        public void SendClientRole(To? to = null)
+        {
+            RPCs.ClientSetRole(to ?? To.Single(this), this, Role.Name);
+            SendRoleButtonsToClient();
         }
 
         public void SyncMIA(TTTPlayer player = null)
