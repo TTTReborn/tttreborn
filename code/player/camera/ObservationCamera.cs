@@ -1,8 +1,6 @@
-using Sandbox;
-
 namespace TTTReborn.Player.Camera
 {
-    public class RagdollSpectateCamera : SpectateRagdollCamera, IObservationCamera
+    public abstract class ObservationCamera : Sandbox.Camera, IObservationCamera
     {
         public Vector3 GetViewPosition()
         {

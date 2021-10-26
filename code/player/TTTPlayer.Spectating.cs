@@ -32,6 +32,19 @@ namespace TTTReborn.Player
             get => (Camera is IObservationCamera);
         }
 
+        public Vector3 ViewPosition
+        {
+            get
+            {
+                if (Camera is IObservationCamera observationCamera)
+                {
+                    return observationCamera.GetViewPosition();
+                }
+
+                return Position;
+            }
+        }
+
         private int _targetIdx = 0;
 
         [Event(TTTEvent.Player.Died)]

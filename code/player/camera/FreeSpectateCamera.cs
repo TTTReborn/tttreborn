@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Player.Camera
 {
-    public partial class FreeSpectateCamera : Sandbox.Camera, IObservationCamera
+    public partial class FreeSpectateCamera : ObservationCamera
     {
         private Angles _lookAngles;
         private Vector3 _moveInput;

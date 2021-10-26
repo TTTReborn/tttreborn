@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Player.Camera
 {
-    public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCamera
+    public partial class FirstPersonSpectatorCamera : ObservationCamera
     {
         private const float SMOOTH_SPEED = 25f;
 
