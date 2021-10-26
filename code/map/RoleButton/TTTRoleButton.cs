@@ -1,6 +1,8 @@
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Map
 {
@@ -18,7 +20,7 @@ namespace TTTReborn.Map
                 _role = value?.ToLower();
             }
         }
-        private string _role = "traitor";
+        private string _role = Utils.GetLibraryName(typeof(TraitorRole));
 
         [Property("Description", "On screen tooltip shown on button")]
         [Net]
