@@ -19,6 +19,7 @@ namespace TTTReborn.Items
         }
     }
 
+    [Hammer.Skip]
     [Library("ttt_weapon")]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {

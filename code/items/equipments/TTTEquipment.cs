@@ -16,6 +16,7 @@ namespace TTTReborn.Items
         }
     }
 
+    [Hammer.Skip]
     [Library("ttt_equipment")]
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {

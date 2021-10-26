@@ -7,7 +7,7 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_healthstation_ent"), Hammer.Skip]
+    [Library("ttt_healthstation_ent")]
     public partial class HealthstationEntity : Prop, IUse, IEntityHint
     {
         [Net]

@@ -147,6 +147,7 @@ namespace TTTReborn.Player
         }
     }
 
+    [Hammer.Skip]
     [Library("ttt_flashlight")]
     public partial class Flashlight : SpotLightEntity
     {
