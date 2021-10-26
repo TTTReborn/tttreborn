@@ -68,10 +68,18 @@ namespace TTTReborn.Player
             Role.OnSelect(this);
         }
 
+        /// <summary>
+        /// Sends the role and all connected additional data like role buttons of the current TTTPlayer to the given target or - if no target was provided - the player itself
+        /// </summary>
+        /// <param name="to">optional - The target</param>
         public void SendClientRole(To? to = null)
         {
             RPCs.ClientSetRole(to ?? To.Single(this), this, Role.Name);
-            SendRoleButtonsToClient();
+
+            if (to == null || to.Value.ToString().Equals(Client.Name))
+            {
+                SendRoleButtonsToClient();
+            }
         }
 
         public void SyncMIA(TTTPlayer player = null)

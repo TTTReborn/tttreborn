@@ -37,6 +37,8 @@ namespace TTTReborn.Player
 
             // Network a small amount of data for each button within the player's scope.
             ClientStoreRoleButton(To.Single(this), roleButtonDataList.ToArray());
+
+            // TODO network role buttons of the current player to it's spectating players as well
         }
 
         [Event.Hotload]
