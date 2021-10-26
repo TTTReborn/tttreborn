@@ -10,16 +10,18 @@ namespace TTTReborn.Items
     {
         public void Activate()
         {
-            List<Type> wepTypes = Globals.Utils.GetTypes<TTTWeapon>(w => !w.IsDefined(typeof(NonSpawnableAttribute), true));
+            List<Type> wepTypes = Globals.Utils.GetTypesWithAttribute<TTTWeapon, SpawnableAttribute>();
 
-            if (wepTypes.Count > 0)
+            if (wepTypes.Count <= 0)
             {
-                Type typeToSpawn = wepTypes[new Random().Next(wepTypes.Count)];
-                TTTWeapon ent = Globals.Utils.GetObjectByType<TTTWeapon>(typeToSpawn);
-                ent.Position = Position;
-                ent.Rotation = Rotation;
-                ent.Spawn();
+                return;
             }
+
+            Type typeToSpawn = wepTypes[new Random().Next(wepTypes.Count)];
+            TTTWeapon ent = Globals.Utils.GetObjectByType<TTTWeapon>(typeToSpawn);
+            ent.Position = Position;
+            ent.Rotation = Rotation;
+            ent.Spawn();
         }
     }
 }

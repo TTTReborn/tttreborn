@@ -16,8 +16,8 @@ namespace TTTReborn.Items
         }
     }
 
-    [Hammer.Skip]
     [Library("ttt_equipment")]
+    [Hammer.Skip]
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
         public string LibraryName { get; }

@@ -1,14 +1,13 @@
-using Hammer;
-
 using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Weapon(SlotType = SlotType.Secondary, AmmoType = "pistol")]
-    [Buyable(Price = 100)]
     [Library("ttt_pistol")]
-    [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
-    partial class Pistol : TTTWeapon
+    [Weapon(SlotType = SlotType.Secondary, AmmoType = "pistol")]
+    [Spawnable]
+    [Buyable(Price = 100)]
+    [Hammer.EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
+    public partial class Pistol : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override bool UnlimitedAmmo => true;

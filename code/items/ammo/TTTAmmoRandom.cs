@@ -10,7 +10,7 @@ namespace TTTReborn.Items
     {
         public void Activate()
         {
-            List<Type> ammoTypes = Globals.Utils.GetTypes<TTTAmmo>(w => !w.IsDefined(typeof(NonSpawnableAttribute), true));
+            List<Type> ammoTypes = Globals.Utils.GetTypesWithAttribute<TTTAmmo, SpawnableAttribute>();
 
             if (ammoTypes.Count <= 0)
             {

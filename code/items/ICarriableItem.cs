@@ -1,7 +1,5 @@
 using System;
 
-using Sandbox;
-
 namespace TTTReborn.Items
 {
     public enum SlotType

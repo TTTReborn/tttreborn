@@ -1,15 +1,14 @@
 using System;
 
-using Hammer;
-
 using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Weapon(SlotType = SlotType.Primary, AmmoType = "smg")]
-    [Buyable(Price = 100)]
     [Library("ttt_smg")]
-    [EditorModel("weapons/rust_smg/rust_smg.vmdl")]
+    [Weapon(SlotType = SlotType.Primary, AmmoType = "smg")]
+    [Spawnable]
+    [Buyable(Price = 100)]
+    [Hammer.EditorModel("weapons/rust_smg/rust_smg.vmdl")]
     partial class SMG : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";

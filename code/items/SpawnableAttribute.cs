@@ -7,7 +7,8 @@ namespace TTTReborn.Items
     /// Prevents this Entity to be spawned from a TTTWeaponRandom
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class NonSpawnableAttribute : Attribute
+    public class SpawnableAttribute : Attribute
     {
+
     }
 }
