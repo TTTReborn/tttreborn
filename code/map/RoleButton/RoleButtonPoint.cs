@@ -70,6 +70,8 @@ namespace TTTReborn.UI
                 }
 
                 Enabled = false;
+
+                return;
             }
 
             if (Enabled)

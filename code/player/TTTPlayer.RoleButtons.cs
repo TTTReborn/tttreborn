@@ -3,6 +3,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Map;
 using TTTReborn.Roles;
@@ -12,28 +13,57 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
-        // Client
         public static Dictionary<int, TTTRoleButtonData> RoleButtons = new();
         public static Dictionary<int, RoleButtonPoint> RoleButtonPoints = new();
         public static RoleButtonPoint FocusedButton;
         public bool HasTrackedButtons => RoleButtons.Count > 0; // RoleButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
 
-        // TODO: Call whenever player's role is set serverside, not initially during assignment.
         public void SendRoleButtonsToClient()
         {
-            if (!IsServer)
+            if (IsClient)
             {
                 return;
             }
 
-            // Find all role button entities in the world and cast to TTTRoleButton.
-            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
+            Clear();
 
-            // Find specific role buttons to current player's role.
-            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role == Role.Name);
+            List<TTTRoleButtonData> roleButtonDataList = new();
+
+            foreach (Entity entity in All)
+            {
+                if (entity is TTTRoleButton roleButton && roleButton.Role.Equals(Role.Name))
+                {
+                    roleButtonDataList.Add(roleButton.PackageData());
+                }
+            }
 
             // Network a small amount of data for each button within the player's scope.
-            ClientStoreRoleButton(To.Single(this), applicableButtons.Select(x => x.PackageData()).ToArray());
+            ClientStoreRoleButton(To.Single(this), roleButtonDataList.ToArray());
+        }
+
+        [Event.Hotload]
+        public static void OnHotload()
+        {
+            if (Host.IsClient)
+            {
+                return;
+            }
+
+            foreach (TTTPlayer player in Utils.GetPlayers())
+            {
+                player.SendRoleButtonsToClient();
+            }
+        }
+
+        [Event(TTTEvent.UI.Reloaded)]
+        public static void OnUIReloaded()
+        {
+            RoleButtonPoints = new();
+
+            foreach (KeyValuePair<int, TTTRoleButtonData> keyValuePair in RoleButtons)
+            {
+                RoleButtonPoints.Add(keyValuePair.Key, new RoleButtonPoint(keyValuePair.Value));
+            }
         }
 
         // Receive data of player's buttons from client.
@@ -51,8 +81,18 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void RemoveRoleButtons()
         {
-            RoleButtons = new();
-            RoleButtonPoints = new();
+            Clear();
+        }
+
+        private void Clear()
+        {
+            foreach (RoleButtonPoint roleButtonPoint in RoleButtonPoints.Values)
+            {
+                roleButtonPoint.Delete(true);
+            }
+
+            RoleButtons.Clear();
+            RoleButtonPoints.Clear();
             FocusedButton = null;
         }
 
@@ -67,10 +107,10 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
-            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role == Utils.GetLibraryName(typeof(TraitorRole)));
+            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x is TTTRoleButton).Select(x => x as TTTRoleButton);
+            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role.Equals(Utils.GetLibraryName(typeof(TraitorRole))));
 
-            player.ClientStoreRoleButton(To.Single(ConsoleSystem.Caller), applicableButtons.Select(x => x.PackageData()).ToArray());
+            player.ClientStoreRoleButton(To.Single(player), applicableButtons.Select(x => x.PackageData()).ToArray());
         }
 
         // Handle client telling server to activate a specific button

@@ -5,7 +5,7 @@ RoleButtonPoint {
     margin-left: -40px;
     margin-top: -40px;
     border-radius: 25%;
-    border: 2px solid black;
+    border: 4px solid black;
     padding: 4px;
     text-align: center;
     align-items: center;
@@ -14,7 +14,7 @@ RoleButtonPoint {
     background-color: rgba(0, 0, 0, 0.65);
 
     &.focus {
-        border: 4px solid black;
+        border: 4px solid #fafafa;
         background-color: rgba(0, 0, 0, 0.85);
     }
 

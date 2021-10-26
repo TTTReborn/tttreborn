@@ -1,5 +1,3 @@
-using System.Linq;
-
 using Sandbox;
 
 using TTTReborn.Player;
@@ -161,5 +159,4 @@ namespace TTTReborn.Map
         public Vector3 Position;
         public bool IsDisabled;
     }
-
 }
