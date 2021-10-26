@@ -33,7 +33,7 @@ namespace TTTReborn.Player
             IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role == Role.Name);
 
             // Network a small amount of data for each button within the player's scope.
-            ClientStoreRoleButton(To.Single(Owner), applicableButtons.Select(x => x.PackageData()).ToArray());
+            ClientStoreRoleButton(To.Single(this), applicableButtons.Select(x => x.PackageData()).ToArray());
         }
 
         // Receive data of player's buttons from client.
@@ -77,19 +77,18 @@ namespace TTTReborn.Player
         [ServerCmd]
         public static void ActivateRoleButton(int networkIdent)
         {
-            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-            TTTRoleButton button = (TTTRoleButton) FindByIndex(networkIdent);
-
-            if (button == null)
+            if (ConsoleSystem.Caller.Pawn is not TTTPlayer player)
             {
-                Log.Warning($"Server received call for null role button with network id `{networkIdent}`.");
+                Log.Warning("Server received call from null player to activate role button.");
 
                 return;
             }
 
-            if (player == null)
+            Entity entity = FindByIndex(networkIdent);
+
+            if (entity == null || entity is not TTTRoleButton button)
             {
-                Log.Warning("Server received call from null player to activate role button.");
+                Log.Warning($"Server received call for null role button with network id `{networkIdent}`.");
 
                 return;
             }
