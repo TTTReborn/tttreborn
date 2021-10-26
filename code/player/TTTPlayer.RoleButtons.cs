@@ -25,8 +25,6 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Clear();
-
             List<TTTRoleButtonData> roleButtonDataList = new();
 
             foreach (Entity entity in All)
@@ -70,6 +68,8 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientStoreRoleButton(TTTRoleButtonData[] buttons)
         {
+            Clear();
+
             FocusedButton = null;
 
             // Index our data table by the role buttons network identity so we can find it later if need be.
