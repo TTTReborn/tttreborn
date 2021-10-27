@@ -25,11 +25,6 @@
     "PLAYER_STATUS_HEALTH_NEAR_DEATH": "Присмерти",
     "PLAYER_STATUS_HEALTH_DEAD": "Dead",
 
-    "CORPSE_INFO_TIME": "Умер {0} назад",
-    "CORPSE_INFO_DISTANCE": "Дистанция {0}",
-    "CORPSE_INFO_HEADSHOT": "Выстрелом в голову",
-    "CORPSE_INFO_WEAPON": "С помощью {0}",
-
     "SCOREBOARD_SERVER_INFO": "{0} игроков. Карта: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "Осталось игроков: {0}",
     "SCOREBOARD_PLAYER_STATUS_KARMA": "Карма",

@@ -9,7 +9,7 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_radar")]
+    [Library("perk_radar")]
     [Buyable(Price = 0)]
     [Hammer.Skip]
     public partial class Radar : TTTCountdownPerk

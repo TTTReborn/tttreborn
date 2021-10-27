@@ -35,7 +35,7 @@ namespace TTTReborn.UI.Menu
         {
             Sandbox.UI.Panel buttonsWrapperPanel = menuContent.Add.Panel("wrapper");
 
-            buttonsWrapperPanel.Add.Button("Save as", "fileselectionbutton", () =>
+            buttonsWrapperPanel.Add.TranslationButton("MENU_SETTINGS_BUTTONS_SAVE", "fileselectionbutton", () =>
             {
                 _currentFileSelection?.Close();
 
@@ -49,7 +49,7 @@ namespace TTTReborn.UI.Menu
                 _currentFileSelection = fileSelection;
             });
 
-            buttonsWrapperPanel.Add.Button("Load from", "fileselectionbutton", () =>
+            buttonsWrapperPanel.Add.TranslationButton("MENU_SETTINGS_BUTTONS_LOAD", "fileselectionbutton", () =>
             {
                 _currentFileSelection?.Close();
 
@@ -123,8 +123,8 @@ namespace TTTReborn.UI.Menu
             string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
             DialogBox dialogBox = new DialogBox();
-            dialogBox.SetTitle($"Overwrite '{fullFilePath}'");
-            dialogBox.AddText($"Do you want to overwrite '{fullFilePath}' with the current settings? (If you agree, the settings defined in this file will be lost!)");
+            dialogBox.SetTranslationTitle("MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE", fullFilePath);
+            dialogBox.AddTranslationText("MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT", fullFilePath);
             dialogBox.OnAgree = () =>
             {
                 onConfirm();

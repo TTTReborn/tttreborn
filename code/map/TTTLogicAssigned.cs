@@ -19,7 +19,7 @@ namespace TTTReborn.Map
         [Property("Check Type", "Entity will only return a result for one of the select values.")]
         public Check CheckType { get; set; } = Check.Role;
 
-        [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `Traitor`, but check the `Team` for `Traitors`.")]
+        [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`.")]
         public string CheckValue
         {
             get => _checkValue;

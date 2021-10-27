@@ -7,7 +7,8 @@ Dropdown {
 
     border-radius: 16px;
 
-    Label {
+    Label,
+    .label {
         &.textLabel {
             padding: 2px;
             padding-right: 12px;

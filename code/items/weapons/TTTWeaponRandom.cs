@@ -5,7 +5,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_weapon_random")]
+    [Library("entity_weapon_random")]
     public class TTTWeaponRandom : Entity
     {
         public void Activate()

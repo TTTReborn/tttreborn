@@ -9,7 +9,8 @@ Window {
             top: -5px;
             padding: 5px;
 
-            Label.title {
+            Label.title,
+            .label.title {
                 display: none;
             }
 
@@ -51,7 +52,8 @@ Window {
                     left: 0px;
                 }
 
-                Label.category {
+                Label.category,
+                .label.category {
                     font-size: 21px;
                     padding: 1px;
 

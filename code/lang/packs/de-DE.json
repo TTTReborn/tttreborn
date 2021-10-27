@@ -1,0 +1,125 @@
+{
+    "__LANGUAGE__": {
+        "NAME": "Deutsch",
+        "CODE": "de-DE"
+    },
+
+    "ROLE_NONE_NAME": "Unbekannt",
+    "ROLE_INNOCENT_NAME": "Unschuldiger",
+    "ROLE_TRAITOR_NAME": "Verräter",
+    "ROLE_DETECTIVE_NAME": "Detektiv",
+
+    "ROUND_STATE_WAITING": "Warten",
+    "ROUND_STATE_PREPARING": "Vorbereitung",
+    "ROUND_STATE_IN_PROGRESS": "Im Gange",
+    "ROUND_STATE_POST": "Runde vorbei",
+
+    "POST_ROUND_WIN_TEAM_INNOCENTS": "DIE UNSCHULDIGEN GEWINNEN!",
+    "POST_ROUND_WIN_TEAM_TRAITORS": "DIE VERRÄTER GEWINNEN!",
+    "POST_ROUND_TEXT": "Danke, dass Du TTT Reborn spielst, weitere Updates und Statistiken werden folgen!",
+
+    "PLAYER_STATUS_HEALTH_HEALTHY": "Gesund",
+    "PLAYER_STATUS_HEALTH_HURT": "Verletzt",
+    "PLAYER_STATUS_HEALTH_WOUNDED": "Verwundet",
+    "PLAYER_STATUS_HEALTH_BADLY_WOUNDED": "Schwer verwundet",
+    "PLAYER_STATUS_HEALTH_NEAR_DEATH": "Dem Tode nahe",
+    "PLAYER_STATUS_HEALTH_DEAD": "Tot",
+
+    "CORPSE_IDENTIFY": "Halte {0} um die Leiche zu identifizieren",
+    "CORPSE_INSPECT": "Halte {0} um die Leiche zu inspizieren",
+    "CORPSE_INSPECT_QUICKINFO_HEADSHOT": "Kopfschuss",
+    "CORPSE_INSPECT_QUICKINFO_SUICIDE": "Selbstmord",
+    "CORPSE_INSPECT_QUICKINFO_DISTANCE": "{0}m",
+    "CORPSE_INSPECT_QUICKINFO_TIME": "{0}",
+    "CORPSE_INSPECT_IDENTIFIER_TIMESINCEDEATH": "Er/Sie starb vor ungefähr {0}.",
+    "CORPSE_INSPECT_IDENTIFIER_HEADSHOT": "Die tötliche Wunde war ein Kopfschuss. Keine Zeit zum Schreien.",
+    "CORPSE_INSPECT_IDENTIFIER_SUICIDE": "Du kannst keinen spezifischen Grund für den Tod dieses Terry's finden.",
+    "CORPSE_INSPECT_IDENTIFIER_KILLED": "Er/Sie wurde von etwa {0}m entfernt getötet.",
+    "CORPSE_INSPECT_IDENTIFIER_WEAPON": "Es scheint, als wäre '{0}' genutzt worden, um Ihn/Sie zu töten.",
+    "CORPSE_INSPECT_IDENTIFIER_PERK": "Er/Sie trug '{0}'.",
+
+    "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Spieler",
+    "SCOREBOARD_SERVER_INFO": "{0} Spieler. Map: {1}",
+    "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} Spieler verbleibend",
+    "SCOREBOARD_PLAYER_STATUS_KARMA": "Karma",
+    "SCOREBOARD_PLAYER_STATUS_DEATHS": "Tode",
+    "SCOREBOARD_PLAYER_STATUS_SCORE": "Punkte",
+    "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
+    "SCOREBOARD_PLAYER_GROUP_ALIVE": "Lebendig",
+    "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Bestätigte Tode",
+    "SCOREBOARD_PLAYER_GROUP_MIA": "Vermisst",
+    "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Zuschauer",
+
+    "REALM_CLIENT": "Client",
+    "REALM_SERVER": "Server",
+
+    "MENU_DROPDOWN_SELECT": "Auswählen...",
+
+    "MENU_SETTINGS_CATEGORY_GENERAL": "Allgemein",
+    "MENU_SETTINGS_CATEGORY_LANGUAGE": "Sprache",
+
+    "MENU_SUBMENU_SETTINGS": "Einstellungen",
+    "MENU_SUBMENU_TESTING": "Testen",
+    "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
+
+    "MENU_SETTINGS_LOADING": "Lade...",
+    "MENU_SETTINGS_TAB_AFK": "AFK",
+    "MENU_SETTINGS_AFK_TIME": "AFK Zeit",
+    "MENU_SETTINGS_AFK_TIME_DESCRIPTION": "Die Zeit bevor der Spieler als AFK markiert wird.",
+    "MENU_SETTINGS_KICK": "Sollen AFK-Spieler gekickt werden?",
+    "MENU_SETTINGS_KICK_DESCRIPTION": "Ob ein Spieler gekickt oder (falls deaktiviert) als Zuschauer gesetzt werden soll.",
+    "MENU_SETTINGS_TAB_SPRINT": "Sprinten",
+    "MENU_SETTINGS_SPRINT": "Sprinten aktivieren?",
+    "MENU_SETTINGS_SPRINT_DESCRIPTION": "Ob Sprinten auf dem Server aktiviert sein soll.",
+    "MENU_SETTINGS_MINPLAYERS": "Minimum Spieler",
+    "MENU_SETTINGS_MINPLAYERS_DESCRIPTION": "Die minimale Anzahl an Spielern, die für den Start des Spiels benötigt werden.",
+    "MENU_SETTINGS_TAB_ROUND": "Runden",
+    "MENU_SETTINGS_PREROUND": "Vorbereitungszeit",
+    "MENU_SETTINGS_PREROUND_DESCRIPTION": "Die Zeit, wie lange die Vorbereitungsrunde gehen soll.",
+    "MENU_SETTINGS_ROUNDTIME": "Rundenzeit",
+    "MENU_SETTINGS_ROUNDTIME_DESCRIPTION": "Die Zeit, wie lange die Hauptrunde gehen soll.",
+    "MENU_SETTINGS_POSTROUND": "Nachrundenzeit",
+    "MENU_SETTINGS_POSTROUND_DESCRIPTION": "Die Zeit, bevor die nächste Runde startet.",
+    "MENU_SETTINGS_KILLTIMEREWARD": "Belohnungszeit für Tötung",
+    "MENU_SETTINGS_KILLTIMEREWARD_DESCRIPTION": "Die Extrazeit, die ein Verräter für das Töten von Unschuldigen bekommt.",
+    "MENU_SETTINGS_LANGUAGE_SELECTION": "Sprache:",
+    "MENU_SETTINGS_FORCESPECTATOR": "Zuschauen erzwingen?",
+
+    "MENU_SETTINGS_BUTTONS_SAVE": "Speichern als",
+    "MENU_SETTINGS_BUTTONS_LOAD": "Laden von",
+    "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE": "Überschreibe '{0}'",
+    "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT": "Möchtest du '{0}' mit den aktuellen Einstellungen überschreiben? (Falls du zustimmst, gehen die Einstellungen, die in der ausgewählten Datei gespeichert sind, verloren!)",
+
+    "MENU_SHOPEDITOR_TOGGLEROLE": "Umschalten, um den Shop für die aktuell ausgewählte Rolle zu de-/aktivieren.",
+    "MENU_SHOPEDITOR_SELECTROLE": "Wähle eine Rolle aus, um den damit verbundenen Shop zu modifizieren.",
+    "MENU_SHOPEDITOR_NOPERMISSION": "Du hast keine Berechtigungen, um auf den ShopEditor zuzugreifen.",
+    "MENU_SHOPEDITOR_ITEM_ACTIVATE": "Aktiviere das Item in dem {0} Shop.",
+    "MENU_SHOPEDITOR_ITEM_DEACTIVATE": "Deaktiviere das Item in dem {0} Shop.",
+    "MENU_SHOPEDITOR_ITEM_EDIT": "Bearbeite das Item.",
+    "MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC": "Bearbeite Item '{0}'",
+    "MENU_SHOPEDITOR_ITEM_PRICE": "Preis",
+    "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC": "Der Preis von: '{0}'.",
+
+    "WEAPON_PISTOL": "Pistole",
+    "WEAPON_SMG": "SMG",
+    "WEAPON_SHOTGUN": "Schrot",
+    "WEAPON_KNIFE": "Messer",
+    "WEAPON_NEWTONLAUNCHER": "Newtonlauncher",
+
+    "AMMO_BUCKSHOT": "Schrot",
+    "AMMO_PISTOL": "Pistole",
+    "AMMO_SMG": "SMG",
+
+    "EQUIPMENT_C4": "C4",
+    "EQUIPMENT_DECOY": "Köder",
+    "EQUIPMENT_HEALTHSTATION": "HealthStation",
+    "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
+
+    "HEALTH_STATION": "Halte {0} um die HealthStation zu nutzen",
+
+    "C4_ARM": "Halte {0}, um das C4 scharf zu machen",
+    "C4_DEFUSE": "Drücke {0}, um das C4 zu entschärfen",
+
+    "PERK_BODYARMOR": "Körperschild",
+    "PERK_RADAR": "Radar"
+}

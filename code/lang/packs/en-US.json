@@ -27,11 +27,18 @@
 
     "CORPSE_IDENTIFY": "Hold {0} to identify the corpse",
     "CORPSE_INSPECT": "Hold {0} to inspect the corpse",
-    "CORPSE_INFO_TIME": "Died {0} ago",
-    "CORPSE_INFO_DISTANCE": "From {0} away",
-    "CORPSE_INFO_HEADSHOT": "By a headshot",
-    "CORPSE_INFO_WEAPON": "With a {0}",
+    "CORPSE_INSPECT_QUICKINFO_HEADSHOT": "Headshot",
+    "CORPSE_INSPECT_QUICKINFO_SUICIDE": "Suicide",
+    "CORPSE_INSPECT_QUICKINFO_DISTANCE": "{0}m",
+    "CORPSE_INSPECT_QUICKINFO_TIME": "{0}",
+    "CORPSE_INSPECT_IDENTIFIER_TIMESINCEDEATH": "They died roughly {0} ago.",
+    "CORPSE_INSPECT_IDENTIFIER_HEADSHOT": "The fatal wound was a headshot. No time to scream.",
+    "CORPSE_INSPECT_IDENTIFIER_SUICIDE": "You cannot find a specific cause of this Terry's death.",
+    "CORPSE_INSPECT_IDENTIFIER_KILLED": "They were killed from approximately {0}m away.",
+    "CORPSE_INSPECT_IDENTIFIER_WEAPON": "It appears a {0} was used to kill them.",
+    "CORPSE_INSPECT_IDENTIFIER_PERK": "They were carrying a {0}.",
 
+    "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Players",
     "SCOREBOARD_SERVER_INFO": "{0} players. Map: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} players left",
     "SCOREBOARD_PLAYER_STATUS_KARMA": "Karma",
@@ -43,8 +50,76 @@
     "SCOREBOARD_PLAYER_GROUP_MIA": "Missing In Action",
     "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Spectators",
 
-    "HEALTH_STATION": "Hold {0} to use the health station",
+    "REALM_CLIENT": "Client",
+    "REALM_SERVER": "Server",
+
+    "MENU_DROPDOWN_SELECT": "Select...",
+
+    "MENU_SETTINGS_CATEGORY_GENERAL": "General",
+    "MENU_SETTINGS_CATEGORY_LANGUAGE": "Language",
+
+    "MENU_SUBMENU_SETTINGS": "Settings",
+    "MENU_SUBMENU_TESTING": "Testing",
+    "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
+
+    "MENU_SETTINGS_LOADING": "Loading...",
+    "MENU_SETTINGS_TAB_AFK": "AFK",
+    "MENU_SETTINGS_AFK_TIME": "AFK Time",
+    "MENU_SETTINGS_AFK_TIME_DESCRIPTION": "The length of time in minutes before a player is marked AFK.",
+    "MENU_SETTINGS_KICK": "Should Kick Players?",
+    "MENU_SETTINGS_KICK_DESCRIPTION": "Whether or not a player should be kicked or moved to Spectators.",
+    "MENU_SETTINGS_TAB_SPRINT": "Sprint",
+    "MENU_SETTINGS_SPRINT": "Sprint enabled?",
+    "MENU_SETTINGS_SPRINT_DESCRIPTION": "Whether or not sprint should be enabled on the server.",
+    "MENU_SETTINGS_MINPLAYERS": "Min Players",
+    "MENU_SETTINGS_MINPLAYERS_DESCRIPTION": "The minimum players required to start.",
+    "MENU_SETTINGS_TAB_ROUND": "Rounds",
+    "MENU_SETTINGS_PREROUND": "PreRound Time",
+    "MENU_SETTINGS_PREROUND_DESCRIPTION": "The amount of time allowed for preparation.",
+    "MENU_SETTINGS_ROUNDTIME": "Round Time",
+    "MENU_SETTINGS_ROUNDTIME_DESCRIPTION": "The amount of time allowed for the main round.",
+    "MENU_SETTINGS_POSTROUND": "PostRound Time",
+    "MENU_SETTINGS_POSTROUND_DESCRIPTION": "The amount of time before the next round starts.",
+    "MENU_SETTINGS_KILLTIMEREWARD": "Kill Time Reward",
+    "MENU_SETTINGS_KILLTIMEREWARD_DESCRIPTION": "The amount of extra time given to traitors for killing an innocent.",
+    "MENU_SETTINGS_LANGUAGE_SELECTION": "Language:",
+    "MENU_SETTINGS_FORCESPECTATOR": "Force Spectator?",
+
+    "MENU_SETTINGS_BUTTONS_SAVE": "Save as",
+    "MENU_SETTINGS_BUTTONS_LOAD": "Load from",
+    "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE": "Overwrite '{0}'",
+    "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT": "Do you want to overwrite '{0}' with the current settings? (If you agree, the settings defined in this file will be lost!)",
+
+    "MENU_SHOPEDITOR_TOGGLEROLE": "Toggle to de-/activate the shop for the currently selected role.",
+    "MENU_SHOPEDITOR_SELECTROLE": "Select a role to modify the connected shop.",
+    "MENU_SHOPEDITOR_NOPERMISSION": "You don't have permissions to access the ShopEditor.",
+    "MENU_SHOPEDITOR_ITEM_ACTIVATE": "Activate this item in the {0} shop.",
+    "MENU_SHOPEDITOR_ITEM_DEACTIVATE": "Deactivate this item in the {0} shop.",
+    "MENU_SHOPEDITOR_ITEM_EDIT": "Edit this item.",
+    "MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC": "Edit item '{0}'",
+    "MENU_SHOPEDITOR_ITEM_PRICE": "Price",
+    "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC": "The price of the '{0}'.",
+
+    "WEAPON_PISTOL": "Pistol",
+    "WEAPON_SMG": "SMG",
+    "WEAPON_SHOTGUN": "Shotgun",
+    "WEAPON_KNIFE": "Knife",
+    "WEAPON_NEWTONLAUNCHER": "Newtonlauncher",
+
+    "AMMO_BUCKSHOT": "Buckshot",
+    "AMMO_PISTOL": "Pistol",
+    "AMMO_SMG": "SMG",
+
+    "EQUIPMENT_C4": "C4",
+    "EQUIPMENT_DECOY": "Decoy",
+    "EQUIPMENT_HEALTHSTATION": "HealthStation",
+    "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
+
+    "HEALTH_STATION": "Hold {0} to use the HealthStation",
 
     "C4_ARM": "Hold {0} to arm the C4",
-    "C4_DEFUSE": "Press {0} to defuse the C4"
+    "C4_DEFUSE": "Press {0} to defuse the C4",
+
+    "PERK_BODYARMOR": "Bodyarmor",
+    "PERK_RADAR": "Radar"
 }

@@ -8,7 +8,7 @@ namespace TTTReborn.UI
 {
     public partial class Dropdown : Panel
     {
-        public readonly Label TextLabel;
+        public readonly TranslationLabel TextLabel;
 
         public Action<DropdownOption> OnSelectOption { get; set; }
 
@@ -38,7 +38,7 @@ namespace TTTReborn.UI
             {
                 _selectedOption = value;
 
-                TextLabel.Text = _selectedOption.TextLabel.Text;
+                TextLabel.SetTranslation(_selectedOption.TextLabel.TranslationKey, _selectedOption.TextLabel.TranslationParams);
             }
         }
         private DropdownOption _selectedOption;
@@ -47,7 +47,7 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/components/dropdown/Dropdown.scss");
 
-            TextLabel = Add.Label("Select...", "textLabel");
+            TextLabel = Add.TryTranslationLabel("MENU_DROPDOWN_SELECT", "textLabel");
             _openLabel = Add.Label("expand_more", "openLabel");
 
             OptionHolder = new DropdownOptionHolder(this);
@@ -55,9 +55,9 @@ namespace TTTReborn.UI
             IsOpen = false;
         }
 
-        public DropdownOption AddOption(string text, object data = null, Action<Panel> onSelect = null)
+        public DropdownOption AddOption(string text, object data = null, Action<Panel> onSelect = null, params object[] translationData)
         {
-            DropdownOption dropdownOption = new DropdownOption(this, OptionHolder, text, data)
+            DropdownOption dropdownOption = new DropdownOption(this, OptionHolder, text, data, translationData)
             {
                 OnSelect = onSelect
             };
@@ -71,7 +71,7 @@ namespace TTTReborn.UI
         {
             foreach (DropdownOption option in Options)
             {
-                if (option.TextLabel.Text.Equals(optionName))
+                if (option.TextLabel.TranslationKey.Equals(optionName) || option.TextLabel.Text.Equals(optionName))
                 {
                     SelectedOption = option;
 

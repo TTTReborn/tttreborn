@@ -46,7 +46,7 @@ namespace TTTReborn.UI.Menu
 
             Content.OnPanelContentUpdated = (panelContentData) =>
             {
-                SetTitle(panelContentData.Title ?? "");
+                SetTranslationTitle(panelContentData.Title ?? "");
 
                 foreach (Sandbox.UI.Panel panel in Header.NavigationHeader.Children)
                 {
@@ -140,7 +140,7 @@ namespace TTTReborn.UI.Menu
                 Tabs tabs = panelContent.Add.Tabs();
                 tabs.AddTab("Test1", (contentPanel) => contentPanel.Add.Label("Test1"));
                 tabs.AddTab("Test2", (contentPanel) => contentPanel.Add.Label("Test2"));
-            }, "Testing", "testing");
+            }, "MENU_SUBMENU_TESTING", "testing");
         }
 
         private void OpenRoleSelectionEditor(PanelContent menuContent)

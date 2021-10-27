@@ -39,5 +39,10 @@ namespace TTTReborn.UI
         {
             return Content.Add.Label(text, "text");
         }
+
+        public Label AddTranslationText(string translationKey, params object[] translationData)
+        {
+            return Content.Add.TranslationLabel(translationKey, "text", translationData);
+        }
     }
 }

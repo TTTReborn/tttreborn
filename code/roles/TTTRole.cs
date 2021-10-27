@@ -93,7 +93,7 @@ namespace TTTReborn.Roles
 
         public string GetRoleTranslationKey(string key)
         {
-            return $"{key}_{Name.ToUpper()}";
+            return $"{Name.ToUpper()}_{key}";
         }
     }
 }

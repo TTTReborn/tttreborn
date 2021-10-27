@@ -5,6 +5,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -28,9 +29,9 @@ namespace TTTReborn.UI
         private readonly Panel _inspectContainer;
         private readonly Image _avatarImage;
         private readonly Label _playerLabel;
-        private readonly Label _roleLabel;
+        private readonly TranslationLabel _roleLabel;
         private readonly Panel _inspectIconsPanel;
-        private readonly Label _inspectDetailsLabel;
+        private readonly TranslationLabel _inspectDetailsLabel;
 
         public new bool Enabled
         {
@@ -67,7 +68,7 @@ namespace TTTReborn.UI
             _playerLabel = _inspectContainer.Add.Label(String.Empty);
             _playerLabel.AddClass("player-label");
 
-            _roleLabel = _inspectContainer.Add.Label(String.Empty);
+            _roleLabel = _inspectContainer.Add.TranslationLabel(String.Empty);
             _roleLabel.AddClass("role-label");
 
             _inspectIconsPanel = new Panel(_inspectContainer);
@@ -104,18 +105,20 @@ namespace TTTReborn.UI
                 entry.AddEventListener("onmouseover", () =>
                 {
                     _selectedInspectEntry = entry;
+
                     UpdateCurrentInspectDescription();
                 });
 
                 entry.AddEventListener("onmouseout", () =>
                 {
                     _selectedInspectEntry = null;
+
                     UpdateCurrentInspectDescription();
                 });
             }
             #endregion
 
-            _inspectDetailsLabel = _inspectContainer.Add.Label();
+            _inspectDetailsLabel = _inspectContainer.Add.TranslationLabel();
             _inspectDetailsLabel.AddClass("inspect-details-label");
 
             Enabled = false;
@@ -134,7 +137,7 @@ namespace TTTReborn.UI
 
             _playerLabel.Text = _playerCorpse.Player?.Client.Name;
 
-            _roleLabel.Text = _playerCorpse.Player?.Role.Name;
+            _roleLabel.SetTranslation(_playerCorpse.Player?.Role.GetRoleTranslationKey("NAME"));
             _roleLabel.Style.FontColor = _playerCorpse.Player?.Role.Color;
             _roleLabel.Style.Dirty();
 
@@ -155,20 +158,20 @@ namespace TTTReborn.UI
             _confirmationData = confirmationData;
 
             _headshotEntry.Enabled = confirmationData.Headshot;
-            _headshotEntry.SetData("/ui/inspectmenu/headshot.png", "The fatal wound was a headshot. No time to scream.");
-            _headshotEntry.SetQuickInfo("Headshot");
+            _headshotEntry.SetData("/ui/inspectmenu/headshot.png", "CORPSE_INSPECT_IDENTIFIER_HEADSHOT");
+            _headshotEntry.SetQuickInfo("CORPSE_INSPECT_QUICKINFO_HEADSHOT");
 
             _suicideEntry.Enabled = confirmationData.Suicide;
-            _suicideEntry.SetData(String.Empty, "You cannot find a specific cause of this Terry's death.");
-            _suicideEntry.SetQuickInfo("Suicide");
+            _suicideEntry.SetData(String.Empty, "CORPSE_INSPECT_IDENTIFIER_SUICIDE");
+            _suicideEntry.SetQuickInfo("CORPSE_INSPECT_QUICKINFO_SUICIDE");
 
             _distanceEntry.Enabled = !confirmationData.Suicide;
-            _distanceEntry.SetData("/ui/inspectmenu/distance.png", $"They were killed from approximately {confirmationData.Distance:n0}m away.");
-            _distanceEntry.SetQuickInfo($"{confirmationData.Distance:n0}m");
+            _distanceEntry.SetData("/ui/inspectmenu/distance.png", "CORPSE_INSPECT_IDENTIFIER_KILLED", $"{confirmationData.Distance:n0}");
+            _distanceEntry.SetQuickInfo("CORPSE_INSPECT_QUICKINFO_DISTANCE", $"{confirmationData.Distance:n0}");
 
             _weaponEntry.Enabled = !string.IsNullOrEmpty(killerWeapon);
-            _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", $"It appears a {killerWeapon} was used to kill them.");
-            _weaponEntry.SetQuickInfo($"{killerWeapon}");
+            _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", "CORPSE_INSPECT_IDENTIFIER_WEAPON", new TranslationData(killerWeapon.ToUpper()));
+            _weaponEntry.SetQuickInfo(killerWeapon.ToUpper());
 
             // Clear and delete all perks
             foreach (InspectEntry perkEntry in _perkEntries)
@@ -184,7 +187,7 @@ namespace TTTReborn.UI
                 foreach (string perkName in perks)
                 {
                     InspectEntry perkEntry = new(this);
-                    perkEntry.SetData($"/ui/weapons/{perkName}.png", $"They were carrying a {perkName}.");
+                    perkEntry.SetData($"/ui/weapons/{perkName}.png", "CORPSE_INSPECT_IDENTIFIER_PERK", perkName);
 
                     _perkEntries.Add(perkEntry);
                 }
@@ -200,7 +203,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _inspectDetailsLabel.Text = _selectedInspectEntry.Description;
+            _inspectDetailsLabel.SetTranslation(_selectedInspectEntry.DescriptionTranslationKey, _selectedInspectEntry.Data);
         }
 
         public override void Tick()
@@ -211,8 +214,8 @@ namespace TTTReborn.UI
             }
 
             string timeSinceDeath = Globals.Utils.TimerString(Time.Now - _confirmationData.Time);
-            _timeSinceDeathEntry.Description = $"They died roughly {timeSinceDeath} ago.";
-            _timeSinceDeathEntry.SetQuickInfo($"{timeSinceDeath}");
+            _timeSinceDeathEntry.SetTranslationData("CORPSE_INSPECT_IDENTIFIER_TIMESINCEDEATH", timeSinceDeath);
+            _timeSinceDeathEntry.SetQuickInfo("CORPSE_INSPECT_QUICKINFO_TIME", timeSinceDeath);
 
             if (_selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry)
             {

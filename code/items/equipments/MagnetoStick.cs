@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_magnetostick")]
+    [Library("equipment_magnetostick")]
     [Equipment(SlotType = SlotType.UtilityEquipment)]
     [Hammer.Skip]
     partial class MagnetoStick : TTTEquipment

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -8,9 +9,9 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
-    public class TranslationLabel : Label
+    public class TranslationButton : Button
     {
-        private readonly static List<TranslationLabel> _translationLabels = new();
+        private readonly static List<TranslationButton> _translationButtons = new();
 
         public string TranslationKey;
         public object[] TranslationParams;
@@ -29,20 +30,19 @@ namespace TTTReborn.UI
             }
         }
 
-        public TranslationLabel(string translationKey = null, string classname = null, bool tryTranslation = false, params object[] args) : base()
+        public TranslationButton(string translationKey = null, string icon = null, Action onClick = null, string classname = null, bool tryTranslation = false, params object[] args) : base(translationKey, icon, onClick)
         {
             IsTryTranslation = tryTranslation;
 
             SetTranslation(translationKey, args);
-            AddClass("label");
             AddClass(classname);
 
-            _translationLabels.Add(this);
+            _translationButtons.Add(this);
         }
 
         public override void OnDeleted()
         {
-            _translationLabels.Remove(this);
+            _translationButtons.Remove(this);
 
             base.OnDeleted();
         }
@@ -72,16 +72,16 @@ namespace TTTReborn.UI
 
         public static void UpdateLanguage(Language language)
         {
-            foreach (TranslationLabel translationLabel in _translationLabels)
+            foreach (TranslationButton translationButton in _translationButtons)
             {
-                translationLabel.UpdateTranslation(language);
+                translationButton.UpdateTranslation(language);
             }
         }
 
         [Event(TTTEvent.Settings.LanguageChange)]
         public static void OnLanguageChange(Language oldLanguage, Language newLanguage)
         {
-            UI.TranslationLabel.UpdateLanguage(newLanguage);
+            UI.TranslationButton.UpdateLanguage(newLanguage);
         }
     }
 }
@@ -90,24 +90,24 @@ namespace Sandbox.UI.Construct
 {
     using TTTReborn.UI;
 
-    public static class TranslationLabelConstructor
+    public static class TranslationButtonConstructor
     {
-        public static TranslationLabel TranslationLabel(this PanelCreator self, string translationKey = null, string classname = null, params object[] args)
+        public static TranslationButton TranslationButton(this PanelCreator self, string translationKey = null, string classname = null, Action onClick = null, params object[] args)
         {
-            TranslationLabel translationLabel = new(translationKey, classname, false, args);
+            TranslationButton translationButton = new(translationKey, null, onClick, classname, false, args);
 
-            self.panel.AddChild(translationLabel);
+            self.panel.AddChild(translationButton);
 
-            return translationLabel;
+            return translationButton;
         }
 
-        public static TranslationLabel TryTranslationLabel(this PanelCreator self, string translationKey = null, string classname = null, params object[] args)
+        public static TranslationButton TryTranslationButton(this PanelCreator self, string translationKey = null, string classname = null, Action onClick = null, params object[] args)
         {
-            TranslationLabel translationLabel = new(translationKey, classname, true, args);
+            TranslationButton translationButton = new(translationKey, null, onClick, classname, true, args);
 
-            self.panel.AddChild(translationLabel);
+            self.panel.AddChild(translationButton);
 
-            return translationLabel;
+            return translationButton;
         }
     }
 }

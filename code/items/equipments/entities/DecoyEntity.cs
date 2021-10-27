@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_decoy_ent")]
+    [Library("entity_decoy")]
     [Hammer.Skip]
     public partial class DecoyEntity : Prop
     {
