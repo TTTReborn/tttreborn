@@ -50,7 +50,7 @@ namespace TTTReborn.Globalization
             }
         }
 
-        public string GetTranslation(string key, bool error = true)
+        public string GetTranslation(string key, bool returnError = true)
         {
             object translation = GetRawTranslation(key);
 
@@ -61,10 +61,10 @@ namespace TTTReborn.Globalization
 
             if (TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
             {
-                return fallbackLanguage.GetTranslation(key, error);
+                return fallbackLanguage.GetTranslation(key, returnError);
             }
 
-            if (!error)
+            if (!returnError)
             {
                 return key;
             }
