@@ -66,17 +66,19 @@ namespace TTTReborn.Player
             }
 
             Role.OnSelect(this);
+        }
 
-            if (QuickShop.Instance != null)
+        /// <summary>
+        /// Sends the role and all connected additional data like role buttons of the current TTTPlayer to the given target or - if no target was provided - the player itself
+        /// </summary>
+        /// <param name="to">optional - The target</param>
+        public void SendClientRole(To? to = null)
+        {
+            RPCs.ClientSetRole(to ?? To.Single(this), this, Role.Name);
+
+            if (to == null || to.Value.ToString().Equals(Client.Name))
             {
-                if (Shop == null || !Shop.Accessable())
-                {
-                    QuickShop.Instance.Enabled = false;
-                }
-                else if (QuickShop.Instance.Enabled)
-                {
-                    QuickShop.Instance.Update();
-                }
+                SendRoleButtonsToClient();
             }
         }
 

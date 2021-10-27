@@ -1,7 +1,5 @@
 using System;
 
-using Hammer;
-
 using Sandbox;
 using Sandbox.ScreenShake;
 
@@ -9,11 +7,12 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Weapon(SlotType = SlotType.Primary, AmmoType = "buckshot")]
-    [Buyable(Price = 100)]
     [Library("ttt_shotgun")]
-    [EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
-    partial class Shotgun : TTTWeapon
+    [Weapon(SlotType = SlotType.Primary, AmmoType = "buckshot")]
+    [Spawnable]
+    [Buyable(Price = 100)]
+    [Hammer.EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
+    public partial class Shotgun : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
         public override float PrimaryRate => 1;

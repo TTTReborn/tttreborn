@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -57,10 +59,7 @@ namespace TTTReborn.UI
             // If our entity is locked, delayed or removed, let's not show it.
             if (_entity.IsDisabled)
             {
-                // Since we're just technically just making it invisible. Let's go ahead and move it off screen so it doesn't interfere with UI input.
-                Style.Left = -10;
-                Style.Top = -10;
-                Style.Opacity = 0;
+                Style.Display = DisplayMode.None;
                 Style.Dirty();
 
                 // Make sure our client is no longer tracking this element.
@@ -70,14 +69,16 @@ namespace TTTReborn.UI
                 }
 
                 Enabled = false;
+
+                return;
             }
 
             if (Enabled)
             {
+                Style.Display = DisplayMode.Flex;
                 Style.Left = Length.Fraction(screenPos.x);
                 Style.Top = Length.Fraction(screenPos.y);
-
-                Style.Opacity = MathX.Clamp(1.0f - (player.Position.Distance(Position) - MIN_VIEW_DISTANCE) / (_maxViewDistance - MIN_VIEW_DISTANCE), 0.0f, 1.0f);
+                Style.Opacity = Math.Clamp(1f - (player.Position.Distance(Position) - MIN_VIEW_DISTANCE) / (_maxViewDistance - MIN_VIEW_DISTANCE), 0f, 1f);
 
                 // Update our 'focus' CSS look if our player currently is looking near this point.
                 SetClass("focus", TTTPlayer.FocusedButton == this);

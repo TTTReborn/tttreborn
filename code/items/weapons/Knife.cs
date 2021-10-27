@@ -1,13 +1,11 @@
-using Hammer;
-
 using Sandbox;
 
 namespace TTTReborn.Items
 {
+    [Library("ttt_knife")]
     [Weapon(SlotType = SlotType.Melee)]
     [Buyable(Price = 100)]
-    [Library("ttt_knife")]
-    [EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
+    [Hammer.EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
     partial class Knife : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";

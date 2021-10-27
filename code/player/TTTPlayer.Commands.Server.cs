@@ -147,7 +147,7 @@ namespace TTTReborn.Player
             }
 
             player.SetRole(role);
-            RPCs.ClientSetRole(To.Single(player), player, role.Name);
+            player.SendClientRole();
         }
 
         [ServerCmd(Name = "ttt_forcespec")]

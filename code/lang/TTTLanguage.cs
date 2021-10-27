@@ -40,7 +40,7 @@ namespace TTTReborn.Globalization
         }
         private static Language _activeLanguage;
 
-        public static void LoadLanguages()
+        public static void Load()
         {
             foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
             {

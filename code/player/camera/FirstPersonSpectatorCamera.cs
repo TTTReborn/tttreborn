@@ -37,13 +37,13 @@ namespace TTTReborn.Player.Camera
             {
                 player.UpdateObservatedPlayer();
 
-                Pos = player.CurrentPlayer.EyePos;
-                Rot = player.CurrentPlayer.EyeRot;
+                Position = player.CurrentPlayer.EyePos;
+                Rotation = player.CurrentPlayer.EyeRot;
             }
             else
             {
-                Pos = Vector3.Lerp(Pos, player.CurrentPlayer.EyePos, SMOOTH_SPEED * Time.Delta);
-                Rot = Rotation.Slerp(Rot, player.CurrentPlayer.EyeRot, SMOOTH_SPEED * Time.Delta);
+                Position = Vector3.Lerp(Position, player.CurrentPlayer.EyePos, SMOOTH_SPEED * Time.Delta);
+                Rotation = Rotation.Slerp(Rotation, player.CurrentPlayer.EyeRot, SMOOTH_SPEED * Time.Delta);
             }
         }
 

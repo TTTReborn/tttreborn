@@ -9,8 +9,9 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    [Buyable(Price = 0)]
     [Library("ttt_radar")]
+    [Buyable(Price = 0)]
+    [Hammer.Skip]
     public partial class Radar : TTTCountdownPerk
     {
         public struct RadarPointData
