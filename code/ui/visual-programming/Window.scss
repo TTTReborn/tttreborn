@@ -1,0 +1,86 @@
+Window {
+    > .panel {
+        &.header {
+            position: absolute;
+            border-radius: 0px;
+            z-index: 1;
+            width: 210px;
+            right: 0px;
+            top: -5px;
+            padding: 5px;
+
+            Label.title {
+                display: none;
+            }
+
+            .play, .save, .load {
+                font-family: MaterialIcons;
+                font-size: 28px;
+                margin: 10px;
+                padding: 2px;
+
+                width: 28px;
+                height: 28px;
+            }
+
+            .closebutton {
+                margin: 10px 20px;
+            }
+        }
+
+        &.content {
+            flex-direction: row;
+            background-color: #282828;
+
+            > WindowSidebar {
+                position: absolute;
+                left: -190px;
+
+                transition: left 0.1s linear;
+
+                flex-direction: column;
+
+                width: 200px;
+                height: 100%;
+                overflow: scroll;
+
+                background-color: #383838;
+                padding: 10px;
+
+                &.open {
+                    left: 0px;
+                }
+
+                Label.category {
+                    font-size: 21px;
+                    padding: 1px;
+
+                    border-bottom: 2px #fafafa solid;
+
+                    margin-bottom: 10px;
+                }
+
+                SidebarEntry {
+                    background-color: rgb(92, 92, 92);
+
+                    border-radius: 16px;
+                    padding: 10px;
+                    margin: 2px;
+                }
+            }
+        }
+
+        &.footer {
+            display: none;
+        }
+    }
+
+    .nodeconnectionwire {
+        z-index: -1;
+
+        > .nodeconnectionwirepart {
+            position: absolute;
+            background-color: rgb(61, 118, 243);
+        }
+    }
+}

@@ -9,7 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         protected override void OnMouseOver(Sandbox.UI.MousePanelEvent e)
         {
-            NodeConnectionWire currentConnectionWire = VisualProgrammingWindow.Instance.ActiveNodeConnectionWire;
+            NodeConnectionWire currentConnectionWire = Window.Instance.ActiveNodeConnectionWire;
 
             if (ConnectionWire != null || currentConnectionWire == null || currentConnectionWire.StartPoint.Node == Node)
             {
@@ -19,7 +19,7 @@ namespace TTTReborn.UI.VisualProgramming
             ConnectionWire = currentConnectionWire;
             ConnectionWire.EndPoint = this;
 
-            VisualProgrammingWindow.Instance.ActiveNodeConnectionWire = null;
+            Window.Instance.ActiveNodeConnectionWire = null;
             ConnectionWire.StartPoint.IsDragging = false;
 
             base.OnMouseOver(e);

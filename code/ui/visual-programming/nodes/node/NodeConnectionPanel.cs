@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace TTTReborn.UI.VisualProgramming
 {
-    public class NodeConnectionPanel : Panel
+    public class NodeConnectionPanel<T> : Panel where T : NodeConnectionPoint, new()
     {
         public Node Node
         {
@@ -11,10 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 _node = value;
 
-                foreach (NodeConnectionPoint nodeConnectionPoint in ConnectionPoints)
-                {
-                    nodeConnectionPoint.Node = _node;
-                }
+                ConnectionPoint.Node = _node;
             }
         }
         private Node _node;
@@ -31,32 +26,15 @@ namespace TTTReborn.UI.VisualProgramming
         }
         private bool _enabled = true;
 
-        public List<NodeConnectionPoint> ConnectionPoints = new();
+        public T ConnectionPoint;
 
         public NodeConnectionPanel(Sandbox.UI.Panel parent = null) : base(parent)
         {
+            ConnectionPoint = new();
 
-        }
+            AddChild(ConnectionPoint);
 
-        public T AddConnectionPoint<T>() where T : NodeConnectionPoint, new()
-        {
-            T connectionPoint = new();
-            connectionPoint.Node = Node;
-
-            AddChild(connectionPoint);
-            ConnectionPoints.Add(connectionPoint);
-
-            return connectionPoint;
-        }
-
-        public NodeConnectionPoint GetConnectionPoint(int index = 0)
-        {
-            if (index >= ConnectionPoints.Count)
-            {
-                return null;
-            }
-
-            return ConnectionPoints[index];
+            AddClass("nodeconnectionpanel");
         }
     }
 }
