@@ -9,16 +9,16 @@ namespace TTTReborn.UI
     {
         public readonly Dropdown Dropdown;
 
-        public readonly Label TextLabel;
+        public readonly TranslationLabel TextLabel;
 
         public object Data { get; set; }
 
         public Action<Panel> OnSelect { get; set; }
 
-        public DropdownOption(Dropdown dropdown, Sandbox.UI.Panel parent = null, string text = "", object data = null) : base(parent)
+        public DropdownOption(Dropdown dropdown, Sandbox.UI.Panel parent = null, string text = "", object data = null, params object[] translationData) : base(parent)
         {
             Dropdown = dropdown;
-            TextLabel = Add.Label(text, "optiontext");
+            TextLabel = Add.TryTranslationLabel(text, "optiontext", translationData);
             Data = data;
         }
 

@@ -53,6 +53,8 @@
     "SCOREBOARD_PLAYER_GROUP_MIA": "Missing In Action",
     "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Spectators",
 
+    "MENU_DROPDOWN_SELECT": "Select...",
+
     "WEAPON_PISTOL": "Pistol",
     "WEAPON_SMG": "SMG",
     "WEAPON_SHOTGUN": "Shotgun",

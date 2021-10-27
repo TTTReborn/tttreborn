@@ -118,7 +118,7 @@ namespace TTTReborn.UI.Menu
                             continue;
                         }
 
-                        dropdown.AddOption(role.Name, role, (panel) =>
+                        dropdown.AddOption(role.GetRoleTranslationKey("NAME"), role, (panel) =>
                         {
                             CreateShopContent(role);
                         });

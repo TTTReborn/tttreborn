@@ -50,7 +50,7 @@ namespace TTTReborn.Globalization
             }
         }
 
-        public string GetTranslation(string key)
+        public string GetTranslation(string key, bool error = true)
         {
             object translation = GetRawTranslation(key);
 
@@ -61,7 +61,12 @@ namespace TTTReborn.Globalization
 
             if (TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
             {
-                return fallbackLanguage.GetTranslation(key);
+                return fallbackLanguage.GetTranslation(key, error);
+            }
+
+            if (!error)
+            {
+                return key;
             }
 
             return $"[ERROR: Translation of '{key}' not found]";
@@ -74,7 +79,12 @@ namespace TTTReborn.Globalization
 
         public string GetFormattedTranslation(string key, params object[] args)
         {
-            string translation = GetTranslation(key);
+            return TryFormattedTranslation(key, true, args);
+        }
+
+        public string TryFormattedTranslation(string key, bool error = true, params object[] args)
+        {
+            string translation = GetTranslation(key, error);
 
             if (args == null)
             {
@@ -87,7 +97,7 @@ namespace TTTReborn.Globalization
             {
                 if (args[i] is TranslationData translationKey)
                 {
-                    data[i] = GetFormattedTranslation(translationKey.Key, translationKey.Data);
+                    data[i] = TryFormattedTranslation(translationKey.Key, error, translationKey.Data);
                 }
                 else
                 {
