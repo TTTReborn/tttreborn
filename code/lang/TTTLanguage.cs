@@ -79,12 +79,11 @@ namespace TTTReborn.Globalization
                 return;
             }
 
+            Language oldLanguage = ActiveLanguage;
+
             ActiveLanguage = language;
 
-            if (Host.IsClient)
-            {
-                UI.TranslationLabel.UpdateLanguage(language);
-            }
+            Event.Run(TTTEvent.Settings.LanguageChange, oldLanguage, language);
         }
 
         [Event(TTTEvent.Settings.Change)]

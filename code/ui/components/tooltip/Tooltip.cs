@@ -69,7 +69,7 @@ namespace Sandbox.UI.Construct
 
     public static class TooltipConstructor
     {
-        public static void AddTooltip(this Sandbox.UI.Panel self, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
+        public static void AddTooltip(this Sandbox.UI.Panel self, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null, params object[] translationData)
         {
             self.AddEventListener("onmouseover", (panelEvent) =>
             {
@@ -78,7 +78,7 @@ namespace Sandbox.UI.Construct
                     return;
                 }
 
-                CreateTooltip(self, text, className, onCreate, onDelete, onTick);
+                CreateTooltip(self, text, className, onCreate, onDelete, onTick, translationData);
             });
 
             self.AddEventListener("onmouseout", (panelEvent) =>
@@ -93,16 +93,16 @@ namespace Sandbox.UI.Construct
 
             self.AddEventListener("onclick", (panelEvent) =>
             {
-                CreateTooltip(self, text, className, onCreate, onDelete, onTick);
+                CreateTooltip(self, text, className, onCreate, onDelete, onTick, translationData);
             });
         }
 
-        private static Tooltip CreateTooltip(Sandbox.UI.Panel panel, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
+        private static Tooltip CreateTooltip(Sandbox.UI.Panel panel, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null, params object[] translationData)
         {
             DeleteTooltip();
 
             Tooltip tooltip = new(panel, onCreate, onDelete, onTick);
-            tooltip.SetTranslation(text);
+            tooltip.SetTranslation(text, translationData);
 
             if (!string.IsNullOrEmpty(className))
             {

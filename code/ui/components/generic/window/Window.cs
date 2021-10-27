@@ -33,5 +33,10 @@ namespace TTTReborn.UI
         {
             Header.NavigationHeader.SetTitle(title);
         }
+
+        public void SetTranslationTitle(string translationKey, params object[] translationData)
+        {
+            Header.NavigationHeader.SetTranslationTitle(translationKey, translationData);
+        }
     }
 }

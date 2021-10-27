@@ -15,11 +15,12 @@
 
             background-color: #000c;
 
-            Button.closebutton {
+            .button.closebutton {
                 display: none;
             }
 
-            Label.title {
+            Label.title,
+            .label.title {
                 height: 20px;
                 top: -5px;
 

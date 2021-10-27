@@ -26,7 +26,8 @@ RoleButtonPoint {
         opacity: 0;
     }
 
-    Label {
+    Label,
+    .label {
         color: #fafafa;
     }
 }

@@ -184,7 +184,8 @@ $info: #ffae00;
         flex-wrap: wrap;
         flex-direction: column;
 
-        Label {
+        Label,
+        .label {
             flex-grow: 1;
             margin-top: 7px;
         }

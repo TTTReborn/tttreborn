@@ -24,7 +24,7 @@ namespace TTTReborn.UI
             Value = value;
             OnSelectTab = onSelectTab;
 
-            TitleLabel = Add.Label(title, "title");
+            TitleLabel = Add.TryTranslationLabel(title, "title");
         }
 
         protected override void OnClick(MousePanelEvent e)
