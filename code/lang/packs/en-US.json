@@ -37,10 +37,6 @@
     "CORPSE_INSPECT_IDENTIFIER_KILLED": "They were killed from approximately {0}m away.",
     "CORPSE_INSPECT_IDENTIFIER_WEAPON": "It appears a {0} was used to kill them.",
     "CORPSE_INSPECT_IDENTIFIER_PERK": "They were carrying a {0}.",
-    "CORPSE_INFO_TIME": "Died {0} ago",
-    "CORPSE_INFO_DISTANCE": "From {0} away",
-    "CORPSE_INFO_HEADSHOT": "By a headshot",
-    "CORPSE_INFO_WEAPON": "With a {0}",
 
     "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Players",
     "SCOREBOARD_SERVER_INFO": "{0} players. Map: {1}",
@@ -113,10 +109,10 @@
 
     "EQUIPMENT_C4": "C4",
     "EQUIPMENT_DECOY": "Decoy",
-    "EQUIPMENT_HEALTHSTATION": "Healthstation",
-    "EQUIPMENT_MAGNETOSTICK": "Magnetostick",
+    "EQUIPMENT_HEALTHSTATION": "HealthStation",
+    "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
 
-    "HEALTH_STATION": "Hold {0} to use the health station",
+    "HEALTH_STATION": "Hold {0} to use the HealthStation",
 
     "C4_ARM": "Hold {0} to arm the C4",
     "C4_DEFUSE": "Press {0} to defuse the C4",
