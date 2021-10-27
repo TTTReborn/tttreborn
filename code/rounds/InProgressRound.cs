@@ -111,7 +111,7 @@ namespace TTTReborn.Rounds
 
         private static void SetLoadout(TTTPlayer player)
         {
-            player.Inventory.TryAdd(new MagnetoStick(), true);
+            player.Inventory.TryAdd(new Hands(), true);
 
             // Randomize between SMG and shotgun
             if (new Random().Next() % 2 == 0)
