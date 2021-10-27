@@ -59,7 +59,6 @@ namespace TTTReborn.UI
             // If our entity is locked, delayed or removed, let's not show it.
             if (_entity.IsDisabled)
             {
-                // Since we're just technically just making it invisible. Let's go ahead and move it off screen so it doesn't interfere with UI input.
                 Style.Display = DisplayMode.None;
                 Style.Dirty();
 

@@ -205,7 +205,7 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            if (Enabled && _playerCorpse?.Transform.Position.Distance((Local.Pawn as TTTPlayer).ViewPosition) > 100f)
+            if (Enabled && _playerCorpse?.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
             {
                 Enabled = false;
             }

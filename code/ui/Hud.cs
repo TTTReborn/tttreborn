@@ -35,7 +35,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Hud.Current.Delete();
+            Hud.Current?.Delete();
 
             Hud hud = new();
 
