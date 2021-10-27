@@ -13,20 +13,19 @@ namespace TTTReborn.Roles
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class RoleAttribute : LibraryAttribute
     {
-        public RoleAttribute(string name) : base(name)
+        public RoleAttribute(string name) : base("role_" + name)
         {
 
         }
     }
 
-    [Role("base")]
     public abstract class TTTRole
     {
         public readonly string Name;
 
         public virtual Color Color => Color.Black;
 
-        public abstract Type DefaultTeamType { get; }
+        public virtual Type DefaultTeamType => typeof(NoneTeam);
 
         public virtual int DefaultCredits => 0;
 

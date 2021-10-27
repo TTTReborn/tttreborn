@@ -4,8 +4,8 @@ namespace TTTReborn.UI
 {
     public partial class Modal : Window
     {
-        public Action<Modal> OnDisplay { get; set; }
-        public bool IsDeletedOnClose { get; set; }
+        public Action<Modal> OnDisplay;
+        public bool IsDeletedOnClose;
 
         public Modal(Sandbox.UI.Panel parent = null, bool isDeletedOnClose = true) : base(parent)
         {

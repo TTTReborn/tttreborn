@@ -20,7 +20,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             ConnectionWire = NodeConnectionWire.Create();
             ConnectionWire.StartPoint = this;
-            VisualProgrammingWindow.Instance.ActiveNodeConnectionWire = ConnectionWire;
+            Window.Instance.ActiveNodeConnectionWire = ConnectionWire;
             IsDragging = true;
 
             base.OnMouseDown(e);
@@ -39,7 +39,7 @@ namespace TTTReborn.UI.VisualProgramming
             }
 
             IsDragging = false;
-            VisualProgrammingWindow.Instance.ActiveNodeConnectionWire = null;
+            Window.Instance.ActiveNodeConnectionWire = null;
 
             base.OnMouseUp(e);
         }

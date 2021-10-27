@@ -4,18 +4,18 @@
         "CODE": "en-US"
     },
 
-    "ROLE_NAME_NONE": "Unknown",
-    "ROLE_NAME_INNOCENT": "Innocent",
-    "ROLE_NAME_TRAITOR": "Traitor",
-    "ROLE_NAME_DETECTIVE": "Detective",
+    "ROLE_NONE_NAME": "Unknown",
+    "ROLE_INNOCENT_NAME": "Innocent",
+    "ROLE_TRAITOR_NAME": "Traitor",
+    "ROLE_DETECTIVE_NAME": "Detective",
 
     "ROUND_STATE_WAITING": "Waiting",
     "ROUND_STATE_PREPARING": "Preparing",
     "ROUND_STATE_IN_PROGRESS": "In progress",
     "ROUND_STATE_POST": "Round over",
 
-    "POST_ROUND_WIN_INNOCENTS": "THE INNOCENT WIN!",
-    "POST_ROUND_WIN_TRAITORS": "THE TRAITORS WIN!",
+    "POST_ROUND_WIN_TEAM_INNOCENTS": "THE INNOCENT WIN!",
+    "POST_ROUND_WIN_TEAM_TRAITORS": "THE TRAITORS WIN!",
     "POST_ROUND_TEXT": "Thanks for playing TTT Reborn, more updates and stats to come!",
 
     "PLAYER_STATUS_HEALTH_HEALTHY": "Healthy",

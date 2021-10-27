@@ -37,7 +37,7 @@ namespace TTTReborn.UI
 
             Style.BackgroundColor = player.Role.Color;
 
-            _roleLabel.SetTranslation($"ROLE_NAME_{player.Role.Name.ToUpper().Replace(' ', '_')}");
+            _roleLabel.SetTranslation($"{player.Role.Name.ToUpper()}_NAME");
         }
     }
 }
