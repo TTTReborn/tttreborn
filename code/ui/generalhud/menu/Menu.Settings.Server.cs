@@ -9,17 +9,17 @@ namespace TTTReborn.UI.Menu
         internal void CreateServerSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
             Tabs tabs = tabContent.Add.Tabs();
-            tabs.AddTab("Sprint", (panelContent) =>
+            tabs.AddTab("MENU_SETTINGS_TAB_SPRINT", (panelContent) =>
             {
                 AddSprintSettings(panelContent, serverSettings);
             }, "sprint");
 
-            tabs.AddTab("Rounds", (panelContent) =>
+            tabs.AddTab("MENU_SETTINGS_TAB_ROUND", (panelContent) =>
             {
                 AddRoundSettings(panelContent, serverSettings);
             }, "rounds");
 
-            tabs.AddTab("AFK", (panelContent) =>
+            tabs.AddTab("MENU_SETTINGS_TAB_AFK", (panelContent) =>
             {
                 AddAFKSwitchSettings(panelContent, serverSettings);
                 AddAFKSettings(panelContent, serverSettings);
