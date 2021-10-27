@@ -13,7 +13,7 @@ namespace TTTReborn.UI
         public bool IsDisabled = false;
 
         private Panel _itemIcon;
-        private Label _itemNameLabel;
+        private TranslationLabel _itemNameLabel;
         private Label _itemPriceLabel;
 
         public QuickShopItem(Sandbox.UI.Panel parent) : base(parent)
@@ -29,7 +29,7 @@ namespace TTTReborn.UI
             _itemIcon = new Panel(this);
             _itemIcon.AddClass("item-icon");
 
-            _itemNameLabel = Add.Label();
+            _itemNameLabel = Add.TranslationLabel();
             _itemNameLabel.AddClass("item-name-label");
         }
 
@@ -37,7 +37,7 @@ namespace TTTReborn.UI
         {
             ItemData = shopItemData;
 
-            _itemNameLabel.Text = $"{shopItemData.Name}";
+            _itemNameLabel.SetTranslation(shopItemData.Name.ToUpper());
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
             _itemIcon.Style.BackgroundImage = Texture.Load($"/ui/weapons/{shopItemData.Name}.png", false) ?? Texture.Load($"/ui/none.png");

@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("_newton_launcher")]
+    [Library("weapon_newton_launcher")]
     [Weapon(SlotType = SlotType.OffensiveEquipment, AmmoType = "pistol")]
     [Buyable(Price = 100)]
     [Hammer.EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
