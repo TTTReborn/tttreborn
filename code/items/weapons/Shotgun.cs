@@ -7,7 +7,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_shotgun")]
+    [Library("weapon_shotgun")]
     [Weapon(SlotType = SlotType.Primary, AmmoType = "buckshot")]
     [Spawnable]
     [Buyable(Price = 100)]

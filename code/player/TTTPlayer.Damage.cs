@@ -73,7 +73,7 @@ namespace TTTReborn.Player
 
             // TODO this should be handled by hooks and in the item itself
             // If player has bodyarmor, was not shot in the head, and was shot by a bullet, reduce damage by 30%.
-            if (Inventory.Perks.Has("ttt_bodyarmor") && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
+            if (Inventory.Perks.Has(Utils.GetLibraryName(typeof(BodyArmor))) && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
             {
                 info.Damage *= ArmorReductionPercentage;
             }

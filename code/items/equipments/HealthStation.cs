@@ -7,7 +7,7 @@ namespace TTTReborn.Items
     /// <summary>
     /// Healthkit equipment definition, for the physical entity, see items/equipments/entities/HealthstationEntity.cs
     /// </summary>
-    [Library("ttt_healthstation")]
+    [Library("equipment_healthstation")]
     [Equipment(SlotType = SlotType.UtilityEquipment)]
     [Buyable(Price = 0)]
     [Hammer.Skip]

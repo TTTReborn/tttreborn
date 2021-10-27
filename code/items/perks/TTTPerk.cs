@@ -17,7 +17,6 @@ namespace TTTReborn.Items
         }
     }
 
-    [Library("ttt_perk")]
     [Hammer.Skip]
     public abstract class TTTPerk : IItem
     {

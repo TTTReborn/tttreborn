@@ -76,7 +76,26 @@ namespace TTTReborn.Globalization
         {
             string translation = GetTranslation(key);
 
-            return args == null ? translation : String.Format(translation, args);
+            if (args == null)
+            {
+                return translation;
+            }
+
+            object[] data = new object[args.Length];
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i] is TranslationData translationKey)
+                {
+                    data[i] = GetFormattedTranslation(translationKey.Key, translationKey.Data);
+                }
+                else
+                {
+                    data[i] = args[i];
+                }
+            }
+
+            return String.Format(translation, data);
         }
 
         public void AddTranslationString(string key, string translation)

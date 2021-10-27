@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_pistol")]
+    [Library("weapon_pistol")]
     [Weapon(SlotType = SlotType.Secondary, AmmoType = "pistol")]
     [Spawnable]
     [Buyable(Price = 100)]
