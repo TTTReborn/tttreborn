@@ -103,7 +103,7 @@ namespace TTTReborn.UI.Menu
                     _shopToggle = panelContent.Add.Switch("shoptoggle", false);
                     _shopToggle.Disabled = true;
 
-                    _shopToggle.AddTooltip("Toggle to de-/activate the shop for the currently selected role.", "togglehint");
+                    _shopToggle.AddTooltip("MENU_SHOPEDITOR_TOGGLEROLE", "togglehint");
 
                     Dropdown dropdown = panelContent.Add.Dropdown();
                     dropdown.TextLabel.Text = "Choose role...";

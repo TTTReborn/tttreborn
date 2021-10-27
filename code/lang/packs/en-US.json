@@ -55,6 +55,8 @@
 
     "MENU_DROPDOWN_SELECT": "Select...",
 
+    "MENU_SHOPEDITOR_TOGGLEROLE": "Toggle to de-/activate the shop for the currently selected role.",
+
     "WEAPON_PISTOL": "Pistol",
     "WEAPON_SMG": "SMG",
     "WEAPON_SHOTGUN": "Shotgun",

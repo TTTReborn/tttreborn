@@ -5,7 +5,7 @@ using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
-    public partial class Tooltip : Label
+    public partial class Tooltip : TranslationLabel
     {
         public static Tooltip Instance;
 
@@ -39,6 +39,7 @@ namespace TTTReborn.UI
             Style.Dirty();
 
             Instance = this;
+            IsTryTranslation = true;
         }
 
         public override void OnDeleted()
@@ -101,7 +102,7 @@ namespace Sandbox.UI.Construct
             DeleteTooltip();
 
             Tooltip tooltip = new(panel, onCreate, onDelete, onTick);
-            tooltip.SetText(text);
+            tooltip.SetTranslation(text);
 
             if (!string.IsNullOrEmpty(className))
             {
