@@ -12,6 +12,10 @@ namespace TTTReborn.Items
     partial class Hands : TTTEquipment
     {
         public override string ViewModelPath => "";
+        public override bool CanDrop() => false;
+
+        private const float MAX_PICKUP_WEIGHT = 205;
+        private const float MAX_PICKUP_DISTANCE = 75;
 
         public Entity GrabbedEntity { get; set; }
 
@@ -57,19 +61,19 @@ namespace TTTReborn.Items
             Vector3 eyePos = player.EyePos;
             Vector3 eyeDir = player.EyeRot.Forward;
 
-            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * 5000)
+            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * MAX_PICKUP_DISTANCE)
                 .UseHitboxes()
                 .Ignore(player)
                 .HitLayer(CollisionLayer.Debris)
                 .EntitiesOnly()
                 .Run();
 
-            if (!tr.Hit || !tr.Entity.IsValid() || tr.Entity is not ModelEntity)
+            if (!tr.Hit || !tr.Entity.IsValid() || tr.Entity is not ModelEntity || tr.Entity?.PhysicsGroup?.Mass > MAX_PICKUP_WEIGHT)
             {
                 return;
             }
 
-            tr.Entity.SetParent(player, "middle_of_both_hands");
+            tr.Entity.SetParent(player, "middle_of_both_hands", new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
             GrabbedEntity = tr.Entity;
             GrabbedEntity.EnableHideInFirstPerson = false;
         }
@@ -99,7 +103,23 @@ namespace TTTReborn.Items
             base.OnDestroy();
         }
 
-        public override bool CanDrop() => false;
+        public override void SimulateAnimator(PawnAnimator anim)
+        {
+            if (!IsServer)
+            {
+                return;
+            }
+
+            if (GrabbedEntity.IsValid())
+            {
+                anim.SetParam("holdtype", 4);
+                anim.SetParam("holdtype_handedness", 0);
+            }
+            else
+            {
+                anim.SetParam("holdtype", 0);
+            }
+        }
     }
 }
 
