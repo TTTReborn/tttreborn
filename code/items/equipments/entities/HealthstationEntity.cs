@@ -13,6 +13,8 @@ namespace TTTReborn.Items
         [Net]
         public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
 
+        public float HintDistance => 80f;
+
         private string ModelPath => "models/entities/healthstation.vmdl";
 
         private RealTimeUntil NextHeal = 0;

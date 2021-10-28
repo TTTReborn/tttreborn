@@ -26,15 +26,12 @@ namespace TTTReborn.Teams
 
         public readonly List<TTTPlayer> Members = new();
 
-        public static TTTTeam Instance;
-
         public static Dictionary<string, TTTTeam> Teams = new();
 
         public TTTTeam()
         {
             Name = Utils.GetLibraryName(GetType());
 
-            Instance = this;
             Teams[Name] = this;
         }
 
@@ -46,6 +43,16 @@ namespace TTTReborn.Teams
 
     public static class TeamFunctions
     {
+        public static TTTTeam TryGetTeam(string teamname)
+        {
+            if (teamname == null || !TTTTeam.Teams.TryGetValue(teamname, out TTTTeam team))
+            {
+                return null;
+            }
+
+            return team;
+        }
+
         public static TTTTeam GetTeam(string teamname)
         {
             if (teamname == null)
@@ -61,7 +68,7 @@ namespace TTTReborn.Teams
             return team;
         }
 
-        public static TTTTeam GetTeamByType(Type teamType)
+        public static TTTTeam GetTeam(Type teamType)
         {
             foreach (TTTTeam team in TTTTeam.Teams.Values)
             {
@@ -71,7 +78,7 @@ namespace TTTReborn.Teams
                 }
             }
 
-            return null;
+            return Utils.GetObjectByType<TTTTeam>(teamType);
         }
     }
 }

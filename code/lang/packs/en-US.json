@@ -16,6 +16,7 @@
 
     "POST_ROUND_WIN_TEAM_INNOCENTS": "THE INNOCENT WIN!",
     "POST_ROUND_WIN_TEAM_TRAITORS": "THE TRAITORS WIN!",
+    "POST_ROUND_WIN_TEAM_NONES": "IT'S A TIE!",
     "POST_ROUND_TEXT": "Thanks for playing TTT Reborn, more updates and stats to come!",
 
     "PLAYER_STATUS_HEALTH_HEALTHY": "Healthy",
@@ -38,17 +39,21 @@
     "CORPSE_INSPECT_IDENTIFIER_WEAPON": "It appears a {0} was used to kill them.",
     "CORPSE_INSPECT_IDENTIFIER_PERK": "They were carrying a {0}.",
 
+    "SCOREBOARD_GAMEMODE": "{0} Server",
+    "SCOREBOARD_CREATEDBY": "Created by {0}",
     "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Players",
     "SCOREBOARD_SERVER_INFO": "{0} players. Map: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} players left",
+
+    "SCOREBOARD_GROUP_ALIVE": "Alive",
+    "SCOREBOARD_GROUP_DEAD": "Confirmed Dead",
+    "SCOREBOARD_GROUP_MISSING": "Missing In Action",
+    "SCOREBOARD_GROUP_SPECTATOR": "Spectators",
+
     "SCOREBOARD_PLAYER_STATUS_KARMA": "Karma",
     "SCOREBOARD_PLAYER_STATUS_DEATHS": "Deaths",
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Score",
     "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
-    "SCOREBOARD_PLAYER_GROUP_ALIVE": "Alive",
-    "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Confirmed Dead",
-    "SCOREBOARD_PLAYER_GROUP_MIA": "Missing In Action",
-    "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Spectators",
 
     "REALM_CLIENT": "Client",
     "REALM_SERVER": "Server",
@@ -72,7 +77,7 @@
     "MENU_SETTINGS_SPRINT": "Sprint enabled?",
     "MENU_SETTINGS_SPRINT_DESCRIPTION": "Whether or not sprint should be enabled on the server.",
     "MENU_SETTINGS_MINPLAYERS": "Min Players",
-    "MENU_SETTINGS_MINPLAYERS_DESCRIPTION": "The minimum players required to start.",
+    "MENU_SETTINGS_MINPLAYERS_DESCRIPTION": "The minimum players required to start. If it's below the set amount, the game will stop if already started!",
     "MENU_SETTINGS_TAB_ROUND": "Rounds",
     "MENU_SETTINGS_PREROUND": "PreRound Time",
     "MENU_SETTINGS_PREROUND_DESCRIPTION": "The amount of time allowed for preparation.",
@@ -119,6 +124,10 @@
 
     "C4_ARM": "Hold {0} to arm the C4",
     "C4_DEFUSE": "Press {0} to defuse the C4",
+    "C4_UI_PICKUP": "Pick Up",
+    "C4_UI_DESTROY": "Destroy",
+    "C4_UI_ARM": "Arm",
+    "C4_UI_DEFUSECHANCE": "{0}% chance to defuse",
 
     "PERK_BODYARMOR": "Bodyarmor",
     "PERK_RADAR": "Radar"

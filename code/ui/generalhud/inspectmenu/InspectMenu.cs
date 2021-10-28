@@ -170,8 +170,12 @@ namespace TTTReborn.UI
             _distanceEntry.SetQuickInfo("CORPSE_INSPECT_QUICKINFO_DISTANCE", $"{confirmationData.Distance:n0}");
 
             _weaponEntry.Enabled = !string.IsNullOrEmpty(killerWeapon);
-            _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", "CORPSE_INSPECT_IDENTIFIER_WEAPON", new TranslationData(killerWeapon.ToUpper()));
-            _weaponEntry.SetQuickInfo(killerWeapon.ToUpper());
+
+            if (_weaponEntry.Enabled)
+            {
+                _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", "CORPSE_INSPECT_IDENTIFIER_WEAPON", new TranslationData(killerWeapon.ToUpper()));
+                _weaponEntry.SetQuickInfo(killerWeapon.ToUpper());
+            }
 
             // Clear and delete all perks
             foreach (InspectEntry perkEntry in _perkEntries)
