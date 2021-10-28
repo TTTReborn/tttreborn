@@ -77,7 +77,7 @@
     "MENU_SETTINGS_SPRINT": "Sprint enabled?",
     "MENU_SETTINGS_SPRINT_DESCRIPTION": "Whether or not sprint should be enabled on the server.",
     "MENU_SETTINGS_MINPLAYERS": "Min Players",
-    "MENU_SETTINGS_MINPLAYERS_DESCRIPTION": "The minimum players required to start.",
+    "MENU_SETTINGS_MINPLAYERS_DESCRIPTION": "The minimum players required to start. If it's below the set amount, the game will stop if already started!",
     "MENU_SETTINGS_TAB_ROUND": "Rounds",
     "MENU_SETTINGS_PREROUND": "PreRound Time",
     "MENU_SETTINGS_PREROUND_DESCRIPTION": "The amount of time allowed for preparation.",

@@ -77,7 +77,7 @@
     "MENU_SETTINGS_SPRINT": "Sprinten aktivieren?",
     "MENU_SETTINGS_SPRINT_DESCRIPTION": "Ob Sprinten auf dem Server aktiviert sein soll.",
     "MENU_SETTINGS_MINPLAYERS": "Minimum Spieler",
-    "MENU_SETTINGS_MINPLAYERS_DESCRIPTION": "Die minimale Anzahl an Spielern, die für den Start des Spiels benötigt werden.",
+    "MENU_SETTINGS_MINPLAYERS_DESCRIPTION": "Die minimale Anzahl an Spielern, die für den Start des Spiels benötigt werden. Falls die Spielerzahl unterhalb der gesetzten Zahl fällt, wird das Spiel abgebrochen, sofern es bereits gestartet ist.",
     "MENU_SETTINGS_TAB_ROUND": "Runden",
     "MENU_SETTINGS_PREROUND": "Vorbereitungszeit",
     "MENU_SETTINGS_PREROUND_DESCRIPTION": "Die Zeit, wie lange die Vorbereitungsrunde gehen soll.",
