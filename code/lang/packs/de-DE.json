@@ -38,6 +38,9 @@
     "CORPSE_INSPECT_IDENTIFIER_WEAPON": "Es scheint, als wäre '{0}' genutzt worden, um Ihn/Sie zu töten.",
     "CORPSE_INSPECT_IDENTIFIER_PERK": "Er/Sie trug '{0}'.",
 
+    "SCOREBOARD_GAMEMODE": "{0} Server",
+    "SCOREBOARD_CREATEDBY": "Erstellt von {0}",
+
     "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Spieler",
     "SCOREBOARD_SERVER_INFO": "{0} Spieler. Map: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} Spieler verbleibend",
