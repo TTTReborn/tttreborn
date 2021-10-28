@@ -36,11 +36,11 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                if (Input.Pressed(InputButton.Attack1) && GrabbedEntity == null)
+                if (Input.Pressed(InputButton.Attack1))
                 {
                     GrabEntity(player);
                 }
-                else if (Input.Released(InputButton.Attack2) && GrabbedEntity != null)
+                else if (Input.Released(InputButton.Attack2))
                 {
                     DropEntity();
                 }
