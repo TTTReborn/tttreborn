@@ -98,6 +98,7 @@ namespace TTTReborn.Items
                 return;
             }
 
+            GrabbedEntity.EnableHideInFirstPerson = true;
             GrabbedEntity.SetParent(null);
             GrabbedEntity = null;
         }
