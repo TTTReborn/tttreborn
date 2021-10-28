@@ -23,7 +23,7 @@ namespace TTTReborn.UI
         private readonly Label _descriptionLabel;
 
         // If the distance from the player to the button is less than this value, the element is fully visible.
-        private const int MIN_VIEW_DISTANCE = 512;
+        private int _minViewDistance = 512;
 
         // Between MINVIEWDISTANCE and this value, the element will slowly become transparent.
         // Past this distance, the button is unusuable.
@@ -34,6 +34,7 @@ namespace TTTReborn.UI
             Data = data;
             Position = data.Position;
             _maxViewDistance = data.Range;
+            _minViewDistance = Math.Min(_minViewDistance, _maxViewDistance / 2);
 
             StyleSheet.Load("/map/RoleButton/RoleButtonPoint.scss");
 
@@ -78,7 +79,7 @@ namespace TTTReborn.UI
                 Style.Display = DisplayMode.Flex;
                 Style.Left = Length.Fraction(screenPos.x);
                 Style.Top = Length.Fraction(screenPos.y);
-                Style.Opacity = Math.Clamp(1f - (player.Position.Distance(Position) - MIN_VIEW_DISTANCE) / (_maxViewDistance - MIN_VIEW_DISTANCE), 0f, 1f);
+                Style.Opacity = Math.Clamp(1f - (player.Position.Distance(Position) - _minViewDistance) / (_maxViewDistance - _minViewDistance), 0f, 1f);
 
                 // Update our 'focus' CSS look if our player currently is looking near this point.
                 SetClass("focus", TTTPlayer.FocusedButton == this);
