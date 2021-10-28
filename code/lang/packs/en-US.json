@@ -119,6 +119,10 @@
 
     "C4_ARM": "Hold {0} to arm the C4",
     "C4_DEFUSE": "Press {0} to defuse the C4",
+    "C4_UI_PICKUP": "Pick Up",
+    "C4_UI_DESTROY": "Destroy",
+    "C4_UI_ARM": "Arm",
+    "C4_UI_DEFUSECHANCE": "{0}% chance to defuse",
 
     "PERK_BODYARMOR": "Bodyarmor",
     "PERK_RADAR": "Radar"
