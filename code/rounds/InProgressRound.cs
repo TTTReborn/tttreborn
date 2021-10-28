@@ -162,6 +162,11 @@ namespace TTTReborn.Rounds
                 }
             }
 
+            if (aliveTeams.Count == 0)
+            {
+                return TeamFunctions.GetTeam(typeof(NoneTeam));
+            }
+
             return aliveTeams.Count == 1 ? aliveTeams[0] : null;
         }
 

@@ -16,6 +16,7 @@
 
     "POST_ROUND_WIN_TEAM_INNOCENTS": "DIE UNSCHULDIGEN GEWINNEN!",
     "POST_ROUND_WIN_TEAM_TRAITORS": "DIE VERRÄTER GEWINNEN!",
+    "POST_ROUND_WIN_TEAM_NONES": "UNENTSCHIEDEN!",
     "POST_ROUND_TEXT": "Danke, dass Du TTT Reborn spielst, weitere Updates und Statistiken werden folgen!",
 
     "PLAYER_STATUS_HEALTH_HEALTHY": "Gesund",
