@@ -1,14 +1,12 @@
 using Sandbox;
-using Sandbox.Joints;
 
 using TTTReborn.Player;
 
-// Credits to the PhysGun: https://github.com/Facepunch/sandbox/blob/master/code/tools/PhysGun.cs
-
 namespace TTTReborn.Items
 {
+    [Library("equipment_hands")]
     [Equipment(SlotType = SlotType.UtilityEquipment)]
-    [Library("ttt_hands")]
+    [Hammer.Skip]
     partial class Hands : TTTEquipment
     {
         public override string ViewModelPath => "";
@@ -68,7 +66,7 @@ namespace TTTReborn.Items
                 .EntitiesOnly()
                 .Run();
 
-            if (!tr.Hit || !tr.Entity.IsValid() || tr.Entity is not ModelEntity || tr.Entity?.PhysicsGroup?.Mass > MAX_PICKUP_WEIGHT)
+            if (!tr.Hit || !tr.Entity.IsValid() || tr.Entity is WorldEntity || tr.Entity is TTTPlayer || tr.Entity.Parent != null || tr.Entity?.PhysicsGroup?.Mass > MAX_PICKUP_WEIGHT)
             {
                 return;
             }
