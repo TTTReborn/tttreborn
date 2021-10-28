@@ -9,7 +9,7 @@ namespace TTTReborn.UI
     {
         public Action<PanelHeader> OnClose { get; set; }
 
-        private Label _title;
+        private TranslationLabel _title;
 
         private Button _closeButton;
 
@@ -24,7 +24,7 @@ namespace TTTReborn.UI
         {
             DeleteChildren(true);
 
-            _title = Add.Label("", "title");
+            _title = Add.TryTranslationLabel("", "title");
 
             OnCreateHeader();
 
@@ -37,6 +37,11 @@ namespace TTTReborn.UI
         public void SetTitle(string text)
         {
             _title.Text = text;
+        }
+
+        public void SetTranslationTitle(string translationKey, params object[] translationData)
+        {
+            _title.SetTranslation(translationKey, translationData);
         }
 
         public virtual void OnCreateHeader()

@@ -1,14 +1,20 @@
+using TTTReborn.VisualProgramming;
+
 namespace TTTReborn.UI.VisualProgramming
 {
     [Node("main")]
     public class MainNode : Node
     {
-        public MainNode() : base()
+        public MainNode() : base(new AllPlayersStackNode())
         {
             SetTitle("MainNode");
 
-            NodeAllPlayersSetting settingPanel = AddSetting<NodeAllPlayersSetting>();
-            settingPanel.ToggleInput(false);
+            AddSetting<NodeAllPlayersSetting>().ToggleInput(false);
+        }
+
+        protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
+        {
+
         }
     }
 }

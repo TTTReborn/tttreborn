@@ -12,7 +12,7 @@ namespace TTTReborn.UI
         private readonly Label _serverDescriptionLabel;
         private readonly Panel _serverDataPanel;
         private readonly Label _serverMapLabel;
-        private readonly Label _serverPlayersLabel;
+        private readonly TranslationLabel _serverPlayersLabel;
 
         public ScoreboardHeader(Sandbox.UI.Panel parent) : base(parent)
         {
@@ -38,7 +38,7 @@ namespace TTTReborn.UI
             _serverMapLabel = _serverDataPanel.Add.Label();
             _serverMapLabel.AddClass("server-map-label");
 
-            _serverPlayersLabel = _serverDataPanel.Add.Label();
+            _serverPlayersLabel = _serverDataPanel.Add.TranslationLabel();
             _serverPlayersLabel.AddClass("server-players-label");
 
             UpdateServerInfo();
@@ -48,8 +48,8 @@ namespace TTTReborn.UI
         {
             int maxPlayers = ConsoleSystem.GetValue("maxplayers").ToInt(0);
 
-            _serverMapLabel.Text = $"{Global.MapName}";
-            _serverPlayersLabel.Text = $"{Client.All.Count} / {maxPlayers} Players";
+            _serverMapLabel.Text = Global.MapName;
+            _serverPlayersLabel.SetTranslation("SCOREBOARD_SERVER_PLAYERAMOUNT", Client.All.Count, maxPlayers);
         }
     }
 }

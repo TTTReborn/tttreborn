@@ -40,7 +40,7 @@ namespace TTTReborn.Globalization
         }
         private static Language _activeLanguage;
 
-        public static void LoadLanguages()
+        public static void Load()
         {
             foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
             {
@@ -79,12 +79,11 @@ namespace TTTReborn.Globalization
                 return;
             }
 
+            Language oldLanguage = ActiveLanguage;
+
             ActiveLanguage = language;
 
-            if (Host.IsClient)
-            {
-                UI.TranslationLabel.UpdateLanguage(language);
-            }
+            Event.Run(TTTEvent.Settings.LanguageChange, oldLanguage, language);
         }
 
         [Event(TTTEvent.Settings.Change)]

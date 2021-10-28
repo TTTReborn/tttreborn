@@ -25,9 +25,9 @@ namespace TTTReborn.Player.Camera
             _targetPos = CurrentView.Position;
             _targetRot = CurrentView.Rotation;
 
-            Pos = _targetPos;
-            Rot = _targetRot;
-            _lookAngles = Rot.Angles();
+            Position = _targetPos;
+            Rotation = _targetRot;
+            _lookAngles = Rotation.Angles();
         }
 
         public override void Update()
@@ -37,13 +37,13 @@ namespace TTTReborn.Player.Camera
                 return;
             }
 
-            Vector3 mv = _moveInput.Normal * 300 * RealTime.Delta * Rot * _moveSpeed;
+            Vector3 mv = _moveInput.Normal * 300 * RealTime.Delta * Rotation * _moveSpeed;
 
             _targetRot = Rotation.From(_lookAngles);
             _targetPos += mv;
 
-            Pos = Vector3.Lerp(Pos, _targetPos, 10 * RealTime.Delta * (1 - LERP_MODE));
-            Rot = Rotation.Slerp(Rot, _targetRot, 10 * RealTime.Delta * (1 - LERP_MODE));
+            Position = Vector3.Lerp(Position, _targetPos, 10 * RealTime.Delta * (1 - LERP_MODE));
+            Rotation = Rotation.Slerp(Rotation, _targetRot, 10 * RealTime.Delta * (1 - LERP_MODE));
         }
 
         public override void BuildInput(InputBuilder input)

@@ -14,7 +14,8 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
 {
-    [Library("tttreborn", Title = "Trouble in Terry's Town"), Hammer.Skip]
+    [Hammer.Skip]
+    [Library("tttreborn", Title = "Trouble in Terry's Town")]
     partial class Game : Sandbox.Game
     {
         public static Game Instance { get; private set; }
@@ -30,13 +31,15 @@ namespace TTTReborn.Gamemode
         {
             Instance = this;
 
-            TTTLanguage.LoadLanguages();
+            TTTLanguage.Load();
             SettingsManager.Load();
 
             if (IsServer)
             {
                 ShopManager.Load();
-
+            }
+            else
+            {
                 new Hud();
             }
         }

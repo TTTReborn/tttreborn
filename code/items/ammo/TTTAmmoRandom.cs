@@ -5,12 +5,12 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_ammo_random")]
+    [Library("entity_ammo_random")]
     public class TTTAmmoRandom : Entity
     {
         public void Activate()
         {
-            List<Type> ammoTypes = Globals.Utils.GetTypes<TTTAmmo>(w => !w.IsDefined(typeof(NonSpawnableAttribute), true));
+            List<Type> ammoTypes = Globals.Utils.GetTypesWithAttribute<TTTAmmo, SpawnableAttribute>();
 
             if (ammoTypes.Count <= 0)
             {

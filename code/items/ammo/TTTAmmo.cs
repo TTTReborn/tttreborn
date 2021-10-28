@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_ammo")]
+    [Hammer.Skip]
     public abstract partial class TTTAmmo : Prop
     {
         /// <summary>

@@ -18,7 +18,7 @@ namespace TTTReborn.UI
             {
                 _item = value;
 
-                _nameLabel.Text = _item?.LibraryName ?? "";
+                _nameLabel.SetTranslation(_item?.LibraryName.ToUpper() ?? "");
                 _effectImage.Texture = (_item != null ? Texture.Load($"/ui/weapons/{_item.LibraryName}.png", false) : null);
 
                 if (_effectImage.Texture == null)
@@ -38,7 +38,7 @@ namespace TTTReborn.UI
         }
 
         private IItem _item;
-        private readonly Label _nameLabel;
+        private readonly TranslationLabel _nameLabel;
         private readonly Panel _effectIconPanel;
         private readonly Image _effectImage;
         private Label _countdownLabel;
@@ -55,7 +55,7 @@ namespace TTTReborn.UI
             _effectImage = _effectIconPanel.Add.Image();
             _effectImage.AddClass("effect-image");
 
-            _nameLabel = Add.Label();
+            _nameLabel = Add.TranslationLabel();
             _nameLabel.AddClass("name-label");
 
             Item = effect;

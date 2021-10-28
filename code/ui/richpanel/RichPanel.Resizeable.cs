@@ -20,7 +20,7 @@ namespace TTTReborn.UI
 
     public partial class RichPanel : Panel
     {
-        public bool IsDraggable { get; set; } = false;
+        public bool IsDraggable = false;
 
         public enum DragAnchor
         {

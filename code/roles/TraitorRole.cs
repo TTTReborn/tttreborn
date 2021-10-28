@@ -29,8 +29,8 @@ namespace TTTReborn.Roles
             {
                 foreach (TTTPlayer otherPlayer in player.Team.Members)
                 {
-                    RPCs.ClientSetRole(To.Single(otherPlayer), player, player.Role.Name);
-                    RPCs.ClientSetRole(To.Single(player), otherPlayer, otherPlayer.Role.Name);
+                    player.SendClientRole(To.Single(otherPlayer));
+                    otherPlayer.SendClientRole(To.Single(player));
                 }
 
                 foreach (TTTPlayer otherPlayer in Utils.GetPlayers())

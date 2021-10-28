@@ -13,12 +13,12 @@ namespace TTTReborn.UI.Menu
         {
             Tabs tabs = tabContent.Add.Tabs();
 
-            tabs.AddTab("General", (panelContent) =>
+            tabs.AddTab("MENU_SETTINGS_CATEGORY_GENERAL", (panelContent) =>
             {
                 AddGeneralSettings(panelContent);
             }, "general");
 
-            tabs.AddTab("Language", (panelContent) =>
+            tabs.AddTab("MENU_SETTINGS_CATEGORY_LANGUAGE", (panelContent) =>
             {
                 AddLanguageSettings(panelContent);
             }, "language");
@@ -27,7 +27,7 @@ namespace TTTReborn.UI.Menu
         private void AddGeneralSettings(PanelContent panelContent)
         {
             Sandbox.UI.Panel sprintPanel = panelContent.Add.Panel("sprint");
-            sprintPanel.Add.Label($"Force Spectator?");
+            sprintPanel.Add.TranslationLabel("MENU_SETTINGS_FORCESPECTATOR");
 
             if (Local.Client.Pawn is TTTPlayer player)
             {
@@ -45,7 +45,7 @@ namespace TTTReborn.UI.Menu
         {
             Sandbox.UI.Panel languagePanel = panelContent.Add.Panel("language");
 
-            languagePanel.Add.Label("Language:");
+            languagePanel.Add.TranslationLabel("MENU_SETTINGS_LANGUAGE_SELECTION");
 
             Dropdown languageSelection = languagePanel.Add.Dropdown();
 

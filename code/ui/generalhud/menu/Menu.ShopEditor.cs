@@ -24,7 +24,7 @@ namespace TTTReborn.UI.Menu
             menuContent.SetPanelContent((panelContent) =>
             {
                 ServerRequestShopEditorAccess();
-            }, "ShopEditor", "shopeditor");
+            }, "MENU_SUBMENU_SHOPEDITOR", "shopeditor");
         }
 
         [ServerCmd]
@@ -86,7 +86,7 @@ namespace TTTReborn.UI.Menu
 
             PanelContent menuContent = menu.Content;
 
-            if (menuContent == null || !menuContent.Title.Equals("ShopEditor"))
+            if (menuContent == null || !menuContent.ClassName.Equals("shopeditor"))
             {
                 return;
             }
@@ -103,11 +103,10 @@ namespace TTTReborn.UI.Menu
                     _shopToggle = panelContent.Add.Switch("shoptoggle", false);
                     _shopToggle.Disabled = true;
 
-                    _shopToggle.AddTooltip("Toggle to de-/activate the shop for the currently selected role.", "togglehint");
+                    _shopToggle.AddTooltip("MENU_SHOPEDITOR_TOGGLEROLE", "togglehint");
 
                     Dropdown dropdown = panelContent.Add.Dropdown();
-                    dropdown.TextLabel.Text = "Choose role...";
-                    dropdown.AddTooltip("Select a role to modify the connected shop.", "roleselection");
+                    dropdown.AddTooltip("MENU_SHOPEDITOR_SELECTROLE", "roleselection");
 
                     foreach (Type roleType in Utils.GetTypes<TTTRole>())
                     {
@@ -118,7 +117,7 @@ namespace TTTReborn.UI.Menu
                             continue;
                         }
 
-                        dropdown.AddOption(role.Name, role, (panel) =>
+                        dropdown.AddOption(role.GetRoleTranslationKey("NAME"), role, (panel) =>
                         {
                             CreateShopContent(role);
                         });
@@ -127,8 +126,8 @@ namespace TTTReborn.UI.Menu
                     _shopEditorWrapper = new(panelContent);
                     _shopEditorWrapper.AddClass("wrapper");
 
-                    _shopEditorWrapper.Add.Label("Please select a role to modify the connected shop.");
-                }, "ShopEditor", "shopeditor");
+                    _shopEditorWrapper.Add.TranslationLabel("MENU_SHOPEDITOR_SELECTROLE");
+                }, "MENU_SUBMENU_SHOPEDITOR", "shopeditor");
             }
             else
             {
@@ -137,8 +136,8 @@ namespace TTTReborn.UI.Menu
                     _shopEditorWrapper = new(panelContent);
                     _shopEditorWrapper.AddClass("wrapper");
 
-                    _shopEditorWrapper.Add.Label("You don't have permissions to access the ShopEditor.");
-                }, "ShopEditor", "shopeditor");
+                    _shopEditorWrapper.Add.Label("MENU_SHOPEDITOR_NOPERMISSION");
+                }, "MENU_SUBMENU_SHOPEDITOR", "shopeditor");
 
                 return;
             }
@@ -213,11 +212,11 @@ namespace TTTReborn.UI.Menu
 
                         Sandbox.UI.Panel panel = tooltip.Add.Panel("span");
                         panel.Add.Label("keyboard_arrow_left", "icon");
-                        panel.Add.Label($"Deactivate this item in the {role.Name} shop.");
+                        panel.Add.TranslationLabel("MENU_SHOPEDITOR_ITEM_DEACTIVATE", "", new Globalization.TranslationData(role.GetRoleTranslationKey("NAME")));
 
                         panel = tooltip.Add.Panel("span");
                         panel.Add.Icon("keyboard_arrow_right", "icon");
-                        panel.Add.Label("Edit this item.");
+                        panel.Add.TranslationLabel("MENU_SHOPEDITOR_ITEM_EDIT");
                     }
                     else if (!item.HasClass("tooltip-right"))
                     {
@@ -228,7 +227,7 @@ namespace TTTReborn.UI.Menu
 
                         Sandbox.UI.Panel panel = tooltip.Add.Panel("span");
                         panel.Add.Label("keyboard_arrow_left", "icon");
-                        panel.Add.Label($"Activate this item in the {role.Name} shop.");
+                        panel.Add.TranslationLabel("MENU_SHOPEDITOR_ITEM_ACTIVATE", "", new Globalization.TranslationData(role.GetRoleTranslationKey("NAME")));
                     }
                 });
 

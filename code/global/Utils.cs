@@ -66,7 +66,7 @@ namespace TTTReborn.Globals
             return types.ToList();
         }
 
-        public static List<Type> GetTypesWithAttribute<T, U>() where U : Attribute => GetTypes<T>((t) => HasAttribute<U>(t));
+        public static List<Type> GetTypesWithAttribute<T, U>(bool inherit = false) where U : Attribute => GetTypes<T>((t) => HasAttribute<U>(t, inherit));
 
         /// <summary>
         /// Get a derived `Type` of the given type by it's name (`Sandbox.LibraryAttribute`).
@@ -115,7 +115,7 @@ namespace TTTReborn.Globals
             return default;
         }
 
-        public static bool HasAttribute<T>(Type type) where T : Attribute => type.IsDefined(typeof(T), false);
+        public static bool HasAttribute<T>(Type type, bool inherit = false) where T : Attribute => type.IsDefined(typeof(T), inherit);
 
         /// <summary>
         /// Returns an approximate value for meters given the Source engine units (for distances)
@@ -194,6 +194,25 @@ namespace TTTReborn.Globals
 
                 currentDir += '/';
             }
+        }
+
+        public static string GetSettingsFolderPath(Realm realm, string path = null, string pathAddition = null)
+        {
+            if (!FileSystem.Data.DirectoryExists("settings"))
+            {
+                FileSystem.Data.CreateDirectory("settings");
+            }
+
+            string settingsName = Utils.GetTypeName(realm == Realm.Client ? typeof(Settings.ClientSettings) : typeof(Settings.ServerSettings));
+
+            path ??= $"/settings/{settingsName.ToLower()}/{pathAddition}";
+
+            if (!FileSystem.Data.DirectoryExists(path))
+            {
+                CreateRecursiveDirectories(path);
+            }
+
+            return path;
         }
     }
 }

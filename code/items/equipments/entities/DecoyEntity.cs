@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
+    [Library("entity_decoy")]
     [Hammer.Skip]
-    [Library("ttt_decoy_ent")]
     public partial class DecoyEntity : Prop
     {
         private string ModelPath => "models/entities/decoy.vmdl";

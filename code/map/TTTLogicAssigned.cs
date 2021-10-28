@@ -1,6 +1,8 @@
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.Roles;
 using TTTReborn.Rounds;
 
 namespace TTTReborn.Map
@@ -17,7 +19,7 @@ namespace TTTReborn.Map
         [Property("Check Type", "Entity will only return a result for one of the select values.")]
         public Check CheckType { get; set; } = Check.Role;
 
-        [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `Traitor`, but check the `Team` for `Traitors`.")]
+        [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`.")]
         public string CheckValue
         {
             get => _checkValue;
@@ -26,7 +28,7 @@ namespace TTTReborn.Map
                 _checkValue = value?.ToLower();
             }
         }
-        private string _checkValue = "traitor";
+        private string _checkValue = Utils.GetLibraryName(typeof(TraitorRole));
 
         /// <summary>
         /// Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass().

@@ -9,7 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeSettingAttribute : LibraryAttribute
     {
-        public NodeSettingAttribute(string name) : base(name)
+        public NodeSettingAttribute(string name) : base("node_setting_" + name)
         {
 
         }
@@ -39,31 +39,23 @@ namespace TTTReborn.UI.VisualProgramming
         }
         private Node _node;
 
-        public NodeConnectionPanel Input { get; set; }
-        public NodeConnectionPanel Output { get; set; }
-        public PanelContent Content { get; set; }
+        public NodeConnectionPanel<NodeConnectionEndPoint> Input;
+        public NodeConnectionPanel<NodeConnectionStartPoint> Output;
+        public PanelContent Content;
 
         public NodeSetting() : base()
         {
             LibraryName = Utils.GetLibraryName(GetType());
 
-            Input = AddConnectionPanel();
-            Input.AddConnectionPoint<NodeConnectionEndPoint>();
+            Input = new(this);
+            Input.Node = Node;
 
             Content = new(this);
 
-            Output = AddConnectionPanel();
-            Output.AddConnectionPoint<NodeConnectionStartPoint>();
+            Output = new(this);
+            Output.Node = Node;
 
             AddClass("nodesetting");
-        }
-
-        public NodeConnectionPanel AddConnectionPanel()
-        {
-            NodeConnectionPanel nodeConnectionPanel = new(this);
-            nodeConnectionPanel.Node = Node;
-
-            return nodeConnectionPanel;
         }
 
         public static NodeSettingAttribute GetAttribute<T>() where T : NodeSetting

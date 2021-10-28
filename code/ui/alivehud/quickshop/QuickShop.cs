@@ -154,6 +154,24 @@ namespace TTTReborn.UI
             QuickShop.Instance?.Reload();
         }
 
+        [Event(TTTEvent.Player.Role.Select)]
+        public static void OnRoleChanged(TTTPlayer player)
+        {
+            QuickShop quickShop = QuickShop.Instance;
+
+            if (quickShop != null)
+            {
+                if (player.Shop == null || !player.Shop.Accessable())
+                {
+                    quickShop.Enabled = false;
+                }
+                else if (quickShop.Enabled)
+                {
+                    quickShop.Update();
+                }
+            }
+        }
+
         public override void Tick()
         {
             base.Tick();

@@ -21,6 +21,8 @@ namespace TTTReborn.UI
     {
         public string Title { get; private set; } = "";
 
+        public string ClassName { get; private set; } = "";
+
         public bool CanPrevious
         {
             get
@@ -111,6 +113,7 @@ namespace TTTReborn.UI
             PanelContentData panelContentData = _contentHistory[_historyIndex];
 
             Title = panelContentData.Title;
+            ClassName = panelContentData.ClassName;
 
             panelContentData.Content(this);
 

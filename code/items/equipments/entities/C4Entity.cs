@@ -10,8 +10,8 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
+    [Library("entity_c4")]
     [Hammer.Skip]
-    [Library("ttt_c4_ent")]
     public partial class C4Entity : Prop, IUse, IEntityHint
     {
         public struct C4Preset

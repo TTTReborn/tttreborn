@@ -1,16 +1,16 @@
-using System.Linq;
-
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.Map
 {
     [Library("ttt_role_button", Description = "Used to provide an onscreen button for a role to activate.")]
     public partial class TTTRoleButton : Entity
     {
-        //We don't want to touch these variables as they are the "reset" standard.
-        //Exposed to Hammer, so change them there.
+        // We don't want to touch these variables as they are the "reset" standard.
+        // Exposed to Hammer, so change them there.
         [Property("Role", "Role which this button is exposed to. Please don't give innocents buttons.")]
         public string Role
         {
@@ -20,7 +20,7 @@ namespace TTTReborn.Map
                 _role = value?.ToLower();
             }
         }
-        private string _role = "traitor";
+        private string _role = Utils.GetLibraryName(typeof(TraitorRole));
 
         [Property("Description", "On screen tooltip shown on button")]
         [Net]
@@ -38,7 +38,7 @@ namespace TTTReborn.Map
         [Property("Locked", "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input.")]
         public bool Locked { get; private set; } = false;
 
-        //Tracks button state.
+        // Tracks button state.
         [Net]
         public bool IsLocked { get; set; }
 
@@ -58,7 +58,7 @@ namespace TTTReborn.Map
 
         public TTTRoleButton()
         {
-            Transmit = TransmitType.Always; //Make sure our clients receive the button entity.
+            Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
 
             if (IsServer)
             {
@@ -66,7 +66,7 @@ namespace TTTReborn.Map
             }
         }
 
-        //(Re)initialize our variables to default. Runs at preround as well as during construction
+        // (Re)initialize our variables to default. Runs at preround as well as during construction
         public void Cleanup()
         {
             Host.AssertServer();
@@ -77,16 +77,13 @@ namespace TTTReborn.Map
             NextUse = 0;
         }
 
-        public void OnSecond() //Hijack the round timer to tick on every second. No reason to tick any faster.
+        public void OnSecond() // Hijack the round timer to tick on every second. No reason to tick any faster.
         {
             Host.AssertServer();
 
-            if (HasDelay && IsDelayed && !IsRemoved) //Check timer if button has delayed, no reason to check if button is removed.
+            if (HasDelay && IsDelayed && !IsRemoved && NextUse <= 0) // Check timer if button has delayed, no reason to check if button is removed.
             {
-                if (NextUse <= 0)
-                {
-                    IsDelayed = false;
-                }
+                IsDelayed = false;
             }
         }
 
@@ -95,9 +92,9 @@ namespace TTTReborn.Map
         {
             Host.AssertServer();
 
-            if (!IsDisabled) //Make sure button is not delayed, locked or removed.
+            if (!IsDisabled) // Make sure button is not delayed, locked or removed.
             {
-                OnPressed.Fire(activator); //Fire Hammer IO
+                OnPressed.Fire(activator); // Fire Hammer IO
 
                 if (RemoveOnPress)
                 {
@@ -116,11 +113,12 @@ namespace TTTReborn.Map
             }
         }
 
-        //Hammer IO
+        // Hammer IO
         [Input]
         public void Lock()
         {
             Host.AssertServer();
+
             IsLocked = true;
         }
 
@@ -128,6 +126,7 @@ namespace TTTReborn.Map
         public void Unlock()
         {
             Host.AssertServer();
+
             IsLocked = false;
         }
 
@@ -135,12 +134,13 @@ namespace TTTReborn.Map
         public void Toggle()
         {
             Host.AssertServer();
+
             IsLocked = !IsLocked;
         }
 
         public bool CanUse() => !IsDisabled;
 
-        //Convert starter data to struct to network to clients for UI display.
+        // Convert starter data to struct to network to clients for UI display.
         public TTTRoleButtonData PackageData()
         {
             return new TTTRoleButtonData()
@@ -153,7 +153,7 @@ namespace TTTReborn.Map
         }
     }
 
-    //Package up our data nice and neat for transmission to the client.
+    // Package up our data nice and neat for transmission to the client.
     public struct TTTRoleButtonData
     {
         public int NetworkIdent;
@@ -161,5 +161,4 @@ namespace TTTReborn.Map
         public Vector3 Position;
         public bool IsDisabled;
     }
-
 }
