@@ -43,6 +43,21 @@ namespace TTTReborn.Teams
 
     public static class TeamFunctions
     {
+        public static TTTTeam TryGetTeam(string teamname)
+        {
+            if (teamname == null)
+            {
+                return null;
+            }
+
+            if (!TTTTeam.Teams.TryGetValue(teamname, out TTTTeam team))
+            {
+                return null;
+            }
+
+            return team;
+        }
+
         public static TTTTeam GetTeam(string teamname)
         {
             if (teamname == null)

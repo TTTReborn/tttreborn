@@ -95,7 +95,7 @@ namespace TTTReborn.Player
 
                 foreach (Client client in Client.All)
                 {
-                    if ((client.Pawn as TTTPlayer).Team.Name == "Traitors")
+                    if ((client.Pawn as TTTPlayer).Team.GetType() == typeof(TraitorTeam))
                     {
                         traitors.Add(client);
                     }
