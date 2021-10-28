@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -12,8 +13,9 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "";
         public override bool CanDrop() => false;
 
-        private const float MAX_PICKUP_WEIGHT = 205;
+        private const float MAX_PICKUP_MASS = 205;
         private const float MAX_PICKUP_DISTANCE = 75;
+        private Vector3 MAX_PICKUP_SIZE = new(50, 50, 50);
 
         public Entity GrabbedEntity { get; set; }
 
@@ -66,7 +68,20 @@ namespace TTTReborn.Items
                 .EntitiesOnly()
                 .Run();
 
-            if (!tr.Hit || !tr.Entity.IsValid() || tr.Entity is WorldEntity || tr.Entity is TTTPlayer || tr.Entity.Parent != null || tr.Entity?.PhysicsGroup?.Mass > MAX_PICKUP_WEIGHT)
+            // Make sure trace is hit and not null.
+            if (!tr.Hit || !tr.Entity.IsValid())
+            {
+                return;
+            }
+
+            // Cannot pickup players or objects currently being held.
+            if (tr.Entity is TTTPlayer || tr.Entity.Parent != null)
+            {
+                return;
+            }
+
+            // Has to be a model, smaller collision box than MAX_PICKUP_SIZE, mass less than MAX_PICKUP_MASS
+            if (tr.Entity is not ModelEntity model || model.CollisionBounds.Size.HasGreatorOrEqualAxis(MAX_PICKUP_SIZE) || tr.Entity.PhysicsGroup.Mass > MAX_PICKUP_MASS)
             {
                 return;
             }
