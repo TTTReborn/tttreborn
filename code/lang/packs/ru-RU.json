@@ -41,14 +41,16 @@
     "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Игроков",
     "SCOREBOARD_SERVER_INFO": "{0} игроков. Карта: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} игроков осталось",
+
+    "SCOREBOARD_GROUP_ALIVE": "Живые",
+    "SCOREBOARD_GROUP_DEAD": "Мертвые",
+    "SCOREBOARD_GROUP_MISSING": "Пропавшие без вести",
+    "SCOREBOARD_GROUP_SPECTATOR": "Наблюдатели",
+
     "SCOREBOARD_PLAYER_STATUS_KARMA": "Карма",
     "SCOREBOARD_PLAYER_STATUS_DEATHS": "Смерти",
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Счет",
     "SCOREBOARD_PLAYER_STATUS_PING": "Задержка",
-    "SCOREBOARD_PLAYER_GROUP_ALIVE": "Живые",
-    "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Мертвые",
-    "SCOREBOARD_PLAYER_GROUP_MIA": "Пропавшие без вести",
-    "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Наблюдатели",
 
     "REALM_CLIENT": "Клиент",
     "REALM_SERVER": "Сервер",

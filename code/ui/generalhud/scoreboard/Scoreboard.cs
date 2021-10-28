@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
 using TTTReborn.Player;

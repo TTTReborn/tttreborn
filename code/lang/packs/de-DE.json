@@ -40,18 +40,19 @@
 
     "SCOREBOARD_GAMEMODE": "{0} Server",
     "SCOREBOARD_CREATEDBY": "Erstellt von {0}",
-
     "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Spieler",
     "SCOREBOARD_SERVER_INFO": "{0} Spieler. Map: {1}",
     "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} Spieler verbleibend",
+
+    "SCOREBOARD_GROUP_ALIVE": "Lebendig",
+    "SCOREBOARD_GROUP_DEAD": "Bestätigte Tode",
+    "SCOREBOARD_GROUP_MISSING": "Vermisst",
+    "SCOREBOARD_GROUP_SPECTATOR": "Zuschauer",
+
     "SCOREBOARD_PLAYER_STATUS_KARMA": "Karma",
     "SCOREBOARD_PLAYER_STATUS_DEATHS": "Tode",
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Punkte",
     "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
-    "SCOREBOARD_PLAYER_GROUP_ALIVE": "Lebendig",
-    "SCOREBOARD_PLAYER_GROUP_CONFIRMED": "Bestätigte Tode",
-    "SCOREBOARD_PLAYER_GROUP_MIA": "Vermisst",
-    "SCOREBOARD_PLAYER_GROUP_SPECTATORS": "Zuschauer",
 
     "REALM_CLIENT": "Client",
     "REALM_SERVER": "Server",
