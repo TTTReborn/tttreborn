@@ -29,6 +29,11 @@ namespace TTTReborn.Roles
             {
                 foreach (TTTPlayer otherPlayer in player.Team.Members)
                 {
+                    if (otherPlayer == player)
+                    {
+                        continue;
+                    }
+
                     player.SendClientRole(To.Single(otherPlayer));
                     otherPlayer.SendClientRole(To.Single(player));
                 }

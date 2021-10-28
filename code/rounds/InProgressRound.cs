@@ -4,6 +4,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Map;
@@ -37,6 +38,20 @@ namespace TTTReborn.Rounds
         {
             base.OnPlayerLeave(player);
             ChangeRoundIfOver();
+        }
+
+        [Event(TTTEvent.Player.Role.Select)]
+        private static void OnPlayerRoleChange(TTTPlayer player)
+        {
+            if (Host.IsClient)
+            {
+                return;
+            }
+
+            if ((Game.Current as TTTReborn.Gamemode.Game).Round is InProgressRound inProgressRound)
+            {
+                inProgressRound.ChangeRoundIfOver();
+            }
         }
 
         protected override void OnStart()
@@ -210,6 +225,7 @@ namespace TTTReborn.Rounds
         private void ChangeRoundIfOver()
         {
             TTTTeam result = IsRoundOver();
+
             if (result != null)
             {
                 LoadPostRound(result);
