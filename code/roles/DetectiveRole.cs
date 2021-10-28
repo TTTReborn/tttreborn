@@ -16,7 +16,7 @@ namespace TTTReborn.Roles
 
         public override int DefaultCredits => 100;
 
-        public override Type DefaultTeamType => typeof(InnocentTeam);
+        public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(InnocentTeam));
 
         public DetectiveRole() : base()
         {
@@ -25,7 +25,7 @@ namespace TTTReborn.Roles
 
         public override void OnSelect(TTTPlayer player)
         {
-            if (Host.IsServer && player.Team.GetType() == DefaultTeamType)
+            if (Host.IsServer && player.Team == DefaultTeam)
             {
                 foreach (TTTPlayer otherPlayer in Utils.GetPlayers((pl) => pl != player))
                 {

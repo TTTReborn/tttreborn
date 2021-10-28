@@ -37,7 +37,7 @@ namespace TTTReborn.Player
             {
                 if (_team == null)
                 {
-                    _team = NoneTeam.Instance;
+                    _team = TeamFunctions.GetTeam(typeof(NoneTeam));
                 }
 
                 return _team;
@@ -57,7 +57,7 @@ namespace TTTReborn.Player
             Role?.OnDeselect(this);
 
             Role = role;
-            Team = team ?? TeamFunctions.GetTeamByType(Role.DefaultTeamType);
+            Team = team ?? Role.DefaultTeam;
 
             if (oldTeam != Team)
             {
