@@ -85,14 +85,9 @@ namespace TTTReborn.Items
             {
                 return !player.Inventory.Perks.Has(Name);
             }
-
-            if (SlotType == null)
+            else if (SlotType == null)
             {
                 return false;
-            }
-            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
-            {
-                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType.Value);
             }
             else if (Type.IsSubclassOf(typeof(TTTWeapon)))
             {
