@@ -34,7 +34,6 @@ namespace TTTReborn.UI.VisualProgramming
             SelectedRole = role;
 
             Style.BackgroundColor = role.Color;
-            Style.Dirty();
         }
 
         public override void Build(params object[] input)

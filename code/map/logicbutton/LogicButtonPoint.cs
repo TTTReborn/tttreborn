@@ -61,7 +61,6 @@ namespace TTTReborn.UI
             if (_entity.IsDisabled)
             {
                 Style.Display = DisplayMode.None;
-                Style.Dirty();
 
                 // Make sure our client is no longer tracking this element.
                 if (TTTPlayer.FocusedButton == this)
@@ -93,8 +92,6 @@ namespace TTTReborn.UI
                 {
                     TTTPlayer.FocusedButton = null;
                 }
-
-                Style.Dirty();
             }
         }
 

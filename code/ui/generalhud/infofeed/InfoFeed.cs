@@ -39,7 +39,6 @@ namespace TTTReborn.UI
 
             Label label = e.AddLabel(method, "method");
             label.Style.FontColor = color ?? Color.White;
-            label.Style.Dirty();
 
             return e;
         }

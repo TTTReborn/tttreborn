@@ -32,7 +32,6 @@ namespace TTTReborn.UI
             Enabled = true;
 
             Style.ZIndex = -1;
-            Style.Dirty();
         }
 
         public override void Tick()
@@ -47,7 +46,6 @@ namespace TTTReborn.UI
             if (playerController.Breath < DefaultWalkController.MAX_BREATH)
             {
                 _breathBar.Style.Width = Length.Percent(playerController.Breath);
-                _breathBar.Style.Dirty();
             }
 
             _breathLabel.Text = playerController.Breath.ToString("F0");
