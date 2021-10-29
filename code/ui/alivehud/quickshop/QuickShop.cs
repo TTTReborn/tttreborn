@@ -5,6 +5,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
@@ -21,7 +22,7 @@ namespace TTTReborn.UI
         private Panel _quickshopContainer;
         private Label _creditLabel;
         private Panel _itemPanel;
-        private Label _itemDescriptionLabel;
+        private TranslationLabel _itemDescriptionLabel;
 
         private int _credits = 0;
 
@@ -59,7 +60,7 @@ namespace TTTReborn.UI
             _itemPanel = new Panel(_quickshopContainer);
             _itemPanel.AddClass("item-panel");
 
-            _itemDescriptionLabel = _quickshopContainer.Add.Label();
+            _itemDescriptionLabel = _quickshopContainer.Add.TranslationLabel();
             _itemDescriptionLabel.AddClass("item-description-label");
 
             Reload();
@@ -144,7 +145,7 @@ namespace TTTReborn.UI
 
             if (_selectedItemData != null)
             {
-                _itemDescriptionLabel.Text = $"The description for {_selectedItemData?.Name} will go here";
+                _itemDescriptionLabel.SetTranslation("QUICKSHOP_ITEM_DESCRIPTION", new TranslationData(_selectedItemData?.Name.ToUpper()));
             }
         }
 
