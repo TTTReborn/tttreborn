@@ -11,7 +11,7 @@ namespace TTTReborn.Map
     public partial class TTTForceWin : Entity
     {
         [Property("Team", "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams.")]
-        public string Team { get; set; } = "None";
+        public string Team { get; set; } = TeamFunctions.GetTeam(typeof(InnocentTeam)).Name;
 
         [Property("Use Activators Team", "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player.")]
         public bool UseActivatorsTeam { get; set; } = false;
@@ -33,14 +33,16 @@ namespace TTTReborn.Map
             }
             else
             {
-                winningTeam = TeamFunctions.GetTeam(Team);
+                winningTeam = TeamFunctions.TryGetTeam(Team);
             }
 
             if (winningTeam != null)
             {
                 ForceEndRound(winningTeam);
+
                 return;
             }
+
             Log.Warning($"ttt_force_win: Failed to grant win to team: {Team}, invalid or nonexistant team name.");
         }
 

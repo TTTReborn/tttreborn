@@ -18,7 +18,7 @@ namespace TTTReborn.Rounds
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
-        private List<TTTRoleButton> RoleButtons;
+        private List<TTTLogicButton> LogicButtons;
 
         public override int RoundDuration
         {
@@ -85,7 +85,7 @@ namespace TTTReborn.Rounds
                 }
 
                 // Cache buttons for OnSecond tick.
-                RoleButtons = Entity.All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton).ToList();
+                LogicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
 
                 AssignRoles();
             }
@@ -218,7 +218,7 @@ namespace TTTReborn.Rounds
             {
                 base.OnSecond();
 
-                RoleButtons.ForEach(x => x.OnSecond()); // Tick role button delay timer.
+                LogicButtons.ForEach(x => x.OnSecond()); // Tick role button delay timer.
 
                 if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {

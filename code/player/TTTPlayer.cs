@@ -204,7 +204,7 @@ namespace TTTReborn.Player
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
             TickPlayerShop();
-            TickRoleButtonActivate();
+            TickLogicButtonActivate();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
