@@ -9,13 +9,13 @@ using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
-    public class RoleButtonPoint : Panel
+    public class LogicButtonPoint : Panel
     {
         // Our data we received initially from the server during creation.
-        public TTTRoleButtonData Data { get; private set; }
+        public TTTLogicButtonData Data { get; private set; }
 
         // Our specific assigned Entity.
-        private TTTRoleButton _entity;
+        private TTTLogicButton _entity;
 
         // Position pulled from Data
         public Vector3 Position { get; private set; }
@@ -29,18 +29,18 @@ namespace TTTReborn.UI
         // Past this distance, the button is unusuable.
         private readonly int _maxViewDistance = 1024;
 
-        public RoleButtonPoint(TTTRoleButtonData data)
+        public LogicButtonPoint(TTTLogicButtonData data)
         {
             Data = data;
             Position = data.Position;
             _maxViewDistance = data.Range;
             _minViewDistance = Math.Min(_minViewDistance, _maxViewDistance / 2);
 
-            StyleSheet.Load("/map/RoleButton/RoleButtonPoint.scss");
+            StyleSheet.Load("/map/logicbutton/LogicButtonPoint.scss");
 
             Hud.Current.RootPanel.AddChild(this);
 
-            _entity = Entity.FindByIndex(Data.NetworkIdent) as TTTRoleButton;
+            _entity = Entity.FindByIndex(Data.NetworkIdent) as TTTLogicButton;
 
             _descriptionLabel = Add.Label(_entity.Description);
         }

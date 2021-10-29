@@ -36,12 +36,17 @@ namespace TTTReborn.Map
             {
                 case PreRound:
                     RoundPreparation.Fire(this);
+
                     break;
+
                 case InProgressRound:
                     RoundStart.Fire(this);
+
                     break;
+
                 case PostRound:
                     RoundEnd.Fire(this);
+
                     break;
             }
         }
