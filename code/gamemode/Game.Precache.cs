@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Items;
 
@@ -24,6 +25,8 @@ namespace TTTReborn.Gamemode
                     Precache.Add(precacheFile);
                 }
             }
+
+            Event.Run(TTTEvent.Game.Precache);
         }
     }
 }

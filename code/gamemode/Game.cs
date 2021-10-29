@@ -34,8 +34,6 @@ namespace TTTReborn.Gamemode
             if (IsServer)
             {
                 PrecacheFiles();
-
-                Event.Run(TTTEvent.Game.Precache);
             }
 
             TTTLanguage.Load();
