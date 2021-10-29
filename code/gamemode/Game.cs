@@ -16,7 +16,7 @@ namespace TTTReborn.Gamemode
 {
     [Hammer.Skip]
     [Library("tttreborn", Title = "Trouble in Terry's Town")]
-    partial class Game : Sandbox.Game
+    public partial class Game : Sandbox.Game
     {
         public static Game Instance { get; private set; }
 
@@ -30,6 +30,11 @@ namespace TTTReborn.Gamemode
         public Game()
         {
             Instance = this;
+
+            if (IsServer)
+            {
+                PrecacheFiles();
+            }
 
             TTTLanguage.Load();
             SettingsManager.Load();

@@ -8,6 +8,7 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Library("entity_healthstation")]
+    [Precached("models/entities/healthstation.vmdl")]
     public partial class HealthstationEntity : Prop, IUse, IEntityHint
     {
         [Net]
@@ -15,7 +16,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        private string ModelPath => "models/entities/healthstation.vmdl";
+        public override string ModelPath => "models/entities/healthstation.vmdl";
 
         private RealTimeUntil NextHeal = 0;
 
