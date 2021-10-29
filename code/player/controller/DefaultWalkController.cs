@@ -52,6 +52,8 @@ namespace TTTReborn.Player
         {
             GroundFriction = 8f;
             DefaultSpeed = 175f;
+
+            Duck = new Duck(this);
         }
 
         public override void Simulate()
