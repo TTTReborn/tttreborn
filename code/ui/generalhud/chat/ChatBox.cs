@@ -114,8 +114,6 @@ namespace TTTReborn.UI
             _inputPanel.SetClass("opacity-heavy", true);
             _inputPanel.SetClass("open", true);
 
-            _inputPanel.Style.Dirty();
-
             _inputField.Focus();
         }
 
@@ -221,7 +219,6 @@ namespace TTTReborn.UI
             }
 
             chatEntry.SetClass("show-header", showHeader);
-            chatEntry.Style.Dirty();
 
             Messages.Add(chatEntry);
         }

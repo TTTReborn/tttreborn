@@ -34,7 +34,6 @@ namespace TTTReborn.UI
             Enabled = true;
 
             Style.ZIndex = -1;
-            Style.Dirty();
         }
 
         public override void Tick()
@@ -49,7 +48,6 @@ namespace TTTReborn.UI
             if (playerController.Stamina < DefaultWalkController.MAX_STAMINA)
             {
                 _staminaBar.Style.Width = Length.Percent(playerController.Stamina);
-                _staminaBar.Style.Dirty();
             }
 
             _staminaLabel.Text = playerController.Stamina.ToString("F0");

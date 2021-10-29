@@ -31,7 +31,6 @@ namespace TTTReborn.UI
             SetTranslationData(descriptionTranslationKey, args);
 
             _inspectIcon.Style.BackgroundImage = Texture.Load(imagePath, false) ?? Texture.Load($"/ui/none.png");
-            _inspectIcon.Style.Dirty();
         }
 
         public void SetTranslationData(string descriptionTranslationKey, params object[] args)
