@@ -9,7 +9,7 @@ namespace TTTReborn.Map
     [Library("ttt_logic_button", Description = "Used to provide an onscreen button for a team or special role to activate.")]
     public partial class TTTLogicButton : Entity
     {
-        [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`. We suggest using teams instead of roles in order to support upcoming roles.")]
+        [Property("Check Value", "Note that teams are often plural. For example, check the `Team` for `team_traitors`, but check the `Role` for `role_traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team.")]
         public string CheckValue
         {
             get => _checkValue;
