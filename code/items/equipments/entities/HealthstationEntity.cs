@@ -8,6 +8,7 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Library("entity_healthstation")]
+    [Precached("models/entities/healthstation.vmdl")]
     public partial class HealthstationEntity : Prop, IUse, IEntityHint
     {
         [Net]

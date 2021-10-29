@@ -9,6 +9,7 @@ namespace TTTReborn.Items
 {
     [Library("equipment_magnetostick")]
     [Equipment(SlotType = SlotType.UtilityEquipment)]
+    [Precached("particles/rope.vpcf")]
     [Hammer.Skip]
     partial class MagnetoStick : TTTEquipment
     {
