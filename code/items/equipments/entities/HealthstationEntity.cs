@@ -15,7 +15,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        private string ModelPath => "models/entities/healthstation.vmdl";
+        public override string ModelPath => "models/entities/healthstation.vmdl";
 
         private RealTimeUntil NextHeal = 0;
 

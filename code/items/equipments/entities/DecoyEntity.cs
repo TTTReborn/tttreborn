@@ -6,7 +6,7 @@ namespace TTTReborn.Items
     [Hammer.Skip]
     public partial class DecoyEntity : Prop
     {
-        private string ModelPath => "models/entities/decoy.vmdl";
+        public override string ModelPath => "models/entities/decoy.vmdl";
 
         public override void Spawn()
         {

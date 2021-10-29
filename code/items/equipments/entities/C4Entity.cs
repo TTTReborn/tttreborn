@@ -59,7 +59,7 @@ namespace TTTReborn.Items
             },
         };
 
-        private string ModelPath => "models/entities/c4.vmdl";
+        public override string ModelPath => "models/entities/c4.vmdl";
 
         public float HintDistance => 80f;
 

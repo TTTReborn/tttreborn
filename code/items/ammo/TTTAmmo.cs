@@ -33,7 +33,7 @@ namespace TTTReborn.Items
         /// </summary>
         protected Output OnPickup { get; set; }
 
-        public virtual string ModelPath => "models/ammo/ammo_buckshot.vmdl";
+        public override string ModelPath => "models/ammo/ammo_buckshot.vmdl";
 
         public override void Spawn()
         {
