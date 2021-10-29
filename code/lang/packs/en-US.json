@@ -55,6 +55,7 @@
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Score",
     "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
 
+    "QUICKSHOP_CREDITS_DESCRIPTION": "You have ${0}",
     "QUICKSHOP_ITEM_DESCRIPTION": "The description for {0} will go here.",
 
     "REALM_CLIENT": "Client",

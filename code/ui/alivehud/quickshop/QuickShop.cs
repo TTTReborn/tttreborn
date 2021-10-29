@@ -20,7 +20,7 @@ namespace TTTReborn.UI
         private readonly List<QuickShopItem> _items = new();
         private Panel _backgroundPanel;
         private Panel _quickshopContainer;
-        private Label _creditLabel;
+        private TranslationLabel _creditLabel;
         private Panel _itemPanel;
         private TranslationLabel _itemDescriptionLabel;
 
@@ -54,7 +54,7 @@ namespace TTTReborn.UI
             _quickshopContainer = new Panel(this);
             _quickshopContainer.AddClass("quickshop-container");
 
-            _creditLabel = _quickshopContainer.Add.Label();
+            _creditLabel = _quickshopContainer.Add.TranslationLabel();
             _creditLabel.AddClass("credit-label");
 
             _itemPanel = new Panel(_quickshopContainer);
@@ -133,7 +133,7 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            _creditLabel.Text = $"You have ${_credits}";
+            _creditLabel.SetTranslation("QUICKSHOP_CREDITS_DESCRIPTION", _credits);
 
             foreach (QuickShopItem item in _items)
             {
