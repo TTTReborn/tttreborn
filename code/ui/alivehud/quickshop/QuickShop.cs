@@ -122,7 +122,7 @@ namespace TTTReborn.UI
 
                 if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
                 {
-                    ConsoleSystem.Run("ttt_requestitem", item.ItemData?.Name);
+                    TTTPlayer.RequestItem(item.ItemData?.Name);
                 }
 
                 Update();
