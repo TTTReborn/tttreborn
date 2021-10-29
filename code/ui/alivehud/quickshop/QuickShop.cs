@@ -71,6 +71,8 @@ namespace TTTReborn.UI
         {
             _itemPanel.DeleteChildren(true);
 
+            _selectedItemData = null;
+
             if (Local.Pawn is not TTTPlayer player)
             {
                 return;
@@ -85,10 +87,7 @@ namespace TTTReborn.UI
 
             foreach (ShopItemData itemData in shop.Items)
             {
-                if (_selectedItemData == null)
-                {
-                    _selectedItemData = itemData;
-                }
+                _selectedItemData ??= itemData;
 
                 AddItem(itemData);
             }
