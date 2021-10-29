@@ -26,7 +26,6 @@ namespace TTTReborn.UI
             Style.SetBackgroundImage(Texture.Load("/ui/damageindicator/default.png"));
 
             Style.ZIndex = -1;
-            Style.Dirty();
         }
 
         [Event(TTTEvent.Player.TakeDamage)]
@@ -86,8 +85,6 @@ namespace TTTReborn.UI
 
                 Style.Display = DisplayMode.None;
             }
-
-            Style.Dirty();
         }
     }
 }

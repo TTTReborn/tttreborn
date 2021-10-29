@@ -252,7 +252,6 @@ namespace TTTReborn.UI
             foreach (ScoreboardGroup value in _scoreboardGroups.Values)
             {
                 value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
-                value.Style.Dirty();
             }
         }
     }

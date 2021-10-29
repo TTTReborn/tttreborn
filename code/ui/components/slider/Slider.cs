@@ -61,7 +61,10 @@ namespace TTTReborn.UI
                 float snapped = Step > 0 ? value.SnapToGrid(Step) : value;
                 snapped = snapped.Clamp(MinValue, MaxValue);
 
-                if (_value == snapped) return;
+                if (_value == snapped)
+                {
+                    return;
+                }
 
                 _value = snapped;
 
@@ -75,27 +78,34 @@ namespace TTTReborn.UI
             if (name == "min" && float.TryParse(value, out float floatValue))
             {
                 MinValue = floatValue;
+
                 UpdateSliderPositions();
+
                 return;
             }
 
             if (name == "step" && float.TryParse(value, out floatValue))
             {
                 Step = floatValue;
+
                 UpdateSliderPositions();
+
                 return;
             }
 
             if (name == "max" && float.TryParse(value, out floatValue))
             {
                 MaxValue = floatValue;
+
                 UpdateSliderPositions();
+
                 return;
             }
 
             if (name == "value" && float.TryParse(value, out floatValue))
             {
                 Value = floatValue;
+
                 return;
             }
 
@@ -111,6 +121,7 @@ namespace TTTReborn.UI
             float thumbSize = Thumb.Box.Rect.width * 0.5f;
             float normalized = MathX.LerpInverse(localPos.x, thumbSize, Box.Rect.width - thumbSize, true);
             float scaled = MathX.LerpTo(MinValue, MaxValue, normalized, true);
+
             return Step > 0 ? scaled.SnapToGrid(Step) : scaled;
         }
 
@@ -122,7 +133,10 @@ namespace TTTReborn.UI
         {
             base.OnMouseMove(e);
 
-            if (!HasActive) return;
+            if (!HasActive)
+            {
+                return;
+            }
 
             Value = ScreenPosToValue(Mouse.Position);
             UpdateSliderPositions();
@@ -160,11 +174,7 @@ namespace TTTReborn.UI
 
             TrackInner.Style.Width = Length.Fraction(pos);
             Thumb.Style.Left = Length.Fraction(pos);
-
-            TrackInner.Style.Dirty();
-            Thumb.Style.Dirty();
         }
-
     }
 
     namespace Construct

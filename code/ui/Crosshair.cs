@@ -82,7 +82,6 @@ namespace TTTReborn.UI
             }
 
             Style.ZIndex = -1;
-            Style.Dirty();
 
             UpdateCrosshair();
         }
@@ -110,8 +109,6 @@ namespace TTTReborn.UI
                 {
                     _crosshairDot.Style.BoxShadow.Add(shadow);
                 }
-
-                _crosshairDot.Style.Dirty();
             }
             #endregion
 
@@ -145,12 +142,8 @@ namespace TTTReborn.UI
                 {
                     _crosshairLines[i].Style.BoxShadow.Add(shadow);
                 }
-
-                _crosshairLines[i].Style.Dirty();
             }
             #endregion
-
-            Style.Dirty();
         }
     }
 }

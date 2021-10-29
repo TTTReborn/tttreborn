@@ -313,8 +313,6 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Style.Top = Sandbox.UI.Length.Pixels(float.Parse(posY.ToString()));
             }
-
-            Style.Dirty();
         }
 
         public static T GetNodeFromJsonData<T>(Dictionary<string, object> jsonData) where T : Node

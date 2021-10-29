@@ -59,7 +59,6 @@ namespace TTTReborn.UI
 
             Style.Left = Length.Fraction(screenPos.x);
             Style.Top = Length.Fraction(screenPos.y);
-            Style.Dirty();
         }
     }
 
@@ -74,7 +73,6 @@ namespace TTTReborn.UI
             AddClass("fullscreen");
 
             Style.ZIndex = -1;
-            Style.Dirty();
         }
     }
 }

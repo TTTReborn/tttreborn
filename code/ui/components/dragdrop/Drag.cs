@@ -55,7 +55,6 @@ namespace TTTReborn.UI
                 _isFreeDraggable = value;
 
                 DragBasePanel.Style.Position = PositionMode.Absolute;
-                DragBasePanel.Style.Dirty();
             }
         }
         private bool _isFreeDraggable = false;
@@ -205,8 +204,6 @@ namespace TTTReborn.UI
         {
             DragBasePanel.Style.Left = Length.Pixels(left);
             DragBasePanel.Style.Top = Length.Pixels(top);
-
-            DragBasePanel.Style.Dirty();
         }
 
         public virtual void OnDragPanelFinished()
@@ -224,8 +221,6 @@ namespace TTTReborn.UI
                 {
                     DragBasePanel.Style.Left = null;
                     DragBasePanel.Style.Top = null;
-
-                    DragBasePanel.Style.Dirty();
                 }
             }
         }
@@ -234,8 +229,6 @@ namespace TTTReborn.UI
         {
             DragBasePanel.Style.Left = _oldPositionLeft;
             DragBasePanel.Style.Top = _oldPositionTop;
-
-            DragBasePanel.Style.Dirty();
         }
 
         private Drop GetDropPanel()

@@ -41,7 +41,6 @@ namespace TTTReborn.UI
             Style.Left = Length.Pixels(rect.left);
             Style.Top = Length.Pixels(rect.bottom);
             Style.Width = Length.Pixels(rect.width);
-            Style.Dirty();
         }
     }
 }
