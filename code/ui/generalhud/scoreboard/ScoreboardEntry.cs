@@ -60,8 +60,6 @@ namespace TTTReborn.UI
                 Style.BackgroundColor = null;
             }
 
-            Style.Dirty();
-
             _playerAvatar.SetTexture($"avatar:{Client.SteamId}");
         }
 

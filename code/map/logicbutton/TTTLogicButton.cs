@@ -2,25 +2,23 @@ using Sandbox;
 
 using TTTReborn.Globals;
 using TTTReborn.Player;
-using TTTReborn.Roles;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Map
 {
-    [Library("ttt_role_button", Description = "Used to provide an onscreen button for a role to activate.")]
-    public partial class TTTRoleButton : Entity
+    [Library("ttt_logic_button", Description = "Used to provide an onscreen button for a team or special role to activate.")]
+    public partial class TTTLogicButton : Entity
     {
-        // We don't want to touch these variables as they are the "reset" standard.
-        // Exposed to Hammer, so change them there.
-        [Property("Role", "Role which this button is exposed to. Please don't give innocents buttons.")]
-        public string Role
+        [Property("Check Value", "Note that teams are often plural. For example, check the `Team` for `team_traitors`, but check the `Role` for `role_traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team.")]
+        public string CheckValue
         {
-            get => _role;
-            private set
+            get => _checkValue;
+            set
             {
-                _role = value?.ToLower();
+                _checkValue = value?.ToLower();
             }
         }
-        private string _role = Utils.GetLibraryName(typeof(TraitorRole));
+        private string _checkValue = Utils.GetLibraryName(typeof(TraitorTeam));
 
         [Property("Description", "On screen tooltip shown on button")]
         [Net]
@@ -56,7 +54,7 @@ namespace TTTReborn.Map
 
         protected Output OnPressed { get; set; }
 
-        public TTTRoleButton()
+        public TTTLogicButton()
         {
             Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
 
@@ -141,9 +139,9 @@ namespace TTTReborn.Map
         public bool CanUse() => !IsDisabled;
 
         // Convert starter data to struct to network to clients for UI display.
-        public TTTRoleButtonData PackageData()
+        public TTTLogicButtonData PackageData()
         {
-            return new TTTRoleButtonData()
+            return new TTTLogicButtonData()
             {
                 NetworkIdent = NetworkIdent,
                 Range = Range,
@@ -154,7 +152,7 @@ namespace TTTReborn.Map
     }
 
     // Package up our data nice and neat for transmission to the client.
-    public struct TTTRoleButtonData
+    public struct TTTLogicButtonData
     {
         public int NetworkIdent;
         public int Range;

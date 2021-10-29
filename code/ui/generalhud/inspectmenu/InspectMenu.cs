@@ -139,7 +139,6 @@ namespace TTTReborn.UI
 
             _roleLabel.SetTranslation(_playerCorpse.Player?.Role.GetRoleTranslationKey("NAME"));
             _roleLabel.Style.FontColor = _playerCorpse.Player?.Role.Color;
-            _roleLabel.Style.Dirty();
 
             SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
 

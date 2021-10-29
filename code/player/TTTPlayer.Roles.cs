@@ -6,7 +6,6 @@ using TTTReborn.Globals;
 using TTTReborn.Roles;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
-using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -69,7 +68,7 @@ namespace TTTReborn.Player
         }
 
         /// <summary>
-        /// Sends the role and all connected additional data like role buttons of the current TTTPlayer to the given target or - if no target was provided - the player itself
+        /// Sends the role + team and all connected additional data like logic buttons of the current TTTPlayer to the given target or - if no target was provided - the player itself
         /// </summary>
         /// <param name="to">optional - The target</param>
         public void SendClientRole(To? to = null)
@@ -78,7 +77,7 @@ namespace TTTReborn.Player
 
             if (to == null || to.Value.ToString().Equals(Client.Name))
             {
-                SendRoleButtonsToClient();
+                SendLogicButtonsToClient();
             }
         }
 

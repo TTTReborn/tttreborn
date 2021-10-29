@@ -11,6 +11,7 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Library("entity_c4")]
+    [Precached("models/entities/c4.vmdl")]
     [Hammer.Skip]
     public partial class C4Entity : Prop, IUse, IEntityHint
     {
@@ -59,7 +60,7 @@ namespace TTTReborn.Items
             },
         };
 
-        private string ModelPath => "models/entities/c4.vmdl";
+        public override string ModelPath => "models/entities/c4.vmdl";
 
         public float HintDistance => 80f;
 

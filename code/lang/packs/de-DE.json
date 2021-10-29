@@ -55,6 +55,8 @@
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Punkte",
     "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
 
+    "QUICKSHOP_ITEM_DESCRIPTION": "Die Beschreibung für das Item '{0}' wird sich später an dieser Stelle befinden.",
+
     "REALM_CLIENT": "Client",
     "REALM_SERVER": "Server",
 

@@ -48,7 +48,7 @@ namespace TTTReborn.Rounds
                     {
                         randomWeapons.Add(rwep); //See above comment.
                     }
-                    if (entity is TTTRoleButton button)
+                    if (entity is TTTLogicButton button)
                     {
                         button.Cleanup();
                     }
@@ -63,7 +63,7 @@ namespace TTTReborn.Rounds
                 {
                     if (client.Pawn is TTTPlayer player)
                     {
-                        player.RemoveRoleButtons();
+                        player.RemoveLogicButtons();
                         player.Respawn();
                     }
                 }
