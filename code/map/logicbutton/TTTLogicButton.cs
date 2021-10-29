@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Teams;
 
@@ -17,7 +18,7 @@ namespace TTTReborn.Map
                 _checkValue = value?.ToLower();
             }
         }
-        private string _checkValue = TeamFunctions.GetTeam(typeof(TraitorTeam)).Name;
+        private string _checkValue = Utils.GetLibraryName(typeof(TraitorTeam));
 
         [Property("Description", "On screen tooltip shown on button")]
         [Net]

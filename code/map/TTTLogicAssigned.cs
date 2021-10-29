@@ -1,5 +1,6 @@
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
@@ -18,7 +19,7 @@ namespace TTTReborn.Map
                 _checkValue = value?.ToLower();
             }
         }
-        private string _checkValue = TeamFunctions.GetTeam(typeof(TraitorTeam)).Name;
+        private string _checkValue = Utils.GetLibraryName(typeof(TraitorTeam));
 
         /// <summary>
         /// Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass().
