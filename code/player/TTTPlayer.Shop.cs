@@ -78,6 +78,15 @@ namespace TTTReborn.Player
         public void RequestPurchase(Type itemType)
         {
             ShopItemData itemData = ShopItemData.CreateItemData(itemType);
+
+            foreach (ShopItemData loopItemData in Shop.Items)
+            {
+                if (loopItemData.Name.Equals(itemData.Name))
+                {
+                    itemData.CopyFrom(loopItemData);
+                }
+            }
+
             BuyError buyError = CanBuy(itemData);
 
             if (buyError != BuyError.None)

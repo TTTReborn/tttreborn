@@ -20,7 +20,7 @@ namespace TTTReborn.Gamemode
     {
         public static Game Instance { get; private set; }
 
-        [Net]
+        [Net, Change]
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
         public KarmaSystem Karma { get; private set; } = new();
@@ -73,6 +73,8 @@ namespace TTTReborn.Gamemode
         /// <param name="round"> The round to change to.</param>
         public void ForceRoundChange(BaseRound round)
         {
+            Host.AssertServer();
+
             Round.Finish();
 
             BaseRound oldRound = Round;
@@ -234,6 +236,11 @@ namespace TTTReborn.Gamemode
         private void OnGameSecond()
         {
             Round?.OnSecond();
+        }
+
+        public void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
+        {
+            Event.Run(TTTEvent.Game.RoundChange, oldRound, newRound);
         }
     }
 }
