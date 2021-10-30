@@ -93,6 +93,11 @@ namespace TTTReborn.UI
         [Event(TTTEvent.Player.Connected)]
         public void OnPlayerConnected(Client client)
         {
+            if (Host.IsServer)
+            {
+                return;
+            }
+
             if (client == Local.Client)
             {
                 Initialize();
@@ -114,6 +119,13 @@ namespace TTTReborn.UI
 
         public void AddClient(Client client)
         {
+            if (client == null)
+            {
+                Log.Warning("Tried to add a client that isn't valid");
+
+                return;
+            }
+
             if (_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
             {
                 return;

@@ -87,7 +87,8 @@ namespace TTTReborn.Player
             Animator = new StandardPlayerAnimator();
 
             EnableHideInFirstPerson = true;
-            EnableShadowInFirstPerson = true;
+            EnableShadowInFirstPerson = false;
+            EnableDrawing = true;
 
             Credits = 0;
 

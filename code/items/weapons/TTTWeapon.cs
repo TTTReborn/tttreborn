@@ -75,6 +75,8 @@ namespace TTTReborn.Items
                 }
             }
 
+            EnableShadowInFirstPerson = false;
+
             Tags.Add(IItem.ITEM_TAG);
         }
 
