@@ -105,7 +105,7 @@ namespace TTTReborn.Player
         }
 
         [Event(TTTEvent.Game.RoundChange)]
-        private static void OnRoundChanged(BaseRound _, BaseRound newRound)
+        private static void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
         {
             if (newRound is PreRound preRound)
             {
@@ -125,7 +125,7 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public static void ClientSendQuickshopUpdate()
+        public static void ClientSendQuickShopUpdate()
         {
             UpdateQuickShop();
         }
