@@ -24,6 +24,7 @@ namespace TTTReborn.Items
         public int Price { get; set; } = 0;
         public SlotType? SlotType = null;
         public Type Type = null;
+        public bool IsLimited { get; set; } = true;
 
         public ShopItemData(string name)
         {
@@ -36,6 +37,7 @@ namespace TTTReborn.Items
             Description = shopItemData.Description ?? Description;
             SlotType = shopItemData.SlotType ?? SlotType;
             Type = shopItemData.Type ?? Type;
+            IsLimited = shopItemData.IsLimited;
         }
 
         public ShopItemData Clone()
@@ -85,14 +87,9 @@ namespace TTTReborn.Items
             {
                 return !player.Inventory.Perks.Has(Name);
             }
-
-            if (SlotType == null)
+            else if (SlotType == null)
             {
                 return false;
-            }
-            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
-            {
-                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType.Value);
             }
             else if (Type.IsSubclassOf(typeof(TTTWeapon)))
             {

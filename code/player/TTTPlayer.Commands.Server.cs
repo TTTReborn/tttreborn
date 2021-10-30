@@ -96,14 +96,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IItem item = Utils.GetObjectByType<IItem>(itemType);
-
-            if (item == null)
-            {
-                return;
-            }
-
-            player.RequestPurchase(item);
+            player.RequestPurchase(itemType);
         }
 
         [ServerCmd(Name = "ttt_setrole")]
