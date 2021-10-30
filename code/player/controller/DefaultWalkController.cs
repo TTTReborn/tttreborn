@@ -30,7 +30,7 @@ namespace TTTReborn.Player
 
         public const float MAX_STAMINA = 100f;
         public const float MAX_SPRINT_SPEED = 400f;
-        public const float STAMINA_LOSS_PER_SECOND = 25f;
+        public const float STAMINA_LOSS_PER_SECOND = 15f;
         public const float STAMINA_LOSS_PER_SPRINT_JUMP = 30f;
         public const float STAMINA_GAIN_PER_SECOND = 10f;
 
