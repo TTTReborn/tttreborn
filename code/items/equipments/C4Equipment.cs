@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     /// C4 equipment definition, for the physical entity, see items/equipments/entities/C4Entity.cs
     /// </summary>
     [Library("equipment_c4")]
-    [Buyable(Price = 0)]
+    [Buyable(Price = 100)]
     [Equipment(SlotType = SlotType.OffensiveEquipment)]
     [Hammer.Skip]
     public partial class C4Equipment : TTTEquipment

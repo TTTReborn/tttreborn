@@ -9,7 +9,7 @@ namespace TTTReborn.Items
     /// </summary>
     [Library("equipment_decoy")]
     [Weapon(SlotType = SlotType.UtilityEquipment)]
-    [Buyable(Price = 0)]
+    [Buyable(Price = 100)]
     [Hammer.Skip]
     public partial class DecoyEquipment : TTTEquipment
     {

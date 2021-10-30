@@ -9,7 +9,7 @@ namespace TTTReborn.Items
     /// </summary>
     [Library("equipment_healthstation")]
     [Equipment(SlotType = SlotType.UtilityEquipment)]
-    [Buyable(Price = 0)]
+    [Buyable(Price = 100)]
     [Hammer.Skip]
     public partial class HealthStation : TTTEquipment
     {

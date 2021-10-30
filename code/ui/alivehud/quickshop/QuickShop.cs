@@ -20,7 +20,7 @@ namespace TTTReborn.UI
         private readonly List<QuickShopItem> _items = new();
         private Panel _backgroundPanel;
         private Panel _quickshopContainer;
-        private Label _creditLabel;
+        private TranslationLabel _creditLabel;
         private Panel _itemPanel;
         private TranslationLabel _itemDescriptionLabel;
 
@@ -54,7 +54,7 @@ namespace TTTReborn.UI
             _quickshopContainer = new Panel(this);
             _quickshopContainer.AddClass("quickshop-container");
 
-            _creditLabel = _quickshopContainer.Add.Label();
+            _creditLabel = _quickshopContainer.Add.TranslationLabel();
             _creditLabel.AddClass("credit-label");
 
             _itemPanel = new Panel(_quickshopContainer);
@@ -72,6 +72,8 @@ namespace TTTReborn.UI
         {
             _itemPanel.DeleteChildren(true);
 
+            _selectedItemData = null;
+
             if (Local.Pawn is not TTTPlayer player)
             {
                 return;
@@ -86,10 +88,7 @@ namespace TTTReborn.UI
 
             foreach (ShopItemData itemData in shop.Items)
             {
-                if (_selectedItemData == null)
-                {
-                    _selectedItemData = itemData;
-                }
+                _selectedItemData ??= itemData;
 
                 AddItem(itemData);
             }
@@ -123,7 +122,7 @@ namespace TTTReborn.UI
 
                 if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
                 {
-                    ConsoleSystem.Run("ttt_requestitem", item.ItemData?.Name);
+                    TTTPlayer.RequestItem(item.ItemData?.Name);
                 }
 
                 Update();
@@ -134,7 +133,7 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            _creditLabel.Text = $"You have ${_credits}";
+            _creditLabel.SetTranslation("QUICKSHOP_CREDITS_DESCRIPTION", _credits);
 
             foreach (QuickShopItem item in _items)
             {

@@ -56,7 +56,7 @@ namespace TTTReborn.UI.Menu
 
             languageSelection.OnSelectOption = (option) =>
             {
-                ConsoleSystem.Run("ttt_language", (string) option.Data);
+                TTTPlayer.ChangeLanguage((string) option.Data);
             };
 
             languageSelection.SelectByData(SettingsManager.Instance.General.Language);
