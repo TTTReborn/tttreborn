@@ -6,6 +6,7 @@ QuickShop {
     transition: all 0.15s ease-out;
     pointer-events: all;
     text-align: center;
+    z-index: 100;
 
     .quickshop-container {
         position: absolute;
