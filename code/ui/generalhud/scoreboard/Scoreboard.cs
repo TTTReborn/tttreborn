@@ -109,6 +109,13 @@ namespace TTTReborn.UI
 
         public void AddClient(Client client)
         {
+            if (client == null)
+            {
+                Log.Warning("Tried to add a client that isn't valid");
+
+                return;
+            }
+
             if (_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
             {
                 return;
