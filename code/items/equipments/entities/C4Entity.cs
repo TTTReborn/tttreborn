@@ -263,7 +263,7 @@ namespace TTTReborn.Items
         {
             Entity entity = FindByIndex(c4EntityIdent);
 
-            if (entity is not C4Entity { IsArmed: false } c4Entity)
+            if (entity is not C4Entity { IsArmed: false } c4Entity || c4Entity.Transform.Position.Distance(ConsoleSystem.Caller.Pawn.Position) > 100f)
             {
                 return;
             }
