@@ -13,6 +13,8 @@ Menu {
     pointer-events: all;
     flex-direction: column;
 
+    z-index: 10;
+
     .panel.header {
         min-height: 50px;
         height: 60px;

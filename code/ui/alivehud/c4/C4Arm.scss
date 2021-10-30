@@ -8,6 +8,8 @@ C4Arm {
     justify-content: center;
     align-items: center;
 
+    z-index: 50;
+
     .content-container {
         position: absolute;
         flex-direction: column;
