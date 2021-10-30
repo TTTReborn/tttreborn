@@ -33,6 +33,8 @@ namespace TTTReborn.Items
                     SlotType = equipmentAttribute.SlotType;
                 }
             }
+
+            EnableShadowInFirstPerson = false;
         }
 
         public void Equip(TTTPlayer player)
