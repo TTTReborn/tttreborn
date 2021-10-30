@@ -8,10 +8,10 @@ namespace TTTReborn.Items
 {
     interface IGrabbable
     {
-        public bool IsHolding { get; }
-        public void Grab(TTTPlayer player, TraceResult tr);
-        public void Drop();
-        public void Update(TTTPlayer player);
+        bool IsHolding { get; }
+        void Grab(TTTPlayer player, TraceResult tr);
+        void Drop();
+        void Update(TTTPlayer player);
     }
 
     class GrabbableProp : IGrabbable
@@ -49,7 +49,6 @@ namespace TTTReborn.Items
     {
         private PhysicsBody _handPhysicsBody;
         private WeldJoint _holdJoint;
-
 
         public bool IsHolding
         {
@@ -107,7 +106,6 @@ namespace TTTReborn.Items
         private IGrabbable GrabbedEntity;
         private bool IsHoldingEntity => GrabbedEntity != null && GrabbedEntity.IsHolding;
 
-
         public override void Spawn()
         {
             base.Spawn();
@@ -139,10 +137,8 @@ namespace TTTReborn.Items
                 {
                     GrabbedEntity?.Drop();
                 }
-                else if (IsHoldingEntity)
-                {
-                    GrabbedEntity?.Update(player);
-                }
+
+                GrabbedEntity?.Update(player);
             }
         }
 
@@ -180,6 +176,7 @@ namespace TTTReborn.Items
             {
                 GrabbedEntity = new GrabbableRagdoll();
                 GrabbedEntity.Grab(player, tr);
+
                 return;
             }
 
@@ -226,5 +223,3 @@ namespace TTTReborn.Items
         }
     }
 }
-
-
