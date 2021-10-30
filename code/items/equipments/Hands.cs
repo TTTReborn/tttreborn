@@ -1,10 +1,97 @@
 using Sandbox;
+using Sandbox.Joints;
 
 using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    interface IGrabbable
+    {
+        public bool IsHolding { get; }
+        public void Grab(TTTPlayer player, TraceResult tr);
+        public void Drop();
+        public void Update(TTTPlayer player);
+    }
+
+    class GrabbableProp : IGrabbable
+    {
+        public Entity GrabbedEntity { get; set; }
+
+        public bool IsHolding
+        {
+            get => GrabbedEntity != null;
+        }
+
+        public void Grab(TTTPlayer player, TraceResult tr)
+        {
+            GrabbedEntity = tr.Entity;
+            GrabbedEntity.SetParent(player, "middle_of_both_hands", new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
+            GrabbedEntity.EnableHideInFirstPerson = false;
+        }
+
+        public void Drop()
+        {
+            if (!GrabbedEntity.IsValid())
+            {
+                return;
+            }
+
+            GrabbedEntity.EnableHideInFirstPerson = true;
+            GrabbedEntity.SetParent(null);
+            GrabbedEntity = null;
+        }
+
+        public void Update(TTTPlayer player) { }
+    }
+
+    class GrabbableRagdoll : IGrabbable
+    {
+        private PhysicsBody _handPhysicsBody;
+        private WeldJoint _holdJoint;
+
+
+        public bool IsHolding
+        {
+            get => _holdJoint.IsValid;
+        }
+
+        public GrabbableRagdoll()
+        {
+            _handPhysicsBody = PhysicsWorld.AddBody();
+            _handPhysicsBody.BodyType = PhysicsBodyType.Keyframed;
+        }
+
+        public void Grab(TTTPlayer player, TraceResult tr)
+        {
+            Transform attachment = player.GetAttachment("middle_of_both_hands")!.Value;
+            _handPhysicsBody.Position = attachment.Position;
+            _handPhysicsBody.Rotation = attachment.Rotation;
+
+            _holdJoint = PhysicsJoint.Weld
+                .From(_handPhysicsBody)
+                .To(tr.Body)
+                .Create();
+        }
+
+        public void Drop()
+        {
+            if (_holdJoint.IsValid)
+            {
+                _holdJoint.Remove();
+            }
+
+            _handPhysicsBody = null;
+        }
+
+        public void Update(TTTPlayer player)
+        {
+            Transform attachment = player.GetAttachment("middle_of_both_hands")!.Value;
+            _handPhysicsBody.Position = attachment.Position;
+            _handPhysicsBody.Rotation = attachment.Rotation;
+        }
+    }
+
     [Library("equipment_hands")]
     [Equipment(SlotType = SlotType.UtilityEquipment)]
     [Hammer.Skip]
@@ -17,7 +104,9 @@ namespace TTTReborn.Items
         private const float MAX_PICKUP_DISTANCE = 75;
         private Vector3 MAX_PICKUP_SIZE = new(50, 50, 50);
 
-        public Entity GrabbedEntity { get; set; }
+        private IGrabbable GrabbedEntity;
+        private bool IsHoldingEntity => GrabbedEntity != null && GrabbedEntity.IsHolding;
+
 
         public override void Spawn()
         {
@@ -42,18 +131,22 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Attack1))
                 {
-                    GrabEntity(player);
+                    TryGrabEntity(player);
                 }
                 else if (Input.Released(InputButton.Attack2))
                 {
-                    DropEntity();
+                    GrabbedEntity?.Drop();
+                }
+                else if (IsHoldingEntity)
+                {
+                    GrabbedEntity?.Update(player);
                 }
             }
         }
 
-        private void GrabEntity(TTTPlayer player)
+        private void TryGrabEntity(TTTPlayer player)
         {
-            if (GrabbedEntity.IsValid())
+            if (IsHoldingEntity)
             {
                 return;
             }
@@ -74,9 +167,17 @@ namespace TTTReborn.Items
                 return;
             }
 
-            // Cannot pickup players or objects currently being held.
-            if (tr.Entity is TTTPlayer || tr.Entity.Parent != null)
+            // Cannot pickup items held by other players.
+            if (tr.Entity.Parent != null)
             {
+                return;
+            }
+
+            // Ignore any size/mass restrictions when picking up a corpse.
+            if (tr.Entity is PlayerCorpse)
+            {
+                GrabbedEntity = new GrabbableRagdoll();
+                GrabbedEntity.Grab(player, tr);
                 return;
             }
 
@@ -86,33 +187,20 @@ namespace TTTReborn.Items
                 return;
             }
 
-            tr.Entity.SetParent(player, "middle_of_both_hands", new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
-            GrabbedEntity = tr.Entity;
-            GrabbedEntity.EnableHideInFirstPerson = false;
-        }
-
-        private void DropEntity()
-        {
-            if (!GrabbedEntity.IsValid())
-            {
-                return;
-            }
-
-            GrabbedEntity.EnableHideInFirstPerson = true;
-            GrabbedEntity.SetParent(null);
-            GrabbedEntity = null;
+            GrabbedEntity = new GrabbableProp();
+            GrabbedEntity.Grab(player, tr);
         }
 
         public override void ActiveEnd(Entity ent, bool dropped)
         {
-            DropEntity();
+            GrabbedEntity?.Drop();
 
             base.ActiveEnd(ent, dropped);
         }
 
         protected override void OnDestroy()
         {
-            DropEntity();
+            GrabbedEntity?.Drop();
 
             base.OnDestroy();
         }
@@ -124,7 +212,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (GrabbedEntity.IsValid())
+            if (IsHoldingEntity)
             {
                 anim.SetParam("holdtype", 4);
                 anim.SetParam("holdtype_handedness", 0);
