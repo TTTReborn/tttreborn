@@ -10,8 +10,6 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.Player
 {
-    using System.Collections.Generic;
-
     public partial class TTTPlayer : Sandbox.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;

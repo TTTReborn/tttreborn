@@ -74,7 +74,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Scoreboard.Instance.UpdateClient(client);
+            Scoreboard.Instance?.UpdateClient(client);
         }
 
         [ClientRpc]
