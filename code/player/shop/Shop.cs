@@ -7,6 +7,7 @@ using Sandbox;
 using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Roles;
+using TTTReborn.Rounds;
 
 namespace TTTReborn.Player
 {
@@ -31,7 +32,7 @@ namespace TTTReborn.Player
 
         public bool Accessable()
         {
-            return Items.Count > 0 && Enabled;
+            return Items.Count > 0 && Enabled && (Game.Current as Gamemode.Game).Round is InProgressRound;
         }
 
         public static Shop InitializeFromJSON(string json)
