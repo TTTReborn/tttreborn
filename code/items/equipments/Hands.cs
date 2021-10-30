@@ -102,9 +102,6 @@ namespace TTTReborn.Items
 
             switch (tr.Entity)
             {
-                case TTTWeapon:
-                    GrabbedEntity = new GrabbableWeapon();
-                    break;
                 case PlayerCorpse:
                     GrabbedEntity = new GrabbableCorpse();
                     break;
