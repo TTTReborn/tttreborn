@@ -11,7 +11,7 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Library("entity_c4")]
-    [Precached("models/entities/c4.vmdl")]
+    [Precached("models/entities/c4.vmdl", "particles/explosion_fireball.vpcf")]
     [Hammer.Skip]
     public partial class C4Entity : Prop, IUse, IEntityHint
     {
