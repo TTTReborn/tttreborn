@@ -10,7 +10,6 @@ using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Settings;
-using TTTReborn.UI;
 
 namespace TTTReborn.Gamemode
 {
@@ -27,6 +26,9 @@ namespace TTTReborn.Gamemode
 
         public TTTMapSettings MapSettings { get; private set; }
 
+        [ConVar.Replicated]
+        public bool Debug { get; set; } = false;
+
         public Game()
         {
             Instance = this;
@@ -42,10 +44,6 @@ namespace TTTReborn.Gamemode
             if (IsServer)
             {
                 ShopManager.Load();
-            }
-            else
-            {
-                new Hud();
             }
         }
 
@@ -150,7 +148,7 @@ namespace TTTReborn.Gamemode
         {
             Host.AssertServer();
 
-            if (source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer)
+            if (source.Name.Equals(dest.Name) || source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer)
             {
                 return false;
             }

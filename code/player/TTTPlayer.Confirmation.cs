@@ -47,7 +47,10 @@ namespace TTTReborn.Player
             {
                 if (IsClient && !Input.Down(InputButton.Use))
                 {
-                    InspectMenu.Instance.Enabled = false;
+                    if (InspectMenu.Instance != null)
+                    {
+                        InspectMenu.Instance.Enabled = false;
+                    }
 
                     return;
                 }

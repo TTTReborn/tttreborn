@@ -61,6 +61,8 @@ namespace TTTReborn.UI
             _scoreboardFooter.AddClass("scoreboard-footer");
             _scoreboardFooter.AddClass("rounded-bottom");
             _scoreboardFooter.AddClass("opacity-heavy");
+
+            Initialize();
         }
 
         [Event.Hotload]
@@ -93,21 +95,9 @@ namespace TTTReborn.UI
         [Event(TTTEvent.Player.Connected)]
         public void OnPlayerConnected(Client client)
         {
-            if (Host.IsServer)
-            {
-                return;
-            }
+            AddClient(client);
 
-            if (client == Local.Client)
-            {
-                Initialize();
-            }
-            else
-            {
-                AddClient(client);
-
-                UpdateScoreboardGroups();
-            }
+            UpdateScoreboardGroups();
         }
 
         [Event(TTTEvent.Player.Disconnected)]

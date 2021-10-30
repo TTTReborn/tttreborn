@@ -165,17 +165,39 @@ namespace TTTReborn.Player
         }
 
         [Event(TTTEvent.Player.InitialSpawn)]
-        [Event(TTTEvent.Settings.Change)]
-        public static void InitializeSprint()
+        private static void OnInitialSpawn(Client client)
         {
-            if (Host.IsServer)
+            if (Host.IsClient)
             {
-                bool enabled = ServerSettings.Instance.Movement.IsSprintEnabled;
-
-                IsSprintEnabled = enabled;
-
-                TTTPlayer.ClientSendToggleSprint(enabled);
+                return;
             }
+
+            Update(client);
+        }
+
+        [Event(TTTEvent.Settings.Change)]
+        public static void OnSettingsChange()
+        {
+            if (Host.IsClient)
+            {
+                return;
+            }
+
+            Update();
+        }
+
+        public static void Update(Client client = null)
+        {
+            if (Host.IsClient)
+            {
+                return;
+            }
+
+            bool enabled = ServerSettings.Instance.Movement.IsSprintEnabled;
+
+            IsSprintEnabled = enabled;
+
+            TTTPlayer.ClientSendToggleSprint(client == null ? To.Everyone : To.Single(client), enabled);
         }
     }
 
