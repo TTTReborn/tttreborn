@@ -55,6 +55,7 @@
     "SCOREBOARD_PLAYER_STATUS_SCORE": "Punkte",
     "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
 
+    "QUICKSHOP_CREDITS_DESCRIPTION": "Du hast ${0}",
     "QUICKSHOP_ITEM_DESCRIPTION": "Die Beschreibung für das Item '{0}' wird sich später an dieser Stelle befinden.",
 
     "REALM_CLIENT": "Client",
@@ -70,6 +71,9 @@
     "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
 
     "MENU_SETTINGS_LOADING": "Lade...",
+    "MENU_SETTINGS_TAB_DEBUG": "Debug",
+    "MENU_SETTINGS_PREVENTWIN": "Sieg unterbinden",
+    "MENU_SETTINGS_PREVENTWIN_DESCRIPTION": "Soll das Rundenende aufgrund eines Sieges basierend auf Zeitablauf oder erfüllte Siegbedingung unterbunden werden? (Map-Trigger ausgenommen)",
     "MENU_SETTINGS_TAB_AFK": "AFK",
     "MENU_SETTINGS_AFK_TIME": "AFK Zeit",
     "MENU_SETTINGS_AFK_TIME_DESCRIPTION": "Die Zeit bevor der Spieler als AFK markiert wird.",

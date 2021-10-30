@@ -3,6 +3,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Library("ammo_buckshot")]
+    [Spawnable]
     [Hammer.EditorModel("models/ammo/ammo_buckshot.vmdl")]
     partial class BuckshotAmmo : TTTAmmo
     {

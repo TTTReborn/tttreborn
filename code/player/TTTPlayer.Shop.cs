@@ -1,15 +1,21 @@
+using System;
+using System.Collections.Generic;
 using System.Text.Json;
 
 using Sandbox;
 
 using TTTReborn.Events;
+using TTTReborn.Globals;
 using TTTReborn.Items;
+using TTTReborn.Rounds;
 using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
+        public HashSet<string> BoughtItemsSet = new();
+
         public Shop Shop
         {
             get => _shop;
@@ -61,12 +67,26 @@ namespace TTTReborn.Player
                 return BuyError.NotAvailable;
             }
 
+            if (itemData.IsLimited && BoughtItemsSet.Contains(itemData.Name))
+            {
+                return BuyError.LimitReached;
+            }
+
             return BuyError.None;
         }
 
-        public void RequestPurchase(IItem item)
+        public void RequestPurchase(Type itemType)
         {
-            ShopItemData itemData = ShopItemData.CreateItemData(item.GetType());
+            ShopItemData itemData = ShopItemData.CreateItemData(itemType);
+
+            foreach (ShopItemData loopItemData in Shop.Items)
+            {
+                if (loopItemData.Name.Equals(itemData.Name))
+                {
+                    itemData.CopyFrom(loopItemData);
+                }
+            }
+
             BuyError buyError = CanBuy(itemData);
 
             if (buyError != BuyError.None)
@@ -78,13 +98,39 @@ namespace TTTReborn.Player
 
             Credits -= itemData.Price;
 
-            item.OnPurchase(this);
+            Utils.GetObjectByType<IItem>(itemType).OnPurchase(this);
+            BoughtItemsSet.Add(itemData.Name);
 
-            ClientSendQuickshopUpdate(To.Single(this));
+            ClientBoughtItem(To.Single(this), itemData.Name);
+        }
+
+        [Event(TTTEvent.Game.RoundChange)]
+        private static void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
+        {
+            if (newRound is PreRound preRound)
+            {
+                foreach (TTTPlayer player in Utils.GetPlayers())
+                {
+                    player.BoughtItemsSet.Clear();
+                }
+            }
         }
 
         [ClientRpc]
-        public static void ClientSendQuickshopUpdate()
+        public static void ClientBoughtItem(string itemName)
+        {
+            (Local.Pawn as TTTPlayer).BoughtItemsSet.Add(itemName);
+
+            UpdateQuickShop();
+        }
+
+        [ClientRpc]
+        public static void ClientSendQuickShopUpdate()
+        {
+            UpdateQuickShop();
+        }
+
+        private static void UpdateQuickShop()
         {
             if (QuickShop.Instance?.Enabled ?? false)
             {

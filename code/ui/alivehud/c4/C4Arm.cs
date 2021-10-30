@@ -100,5 +100,15 @@ namespace TTTReborn.UI
 
             _defuseChance.SetTranslation("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 100f).FloorToInt());
         }
+
+        public override void Tick()
+        {
+            if (Enabled && Entity?.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
+            {
+                Enabled = false;
+            }
+
+            base.Tick();
+        }
     }
 }

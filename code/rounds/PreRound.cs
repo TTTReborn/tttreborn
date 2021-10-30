@@ -40,15 +40,15 @@ namespace TTTReborn.Rounds
                     {
                         entity.Delete();
                     }
-                    if (entity is TTTAmmoRandom rammo)
+                    else if (entity is TTTAmmoRandom ammoRandom)
                     {
-                        randomAmmo.Add(rammo); //Throws `Collection was Modified` if we activate here. Worth looking further into cleanup wise.
+                        randomAmmo.Add(ammoRandom); // Throws `Collection was Modified` if we activate here. Worth looking further into cleanup wise.
                     }
-                    if (entity is TTTWeaponRandom rwep)
+                    else if (entity is TTTWeaponRandom weaponRandom)
                     {
-                        randomWeapons.Add(rwep); //See above comment.
+                        randomWeapons.Add(weaponRandom); // See above comment.
                     }
-                    if (entity is TTTLogicButton button)
+                    else if (entity is TTTLogicButton button)
                     {
                         button.Cleanup();
                     }
