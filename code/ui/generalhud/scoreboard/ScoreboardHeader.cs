@@ -8,8 +8,8 @@ namespace TTTReborn.UI
     {
         private readonly Panel _gameLogoPanel;
         private readonly Panel _serverInfoPanel;
-        private readonly Label _serverNameLabel;
-        private readonly Label _serverDescriptionLabel;
+        private readonly TranslationLabel _serverNameLabel;
+        private readonly TranslationLabel _serverDescriptionLabel;
         private readonly Panel _serverDataPanel;
         private readonly Label _serverMapLabel;
         private readonly TranslationLabel _serverPlayersLabel;
@@ -24,13 +24,13 @@ namespace TTTReborn.UI
             _serverInfoPanel = new(this);
             _serverInfoPanel.AddClass("server-information-panel");
 
-            _serverNameLabel = _serverInfoPanel.Add.Label();
+            _serverNameLabel = _serverInfoPanel.Add.TranslationLabel();
             _serverNameLabel.AddClass("server-name-label");
-            _serverNameLabel.Text = "Trouble in Terry's Town Server";
+            _serverNameLabel.SetTranslation("SCOREBOARD_GAMEMODE", "Trouble in Terry's Town");
 
-            _serverDescriptionLabel = _serverInfoPanel.Add.Label();
+            _serverDescriptionLabel = _serverInfoPanel.Add.TranslationLabel();
             _serverDescriptionLabel.AddClass("server-description-label");
-            _serverDescriptionLabel.Text = "Created by Neoxult";
+            _serverDescriptionLabel.SetTranslation("SCOREBOARD_CREATEDBY", "Neoxult");
 
             _serverDataPanel = new(this);
             _serverDataPanel.AddClass("server-data-panel");

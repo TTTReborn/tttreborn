@@ -27,18 +27,26 @@ namespace TTTReborn.Map
             {
                 case FeedEntryType.Activator:
                     RPCs.ClientDisplayMessage(To.Single(activator), Message, Color);
+
                     break;
+
                 case FeedEntryType.All:
                     RPCs.ClientDisplayMessage(To.Everyone, Message, Color);
+
                     break;
+
                 case FeedEntryType.Innocents:
-                    RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeamByType(typeof(InnocentTeam)).GetClients()), Message, Color);
+                    RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeam(typeof(InnocentTeam)).GetClients()), Message, Color);
+
                     break;
+
                 case FeedEntryType.Traitors:
-                    RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeamByType(typeof(TraitorTeam)).GetClients()), Message, Color);
+                    RPCs.ClientDisplayMessage(To.Multiple(TeamFunctions.GetTeam(typeof(TraitorTeam)).GetClients()), Message, Color);
+
                     break;
+
                 case FeedEntryType.Other:
-                    TTTTeam team = TeamFunctions.GetTeam(ReceiverTeamOverride);
+                    TTTTeam team = TeamFunctions.TryGetTeam(ReceiverTeamOverride);
 
                     if (team != null)
                     {
@@ -48,6 +56,7 @@ namespace TTTReborn.Map
                     {
                         Log.Warning($"Feed entry receiver value `{Receiver}` is incorrect and will not work.");
                     }
+
                     break;
             }
         }

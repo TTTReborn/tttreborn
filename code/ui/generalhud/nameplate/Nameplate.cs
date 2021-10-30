@@ -84,12 +84,9 @@ namespace TTTReborn.UI
 
                 _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
                 _damageIndicatorLabel.Text = healthGroup.Title;
-                _damageIndicatorLabel.Style.Dirty();
             }
 
             _nameLabel.Text = Player.Client?.Name ?? "";
-
-            Style.Dirty();
         }
     }
 }

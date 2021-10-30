@@ -16,7 +16,7 @@ namespace TTTReborn.UI
 
         private int _selectedPresetIndex;
         private readonly Label _timer;
-        private readonly Label _defuseChance;
+        private readonly TranslationLabel _defuseChance;
 
         public C4Arm() : base()
         {
@@ -39,7 +39,7 @@ namespace TTTReborn.UI
             timerPanel.AddClass("opacity-heavy");
 
             _timer = timerPanel.Add.Label("00:00", "timer-label");
-            _defuseChance = contentPanel.Add.Label("", "defuse-label");
+            _defuseChance = contentPanel.Add.TranslationLabel("", "defuse-label");
 
             Panel timerButtons = new Panel(contentPanel);
             timerButtons.AddClass("timer-button-panel");
@@ -62,19 +62,19 @@ namespace TTTReborn.UI
             Panel actionButtons = new Panel(contentPanel);
             actionButtons.AddClass("action-button-panel");
 
-            actionButtons.Add.Button("Pick Up", "button action-button", () =>
+            actionButtons.Add.TranslationButton("C4_UI_PICKUP", "button action-button", () =>
             {
                 C4Entity.PickUp(Entity.NetworkIdent, User.NetworkIdent);
                 Enabled = false;
             });
 
-            actionButtons.Add.Button("Destroy", "button action-button", () =>
+            actionButtons.Add.TranslationButton("C4_UI_DESTROY", "button action-button", () =>
             {
                 C4Entity.Delete(Entity.NetworkIdent);
                 Enabled = false;
             });
 
-            actionButtons.Add.Button("Arm", "button arm-button", () =>
+            actionButtons.Add.TranslationButton("C4_UI_ARM", "button arm-button", () =>
             {
                 C4Entity.Arm(Entity.NetworkIdent, _selectedPresetIndex);
                 Enabled = false;
@@ -98,8 +98,7 @@ namespace TTTReborn.UI
 
             _timer.Text = Utils.TimerString(preset.Timer);
 
-            int defuseChance = (1f / preset.Wires * 100f).FloorToInt();
-            _defuseChance.Text = $"{defuseChance}% chance to defuse";
+            _defuseChance.SetTranslation("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 100f).FloorToInt());
         }
     }
 }

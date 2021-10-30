@@ -11,6 +11,7 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Library("entity_c4")]
+    [Precached("models/entities/c4.vmdl")]
     [Hammer.Skip]
     public partial class C4Entity : Prop, IUse, IEntityHint
     {
@@ -59,10 +60,12 @@ namespace TTTReborn.Items
             },
         };
 
-        private string ModelPath => "models/entities/c4.vmdl";
+        public override string ModelPath => "models/entities/c4.vmdl";
+
+        public float HintDistance => 80f;
 
         [Net]
-        public int AttachedBone { get; set; } = -1; //Defaults to -1, which indicates no bone attached as this value will not always be set.
+        public int AttachedBone { get; set; } = -1; // Defaults to -1, which indicates no bone attached as this value will not always be set.
 
         [Net]
         public bool IsArmed { get; set; } = false;
@@ -70,7 +73,7 @@ namespace TTTReborn.Items
         [Net]
         public C4Preset CurrentPreset { get; set; } = TimerPresets[0];
 
-        //Timer display on C4 entity.
+        // Timer display on C4 entity.
         private Sandbox.UI.WorldPanel TimerDisplay;
         private Sandbox.UI.Label TimerDisplayLabel;
         private bool CreatedDisplay = false;
@@ -199,7 +202,7 @@ namespace TTTReborn.Items
         }
 
 
-        //Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
+        // Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
         private async Task Explode()
         {
             IsArmed = false;

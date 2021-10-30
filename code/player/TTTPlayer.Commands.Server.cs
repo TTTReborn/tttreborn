@@ -32,8 +32,6 @@ namespace TTTReborn.Player
             player.Respawn();
 
             Log.Info($"You respawned yourself.");
-
-            return;
         }
 
         [ServerCmd(Name = "ttt_respawnid", Help = "Respawns the player with the associated ID")]

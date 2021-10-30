@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
 using TTTReborn.Player;
@@ -253,7 +252,6 @@ namespace TTTReborn.UI
             foreach (ScoreboardGroup value in _scoreboardGroups.Values)
             {
                 value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
-                value.Style.Dirty();
             }
         }
     }

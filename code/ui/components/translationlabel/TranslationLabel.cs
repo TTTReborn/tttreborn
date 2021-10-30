@@ -49,6 +49,11 @@ namespace TTTReborn.UI
 
         public void SetTranslation(string translationKey, params object[] args)
         {
+            if (string.IsNullOrWhiteSpace(translationKey))
+            {
+                translationKey = null;
+            }
+
             TranslationKey = translationKey;
             TranslationParams = args;
 

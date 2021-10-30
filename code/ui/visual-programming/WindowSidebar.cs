@@ -117,7 +117,6 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 _currentNode.Style.Left = Sandbox.UI.Length.Pixels(Mouse.Position.x);
                 _currentNode.Style.Top = Sandbox.UI.Length.Pixels(Mouse.Position.y);
-                _currentNode.Style.Dirty();
             }
 
             base.Tick();

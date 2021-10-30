@@ -139,7 +139,6 @@ namespace TTTReborn.UI
 
             _roleLabel.SetTranslation(_playerCorpse.Player?.Role.GetRoleTranslationKey("NAME"));
             _roleLabel.Style.FontColor = _playerCorpse.Player?.Role.Color;
-            _roleLabel.Style.Dirty();
 
             SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
 
@@ -170,8 +169,12 @@ namespace TTTReborn.UI
             _distanceEntry.SetQuickInfo("CORPSE_INSPECT_QUICKINFO_DISTANCE", $"{confirmationData.Distance:n0}");
 
             _weaponEntry.Enabled = !string.IsNullOrEmpty(killerWeapon);
-            _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", "CORPSE_INSPECT_IDENTIFIER_WEAPON", new TranslationData(killerWeapon.ToUpper()));
-            _weaponEntry.SetQuickInfo(killerWeapon.ToUpper());
+
+            if (_weaponEntry.Enabled)
+            {
+                _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", "CORPSE_INSPECT_IDENTIFIER_WEAPON", new TranslationData(killerWeapon.ToUpper()));
+                _weaponEntry.SetQuickInfo(killerWeapon.ToUpper());
+            }
 
             // Clear and delete all perks
             foreach (InspectEntry perkEntry in _perkEntries)
