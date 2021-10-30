@@ -15,6 +15,7 @@ namespace TTTReborn.Gamemode
             Host.AssertServer();
 
             Precache.Add("particles/impact.generic.vpcf");
+            Precache.Add("particles/impact.flesh.vpcf");
 
             foreach (Type type in Utils.GetTypesWithAttribute<Entity, PrecachedAttribute>())
             {
