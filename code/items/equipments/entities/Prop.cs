@@ -19,6 +19,13 @@ namespace TTTReborn.Items
         {
 
         }
+
+        public override void Spawn()
+        {
+            Tags.Add(IItem.ITEM_TAG);
+
+            base.Spawn();
+        }
     }
 }
 
