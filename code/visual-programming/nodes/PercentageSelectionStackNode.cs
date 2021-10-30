@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.VisualProgramming
@@ -30,8 +31,6 @@ namespace TTTReborn.VisualProgramming
                 throw new NodeStackException("Missing values in RandomNode.");
             }
 
-            Random random = new();
-
             int allPlayerAmount = Client.All.Count;
 
             object[] buildArray = new object[percentListCount];
@@ -44,7 +43,7 @@ namespace TTTReborn.VisualProgramming
 
                 for (int index = 0; index < playerAmount; index++)
                 {
-                    int rnd = random.Next(playerList.Count);
+                    int rnd = Utils.RNG.Next(playerList.Count);
 
                     selectedPlayers.Add(playerList[rnd]);
                     playerList.RemoveAt(rnd);

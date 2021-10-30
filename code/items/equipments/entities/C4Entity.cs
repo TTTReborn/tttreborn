@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -151,7 +152,7 @@ namespace TTTReborn.Items
         {
             // Add a wire minigame in here later
             // For now, if you randomly roll the wrong wire the bomb explodes
-            if (new Random().Next(1, CurrentPreset.Wires + 1) == 1)
+            if (Utils.RNG.Next(1, CurrentPreset.Wires + 1) != 1)
             {
                 _ = Explode();
 
@@ -285,9 +286,7 @@ namespace TTTReborn.Items
         [ServerCmd]
         public static void Arm(int c4EntityIdent, int presetIndex)
         {
-            Entity entity = FindByIndex(c4EntityIdent);
-
-            if (entity is not C4Entity { IsArmed: false } c4Entity || c4Entity.Transform.Position.Distance(ConsoleSystem.Caller.Pawn.Position) > 100f)
+            if (FindByIndex(c4EntityIdent) is not C4Entity { IsArmed: false } c4Entity || c4Entity.Transform.Position.Distance(ConsoleSystem.Caller.Pawn.Position) > 100f)
             {
                 return;
             }
@@ -296,25 +295,28 @@ namespace TTTReborn.Items
             c4Entity.StartTimer();
         }
 
-        [ServerCmd]
-        public static void Delete(int c4EntityIdent)
+        public static void DeleteC4(int c4EntityIdent)
         {
-            Entity entity = FindByIndex(c4EntityIdent);
-
-            if (entity is C4Entity c4Entity)
+            if (FindByIndex(c4EntityIdent) is C4Entity c4Entity)
             {
                 c4Entity.Delete();
             }
         }
 
         [ServerCmd]
+        public static void Delete(int c4EntityIdent)
+        {
+            DeleteC4(c4EntityIdent);
+        }
+
+        [ServerCmd]
         public static void PickUp(int c4EntityIdent, int playerIdent)
         {
-            Entity player = FindByIndex(playerIdent);
+            Entity entity = FindByIndex(playerIdent);
 
-            if (player is TTTPlayer pl && pl.Inventory.TryAdd(new C4Equipment()))
+            if (entity is TTTPlayer player && player.Inventory.TryAdd(new C4Equipment()))
             {
-                Delete(c4EntityIdent);
+                DeleteC4(c4EntityIdent);
             }
         }
 

@@ -131,7 +131,7 @@ namespace TTTReborn.Rounds
             player.Inventory.TryAdd(new MagnetoStick(), true);
 
             // Randomize between SMG and shotgun
-            if (new Random().Next() % 2 == 0)
+            if (Utils.RNG.Next() % 2 == 0)
             {
                 if (player.Inventory.TryAdd(new Shotgun(), false))
                 {
@@ -175,14 +175,12 @@ namespace TTTReborn.Rounds
         private void AssignRoles()
         {
             // TODO: There should be a neater way to handle this logic.
-            Random random = new();
-
             int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
 
             for (int i = 0; i < traitorCount; i++)
             {
                 List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
-                int randomId = random.Next(unassignedPlayers.Count);
+                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
 
                 if (unassignedPlayers[randomId].Role is NoneRole)
                 {

@@ -33,6 +33,10 @@ namespace TTTReborn.Gamemode
         {
             Instance = this;
 
+            Utils.RNG.Next();
+            Utils.RNG.Next();
+            Utils.RNG.Next();
+
             if (IsServer)
             {
                 PrecacheFiles();
