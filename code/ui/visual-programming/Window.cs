@@ -23,6 +23,7 @@ namespace TTTReborn.UI.VisualProgramming
             StyleSheet.Load("/ui/visual-programming/Window.scss");
 
             AddClass("fullscreen");
+            AddClass("visualprogramming");
 
             Header.NavigationHeader.OnCreateWindowHeader = (header) =>
             {
