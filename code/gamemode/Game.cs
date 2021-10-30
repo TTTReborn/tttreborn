@@ -74,8 +74,12 @@ namespace TTTReborn.Gamemode
         public void ForceRoundChange(BaseRound round)
         {
             Round.Finish();
+
+            BaseRound oldRound = Round;
             Round = round;
-            Event.Run("tttreborn.round.changed", round);
+
+            Event.Run(TTTEvent.Game.RoundChange, oldRound, round);
+
             Round.Start();
         }
 

@@ -16,7 +16,8 @@ namespace TTTReborn.Player
         InventoryBlocked,
         NotEnoughCredits,
         NoAccess,
-        NotAvailable
+        NotAvailable,
+        LimitReached
     }
 
     public class Shop
