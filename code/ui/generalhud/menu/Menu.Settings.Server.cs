@@ -21,34 +21,13 @@ namespace TTTReborn.UI.Menu
 
             tabs.AddTab("MENU_SETTINGS_TAB_AFK", (panelContent) =>
             {
-                AddAFKSwitchSettings(panelContent, serverSettings);
                 AddAFKSettings(panelContent, serverSettings);
             }, "afk");
-        }
 
-        private void AddAFKSettings(PanelContent panelContent, ServerSettings serverSettings)
-        {
-            // TTTMinPlayers
-            CreateSettingsEntry(panelContent, "MENU_SETTINGS_AFK_TIME", serverSettings.AFK.SecondsTillKick, "MENU_SETTINGS_AFK_TIME_DESCRIPTION", (value) =>
+            tabs.AddTab("MENU_SETTINGS_TAB_DEBUG", (panelContent) =>
             {
-                serverSettings.AFK.SecondsTillKick = value;
-
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
-        }
-
-        private void AddAFKSwitchSettings(PanelContent tabContent, ServerSettings serverSettings)
-        {
-            Sandbox.UI.Panel sprintPanel = tabContent.Add.Panel("sprint");
-            sprintPanel.Add.TranslationLabel("MENU_SETTINGS_KICK").AddTooltip("MENU_SETTINGS_KICK_DESCRIPTION");
-
-            Switch sw = sprintPanel.Add.Switch("afk", serverSettings.AFK.ShouldKickPlayers);
-            sw.AddEventListener("onchange", (panelEvent) =>
-            {
-                serverSettings.AFK.ShouldKickPlayers = !serverSettings.AFK.ShouldKickPlayers;
-
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
+                AddDebugSettings(panelContent, serverSettings);
+            }, "afk");
         }
 
         private void AddSprintSettings(PanelContent tabContent, ServerSettings serverSettings)
@@ -103,6 +82,42 @@ namespace TTTReborn.UI.Menu
             CreateSettingsEntry(panelContent, "MENU_SETTINGS_KILLTIMEREWARD", serverSettings.Round.KillTimeReward, "MENU_SETTINGS_KILLTIMEREWARD_DESCRIPTION", (value) =>
             {
                 serverSettings.Round.KillTimeReward = value;
+
+                SettingFunctions.SendSettingsToServer(serverSettings);
+            });
+        }
+
+        private void AddAFKSettings(PanelContent panelContent, ServerSettings serverSettings)
+        {
+            Sandbox.UI.Panel sprintPanel = panelContent.Add.Panel("sprint");
+            sprintPanel.Add.TranslationLabel("MENU_SETTINGS_KICK").AddTooltip("MENU_SETTINGS_KICK_DESCRIPTION");
+
+            Switch sw = sprintPanel.Add.Switch("afk", serverSettings.AFK.ShouldKickPlayers);
+            sw.AddEventListener("onchange", (panelEvent) =>
+            {
+                serverSettings.AFK.ShouldKickPlayers = !serverSettings.AFK.ShouldKickPlayers;
+
+                SettingFunctions.SendSettingsToServer(serverSettings);
+            });
+
+            // TTTMinPlayers
+            CreateSettingsEntry(panelContent, "MENU_SETTINGS_AFK_TIME", serverSettings.AFK.SecondsTillKick, "MENU_SETTINGS_AFK_TIME_DESCRIPTION", (value) =>
+            {
+                serverSettings.AFK.SecondsTillKick = value;
+
+                SettingFunctions.SendSettingsToServer(serverSettings);
+            });
+        }
+
+        private void AddDebugSettings(PanelContent panelContent, ServerSettings serverSettings)
+        {
+            Sandbox.UI.Panel sprintPanel = panelContent.Add.Panel("sprint");
+            sprintPanel.Add.TranslationLabel("MENU_SETTINGS_PREVENTWIN").AddTooltip("MENU_SETTINGS_PREVENTWIN_DESCRIPTION");
+
+            Switch sw = sprintPanel.Add.Switch("preventwin", serverSettings.Debug.PreventWin);
+            sw.AddEventListener("onchange", (panelEvent) =>
+            {
+                serverSettings.Debug.PreventWin = !serverSettings.Debug.PreventWin;
 
                 SettingFunctions.SendSettingsToServer(serverSettings);
             });

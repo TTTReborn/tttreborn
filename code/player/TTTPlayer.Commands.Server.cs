@@ -179,14 +179,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Gamemode.Game game = Gamemode.Game.Instance;
-
-            if (game.Round is WaitingRound)
-            {
-                return;
-            }
-
-            game.ForceRoundChange(new PreRound());
+            Gamemode.Game.Instance.ChangeRound(new PreRound());
 
             Log.Info($"{ConsoleSystem.Caller.Name} forced a restart.");
         }

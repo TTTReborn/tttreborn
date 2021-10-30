@@ -71,6 +71,9 @@
     "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
 
     "MENU_SETTINGS_LOADING": "Lade...",
+    "MENU_SETTINGS_TAB_DEBUG": "Debug",
+    "MENU_SETTINGS_PREVENTWIN": "Sieg unterbinden",
+    "MENU_SETTINGS_PREVENTWIN_DESCRIPTION": "Soll das Rundenende aufgrund eines Sieges basierend auf Zeitablauf oder erfüllte Siegbedingung unterbunden werden? (Map-Trigger ausgenommen)",
     "MENU_SETTINGS_TAB_AFK": "AFK",
     "MENU_SETTINGS_AFK_TIME": "AFK Zeit",
     "MENU_SETTINGS_AFK_TIME_DESCRIPTION": "Die Zeit bevor der Spieler als AFK markiert wird.",
