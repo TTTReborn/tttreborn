@@ -117,6 +117,8 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client client)
         {
+            base.Simulate(client);
+
             if (!IsServer)
             {
                 return;
