@@ -5,6 +5,17 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    public interface IGrabbable
+    {
+        const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
+
+        bool IsHolding { get; }
+        void Grab(TTTPlayer player, TraceResult tr);
+        void Drop();
+        void Update(TTTPlayer player);
+        void SecondaryAction();
+    }
+
     [Library("equipment_hands")]
     [Equipment(SlotType = SlotType.UtilityEquipment)]
     [Hammer.Skip]
@@ -17,7 +28,7 @@ namespace TTTReborn.Items
         private const float MAX_PICKUP_DISTANCE = 75;
         private Vector3 MAX_PICKUP_SIZE = new(50, 50, 50);
 
-        private GrabbableEntities.IGrabbable GrabbedEntity;
+        private IGrabbable GrabbedEntity;
         private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
 
         public override void Spawn()
@@ -89,20 +100,23 @@ namespace TTTReborn.Items
                 return;
             }
 
-            // Ignore any size/mass restrictions when picking up a corpse.
-            if (tr.Entity is PlayerCorpse)
+            switch (tr.Entity)
             {
-                GrabbedEntity = new GrabbableEntities.Ragdoll();
-                GrabbedEntity.Grab(player, tr);
-
-                return;
+                case TTTWeapon:
+                    GrabbedEntity = new GrabbableWeapon();
+                    break;
+                case PlayerCorpse:
+                    GrabbedEntity = new GrabbableCorpse();
+                    break;
+                case ModelEntity model:
+                    if (model.CollisionBounds.Size.HasGreatorOrEqualAxis(MAX_PICKUP_SIZE) && model.PhysicsGroup.Mass > MAX_PICKUP_MASS)
+                    {
+                        GrabbedEntity = new GrabbableProp();
+                    }
+                    break;
             }
 
-            // Has to be a model, smaller collision box than MAX_PICKUP_SIZE, mass less than MAX_PICKUP_MASS
-            if (tr.Entity is not ModelEntity model || model.CollisionBounds.Size.HasGreatorOrEqualAxis(MAX_PICKUP_SIZE) || tr.Entity.PhysicsGroup.Mass > MAX_PICKUP_MASS)
-            {
-                return;
-            }
+            GrabbedEntity?.Grab(player, tr);
         }
 
         public override void ActiveEnd(Entity ent, bool dropped)
