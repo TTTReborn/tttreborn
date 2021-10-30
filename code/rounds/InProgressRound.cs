@@ -48,7 +48,7 @@ namespace TTTReborn.Rounds
                 return;
             }
 
-            if ((Game.Current as TTTReborn.Gamemode.Game).Round is InProgressRound inProgressRound)
+            if (Gamemode.Game.Instance.Round is InProgressRound inProgressRound)
             {
                 inProgressRound.ChangeRoundIfOver();
             }

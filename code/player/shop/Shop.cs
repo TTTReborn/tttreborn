@@ -32,7 +32,7 @@ namespace TTTReborn.Player
 
         public bool Accessable()
         {
-            return Items.Count > 0 && Enabled && (Game.Current as Gamemode.Game).Round is InProgressRound;
+            return Items.Count > 0 && Enabled && Gamemode.Game.Instance.Round is InProgressRound;
         }
 
         public static Shop InitializeFromJSON(string json)
