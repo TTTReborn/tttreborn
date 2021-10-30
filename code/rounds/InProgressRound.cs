@@ -126,6 +126,8 @@ namespace TTTReborn.Rounds
 
         private static void SetLoadout(TTTPlayer player)
         {
+            Extensions.Log.Debug($"Added loadout to {player.Client.Name}");
+
             player.Inventory.TryAdd(new MagnetoStick(), true);
 
             // Randomize between SMG and shotgun
@@ -216,7 +218,14 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                base.OnSecond();
+                if (!Settings.ServerSettings.Instance.Debug.PreventWin)
+                {
+                    base.OnSecond();
+                }
+                else
+                {
+                    RoundEndTime += 1f;
+                }
 
                 LogicButtons.ForEach(x => x.OnSecond()); // Tick role button delay timer.
 
@@ -227,14 +236,29 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private void ChangeRoundIfOver()
+        private bool ChangeRoundIfOver()
         {
             TTTTeam result = IsRoundOver();
 
-            if (result != null)
+            if (result != null && !Settings.ServerSettings.Instance.Debug.PreventWin)
             {
                 LoadPostRound(result);
+
+                return true;
             }
+
+            return false;
+        }
+
+        [Event(TTTReborn.Events.TTTEvent.Settings.Change)]
+        private static void OnChangeSettings()
+        {
+            if (Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)
+            {
+                return;
+            }
+
+            inProgressRound.ChangeRoundIfOver();
         }
     }
 }
