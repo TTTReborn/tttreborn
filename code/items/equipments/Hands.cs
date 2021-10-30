@@ -16,6 +16,7 @@ namespace TTTReborn.Items
             void Grab(TTTPlayer player, TraceResult tr);
             void Drop();
             void Update(TTTPlayer player);
+            void SecondaryAction();
         }
 
         public class Prop : IGrabbable
@@ -46,7 +47,22 @@ namespace TTTReborn.Items
                 GrabbedEntity = null;
             }
 
-            public void Update(TTTPlayer player) { }
+            public void Update(TTTPlayer player)
+            {
+                // If the weapon is picked up, we should stop holding it.
+                if (GrabbedEntity is TTTWeapon weapon && weapon.Owner != null)
+                {
+                    Drop();
+                }
+
+                // If the entity gets destroyed, we should stop holding it.
+                if (GrabbedEntity?.Health == 0)
+                {
+                    Drop();
+                }
+            }
+
+            public void SecondaryAction() { }
         }
 
         public class Ragdoll : IGrabbable
@@ -89,10 +105,17 @@ namespace TTTReborn.Items
 
             public void Update(TTTPlayer player)
             {
+                if (_handPhysicsBody == null)
+                {
+                    return;
+                }
+
                 Transform attachment = player.GetAttachment("middle_of_both_hands")!.Value;
                 _handPhysicsBody.Position = attachment.Position;
                 _handPhysicsBody.Rotation = attachment.Rotation;
             }
+
+            public void SecondaryAction() { }
         }
     }
 
@@ -109,7 +132,7 @@ namespace TTTReborn.Items
         private Vector3 MAX_PICKUP_SIZE = new(50, 50, 50);
 
         private GrabbableEntities.IGrabbable GrabbedEntity;
-        private bool IsHoldingEntity => GrabbedEntity != null && GrabbedEntity.IsHolding;
+        private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
 
         public override void Spawn()
         {
@@ -138,9 +161,13 @@ namespace TTTReborn.Items
                 {
                     TryGrabEntity(player);
                 }
-                else if (Input.Released(InputButton.Attack2))
+                else if (Input.Pressed(InputButton.Attack2))
                 {
                     GrabbedEntity?.Drop();
+                }
+                else if (Input.Pressed(InputButton.Use))
+                {
+                    GrabbedEntity?.SecondaryAction();
                 }
 
                 GrabbedEntity?.Update(player);
