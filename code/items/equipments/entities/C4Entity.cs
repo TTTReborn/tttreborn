@@ -171,20 +171,32 @@ namespace TTTReborn.Items
 
             while (timeRemaining > 0 && IsArmed)
             {
-                if (timeRemaining <= 60)
+                try
                 {
-                    Sound.FromEntity("c4-beep", this)
-                        .SetVolume(0.05f);
+                    if (timeRemaining <= 60)
+                    {
+                        Sound.FromEntity("c4-beep", this)
+                            .SetVolume(0.05f);
+                    }
+
+                    timeRemaining -= 1;
+
+                    TimeSpan span = TimeSpan.FromSeconds(timeRemaining);
+                    string timerString = span.ToString("mm\\:ss");
+
+                    ClientUpdateTimer(timerString);
+
+                    await GameTask.DelaySeconds(1);
                 }
+                catch (Exception e)
+                {
+                    if (e.Message.Trim() == "A task was canceled.")
+                    {
+                        return;
+                    }
 
-                timeRemaining -= 1;
-
-                TimeSpan span = TimeSpan.FromSeconds(timeRemaining);
-                string timerString = span.ToString("mm\\:ss");
-
-                ClientUpdateTimer(timerString);
-
-                await GameTask.DelaySeconds(1);
+                    Log.Error($"{e.Message}: {e.StackTrace}");
+                }
             }
 
             if (IsArmed)
@@ -205,48 +217,60 @@ namespace TTTReborn.Items
         // Modified from Prop.cs to allow tweaking through code/cvar rather than having to go through model doc.
         private async Task Explode()
         {
-            IsArmed = false;
-
-            await Task.DelaySeconds(0.1f);
-
-            Sound.FromWorld("rust_pumpshotgun.shootdouble", PhysicsBody.MassCenter);
-            Particles.Create("particles/explosion_fireball.vpcf", PhysicsBody.MassCenter);
-
-            Vector3 sourcePos = PhysicsBody.MassCenter;
-            IEnumerable<Entity> overlaps = Physics.GetEntitiesInSphere(sourcePos, BOMB_RADIUS);
-
-            foreach (Entity overlap in overlaps)
+            try
             {
-                if (overlap is not ModelEntity ent || !ent.IsValid() || ent.LifeState != LifeState.Alive || !ent.PhysicsBody.IsValid() || ent.IsWorld)
+                IsArmed = false;
+
+                await Task.DelaySeconds(0.1f);
+
+                Sound.FromWorld("rust_pumpshotgun.shootdouble", PhysicsBody.MassCenter);
+                Particles.Create("particles/explosion_fireball.vpcf", PhysicsBody.MassCenter);
+
+                Vector3 sourcePos = PhysicsBody.MassCenter;
+                IEnumerable<Entity> overlaps = Physics.GetEntitiesInSphere(sourcePos, BOMB_RADIUS);
+
+                foreach (Entity overlap in overlaps)
                 {
-                    continue;
+                    if (overlap is not ModelEntity ent || !ent.IsValid() || ent.LifeState != LifeState.Alive || !ent.PhysicsBody.IsValid() || ent.IsWorld)
+                    {
+                        continue;
+                    }
+
+                    Vector3 targetPos = ent.PhysicsBody.MassCenter;
+                    float dist = Vector3.DistanceBetween(sourcePos, targetPos);
+
+                    if (dist > BOMB_RADIUS)
+                    {
+                        continue;
+                    }
+
+                    TraceResult tr = Trace.Ray(sourcePos, targetPos)
+                        .Ignore(this)
+                        .WorldOnly()
+                        .Run();
+
+                    if (tr.Fraction < 1.0f)
+                    {
+                        continue;
+                    }
+
+                    float distanceMul = 1.0f - Math.Clamp(dist / BOMB_RADIUS, 0.0f, 1.0f);
+                    float damage = BOMB_DAMAGE * distanceMul;
+                    float force = (BOMB_FORCE * distanceMul) * ent.PhysicsBody.Mass;
+                    Vector3 forceDir = (targetPos - sourcePos).Normal;
+
+                    ent.TakeDamage(DamageInfo.Explosion(sourcePos, forceDir * force, damage)
+                        .WithAttacker(this));
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Trim() == "A task was canceled.")
+                {
+                    return;
                 }
 
-                Vector3 targetPos = ent.PhysicsBody.MassCenter;
-                float dist = Vector3.DistanceBetween(sourcePos, targetPos);
-
-                if (dist > BOMB_RADIUS)
-                {
-                    continue;
-                }
-
-                TraceResult tr = Trace.Ray(sourcePos, targetPos)
-                    .Ignore(this)
-                    .WorldOnly()
-                    .Run();
-
-                if (tr.Fraction < 1.0f)
-                {
-                    continue;
-                }
-
-                float distanceMul = 1.0f - Math.Clamp(dist / BOMB_RADIUS, 0.0f, 1.0f);
-                float damage = BOMB_DAMAGE * distanceMul;
-                float force = (BOMB_FORCE * distanceMul) * ent.PhysicsBody.Mass;
-                Vector3 forceDir = (targetPos - sourcePos).Normal;
-
-                ent.TakeDamage(DamageInfo.Explosion(sourcePos, forceDir * force, damage)
-                    .WithAttacker(this));
+                Log.Error($"{e.Message}: {e.StackTrace}");
             }
 
             base.OnKilled();
