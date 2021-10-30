@@ -69,6 +69,17 @@ namespace TTTReborn.UI
             AliveHudInstance.Enabled = false;
         }
 
+        [Event(TTTEvent.Player.InitialSpawn)]
+        public static void Initialize(Client client)
+        {
+            if (Host.IsServer || client != Local.Client)
+            {
+                return;
+            }
+
+            new Hud();
+        }
+
         public class GeneralHud : Panel
         {
             public GeneralHud()
