@@ -60,7 +60,14 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Attack1))
                 {
-                    TryGrabEntity(player);
+                    if (IsHoldingEntity)
+                    {
+                        GrabbedEntity?.SecondaryAction();
+                    }
+                    else
+                    {
+                        TryGrabEntity(player);
+                    }
                 }
                 else if (Input.Pressed(InputButton.Attack2))
                 {
@@ -72,10 +79,6 @@ namespace TTTReborn.Items
                     {
                         PushPlayer(player);
                     }
-                }
-                else if (Input.Pressed(InputButton.Reload) && IsHoldingEntity)
-                {
-                    GrabbedEntity?.SecondaryAction();
                 }
 
                 GrabbedEntity?.Update(player);
