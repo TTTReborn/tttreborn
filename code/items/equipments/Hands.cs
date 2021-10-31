@@ -7,6 +7,7 @@ namespace TTTReborn.Items
 {
     public interface IGrabbable
     {
+        const float MAX_INTERACT_DISTANCE = 75;
         const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
         bool IsHolding { get; }
@@ -24,7 +25,6 @@ namespace TTTReborn.Items
         public override bool CanDrop() => false;
 
         private const float MAX_PICKUP_MASS = 205;
-        private const float MAX_PICKUP_DISTANCE = 75;
         private Vector3 MAX_PICKUP_SIZE = new(50, 50, 50);
         private const float PUSHING_FORCE = 600f;
 
@@ -80,7 +80,7 @@ namespace TTTReborn.Items
 
         private static void PushPlayer(TTTPlayer player)
         {
-            TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_PICKUP_DISTANCE)
+            TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * IGrabbable.MAX_INTERACT_DISTANCE)
                     .Ignore(player)
                     .Run();
 
@@ -102,7 +102,7 @@ namespace TTTReborn.Items
             Vector3 eyePos = player.EyePos;
             Vector3 eyeDir = player.EyeRot.Forward;
 
-            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * MAX_PICKUP_DISTANCE)
+            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * IGrabbable.MAX_INTERACT_DISTANCE)
                 .UseHitboxes()
                 .Ignore(player)
                 .HitLayer(CollisionLayer.Debris)
@@ -124,7 +124,7 @@ namespace TTTReborn.Items
             switch (tr.Entity)
             {
                 case PlayerCorpse:
-                    GrabbedEntity = new GrabbableCorpse(player, tr.Body);
+                    GrabbedEntity = new GrabbableCorpse(player, tr.Entity as PlayerCorpse, tr.Body, tr.Bone);
                     break;
                 case ModelEntity model:
                     if (!model.CollisionBounds.Size.HasGreatorOrEqualAxis(MAX_PICKUP_SIZE) && model.PhysicsGroup.Mass < MAX_PICKUP_MASS)
