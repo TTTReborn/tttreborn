@@ -68,7 +68,7 @@ namespace TTTReborn.Items
                         PushPlayer(player);
                     }
                 }
-                else if (Input.Pressed(InputButton.Reload))
+                else if (Input.Pressed(InputButton.Reload) && IsHoldingEntity)
                 {
                     GrabbedEntity?.SecondaryAction();
                 }

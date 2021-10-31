@@ -7,7 +7,9 @@ namespace TTTReborn.Items
 
     public class GrabbableProp : IGrabbable
     {
+        public const float THROW_FORCE = 500;
         public Entity GrabbedEntity { get; set; }
+        public TTTPlayer _owner;
 
         public bool IsHolding
         {
@@ -16,6 +18,8 @@ namespace TTTReborn.Items
 
         public GrabbableProp(TTTPlayer player, Entity ent)
         {
+            _owner = player;
+
             GrabbedEntity = ent;
             GrabbedEntity.SetParent(player, Hands.MIDDLE_HANDS_ATTACHMENT, new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
             GrabbedEntity.EnableHideInFirstPerson = false;
@@ -49,6 +53,12 @@ namespace TTTReborn.Items
             }
         }
 
-        public void SecondaryAction() { }
+        public void SecondaryAction()
+        {
+            GrabbedEntity.SetParent(null);
+            GrabbedEntity.EnableHideInFirstPerson = true;
+            GrabbedEntity.Velocity += _owner.EyeRot.Forward * THROW_FORCE;
+            GrabbedEntity = null;
+        }
     }
 }
