@@ -22,7 +22,7 @@ namespace TTTReborn.Items
         private RealTimeUntil NextHeal = 0;
 
         private const int HEALAMOUNT = 1;
-        private const int HEALFREQUENCY = 2; // seconds
+        private const int HEALFREQUENCY = 1; // seconds
         private const int DELAYIFFAILED = 2; // Multiplied by HealFrequency if HealthPlayer returns false
 
         public override void Spawn()

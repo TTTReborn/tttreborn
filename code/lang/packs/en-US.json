@@ -127,7 +127,7 @@
     "EQUIPMENT_HEALTHSTATION": "HealthStation",
     "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
 
-    "HEALTH_STATION": "Hold {0} to use the HealthStation",
+    "HEALTH_STATION": "Hold {0} to use the HealthStation ({1} charges)",
 
     "C4_ARM": "Hold {0} to arm the C4",
     "C4_DEFUSE": "Press {0} to defuse the C4",
