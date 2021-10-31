@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -72,8 +74,22 @@ namespace TTTReborn.UI
         {
             SetClass("fade-in", Enabled);
 
+            bool isAlive = false;
+
+            // needed regarding https://github.com/Facepunch/sbox-issues/issues/1197
+            try
+            {
+                isAlive = Player.LifeState == LifeState.Alive;
+            }
+            catch (Exception e)
+            {
+                Log.Warning(e.StackTrace);
+
+                return;
+            }
+
             // Network sync workaround
-            if (Player.Health == 0 && Player.LifeState == LifeState.Alive)
+            if (Player.Health == 0 && isAlive)
             {
                 _damageIndicatorLabel.Text = "";
             }
@@ -84,12 +100,9 @@ namespace TTTReborn.UI
 
                 _damageIndicatorLabel.Style.FontColor = healthGroup.Color;
                 _damageIndicatorLabel.Text = healthGroup.Title;
-                _damageIndicatorLabel.Style.Dirty();
             }
 
             _nameLabel.Text = Player.Client?.Name ?? "";
-
-            Style.Dirty();
         }
     }
 }

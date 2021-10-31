@@ -8,13 +8,16 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_healthstation_ent"), Hammer.Skip]
+    [Library("entity_healthstation")]
+    [Precached("models/entities/healthstation.vmdl")]
     public partial class HealthstationEntity : Prop, IUse, IEntityHint
     {
         [Net]
         public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
 
-        private string ModelPath => "models/entities/healthstation.vmdl";
+        public float HintDistance => 80f;
+
+        public override string ModelPath => "models/entities/healthstation.vmdl";
 
         private RealTimeUntil NextHeal = 0;
 

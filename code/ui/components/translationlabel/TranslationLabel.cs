@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 
+using Sandbox;
 using Sandbox.UI;
 
+using TTTReborn.Events;
 using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
@@ -10,13 +12,29 @@ namespace TTTReborn.UI
     {
         private readonly static List<TranslationLabel> _translationLabels = new();
 
-        private string _translationKey;
+        public string TranslationKey;
+        public object[] TranslationParams;
+        public bool IsTranslationDisabled = false;
+        public bool IsTryTranslation;
 
-        private object[] _translationParams;
-
-        public TranslationLabel(string translationKey = null, string classname = null, params object[] args) : base()
+        public new string Text
         {
+            get => base.Text;
+            set
+            {
+                base.Text = value;
+
+                TranslationKey = null;
+                TranslationParams = null;
+            }
+        }
+
+        public TranslationLabel(string translationKey = null, string classname = null, bool tryTranslation = false, params object[] args) : base()
+        {
+            IsTryTranslation = tryTranslation;
+
             SetTranslation(translationKey, args);
+            AddClass("label");
             AddClass(classname);
 
             _translationLabels.Add(this);
@@ -31,25 +49,30 @@ namespace TTTReborn.UI
 
         public void SetTranslation(string translationKey, params object[] args)
         {
-            _translationKey = translationKey;
-            _translationParams = args;
+            if (string.IsNullOrWhiteSpace(translationKey))
+            {
+                translationKey = null;
+            }
 
-            if (_translationKey == null)
+            TranslationKey = translationKey;
+            TranslationParams = args;
+
+            if (TranslationKey == null)
             {
                 return;
             }
 
-            Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationKey, _translationParams);
+            base.Text = TTTLanguage.ActiveLanguage.TryFormattedTranslation(TranslationKey, !IsTryTranslation, TranslationParams);
         }
 
         public void UpdateTranslation(Language language)
         {
-            if (_translationKey == null)
+            if (TranslationKey == null || IsTranslationDisabled)
             {
                 return;
             }
 
-            Text = language.GetFormattedTranslation(_translationKey, _translationParams);
+            base.Text = language.TryFormattedTranslation(TranslationKey, !IsTryTranslation, TranslationParams);
         }
 
         public static void UpdateLanguage(Language language)
@@ -58,6 +81,12 @@ namespace TTTReborn.UI
             {
                 translationLabel.UpdateTranslation(language);
             }
+        }
+
+        [Event(TTTEvent.Settings.LanguageChange)]
+        public static void OnLanguageChange(Language oldLanguage, Language newLanguage)
+        {
+            UI.TranslationLabel.UpdateLanguage(newLanguage);
         }
     }
 }
@@ -70,7 +99,16 @@ namespace Sandbox.UI.Construct
     {
         public static TranslationLabel TranslationLabel(this PanelCreator self, string translationKey = null, string classname = null, params object[] args)
         {
-            TranslationLabel translationLabel = new TranslationLabel(translationKey, classname, args);
+            TranslationLabel translationLabel = new(translationKey, classname, false, args);
+
+            self.panel.AddChild(translationLabel);
+
+            return translationLabel;
+        }
+
+        public static TranslationLabel TryTranslationLabel(this PanelCreator self, string translationKey = null, string classname = null, params object[] args)
+        {
+            TranslationLabel translationLabel = new(translationKey, classname, true, args);
 
             self.panel.AddChild(translationLabel);
 

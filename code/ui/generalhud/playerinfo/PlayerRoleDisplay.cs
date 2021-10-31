@@ -1,7 +1,7 @@
 using Sandbox;
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Events;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -19,9 +19,11 @@ namespace TTTReborn.UI
             AddClass("opacity-heavy");
             AddClass("text-shadow");
 
-            _roleLabel = Add.TranslationLabel();
+            _roleLabel = Add.TranslationLabel("");
             _roleLabel.AddClass("centered");
             _roleLabel.AddClass("role-label");
+
+            OnRoleUpdate(Local.Pawn as TTTPlayer);
         }
 
         public override void Tick()
@@ -33,11 +35,20 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Enabled = Local.Pawn is TTTPlayer && !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+            Enabled = !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+        }
+
+        [Event(TTTEvent.Player.Role.Select)]
+        private void OnRoleUpdate(TTTPlayer player)
+        {
+            if (player == null || player != Local.Pawn as TTTPlayer)
+            {
+                return;
+            }
 
             Style.BackgroundColor = player.Role.Color;
 
-            _roleLabel.SetTranslation($"ROLE_NAME_{player.Role.Name.ToUpper().Replace(' ', '_')}");
+            _roleLabel.SetTranslation(player.Role.GetRoleTranslationKey("NAME"));
         }
     }
 }

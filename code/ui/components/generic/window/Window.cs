@@ -2,9 +2,9 @@ namespace TTTReborn.UI
 {
     public class Window : RichPanel
     {
-        public WindowHeader Header { get; set; }
-        public PanelContent Content { get; set; }
-        public Panel Footer { get; set; }
+        public WindowHeader Header;
+        public PanelContent Content;
+        public Panel Footer;
 
         public Window(Sandbox.UI.Panel parent = null) : base(parent)
         {
@@ -32,6 +32,11 @@ namespace TTTReborn.UI
         public void SetTitle(string title)
         {
             Header.NavigationHeader.SetTitle(title);
+        }
+
+        public void SetTranslationTitle(string translationKey, params object[] translationData)
+        {
+            Header.NavigationHeader.SetTranslationTitle(translationKey, translationData);
         }
     }
 }

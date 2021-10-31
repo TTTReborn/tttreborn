@@ -19,7 +19,7 @@ namespace TTTReborn.Items
         }
     }
 
-    [Library("ttt_weapon")]
+    [Hammer.Skip]
     public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public string LibraryName { get; }
@@ -34,6 +34,8 @@ namespace TTTReborn.Items
         public virtual float ChargeAttackDuration => 2;
         public virtual int BaseDamage => 10;
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
+        public virtual string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
+
         // TODO add player role to weapon to access in UI InventorySelection.cs.
         // E.G. this weapon is bought in traitor shop: Role => "Traitor";
         // This weapon is a normal weapon: Role => "None"
@@ -72,6 +74,8 @@ namespace TTTReborn.Items
                     AmmoType = weaponAttribute.AmmoType;
                 }
             }
+
+            EnableShadowInFirstPerson = false;
 
             Tags.Add(IItem.ITEM_TAG);
         }
@@ -121,7 +125,7 @@ namespace TTTReborn.Items
 
             AmmoClip = ClipSize;
 
-            SetModel("weapons/rust_pistol/rust_pistol.vmdl");
+            SetModel(ModelPath);
 
             PickupTrigger = new();
             PickupTrigger.Parent = this;

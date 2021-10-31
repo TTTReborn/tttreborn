@@ -6,7 +6,6 @@ using TTTReborn.Globals;
 using TTTReborn.Roles;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
-using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
@@ -37,7 +36,7 @@ namespace TTTReborn.Player
             {
                 if (_team == null)
                 {
-                    _team = NoneTeam.Instance;
+                    _team = TeamFunctions.GetTeam(typeof(NoneTeam));
                 }
 
                 return _team;
@@ -57,7 +56,7 @@ namespace TTTReborn.Player
             Role?.OnDeselect(this);
 
             Role = role;
-            Team = team ?? TeamFunctions.GetTeamByType(Role.DefaultTeamType);
+            Team = team ?? Role.DefaultTeam;
 
             if (oldTeam != Team)
             {
@@ -66,17 +65,19 @@ namespace TTTReborn.Player
             }
 
             Role.OnSelect(this);
+        }
 
-            if (QuickShop.Instance != null)
+        /// <summary>
+        /// Sends the role + team and all connected additional data like logic buttons of the current TTTPlayer to the given target or - if no target was provided - the player itself
+        /// </summary>
+        /// <param name="to">optional - The target</param>
+        public void SendClientRole(To? to = null)
+        {
+            RPCs.ClientSetRole(to ?? To.Single(this), this, Role.Name);
+
+            if (to == null || to.Value.ToString().Equals(Client.Name))
             {
-                if (Shop == null || !Shop.Accessable())
-                {
-                    QuickShop.Instance.Enabled = false;
-                }
-                else if (QuickShop.Instance.Enabled)
-                {
-                    QuickShop.Instance.Update();
-                }
+                SendLogicButtonsToClient();
             }
         }
 
@@ -93,7 +94,7 @@ namespace TTTReborn.Player
 
                 foreach (Client client in Client.All)
                 {
-                    if ((client.Pawn as TTTPlayer).Team.Name == "Traitors")
+                    if ((client.Pawn as TTTPlayer).Team.GetType() == typeof(TraitorTeam))
                     {
                         traitors.Add(client);
                     }

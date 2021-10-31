@@ -50,7 +50,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public static NodeConnectionWire Create()
         {
-            return new NodeConnectionWire(VisualProgrammingWindow.Instance.Content);
+            return new NodeConnectionWire(Window.Instance.Content);
         }
 
         public void UpdateMousePosition(Vector2 vector2)
@@ -98,10 +98,6 @@ namespace TTTReborn.UI.VisualProgramming
             }
 
             SetPanelMatrix(this, finalPos, finalSize);
-
-            _startMidLine.Style.Dirty();
-            _midLine.Style.Dirty();
-            _endMidLine.Style.Dirty();
         }
 
         public static void SetPanelMatrix(Sandbox.UI.Panel panel, Vector2 pos, Vector2 size)
@@ -111,7 +107,6 @@ namespace TTTReborn.UI.VisualProgramming
             panel.Style.Top = Sandbox.UI.Length.Pixels(pos.y);
             panel.Style.Width = Sandbox.UI.Length.Pixels(size.x);
             panel.Style.Height = Sandbox.UI.Length.Pixels(size.y);
-            panel.Style.Dirty();
         }
 
         public override void Tick()

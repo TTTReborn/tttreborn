@@ -76,7 +76,7 @@ namespace TTTReborn.UI.Menu
 
                 PanelContent menuContent = menu.Content;
 
-                if (menuContent == null || !menuContent.Title.Equals("ShopEditor") || !roleName.Equals(menu._selectedRole?.Name) || menu._shopToggle == null)
+                if (menuContent == null || !menuContent.ClassName.Equals("shopeditor") || !roleName.Equals(menu._selectedRole?.Name) || menu._shopToggle == null)
                 {
                     return;
                 }

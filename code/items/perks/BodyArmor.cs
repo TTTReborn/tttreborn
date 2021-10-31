@@ -2,8 +2,9 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Buyable(Price = 0)]
-    [Library("ttt_bodyarmor")]
+    [Library("perk_bodyarmor")]
+    [Buyable(Price = 100)]
+    [Hammer.Skip]
     public partial class BodyArmor : TTTPerk
     {
         public BodyArmor() : base()

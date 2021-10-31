@@ -4,19 +4,17 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
     public class C4Arm : Panel
     {
         public static C4Arm Instance;
-        public TTTPlayer User { get; set; }
         public C4Entity Entity { get; set; }
 
         private int _selectedPresetIndex;
         private readonly Label _timer;
-        private readonly Label _defuseChance;
+        private readonly TranslationLabel _defuseChance;
 
         public C4Arm() : base()
         {
@@ -39,7 +37,7 @@ namespace TTTReborn.UI
             timerPanel.AddClass("opacity-heavy");
 
             _timer = timerPanel.Add.Label("00:00", "timer-label");
-            _defuseChance = contentPanel.Add.Label("", "defuse-label");
+            _defuseChance = contentPanel.Add.TranslationLabel("", "defuse-label");
 
             Panel timerButtons = new Panel(contentPanel);
             timerButtons.AddClass("timer-button-panel");
@@ -62,31 +60,27 @@ namespace TTTReborn.UI
             Panel actionButtons = new Panel(contentPanel);
             actionButtons.AddClass("action-button-panel");
 
-            actionButtons.Add.Button("Pick Up", "button action-button", () =>
+            actionButtons.Add.TranslationButton("C4_UI_PICKUP", "button action-button", () =>
             {
-                C4Entity.PickUp(Entity.NetworkIdent, User.NetworkIdent);
-                Enabled = false;
+                C4Entity.PickUp(Entity.NetworkIdent, Local.Pawn.NetworkIdent);
             });
 
-            actionButtons.Add.Button("Destroy", "button action-button", () =>
+            actionButtons.Add.TranslationButton("C4_UI_DESTROY", "button action-button", () =>
             {
                 C4Entity.Delete(Entity.NetworkIdent);
-                Enabled = false;
             });
 
-            actionButtons.Add.Button("Arm", "button arm-button", () =>
+            actionButtons.Add.TranslationButton("C4_UI_ARM", "button arm-button", () =>
             {
                 C4Entity.Arm(Entity.NetworkIdent, _selectedPresetIndex);
-                Enabled = false;
             });
 
             Enabled = false;
         }
 
-        public void Open(C4Entity entity, TTTPlayer user)
+        public void Open(C4Entity entity)
         {
             Entity = entity;
-            User = user;
             Enabled = true;
         }
 
@@ -98,8 +92,17 @@ namespace TTTReborn.UI
 
             _timer.Text = Utils.TimerString(preset.Timer);
 
-            int defuseChance = (1f / preset.Wires * 100f).FloorToInt();
-            _defuseChance.Text = $"{defuseChance}% chance to defuse";
+            _defuseChance.SetTranslation("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 1000f).FloorToInt() / 10f);
+        }
+
+        public override void Tick()
+        {
+            if (Enabled && Entity?.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
+            {
+                Enabled = false;
+            }
+
+            base.Tick();
         }
     }
 }

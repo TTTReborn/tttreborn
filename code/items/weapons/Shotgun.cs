@@ -1,7 +1,5 @@
 using System;
 
-using Hammer;
-
 using Sandbox;
 using Sandbox.ScreenShake;
 
@@ -9,13 +7,16 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    [Library("weapon_shotgun")]
     [Weapon(SlotType = SlotType.Primary, AmmoType = "buckshot")]
+    [Spawnable]
     [Buyable(Price = 100)]
-    [Library("ttt_shotgun")]
-    [EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
-    partial class Shotgun : TTTWeapon
+    [Precached("weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl", "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl", "particles/pistol_muzzleflash.vpcf", "particles/pistol_ejectbrass.vpcf")]
+    [Hammer.EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
+    public partial class Shotgun : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
+        public override string ModelPath => "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl";
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
         public override Type AmmoEntity => typeof(BuckshotAmmo);
@@ -23,13 +24,6 @@ namespace TTTReborn.Items
         public override float ReloadTime => 0.5f;
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 6; // This is per bullet, so 6 x 10 for the shotgun.
-
-        public override void Spawn()
-        {
-            base.Spawn();
-
-            SetModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl");
-        }
 
         public override void AttackPrimary()
         {

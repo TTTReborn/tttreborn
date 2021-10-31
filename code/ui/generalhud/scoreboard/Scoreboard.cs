@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
 using TTTReborn.Player;
@@ -62,6 +61,8 @@ namespace TTTReborn.UI
             _scoreboardFooter.AddClass("scoreboard-footer");
             _scoreboardFooter.AddClass("rounded-bottom");
             _scoreboardFooter.AddClass("opacity-heavy");
+
+            Initialize();
         }
 
         [Event.Hotload]
@@ -94,16 +95,9 @@ namespace TTTReborn.UI
         [Event(TTTEvent.Player.Connected)]
         public void OnPlayerConnected(Client client)
         {
-            if (client == Local.Client)
-            {
-                Initialize();
-            }
-            else
-            {
-                AddClient(client);
+            AddClient(client);
 
-                UpdateScoreboardGroups();
-            }
+            UpdateScoreboardGroups();
         }
 
         [Event(TTTEvent.Player.Disconnected)]
@@ -115,6 +109,13 @@ namespace TTTReborn.UI
 
         public void AddClient(Client client)
         {
+            if (client == null)
+            {
+                Log.Warning("Tried to add a client that isn't valid");
+
+                return;
+            }
+
             if (_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
             {
                 return;
@@ -253,7 +254,6 @@ namespace TTTReborn.UI
             foreach (ScoreboardGroup value in _scoreboardGroups.Values)
             {
                 value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
-                value.Style.Dirty();
             }
         }
     }

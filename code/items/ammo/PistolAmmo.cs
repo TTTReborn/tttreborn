@@ -1,11 +1,10 @@
-using Hammer;
-
 using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_ammo_pistol")]
-    [EditorModel("models/ammo/ammo_9mm.vmdl")]
+    [Library("ammo_pistol")]
+    [Spawnable]
+    [Hammer.EditorModel("models/ammo/ammo_9mm.vmdl")]
     partial class PistolAmmo : TTTAmmo
     {
         public override string AmmoName => "pistol";

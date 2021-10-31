@@ -10,8 +10,6 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.Player
 {
-    using System.Collections.Generic;
-
     public partial class TTTPlayer : Sandbox.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;
@@ -62,7 +60,7 @@ namespace TTTReborn.Player
                 {
                     if (isPostRound || player.IsConfirmed)
                     {
-                        RPCs.ClientSetRole(To.Single(this), player, player.Role.Name);
+                        player.SendClientRole(To.Single(this));
                     }
                 }
 
@@ -87,7 +85,8 @@ namespace TTTReborn.Player
             Animator = new StandardPlayerAnimator();
 
             EnableHideInFirstPerson = true;
-            EnableShadowInFirstPerson = true;
+            EnableShadowInFirstPerson = false;
+            EnableDrawing = true;
 
             Credits = 0;
 
@@ -100,7 +99,7 @@ namespace TTTReborn.Player
                 Event.Run(TTTEvent.Player.Spawned, this);
 
                 RPCs.ClientOnPlayerSpawned(this);
-                RPCs.ClientSetRole(To.Single(this), this, Role.Name);
+                SendClientRole();
             }
 
             base.Respawn();
@@ -173,15 +172,14 @@ namespace TTTReborn.Player
             {
                 TickPlayerVoiceChat();
                 TickMenu();
+                TickEntityHints();
             }
-
-            if (IsServer)
+            else
             {
                 TickAFKSystem();
             }
 
             TickAttemptInspectPlayerCorpse();
-            TickEntityHints();
 
             if (LifeState != LifeState.Alive)
             {
@@ -204,7 +202,7 @@ namespace TTTReborn.Player
             TickPlayerDropCarriable();
             TickPlayerFlashlight();
             TickPlayerShop();
-            TickRoleButtonActivate();
+            TickLogicButtonActivate();
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());

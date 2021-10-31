@@ -1,5 +1,6 @@
 using System.Text.Json;
 
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Roles;
 
@@ -33,7 +34,7 @@ namespace TTTReborn.UI.Menu
 
             DialogBox dialogBox = new DialogBox();
             dialogBox.Header.DragHeader.IsLocked = false;
-            dialogBox.SetTitle($"Edit item '{item.ItemData.Name}'");
+            dialogBox.SetTranslationTitle("MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC", new TranslationData(item.ItemData.Name.ToUpper()));
             dialogBox.AddClass("itemeditwindow");
 
             dialogBox.OnAgree = () =>
@@ -66,10 +67,10 @@ namespace TTTReborn.UI.Menu
             {
                 ShopItemData shopItemData = Menu.Instance._shopItemData;
 
-                CreateSettingsEntry(panelContent, "Price", shopItemData.Price, $"The price of the '{shopItemData.Name}'.", null, (value) =>
+                CreateSettingsEntry(panelContent, "MENU_SHOPEDITOR_ITEM_PRICE", shopItemData.Price, "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC", null, (value) =>
                 {
                     Menu.Instance._shopItemData.Price = value;
-                });
+                }, new TranslationData(shopItemData.Name.ToUpper()));
             });
         }
     }

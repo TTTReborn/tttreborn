@@ -2,11 +2,12 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
+    [Library("entity_decoy")]
+    [Precached("models/entities/decoy.vmdl")]
     [Hammer.Skip]
-    [Library("ttt_decoy_ent")]
     public partial class DecoyEntity : Prop
     {
-        private string ModelPath => "models/entities/decoy.vmdl";
+        public override string ModelPath => "models/entities/decoy.vmdl";
 
         public override void Spawn()
         {

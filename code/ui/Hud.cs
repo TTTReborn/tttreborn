@@ -17,7 +17,7 @@ namespace TTTReborn.UI
 
         public Hud()
         {
-            if (!IsClient)
+            if (Host.IsServer)
             {
                 return;
             }
@@ -30,17 +30,21 @@ namespace TTTReborn.UI
         [Event.Hotload]
         public static void OnHotReloaded()
         {
-            if (Host.IsClient)
+            if (Host.IsServer)
             {
-                Local.Hud?.Delete();
-
-                Hud hud = new();
-
-                if (Local.Client.Pawn is TTTPlayer player)
-                {
-                    Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
-                }
+                return;
             }
+
+            Hud.Current?.Delete();
+
+            Hud hud = new();
+
+            if (Local.Client.Pawn is TTTPlayer player)
+            {
+                Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
+            }
+
+            Event.Run(TTTEvent.UI.Reloaded);
         }
 
         [Event(TTTEvent.Player.Spawned)]
@@ -63,6 +67,17 @@ namespace TTTReborn.UI
             }
 
             AliveHudInstance.Enabled = false;
+        }
+
+        [Event(TTTEvent.Player.InitialSpawn)]
+        public static void Initialize(Client client)
+        {
+            if (Host.IsServer || client != Local.Client)
+            {
+                return;
+            }
+
+            new Hud();
         }
 
         public class GeneralHud : Panel

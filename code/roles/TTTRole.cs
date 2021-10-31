@@ -13,22 +13,21 @@ namespace TTTReborn.Roles
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class RoleAttribute : LibraryAttribute
     {
-        public RoleAttribute(string name) : base(name)
+        public RoleAttribute(string name) : base("role_" + name)
         {
 
         }
     }
 
-    [Role("base")]
     public abstract class TTTRole
     {
         public readonly string Name;
 
         public virtual Color Color => Color.Black;
 
-        public abstract Type DefaultTeamType { get; }
+        public virtual TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
 
-        public virtual int DefaultCredits => 0;
+        public virtual int DefaultCredits => 50;
 
         public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
 
@@ -51,11 +50,6 @@ namespace TTTReborn.Roles
         public TTTRole()
         {
             Name = Utils.GetLibraryName(GetType());
-
-            if (TeamFunctions.GetTeamByType(DefaultTeamType) == null)
-            {
-                Utils.GetObjectByType<TTTTeam>(DefaultTeamType);
-            }
         }
 
         public virtual void OnSelect(TTTPlayer player)
@@ -94,7 +88,7 @@ namespace TTTReborn.Roles
 
         public string GetRoleTranslationKey(string key)
         {
-            return $"{key}_{Name.ToUpper()}";
+            return $"{Name.ToUpper()}_{key}";
         }
     }
 }

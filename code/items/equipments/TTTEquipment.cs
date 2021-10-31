@@ -16,7 +16,7 @@ namespace TTTReborn.Items
         }
     }
 
-    [Library("ttt_equipment")]
+    [Hammer.Skip]
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
         public string LibraryName { get; }
@@ -33,6 +33,8 @@ namespace TTTReborn.Items
                     SlotType = equipmentAttribute.SlotType;
                 }
             }
+
+            EnableShadowInFirstPerson = false;
         }
 
         public void Equip(TTTPlayer player)

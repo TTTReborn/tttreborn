@@ -1,18 +1,19 @@
 using System;
 
-using Hammer;
-
 using Sandbox;
 
 namespace TTTReborn.Items
 {
+    [Library("weapon_smg")]
     [Weapon(SlotType = SlotType.Primary, AmmoType = "smg")]
+    [Spawnable]
     [Buyable(Price = 100)]
-    [Library("ttt_smg")]
-    [EditorModel("weapons/rust_smg/rust_smg.vmdl")]
+    [Precached("weapons/rust_smg/v_rust_smg.vmdl", "weapons/rust_smg/rust_smg.vmdl", "particles/pistol_muzzleflash.vpcf", "particles/pistol_ejectbrass.vpcf")]
+    [Hammer.EditorModel("weapons/rust_smg/rust_smg.vmdl")]
     partial class SMG : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
+        public override string ModelPath => "weapons/rust_smg/rust_smg.vmdl";
         public override float PrimaryRate => 10.0f;
         public override float SecondaryRate => 1.0f;
         public override int ClipSize => 30;
@@ -20,13 +21,6 @@ namespace TTTReborn.Items
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 8;
         public override Type AmmoEntity => typeof(SMGAmmo);
-
-        public override void Spawn()
-        {
-            base.Spawn();
-
-            SetModel("weapons/rust_smg/rust_smg.vmdl");
-        }
 
         public override void AttackPrimary()
         {

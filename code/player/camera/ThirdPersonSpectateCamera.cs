@@ -18,7 +18,7 @@ namespace TTTReborn.Player.Camera
         {
             base.Activated();
 
-            Rot = CurrentView.Rotation;
+            Rotation = CurrentView.Rotation;
 
             FieldOfView = FIELD_OF_VIEW_OVERRIDE;
         }
@@ -36,10 +36,10 @@ namespace TTTReborn.Player.Camera
             }
 
             _targetRot = Rotation.From(_lookAngles);
-            Rot = Rotation.Slerp(Rot, _targetRot, 10 * RealTime.Delta * (1 - LERP_MODE));
+            Rotation = Rotation.Slerp(Rotation, _targetRot, 10 * RealTime.Delta * (1 - LERP_MODE));
 
-            _targetPos = GetSpectatePoint() + Rot.Forward * -CAMERA_DISTANCE;
-            Pos = _targetPos;
+            _targetPos = GetSpectatePoint() + Rotation.Forward * -CAMERA_DISTANCE;
+            Position = _targetPos;
         }
 
         private Vector3 GetSpectatePoint()

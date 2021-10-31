@@ -3,6 +3,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Map;
 using TTTReborn.Roles;
@@ -12,47 +13,86 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
-        // Client
-        public static Dictionary<int, TTTRoleButtonData> RoleButtons = new();
-        public static Dictionary<int, RoleButtonPoint> RoleButtonPoints = new();
-        public static RoleButtonPoint FocusedButton;
-        public bool HasTrackedButtons => RoleButtons.Count > 0; // RoleButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
+        public static Dictionary<int, TTTLogicButtonData> LogicButtons = new();
+        public static Dictionary<int, LogicButtonPoint> LogicButtonPoints = new();
+        public static LogicButtonPoint FocusedButton;
+        public bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
 
-        // TODO: Call whenever player's role is set serverside, not initially during assignment.
-        public void SendRoleButtonsToClient()
+        public void SendLogicButtonsToClient()
         {
-            if (!IsServer)
+            if (IsClient)
             {
                 return;
             }
 
-            // Find all role button entities in the world and cast to TTTRoleButton.
-            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
+            List<TTTLogicButtonData> logicButtonDataList = new();
 
-            // Find specific role buttons to current player's role.
-            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role == Role.Name);
+            foreach (Entity entity in All)
+            {
+                if (entity is TTTLogicButton logicButton && (logicButton.CheckValue.Equals(Role.Name) || logicButton.CheckValue.Equals(Team.Name)))
+                {
+                    logicButtonDataList.Add(logicButton.PackageData());
+                }
+            }
 
             // Network a small amount of data for each button within the player's scope.
-            ClientStoreRoleButton(To.Single(Owner), applicableButtons.Select(x => x.PackageData()).ToArray());
+            ClientStoreLogicButton(To.Single(this), logicButtonDataList.ToArray());
+        }
+
+        [Event.Hotload]
+        public static void OnHotload()
+        {
+            if (Host.IsClient)
+            {
+                return;
+            }
+
+            foreach (TTTPlayer player in Utils.GetPlayers())
+            {
+                player.SendLogicButtonsToClient();
+            }
+        }
+
+        [Event(TTTEvent.UI.Reloaded)]
+        public static void OnUIReloaded()
+        {
+            LogicButtonPoints = new();
+
+            foreach (KeyValuePair<int, TTTLogicButtonData> keyValuePair in LogicButtons)
+            {
+                LogicButtonPoints.Add(keyValuePair.Key, new LogicButtonPoint(keyValuePair.Value));
+            }
         }
 
         // Receive data of player's buttons from client.
         [ClientRpc]
-        public void ClientStoreRoleButton(TTTRoleButtonData[] buttons)
+        public void ClientStoreLogicButton(TTTLogicButtonData[] buttons)
         {
+            Clear();
+
             FocusedButton = null;
 
-            // Index our data table by the role buttons network identity so we can find it later if need be.
-            RoleButtons = buttons.ToDictionary(k => k.NetworkIdent, v => v);
-            RoleButtonPoints = buttons.ToDictionary(k => k.NetworkIdent, v => new RoleButtonPoint(v));
+            // Index our data table by the Logic buttons network identity so we can find it later if need be.
+            LogicButtons = buttons.ToDictionary(k => k.NetworkIdent, v => v);
+            LogicButtonPoints = buttons.ToDictionary(k => k.NetworkIdent, v => new LogicButtonPoint(v));
         }
 
-        // Clear role buttons, called before player respawns.
+        // Clear logic buttons, called before player respawns.
         [ClientRpc]
-        public void RemoveRoleButtons()
+        public void RemoveLogicButtons()
         {
-            RoleButtons = new();
-            RoleButtonPoints = new();
+            Clear();
+        }
+
+        private void Clear()
+        {
+            foreach (LogicButtonPoint logicButtonPoint in LogicButtonPoints.Values)
+            {
+                logicButtonPoint.Delete(true);
+            }
+
+            LogicButtons.Clear();
+            LogicButtonPoints.Clear();
             FocusedButton = null;
         }
 
@@ -67,29 +107,28 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IEnumerable<TTTRoleButton> roleButtons = All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton);
-            IEnumerable<TTTRoleButton> applicableButtons = roleButtons.Where(x => x.Role == Utils.GetLibraryName(typeof(TraitorRole)));
+            IEnumerable<TTTLogicButton> logicButtons = All.Where(x => x is TTTLogicButton).Select(x => x as TTTLogicButton);
+            IEnumerable<TTTLogicButton> applicableButtons = logicButtons.Where(x => x.CheckValue.Equals(Teams.TeamFunctions.GetTeam(typeof(Teams.TraitorTeam))) || x.CheckValue.Equals(Utils.GetLibraryName(typeof(TraitorRole))));
 
-            player.ClientStoreRoleButton(To.Single(ConsoleSystem.Caller), applicableButtons.Select(x => x.PackageData()).ToArray());
+            player.ClientStoreLogicButton(To.Single(player), applicableButtons.Select(x => x.PackageData()).ToArray());
         }
 
         // Handle client telling server to activate a specific button
         [ServerCmd]
-        public static void ActivateRoleButton(int networkIdent)
+        public static void ActivateLogicButton(int networkIdent)
         {
-            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-            TTTRoleButton button = (TTTRoleButton) FindByIndex(networkIdent);
-
-            if (button == null)
+            if (ConsoleSystem.Caller.Pawn is not TTTPlayer player)
             {
-                Log.Warning($"Server received call for null role button with network id `{networkIdent}`.");
+                Log.Warning("Server received call from null player to activate logic button.");
 
                 return;
             }
 
-            if (player == null)
+            Entity entity = FindByIndex(networkIdent);
+
+            if (entity == null || entity is not TTTLogicButton button)
             {
-                Log.Warning("Server received call from null player to activate role button.");
+                Log.Warning($"Server received call for null logic button with network id `{networkIdent}`.");
 
                 return;
             }
@@ -101,7 +140,7 @@ namespace TTTReborn.Player
         }
 
         // Client keybinding for activating button within focus.
-        public void TickRoleButtonActivate()
+        public void TickLogicButtonActivate()
         {
             if (!IsClient || Local.Pawn is not TTTPlayer player || FocusedButton == null || !Input.Pressed(InputButton.Use))
             {
@@ -111,7 +150,7 @@ namespace TTTReborn.Player
             // Double check all of our data that initially set `FocusedButton` to make sure nothing has changed or any fuckery is about.
             if (FocusedButton.IsLengthWithinCamerasFocus() && FocusedButton.IsUsable(player))
             {
-                ActivateRoleButton(FocusedButton.Data.NetworkIdent);
+                ActivateLogicButton(FocusedButton.Data.NetworkIdent);
             }
         }
     }

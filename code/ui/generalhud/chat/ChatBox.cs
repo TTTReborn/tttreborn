@@ -56,6 +56,7 @@ namespace TTTReborn.UI
             _inputField.CaretColor = Color.White;
             _inputField.AcceptsFocus = true;
             _inputField.AllowEmojiReplace = true;
+            _inputField.Text = "";
             _inputField.AddClass("input-field");
             _inputField.AddEventListener("onsubmit", Submit);
             _inputField.AddEventListener("onblur", Close);
@@ -113,8 +114,6 @@ namespace TTTReborn.UI
             _inputPanel.SetClass("opacity-heavy", true);
             _inputPanel.SetClass("open", true);
 
-            _inputPanel.Style.Dirty();
-
             _inputField.Focus();
         }
 
@@ -155,7 +154,7 @@ namespace TTTReborn.UI
         {
             _lastChatFocus = 0f;
 
-            if (channel == Channel.Team && string.IsNullOrEmpty(teamName))
+            if (channel == Channel.Team && (string.IsNullOrEmpty(teamName) || TeamFunctions.TryGetTeam(teamName) == null))
             {
                 Log.Error("Cannot add chat entry to Team channel without a team name.");
 
@@ -189,18 +188,22 @@ namespace TTTReborn.UI
             {
                 case Channel.Info:
                     chatEntry.Header.AddClass("text-color-info");
+
                     break;
 
                 case Channel.Player:
                     chatEntry.Header.AddClass("text-color-alive");
+
                     break;
 
                 case Channel.Spectator:
                     chatEntry.Header.AddClass("text-color-spectator");
+
                     break;
 
                 case Channel.Team:
                     chatEntry.Header.Style.FontColor = TeamFunctions.GetTeam(teamName).Color;
+
                     break;
             }
 
@@ -216,7 +219,6 @@ namespace TTTReborn.UI
             }
 
             chatEntry.SetClass("show-header", showHeader);
-            chatEntry.Style.Dirty();
 
             Messages.Add(chatEntry);
         }

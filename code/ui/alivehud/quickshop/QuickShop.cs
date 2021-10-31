@@ -5,6 +5,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
@@ -19,9 +20,9 @@ namespace TTTReborn.UI
         private readonly List<QuickShopItem> _items = new();
         private Panel _backgroundPanel;
         private Panel _quickshopContainer;
-        private Label _creditLabel;
+        private TranslationLabel _creditLabel;
         private Panel _itemPanel;
-        private Label _itemDescriptionLabel;
+        private TranslationLabel _itemDescriptionLabel;
 
         private int _credits = 0;
 
@@ -53,13 +54,13 @@ namespace TTTReborn.UI
             _quickshopContainer = new Panel(this);
             _quickshopContainer.AddClass("quickshop-container");
 
-            _creditLabel = _quickshopContainer.Add.Label();
+            _creditLabel = _quickshopContainer.Add.TranslationLabel();
             _creditLabel.AddClass("credit-label");
 
             _itemPanel = new Panel(_quickshopContainer);
             _itemPanel.AddClass("item-panel");
 
-            _itemDescriptionLabel = _quickshopContainer.Add.Label();
+            _itemDescriptionLabel = _quickshopContainer.Add.TranslationLabel();
             _itemDescriptionLabel.AddClass("item-description-label");
 
             Reload();
@@ -70,6 +71,8 @@ namespace TTTReborn.UI
         public void Reload()
         {
             _itemPanel.DeleteChildren(true);
+
+            _selectedItemData = null;
 
             if (Local.Pawn is not TTTPlayer player)
             {
@@ -85,10 +88,7 @@ namespace TTTReborn.UI
 
             foreach (ShopItemData itemData in shop.Items)
             {
-                if (_selectedItemData == null)
-                {
-                    _selectedItemData = itemData;
-                }
+                _selectedItemData ??= itemData;
 
                 AddItem(itemData);
             }
@@ -122,7 +122,7 @@ namespace TTTReborn.UI
 
                 if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
                 {
-                    ConsoleSystem.Run("ttt_requestitem", item.ItemData?.Name);
+                    TTTPlayer.RequestItem(item.ItemData?.Name);
                 }
 
                 Update();
@@ -133,7 +133,7 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            _creditLabel.Text = $"You have ${_credits}";
+            _creditLabel.SetTranslation("QUICKSHOP_CREDITS_DESCRIPTION", _credits);
 
             foreach (QuickShopItem item in _items)
             {
@@ -144,7 +144,7 @@ namespace TTTReborn.UI
 
             if (_selectedItemData != null)
             {
-                _itemDescriptionLabel.Text = $"The description for {_selectedItemData?.Name} will go here";
+                _itemDescriptionLabel.SetTranslation("QUICKSHOP_ITEM_DESCRIPTION", new TranslationData(_selectedItemData?.Name.ToUpper()));
             }
         }
 
@@ -152,6 +152,24 @@ namespace TTTReborn.UI
         public static void OnShopChanged()
         {
             QuickShop.Instance?.Reload();
+        }
+
+        [Event(TTTEvent.Player.Role.Select)]
+        public static void OnRoleChanged(TTTPlayer player)
+        {
+            QuickShop quickShop = QuickShop.Instance;
+
+            if (quickShop != null)
+            {
+                if (player.Shop == null || !player.Shop.Accessable())
+                {
+                    quickShop.Enabled = false;
+                }
+                else if (quickShop.Enabled)
+                {
+                    quickShop.Update();
+                }
+            }
         }
 
         public override void Tick()

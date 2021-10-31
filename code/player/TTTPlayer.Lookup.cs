@@ -14,7 +14,7 @@ namespace TTTReborn.Player
             {
                 Sandbox.Camera camera = Camera as Sandbox.Camera;
 
-                trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * distance);
+                trace = Trace.Ray(camera.Position, camera.Position + camera.Rotation.Forward * distance);
             }
             else
             {
@@ -48,7 +48,7 @@ namespace TTTReborn.Player
             {
                 Sandbox.Camera camera = Camera as Sandbox.Camera;
 
-                trace = Trace.Ray(camera.Pos, camera.Pos + camera.Rot.Forward * maxHintDistance);
+                trace = Trace.Ray(camera.Position, camera.Position + camera.Rotation.Forward * maxHintDistance);
             }
             else
             {

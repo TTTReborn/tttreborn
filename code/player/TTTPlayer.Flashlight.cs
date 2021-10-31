@@ -9,7 +9,7 @@ namespace TTTReborn.Player
         private Flashlight _worldFlashlight;
         private Flashlight _viewFlashlight;
 
-        private const float FLASHLIGHT_DISTANCE = 40f;
+        private const float FLASHLIGHT_DISTANCE = 15f;
         private const float SMOOTH_SPEED = 25f;
 
         public bool HasFlashlightEntity
@@ -120,13 +120,16 @@ namespace TTTReborn.Player
 
         private void TickPlayerFlashlight()
         {
-            if (Input.Released(InputButton.Flashlight))
-            {
-                ToggleFlashlight();
-            }
-
             if (IsServer)
             {
+                using (Prediction.Off())
+                {
+                    if (Input.Released(InputButton.Flashlight))
+                    {
+                        ToggleFlashlight();
+                    }
+                }
+
                 if (IsFlashlightOn)
                 {
                     _worldFlashlight.Rotation = Rotation.Slerp(_worldFlashlight.Rotation, Input.Rotation, SMOOTH_SPEED);
@@ -147,6 +150,7 @@ namespace TTTReborn.Player
         }
     }
 
+    [Hammer.Skip]
     [Library("ttt_flashlight")]
     public partial class Flashlight : SpotLightEntity
     {

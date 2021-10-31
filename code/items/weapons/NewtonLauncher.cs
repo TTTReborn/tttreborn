@@ -1,19 +1,18 @@
 using System;
 
-using Hammer;
-
 using Sandbox;
 
 namespace TTTReborn.Items
 {
+    [Library("weapon_newtonlauncher")]
     [Weapon(SlotType = SlotType.OffensiveEquipment, AmmoType = "pistol")]
     [Buyable(Price = 100)]
-    [Library("ttt_newton_launcher")]
-    [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
-    [NonSpawnable]
+    [Precached("weapons/rust_pistol/v_rust_pistol.vmdl", "weapons/rust_pistol/rust_pistol.vmdl")]
+    [Hammer.EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
     partial class NewtonLauncher : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
+        public override string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
         public override bool UnlimitedAmmo => true;
         public override int ClipSize => 1;
         public override float PrimaryRate => 1f;
@@ -28,13 +27,6 @@ namespace TTTReborn.Items
 
         public bool IsCharging { get; set; } = false;
         public float ChargingStartTime;
-
-        public override void Spawn()
-        {
-            base.Spawn();
-
-            SetModel("weapons/rust_pistol/rust_pistol.vmdl");
-        }
 
         public override void OnActive()
         {

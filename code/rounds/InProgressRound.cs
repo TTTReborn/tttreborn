@@ -4,6 +4,7 @@ using System.Linq;
 
 using Sandbox;
 
+using TTTReborn.Events;
 using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Map;
@@ -17,7 +18,7 @@ namespace TTTReborn.Rounds
     public class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
-        private List<TTTRoleButton> RoleButtons;
+        private List<TTTLogicButton> LogicButtons;
 
         public override int RoundDuration
         {
@@ -37,6 +38,20 @@ namespace TTTReborn.Rounds
         {
             base.OnPlayerLeave(player);
             ChangeRoundIfOver();
+        }
+
+        [Event(TTTEvent.Player.Role.Select)]
+        private static void OnPlayerRoleChange(TTTPlayer player)
+        {
+            if (Host.IsClient)
+            {
+                return;
+            }
+
+            if (Gamemode.Game.Instance.Round is InProgressRound inProgressRound)
+            {
+                inProgressRound.ChangeRoundIfOver();
+            }
         }
 
         protected override void OnStart()
@@ -70,7 +85,7 @@ namespace TTTReborn.Rounds
                 }
 
                 // Cache buttons for OnSecond tick.
-                RoleButtons = Entity.All.Where(x => x.GetType() == typeof(TTTRoleButton)).Select(x => x as TTTRoleButton).ToList();
+                LogicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
 
                 AssignRoles();
             }
@@ -78,7 +93,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnTimeUp()
         {
-            LoadPostRound(InnocentTeam.Instance);
+            LoadPostRound(TeamFunctions.GetTeam(typeof(InnocentTeam)));
 
             base.OnTimeUp();
         }
@@ -111,10 +126,12 @@ namespace TTTReborn.Rounds
 
         private static void SetLoadout(TTTPlayer player)
         {
-            player.Inventory.TryAdd(new MagnetoStick(), true);
+            Extensions.Log.Debug($"Added loadout to {player.Client.Name}");
+
+            player.Inventory.TryAdd(new Hands(), true);
 
             // Randomize between SMG and shotgun
-            if (new Random().Next() % 2 == 0)
+            if (Utils.RNG.Next() % 2 == 0)
             {
                 if (player.Inventory.TryAdd(new Shotgun(), false))
                 {
@@ -147,20 +164,23 @@ namespace TTTReborn.Rounds
                 }
             }
 
+            if (aliveTeams.Count == 0)
+            {
+                return TeamFunctions.GetTeam(typeof(NoneTeam));
+            }
+
             return aliveTeams.Count == 1 ? aliveTeams[0] : null;
         }
 
         private void AssignRoles()
         {
             // TODO: There should be a neater way to handle this logic.
-            Random random = new();
-
             int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
 
             for (int i = 0; i < traitorCount; i++)
             {
                 List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
-                int randomId = random.Next(unassignedPlayers.Count);
+                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
 
                 if (unassignedPlayers[randomId].Role is NoneRole)
                 {
@@ -178,7 +198,7 @@ namespace TTTReborn.Rounds
                 // send everyone their roles
                 using (Prediction.Off())
                 {
-                    RPCs.ClientSetRole(To.Single(player), player, player.Role.Name);
+                    player.SendClientRole();
                 }
             }
         }
@@ -196,9 +216,16 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                base.OnSecond();
+                if (!Settings.ServerSettings.Instance.Debug.PreventWin)
+                {
+                    base.OnSecond();
+                }
+                else
+                {
+                    RoundEndTime += 1f;
+                }
 
-                RoleButtons.ForEach(x => x.OnSecond()); //Tick role button delay timer.
+                LogicButtons.ForEach(x => x.OnSecond()); // Tick role button delay timer.
 
                 if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {
@@ -207,13 +234,29 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private void ChangeRoundIfOver()
+        private bool ChangeRoundIfOver()
         {
             TTTTeam result = IsRoundOver();
-            if (result != null)
+
+            if (result != null && !Settings.ServerSettings.Instance.Debug.PreventWin)
             {
                 LoadPostRound(result);
+
+                return true;
             }
+
+            return false;
+        }
+
+        [Event(TTTReborn.Events.TTTEvent.Settings.Change)]
+        private static void OnChangeSettings()
+        {
+            if (Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)
+            {
+                return;
+            }
+
+            inProgressRound.ChangeRoundIfOver();
         }
     }
 }

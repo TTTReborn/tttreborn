@@ -20,7 +20,7 @@ namespace TTTReborn.UI
 
     public partial class RichPanel : Panel
     {
-        public bool IsDraggable { get; set; } = false;
+        public bool IsDraggable = false;
 
         public enum DragAnchor
         {
@@ -281,7 +281,6 @@ namespace TTTReborn.UI
             Style.Height = Length.Pixels((float) Math.Ceiling(height));
             Style.Left = Length.Pixels((float) Math.Ceiling(left));
             Style.Top = Length.Pixels((float) Math.Ceiling(top));
-            Style.Dirty();
         }
 
         public override void Tick()

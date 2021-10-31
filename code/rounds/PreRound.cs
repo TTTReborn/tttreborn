@@ -31,39 +31,13 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                List<TTTAmmoRandom> randomAmmo = new();
-                List<TTTWeaponRandom> randomWeapons = new();
-
-                foreach (Entity entity in Entity.All)
-                {
-                    if (entity.Tags.Has(IItem.ITEM_TAG))
-                    {
-                        entity.Delete();
-                    }
-                    if (entity is TTTAmmoRandom rammo)
-                    {
-                        randomAmmo.Add(rammo); //Throws `Collection was Modified` if we activate here. Worth looking further into cleanup wise.
-                    }
-                    if (entity is TTTWeaponRandom rwep)
-                    {
-                        randomWeapons.Add(rwep); //See above comment.
-                    }
-                    if (entity is TTTRoleButton button)
-                    {
-                        button.Cleanup();
-                    }
-
-                    entity.RemoveAllDecals();
-                }
-
-                randomAmmo.ForEach(x => x.Activate());
-                randomWeapons.ForEach(x => x.Activate());
+                Gamemode.Game.Instance.MapHandler.Reset();
 
                 foreach (Client client in Client.All)
                 {
                     if (client.Pawn is TTTPlayer player)
                     {
-                        player.RemoveRoleButtons();
+                        player.RemoveLogicButtons();
                         player.Respawn();
                     }
                 }
