@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globals;
+
 namespace TTTReborn.Items
 {
     [Library("entity_ammo_random")]
@@ -17,7 +19,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            Type typeToSpawn = ammoTypes[new Random().Next(ammoTypes.Count)];
+            Type typeToSpawn = ammoTypes[Utils.RNG.Next(ammoTypes.Count)];
             TTTAmmo ent = Globals.Utils.GetObjectByType<TTTAmmo>(typeToSpawn);
             ent.Position = Position;
             ent.Rotation = Rotation;

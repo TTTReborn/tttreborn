@@ -31,7 +31,7 @@ namespace TTTReborn.Player
         }
 
         [ServerCmd(Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id")]
-        public static void RespawnPlayer(int? id)
+        public static void RespawnPlayer(string id = null)
         {
             if (!ConsoleSystem.Caller.HasPermission("respawn"))
             {
@@ -46,7 +46,14 @@ namespace TTTReborn.Player
             }
             else
             {
-                player = GetPlayerById((int) id);
+                try
+                {
+                    player = GetPlayerById(int.Parse(id));
+                }
+                catch (Exception)
+                {
+                    return;
+                }
             }
 
             if (player == null || player.Client.GetValue<bool>("forcedspectator", false))
@@ -101,7 +108,7 @@ namespace TTTReborn.Player
         }
 
         [ServerCmd(Name = "ttt_setrole")]
-        public static void SetRole(string roleName, int? id = null)
+        public static void SetRole(string roleName, string id = null)
         {
             if (!ConsoleSystem.Caller.HasPermission("role"))
             {
@@ -146,7 +153,14 @@ namespace TTTReborn.Player
             }
             else
             {
-                player = GetPlayerById((int) id);
+                try
+                {
+                    player = GetPlayerById(int.Parse(id));
+                }
+                catch (Exception)
+                {
+                    return;
+                }
             }
 
             if (player == null)

@@ -26,7 +26,7 @@ namespace TTTReborn.Gamemode
 
         public TTTMapSettings MapSettings { get; private set; }
 
-        [ConVar.Replicated]
+        [ConVar.Replicated("ttt_debug")]
         public bool Debug { get; set; } = false;
 
         public Game()
