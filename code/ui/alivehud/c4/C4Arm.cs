@@ -4,7 +4,6 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
