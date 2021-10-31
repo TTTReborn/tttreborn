@@ -70,8 +70,21 @@ namespace TTTReborn.Items
 
         private async Task WaitForAnimationFinish()
         {
-            await GameTask.DelaySeconds(0.6f);
-            GrabbedEntity = null;
+            try
+            {
+                await GameTask.DelaySeconds(0.6f);
+                GrabbedEntity = null;
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Trim() == "A task was canceled.")
+                {
+                    return;
+                }
+
+                Log.Error($"{e.Message}: {e.StackTrace}");
+                GrabbedEntity = null;
+            }
         }
     }
 }

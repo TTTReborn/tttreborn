@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 using Sandbox;
@@ -105,8 +106,21 @@ namespace TTTReborn.Items
 
         private async Task WaitForAnimationFinish()
         {
-            await GameTask.DelaySeconds(0.6f);
-            IsPushingPlayer = false;
+            try
+            {
+                await GameTask.DelaySeconds(0.6f);
+                IsPushingPlayer = false;
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Trim() == "A task was canceled.")
+                {
+                    return;
+                }
+
+                Log.Error($"{e.Message}: {e.StackTrace}");
+                IsPushingPlayer = false;
+            }
         }
 
         private void TryGrabEntity(TTTPlayer player)
@@ -140,8 +154,8 @@ namespace TTTReborn.Items
 
             switch (tr.Entity)
             {
-                case PlayerCorpse:
-                    GrabbedEntity = new GrabbableCorpse(player, tr.Entity as PlayerCorpse, tr.Body, tr.Bone);
+                case PlayerCorpse corpse:
+                    GrabbedEntity = new GrabbableCorpse(player, corpse, tr.Body, tr.Bone);
                     break;
                 case ModelEntity model:
                     if (!model.CollisionBounds.Size.HasGreatorOrEqualAxis(MAX_PICKUP_SIZE) && model.PhysicsGroup.Mass < MAX_PICKUP_MASS)
