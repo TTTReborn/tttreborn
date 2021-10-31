@@ -4,14 +4,12 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Globals;
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
     public class C4Arm : Panel
     {
         public static C4Arm Instance;
-        public TTTPlayer User { get; set; }
         public C4Entity Entity { get; set; }
 
         private int _selectedPresetIndex;
@@ -64,29 +62,25 @@ namespace TTTReborn.UI
 
             actionButtons.Add.TranslationButton("C4_UI_PICKUP", "button action-button", () =>
             {
-                C4Entity.PickUp(Entity.NetworkIdent, User.NetworkIdent);
-                Enabled = false;
+                C4Entity.PickUp(Entity.NetworkIdent, Local.Pawn.NetworkIdent);
             });
 
             actionButtons.Add.TranslationButton("C4_UI_DESTROY", "button action-button", () =>
             {
                 C4Entity.Delete(Entity.NetworkIdent);
-                Enabled = false;
             });
 
             actionButtons.Add.TranslationButton("C4_UI_ARM", "button arm-button", () =>
             {
                 C4Entity.Arm(Entity.NetworkIdent, _selectedPresetIndex);
-                Enabled = false;
             });
 
             Enabled = false;
         }
 
-        public void Open(C4Entity entity, TTTPlayer user)
+        public void Open(C4Entity entity)
         {
             Entity = entity;
-            User = user;
             Enabled = true;
         }
 
@@ -98,7 +92,7 @@ namespace TTTReborn.UI
 
             _timer.Text = Utils.TimerString(preset.Timer);
 
-            _defuseChance.SetTranslation("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 100f).FloorToInt());
+            _defuseChance.SetTranslation("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 1000f).FloorToInt() / 10f);
         }
 
         public override void Tick()

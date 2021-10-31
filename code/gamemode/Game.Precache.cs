@@ -16,6 +16,7 @@ namespace TTTReborn.Gamemode
 
             Precache.Add("particles/impact.generic.vpcf");
             Precache.Add("particles/impact.flesh.vpcf");
+            Precache.Add("particles/impact.metal.vpcf");
 
             foreach (Type type in Utils.GetTypesWithAttribute<Entity, PrecachedAttribute>())
             {

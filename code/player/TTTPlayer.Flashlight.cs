@@ -9,7 +9,7 @@ namespace TTTReborn.Player
         private Flashlight _worldFlashlight;
         private Flashlight _viewFlashlight;
 
-        private const float FLASHLIGHT_DISTANCE = 10f;
+        private const float FLASHLIGHT_DISTANCE = 15f;
         private const float SMOOTH_SPEED = 25f;
 
         public bool HasFlashlightEntity
