@@ -118,18 +118,19 @@ namespace TTTReborn.Items
             try
             {
                 await GameTask.DelaySeconds(0.6f);
-                IsPushingEntity = false;
             }
             catch (Exception e)
             {
-                IsPushingEntity = false;
-
                 if (e.Message.Trim() == "A task was canceled.")
                 {
                     return;
                 }
 
                 Log.Error($"{e.Message}: {e.StackTrace}");
+            }
+            finally
+            {
+                IsPushingEntity = false;
             }
         }
 
