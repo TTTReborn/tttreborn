@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 
 using Sandbox;
 
@@ -24,7 +23,7 @@ namespace TTTReborn.Gamemode
 
         public KarmaSystem Karma { get; private set; } = new();
 
-        public TTTMapSettings MapSettings { get; private set; }
+        public MapHandler MapHandler { get; private set; }
 
         [ConVar.Replicated("ttt_debug")]
         public bool Debug { get; set; } = false;
@@ -201,10 +200,9 @@ namespace TTTReborn.Gamemode
         {
             StartGameTimer();
 
-            MapSettings = (TTTMapSettings) All.FirstOrDefault(x => x.GetType().Equals(typeof(TTTMapSettings)));
-            MapSettings?.FireSettingsSpawn();
-
             base.PostLevelLoaded();
+
+            MapHandler = new();
         }
 
         private async void StartGameTimer()
