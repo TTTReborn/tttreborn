@@ -155,6 +155,12 @@ namespace TTTReborn.Items
                 return;
             }
 
+            // Only allow dynamic entities to be picked up.
+            if (tr.Body.BodyType == PhysicsBodyType.Keyframed || tr.Body.BodyType == PhysicsBodyType.Static)
+            {
+                return;
+            }
+
             // Cannot pickup items held by other players.
             if (tr.Entity.Parent != null)
             {
