@@ -29,11 +29,11 @@ namespace TTTReborn.Items
 
         private const float MAX_PICKUP_MASS = 205;
         private Vector3 MAX_PICKUP_SIZE = new(50, 50, 50);
-        private const float PUSHING_FORCE = 600f;
+        private const float PUSHING_FORCE = 200f;
 
         private IGrabbable GrabbedEntity;
         private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
-        private bool IsPushingPlayer = false;
+        private bool IsPushingEntity = false;
 
         public override void Spawn()
         {
@@ -77,7 +77,7 @@ namespace TTTReborn.Items
                     }
                     else
                     {
-                        PushPlayer(player);
+                        PushEntity(player);
                     }
                 }
 
@@ -85,18 +85,24 @@ namespace TTTReborn.Items
             }
         }
 
-        private void PushPlayer(TTTPlayer player)
+        private void PushEntity(TTTPlayer player)
         {
-            TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_INTERACT_DISTANCE)
-                    .Ignore(player)
-                    .Run();
-
-            if (!tr.Hit || tr.Entity is not TTTPlayer || !tr.Entity.IsValid())
+            if (IsPushingEntity)
             {
                 return;
             }
 
-            IsPushingPlayer = true;
+            TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_INTERACT_DISTANCE)
+                    .EntitiesOnly()
+                    .Ignore(player)
+                    .Run();
+
+            if (!tr.Hit || !tr.Entity.IsValid())
+            {
+                return;
+            }
+
+            IsPushingEntity = true;
 
             player.SetAnimBool("b_attack", true);
             player.SetAnimInt("holdtype", 4);
@@ -112,7 +118,7 @@ namespace TTTReborn.Items
             try
             {
                 await GameTask.DelaySeconds(0.6f);
-                IsPushingPlayer = false;
+                IsPushingEntity = false;
             }
             catch (Exception e)
             {
@@ -122,7 +128,7 @@ namespace TTTReborn.Items
                 }
 
                 Log.Error($"{e.Message}: {e.StackTrace}");
-                IsPushingPlayer = false;
+                IsPushingEntity = false;
             }
         }
 
@@ -190,7 +196,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (IsPushingPlayer)
+            if (IsPushingEntity)
             {
                 return;
             }
