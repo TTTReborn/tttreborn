@@ -77,13 +77,14 @@ namespace TTTReborn.Items
             }
             catch (Exception e)
             {
+                GrabbedEntity = null;
+
                 if (e.Message.Trim() == "A task was canceled.")
                 {
                     return;
                 }
 
                 Log.Error($"{e.Message}: {e.StackTrace}");
-                GrabbedEntity = null;
             }
         }
     }

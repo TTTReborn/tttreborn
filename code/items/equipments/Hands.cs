@@ -122,13 +122,14 @@ namespace TTTReborn.Items
             }
             catch (Exception e)
             {
+                IsPushingEntity = false;
+
                 if (e.Message.Trim() == "A task was canceled.")
                 {
                     return;
                 }
 
                 Log.Error($"{e.Message}: {e.StackTrace}");
-                IsPushingEntity = false;
             }
         }
 
