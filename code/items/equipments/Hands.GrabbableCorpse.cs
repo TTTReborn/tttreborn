@@ -29,7 +29,7 @@ namespace TTTReborn.Items
             _handPhysicsBody = PhysicsWorld.AddBody();
             _handPhysicsBody.BodyType = PhysicsBodyType.Keyframed;
 
-            Transform attachment = player.GetAttachment(IGrabbable.MIDDLE_HANDS_ATTACHMENT)!.Value;
+            Transform attachment = player.GetAttachment(Hands.MIDDLE_HANDS_ATTACHMENT)!.Value;
             _handPhysicsBody.Position = attachment.Position;
             _handPhysicsBody.Rotation = attachment.Rotation;
 
@@ -56,14 +56,14 @@ namespace TTTReborn.Items
                 return;
             }
 
-            Transform attachment = player.GetAttachment(IGrabbable.MIDDLE_HANDS_ATTACHMENT)!.Value;
+            Transform attachment = player.GetAttachment(Hands.MIDDLE_HANDS_ATTACHMENT)!.Value;
             _handPhysicsBody.Position = attachment.Position;
             _handPhysicsBody.Rotation = attachment.Rotation;
         }
 
         public void SecondaryAction()
         {
-            TraceResult tr = Trace.Ray(_owner.EyePos, _owner.EyePos + _owner.EyeRot.Forward * IGrabbable.MAX_INTERACT_DISTANCE)
+            TraceResult tr = Trace.Ray(_owner.EyePos, _owner.EyePos + _owner.EyeRot.Forward * Hands.MAX_INTERACT_DISTANCE)
                 .Ignore(_owner)
                 .Run();
 

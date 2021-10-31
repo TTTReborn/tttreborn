@@ -17,7 +17,7 @@ namespace TTTReborn.Items
         public GrabbableProp(TTTPlayer player, Entity ent)
         {
             GrabbedEntity = ent;
-            GrabbedEntity.SetParent(player, IGrabbable.MIDDLE_HANDS_ATTACHMENT, new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
+            GrabbedEntity.SetParent(player, Hands.MIDDLE_HANDS_ATTACHMENT, new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
             GrabbedEntity.EnableHideInFirstPerson = false;
         }
 

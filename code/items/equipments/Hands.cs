@@ -7,9 +7,6 @@ namespace TTTReborn.Items
 {
     public interface IGrabbable
     {
-        const float MAX_INTERACT_DISTANCE = 75;
-        const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
-
         bool IsHolding { get; }
         void Drop();
         void Update(TTTPlayer player);
@@ -23,6 +20,8 @@ namespace TTTReborn.Items
     {
         public override string ViewModelPath => "";
         public override bool CanDrop() => false;
+        public static readonly float MAX_INTERACT_DISTANCE = 75;
+        public static readonly string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
         private const float MAX_PICKUP_MASS = 205;
         private Vector3 MAX_PICKUP_SIZE = new(50, 50, 50);
@@ -80,7 +79,7 @@ namespace TTTReborn.Items
 
         private static void PushPlayer(TTTPlayer player)
         {
-            TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * IGrabbable.MAX_INTERACT_DISTANCE)
+            TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_INTERACT_DISTANCE)
                     .Ignore(player)
                     .Run();
 
@@ -102,7 +101,7 @@ namespace TTTReborn.Items
             Vector3 eyePos = player.EyePos;
             Vector3 eyeDir = player.EyeRot.Forward;
 
-            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * IGrabbable.MAX_INTERACT_DISTANCE)
+            TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * MAX_INTERACT_DISTANCE)
                 .UseHitboxes()
                 .Ignore(player)
                 .HitLayer(CollisionLayer.Debris)
