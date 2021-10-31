@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using Sandbox;
 
 using TTTReborn.Globals;
@@ -29,6 +31,7 @@ namespace TTTReborn.Items
 
         private IGrabbable GrabbedEntity;
         private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
+        private bool IsPushingPlayer = false;
 
         public override void Spawn()
         {
@@ -77,7 +80,7 @@ namespace TTTReborn.Items
             }
         }
 
-        private static void PushPlayer(TTTPlayer player)
+        private void PushPlayer(TTTPlayer player)
         {
             TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_INTERACT_DISTANCE)
                     .Ignore(player)
@@ -88,7 +91,21 @@ namespace TTTReborn.Items
                 return;
             }
 
+            IsPushingPlayer = true;
+
+            player.SetAnimBool("b_attack", true);
+            player.SetAnimInt("holdtype", 4);
+            player.SetAnimInt("holdtype_handedness", 0);
+
             tr.Entity.Velocity += player.EyeRot.Forward * PUSHING_FORCE;
+
+            _ = WaitForAnimationFinish();
+        }
+
+        private async Task WaitForAnimationFinish()
+        {
+            await GameTask.DelaySeconds(0.6f);
+            IsPushingPlayer = false;
         }
 
         private void TryGrabEntity(TTTPlayer player)
@@ -151,6 +168,11 @@ namespace TTTReborn.Items
         public override void SimulateAnimator(PawnAnimator anim)
         {
             if (!IsServer)
+            {
+                return;
+            }
+
+            if (IsPushingPlayer)
             {
                 return;
             }

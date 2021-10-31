@@ -69,7 +69,7 @@ namespace TTTReborn.Items
 
         private async Task WaitForAnimationFinish()
         {
-            await GameTask.DelaySeconds(0.5f);
+            await GameTask.DelaySeconds(0.6f);
             GrabbedEntity = null;
         }
     }
