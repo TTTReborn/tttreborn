@@ -14,36 +14,35 @@ namespace TTTReborn.Items
             get => GrabbedEntity != null;
         }
 
-        public void Grab(TTTPlayer player, TraceResult tr)
+        public GrabbableProp(TTTPlayer player, Entity ent)
         {
-            GrabbedEntity = tr.Entity;
+            GrabbedEntity = ent;
             GrabbedEntity.SetParent(player, IGrabbable.MIDDLE_HANDS_ATTACHMENT, new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
             GrabbedEntity.EnableHideInFirstPerson = false;
         }
 
         public void Drop()
         {
-            if (!GrabbedEntity.IsValid())
+            if (GrabbedEntity?.IsValid ?? false)
             {
-                return;
+                GrabbedEntity.EnableHideInFirstPerson = true;
+                GrabbedEntity.SetParent(null);
             }
 
-            GrabbedEntity.EnableHideInFirstPerson = true;
-            GrabbedEntity.SetParent(null);
             GrabbedEntity = null;
         }
 
         public void Update(TTTPlayer player)
         {
-            // If the prop gets destroyed.
-            if (GrabbedEntity.Health == 0)
+            // If the entity is destroyed drop it.
+            if (!GrabbedEntity?.IsValid ?? true)
             {
                 Drop();
                 return;
             }
 
-            // If the entity gets another owner (i.e weapon pickup)
-            if (GrabbedEntity.Owner != null)
+            // // If the entity gets another owner (i.e weapon pickup) drop it.
+            if (GrabbedEntity?.Owner != null)
             {
                 Drop();
                 return;

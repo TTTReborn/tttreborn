@@ -10,7 +10,6 @@ namespace TTTReborn.Items
         const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
         bool IsHolding { get; }
-        void Grab(TTTPlayer player, TraceResult tr);
         void Drop();
         void Update(TTTPlayer player);
         void SecondaryAction();
@@ -103,17 +102,15 @@ namespace TTTReborn.Items
             switch (tr.Entity)
             {
                 case PlayerCorpse:
-                    GrabbedEntity = new GrabbableCorpse();
+                    GrabbedEntity = new GrabbableCorpse(player, tr.Body);
                     break;
                 case ModelEntity model:
-                    if (model.CollisionBounds.Size.HasGreatorOrEqualAxis(MAX_PICKUP_SIZE) && model.PhysicsGroup.Mass > MAX_PICKUP_MASS)
+                    if (!model.CollisionBounds.Size.HasGreatorOrEqualAxis(MAX_PICKUP_SIZE) && model.PhysicsGroup.Mass < MAX_PICKUP_MASS)
                     {
-                        GrabbedEntity = new GrabbableProp();
+                        GrabbedEntity = new GrabbableProp(player, tr.Entity);
                     }
                     break;
             }
-
-            GrabbedEntity?.Grab(player, tr);
         }
 
         public override void ActiveEnd(Entity ent, bool dropped)
