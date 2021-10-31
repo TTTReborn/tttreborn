@@ -7,7 +7,6 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-
     public class GrabbableProp : IGrabbable
     {
         public const float THROW_FORCE = 500;
@@ -45,6 +44,7 @@ namespace TTTReborn.Items
             if (!GrabbedEntity?.IsValid ?? true)
             {
                 Drop();
+
                 return;
             }
 
@@ -52,6 +52,7 @@ namespace TTTReborn.Items
             if (GrabbedEntity?.Owner != null)
             {
                 Drop();
+
                 return;
             }
         }
