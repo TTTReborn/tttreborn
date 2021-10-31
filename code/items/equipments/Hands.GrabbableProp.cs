@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 using Sandbox;
 
 using TTTReborn.Player;
@@ -55,9 +58,18 @@ namespace TTTReborn.Items
 
         public void SecondaryAction()
         {
+            _owner.SetAnimBool("b_attack", true);
+
             GrabbedEntity.SetParent(null);
             GrabbedEntity.EnableHideInFirstPerson = true;
             GrabbedEntity.Velocity += _owner.EyeRot.Forward * THROW_FORCE;
+
+            _ = WaitForAnimationFinish();
+        }
+
+        private async Task WaitForAnimationFinish()
+        {
+            await GameTask.DelaySeconds(0.5f);
             GrabbedEntity = null;
         }
     }
