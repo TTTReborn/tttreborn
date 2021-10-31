@@ -93,7 +93,7 @@ namespace TTTReborn.UI
 
             _timer.Text = Utils.TimerString(preset.Timer);
 
-            _defuseChance.SetTranslation("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 100f).FloorToInt());
+            _defuseChance.SetTranslation("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 1000f).FloorToInt() / 10f);
         }
 
         public override void Tick()

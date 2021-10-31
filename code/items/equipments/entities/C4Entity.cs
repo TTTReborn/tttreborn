@@ -149,7 +149,7 @@ namespace TTTReborn.Items
         {
             // Add a wire minigame in here later
             // For now, if you randomly roll the wrong wire the bomb explodes
-            if (Utils.RNG.Next(1, CurrentPreset.Wires + 1) != 1)
+            if (Utils.RNG.Next(CurrentPreset.Wires) != 0)
             {
                 _ = Explode();
 
