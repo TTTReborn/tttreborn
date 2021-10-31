@@ -68,7 +68,7 @@ namespace TTTReborn.Items
         [Net]
         public int AttachedBone { get; set; } = -1; // Defaults to -1, which indicates no bone attached as this value will not always be set.
 
-        [Net]
+        [Net, Change]
         public bool IsArmed { get; set; } = false;
 
         [Net]
@@ -106,7 +106,7 @@ namespace TTTReborn.Items
             }
             else
             {
-                player.ClientOpenC4Menu(To.Single(player), this);
+                ClientOpenC4Menu(To.Single(player), this);
             }
 
             return false;
@@ -116,21 +116,18 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client cl)
         {
-            if (IsClient)
+            if (IsClient && !CreatedDisplay)
             {
-                if (!CreatedDisplay)
-                {
-                    TimerDisplay = new();
-                    CreatedDisplay = true;
+                TimerDisplay = new();
+                CreatedDisplay = true;
 
-                    TimerDisplay.AddClass("c4worldtimer");
-                    TimerDisplay.StyleSheet.Add(Sandbox.UI.StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
+                TimerDisplay.PanelBounds = new Rect(-120, 0, 140, 80);
 
-                    TimerDisplay.PanelBounds = new Rect(-120, 0, 140, 80);
+                TimerDisplay.AddClass("c4worldtimer");
+                TimerDisplay.StyleSheet.Add(Sandbox.UI.StyleSheet.FromFile("/ui/alivehud/c4/C4WorldTimer.scss"));
 
-                    TimerDisplayLabel = TimerDisplay.Add.Label();
-                    TimerDisplayLabel.Text = EMPTY_TIMER;
-                }
+                TimerDisplayLabel = TimerDisplay.Add.Label();
+                TimerDisplayLabel.Text = EMPTY_TIMER;
             }
 
             base.Simulate(cl);
@@ -208,6 +205,8 @@ namespace TTTReborn.Items
 
         protected override void OnDestroy()
         {
+            ClientCloseC4Menu(this);
+
             TimerDisplay?.Delete();
             TimerDisplay = null;
 
@@ -328,6 +327,43 @@ namespace TTTReborn.Items
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
             return IsArmed ? new UsableHint("C4_DEFUSE") : new UsableHint("C4_ARM");
+        }
+
+        public void OnIsArmedChanged(bool oldValue, bool newValue)
+        {
+            if (newValue)
+            {
+                CloseC4Menu(this);
+            }
+        }
+
+        [ClientRpc]
+        public void ClientOpenC4Menu(C4Entity c4Entity)
+        {
+            if (c4Entity == null || !c4Entity.IsValid)
+            {
+                return;
+            }
+
+            C4Arm.Instance?.Open(c4Entity);
+        }
+
+        [ClientRpc]
+        public void ClientCloseC4Menu(C4Entity c4Entity)
+        {
+            Host.AssertClient();
+
+            CloseC4Menu(c4Entity);
+        }
+
+        private void CloseC4Menu(C4Entity c4Entity)
+        {
+            if (C4Arm.Instance == null || c4Entity == null || !c4Entity.IsValid || C4Arm.Instance.Entity != c4Entity)
+            {
+                return;
+            }
+
+            C4Arm.Instance.Enabled = false;
         }
     }
 }
