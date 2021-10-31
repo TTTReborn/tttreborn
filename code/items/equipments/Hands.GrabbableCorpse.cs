@@ -56,6 +56,18 @@ namespace TTTReborn.Items
                 return;
             }
 
+            // If the player grabs the corpse while it is attached with a rope, we should automatically
+            // drop it if they walk away far enough.
+            foreach (PhysicsJoint spring in _corpse?.RopeSprings)
+            {
+                if (Vector3.DistanceBetween(spring.Body1.Position, spring.Anchor2) > Hands.MAX_INTERACT_DISTANCE)
+                {
+                    Drop();
+
+                    return;
+                }
+            }
+
             Transform attachment = player.GetAttachment(Hands.MIDDLE_HANDS_ATTACHMENT)!.Value;
             _handPhysicsBody.Position = attachment.Position;
             _handPhysicsBody.Rotation = attachment.Rotation;
