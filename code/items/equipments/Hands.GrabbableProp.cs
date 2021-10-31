@@ -41,7 +41,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            // // If the entity gets another owner (i.e weapon pickup) drop it.
+            // If the entity gets another owner (i.e weapon pickup) drop it.
             if (GrabbedEntity?.Owner != null)
             {
                 Drop();

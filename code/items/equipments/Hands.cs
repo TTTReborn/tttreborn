@@ -26,6 +26,7 @@ namespace TTTReborn.Items
         private const float MAX_PICKUP_MASS = 205;
         private const float MAX_PICKUP_DISTANCE = 75;
         private Vector3 MAX_PICKUP_SIZE = new(50, 50, 50);
+        private const float PUSHING_FORCE = 600f;
 
         private IGrabbable GrabbedEntity;
         private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
@@ -59,15 +60,36 @@ namespace TTTReborn.Items
                 }
                 else if (Input.Pressed(InputButton.Attack2))
                 {
-                    GrabbedEntity?.Drop();
+                    if (IsHoldingEntity)
+                    {
+                        GrabbedEntity?.Drop();
+                    }
+                    else
+                    {
+                        PushPlayer(player);
+                    }
                 }
-                else if (Input.Pressed(InputButton.Use))
+                else if (Input.Pressed(InputButton.Reload))
                 {
                     GrabbedEntity?.SecondaryAction();
                 }
 
                 GrabbedEntity?.Update(player);
             }
+        }
+
+        private static void PushPlayer(TTTPlayer player)
+        {
+            TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_PICKUP_DISTANCE)
+                    .Ignore(player)
+                    .Run();
+
+            if (!tr.Hit || tr.Entity is not TTTPlayer || !tr.Entity.IsValid())
+            {
+                return;
+            }
+
+            tr.Entity.Velocity += player.EyeRot.Forward * PUSHING_FORCE;
         }
 
         private void TryGrabEntity(TTTPlayer player)

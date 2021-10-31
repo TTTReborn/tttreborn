@@ -47,13 +47,11 @@ namespace TTTReborn.Items
                 return;
             }
 
-            Transform attachment = player.GetAttachment("middle_of_both_hands")!.Value;
+            Transform attachment = player.GetAttachment(IGrabbable.MIDDLE_HANDS_ATTACHMENT)!.Value;
             _handPhysicsBody.Position = attachment.Position;
             _handPhysicsBody.Rotation = attachment.Rotation;
         }
 
-        public void SecondaryAction()
-        {
-        }
+        public void SecondaryAction() { }
     }
 }
