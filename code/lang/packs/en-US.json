@@ -121,6 +121,7 @@
     "AMMO_PISTOL": "Pistol",
     "AMMO_SMG": "SMG",
 
+    "EQUIPMENT_HANDS": "Hands",
     "EQUIPMENT_C4": "C4",
     "EQUIPMENT_DECOY": "Decoy",
     "EQUIPMENT_HEALTHSTATION": "HealthStation",

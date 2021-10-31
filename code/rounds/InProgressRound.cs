@@ -128,7 +128,7 @@ namespace TTTReborn.Rounds
         {
             Extensions.Log.Debug($"Added loadout to {player.Client.Name}");
 
-            player.Inventory.TryAdd(new MagnetoStick(), true);
+            player.Inventory.TryAdd(new Hands(), true);
 
             // Randomize between SMG and shotgun
             if (Utils.RNG.Next() % 2 == 0)

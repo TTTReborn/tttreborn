@@ -216,5 +216,10 @@ namespace TTTReborn.Globals
 
             return path;
         }
+
+        public static bool HasGreatorOrEqualAxis(this Vector3 local, Vector3 other)
+        {
+            return local.x >= other.x || local.y >= other.y || local.z >= other.z;
+        }
     }
 }
