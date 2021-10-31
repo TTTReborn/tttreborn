@@ -172,6 +172,9 @@ namespace TTTReborn.Items
                 case PlayerCorpse corpse:
                     GrabbedEntity = new GrabbableCorpse(player, corpse, tr.Body, tr.Bone);
                     break;
+                case TTTWeapon: // Ignore any size requirements, any weapon can be picked up.
+                    GrabbedEntity = new GrabbableProp(player, tr.Entity);
+                    break;
                 case ModelEntity model:
                     if (!model.CollisionBounds.Size.HasGreatorOrEqualAxis(MAX_PICKUP_SIZE) && model.PhysicsGroup.Mass < MAX_PICKUP_MASS)
                     {
