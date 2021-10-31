@@ -294,28 +294,24 @@ namespace TTTReborn.Items
             c4Entity.StartTimer();
         }
 
-        public static void DeleteC4(int c4EntityIdent)
+        [ServerCmd]
+        public static void Delete(int c4EntityIdent)
         {
-            if (FindByIndex(c4EntityIdent) is C4Entity c4Entity)
+            if (FindByIndex(c4EntityIdent) is C4Entity c4Entity && !c4Entity.IsArmed)
             {
                 c4Entity.Delete();
             }
         }
 
         [ServerCmd]
-        public static void Delete(int c4EntityIdent)
-        {
-            DeleteC4(c4EntityIdent);
-        }
-
-        [ServerCmd]
         public static void PickUp(int c4EntityIdent, int playerIdent)
         {
-            Entity entity = FindByIndex(playerIdent);
-
-            if (entity is TTTPlayer player && player.Inventory.TryAdd(new C4Equipment()))
+            if (FindByIndex(c4EntityIdent) is C4Entity c4Entity && !c4Entity.IsArmed)
             {
-                DeleteC4(c4EntityIdent);
+                if (FindByIndex(playerIdent) is TTTPlayer player && player.Inventory.TryAdd(new C4Equipment()))
+                {
+                    c4Entity.Delete();
+                }
             }
         }
 
