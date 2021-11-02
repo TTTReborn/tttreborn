@@ -9,8 +9,6 @@ namespace TTTReborn.Player.Camera
         public override void Activated()
         {
             base.Activated();
-
-            FieldOfView = 80;
         }
 
         public override void Deactivated()
