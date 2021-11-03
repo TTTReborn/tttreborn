@@ -57,10 +57,13 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                _startingRoundPlayers = Utils.GetPlayers();
-
-                foreach (TTTPlayer player in _startingRoundPlayers)
+                foreach (Client client in Client.All)
                 {
+                    if (client is not TTTPlayer player)
+                    {
+                        return;
+                    }
+
                     player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
 
                     if (player.LifeState == LifeState.Dead)
@@ -75,6 +78,7 @@ namespace TTTReborn.Rounds
                     if (!player.IsForcedSpectator)
                     {
                         SetLoadout(player);
+                        _startingRoundPlayers.Add(player);
                     }
                 }
 
