@@ -57,8 +57,8 @@
 
     "MENU_DROPDOWN_SELECT": "Seleziona...",
 
-    "MENU_SETTINGS_CATEGORY_GENERAL": "Generale",
-    "MENU_SETTINGS_CATEGORY_LANGUAGE": "Lingua",
+    "MENU_SETTINGS_TAB_GENERAL": "Generale",
+    "MENU_SETTINGS_GENERAL_LANGUAGE": "Lingua",
 
     "MENU_SUBMENU_SETTINGS": "Impostazioni",
     "MENU_SUBMENU_TESTING": "Testing",

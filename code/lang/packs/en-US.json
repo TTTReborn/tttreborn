@@ -63,8 +63,8 @@
 
     "MENU_DROPDOWN_SELECT": "Select...",
 
-    "MENU_SETTINGS_CATEGORY_GENERAL": "General",
-    "MENU_SETTINGS_CATEGORY_LANGUAGE": "Language",
+    "MENU_SETTINGS_TAB_GENERAL": "General",
+    "MENU_SETTINGS_GENERAL_LANGUAGE": "Language",
 
     "MENU_SUBMENU_SETTINGS": "Settings",
     "MENU_SUBMENU_TESTING": "Testing",

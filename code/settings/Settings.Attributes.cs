@@ -37,4 +37,15 @@ namespace TTTReborn.Settings
 
         }
     }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class DropdownOptionsAttribute : SettingAttribute
+    {
+        public string DropdownSetting;
+
+        public DropdownOptionsAttribute(string dropdownSetting) : base()
+        {
+            DropdownSetting = dropdownSetting;
+        }
+    }
 }

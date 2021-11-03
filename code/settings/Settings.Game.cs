@@ -2,11 +2,10 @@ namespace TTTReborn.Settings
 {
     public partial class ServerSettings
     {
-        public Categories.Round Round { get; set; } = new Categories.Round();
-        public Categories.AFK AFK { get; set; } = new Categories.AFK();
-        public Categories.Debug Debug { get; set; } = new Categories.Debug();
+        public Categories.Round Round { get; set; } = new();
+        public Categories.AFK AFK { get; set; } = new();
+        public Categories.Debug Debug { get; set; } = new();
     }
-
 
     namespace Categories
     {

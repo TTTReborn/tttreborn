@@ -57,8 +57,8 @@
 
     "MENU_DROPDOWN_SELECT": "Выбрать...",
 
-    "MENU_SETTINGS_CATEGORY_GENERAL": "Общие",
-    "MENU_SETTINGS_CATEGORY_LANGUAGE": "Язык",
+    "MENU_SETTINGS_TAB_GENERAL": "Общие",
+    "MENU_SETTINGS_GENERAL_LANGUAGE": "Язык",
 
     "MENU_SUBMENU_SETTINGS": "Настройки",
     "MENU_SUBMENU_TESTING": "Тестирование",
