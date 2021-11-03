@@ -19,7 +19,6 @@ namespace TTTReborn.Rounds
     {
         public override string RoundName => "In Progress";
         private List<TTTLogicButton> _logicButtons;
-        private List<TTTPlayer> _startingRoundPlayers = new();
         private bool _areRolesAssigned = false;
 
         public override int RoundDuration
@@ -57,14 +56,15 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                foreach (Client client in Client.All)
+                foreach (TTTPlayer player in Utils.GetPlayers())
                 {
-                    if (client is not TTTPlayer player)
-                    {
-                        return;
-                    }
-
                     player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
+
+                    if (player.IsForcedSpectator)
+                    {
+                        player.MakeSpectator(false);
+                        continue;
+                    }
 
                     if (player.LifeState == LifeState.Dead)
                     {
@@ -75,11 +75,7 @@ namespace TTTReborn.Rounds
                         player.SetHealth(player.MaxHealth);
                     }
 
-                    if (!player.IsForcedSpectator)
-                    {
-                        SetLoadout(player);
-                        _startingRoundPlayers.Add(player);
-                    }
+                    SetLoadout(player);
                 }
 
                 // Cache buttons for OnSecond tick.
@@ -94,20 +90,6 @@ namespace TTTReborn.Rounds
             LoadPostRound(TeamFunctions.GetTeam(typeof(InnocentTeam)));
 
             base.OnTimeUp();
-        }
-
-        public override void OnPlayerSpawn(TTTPlayer player)
-        {
-            if (player.IsForcedSpectator)
-            {
-                player.MakeSpectator();
-            }
-            else
-            {
-                SetLoadout(player);
-            }
-
-            base.OnPlayerSpawn(player);
         }
 
         private static void SetLoadout(TTTPlayer player)
@@ -160,12 +142,13 @@ namespace TTTReborn.Rounds
 
         private void AssignRoles()
         {
-            // TODO: There should be a neater way to handle this logic.
-            int traitorCount = (int) Math.Max(_startingRoundPlayers.Count * 0.25f, 1f);
+            List<TTTPlayer> alivePlayers = Utils.GetAlivePlayers();
+
+            int traitorCount = (int) Math.Max(alivePlayers.Count * 0.25f, 1f);
 
             for (int i = 0; i < traitorCount; i++)
             {
-                List<TTTPlayer> unassignedPlayers = _startingRoundPlayers.Where(p => p.Role is NoneRole).ToList();
+                List<TTTPlayer> unassignedPlayers = alivePlayers.Where(p => p?.Role is NoneRole).ToList();
                 int randomId = Utils.RNG.Next(unassignedPlayers.Count);
 
                 if (unassignedPlayers[randomId].Role is NoneRole)
@@ -174,7 +157,7 @@ namespace TTTReborn.Rounds
                 }
             }
 
-            foreach (TTTPlayer player in _startingRoundPlayers)
+            foreach (TTTPlayer player in alivePlayers)
             {
                 if (player.Role is NoneRole)
                 {
@@ -204,7 +187,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                if (!Settings.ServerSettings.Instance.Debug.PreventWin)
+                if (!ServerSettings.Instance.Debug.PreventWin)
                 {
                     base.OnSecond();
                 }

@@ -22,10 +22,9 @@ namespace TTTReborn.UI
             Instance = this;
 
             StyleSheet.Load("/ui/alivehud/damageindicator/DamageIndicator.scss");
-
             Style.SetBackgroundImage(Texture.Load("/ui/damageindicator/default.png"));
-
             Style.ZIndex = -1;
+            Style.Dirty();
         }
 
         [Event(TTTEvent.Player.TakeDamage)]
