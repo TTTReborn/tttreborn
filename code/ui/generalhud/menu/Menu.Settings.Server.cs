@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globals;
 using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
@@ -9,118 +14,74 @@ namespace TTTReborn.UI.Menu
         internal void CreateServerSettings(PanelContent tabContent, ServerSettings serverSettings)
         {
             Tabs tabs = tabContent.Add.Tabs();
-            tabs.AddTab("MENU_SETTINGS_TAB_SPRINT", (panelContent) =>
+
+            Dictionary<string, Dictionary<string, SettingAttribute>> serverSettingsData = new();
+            PropertyInfo[] properties = serverSettings.GetType().GetProperties();
+
+            Type baseSettingsType = typeof(Settings.Settings);
+            string nsp = typeof(Settings.Categories.Round).Namespace;
+
+            foreach (PropertyInfo propertyInfo in properties)
             {
-                AddSprintSettings(panelContent, serverSettings);
-            }, "sprint");
+                if (propertyInfo.DeclaringType.BaseType == baseSettingsType && propertyInfo.PropertyType.Namespace.Equals(nsp))
+                {
+                    string categoryName = propertyInfo.Name;
+                    object propertyObject = propertyInfo.GetValue(serverSettings);
 
-            tabs.AddTab("MENU_SETTINGS_TAB_ROUND", (panelContent) =>
-            {
-                AddRoundSettings(panelContent, serverSettings);
-            }, "rounds");
+                    if (propertyObject == null)
+                    {
+                        continue;
+                    }
 
-            tabs.AddTab("MENU_SETTINGS_TAB_AFK", (panelContent) =>
-            {
-                AddAFKSettings(panelContent, serverSettings);
-            }, "afk");
+                    tabs.AddTab($"MENU_SETTINGS_TAB_{categoryName.ToUpper()}", (panelContent) =>
+                    {
+                        foreach (PropertyInfo subPropertyInfo in propertyInfo.PropertyType.GetProperties())
+                        {
+                            foreach (object attribute in subPropertyInfo.GetCustomAttributes())
+                            {
+                                if (attribute is SettingAttribute settingAttribute)
+                                {
+                                    string propertyName = subPropertyInfo.Name;
 
-            tabs.AddTab("MENU_SETTINGS_TAB_DEBUG", (panelContent) =>
-            {
-                AddDebugSettings(panelContent, serverSettings);
-            }, "afk");
-        }
+                                    switch (settingAttribute)
+                                    {
+                                        case SwitchSettingAttribute:
+                                            Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
+                                            uiPanel.Add.TranslationLabel($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}").AddTooltip($"MENU_MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION");
 
-        private void AddSprintSettings(PanelContent tabContent, ServerSettings serverSettings)
-        {
-            Sandbox.UI.Panel sprintPanel = tabContent.Add.Panel("sprint");
-            sprintPanel.Add.TranslationLabel("MENU_SETTINGS_SPRINT").AddTooltip("MENU_SETTINGS_SPRINT_DESCRIPTION");
+                                            Switch sw = uiPanel.Add.Switch(propertyName.ToLower(), Utils.GetPropertyValue<bool>(propertyObject, propertyName));
+                                            sw.AddEventListener("onchange", (panelEvent) =>
+                                            {
+                                                Utils.SetPropertyValue(propertyObject, propertyName, !Utils.GetPropertyValue<bool>(propertyObject, propertyName));
 
-            Switch sw = sprintPanel.Add.Switch("sprint", serverSettings.Movement.IsSprintEnabled);
-            sw.AddEventListener("onchange", (panelEvent) =>
-            {
-                serverSettings.Movement.IsSprintEnabled = !serverSettings.Movement.IsSprintEnabled;
+                                                SettingFunctions.SendSettingsToServer(serverSettings);
+                                            });
 
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
-        }
+                                            break;
 
-        private void AddRoundSettings(PanelContent panelContent, ServerSettings serverSettings)
-        {
-            // TTTMinPlayers
-            CreateSettingsEntry(panelContent, "MENU_SETTINGS_MINPLAYERS", serverSettings.Round.MinPlayers, "MENU_SETTINGS_MINPLAYERS_DESCRIPTION", (value) =>
-            {
-                serverSettings.Round.MinPlayers = value;
+                                        case InputSettingAttribute:
+                                            CreateSettingsEntry(panelContent, $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}", Utils.GetPropertyValue(propertyObject, propertyName).ToString(), $"MENU_MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION", (value) =>
+                                            {
+                                                Utils.SetPropertyValue(propertyObject, propertyName, value);
 
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
+                                                SettingFunctions.SendSettingsToServer(serverSettings);
+                                            });
 
-            // TTTPreRoundTime
-            CreateSettingsEntry(panelContent, "MENU_SETTINGS_PREROUND", serverSettings.Round.PreRoundTime, "MENU_SETTINGS_PREROUND_DESCRIPTION", (value) =>
-            {
-                serverSettings.Round.PreRoundTime = value;
+                                            break;
 
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
+                                        case DropdownSettingAttribute:
 
-            // TTTRoundTime
-            CreateSettingsEntry(panelContent, "MENU_SETTINGS_ROUNDTIME", serverSettings.Round.RoundTime, "MENU_SETTINGS_ROUNDTIME_DESCRIPTION", (value) =>
-            {
-                serverSettings.Round.RoundTime = value;
 
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
+                                            break;
+                                    }
 
-            // TTTPostRoundTime
-            CreateSettingsEntry(panelContent, "MENU_SETTINGS_POSTROUND", serverSettings.Round.PostRoundTime, "MENU_SETTINGS_POSTROUND_DESCRIPTION", (value) =>
-            {
-                serverSettings.Round.PostRoundTime = value;
-
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
-
-            // TTTKillTimeReward
-            CreateSettingsEntry(panelContent, "MENU_SETTINGS_KILLTIMEREWARD", serverSettings.Round.KillTimeReward, "MENU_SETTINGS_KILLTIMEREWARD_DESCRIPTION", (value) =>
-            {
-                serverSettings.Round.KillTimeReward = value;
-
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
-        }
-
-        private void AddAFKSettings(PanelContent panelContent, ServerSettings serverSettings)
-        {
-            Sandbox.UI.Panel sprintPanel = panelContent.Add.Panel("sprint");
-            sprintPanel.Add.TranslationLabel("MENU_SETTINGS_KICK").AddTooltip("MENU_SETTINGS_KICK_DESCRIPTION");
-
-            Switch sw = sprintPanel.Add.Switch("afk", serverSettings.AFK.ShouldKickPlayers);
-            sw.AddEventListener("onchange", (panelEvent) =>
-            {
-                serverSettings.AFK.ShouldKickPlayers = !serverSettings.AFK.ShouldKickPlayers;
-
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
-
-            // TTTMinPlayers
-            CreateSettingsEntry(panelContent, "MENU_SETTINGS_AFK_TIME", serverSettings.AFK.SecondsTillKick, "MENU_SETTINGS_AFK_TIME_DESCRIPTION", (value) =>
-            {
-                serverSettings.AFK.SecondsTillKick = value;
-
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
-        }
-
-        private void AddDebugSettings(PanelContent panelContent, ServerSettings serverSettings)
-        {
-            Sandbox.UI.Panel sprintPanel = panelContent.Add.Panel("sprint");
-            sprintPanel.Add.TranslationLabel("MENU_SETTINGS_PREVENTWIN").AddTooltip("MENU_SETTINGS_PREVENTWIN_DESCRIPTION");
-
-            Switch sw = sprintPanel.Add.Switch("preventwin", serverSettings.Debug.PreventWin);
-            sw.AddEventListener("onchange", (panelEvent) =>
-            {
-                serverSettings.Debug.PreventWin = !serverSettings.Debug.PreventWin;
-
-                SettingFunctions.SendSettingsToServer(serverSettings);
-            });
+                                    break;
+                                }
+                            }
+                        }
+                    }, categoryName.ToLower());
+                }
+            }
         }
     }
 }

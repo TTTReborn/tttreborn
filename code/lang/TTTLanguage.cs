@@ -17,6 +17,7 @@ namespace TTTReborn.Settings
     {
         public partial class General
         {
+            [DropdownSetting]
             public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
         }
     }

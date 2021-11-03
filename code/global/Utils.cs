@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Sandbox;
 using Sandbox.UI;
@@ -220,6 +221,44 @@ namespace TTTReborn.Globals
         public static bool HasGreatorOrEqualAxis(this Vector3 local, Vector3 other)
         {
             return local.x >= other.x || local.y >= other.y || local.z >= other.z;
+        }
+
+        public static void SetPropertyValue<T>(object obj, string propertyName, T value)
+        {
+            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+
+            if (propertyInfo != null && propertyInfo.CanWrite)
+            {
+                propertyInfo.SetValue(obj, value);
+            }
+            else
+            {
+                Log.Warning($"Tried to write property '{propertyName}' of '{obj}' with '{value}'");
+            }
+        }
+
+        public static T GetPropertyValue<T>(object obj, string propertyName)
+        {
+            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+
+            if (propertyInfo == null || !propertyInfo.CanRead)
+            {
+                return default;
+            }
+
+            return (T) propertyInfo.GetValue(obj);
+        }
+
+        public static object GetPropertyValue(object obj, string propertyName)
+        {
+            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+
+            if (propertyInfo == null || !propertyInfo.CanRead)
+            {
+                return default;
+            }
+
+            return propertyInfo.GetValue(obj);
         }
     }
 }
