@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json.Serialization;
 
 using Sandbox;
 
@@ -22,6 +23,7 @@ namespace TTTReborn.Settings
             [DropdownSetting]
             public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
 
+            [JsonIgnore]
             [DropdownOptions("Language")]
             public Dictionary<string, object> LanguageOptions
             {
@@ -141,6 +143,8 @@ namespace TTTReborn.Player
             Log.Warning($"You set your language to '{language.Data.Name}'.");
 
             Settings.SettingsManager.Instance.General.Language = language.Data.Code;
+
+            Event.Run(TTTEvent.Settings.Change);
         }
     }
 }
