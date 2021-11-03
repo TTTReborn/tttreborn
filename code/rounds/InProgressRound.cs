@@ -19,7 +19,7 @@ namespace TTTReborn.Rounds
     {
         public override string RoundName => "In Progress";
         private List<TTTLogicButton> _logicButtons;
-        private List<TTTPlayer> _players = new();
+        private List<TTTPlayer> _startingRoundPlayers = new();
         private bool _areRolesAssigned = false;
 
         public override int RoundDuration
@@ -57,9 +57,9 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                _players = Utils.GetPlayers();
+                _startingRoundPlayers = Utils.GetPlayers();
 
-                foreach (TTTPlayer player in _players)
+                foreach (TTTPlayer player in _startingRoundPlayers)
                 {
                     player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
 
@@ -157,11 +157,11 @@ namespace TTTReborn.Rounds
         private void AssignRoles()
         {
             // TODO: There should be a neater way to handle this logic.
-            int traitorCount = (int) Math.Max(_players.Count * 0.25f, 1f);
+            int traitorCount = (int) Math.Max(_startingRoundPlayers.Count * 0.25f, 1f);
 
             for (int i = 0; i < traitorCount; i++)
             {
-                List<TTTPlayer> unassignedPlayers = _players.Where(p => p.Role is NoneRole).ToList();
+                List<TTTPlayer> unassignedPlayers = _startingRoundPlayers.Where(p => p.Role is NoneRole).ToList();
                 int randomId = Utils.RNG.Next(unassignedPlayers.Count);
 
                 if (unassignedPlayers[randomId].Role is NoneRole)
@@ -170,7 +170,7 @@ namespace TTTReborn.Rounds
                 }
             }
 
-            foreach (TTTPlayer player in _players)
+            foreach (TTTPlayer player in _startingRoundPlayers)
             {
                 if (player.Role is NoneRole)
                 {
