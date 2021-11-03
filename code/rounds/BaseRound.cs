@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Sandbox;
 
@@ -11,9 +10,6 @@ namespace TTTReborn.Rounds
     {
         public virtual int RoundDuration => 0;
         public virtual string RoundName => "";
-
-        public readonly List<TTTPlayer> Players = new();
-        public readonly List<TTTPlayer> Spectators = new();
 
         public float RoundEndTime { get; set; }
 
@@ -38,26 +34,9 @@ namespace TTTReborn.Rounds
             if (Host.IsServer)
             {
                 RoundEndTime = 0f;
-
-                Players.Clear();
-                Spectators.Clear();
             }
 
             OnFinish();
-        }
-
-        public void AddPlayer(TTTPlayer player)
-        {
-            Host.AssertServer();
-
-            if (!player.IsForcedSpectator && !Players.Contains(player))
-            {
-                Players.Add(player);
-            }
-            else if (player.IsForcedSpectator && !Spectators.Contains(player))
-            {
-                Spectators.Add(player);
-            }
         }
 
         public virtual void OnPlayerSpawn(TTTPlayer player)
@@ -72,8 +51,7 @@ namespace TTTReborn.Rounds
 
         public virtual void OnPlayerLeave(TTTPlayer player)
         {
-            Players.Remove(player);
-            Spectators.Remove(player);
+
         }
 
         public virtual void OnTick()

@@ -63,8 +63,6 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            AddPlayer(player);
-
             base.OnPlayerSpawn(player);
         }
     }

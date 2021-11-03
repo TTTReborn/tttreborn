@@ -54,7 +54,7 @@ namespace TTTReborn.Player
 
             CurrentPlayer = null;
 
-            List<TTTPlayer> players = Utils.GetPlayers((pl) => pl.LifeState == LifeState.Alive);
+            List<TTTPlayer> players = Utils.GetAlivePlayers();
 
             if (players.Count > 0)
             {
