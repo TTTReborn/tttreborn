@@ -1,3 +1,4 @@
+using TTTReborn.Globalization;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -7,12 +8,12 @@ namespace TTTReborn.UI
         /// <summary>
         /// The max viewable distance of the hint.
         /// </summary>
-        public virtual float HintDistance => 2048f;
+        public float HintDistance => 2048f;
 
         /// <summary>
         /// The text to display on the hint each tick.
         /// </summary>
-        public virtual string TextOnTick => string.Empty;
+        public TranslationData TextOnTick => null;
 
         bool CanHint(TTTPlayer client);
 

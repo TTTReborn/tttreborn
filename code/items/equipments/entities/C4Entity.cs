@@ -316,7 +316,7 @@ namespace TTTReborn.Items
             }
         }
 
-        public string TextOnTick => TTTLanguage.ActiveLanguage.GetFormattedTranslation(IsArmed ? "C4_DEFUSE" : "C4_ARM", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
+        public TranslationData TextOnTick => new(IsArmed ? "C4_DEFUSE" : "C4_ARM", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 
         public bool CanHint(TTTPlayer client)
         {

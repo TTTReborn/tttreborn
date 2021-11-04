@@ -4,6 +4,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -70,7 +71,7 @@ namespace TTTReborn.UI
             return HealthGroupList[^1];
         }
 
-        public override void UpdateHintPanel(string textOnTick)
+        public override void UpdateHintPanel(TranslationData translationData)
         {
             SetClass("fade-in", Enabled);
 

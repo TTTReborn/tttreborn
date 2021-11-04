@@ -63,7 +63,7 @@ namespace TTTReborn.Items
 
         public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
 
-        public string TextOnTick => TTTLanguage.ActiveLanguage.GetFormattedTranslation("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
+        public TranslationData TextOnTick => new("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
 
         public bool CanHint(TTTPlayer client)
         {
