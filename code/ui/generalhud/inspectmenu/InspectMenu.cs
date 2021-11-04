@@ -211,15 +211,10 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            if (!_playerCorpse.IsValid())
+            if (!_playerCorpse.IsValid() || _playerCorpse.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
             {
                 Enabled = false;
                 return;
-            }
-
-            if (Enabled && _playerCorpse.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
-            {
-                Enabled = false;
             }
 
             string timeSinceDeath = Globals.Utils.TimerString(Time.Now - _confirmationData.Time);

@@ -148,7 +148,7 @@ namespace TTTReborn.Rounds
 
             for (int i = 0; i < traitorCount; i++)
             {
-                List<TTTPlayer> unassignedPlayers = alivePlayers.Where(p => p?.Role is NoneRole).ToList();
+                List<TTTPlayer> unassignedPlayers = alivePlayers.Where(p => p.Role is NoneRole).ToList();
                 int randomId = Utils.RNG.Next(unassignedPlayers.Count);
 
                 if (unassignedPlayers[randomId].Role is NoneRole)
