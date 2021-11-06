@@ -120,6 +120,11 @@ Menu {
             }
         }
 
+        &.keybindings {
+            flex-wrap: nowrap;
+            min-height: 600px;
+        }
+
         &.testing {
             Label,
             .label {
