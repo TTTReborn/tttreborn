@@ -35,6 +35,10 @@ $info: #ffae00;
         font-weight: 500;
     }
 
+    .content {
+        flex-grow: 1;
+    }
+
     .footer {
         width: 100%;
         min-height: 40px;
