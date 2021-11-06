@@ -28,7 +28,7 @@ namespace TTTReborn.UI.Menu
                 panelContent.Add.Label("Weapons");
                 CreateBinding(menuContent, "Fire", new List<string> { "+iv_attack" });
                 CreateBinding(menuContent, "Reloaded", new List<string> { "+iv_reload" });
-                CreateBinding(menuContent, "Drop", new List<string> { "+iv_drop" });
+                CreateBinding(menuContent, "Drop Weapon", new List<string> { "+iv_drop" });
                 CreateBinding(menuContent, "Drop Ammo", new List<string> { "+iv_sprint", "+iv_drop" });
                 panelContent.Add.Label("");
 
