@@ -31,12 +31,16 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
+            Players.Remove(player);
+            Spectators.Add(player);
+
             player.MakeSpectator();
             ChangeRoundIfOver();
         }
 
         public override void OnPlayerLeave(TTTPlayer player)
         {
+
             base.OnPlayerLeave(player);
             ChangeRoundIfOver();
         }
