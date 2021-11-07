@@ -243,22 +243,14 @@ namespace TTTReborn.Globals
 
             if (propertyInfo == null || !propertyInfo.CanRead)
             {
+                Log.Warning($"Tried to read non-existing property '{propertyName}' of '{obj}'");
+
                 return default;
             }
 
             return (T) propertyInfo.GetValue(obj);
         }
 
-        public static object GetPropertyValue(object obj, string propertyName)
-        {
-            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
-
-            if (propertyInfo == null || !propertyInfo.CanRead)
-            {
-                return default;
-            }
-
-            return propertyInfo.GetValue(obj);
-        }
+        public static object GetPropertyValue(object obj, string propertyName) => GetPropertyValue<object>(obj, propertyName);
     }
 }
