@@ -19,8 +19,11 @@ namespace TTTReborn.Rounds
     {
         public override string RoundName => "In Progress";
 
-        [Net] public List<TTTPlayer> Players { get; set; }
-        [Net] public List<TTTPlayer> Spectators { get; set; }
+        [Net]
+        public List<TTTPlayer> Players { get; set; }
+
+        [Net]
+        public List<TTTPlayer> Spectators { get; set; }
 
         private List<TTTLogicButton> _logicButtons;
 
@@ -40,6 +43,14 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerLeave(TTTPlayer player)
         {
+            if (player.LifeState == LifeState.Alive)
+            {
+                Players.Remove(player);
+            }
+            else
+            {
+                Spectators.Remove(player);
+            }
 
             base.OnPlayerLeave(player);
             ChangeRoundIfOver();

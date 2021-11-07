@@ -33,7 +33,7 @@ namespace TTTReborn.Map
                 }
                 else if (entity is TTTWeaponRandom)
                 {
-                    RandomWeaponCount += 1;
+                    RandomWeaponCount++;
                 }
             }
         }
