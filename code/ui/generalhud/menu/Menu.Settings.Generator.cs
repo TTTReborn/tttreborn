@@ -52,84 +52,17 @@ namespace TTTReborn.UI.Menu
                                     switch (settingAttribute)
                                     {
                                         case SwitchSettingAttribute:
-                                            {
-                                                Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
-                                                uiPanel.Add.TranslationLabel($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}").AddTooltip($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION");
-
-                                                Switch sw = uiPanel.Add.Switch(propertyName.ToLower(), Utils.GetPropertyValue<bool>(propertyObject, propertyName));
-                                                sw.AddEventListener("onchange", (panelEvent) =>
-                                                {
-                                                    Utils.SetPropertyValue(propertyObject, propertyName, !Utils.GetPropertyValue<bool>(propertyObject, propertyName));
-
-                                                    if (settings is ServerSettings serverSettings)
-                                                    {
-                                                        SettingFunctions.SendSettingsToServer(serverSettings);
-                                                    }
-                                                    else
-                                                    {
-                                                        Event.Run(TTTEvent.Settings.Change);
-                                                    }
-                                                });
-                                            }
+                                            CreateSwitchSetting(settings, panelContent, categoryName, propertyName, propertyObject);
 
                                             break;
 
                                         case InputSettingAttribute:
-                                            {
-                                                CreateSettingsEntry(panelContent, $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}", Utils.GetPropertyValue(propertyObject, propertyName).ToString(), $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION", (value) =>
-                                                {
-                                                    Utils.SetPropertyValue(propertyObject, propertyName, value);
-
-                                                    if (settings is ServerSettings serverSettings)
-                                                    {
-                                                        SettingFunctions.SendSettingsToServer(serverSettings);
-                                                    }
-                                                    else
-                                                    {
-                                                        Event.Run(TTTEvent.Settings.Change);
-                                                    }
-                                                });
-                                            }
+                                            CreateInputSetting(settings, panelContent, categoryName, propertyName, propertyObject);
 
                                             break;
 
                                         case DropdownSettingAttribute:
-                                            {
-                                                Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
-                                                uiPanel.Add.TranslationLabel($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}").AddTooltip($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION");
-
-                                                Dropdown dropdownSelection = uiPanel.Add.Dropdown(propertyName.ToLower());
-
-                                                foreach (PropertyInfo possibleDropdownPropertyInfo in propertyInfo.PropertyType.GetProperties())
-                                                {
-                                                    foreach (object possibleDropdownAttribute in possibleDropdownPropertyInfo.GetCustomAttributes())
-                                                    {
-                                                        if (possibleDropdownAttribute is DropdownOptionsAttribute dropdownOptionsAttribute && dropdownOptionsAttribute.DropdownSetting.Equals(subPropertyInfo.Name))
-                                                        {
-                                                            foreach (KeyValuePair<string, object> keyValuePair in Utils.GetPropertyValue<Dictionary<string, object>>(propertyObject, possibleDropdownPropertyInfo.Name))
-                                                            {
-                                                                dropdownSelection.AddOption(keyValuePair.Key, keyValuePair.Value);
-                                                            }
-
-                                                            dropdownSelection.OnSelectOption = (option) =>
-                                                            {
-                                                                Utils.SetPropertyValue(propertyObject, propertyName, (string) option.Data);
-
-                                                                if (settings is ServerSettings serverSettings)
-                                                                {
-                                                                    SettingFunctions.SendSettingsToServer(serverSettings);
-                                                                }
-                                                                else
-                                                                {
-                                                                    Event.Run(TTTEvent.Settings.Change);
-                                                                }
-                                                            };
-                                                        }
-                                                    }
-                                                }
-
-                                                dropdownSelection.SelectByData(Utils.GetPropertyValue<string>(propertyObject, propertyName));
-                                            }
+                                            CreateDropdownSetting(settings, panelContent, categoryName, propertyName, propertyObject, propertyInfo, subPropertyInfo);
 
                                             break;
                                     }
@@ -140,6 +73,69 @@ namespace TTTReborn.UI.Menu
                         }
                     }, categoryName.ToLower());
                 }
+            }
+        }
+
+        private static void CreateSwitchSetting(Settings.Settings settings, PanelContent panelContent, string categoryName, string propertyName, object propertyObject)
+        {
+            Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
+            uiPanel.Add.TranslationLabel($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}").AddTooltip($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION");
+
+            Switch sw = uiPanel.Add.Switch(propertyName.ToLower(), Utils.GetPropertyValue<bool>(propertyObject, propertyName));
+            sw.AddEventListener("onchange", (panelEvent) =>
+            {
+                UpdateSettingsProperty(settings, propertyObject, propertyName, !Utils.GetPropertyValue<bool>(propertyObject, propertyName));
+            });
+        }
+
+        private static void CreateInputSetting(Settings.Settings settings, PanelContent panelContent, string categoryName, string propertyName, object propertyObject)
+        {
+            CreateSettingsEntry(panelContent, $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}", Utils.GetPropertyValue(propertyObject, propertyName).ToString(), $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION", (value) =>
+            {
+                UpdateSettingsProperty(settings, propertyObject, propertyName, value);
+            });
+        }
+
+        private static void CreateDropdownSetting(Settings.Settings settings, PanelContent panelContent, string categoryName, string propertyName, object propertyObject, PropertyInfo propertyInfo, PropertyInfo subPropertyInfo)
+        {
+            Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
+            uiPanel.Add.TranslationLabel($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}").AddTooltip($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION");
+
+            Dropdown dropdownSelection = uiPanel.Add.Dropdown(propertyName.ToLower());
+
+            foreach (PropertyInfo possibleDropdownPropertyInfo in propertyInfo.PropertyType.GetProperties())
+            {
+                foreach (object possibleDropdownAttribute in possibleDropdownPropertyInfo.GetCustomAttributes())
+                {
+                    if (possibleDropdownAttribute is DropdownOptionsAttribute dropdownOptionsAttribute && dropdownOptionsAttribute.DropdownSetting.Equals(subPropertyInfo.Name))
+                    {
+                        foreach (KeyValuePair<string, object> keyValuePair in Utils.GetPropertyValue<Dictionary<string, object>>(propertyObject, possibleDropdownPropertyInfo.Name))
+                        {
+                            dropdownSelection.AddOption(keyValuePair.Key, keyValuePair.Value);
+                        }
+
+                        dropdownSelection.OnSelectOption = (option) =>
+                        {
+                            UpdateSettingsProperty(settings, propertyObject, propertyName, (string) option.Data);
+                        };
+                    }
+                }
+            }
+
+            dropdownSelection.SelectByData(Utils.GetPropertyValue<string>(propertyObject, propertyName));
+        }
+
+        private static void UpdateSettingsProperty<T>(Settings.Settings settings, object propertyObject, string propertyName, T value)
+        {
+            Utils.SetPropertyValue(propertyObject, propertyName, value);
+
+            if (settings is ServerSettings serverSettings)
+            {
+                SettingFunctions.SendSettingsToServer(serverSettings);
+            }
+            else
+            {
+                Event.Run(TTTEvent.Settings.Change);
             }
         }
     }
