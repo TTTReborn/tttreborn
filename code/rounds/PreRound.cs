@@ -129,6 +129,11 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
+            if (player.IsForcedSpectator)
+            {
+                return;
+            }
+
             Extensions.Log.Debug($"Added Hands to {player.Client.Name}");
 
             player.Inventory.TryAdd(new Hands(), true);
