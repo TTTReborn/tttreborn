@@ -128,7 +128,7 @@ namespace TTTReborn.Rounds
 
             foreach (TTTPlayer player in Players)
             {
-                if (player.LifeState == LifeState.Alive && player.Team != null && !aliveTeams.Contains(player.Team))
+                if (player.Team != null && !aliveTeams.Contains(player.Team))
                 {
                     aliveTeams.Add(player.Team);
                 }
