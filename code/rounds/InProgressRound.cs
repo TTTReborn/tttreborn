@@ -59,8 +59,44 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
+                // For now, if the RandomWeaponCount of the map is zero, let's just give the players
+                // a fixed weapon loadout.
+                if (Gamemode.Game.Instance.MapHandler.RandomWeaponCount == 0)
+                {
+                    foreach (TTTPlayer player in Players)
+                    {
+                        GiveFixedLoadout(player);
+                    }
+                }
+
                 // Cache buttons for OnSecond tick.
                 _logicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
+            }
+        }
+
+        private static void GiveFixedLoadout(TTTPlayer player)
+        {
+            Extensions.Log.Debug($"Added Fixed Loadout to {player.Client.Name}");
+
+            // Randomize between SMG and shotgun
+            if (Utils.RNG.Next() % 2 == 0)
+            {
+                if (player.Inventory.TryAdd(new Shotgun(), false))
+                {
+                    player.Inventory.Ammo.Give("buckshot", 16);
+                }
+            }
+            else
+            {
+                if (player.Inventory.TryAdd(new SMG(), false))
+                {
+                    player.Inventory.Ammo.Give("smg", 60);
+                }
+            }
+
+            if (player.Inventory.TryAdd(new Pistol(), false))
+            {
+                player.Inventory.Ammo.Give("pistol", 30);
             }
         }
 

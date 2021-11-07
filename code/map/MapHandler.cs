@@ -13,10 +13,12 @@ namespace TTTReborn.Map
         public TTTMapSettings MapSettings { get; private set; }
 
         public List<ModelEntityData> ModelEntityDataList;
+        public int RandomWeaponCount;
 
         public MapHandler()
         {
             ModelEntityDataList = new();
+            RandomWeaponCount = 0;
 
             foreach (Entity entity in Entity.All)
             {
@@ -28,6 +30,10 @@ namespace TTTReborn.Map
                 else if (entity is Sandbox.Prop || entity is BaseCarriable)
                 {
                     ModelEntityDataList.Add(ModelEntityData.Create(entity as ModelEntity));
+                }
+                else if (entity is TTTWeaponRandom)
+                {
+                    RandomWeaponCount += 1;
                 }
             }
         }
