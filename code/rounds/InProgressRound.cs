@@ -59,11 +59,6 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                foreach (TTTPlayer player in Players)
-                {
-                    SetLoadout(player);
-                }
-
                 // Cache buttons for OnSecond tick.
                 _logicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
             }
@@ -74,34 +69,6 @@ namespace TTTReborn.Rounds
             LoadPostRound(TeamFunctions.GetTeam(typeof(InnocentTeam)));
 
             base.OnTimeUp();
-        }
-
-        private static void SetLoadout(TTTPlayer player)
-        {
-            Extensions.Log.Debug($"Added loadout to {player.Client.Name}");
-
-            player.Inventory.TryAdd(new Hands(), true);
-
-            // Randomize between SMG and shotgun
-            if (Utils.RNG.Next() % 2 == 0)
-            {
-                if (player.Inventory.TryAdd(new Shotgun(), false))
-                {
-                    player.Inventory.Ammo.Give("buckshot", 16);
-                }
-            }
-            else
-            {
-                if (player.Inventory.TryAdd(new SMG(), false))
-                {
-                    player.Inventory.Ammo.Give("smg", 60);
-                }
-            }
-
-            if (player.Inventory.TryAdd(new Pistol(), false))
-            {
-                player.Inventory.Ammo.Give("pistol", 30);
-            }
         }
 
         private TTTTeam IsRoundOver()
