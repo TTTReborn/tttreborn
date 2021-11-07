@@ -214,6 +214,7 @@ namespace TTTReborn.UI
             if (!Enabled || !_playerCorpse.IsValid() || _playerCorpse.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
             {
                 Enabled = false;
+
                 return;
             }
 
