@@ -44,8 +44,6 @@ namespace TTTReborn.Rounds
         public override void OnPlayerJoin(TTTPlayer player)
         {
             Spectators.Add(player);
-            Log.Info(Players.Count);
-            Log.Info(Spectators.Count);
         }
 
         public override void OnPlayerLeave(TTTPlayer player)
