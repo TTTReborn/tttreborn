@@ -23,47 +23,32 @@ namespace TTTReborn.Player
 
             IEntityHint hint = player.IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
 
-            if (hint != null && _currentHintPanel != null)
+            if (hint == null || !hint.CanHint(player))
             {
-                _currentHintPanel.UpdateHintPanel();
-
-                if (!hint.CanHint(player) || hint != _currentHint)
-                {
-                    DeleteHint();
-
-                    return;
-                }
-            }
-
-            // If we are looking at a hint and don't have a current hint, let's see if we can make one.
-            if (hint != null)
-            {
-                if (hint.CanHint(player) && _currentHintPanel == null)
-                {
-                    _currentHintPanel = hint.DisplayHint(player);
-                    _currentHintPanel.Parent = HintDisplay.Instance;
-                    _currentHintPanel.Enabled = true;
-                    _currentHintPanel.UpdateHintPanel();
-
-                    _currentHint = hint;
-                }
-            }
-            else
-            {
-                // If we just looked away, disable and update the panel
-                if (_currentHintPanel != null)
-                {
-                    _currentHintPanel.Enabled = false;
-                    _currentHintPanel.UpdateHintPanel();
-                }
-
                 DeleteHint();
+
+                return;
             }
+
+            if (hint == _currentHint)
+            {
+                _currentHintPanel.UpdateHintPanel(hint.TextOnTick);
+
+                return;
+            }
+
+            DeleteHint();
+
+            _currentHintPanel = hint.DisplayHint(player);
+            _currentHintPanel.Parent = HintDisplay.Instance;
+            _currentHintPanel.Enabled = true;
+
+            _currentHint = hint;
         }
 
         private void DeleteHint()
         {
-            _currentHintPanel?.Delete();
+            _currentHintPanel?.Delete(true);
             _currentHintPanel = null;
             _currentHint = null;
         }

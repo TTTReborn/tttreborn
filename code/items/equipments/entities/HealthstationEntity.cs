@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -21,7 +22,7 @@ namespace TTTReborn.Items
         private RealTimeUntil NextHeal = 0;
 
         private const int HEALAMOUNT = 1;
-        private const int HEALFREQUENCY = 2; // seconds
+        private const int HEALFREQUENCY = 1; // seconds
         private const int DELAYIFFAILED = 2; // Multiplied by HealFrequency if HealthPlayer returns false
 
         public override void Spawn()
@@ -62,6 +63,8 @@ namespace TTTReborn.Items
 
         public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
 
+        public TranslationData TextOnTick => new("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
+
         public bool CanHint(TTTPlayer client)
         {
             return true;
@@ -69,7 +72,7 @@ namespace TTTReborn.Items
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return new UsableHint("HEALTH_STATION");
+            return new Hint(TextOnTick);
         }
     }
 }

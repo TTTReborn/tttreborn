@@ -156,7 +156,7 @@ namespace TTTReborn.Items
             }
 
             // Only allow dynamic entities to be picked up.
-            if (tr.Body.BodyType == PhysicsBodyType.Keyframed || tr.Body.BodyType == PhysicsBodyType.Static)
+            if (tr.Body == null || tr.Body.BodyType == PhysicsBodyType.Keyframed || tr.Body.BodyType == PhysicsBodyType.Static)
             {
                 return;
             }
