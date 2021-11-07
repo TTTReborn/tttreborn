@@ -22,7 +22,10 @@ namespace TTTReborn.UI.Menu
             menuContent.SetPanelContent((menuContent) =>
             {
                 SettingsTabs = menuContent.Add.Tabs();
-                SettingsTabs.AddTab("REALM_CLIENT", CreateClientSettings, Utils.Realm.Client);
+                SettingsTabs.AddTab("REALM_CLIENT", (panelContent) =>
+                {
+                    panelContent.SetPanelContent((content) => CreateSettings(content.Add.Tabs(), Settings.ClientSettings.Instance));
+                }, Utils.Realm.Client);
 
                 if (Local.Client.HasPermission("serversettings"))
                 {
@@ -49,7 +52,7 @@ namespace TTTReborn.UI.Menu
                 return;
             }
 
-            ServerSettingsTabContent.SetPanelContent((menuContent) => CreateServerSettings(menuContent, serverSettings));
+            ServerSettingsTabContent.SetPanelContent((menuContent) => CreateSettings(menuContent.Add.Tabs(), serverSettings));
         }
 
         internal static TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null, params object[] translationData)
