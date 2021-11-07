@@ -34,7 +34,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
-            Players.Remove(player);
+            Players.Add(player);
             Spectators.Remove(player);
 
             player.MakeSpectator();
@@ -43,14 +43,8 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerLeave(TTTPlayer player)
         {
-            if (player.LifeState == LifeState.Alive)
-            {
-                Players.Remove(player);
-            }
-            else
-            {
-                Spectators.Remove(player);
-            }
+            Players.Remove(player);
+            Spectators.Remove(player);
 
             base.OnPlayerLeave(player);
             ChangeRoundIfOver();
