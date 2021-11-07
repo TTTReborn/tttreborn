@@ -120,8 +120,6 @@ namespace TTTReborn.Rounds
         {
             List<TTTTeam> aliveTeams = new();
 
-            Log.Info(Players.Count);
-
             foreach (TTTPlayer player in Players)
             {
                 if (player.Team != null && !aliveTeams.Contains(player.Team))

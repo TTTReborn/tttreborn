@@ -132,8 +132,6 @@ namespace TTTReborn.Gamemode
 
         public override void ClientDisconnect(Client client, NetworkDisconnectionReason reason)
         {
-            base.ClientDisconnect(client, reason);
-
             Log.Info(client.Name + " left, checking minimum player count...");
 
             Round.OnPlayerLeave(client.Pawn as TTTPlayer);
@@ -141,6 +139,8 @@ namespace TTTReborn.Gamemode
             Event.Run(TTTEvent.Player.Disconnected, client.SteamId, reason);
 
             RPCs.ClientOnPlayerDisconnect(client.SteamId, reason);
+
+            base.ClientDisconnect(client, reason);
         }
 
         public override bool CanHearPlayerVoice(Client source, Client dest)
