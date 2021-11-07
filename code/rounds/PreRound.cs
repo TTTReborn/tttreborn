@@ -129,9 +129,9 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            Extensions.Log.Debug($"Added Hands to {player.Client.Name}");
+            bool handsAdded = player.Inventory.TryAdd(new Hands(), true);
 
-            player.Inventory.TryAdd(new Hands(), true);
+            Extensions.Log.Debug($"Attempting to add Hands to {player.Client.Name} {handsAdded}");
 
             base.OnPlayerSpawn(player);
         }
