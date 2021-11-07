@@ -15,11 +15,14 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
-    public class InProgressRound : BaseRound
+    public partial class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
+
+        [Net] public List<TTTPlayer> Players { get; set; }
+        [Net] public List<TTTPlayer> Spectators { get; set; }
+
         private List<TTTLogicButton> _logicButtons;
-        private bool _areRolesAssigned = false;
 
         public override int RoundDuration
         {
@@ -56,32 +59,13 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                foreach (TTTPlayer player in Utils.GetPlayers())
+                foreach (TTTPlayer player in Players)
                 {
-                    player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
-
-                    if (player.IsForcedSpectator)
-                    {
-                        player.MakeSpectator(false);
-                        continue;
-                    }
-
-                    if (player.LifeState == LifeState.Dead)
-                    {
-                        player.Respawn();
-                    }
-                    else
-                    {
-                        player.SetHealth(player.MaxHealth);
-                    }
-
                     SetLoadout(player);
                 }
 
                 // Cache buttons for OnSecond tick.
                 _logicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
-
-                AssignRoles();
             }
         }
 
@@ -140,40 +124,6 @@ namespace TTTReborn.Rounds
             return aliveTeams.Count == 1 ? aliveTeams[0] : null;
         }
 
-        private void AssignRoles()
-        {
-            List<TTTPlayer> alivePlayers = Utils.GetAlivePlayers();
-
-            int traitorCount = (int) Math.Max(alivePlayers.Count * 0.25f, 1f);
-
-            for (int i = 0; i < traitorCount; i++)
-            {
-                List<TTTPlayer> unassignedPlayers = alivePlayers.Where(p => p.Role is NoneRole).ToList();
-                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
-
-                if (unassignedPlayers[randomId].Role is NoneRole)
-                {
-                    unassignedPlayers[randomId].SetRole(new TraitorRole());
-                }
-            }
-
-            foreach (TTTPlayer player in alivePlayers)
-            {
-                if (player.Role is NoneRole)
-                {
-                    player.SetRole(new InnocentRole());
-                }
-
-                // send everyone their roles
-                using (Prediction.Off())
-                {
-                    player.SendClientRole();
-                }
-            }
-
-            _areRolesAssigned = true;
-        }
-
         private static void LoadPostRound(TTTTeam winningTeam)
         {
             Gamemode.Game.Instance.ForceRoundChange(new PostRound());
@@ -207,11 +157,6 @@ namespace TTTReborn.Rounds
 
         private bool ChangeRoundIfOver()
         {
-            if (!_areRolesAssigned)
-            {
-                return false;
-            }
-
             TTTTeam result = IsRoundOver();
 
             if (result != null && !Settings.ServerSettings.Instance.Debug.PreventWin)

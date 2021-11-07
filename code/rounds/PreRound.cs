@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Sandbox;
 
+using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Map;
 using TTTReborn.Player;
+using TTTReborn.Roles;
 using TTTReborn.Settings;
 
 namespace TTTReborn.Rounds
@@ -48,7 +52,69 @@ namespace TTTReborn.Rounds
         {
             base.OnTimeUp();
 
-            Gamemode.Game.Instance.ChangeRound(new InProgressRound());
+            List<TTTPlayer> players = new();
+            List<TTTPlayer> spectators = new();
+
+            foreach (TTTPlayer player in Utils.GetPlayers())
+            {
+                player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
+
+                if (player.IsForcedSpectator)
+                {
+                    player.MakeSpectator(false);
+                    spectators.Add(player);
+                    continue;
+                }
+
+                players.Add(player);
+
+                if (player.LifeState == LifeState.Dead)
+                {
+                    player.Respawn();
+                }
+                else
+                {
+                    player.SetHealth(player.MaxHealth);
+                }
+            }
+
+            AssignRoles(players);
+
+            Gamemode.Game.Instance.ChangeRound(new InProgressRound
+            {
+                Players = players,
+                Spectators = spectators
+            });
+        }
+
+        private void AssignRoles(List<TTTPlayer> players)
+        {
+            int traitorCount = (int) Math.Max(players.Count * 0.25f, 1f);
+
+            for (int i = 0; i < traitorCount; i++)
+            {
+                List<TTTPlayer> unassignedPlayers = players.Where(p => p.Role is NoneRole).ToList();
+                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
+
+                if (unassignedPlayers[randomId].Role is NoneRole)
+                {
+                    unassignedPlayers[randomId].SetRole(new TraitorRole());
+                }
+            }
+
+            foreach (TTTPlayer player in players)
+            {
+                if (player.Role is NoneRole)
+                {
+                    player.SetRole(new InnocentRole());
+                }
+
+                // send everyone their roles
+                using (Prediction.Off())
+                {
+                    player.SendClientRole();
+                }
+            }
         }
 
         private static async Task StartRespawnTimer(TTTPlayer player)
