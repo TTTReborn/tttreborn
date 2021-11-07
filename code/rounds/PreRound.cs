@@ -63,22 +63,14 @@ namespace TTTReborn.Rounds
                 {
                     player.MakeSpectator(false);
                     spectators.Add(player);
-                    continue;
-                }
-
-                players.Add(player);
-
-                if (player.LifeState == LifeState.Dead)
-                {
-                    player.Respawn();
                 }
                 else
                 {
-                    player.SetHealth(player.MaxHealth);
+                    players.Add(player);
                 }
             }
 
-            AssignRoles(players);
+            AssignRolesAndRespawn(players);
 
             Gamemode.Game.Instance.ChangeRound(new InProgressRound
             {
@@ -87,7 +79,7 @@ namespace TTTReborn.Rounds
             });
         }
 
-        private void AssignRoles(List<TTTPlayer> players)
+        private void AssignRolesAndRespawn(List<TTTPlayer> players)
         {
             int traitorCount = (int) Math.Max(players.Count * 0.25f, 1f);
 
@@ -109,10 +101,18 @@ namespace TTTReborn.Rounds
                     player.SetRole(new InnocentRole());
                 }
 
-                // send everyone their roles
                 using (Prediction.Off())
                 {
                     player.SendClientRole();
+                }
+
+                if (player.LifeState == LifeState.Dead)
+                {
+                    player.Respawn();
+                }
+                else
+                {
+                    player.SetHealth(player.MaxHealth);
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerSpawn(TTTPlayer player)
         {
-            Extensions.Log.Debug($"Added loadout to {player.Client.Name}");
+            Extensions.Log.Debug($"Added Hands to {player.Client.Name}");
 
             player.Inventory.TryAdd(new Hands(), true);
 
