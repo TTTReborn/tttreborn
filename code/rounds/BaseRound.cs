@@ -49,6 +49,12 @@ namespace TTTReborn.Rounds
 
         }
 
+        public virtual void OnPlayerJoin(TTTPlayer player)
+        {
+
+        }
+
+
         public virtual void OnPlayerLeave(TTTPlayer player)
         {
 

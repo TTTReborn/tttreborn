@@ -41,12 +41,18 @@ namespace TTTReborn.Rounds
             ChangeRoundIfOver();
         }
 
+        public override void OnPlayerJoin(TTTPlayer player)
+        {
+            Spectators.Add(player);
+            Log.Info(Players.Count);
+            Log.Info(Spectators.Count);
+        }
+
         public override void OnPlayerLeave(TTTPlayer player)
         {
             Players.Remove(player);
             Spectators.Remove(player);
 
-            base.OnPlayerLeave(player);
             ChangeRoundIfOver();
         }
 
