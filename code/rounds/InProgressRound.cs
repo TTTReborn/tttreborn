@@ -34,8 +34,8 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
-            Players.Add(player);
-            Spectators.Remove(player);
+            Players.Remove(player);
+            Spectators.Add(player);
 
             player.MakeSpectator();
             ChangeRoundIfOver();
@@ -119,6 +119,8 @@ namespace TTTReborn.Rounds
         private TTTTeam IsRoundOver()
         {
             List<TTTTeam> aliveTeams = new();
+
+            Log.Info(Players.Count);
 
             foreach (TTTPlayer player in Players)
             {
