@@ -35,7 +35,7 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(TTTPlayer player)
         {
             Players.Remove(player);
-            Spectators.Add(player);
+            Spectators.AddIfDoesNotContain(player);
 
             player.MakeSpectator();
             ChangeRoundIfOver();
@@ -43,7 +43,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerJoin(TTTPlayer player)
         {
-            Spectators.Add(player);
+            Spectators.AddIfDoesNotContain(player);
         }
 
         public override void OnPlayerLeave(TTTPlayer player)
@@ -52,20 +52,6 @@ namespace TTTReborn.Rounds
             Spectators.Remove(player);
 
             ChangeRoundIfOver();
-        }
-
-        [Event(TTTEvent.Player.Role.Select)]
-        private static void OnPlayerRoleChange(TTTPlayer player)
-        {
-            if (Host.IsClient)
-            {
-                return;
-            }
-
-            if (Gamemode.Game.Instance.Round is InProgressRound inProgressRound)
-            {
-                inProgressRound.ChangeRoundIfOver();
-            }
         }
 
         protected override void OnStart()
@@ -183,6 +169,20 @@ namespace TTTReborn.Rounds
             }
 
             return false;
+        }
+
+        [Event(TTTEvent.Player.Role.Select)]
+        private static void OnPlayerRoleChange(TTTPlayer player)
+        {
+            if (Host.IsClient)
+            {
+                return;
+            }
+
+            if (Gamemode.Game.Instance.Round is InProgressRound inProgressRound)
+            {
+                inProgressRound.ChangeRoundIfOver();
+            }
         }
 
         [Event(TTTReborn.Events.TTTEvent.Settings.Change)]
