@@ -15,7 +15,7 @@ namespace TTTReborn.UI.Menu
                 panelContent.Add.Label("You can change your bindings in the s&box options menu or through console.");
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Movement");
+                panelContent.Add.Label("Movement", "binding-header");
                 CreateBinding(menuContent, "Forward", new List<string> { "+iv_forward" });
                 CreateBinding(menuContent, "Back", new List<string> { "+iv_back" });
                 CreateBinding(menuContent, "Left", new List<string> { "+iv_left" });
@@ -25,25 +25,25 @@ namespace TTTReborn.UI.Menu
                 CreateBinding(menuContent, "Sprint", new List<string> { "+iv_sprint" });
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Weapons");
+                panelContent.Add.Label("Weapons", "binding-header");
                 CreateBinding(menuContent, "Fire", new List<string> { "+iv_attack" });
                 CreateBinding(menuContent, "Reloaded", new List<string> { "+iv_reload" });
                 CreateBinding(menuContent, "Drop Weapon", new List<string> { "+iv_drop" });
                 CreateBinding(menuContent, "Drop Ammo", new List<string> { "+iv_sprint", "+iv_drop" });
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Actions");
+                panelContent.Add.Label("Actions", "binding-header");
                 CreateBinding(menuContent, "Use", new List<string> { "+iv_use" });
                 CreateBinding(menuContent, "Flashlight", new List<string> { "+iv_flashlight" });
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Communication");
+                panelContent.Add.Label("Communication", "binding-header");
                 CreateBinding(menuContent, "Voice Chat", new List<string> { "+iv_voice" });
                 CreateBinding(menuContent, "Team Voice Chat", new List<string> { "+iv_walk" });
                 CreateBinding(menuContent, "Team Text Chat", new List<string> { "+iv_score" });
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Menus");
+                panelContent.Add.Label("Menus", "binding-header");
                 CreateBinding(menuContent, "Scoreboard", new List<string> { "+iv_score" });
                 CreateBinding(menuContent, "Menu", new List<string> { "+iv_menu" });
                 CreateBinding(menuContent, "Quick Shop", new List<string> { "+iv_view" });

@@ -124,12 +124,15 @@ Menu {
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: start;
+            width: 100%;
+
+            .binding-header {
+                width: 100%;
+                font-weight: bold;
+            }
 
             .wrapper {
-                flex-direction: column;
                 width: 100%;
-                align-items: start;
-                justify-content: start;
             }
         }
 
