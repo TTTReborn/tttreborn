@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Sandbox;
 using Sandbox.UI;
@@ -234,5 +235,35 @@ namespace TTTReborn.Globals
                 list.Add(item);
             }
         }
+
+        public static void SetPropertyValue<T>(object obj, string propertyName, T value)
+        {
+            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+
+            if (propertyInfo != null && propertyInfo.CanWrite)
+            {
+                propertyInfo.SetValue(obj, value);
+            }
+            else
+            {
+                Log.Warning($"Tried to write property '{propertyName}' of '{obj}' with '{value}'");
+            }
+        }
+
+        public static T GetPropertyValue<T>(object obj, string propertyName)
+        {
+            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+
+            if (propertyInfo == null || !propertyInfo.CanRead)
+            {
+                Log.Warning($"Tried to read non-existing property '{propertyName}' of '{obj}'");
+
+                return default;
+            }
+
+            return (T) propertyInfo.GetValue(obj);
+        }
+
+        public static object GetPropertyValue(object obj, string propertyName) => GetPropertyValue<object>(obj, propertyName);
     }
 }
