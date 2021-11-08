@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
 using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.UI;
@@ -315,6 +316,8 @@ namespace TTTReborn.Items
             }
         }
 
+        public TranslationData TextOnTick => new(IsArmed ? "C4_DEFUSE" : "C4_ARM", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
+
         public bool CanHint(TTTPlayer client)
         {
             return true;
@@ -322,7 +325,7 @@ namespace TTTReborn.Items
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return IsArmed ? new UsableHint("C4_DEFUSE") : new UsableHint("C4_ARM");
+            return new Hint(TextOnTick);
         }
 
         public void OnIsArmedChanged(bool oldValue, bool newValue)

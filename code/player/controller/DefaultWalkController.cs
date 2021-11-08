@@ -17,6 +17,7 @@ namespace TTTReborn.Settings
     {
         public partial class Movement
         {
+            [SwitchSetting]
             public bool IsSprintEnabled { get; set; } = false;
         }
     }

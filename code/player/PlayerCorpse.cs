@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.UI;
 
@@ -137,11 +138,13 @@ namespace TTTReborn.Player
 
         public float HintDistance => 80f;
 
+        public TranslationData TextOnTick => new(IsIdentified ? "CORPSE_INSPECT" : "CORPSE_IDENTIFY", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
+
         public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.Enabled ?? false;
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
-            return (IsIdentified) ? new UsableHint("CORPSE_INSPECT") : new UsableHint("CORPSE_IDENTIFY");
+            return new Hint(TextOnTick);
         }
     }
 }

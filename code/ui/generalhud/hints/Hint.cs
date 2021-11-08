@@ -1,13 +1,15 @@
-using System;
-
-using Sandbox;
+using Sandbox.UI;
 using Sandbox.UI.Construct;
+
+using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
-    public class UsableHint : EntityHintPanel
+    public class Hint : EntityHintPanel
     {
-        public UsableHint(string translationKey)
+        private readonly TranslationLabel _label;
+
+        public Hint(TranslationData translationData)
         {
             AddClass("centered-vertical-75");
             AddClass("background-color-primary");
@@ -15,10 +17,20 @@ namespace TTTReborn.UI
             AddClass("text-color-info");
             AddClass("text-shadow");
 
-            TranslationLabel label = Add.TranslationLabel(translationKey, String.Empty, new object[] { $"{Input.GetKeyWithBinding("+iv_use").ToUpper()}" });
-            label.Style.Padding = 10;
+            _label = Add.TranslationLabel(translationData.Key, string.Empty, translationData.Data);
+            _label.Style.Padding = 10;
 
             Enabled = false;
+        }
+
+        public override void UpdateHintPanel(TranslationData translationData)
+        {
+            if (translationData == null)
+            {
+                return;
+            }
+
+            _label.SetTranslation(translationData.Key, translationData.Data);
         }
     }
 }

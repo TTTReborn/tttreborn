@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json.Serialization;
 
 using Sandbox;
 
@@ -10,14 +11,34 @@ namespace TTTReborn.Settings
 {
     public partial class Settings
     {
-        public Categories.General General { get; set; } = new Categories.General();
+        public Categories.General General { get; set; } = new();
     }
 
     namespace Categories
     {
+        using Globalization;
+
         public partial class General
         {
+            [DropdownSetting]
             public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
+
+            [JsonIgnore]
+            [DropdownOptions("Language")]
+            public Dictionary<string, object> LanguageOptions
+            {
+                get
+                {
+                    Dictionary<string, object> dict = new();
+
+                    foreach (Language language in TTTLanguage.Languages.Values)
+                    {
+                        dict.Add(language.Data.Name, language.Data.Code);
+                    }
+
+                    return dict;
+                }
+            }
         }
     }
 }
@@ -123,7 +144,7 @@ namespace TTTReborn.Player
 
             Settings.SettingsManager.Instance.General.Language = language.Data.Code;
 
-            TTTLanguage.OnChangeLanguageSettings();
+            Event.Run(TTTEvent.Settings.Change);
         }
     }
 }
