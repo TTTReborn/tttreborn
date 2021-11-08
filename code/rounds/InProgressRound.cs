@@ -15,10 +15,17 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Rounds
 {
-    public class InProgressRound : BaseRound
+    public partial class InProgressRound : BaseRound
     {
         public override string RoundName => "In Progress";
-        private List<TTTLogicButton> LogicButtons;
+
+        [Net]
+        public List<TTTPlayer> Players { get; set; }
+
+        [Net]
+        public List<TTTPlayer> Spectators { get; set; }
+
+        private List<TTTLogicButton> _logicButtons;
 
         public override int RoundDuration
         {
@@ -28,107 +35,47 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(TTTPlayer player)
         {
             Players.Remove(player);
-            Spectators.Add(player);
+            Spectators.AddIfDoesNotContain(player);
 
             player.MakeSpectator();
             ChangeRoundIfOver();
         }
 
-        public override void OnPlayerLeave(TTTPlayer player)
+        public override void OnPlayerJoin(TTTPlayer player)
         {
-            base.OnPlayerLeave(player);
-            ChangeRoundIfOver();
+            Spectators.AddIfDoesNotContain(player);
         }
 
-        [Event(TTTEvent.Player.Role.Select)]
-        private static void OnPlayerRoleChange(TTTPlayer player)
+        public override void OnPlayerLeave(TTTPlayer player)
         {
-            if (Host.IsClient)
-            {
-                return;
-            }
+            Players.Remove(player);
+            Spectators.Remove(player);
 
-            if (Gamemode.Game.Instance.Round is InProgressRound inProgressRound)
-            {
-                inProgressRound.ChangeRoundIfOver();
-            }
+            ChangeRoundIfOver();
         }
 
         protected override void OnStart()
         {
             if (Host.IsServer)
             {
-                foreach (Client client in Client.All)
+                // For now, if the RandomWeaponCount of the map is zero, let's just give the players
+                // a fixed weapon loadout.
+                if (Gamemode.Game.Instance.MapHandler.RandomWeaponCount == 0)
                 {
-                    if (client.Pawn is not TTTPlayer player)
+                    foreach (TTTPlayer player in Players)
                     {
-                        continue;
-                    }
-
-                    player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
-
-                    if (player.LifeState == LifeState.Dead)
-                    {
-                        player.Respawn();
-                    }
-                    else
-                    {
-                        player.SetHealth(player.MaxHealth);
-                    }
-
-                    AddPlayer(player);
-
-                    if (!player.IsForcedSpectator)
-                    {
-                        SetLoadout(player);
+                        GiveFixedLoadout(player);
                     }
                 }
 
                 // Cache buttons for OnSecond tick.
-                LogicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
-
-                AssignRoles();
+                _logicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
             }
         }
 
-        protected override void OnTimeUp()
+        private static void GiveFixedLoadout(TTTPlayer player)
         {
-            LoadPostRound(TeamFunctions.GetTeam(typeof(InnocentTeam)));
-
-            base.OnTimeUp();
-        }
-
-        public override void OnPlayerSpawn(TTTPlayer player)
-        {
-            if (player.IsForcedSpectator)
-            {
-                if (!Spectators.Contains(player))
-                {
-                    Spectators.Add(player);
-                }
-
-                Players.Remove(player);
-            }
-            else
-            {
-                if (!Players.Contains(player))
-                {
-                    Players.Add(player);
-                }
-
-                Spectators.Remove(player);
-
-                SetLoadout(player);
-            }
-
-            base.OnPlayerSpawn(player);
-        }
-
-        private static void SetLoadout(TTTPlayer player)
-        {
-            Extensions.Log.Debug($"Added loadout to {player.Client.Name}");
-
-            player.Inventory.TryAdd(new Hands(), true);
+            Extensions.Log.Debug($"Added Fixed Loadout to {player.Client.Name}");
 
             // Randomize between SMG and shotgun
             if (Utils.RNG.Next() % 2 == 0)
@@ -152,6 +99,13 @@ namespace TTTReborn.Rounds
             }
         }
 
+        protected override void OnTimeUp()
+        {
+            LoadPostRound(TeamFunctions.GetTeam(typeof(InnocentTeam)));
+
+            base.OnTimeUp();
+        }
+
         private TTTTeam IsRoundOver()
         {
             List<TTTTeam> aliveTeams = new();
@@ -172,37 +126,6 @@ namespace TTTReborn.Rounds
             return aliveTeams.Count == 1 ? aliveTeams[0] : null;
         }
 
-        private void AssignRoles()
-        {
-            // TODO: There should be a neater way to handle this logic.
-            int traitorCount = (int) Math.Max(Players.Count * 0.25f, 1f);
-
-            for (int i = 0; i < traitorCount; i++)
-            {
-                List<TTTPlayer> unassignedPlayers = Players.Where(p => p.Role is NoneRole).ToList();
-                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
-
-                if (unassignedPlayers[randomId].Role is NoneRole)
-                {
-                    unassignedPlayers[randomId].SetRole(new TraitorRole());
-                }
-            }
-
-            foreach (TTTPlayer player in Players)
-            {
-                if (player.Role is NoneRole)
-                {
-                    player.SetRole(new InnocentRole());
-                }
-
-                // send everyone their roles
-                using (Prediction.Off())
-                {
-                    player.SendClientRole();
-                }
-            }
-        }
-
         private static void LoadPostRound(TTTTeam winningTeam)
         {
             Gamemode.Game.Instance.ForceRoundChange(new PostRound());
@@ -216,7 +139,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                if (!Settings.ServerSettings.Instance.Debug.PreventWin)
+                if (!ServerSettings.Instance.Debug.PreventWin)
                 {
                     base.OnSecond();
                 }
@@ -225,7 +148,7 @@ namespace TTTReborn.Rounds
                     RoundEndTime += 1f;
                 }
 
-                LogicButtons.ForEach(x => x.OnSecond()); // Tick role button delay timer.
+                _logicButtons.ForEach(x => x.OnSecond()); // Tick role button delay timer.
 
                 if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {
@@ -246,6 +169,20 @@ namespace TTTReborn.Rounds
             }
 
             return false;
+        }
+
+        [Event(TTTEvent.Player.Role.Select)]
+        private static void OnPlayerRoleChange(TTTPlayer player)
+        {
+            if (Host.IsClient)
+            {
+                return;
+            }
+
+            if (Gamemode.Game.Instance.Round is InProgressRound inProgressRound)
+            {
+                inProgressRound.ChangeRoundIfOver();
+            }
         }
 
         [Event(TTTReborn.Events.TTTEvent.Settings.Change)]

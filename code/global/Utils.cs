@@ -44,6 +44,8 @@ namespace TTTReborn.Globals
             return players;
         }
 
+        public static List<TTTPlayer> GetAlivePlayers() => GetPlayers((pl) => pl.LifeState == LifeState.Alive);
+
         public static bool HasMinimumPlayers() => GetPlayers((pl) => !pl.IsForcedSpectator).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
 
         /// <summary>
@@ -221,6 +223,17 @@ namespace TTTReborn.Globals
         public static bool HasGreatorOrEqualAxis(this Vector3 local, Vector3 other)
         {
             return local.x >= other.x || local.y >= other.y || local.z >= other.z;
+        }
+
+        /// <summary>
+        /// Adds the item to the IList if that IList does not already contain the item
+        /// </summary>
+        public static void AddIfDoesNotContain<T>(this IList<T> list, T item)
+        {
+            if (!list.Contains(item))
+            {
+                list.Add(item);
+            }
         }
 
         public static void SetPropertyValue<T>(object obj, string propertyName, T value)

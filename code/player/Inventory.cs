@@ -87,7 +87,7 @@ namespace TTTReborn.Player
         /// <returns></returns>
         public bool TryAdd(IItem item, bool makeActive = false)
         {
-            if (!Add(item, makeActive))
+            if (Owner.LifeState != LifeState.Alive || !Add(item, makeActive))
             {
                 item.Delete();
 
