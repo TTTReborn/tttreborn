@@ -55,6 +55,7 @@ namespace TTTReborn.UI.Menu
         private void CreateBinding(PanelContent menuContent, string action, List<string> bindings)
         {
             Panel wrapper = new(menuContent);
+            wrapper.AddClass("wrapper");
 
             Label actionLabel = wrapper.Add.Label($"{action}: ");
             actionLabel.Style.Width = 150;

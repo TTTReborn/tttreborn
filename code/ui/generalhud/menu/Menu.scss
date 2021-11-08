@@ -121,8 +121,16 @@ Menu {
         }
 
         &.keybindings {
-            flex-wrap: nowrap;
-            min-height: 600px;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: start;
+
+            .wrapper {
+                flex-direction: column;
+                width: 100%;
+                align-items: start;
+                justify-content: start;
+            }
         }
 
         &.testing {
