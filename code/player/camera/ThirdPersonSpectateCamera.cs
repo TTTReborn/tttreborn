@@ -7,7 +7,6 @@ namespace TTTReborn.Player.Camera
         private Vector3 DefaultPosition { get; set; }
 
         private const float LERP_MODE = 0;
-        private const int FIELD_OF_VIEW_OVERRIDE = 70;
         private const int CAMERA_DISTANCE = 120;
 
         private Rotation _targetRot;
@@ -19,8 +18,6 @@ namespace TTTReborn.Player.Camera
             base.Activated();
 
             Rotation = CurrentView.Rotation;
-
-            FieldOfView = FIELD_OF_VIEW_OVERRIDE;
         }
 
         public override void Update()
@@ -54,7 +51,7 @@ namespace TTTReborn.Player.Camera
 
         public override void BuildInput(InputBuilder input)
         {
-            _lookAngles += input.AnalogLook * (FIELD_OF_VIEW_OVERRIDE / 80.0f);
+            _lookAngles += input.AnalogLook;
             _lookAngles.roll = 0;
 
             base.BuildInput(input);
