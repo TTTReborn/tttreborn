@@ -227,7 +227,7 @@ namespace TTTReborn.Globals
         /// <summary>
         /// Adds the item to the list if that list does not already contain the item
         /// </summary>
-        public static void AddIfDoesNotContain<T>(this List<T> list, T item)
+        public static void AddIfDoesNotContain<T>(this IList<T> list, T item)
         {
             if (!list.Contains(item))
             {
