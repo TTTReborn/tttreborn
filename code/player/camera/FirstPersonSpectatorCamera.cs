@@ -6,11 +6,6 @@ namespace TTTReborn.Player.Camera
     {
         private const float SMOOTH_SPEED = 25f;
 
-        public override void Activated()
-        {
-            base.Activated();
-        }
-
         public override void Deactivated()
         {
             base.Deactivated();

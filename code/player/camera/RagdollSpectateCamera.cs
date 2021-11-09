@@ -15,11 +15,6 @@ namespace TTTReborn.Player.Camera
 
         public override void Update()
         {
-            if (Local.Client == null)
-            {
-                return;
-            }
-
             FocusPoint = Vector3.Lerp(FocusPoint, GetSpectatePoint(), Time.Delta * 5.0f);
 
             Position = FocusPoint + GetViewOffset();
@@ -40,12 +35,7 @@ namespace TTTReborn.Player.Camera
 
         public virtual Vector3 GetViewOffset()
         {
-            if (Local.Client == null)
-            {
-                return Vector3.Zero;
-            }
-
-            return Input.Rotation.Forward * (-130 * 1) + Vector3.Up * (20 * 1);
+            return Input.Rotation.Forward * -130 + Vector3.Up * 20;
         }
     }
 }
