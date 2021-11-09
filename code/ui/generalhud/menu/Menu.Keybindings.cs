@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
 using Sandbox;
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.Menu
@@ -12,41 +11,41 @@ namespace TTTReborn.UI.Menu
         {
             menuContent.SetPanelContent((panelContent) =>
             {
-                panelContent.Add.Label("You can change your bindings in the s&box options menu or through console.");
+                panelContent.Add.TranslationLabel("MENU_KEYBINDINGS_DESCRIPTION");
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Movement", "binding-header");
-                CreateBinding(menuContent, "Forward", new List<string> { "+iv_forward" });
-                CreateBinding(menuContent, "Back", new List<string> { "+iv_back" });
-                CreateBinding(menuContent, "Left", new List<string> { "+iv_left" });
-                CreateBinding(menuContent, "Right", new List<string> { "+iv_right" });
-                CreateBinding(menuContent, "Jump", new List<string> { "+iv_jump" });
-                CreateBinding(menuContent, "Crouch", new List<string> { "+iv_duck" });
-                CreateBinding(menuContent, "Sprint", new List<string> { "+iv_sprint" });
+                panelContent.Add.TranslationLabel("MENU_KEYBINDINGS_MOVEMENT", "binding-header");
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_FORWARD", new() { "+iv_forward" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_BACK", new() { "+iv_back" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_LEFT", new() { "+iv_left" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_RIGHT", new() { "+iv_right" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_JUMP", new() { "+iv_jump" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_CROUCH", new() { "+iv_duck" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_SPRINT", new() { "+iv_sprint" });
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Weapons", "binding-header");
-                CreateBinding(menuContent, "Fire", new List<string> { "+iv_attack" });
-                CreateBinding(menuContent, "Reloaded", new List<string> { "+iv_reload" });
-                CreateBinding(menuContent, "Drop Weapon", new List<string> { "+iv_drop" });
-                CreateBinding(menuContent, "Drop Ammo", new List<string> { "+iv_sprint", "+iv_drop" });
+                panelContent.Add.TranslationLabel("MENU_KEYBINDINGS_WEAPONS", "binding-header");
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_FIRE", new() { "+iv_attack" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_RELOAD", new() { "+iv_reload" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_DROP_WEAPON", new() { "+iv_drop" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_DROP_AMMO", new() { "+iv_sprint", "+iv_drop" });
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Actions", "binding-header");
-                CreateBinding(menuContent, "Use", new List<string> { "+iv_use" });
-                CreateBinding(menuContent, "Flashlight", new List<string> { "+iv_flashlight" });
+                panelContent.Add.TranslationLabel("MENU_KEYBINDINGS_ACTIONS", "binding-header");
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_USE", new() { "+iv_use" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_FLASHLIGHT", new() { "+iv_flashlight" });
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Communication", "binding-header");
-                CreateBinding(menuContent, "Voice Chat", new List<string> { "+iv_voice" });
-                CreateBinding(menuContent, "Team Voice Chat", new List<string> { "+iv_walk" });
-                CreateBinding(menuContent, "Team Text Chat", new List<string> { "+iv_score" });
+                panelContent.Add.TranslationLabel("MENU_KEYBINDINGS_COMMUNICATION", "binding-header");
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_VOICE_CHAT", new() { "+iv_voice" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_TEAM_VOICE_CHAT", new() { "+iv_walk" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_TEAM_TEXT_CHAT", new() { "+iv_score" });
                 panelContent.Add.Label("");
 
-                panelContent.Add.Label("Menus", "binding-header");
-                CreateBinding(menuContent, "Scoreboard", new List<string> { "+iv_score" });
-                CreateBinding(menuContent, "Menu", new List<string> { "+iv_menu" });
-                CreateBinding(menuContent, "Quick Shop", new List<string> { "+iv_view" });
+                panelContent.Add.TranslationLabel("MENU_KEYBINDINGS_MENUS", "binding-header");
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_SCOREBOARD", new() { "+iv_score" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_MENU", new() { "+iv_menu" });
+                CreateBinding(menuContent, "MENU_KEYBINDINGS_QUICK_SHOP", new() { "+iv_view" });
                 panelContent.Add.Label("");
 
             }, "MENU_KEYBINDINGS", "keybindings");
@@ -57,8 +56,8 @@ namespace TTTReborn.UI.Menu
             Panel wrapper = new(menuContent);
             wrapper.AddClass("wrapper");
 
-            Label actionLabel = wrapper.Add.Label($"{action}: ");
-            actionLabel.Style.Width = 150;
+            wrapper.Add.TranslationLabel(action);
+            wrapper.Add.Label(": ");
 
             for (int i = 0; i < bindings.Count; ++i)
             {
