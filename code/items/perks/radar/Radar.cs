@@ -53,7 +53,7 @@ namespace TTTReborn.Items
 
                 List<RadarPointData> pointData = new();
 
-                foreach (TTTPlayer player in Globals.Utils.GetPlayers((pl) => pl.LifeState == LifeState.Alive))
+                foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
                 {
                     if (player.Client.UserId == owner.Client.UserId)
                     {

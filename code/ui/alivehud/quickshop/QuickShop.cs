@@ -70,7 +70,7 @@ namespace TTTReborn.UI
 
         public void Reload()
         {
-            _itemPanel.DeleteChildren(true);
+            _itemPanel?.DeleteChildren(true);
 
             _selectedItemData = null;
 

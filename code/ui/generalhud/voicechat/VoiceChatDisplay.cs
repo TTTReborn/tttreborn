@@ -18,7 +18,7 @@ namespace TTTReborn.UI
 
         public void OnVoicePlayed(Client client, float level)
         {
-            VoiceChatEntry entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault(x => x.Friend.Id == client.SteamId) ?? new VoiceChatEntry(this, client);
+            VoiceChatEntry entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault(x => x.Friend.Id == client.PlayerId) ?? new VoiceChatEntry(this, client);
 
             entry.Update(level);
         }
