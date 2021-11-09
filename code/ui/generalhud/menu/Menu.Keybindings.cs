@@ -62,7 +62,7 @@ namespace TTTReborn.UI.Menu
             for (int i = 0; i < bindings.Count; ++i)
             {
                 string binding = bindings[i];
-                wrapper.Add.Label($"{Input.GetKeyWithBinding(binding).ToUpper()}", "text-color-info");
+                wrapper.Add.Label(Input.GetKeyWithBinding(binding).ToUpper(), "text-color-info");
                 wrapper.Add.Label($" ({binding}) ");
 
                 // Don't show a + if it's the last binding in the list.
