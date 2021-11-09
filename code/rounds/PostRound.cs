@@ -26,18 +26,8 @@ namespace TTTReborn.Rounds
             Gamemode.Game.Instance.ChangeRound(new PreRound());
         }
 
-        public override void OnPlayerSpawn(TTTPlayer player)
-        {
-            AddPlayer(player);
-
-            base.OnPlayerSpawn(player);
-        }
-
         public override void OnPlayerKilled(TTTPlayer player)
         {
-            Players.Remove(player);
-            Spectators.Add(player);
-
             player.MakeSpectator();
         }
 
