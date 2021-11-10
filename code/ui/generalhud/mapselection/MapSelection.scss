@@ -41,6 +41,16 @@ MapSelection {
         }
 
         &.voted {
+            box-shadow: 0px 0px 10px #009e088f;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        &:active {
+            transform: scale(1);
         }
     }
 }

@@ -9,11 +9,15 @@ namespace TTTReborn.UI
 {
     public class MapSelection : Panel
     {
+        public static MapSelection Instance;
+
         private readonly Panel _mapWrapper;
         private List<MapPanel> _mapPanels;
 
         public MapSelection() : base()
         {
+            Instance = this;
+
             StyleSheet.Load("/ui/generalhud/mapselection/MapSelection.scss");
 
             AddClass("text-shadow");
@@ -28,6 +32,8 @@ namespace TTTReborn.UI
             _mapWrapper.AddClass("map-wrapper");
 
             InitMapPanels();
+
+            Enabled = false;
         }
 
         private async void InitMapPanels()
@@ -82,6 +88,7 @@ namespace TTTReborn.UI
 
             bool hasLocalClientVoted = nextMapVotes.ContainsKey(Local.Client.PlayerId);
 
+            // Iterate over the map panels, update vote total, showcase the current map the player has selected.
             for (int i = 0; i < _mapPanels.Count; ++i)
             {
                 MapPanel panel = _mapPanels[i];
@@ -98,6 +105,10 @@ namespace TTTReborn.UI
 
             public MapPanel(string name, string image, int index)
             {
+                AddClass("box-shadow");
+                AddClass("info-panel");
+                AddClass("rounded");
+
                 Add.Label(name, "map-name text-color-info");
                 TotalVotes = Add.Label("0", "map-vote text-color-info");
 
