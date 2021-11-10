@@ -1,0 +1,26 @@
+MapSelection {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: all;
+
+    .title {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .map-wrapper {
+        flex-wrap: wrap;
+        max-width: 1000px;
+        overflow: scroll;
+    }
+
+    MapPanel {
+        width: 200px;
+        height: 200px;
+        background-size: cover;
+    }
+}

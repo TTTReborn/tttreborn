@@ -44,6 +44,7 @@ namespace TTTReborn.UI
                 _inspectContainer.SetClass("pop-in", base.IsEnabled);
             }
         }
+
         public InspectMenu()
         {
             Instance = this;
