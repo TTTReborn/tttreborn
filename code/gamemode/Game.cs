@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
-using System.Collections.Generic;
 
 using TTTReborn.Events;
 using TTTReborn.Globalization;
@@ -19,11 +19,13 @@ namespace TTTReborn.Gamemode
     {
         public static Game Instance { get; private set; }
 
+        [Net]
+        public IDictionary<long, int> NextMapVotes { get; set; }
+
         [Net, Change]
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
-        [Net]
-        public IDictionary<long, int> NextMapVotes { get; set; }
+        public int TotalRoundsPlayed = 0;
 
         public KarmaSystem Karma { get; private set; } = new();
 
