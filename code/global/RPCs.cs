@@ -156,6 +156,12 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
+        public static void ClientOpenMapSelection()
+        {
+            MapSelection.Instance.Enabled = true;
+        }
+
+        [ClientRpc]
         public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
             Event.Run(TTTEvent.Player.Inventory.PickUp, carriable as ICarriableItem);

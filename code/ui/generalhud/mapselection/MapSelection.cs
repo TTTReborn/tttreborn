@@ -46,12 +46,6 @@ namespace TTTReborn.UI
             });
         }
 
-        private static async Task<List<string>> GetTTTMapNames()
-        {
-            Package result = await Package.Fetch(Global.GameName, true);
-            return result.GameConfiguration.MapList;
-        }
-
         private static async Task<List<MapPanel>> GetTTTMapPanels(List<string> mapNames)
         {
             List<MapPanel> mapPanels = new();
@@ -80,11 +74,7 @@ namespace TTTReborn.UI
             }
 
             // Count how many votes each map has.
-            IDictionary<int, int> indexToVoteCount = new Dictionary<int, int>();
-            foreach (int index in nextMapVotes.Values)
-            {
-                indexToVoteCount[index] = !indexToVoteCount.ContainsKey(index) ? 1 : indexToVoteCount[index]++;
-            }
+            IDictionary<int, int> mapIndexToVoteCount = GetTotalVotesPerMapIndex(nextMapVotes);
 
             bool hasLocalClientVoted = nextMapVotes.ContainsKey(Local.Client.PlayerId);
 
@@ -93,10 +83,33 @@ namespace TTTReborn.UI
             {
                 MapPanel panel = _mapPanels[i];
 
-                panel.TotalVotes.Text = indexToVoteCount.ContainsKey(i) ? indexToVoteCount[i] == 1 ? $"{1} vote" : $"{indexToVoteCount[i]} votes" : "";
+                panel.TotalVotes.Text = mapIndexToVoteCount.ContainsKey(i) ? mapIndexToVoteCount[i] == 1 ? $"{1} vote" : $"{mapIndexToVoteCount[i]} votes" : "";
 
                 panel.SetClass("voted", hasLocalClientVoted && nextMapVotes[Local.Client.PlayerId] == i);
             }
+        }
+
+        /// <summary>
+        /// Get all of the TTT Map names.
+        /// </summary>
+        public static async Task<List<string>> GetTTTMapNames()
+        {
+            Package result = await Package.Fetch(Global.GameName, true);
+            return result.GameConfiguration.MapList;
+        }
+
+        /// <summary>
+        /// Get the total votes for each map index.
+        /// <para>A dictionary of PlayerId -> Map Index key value pair.</para>
+        /// </summary>
+        public static IDictionary<int, int> GetTotalVotesPerMapIndex(IDictionary<long, int> mapVotes)
+        {
+            IDictionary<int, int> indexToVoteCount = new Dictionary<int, int>();
+            foreach (int index in mapVotes.Values)
+            {
+                indexToVoteCount[index] = !indexToVoteCount.ContainsKey(index) ? 1 : indexToVoteCount[index]++;
+            }
+            return indexToVoteCount;
         }
 
         public class MapPanel : Panel

@@ -24,6 +24,12 @@ namespace TTTReborn.Settings
             public int PostRoundTime { get; set; } = 10; // The amount of time before the next round starts.
 
             [InputSetting]
+            public int MapSelectionRoundTime { get; set; } = 15; // The amount of time to vote for the next map.
+
+            [InputSetting]
+            public int TotalRounds { get; set; } = 10; // The amount of rounds to play
+
+            [InputSetting]
             public int KillTimeReward { get; set; } = 30; // The amount of extra time given to traitors for killing an innocent.
         }
 
