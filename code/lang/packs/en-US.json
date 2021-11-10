@@ -39,6 +39,8 @@
     "CORPSE_INSPECT_IDENTIFIER_WEAPON": "It appears a {0} was used to kill them.",
     "CORPSE_INSPECT_IDENTIFIER_PERK": "They were carrying a {0}.",
 
+    "VOTE_NEXT_MAP": "VOTE FOR THE NEXT MAP!",
+
     "SCOREBOARD_GAMEMODE": "{0} Server",
     "SCOREBOARD_CREATEDBY": "Created by {0}",
     "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Players",
