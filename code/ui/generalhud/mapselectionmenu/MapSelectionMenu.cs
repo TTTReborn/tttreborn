@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+
+using TTTReborn.Globals;
 
 namespace TTTReborn.UI
 {
@@ -46,7 +47,8 @@ namespace TTTReborn.UI
                 {
                     Parent = _mapWrapper
                 };
-                _mapPanels.Add(panel);
+
+                _mapPanels.AddIfDoesNotContain(panel);
             }
         }
 

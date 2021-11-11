@@ -13,6 +13,7 @@
     "ROUND_STATE_PREPARING": "Preparing",
     "ROUND_STATE_IN_PROGRESS": "In progress",
     "ROUND_STATE_POST": "Round over",
+    "ROUND_STATE_MAP_SELECTION": "Selecting next map",
 
     "POST_ROUND_WIN_TEAM_INNOCENTS": "THE INNOCENT WIN!",
     "POST_ROUND_WIN_TEAM_TRAITORS": "THE TRAITORS WIN!",
@@ -72,6 +73,9 @@
     "MENU_SUBMENU_TESTING": "Testing",
     "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
 
+    "MENU_SETTINGS_TAB_MAP": "Map",
+    "MENU_SETTINGS_MAP_DEFAULTMAP": "Default Map",
+
     "MENU_SETTINGS_LOADING": "Loading...",
     "MENU_SETTINGS_TAB_DEBUG": "Debug",
     "MENU_SETTINGS_DEBUG_PREVENTWIN": "Supress victory",
@@ -92,6 +96,8 @@
     "MENU_SETTINGS_ROUND_ROUNDTIME": "Round Time",
     "MENU_SETTINGS_ROUND_ROUNDTIME_DESCRIPTION": "The amount of time allowed for the main round.",
     "MENU_SETTINGS_ROUND_POSTROUNDTIME": "PostRound Time",
+    "MENU_SETTINGS_ROUND_MAPSELECTIONROUNDTIME": "Map Selection Round Time",
+    "MENU_SETTINGS_ROUND_TOTALROUNDS": "Total rounds to play",
     "MENU_SETTINGS_ROUND_POSTROUNDTIME_DESCRIPTION": "The amount of time before the next round starts.",
     "MENU_SETTINGS_ROUND_KILLTIMEREWARD": "Kill Time Reward",
     "MENU_SETTINGS_ROUND_KILLTIMEREWARD_DESCRIPTION": "The amount of extra time given to traitors for killing an innocent.",
