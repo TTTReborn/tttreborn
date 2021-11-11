@@ -24,7 +24,7 @@ namespace TTTReborn.Rounds
         {
             base.OnTimeUp();
 
-            IDictionary<string, int> mapIndexToVoteCount = Map.MapSelection.GetTotalVotesPerMapIndex(Gamemode.Game.Instance.MapSelection.PlayerIdMapVote);
+            IDictionary<string, int> mapIndexToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap(Gamemode.Game.Instance.MapSelection.PlayerIdMapVote);
             if (mapIndexToVoteCount.Count == 0)
             {
                 Global.ChangeLevel("facepunch.flatgrass");
@@ -40,7 +40,7 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                RPCs.ClientOpenMapSelection();
+                RPCs.ClientOpenMapSelectionMenu();
             }
         }
     }

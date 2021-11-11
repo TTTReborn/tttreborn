@@ -5,7 +5,7 @@ using Sandbox;
 
 namespace TTTReborn.Map
 {
-    public partial class MapSelection : BaseNetworkable
+    public partial class MapSelectionHandler : BaseNetworkable
     {
         // Player Id (long) -> Map name (string)
         [Net]
@@ -45,7 +45,7 @@ namespace TTTReborn.Map
             return mapPanels;
         }
 
-        public static IDictionary<string, int> GetTotalVotesPerMapIndex(IDictionary<long, string> mapVotes)
+        public static IDictionary<string, int> GetTotalVotesPerMap(IDictionary<long, string> mapVotes)
         {
             IDictionary<string, int> indexToVoteCount = new Dictionary<string, int>();
             foreach (string index in mapVotes.Values)
@@ -57,7 +57,7 @@ namespace TTTReborn.Map
 
         public void OnMapImagesChanged(IDictionary<string, string> oldValue, IDictionary<string, string> newValue)
         {
-            Event.Run(Events.TTTEvent.Game.MapImagesChange);
+            Event.Run(Events.TTTEvent.MapSelectionHandler.MapImagesChange);
         }
     }
 }

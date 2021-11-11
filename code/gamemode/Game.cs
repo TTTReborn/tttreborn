@@ -23,7 +23,7 @@ namespace TTTReborn.Gamemode
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
         [Net]
-        public MapSelection MapSelection { get; set; } = new();
+        public MapSelectionHandler MapSelection { get; set; } = new();
 
         public KarmaSystem Karma { get; private set; } = new();
 

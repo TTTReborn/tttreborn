@@ -36,7 +36,7 @@ namespace TTTReborn.UI
             Enabled = false;
         }
 
-        [Event(Events.TTTEvent.Game.MapImagesChange)]
+        [Event(Events.TTTEvent.MapSelectionHandler.MapImagesChange)]
         private void OnMapImagesChange()
         {
             IDictionary<string, string> mapImages = Gamemode.Game.Instance.MapSelection.MapImages;
@@ -66,7 +66,7 @@ namespace TTTReborn.UI
             }
 
             // Count how many votes each map has.
-            IDictionary<string, int> mapIndexToVoteCount = Map.MapSelection.GetTotalVotesPerMapIndex(playerIdMapVote);
+            IDictionary<string, int> mapIndexToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap(playerIdMapVote);
 
             bool hasLocalClientVoted = playerIdMapVote.ContainsKey(Local.Client.PlayerId);
 
