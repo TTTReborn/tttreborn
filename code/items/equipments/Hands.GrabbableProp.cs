@@ -51,7 +51,9 @@ namespace TTTReborn.Items
             // If the entity gets another owner (i.e weapon pickup) drop it.
             if (GrabbedEntity?.Owner != null)
             {
-                Drop();
+                // Since the weapon now has a new owner/parent, no need to set parent to null.
+                GrabbedEntity.EnableHideInFirstPerson = true;
+                GrabbedEntity = null;
 
                 return;
             }
