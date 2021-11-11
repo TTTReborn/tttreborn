@@ -30,7 +30,7 @@ namespace TTTReborn.Events
 
             /// <summary>
             /// Occurs when a player disconnects.
-            /// <para>The <strong><see cref="ulong"/></strong> of the player's SteamId who disconnected.</para>
+            /// <para>The <strong><see cref="ulong"/></strong> of the player's playerId who disconnected.</para>
             /// <para>The <strong><see cref="Sandbox.NetworkDisconnectionReason"/></strong>.</para>
             /// </summary>
             public const string Disconnected = "tttreborn.player.disconnected";

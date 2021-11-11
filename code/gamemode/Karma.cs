@@ -53,25 +53,25 @@ namespace TTTReborn.Gamemode
             //int updatedDamage = 0;
 
             // TODO: Once network dictionaries are supported, implement.
-            // DamageRecords.TryGetValue((attacker.SteamId, victim.SteamId), out updatedDamage);
+            // DamageRecords.TryGetValue((attacker.PlayerId, victim.PlayerId), out updatedDamage);
             //
             // updatedDamage += damage;
             // updatedDamage = Math.Min(updatedDamage, 100);
             //
-            // DamageRecords[(attacker.SteamId, victim.SteamId)] = updatedDamage;
+            // DamageRecords[(attacker.PlayerId, victim.PlayerId)] = updatedDamage;
         }
 
         public void UpdatePlayerKarma(TTTPlayer player, int delta)
         {
-            UpdateSteamIdKarma(player.Client.SteamId, delta);
+            UpdatePlayerIdKarma(player.Client.PlayerId, delta);
         }
 
-        public void UpdateSteamIdKarma(ulong steamId, int delta)
+        public void UpdatePlayerIdKarma(long playerId, int delta)
         {
             int updatedKarma = 0;
 
             // TODO: Once network dictionaries are supported, implement.
-            // KarmaRecords.TryGetValue(steamId, out updatedKarma);
+            // KarmaRecords.TryGetValue(playerId, out updatedKarma);
 
             updatedKarma += delta;
 
@@ -80,7 +80,7 @@ namespace TTTReborn.Gamemode
             updatedKarma = updatedKarma < TTTKarmaMin ? TTTKarmaMin : updatedKarma;
 
             // TODO: Once network dictionaries are supported, implement.
-            // KarmaRecords[player.SteamId] = updatedKarma;
+            // KarmaRecords[player.playerId] = updatedKarma;
         }
 
         public void ResolveKarma()
@@ -91,7 +91,7 @@ namespace TTTReborn.Gamemode
                 // Update karma records based on the damage done this round
                 // foreach (var record in DamageRecords)
                 // {
-                //  UpdateSteamIdKarma(record.Key.Item1, record.Value);
+                //  UpdatePlayerIdKarma(record.Key.Item1, record.Value);
                 // }
             }
 
@@ -103,7 +103,7 @@ namespace TTTReborn.Gamemode
         public bool IsBanned(TTTPlayer player)
         {
             // TODO: Once network dictionaries are supported, implement. Return false meanwhile...
-            // return (KarmaRecords[player.SteamId] < TTTKarmaMin && TTTKarmaBan);
+            // return (KarmaRecords[player.PlayerId] < TTTKarmaMin && TTTKarmaBan);
             return false;
         }
     }
