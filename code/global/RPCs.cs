@@ -158,7 +158,7 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientOpenMapSelection()
         {
-            MapSelection.Instance.Enabled = true;
+            MapSelectionMenu.Instance.Enabled = true;
         }
 
         [ClientRpc]

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Sandbox;
 
 using TTTReborn.Globals;
+using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Settings;
 using TTTReborn.UI;
@@ -23,19 +24,11 @@ namespace TTTReborn.Rounds
         {
             base.OnTimeUp();
 
-            IDictionary<int, int> mapIndexToVoteCount = MapSelection.GetTotalVotesPerMapIndex(Gamemode.Game.Instance.NextMapVotes);
+            IDictionary<string, int> mapIndexToVoteCount = Map.MapSelection.GetTotalVotesPerMapIndex(Gamemode.Game.Instance.MapSelection.PlayerIdMapVote);
             if (mapIndexToVoteCount.Count == 0)
             {
                 Global.ChangeLevel("facepunch.flatgrass");
             }
-
-            _ = FetchAndChangeMap(mapIndexToVoteCount.OrderByDescending(x => x.Value).First().Key);
-        }
-
-        private static async Task FetchAndChangeMap(int mapIndex)
-        {
-            List<string> maps = await MapSelection.GetTTTMapNames();
-            Global.ChangeLevel(maps[mapIndex]);
         }
 
         public override void OnPlayerKilled(TTTPlayer player)

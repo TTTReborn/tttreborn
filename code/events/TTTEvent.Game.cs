@@ -16,6 +16,8 @@ namespace TTTReborn.Events
             /// <para>Event is passed the <strong><see cref="TTTReborn.Rounds.BaseRound"/></strong> instance of the new round.</para>
             /// </summary>
             public const string RoundChange = "tttreborn.game.roundchange";
+
+            public const string MapImagesChange = "tttreborn.game.mapimage";
         }
     }
 }

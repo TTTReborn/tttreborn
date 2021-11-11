@@ -19,13 +19,11 @@ namespace TTTReborn.Gamemode
     {
         public static Game Instance { get; private set; }
 
-        [Net]
-        public IDictionary<long, int> NextMapVotes { get; set; }
-
         [Net, Change]
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
-        public int TotalRoundsPlayed = 0;
+        [Net]
+        public MapSelection MapSelection { get; set; } = new();
 
         public KarmaSystem Karma { get; private set; } = new();
 
@@ -45,6 +43,7 @@ namespace TTTReborn.Gamemode
 
             TTTLanguage.Load();
             SettingsManager.Load();
+            MapSelection.Load();
 
             if (IsServer)
             {
