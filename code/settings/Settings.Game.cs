@@ -3,6 +3,7 @@ namespace TTTReborn.Settings
     public partial class ServerSettings
     {
         public Categories.Round Round { get; set; } = new();
+        public Categories.Map Map { get; set; } = new();
         public Categories.AFK AFK { get; set; } = new();
         public Categories.Debug Debug { get; set; } = new();
     }
@@ -31,6 +32,12 @@ namespace TTTReborn.Settings
 
             [InputSetting]
             public int KillTimeReward { get; set; } = 30; // The amount of extra time given to traitors for killing an innocent.
+        }
+
+        public partial class Map
+        {
+            [InputSetting]
+            public string DefaultMap { get; set; } = "facepunch.flatgrass"; // The map we choose by default.
         }
 
         public partial class AFK

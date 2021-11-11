@@ -8,7 +8,6 @@ using TTTReborn.Globals;
 using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Settings;
-using TTTReborn.UI;
 
 namespace TTTReborn.Rounds
 {
@@ -24,11 +23,14 @@ namespace TTTReborn.Rounds
         {
             base.OnTimeUp();
 
-            IDictionary<string, int> mapIndexToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap(Gamemode.Game.Instance.MapSelection.PlayerIdMapVote);
-            if (mapIndexToVoteCount.Count == 0)
+            IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance?.MapSelection?.PlayerIdMapVote;
+            IDictionary<string, int> mapToVoteCount = MapSelectionHandler.GetTotalVotesPerMap(playerIdMapVote);
+            if (mapToVoteCount.Count == 0)
             {
-                Global.ChangeLevel("facepunch.flatgrass");
+                Global.ChangeLevel(ServerSettings.Instance?.Map?.DefaultMap ?? "facepunch.flatgrass");
             }
+
+            Global.ChangeLevel(mapToVoteCount.OrderByDescending(x => x.Value).First().Key);
         }
 
         public override void OnPlayerKilled(TTTPlayer player)
