@@ -60,13 +60,9 @@ namespace TTTReborn.UI
             }
 
             IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
-            if (playerIdMapVote == null)
-            {
-                return;
-            }
 
             // Count how many votes each map has.
-            IDictionary<string, int> mapIndexToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap(playerIdMapVote);
+            IDictionary<string, int> mapToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap(playerIdMapVote);
 
             bool hasLocalClientVoted = playerIdMapVote.ContainsKey(Local.Client.PlayerId);
 
@@ -75,7 +71,7 @@ namespace TTTReborn.UI
             {
                 MapPanel panel = _mapPanels[i];
 
-                panel.TotalVotes.Text = mapIndexToVoteCount.ContainsKey(panel.MapName) ? mapIndexToVoteCount[panel.MapName] == 1 ? $"{1} vote" : $"{mapIndexToVoteCount[panel.MapName]} votes" : "";
+                panel.TotalVotes.Text = mapToVoteCount.ContainsKey(panel.MapName) ? mapToVoteCount[panel.MapName] == 1 ? $"{1} vote" : $"{mapToVoteCount[panel.MapName]} votes" : "";
 
                 panel.SetClass("voted", hasLocalClientVoted && playerIdMapVote[Local.Client.PlayerId] == panel.MapName);
             }
