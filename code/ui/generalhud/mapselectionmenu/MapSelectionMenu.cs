@@ -75,12 +75,10 @@ namespace TTTReborn.UI
 
             IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
 
-            // Count how many votes each map has.
             IDictionary<string, int> mapToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap(playerIdMapVote);
 
             bool hasLocalClientVoted = playerIdMapVote.ContainsKey(Local.Client.PlayerId);
 
-            // Iterate over the map panels, update vote total, showcase the current map the player has selected.
             for (int i = 0; i < _mapPanels.Count; ++i)
             {
                 MapPanel panel = _mapPanels[i];
