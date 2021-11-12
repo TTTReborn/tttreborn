@@ -118,13 +118,7 @@ namespace TTTReborn.UI
         public static void VoteNextMap(string name)
         {
             long callerPlayerId = ConsoleSystem.Caller.PlayerId;
-            IDictionary<long, string> nextMapVotes = Gamemode.Game.Instance?.MapSelection.PlayerIdMapVote;
-
-            // Remove previous vote if caller has already voted.
-            if (nextMapVotes.ContainsKey(callerPlayerId))
-            {
-                nextMapVotes.Remove(callerPlayerId);
-            }
+            IDictionary<long, string> nextMapVotes = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
 
             nextMapVotes[callerPlayerId] = name;
             Extensions.Log.Debug($"{callerPlayerId} voting for map index {name}");
