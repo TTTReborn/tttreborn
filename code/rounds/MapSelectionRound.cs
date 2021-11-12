@@ -23,11 +23,11 @@ namespace TTTReborn.Rounds
         {
             base.OnTimeUp();
 
-            IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance?.MapSelection?.PlayerIdMapVote;
+            IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
             IDictionary<string, int> mapToVoteCount = MapSelectionHandler.GetTotalVotesPerMap(playerIdMapVote);
             if (mapToVoteCount.Count == 0)
             {
-                Global.ChangeLevel(ServerSettings.Instance?.Map?.DefaultMap ?? "facepunch.flatgrass");
+                Global.ChangeLevel(ServerSettings.Instance.Map.DefaultMap);
             }
 
             Global.ChangeLevel(mapToVoteCount.OrderByDescending(x => x.Value).First().Key);

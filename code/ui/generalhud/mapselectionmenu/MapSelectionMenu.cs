@@ -36,7 +36,7 @@ namespace TTTReborn.UI
 
             InitMapPanels();
 
-            Enabled = false;
+            Enabled = true;
         }
 
         [Event(Events.TTTEvent.MapSelectionHandler.MapImagesChange)]

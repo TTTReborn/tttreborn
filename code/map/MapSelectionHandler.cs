@@ -48,7 +48,7 @@ namespace TTTReborn.Map
         public static IDictionary<string, int> GetTotalVotesPerMap(IDictionary<long, string> mapVotes)
         {
             IDictionary<string, int> indexToVoteCount = new Dictionary<string, int>();
-            foreach (string mapName in mapVotes?.Values ?? new List<string>())
+            foreach (string mapName in mapVotes.Values)
             {
                 indexToVoteCount[mapName] = !indexToVoteCount.ContainsKey(mapName) ? 1 : indexToVoteCount[mapName] + 1;
             }
