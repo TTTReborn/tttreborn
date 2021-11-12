@@ -37,10 +37,10 @@ namespace TTTReborn.Rounds
             // Nobody voted, so let's change to a random map.
             if (mapToVoteCount.Count == 0)
             {
-                Global.ChangeLevel(maps.ElementAt(Rand.Int(0, maps.Count)).Key);
+                Global.ChangeLevel(maps.ElementAt(Rand.Int(0, maps.Count - 1)).Key);
             }
 
-            // Change to the map with the most votes.
+            // Change to the map which received the most votes first.
             Global.ChangeLevel(mapToVoteCount.OrderByDescending(x => x.Value).First().Key);
         }
 
