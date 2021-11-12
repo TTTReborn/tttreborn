@@ -50,7 +50,7 @@ namespace TTTReborn.Map
             IDictionary<string, int> indexToVoteCount = new Dictionary<string, int>();
             foreach (string mapName in mapVotes?.Values ?? new List<string>())
             {
-                indexToVoteCount[mapName] = !indexToVoteCount.ContainsKey(mapName) ? 1 : indexToVoteCount[mapName]++;
+                indexToVoteCount[mapName] = !indexToVoteCount.ContainsKey(mapName) ? 1 : indexToVoteCount[mapName] + 1;
             }
             return indexToVoteCount;
         }

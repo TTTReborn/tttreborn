@@ -18,6 +18,7 @@ MapSelectionMenu {
         max-width: 880px;
         overflow: scroll;
         justify-content: start;
+        max-height: 700px;
     }
 
     MapPanel {
@@ -30,14 +31,15 @@ MapSelectionMenu {
         justify-content: space-around;
 
         .map-name {
-            font-size: 15px;
             font-weight: bold;
             height: 150px;
+            text-overflow:ellipsis;
+            white-space:nowrap;
         }
 
         .map-vote {
-            font-size: 15px;
             font-weight: bold;
+            font-size: 20px;
         }
 
         &.voted {

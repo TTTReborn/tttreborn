@@ -34,21 +34,33 @@ namespace TTTReborn.UI
             _mapWrapper = new Panel(this);
             _mapWrapper.AddClass("map-wrapper");
 
+            InitMapPanels();
+
             Enabled = false;
         }
 
         [Event(Events.TTTEvent.MapSelectionHandler.MapImagesChange)]
         private void OnMapImagesChange()
         {
+            InitMapPanels();
+        }
+
+        private void InitMapPanels()
+        {
             IDictionary<string, string> mapImages = Gamemode.Game.Instance.MapSelection.MapImages;
             foreach (KeyValuePair<string, string> mapImage in mapImages)
             {
+                if (_mapPanels.Exists((mapPanel) => mapPanel.MapName == mapImage.Key))
+                {
+                    continue;
+                }
+
                 MapPanel panel = new(mapImage.Key, mapImage.Value)
                 {
                     Parent = _mapWrapper
                 };
 
-                _mapPanels.AddIfDoesNotContain(panel);
+                _mapPanels.Add(panel);
             }
         }
 
@@ -73,7 +85,7 @@ namespace TTTReborn.UI
             {
                 MapPanel panel = _mapPanels[i];
 
-                panel.TotalVotes.Text = mapToVoteCount.ContainsKey(panel.MapName) ? mapToVoteCount[panel.MapName] == 1 ? $"{1} vote" : $"{mapToVoteCount[panel.MapName]} votes" : "";
+                panel.TotalVotes.Text = mapToVoteCount.ContainsKey(panel.MapName) ? $"{mapToVoteCount[panel.MapName]}" : string.Empty;
 
                 panel.SetClass("voted", hasLocalClientVoted && playerIdMapVote[Local.Client.PlayerId] == panel.MapName);
             }
@@ -92,8 +104,8 @@ namespace TTTReborn.UI
                 AddClass("info-panel");
                 AddClass("rounded");
 
-                Add.Label(MapName, "map-name text-color-info");
-                TotalVotes = Add.Label("0", "map-vote text-color-info");
+                Add.Label(MapName, "map-name");
+                TotalVotes = Add.Label("0", "map-vote");
 
                 Style.BackgroundImage = Texture.Load(image);
 
