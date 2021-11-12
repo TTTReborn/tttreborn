@@ -105,7 +105,7 @@ namespace TTTReborn.UI
                 AddClass("rounded");
 
                 Add.Label(MapName, "map-name");
-                TotalVotes = Add.Label("0", "map-vote");
+                TotalVotes = Add.Label(string.Empty, "map-vote");
 
                 Style.BackgroundImage = Texture.Load(image);
 
