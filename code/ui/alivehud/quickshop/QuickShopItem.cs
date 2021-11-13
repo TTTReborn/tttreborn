@@ -45,8 +45,15 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(ItemData) != BuyError.None;
-            SetClass("buy-error", IsDisabled);
+            BuyError buyError = (Local.Pawn as TTTPlayer).CanBuy(ItemData);
+
+            // Let's not show any items that the player could not access in the first place, or
+            // items that have had their limit reached.
+            SetClass("disabled", buyError == BuyError.NoAccess || buyError == BuyError.LimitReached);
+
+            // Decrease the opacity to show that the item cannot be purchased
+            // ex. lack of credits
+            SetClass("cannot-purchase", buyError != BuyError.None);
         }
     }
 }

@@ -76,7 +76,7 @@ QuickShopItem {
         transform: scale(1);
     }
 
-    &.buy-error {
+    &.cannot-purchase {
         opacity: 0.35;
         transform: scale(1);
         cursor: none;
