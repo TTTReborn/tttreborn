@@ -55,7 +55,7 @@ namespace TTTReborn.Items
 
                 foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
                 {
-                    if (player.Client.UserId == owner.Client.UserId)
+                    if (player.Client.PlayerId == owner.Client.PlayerId)
                     {
                         continue;
                     }
