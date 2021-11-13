@@ -29,12 +29,11 @@ QuickShop {
         }
 
         .item-panel {
-            max-width: 50%;
-            display: flex;
             flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            margin: 25px;
+            max-width: 680px;
+            overflow: scroll;
+            justify-content: start;
+            max-height: 700px;
         }
 
         .item-description-label {
@@ -59,7 +58,7 @@ QuickShopItem {
     flex-direction: column;
     width: 90px;
     height: 90px;
-    margin: 25px;
+    margin: 40px;
     align-items: center;
     justify-content: center;
     padding: 8px;
@@ -75,6 +74,12 @@ QuickShopItem {
 
     &:active {
         transform: scale(1);
+    }
+
+    &.buy-error {
+        opacity: 0.35;
+        transform: scale(1);
+        cursor: none;
     }
 
     .item-icon {
