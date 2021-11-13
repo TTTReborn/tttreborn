@@ -120,6 +120,22 @@ Menu {
             }
         }
 
+        &.keybindings {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: start;
+            width: 100%;
+
+            .binding-header {
+                width: 100%;
+                font-weight: bold;
+            }
+
+            .wrapper {
+                width: 100%;
+            }
+        }
+
         &.testing {
             Label,
             .label {

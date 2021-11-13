@@ -89,6 +89,7 @@ namespace TTTReborn.UI.Menu
                 CreateMenuButton(panelContent, "science", () => OpenTesting(panelContent));
                 CreateMenuButton(panelContent, "shopping_cart", () => OpenShopEditor(panelContent));
                 CreateMenuButton(panelContent, "share", () => OpenRoleSelectionEditor(panelContent));
+                CreateMenuButton(panelContent, "keyboard", () => OpenKeybindings(panelContent));
             }, "", "home");
         }
 
