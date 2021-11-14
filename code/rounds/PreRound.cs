@@ -94,6 +94,19 @@ namespace TTTReborn.Rounds
                 }
             }
 
+            int detectiveCount = (int) (players.Count * 0.125f);
+
+            for (int i = 0; i < detectiveCount; i++)
+            {
+                List<TTTPlayer> unassignedPlayers = players.Where(p => p.Role is NoneRole).ToList();
+                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
+
+                if (unassignedPlayers[randomId].Role is NoneRole)
+                {
+                    unassignedPlayers[randomId].SetRole(new DetectiveRole());
+                }
+            }
+
             foreach (TTTPlayer player in players)
             {
                 if (player.Role is NoneRole)
