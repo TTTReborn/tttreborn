@@ -103,8 +103,8 @@ namespace TTTReborn.UI
                 AddChild<InspectMenu>();
                 AddChild<PostRoundMenu>();
                 AddChild<Scoreboard>();
-                AddChild<Menu.Menu>();
                 AddChild<MapSelectionMenu>();
+                AddChild<Menu.Menu>();
             }
         }
 

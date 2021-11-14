@@ -29,6 +29,7 @@ namespace TTTReborn.Rounds
             if (maps.Count == 0)
             {
                 Global.ChangeLevel(ServerSettings.Instance.Map.DefaultMap);
+                return;
             }
 
             IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
@@ -37,7 +38,8 @@ namespace TTTReborn.Rounds
             // Nobody voted, so let's change to a random map.
             if (mapToVoteCount.Count == 0)
             {
-                Global.ChangeLevel(maps.ElementAt(Rand.Int(0, maps.Count - 1)).Key);
+                Global.ChangeLevel(maps.ElementAt(Utils.RNG.Next(maps.Count)).Key);
+                return;
             }
 
             // Change to the map which received the most votes first.

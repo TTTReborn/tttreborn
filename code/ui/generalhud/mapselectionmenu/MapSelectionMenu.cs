@@ -79,14 +79,12 @@ namespace TTTReborn.UI
 
             bool hasLocalClientVoted = playerIdMapVote.ContainsKey(Local.Client.PlayerId);
 
-            for (int i = 0; i < _mapPanels.Count; ++i)
+            _mapPanels.ForEach((mapPanel) =>
             {
-                MapPanel panel = _mapPanels[i];
+                mapPanel.TotalVotes.Text = mapToVoteCount.ContainsKey(mapPanel.MapName) ? $"{mapToVoteCount[mapPanel.MapName]}" : string.Empty;
 
-                panel.TotalVotes.Text = mapToVoteCount.ContainsKey(panel.MapName) ? $"{mapToVoteCount[panel.MapName]}" : string.Empty;
-
-                panel.SetClass("voted", hasLocalClientVoted && playerIdMapVote[Local.Client.PlayerId] == panel.MapName);
-            }
+                mapPanel.SetClass("voted", hasLocalClientVoted && playerIdMapVote[Local.Client.PlayerId] == mapPanel.MapName);
+            });
         }
 
         public class MapPanel : Panel
