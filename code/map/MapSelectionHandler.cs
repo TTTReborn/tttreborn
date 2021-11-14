@@ -55,9 +55,9 @@ namespace TTTReborn.Map
             return indexToVoteCount;
         }
 
-        public void OnMapImagesChanged(IDictionary<string, string> oldValue, IDictionary<string, string> newValue)
+        public void OnMapImagesChanged()
         {
-            Event.Run(Events.TTTEvent.MapSelectionHandler.MapImagesChange);
+            Event.Run(Events.TTTEvent.Game.MapImagesChange);
         }
     }
 }
