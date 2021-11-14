@@ -262,11 +262,11 @@ namespace TTTReborn.UI
 
             if (Gamemode.Game.Instance?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead)
             {
-                AddChatEntry(To.Multiple(Utils.GetClients((pl) => pl.LifeState == LifeState.Dead)), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.SteamId}");
+                AddChatEntry(To.Multiple(Utils.GetClients((pl) => pl.LifeState == LifeState.Dead)), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.PlayerId}");
             }
             else
             {
-                AddChatEntry(To.Everyone, ConsoleSystem.Caller.Name, message, Channel.Player, $"avatar:{ConsoleSystem.Caller.SteamId}");
+                AddChatEntry(To.Everyone, ConsoleSystem.Caller.Name, message, Channel.Player, $"avatar:{ConsoleSystem.Caller.PlayerId}");
             }
         }
 
@@ -287,7 +287,7 @@ namespace TTTReborn.UI
 
             player.Team.Members.ForEach(member => clients.Add(member.Client));
 
-            AddChatEntry(To.Multiple(clients), ConsoleSystem.Caller.Name, message, Channel.Team, $"avatar:{ConsoleSystem.Caller.SteamId}", player.Team.Name);
+            AddChatEntry(To.Multiple(clients), ConsoleSystem.Caller.Name, message, Channel.Team, $"avatar:{ConsoleSystem.Caller.PlayerId}", player.Team.Name);
         }
     }
 }

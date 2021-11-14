@@ -21,9 +21,9 @@ namespace TTTReborn.UI
 
         public static Scoreboard Instance;
 
-        private readonly Dictionary<ulong, ScoreboardEntry> _entries = new();
+        private readonly Dictionary<long, ScoreboardEntry> _entries = new();
         private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
-        private readonly Dictionary<ulong, bool> _forcedSpecList = new();
+        private readonly Dictionary<long, bool> _forcedSpecList = new();
 
         private readonly Panel _backgroundPanel;
         private readonly Panel _scoreboardContainer;
@@ -101,9 +101,9 @@ namespace TTTReborn.UI
         }
 
         [Event(TTTEvent.Player.Disconnected)]
-        private void OnPlayerDisconnected(ulong steamId, NetworkDisconnectionReason reason)
+        private void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
         {
-            RemoveClient(steamId);
+            RemoveClient(playerId);
             UpdateScoreboardGroups();
         }
 
@@ -116,7 +116,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
+            if (_entries.TryGetValue(client.PlayerId, out ScoreboardEntry panel))
             {
                 return;
             }
@@ -126,7 +126,7 @@ namespace TTTReborn.UI
 
             scoreboardGroup.GroupMembers++;
 
-            _entries.Add(client.SteamId, scoreboardEntry);
+            _entries.Add(client.PlayerId, scoreboardEntry);
 
             scoreboardGroup.UpdateLabel();
             _scoreboardHeader.UpdateServerInfo();
@@ -134,7 +134,7 @@ namespace TTTReborn.UI
 
         public void UpdateClient(Client client)
         {
-            if (!_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
+            if (!_entries.TryGetValue(client.PlayerId, out ScoreboardEntry panel))
             {
                 return;
             }
@@ -144,7 +144,7 @@ namespace TTTReborn.UI
             if (scoreboardGroup.GroupTitle != panel.ScoreboardGroupName)
             {
                 // instead of remove and add, move the panel into the right parent
-                RemoveClient(client.SteamId);
+                RemoveClient(client.PlayerId);
                 AddClient(client);
             }
             else
@@ -163,9 +163,9 @@ namespace TTTReborn.UI
             }
         }
 
-        public void RemoveClient(ulong steamId)
+        public void RemoveClient(long playerId)
         {
-            if (!_entries.TryGetValue(steamId, out ScoreboardEntry panel))
+            if (!_entries.TryGetValue(playerId, out ScoreboardEntry panel))
             {
                 return;
             }
@@ -180,7 +180,7 @@ namespace TTTReborn.UI
             scoreboardGroup.UpdateLabel();
 
             panel.Delete();
-            _entries.Remove(steamId);
+            _entries.Remove(playerId);
         }
 
         public override void Tick()
@@ -192,13 +192,13 @@ namespace TTTReborn.UI
             {
                 bool newIsForcedSpectator = client.GetValue<bool>("forcedspectator");
 
-                if (!_forcedSpecList.TryGetValue(client.SteamId, out bool isForcedSpectator))
+                if (!_forcedSpecList.TryGetValue(client.PlayerId, out bool isForcedSpectator))
                 {
-                    _forcedSpecList.Add(client.SteamId, newIsForcedSpectator);
+                    _forcedSpecList.Add(client.PlayerId, newIsForcedSpectator);
                 }
                 else if (isForcedSpectator != newIsForcedSpectator)
                 {
-                    _forcedSpecList[client.SteamId] = newIsForcedSpectator;
+                    _forcedSpecList[client.PlayerId] = newIsForcedSpectator;
 
                     UpdateClient(client);
                 }
@@ -232,7 +232,7 @@ namespace TTTReborn.UI
             {
                 group = DefaultScoreboardGroup.Spectator.ToString();
             }
-            else if (client.SteamId != 0 && client.Pawn is TTTPlayer player)
+            else if (client.PlayerId != 0 && client.Pawn is TTTPlayer player)
             {
                 if (player.IsConfirmed)
                 {

@@ -29,9 +29,9 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientOnPlayerDisconnect(ulong steamId, NetworkDisconnectionReason reason)
+        public static void ClientOnPlayerDisconnect(long playerId, NetworkDisconnectionReason reason)
         {
-            Event.Run(TTTEvent.Player.Disconnected, steamId, reason);
+            Event.Run(TTTEvent.Player.Disconnected, playerId, reason);
         }
 
         [ClientRpc]

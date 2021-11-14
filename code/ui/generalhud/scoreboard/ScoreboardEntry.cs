@@ -60,7 +60,7 @@ namespace TTTReborn.UI
                 Style.BackgroundColor = null;
             }
 
-            _playerAvatar.SetTexture($"avatar:{Client.SteamId}");
+            _playerAvatar.SetTexture($"avatar:{Client.PlayerId}");
         }
 
         public override void Tick()

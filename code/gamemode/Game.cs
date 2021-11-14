@@ -138,9 +138,9 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerLeave(client.Pawn as TTTPlayer);
 
-            Event.Run(TTTEvent.Player.Disconnected, client.SteamId, reason);
+            Event.Run(TTTEvent.Player.Disconnected, client.PlayerId, reason);
 
-            RPCs.ClientOnPlayerDisconnect(client.SteamId, reason);
+            RPCs.ClientOnPlayerDisconnect(client.PlayerId, reason);
 
             base.ClientDisconnect(client, reason);
         }
@@ -171,13 +171,13 @@ namespace TTTReborn.Gamemode
         /// Someone is speaking via voice chat. This might be someone in your game,
         /// or in your party, or in your lobby.
         /// </summary>
-        public override void OnVoicePlayed(ulong steamId, float level)
+        public override void OnVoicePlayed(long playerId, float level)
         {
             Client client = null;
 
             foreach (Client loopClient in Client.All)
             {
-                if (loopClient.SteamId == steamId)
+                if (loopClient.PlayerId == playerId)
                 {
                     client = loopClient;
 
