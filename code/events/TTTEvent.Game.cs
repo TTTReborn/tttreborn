@@ -6,7 +6,6 @@ namespace TTTReborn.Events
         {
             /// <summary>
             /// Should be used to precache models and stuff.
-            /// <para>No data is passed to this event.</para>
             /// </summary>
             public const string Precache = "tttreborn.game.precache";
 
@@ -16,6 +15,11 @@ namespace TTTReborn.Events
             /// <para>Event is passed the <strong><see cref="TTTReborn.Rounds.BaseRound"/></strong> instance of the new round.</para>
             /// </summary>
             public const string RoundChange = "tttreborn.game.roundchange";
+
+            /// <summary>
+            /// Updates when the map images are networked.
+            /// </summary>
+            public const string MapImagesChange = "tttreborn.game.mapimagechange";
         }
     }
 }

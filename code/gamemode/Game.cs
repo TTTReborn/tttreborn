@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 
@@ -21,6 +22,9 @@ namespace TTTReborn.Gamemode
         [Net, Change]
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
 
+        [Net]
+        public MapSelectionHandler MapSelection { get; set; } = new();
+
         public KarmaSystem Karma { get; private set; } = new();
 
         public MapHandler MapHandler { get; private set; }
@@ -39,6 +43,7 @@ namespace TTTReborn.Gamemode
 
             TTTLanguage.Load();
             SettingsManager.Load();
+            MapSelection.Load();
 
             if (IsServer)
             {

@@ -1,0 +1,58 @@
+MapSelectionMenu {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: all;
+
+    .title {
+        font-size: 30px;
+        font-weight: bold;
+        padding-bottom: 20px;
+    }
+
+    .map-wrapper {
+        flex-wrap: wrap;
+        max-width: 880px;
+        overflow: scroll;
+        justify-content: start;
+        max-height: 700px;
+    }
+
+    MapPanel {
+        width: 200px;
+        height: 200px;
+        background-size: cover;
+        margin: 10px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+
+        .map-name {
+            font-weight: bold;
+            height: 150px;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+        }
+
+        .map-vote {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        &.voted {
+            box-shadow: 0px 0px 10px #009e088f;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        &:active {
+            transform: scale(1);
+        }
+    }
+}

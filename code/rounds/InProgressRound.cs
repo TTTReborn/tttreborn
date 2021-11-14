@@ -128,6 +128,7 @@ namespace TTTReborn.Rounds
 
         private static void LoadPostRound(TTTTeam winningTeam)
         {
+            Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed++;
             Gamemode.Game.Instance.ForceRoundChange(new PostRound());
             RPCs.ClientOpenAndSetPostRoundMenu(
                 winningTeam.Name,
