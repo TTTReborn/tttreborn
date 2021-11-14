@@ -56,3 +56,4 @@ namespace TTTReborn.Rounds
             RPCs.ClientOpenMapSelectionMenu();
         }
     }
+}
