@@ -53,10 +53,6 @@ namespace TTTReborn.Rounds
 
         protected override void OnStart()
         {
-            if (Host.IsServer)
-            {
-                RPCs.ClientOpenMapSelectionMenu();
-            }
+            RPCs.ClientOpenMapSelectionMenu();
         }
     }
-}
