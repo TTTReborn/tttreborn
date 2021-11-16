@@ -76,12 +76,6 @@ QuickShopItem {
         transform: scale(1);
     }
 
-    &.cannot-purchase {
-        opacity: 0.35;
-        transform: scale(1);
-        cursor: none;
-    }
-
     .item-icon {
         background-repeat: no-repeat;
         background-size: contain;
