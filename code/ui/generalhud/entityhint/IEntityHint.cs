@@ -10,13 +10,19 @@ namespace TTTReborn.UI
         /// </summary>
         public float HintDistance => 2048f;
 
+        public bool ShowGlow => true;
+
         /// <summary>
         /// The text to display on the hint each tick.
         /// </summary>
         public TranslationData TextOnTick => null;
 
-        bool CanHint(TTTPlayer client);
+        public bool CanHint(TTTPlayer client);
 
-        EntityHintPanel DisplayHint(TTTPlayer client);
+        public EntityHintPanel DisplayHint(TTTPlayer client);
+
+        public void StopUsing(TTTPlayer player);
+
+        public void TickUse(TTTPlayer player);
     }
 }

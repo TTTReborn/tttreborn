@@ -20,7 +20,7 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem, ITTTUse
+    public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;

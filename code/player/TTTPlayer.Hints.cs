@@ -14,42 +14,68 @@ namespace TTTReborn.Player
 
         private void TickEntityHints()
         {
-            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
+            if (Camera is ThirdPersonSpectateCamera)
             {
                 DeleteHint();
 
                 return;
             }
 
-            IEntityHint hint = player.IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
+            IEntityHint hint = IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
 
-            if (hint == null || !hint.CanHint(player))
+            if (hint == null)
             {
                 DeleteHint();
+                return;
+            }
 
+            hint?.TickUse(this);
+
+            if (!hint.CanHint(this))
+            {
+                DeleteHint();
                 return;
             }
 
             if (hint == _currentHint)
             {
-                _currentHintPanel.UpdateHintPanel(hint.TextOnTick);
+                if (IsClient)
+                {
+                    _currentHintPanel.UpdateHintPanel(hint.TextOnTick);
+                }
 
                 return;
             }
 
             DeleteHint();
 
-            _currentHintPanel = hint.DisplayHint(player);
-            _currentHintPanel.Parent = HintDisplay.Instance;
-            _currentHintPanel.Enabled = true;
+            if (IsClient)
+            {
+                if (hint.ShowGlow && hint is ModelEntity model)
+                {
+                    model.GlowColor = Color.Blue;
+                    model.GlowActive = true;
+                }
+                _currentHintPanel = hint.DisplayHint(this);
+                _currentHintPanel.Parent = HintDisplay.Instance;
+                _currentHintPanel.Enabled = true;
+            }
 
             _currentHint = hint;
         }
 
         private void DeleteHint()
         {
-            _currentHintPanel?.Delete(true);
-            _currentHintPanel = null;
+            if (IsClient)
+            {
+                if (_currentHint is ModelEntity model)
+                {
+                    model.GlowActive = false;
+                }
+                _currentHintPanel?.Delete(true);
+                _currentHintPanel = null;
+            }
+            _currentHint?.StopUsing(this);
             _currentHint = null;
         }
     }

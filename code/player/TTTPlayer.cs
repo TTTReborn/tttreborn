@@ -172,14 +172,13 @@ namespace TTTReborn.Player
             {
                 TickPlayerVoiceChat();
                 TickMenu();
-                TickEntityHints();
             }
             else
             {
                 TickAFKSystem();
             }
 
-            TickPlayerTTTUse();
+            TickEntityHints();
 
             if (LifeState != LifeState.Alive)
             {

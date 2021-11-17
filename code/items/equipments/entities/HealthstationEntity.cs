@@ -74,5 +74,15 @@ namespace TTTReborn.Items
         {
             return new Hint(TextOnTick);
         }
+
+        public void TickUse(TTTPlayer player)
+        {
+
+        }
+
+        public void StopUsing(TTTPlayer player)
+        {
+
+        }
     }
 }

@@ -9,7 +9,7 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
-    public partial class PlayerCorpse : ModelEntity, IEntityHint, ITTTUse
+    public partial class PlayerCorpse : ModelEntity, IEntityHint
     {
         public TTTPlayer Player { get; set; }
         public List<Particles> Ropes = new();
@@ -165,7 +165,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            if (IsServer && !this.IsIdentified && LifeState == LifeState.Alive && Input.Down(InputButton.Use))
+            if (IsServer && !this.IsIdentified && player.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
             {
                 this.IsIdentified = true;
 

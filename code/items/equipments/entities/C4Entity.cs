@@ -328,6 +328,16 @@ namespace TTTReborn.Items
             return new Hint(TextOnTick);
         }
 
+        public void TickUse(TTTPlayer player)
+        {
+
+        }
+
+        public void StopUsing(TTTPlayer player)
+        {
+
+        }
+
         public void OnIsArmedChanged(bool oldValue, bool newValue)
         {
             if (newValue)
