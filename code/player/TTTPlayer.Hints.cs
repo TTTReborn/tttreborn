@@ -23,15 +23,7 @@ namespace TTTReborn.Player
 
             IEntityHint hint = IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
 
-            if (hint == null)
-            {
-                DeleteHint();
-                return;
-            }
-
-            hint?.TickUse(this);
-
-            if (!hint.CanHint(this))
+            if (hint == null || !hint.CanHint(this))
             {
                 DeleteHint();
                 return;
@@ -39,6 +31,8 @@ namespace TTTReborn.Player
 
             if (hint == _currentHint)
             {
+                hint?.Tick(this);
+
                 if (IsClient)
                 {
                     _currentHintPanel.UpdateHintPanel(hint.TextOnTick);
@@ -53,7 +47,7 @@ namespace TTTReborn.Player
             {
                 if (hint.ShowGlow && hint is ModelEntity model)
                 {
-                    model.GlowColor = Color.Blue;
+                    model.GlowColor = Color.Cyan;
                     model.GlowActive = true;
                 }
                 _currentHintPanel = hint.DisplayHint(this);
@@ -75,7 +69,6 @@ namespace TTTReborn.Player
                 _currentHintPanel?.Delete(true);
                 _currentHintPanel = null;
             }
-            _currentHint?.StopUsing(this);
             _currentHint = null;
         }
     }

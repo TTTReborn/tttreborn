@@ -328,12 +328,7 @@ namespace TTTReborn.Items
             return new Hint(TextOnTick);
         }
 
-        public void TickUse(TTTPlayer player)
-        {
-
-        }
-
-        public void StopUsing(TTTPlayer player)
+        public void Tick(TTTPlayer player)
         {
 
         }

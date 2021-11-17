@@ -18,12 +18,7 @@ namespace TTTReborn.Player
             return new Nameplate(this);
         }
 
-        public void TickUse(TTTPlayer player)
-        {
-
-        }
-
-        public void StopUsing(TTTPlayer player)
+        public void Tick(TTTPlayer player)
         {
 
         }

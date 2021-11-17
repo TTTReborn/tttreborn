@@ -141,14 +141,14 @@ namespace TTTReborn.Player
 
         public TranslationData TextOnTick => new(IsIdentified ? "CORPSE_INSPECT" : "CORPSE_IDENTIFY", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 
-        public bool CanHint(TTTPlayer client) => !InspectMenu.Instance?.Enabled ?? false;
+        public bool CanHint(TTTPlayer client) => true;
 
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
             return new Hint(TextOnTick);
         }
 
-        public void TickUse(TTTPlayer player)
+        public void Tick(TTTPlayer player)
         {
             if (IsClient && !Input.Down(InputButton.Use))
             {
@@ -192,11 +192,6 @@ namespace TTTReborn.Player
             {
                 TTTPlayer.ClientEnableInspectMenu(this);
             }
-        }
-
-        public void StopUsing(TTTPlayer player)
-        {
-
         }
     }
 }
