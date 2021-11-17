@@ -36,7 +36,7 @@ namespace TTTReborn.Player
 
         private DamageInfo _lastDamageInfo;
 
-        private TimeSince _timeSinceDropped = 0;
+        private const float DEFAULT_USE_DISTANCE = 80f;
 
         public TTTPlayer()
         {
@@ -179,7 +179,7 @@ namespace TTTReborn.Player
                 TickAFKSystem();
             }
 
-            TickAttemptInspectPlayerCorpse();
+            TickPlayerTTTUse();
 
             if (LifeState != LifeState.Alive)
             {
@@ -215,12 +215,16 @@ namespace TTTReborn.Player
 
         public override void StartTouch(Entity other)
         {
-            if (_timeSinceDropped < 1)
+            if (IsClient)
             {
                 return;
             }
 
-            base.StartTouch(other);
+            if (other is PickupTrigger)
+            {
+                StartTouch(other.Parent);
+                return;
+            }
         }
 
         private void TickPlayerDropCarriable()
@@ -235,8 +239,6 @@ namespace TTTReborn.Player
                     {
                         droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * CarriableDropVelocity;
                     }
-
-                    _timeSinceDropped = 0;
                 }
             }
         }

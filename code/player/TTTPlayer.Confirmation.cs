@@ -28,8 +28,6 @@ namespace TTTReborn.Player
 
         public TTTPlayer CorpseConfirmer = null;
 
-        private const float INSPECT_CORPSE_DISTANCE = 80f;
-
         public void RemovePlayerCorpse()
         {
             if (PlayerCorpse == null || !PlayerCorpse.IsValid())
@@ -39,56 +37,6 @@ namespace TTTReborn.Player
 
             PlayerCorpse.Delete();
             PlayerCorpse = null;
-        }
-
-        private void TickAttemptInspectPlayerCorpse()
-        {
-            using (Prediction.Off())
-            {
-                if (IsClient && !Input.Down(InputButton.Use))
-                {
-                    if (InspectMenu.Instance != null)
-                    {
-                        InspectMenu.Instance.Enabled = false;
-                    }
-
-                    return;
-                }
-
-                PlayerCorpse playerCorpse = IsLookingAtType<PlayerCorpse>(INSPECT_CORPSE_DISTANCE);
-                if (playerCorpse == null)
-                {
-                    return;
-                }
-
-                if (IsServer && !playerCorpse.IsIdentified && LifeState == LifeState.Alive && Input.Down(InputButton.Use))
-                {
-                    playerCorpse.IsIdentified = true;
-
-                    // TODO: Handle player disconnects.
-                    if (playerCorpse.Player != null && playerCorpse.Player.IsValid())
-                    {
-                        playerCorpse.Player.IsConfirmed = true;
-                        playerCorpse.Player.CorpseConfirmer = this;
-
-                        int credits = playerCorpse.Player.Credits;
-
-                        if (credits > 0)
-                        {
-                            Credits += credits;
-                            playerCorpse.Player.Credits = 0;
-                            playerCorpse.Player.CorpseCredits = credits;
-                        }
-
-                        RPCs.ClientConfirmPlayer(this, playerCorpse, playerCorpse.Player, playerCorpse.Player.Role.Name, playerCorpse.Player.Team.Name, playerCorpse.GetConfirmationData(), playerCorpse.KillerWeapon, playerCorpse.Perks);
-                    }
-                }
-
-                if (Input.Down(InputButton.Use) && playerCorpse.IsIdentified)
-                {
-                    ClientEnableInspectMenu(playerCorpse);
-                }
-            }
         }
 
         public static void ClientEnableInspectMenu(PlayerCorpse playerCorpse)

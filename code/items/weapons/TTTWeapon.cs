@@ -20,7 +20,7 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
+    public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem, ITTTUse
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
@@ -389,5 +389,15 @@ namespace TTTReborn.Items
         }
 
         public virtual bool CanDrop() => true;
+
+        public void StopUsing(TTTPlayer player)
+        {
+
+        }
+
+        public void TickUse(TTTPlayer player)
+        {
+
+        }
     }
 }

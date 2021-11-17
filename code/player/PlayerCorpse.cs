@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globalization;
+using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.UI;
 
 namespace TTTReborn.Player
 {
-    public partial class PlayerCorpse : ModelEntity, IEntityHint
+    public partial class PlayerCorpse : ModelEntity, IEntityHint, ITTTUse
     {
         public TTTPlayer Player { get; set; }
         public List<Particles> Ropes = new();
@@ -145,6 +146,57 @@ namespace TTTReborn.Player
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
             return new Hint(TextOnTick);
+        }
+
+        public void TickUse(TTTPlayer player)
+        {
+            if (IsClient && !Input.Down(InputButton.Use))
+            {
+                if (InspectMenu.Instance != null)
+                {
+                    InspectMenu.Instance.Enabled = false;
+                }
+
+                return;
+            }
+
+            if (this == null)
+            {
+                return;
+            }
+
+            if (IsServer && !this.IsIdentified && LifeState == LifeState.Alive && Input.Down(InputButton.Use))
+            {
+                this.IsIdentified = true;
+
+                // TODO: Handle player disconnects.
+                if (this.Player != null && this.Player.IsValid())
+                {
+                    this.Player.IsConfirmed = true;
+                    this.Player.CorpseConfirmer = player;
+
+                    int credits = this.Player.Credits;
+
+                    if (credits > 0)
+                    {
+                        player.Credits += credits;
+                        this.Player.Credits = 0;
+                        this.Player.CorpseCredits = credits;
+                    }
+
+                    RPCs.ClientConfirmPlayer(player, this, this.Player, this.Player.Role.Name, this.Player.Team.Name, this.GetConfirmationData(), this.KillerWeapon, this.Perks);
+                }
+            }
+
+            if (Input.Down(InputButton.Use) && this.IsIdentified)
+            {
+                TTTPlayer.ClientEnableInspectMenu(this);
+            }
+        }
+
+        public void StopUsing(TTTPlayer player)
+        {
+
         }
     }
 }
