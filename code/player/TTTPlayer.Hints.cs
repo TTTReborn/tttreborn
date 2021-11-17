@@ -62,7 +62,7 @@ namespace TTTReborn.Player
         {
             if (IsClient)
             {
-                if (_currentHint is ModelEntity model)
+                if (_currentHint != null && _currentHint is ModelEntity model)
                 {
                     model.GlowActive = false;
                 }
