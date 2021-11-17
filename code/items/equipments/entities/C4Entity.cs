@@ -15,7 +15,7 @@ namespace TTTReborn.Items
     [Library("entity_c4")]
     [Precached("models/entities/c4.vmdl", "particles/explosion_fireball.vpcf")]
     [Hammer.Skip]
-    public partial class C4Entity : Prop, IUse, IEntityHint
+    public partial class C4Entity : Prop, IEntityHint
     {
         public struct C4Preset
         {
@@ -93,27 +93,6 @@ namespace TTTReborn.Items
             SetModel(ModelPath);
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         }
-
-        public bool OnUse(Entity user)
-        {
-            if (user is not TTTPlayer player)
-            {
-                return false;
-            }
-
-            if (IsArmed)
-            {
-                TryDisarm();
-            }
-            else
-            {
-                ClientOpenC4Menu(To.Single(player), this);
-            }
-
-            return false;
-        }
-
-        public bool IsUsable(Entity user) => user is TTTPlayer;
 
         public override void Simulate(Client cl)
         {
@@ -330,7 +309,27 @@ namespace TTTReborn.Items
 
         public void Tick(TTTPlayer player)
         {
+            if (IsClient)
+            {
+                return;
+            }
 
+            if (player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (IsArmed)
+                {
+                    TryDisarm();
+                }
+                else
+                {
+                    ClientOpenC4Menu(To.Single(player), this);
+                }
+            }
         }
 
         public void OnIsArmedChanged(bool oldValue, bool newValue)

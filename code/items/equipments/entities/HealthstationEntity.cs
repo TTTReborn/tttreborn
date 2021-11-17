@@ -10,7 +10,7 @@ namespace TTTReborn.Items
 {
     [Library("entity_healthstation")]
     [Precached("models/entities/healthstation.vmdl")]
-    public partial class HealthstationEntity : Prop, IUse, IEntityHint
+    public partial class HealthstationEntity : Prop, IEntityHint
     {
         [Net]
         public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
@@ -51,18 +51,6 @@ namespace TTTReborn.Items
             return false;
         }
 
-        public bool OnUse(Entity user)
-        {
-            if (user is TTTPlayer player && NextHeal <= 0)
-            {
-                NextHeal = HealPlayer(player) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
-            }
-
-            return true;
-        }
-
-        public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
-
         public TranslationData TextOnTick => new("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
 
         public bool CanHint(TTTPlayer client)
@@ -77,7 +65,18 @@ namespace TTTReborn.Items
 
         public void Tick(TTTPlayer player)
         {
+            if (player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
 
+            using (Prediction.Off())
+            {
+                if (player.Health < player.MaxHealth && NextHeal <= 0)
+                {
+                    NextHeal = HealPlayer(player) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
+                }
+            }
         }
     }
 }

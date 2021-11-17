@@ -150,47 +150,51 @@ namespace TTTReborn.Player
 
         public void Tick(TTTPlayer player)
         {
-            if (IsClient && !Input.Down(InputButton.Use))
+            using (Prediction.Off())
             {
-                if (InspectMenu.Instance != null)
+
+                if (IsClient && !Input.Down(InputButton.Use))
                 {
-                    InspectMenu.Instance.Enabled = false;
-                }
-
-                return;
-            }
-
-            if (this == null)
-            {
-                return;
-            }
-
-            if (IsServer && !this.IsIdentified && player.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
-            {
-                this.IsIdentified = true;
-
-                // TODO: Handle player disconnects.
-                if (this.Player != null && this.Player.IsValid())
-                {
-                    this.Player.IsConfirmed = true;
-                    this.Player.CorpseConfirmer = player;
-
-                    int credits = this.Player.Credits;
-
-                    if (credits > 0)
+                    if (InspectMenu.Instance != null)
                     {
-                        player.Credits += credits;
-                        this.Player.Credits = 0;
-                        this.Player.CorpseCredits = credits;
+                        InspectMenu.Instance.Enabled = false;
                     }
 
-                    RPCs.ClientConfirmPlayer(player, this, this.Player, this.Player.Role.Name, this.Player.Team.Name, this.GetConfirmationData(), this.KillerWeapon, this.Perks);
+                    return;
                 }
-            }
 
-            if (Input.Down(InputButton.Use) && this.IsIdentified)
-            {
-                TTTPlayer.ClientEnableInspectMenu(this);
+                if (this == null)
+                {
+                    return;
+                }
+
+                if (IsServer && !this.IsIdentified && player.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
+                {
+                    this.IsIdentified = true;
+
+                    // TODO: Handle player disconnects.
+                    if (this.Player != null && this.Player.IsValid())
+                    {
+                        this.Player.IsConfirmed = true;
+                        this.Player.CorpseConfirmer = player;
+
+                        int credits = this.Player.Credits;
+
+                        if (credits > 0)
+                        {
+                            player.Credits += credits;
+                            this.Player.Credits = 0;
+                            this.Player.CorpseCredits = credits;
+                        }
+
+                        RPCs.ClientConfirmPlayer(player, this, this.Player, this.Player.Role.Name, this.Player.Team.Name, this.GetConfirmationData(), this.KillerWeapon, this.Perks);
+                    }
+                }
+
+                if (Input.Down(InputButton.Use) && this.IsIdentified)
+                {
+                    TTTPlayer.ClientEnableInspectMenu(this);
+                }
             }
         }
     }
