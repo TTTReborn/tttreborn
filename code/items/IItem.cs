@@ -37,7 +37,7 @@ namespace TTTReborn.Items
 
         void OnPurchase(TTTPlayer player)
         {
-            player.Inventory.TryAdd(this);
+            player.Inventory.TryAdd(this, true, false);
         }
     }
 }

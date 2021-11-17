@@ -423,7 +423,7 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                player.Inventory.TryAdd(this, false);
+                player.Inventory.TryAdd(this);
             }
         }
     }
