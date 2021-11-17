@@ -222,7 +222,6 @@ namespace TTTReborn.Player
             if (other is PickupTrigger)
             {
                 StartTouch(other.Parent);
-                return;
             }
         }
 

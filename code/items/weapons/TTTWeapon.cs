@@ -3,8 +3,10 @@ using System;
 using Sandbox;
 using Sandbox.ScreenShake;
 
+using TTTReborn.Globalization;
 using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
@@ -390,14 +392,39 @@ namespace TTTReborn.Items
 
         public virtual bool CanDrop() => true;
 
-        public void StopUsing(TTTPlayer player)
-        {
+        public TranslationData TextOnTick => new("WIP", new object[] { });
 
+        public bool CanHint(TTTPlayer client)
+        {
+            return true;
         }
 
-        public void TickUse(TTTPlayer player)
+        public EntityHintPanel DisplayHint(TTTPlayer client)
         {
+            return new Hint(TextOnTick);
+        }
 
+        public void Tick(TTTPlayer player)
+        {
+            if (IsClient)
+            {
+                return;
+            }
+
+            if (player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (!Input.Down(InputButton.Use))
+                {
+                    return;
+                }
+
+                player.Inventory.TryAdd(this, false);
+            }
         }
     }
 }

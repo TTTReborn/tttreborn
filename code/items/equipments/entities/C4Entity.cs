@@ -321,6 +321,11 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
+                if (!Input.Down(InputButton.Use))
+                {
+                    return;
+                }
+
                 if (IsArmed)
                 {
                     TryDisarm();

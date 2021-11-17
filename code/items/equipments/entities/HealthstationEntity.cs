@@ -65,6 +65,11 @@ namespace TTTReborn.Items
 
         public void Tick(TTTPlayer player)
         {
+            if (IsClient)
+            {
+                return;
+            }
+
             if (player.LifeState != LifeState.Alive)
             {
                 return;
@@ -72,6 +77,11 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
+                if (!Input.Down(InputButton.Use))
+                {
+                    return;
+                }
+
                 if (player.Health < player.MaxHealth && NextHeal <= 0)
                 {
                     NextHeal = HealPlayer(player) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
