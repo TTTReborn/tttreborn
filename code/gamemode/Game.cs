@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 
 using Sandbox;
 
 using TTTReborn.Events;
 using TTTReborn.Globalization;
-using TTTReborn.Globals;
 using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
+using TTTReborn.Settings;
 
 namespace TTTReborn.Gamemode
 {
