@@ -148,7 +148,7 @@ namespace TTTReborn.Player
             return new Hint(TextOnTick);
         }
 
-        public void Tick(TTTPlayer player)
+        public void Tick(TTTPlayer confirmingPlayer)
         {
             using (Prediction.Off())
             {
@@ -163,35 +163,30 @@ namespace TTTReborn.Player
                     return;
                 }
 
-                if (this == null)
+                if (IsServer && !IsIdentified && confirmingPlayer.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
                 {
-                    return;
-                }
-
-                if (IsServer && !this.IsIdentified && player.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
-                {
-                    this.IsIdentified = true;
+                    IsIdentified = true;
 
                     // TODO: Handle player disconnects.
-                    if (this.Player != null && this.Player.IsValid())
+                    if (Player != null && Player.IsValid())
                     {
-                        this.Player.IsConfirmed = true;
-                        this.Player.CorpseConfirmer = player;
+                        Player.IsConfirmed = true;
+                        Player.CorpseConfirmer = confirmingPlayer;
 
-                        int credits = this.Player.Credits;
+                        int credits = Player.Credits;
 
                         if (credits > 0)
                         {
-                            player.Credits += credits;
-                            this.Player.Credits = 0;
-                            this.Player.CorpseCredits = credits;
+                            Player.Credits += credits;
+                            .Player.Credits = 0;
+                            Player.CorpseCredits = credits;
                         }
 
-                        RPCs.ClientConfirmPlayer(player, this, this.Player, this.Player.Role.Name, this.Player.Team.Name, this.GetConfirmationData(), this.KillerWeapon, this.Perks);
+                        RPCs.ClientConfirmPlayer(confirmingPlayer, this, Player, Player.Role.Name, Player.Team.Name, GetConfirmationData(), KillerWeapon, Perks);
                     }
                 }
 
-                if (Input.Down(InputButton.Use) && this.IsIdentified)
+                if (Input.Down(InputButton.Use) && IsIdentified)
                 {
                     TTTPlayer.ClientEnableInspectMenu(this);
                 }
