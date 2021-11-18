@@ -80,20 +80,20 @@ namespace TTTReborn.Rounds
             // Randomize between SMG and shotgun
             if (Utils.RNG.Next() % 2 == 0)
             {
-                if (player.Inventory.TryAdd(new Shotgun(), true, false))
+                if (player.Inventory.TryAdd(new Shotgun(), deleteIfFails: true, makeActive: false))
                 {
                     player.Inventory.Ammo.Give("buckshot", 16);
                 }
             }
             else
             {
-                if (player.Inventory.TryAdd(new SMG(), true, false))
+                if (player.Inventory.TryAdd(new SMG(), deleteIfFails: true, makeActive: false))
                 {
                     player.Inventory.Ammo.Give("smg", 60);
                 }
             }
 
-            if (player.Inventory.TryAdd(new Pistol(), true, false))
+            if (player.Inventory.TryAdd(new Pistol(), deleteIfFails: true, makeActive: false))
             {
                 player.Inventory.Ammo.Give("pistol", 30);
             }

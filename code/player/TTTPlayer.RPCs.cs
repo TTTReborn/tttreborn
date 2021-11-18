@@ -37,7 +37,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Inventory.TryAdd(perk, true, false);
+            Inventory.TryAdd(perk, deleteIfFails: true, makeActive: false);
         }
 
         [ClientRpc]

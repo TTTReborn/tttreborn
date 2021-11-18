@@ -36,8 +36,6 @@ namespace TTTReborn.Player
 
         private DamageInfo _lastDamageInfo;
 
-        private const float DEFAULT_USE_DISTANCE = 80f;
-
         public TTTPlayer()
         {
             Inventory = new Inventory(this);

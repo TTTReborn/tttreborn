@@ -77,14 +77,12 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                if (!Input.Down(InputButton.Use))
+                if (Input.Down(InputButton.Use))
                 {
-                    return;
-                }
-
-                if (player.Health < player.MaxHealth && NextHeal <= 0)
-                {
-                    NextHeal = HealPlayer(player) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
+                    if (player.Health < player.MaxHealth && NextHeal <= 0)
+                    {
+                        NextHeal = HealPlayer(player) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
+                    }
                 }
             }
         }

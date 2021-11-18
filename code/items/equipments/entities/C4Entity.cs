@@ -321,18 +321,16 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                if (!Input.Down(InputButton.Use))
+                if (Input.Down(InputButton.Use))
                 {
-                    return;
-                }
-
-                if (IsArmed)
-                {
-                    TryDisarm();
-                }
-                else
-                {
-                    ClientOpenC4Menu(To.Single(player), this);
+                    if (IsArmed)
+                    {
+                        TryDisarm();
+                    }
+                    else
+                    {
+                        ClientOpenC4Menu(To.Single(player), this);
+                    }
                 }
             }
         }

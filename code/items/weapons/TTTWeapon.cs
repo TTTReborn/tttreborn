@@ -392,7 +392,7 @@ namespace TTTReborn.Items
 
         public virtual bool CanDrop() => true;
 
-        public TranslationData TextOnTick => new("WIP", new object[] { });
+        public TranslationData TextOnTick => new("WEAPON_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), LibraryName });
 
         public bool CanHint(TTTPlayer client)
         {
@@ -418,12 +418,10 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                if (!Input.Down(InputButton.Use))
+                if (Input.Pressed(InputButton.Use))
                 {
-                    return;
+                    player.Inventory.TryAdd(this, deleteIfFails: false, makeActive: true);
                 }
-
-                player.Inventory.TryAdd(this);
             }
         }
     }

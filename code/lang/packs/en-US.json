@@ -162,6 +162,8 @@
     "EQUIPMENT_HEALTHSTATION": "HealthStation",
     "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
 
+    "WEAPON_PICKUP": "Press {0} to pickup {1}",
+
     "HEALTH_STATION": "Hold {0} to use the HealthStation ({1} charges)",
 
     "C4_ARM": "Hold {0} to arm the C4",
