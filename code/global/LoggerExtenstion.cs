@@ -1,14 +1,17 @@
 using Sandbox;
 
-public static class LoggerExtenstion
+namespace TTTReborn.Globals
 {
-    public static void Debug(this Logger log, object obj = null)
+    public static class LoggerExtenstion
     {
-        if (!TTTReborn.Gamemode.Game.Instance.Debug)
+        public static void Debug(this Logger log, object obj = null)
         {
-            return;
-        }
+            if (!Gamemode.Game.Instance.Debug)
+            {
+                return;
+            }
 
-        log.Info($"[DEBUG] {obj}");
+            log.Info($"[DEBUG] {obj}");
+        }
     }
 }

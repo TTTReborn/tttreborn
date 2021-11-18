@@ -4,8 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
-
 namespace TTTReborn.UI
 {
     public class MapSelectionMenu : Panel
