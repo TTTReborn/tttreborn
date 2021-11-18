@@ -127,19 +127,19 @@ namespace TTTReborn.UI
 
         public void InspectCorpse(PlayerCorpse playerCorpse)
         {
-            if (playerCorpse?.Player == null)
+            if (playerCorpse?.DeadPlayer == null)
             {
                 return;
             }
 
             _playerCorpse = playerCorpse;
 
-            _avatarImage.SetTexture($"avatar:{_playerCorpse.Player?.Client.PlayerId}");
+            _avatarImage.SetTexture($"avatar:{_playerCorpse.DeadPlayer?.Client.PlayerId}");
 
-            _playerLabel.Text = _playerCorpse.Player?.Client.Name;
+            _playerLabel.Text = _playerCorpse.DeadPlayer?.Client.Name;
 
-            _roleLabel.SetTranslation(_playerCorpse.Player?.Role.GetRoleTranslationKey("NAME"));
-            _roleLabel.Style.FontColor = _playerCorpse.Player?.Role.Color;
+            _roleLabel.SetTranslation(_playerCorpse.DeadPlayer?.Role.GetRoleTranslationKey("NAME"));
+            _roleLabel.Style.FontColor = _playerCorpse.DeadPlayer?.Role.Color;
 
             SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
 

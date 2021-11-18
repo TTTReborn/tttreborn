@@ -11,7 +11,7 @@ namespace TTTReborn.Player
 {
     public partial class PlayerCorpse : ModelEntity, IEntityHint
     {
-        public TTTPlayer Player { get; set; }
+        public TTTPlayer DeadPlayer { get; set; }
         public List<Particles> Ropes = new();
         public List<PhysicsJoint> RopeSprings = new();
         public string KillerWeapon { get; set; }
@@ -36,7 +36,7 @@ namespace TTTReborn.Player
 
         public void CopyFrom(TTTPlayer player)
         {
-            Player = player;
+            DeadPlayer = player;
 
             SetModel(player.GetModelName());
             TakeDecalsFrom(player);
@@ -168,21 +168,21 @@ namespace TTTReborn.Player
                     IsIdentified = true;
 
                     // TODO: Handle player disconnects.
-                    if (Player != null && Player.IsValid())
+                    if (DeadPlayer != null && DeadPlayer.IsValid())
                     {
-                        Player.IsConfirmed = true;
-                        Player.CorpseConfirmer = confirmingPlayer;
+                        DeadPlayer.IsConfirmed = true;
+                        DeadPlayer.CorpseConfirmer = confirmingPlayer;
 
-                        int credits = Player.Credits;
+                        int credits = DeadPlayer.Credits;
 
                         if (credits > 0)
                         {
-                            Player.Credits += credits;
-                            .Player.Credits = 0;
-                            Player.CorpseCredits = credits;
+                            DeadPlayer.Credits += credits;
+                            DeadPlayer.Credits = 0;
+                            DeadPlayer.CorpseCredits = credits;
                         }
 
-                        RPCs.ClientConfirmPlayer(confirmingPlayer, this, Player, Player.Role.Name, Player.Team.Name, GetConfirmationData(), KillerWeapon, Perks);
+                        RPCs.ClientConfirmPlayer(confirmingPlayer, this, DeadPlayer, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks);
                     }
                 }
 
