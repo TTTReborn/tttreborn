@@ -9,7 +9,6 @@ using TTTReborn.Globals;
 using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
-using TTTReborn.Settings;
 
 namespace TTTReborn.Gamemode
 {

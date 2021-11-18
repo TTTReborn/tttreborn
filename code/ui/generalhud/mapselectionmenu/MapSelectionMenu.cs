@@ -4,8 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
-
 namespace TTTReborn.UI
 {
     public class MapSelectionMenu : Panel
@@ -119,7 +117,7 @@ namespace TTTReborn.UI
             IDictionary<long, string> nextMapVotes = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
 
             nextMapVotes[callerPlayerId] = name;
-            Extensions.Log.Debug($"{callerPlayerId} voting for map {name}");
+            Log.Debug($"{callerPlayerId} voting for map {name}");
         }
     }
 }

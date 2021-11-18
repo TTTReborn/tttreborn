@@ -36,7 +36,7 @@ namespace TTTReborn.UI.VisualProgramming
             }
             catch (Exception e)
             {
-                Sandbox.Log.Error(e);
+                Log.Error(e);
             }
         }
     }
