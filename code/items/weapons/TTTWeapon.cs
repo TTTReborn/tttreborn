@@ -392,7 +392,9 @@ namespace TTTReborn.Items
 
         public virtual bool CanDrop() => true;
 
-        public TranslationData TextOnTick => new("WEAPON_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), LibraryName });
+        public float HintDistance => 80f;
+
+        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 
         public bool CanHint(TTTPlayer client)
         {

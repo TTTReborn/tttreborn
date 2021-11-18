@@ -64,8 +64,6 @@ namespace TTTReborn.Items
 
         public override string ModelPath => "models/entities/c4.vmdl";
 
-        public float HintDistance => 80f;
-
         [Net]
         public int AttachedBone { get; set; } = -1; // Defaults to -1, which indicates no bone attached as this value will not always be set.
 
@@ -294,6 +292,8 @@ namespace TTTReborn.Items
                 }
             }
         }
+
+        public float HintDistance => 80f;
 
         public TranslationData TextOnTick => new(IsArmed ? "C4_DEFUSE" : "C4_ARM", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 

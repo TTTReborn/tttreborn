@@ -15,8 +15,6 @@ namespace TTTReborn.Items
         [Net]
         public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
 
-        public float HintDistance => 80f;
-
         public override string ModelPath => "models/entities/healthstation.vmdl";
 
         private RealTimeUntil NextHeal = 0;
@@ -50,6 +48,8 @@ namespace TTTReborn.Items
 
             return false;
         }
+
+        public float HintDistance => 80f;
 
         public TranslationData TextOnTick => new("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
 

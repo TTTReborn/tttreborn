@@ -162,7 +162,7 @@
     "EQUIPMENT_HEALTHSTATION": "HealthStation",
     "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
 
-    "WEAPON_PICKUP": "Press {0} to pickup {1}",
+    "GENERIC_PICKUP": "Press {0} to pickup",
 
     "HEALTH_STATION": "Hold {0} to use the HealthStation ({1} charges)",
 
