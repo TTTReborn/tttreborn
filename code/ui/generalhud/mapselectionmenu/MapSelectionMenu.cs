@@ -119,7 +119,7 @@ namespace TTTReborn.UI
             IDictionary<long, string> nextMapVotes = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
 
             nextMapVotes[callerPlayerId] = name;
-            Extensions.Log.Debug($"{callerPlayerId} voting for map {name}");
+            Log.Debug($"{callerPlayerId} voting for map {name}");
         }
     }
 }

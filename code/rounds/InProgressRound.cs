@@ -75,7 +75,7 @@ namespace TTTReborn.Rounds
 
         private static void GiveFixedLoadout(TTTPlayer player)
         {
-            Extensions.Log.Debug($"Added Fixed Loadout to {player.Client.Name}");
+            Log.Debug($"Added Fixed Loadout to {player.Client.Name}");
 
             // Randomize between SMG and shotgun
             if (Utils.RNG.Next() % 2 == 0)

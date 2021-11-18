@@ -144,7 +144,7 @@ namespace TTTReborn.Rounds
         {
             bool handsAdded = player.Inventory.TryAdd(new Hands(), true);
 
-            Extensions.Log.Debug($"Attempting to add Hands to {player.Client.Name} {handsAdded}");
+            Log.Debug($"Attempting to add Hands to {player.Client.Name} {handsAdded}");
 
             base.OnPlayerSpawn(player);
         }
