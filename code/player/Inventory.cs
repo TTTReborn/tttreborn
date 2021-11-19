@@ -34,7 +34,7 @@ namespace TTTReborn.Player
                 }
             }
 
-            RPCs.ClientClearInventory(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as TTTPlayer)));
+            RPCs.ClientClearInventory(To.Single(Owner));
 
             Perks.Clear();
             Ammo.Clear();
