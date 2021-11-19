@@ -88,8 +88,6 @@ namespace TTTReborn.UI
 
             foreach (ShopItemData itemData in shop.Items)
             {
-                _selectedItemData ??= itemData;
-
                 AddItem(itemData);
             }
         }
@@ -123,6 +121,9 @@ namespace TTTReborn.UI
                 if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
                 {
                     TTTPlayer.RequestItem(item.ItemData?.Name);
+
+                    // The item was purchased, let's deselect it from the UI.
+                    _selectedItemData = null;
                 }
 
                 Update();
