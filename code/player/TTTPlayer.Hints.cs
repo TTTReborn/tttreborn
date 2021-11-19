@@ -50,6 +50,7 @@ namespace TTTReborn.Player
                     model.GlowColor = Color.White;
                     model.GlowActive = true;
                 }
+
                 _currentHintPanel = hint.DisplayHint(this);
                 _currentHintPanel.Parent = HintDisplay.Instance;
                 _currentHintPanel.Enabled = true;

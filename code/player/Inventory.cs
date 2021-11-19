@@ -94,6 +94,7 @@ namespace TTTReborn.Player
                 {
                     item.Delete();
                 }
+
                 return false;
             }
 

@@ -152,7 +152,6 @@ namespace TTTReborn.Player
         {
             using (Prediction.Off())
             {
-
                 if (IsClient && !Input.Down(InputButton.Use))
                 {
                     if (InspectMenu.Instance != null)
@@ -177,7 +176,7 @@ namespace TTTReborn.Player
 
                         if (credits > 0)
                         {
-                            DeadPlayer.Credits += credits;
+                            confirmingPlayer.Credits += credits;
                             DeadPlayer.Credits = 0;
                             DeadPlayer.CorpseCredits = credits;
                         }
