@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Globals
 {
-    public static class LoggerExtenstion
+    public static class LoggerExtension
     {
         public static void Debug(this Logger log, object obj = null)
         {
