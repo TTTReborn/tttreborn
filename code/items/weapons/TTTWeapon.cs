@@ -13,7 +13,7 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class WeaponAttribute : CarriableAttribute
     {
-        public string AmmoType = "pistol";
+        public string AmmoType = "ammo_pistol";
 
         public WeaponAttribute() : base()
         {
@@ -26,7 +26,7 @@ namespace TTTReborn.Items
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
-        public string AmmoType { get; } = "pistol";
+        public string AmmoType { get; } = "ammo_pistol";
 
         public virtual Type AmmoEntity => null;
         public virtual int ClipSize => 16;
@@ -394,7 +394,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
+        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(LibraryName.ToUpper()) });
 
         public bool CanHint(TTTPlayer client)
         {

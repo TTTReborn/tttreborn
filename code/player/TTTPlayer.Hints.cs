@@ -45,7 +45,7 @@ namespace TTTReborn.Player
 
             if (IsClient)
             {
-                if (hint.ShowGlow && hint is ModelEntity model)
+                if (hint.ShowGlow && hint is ModelEntity model && model.IsValid())
                 {
                     model.GlowColor = Color.White;
                     model.GlowActive = true;
@@ -66,6 +66,7 @@ namespace TTTReborn.Player
                 {
                     model.GlowActive = false;
                 }
+
                 _currentHintPanel?.Delete(true);
                 _currentHintPanel = null;
             }

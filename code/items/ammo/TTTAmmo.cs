@@ -74,7 +74,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
+        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(AmmoName.ToUpper()) });
 
         public bool CanHint(TTTPlayer client)
         {
@@ -115,7 +115,7 @@ namespace TTTReborn.Items
 
                 int playerAmount = inventory.Ammo.Count(ammoType);
 
-                if (!(Max >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25))))
+                if (Max < playerAmount + Math.Ceiling(CurrentAmmo * 0.25))
                 {
                     return;
                 }
