@@ -70,6 +70,7 @@ namespace TTTReborn.Player
                 _currentHintPanel?.Delete(true);
                 _currentHintPanel = null;
             }
+
             _currentHint = null;
         }
     }
