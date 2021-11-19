@@ -44,8 +44,6 @@ namespace TTTReborn.Player
 
         public override bool Add(Entity entity, bool makeActive = false)
         {
-            TTTPlayer player = Owner as TTTPlayer;
-
             if (entity is ICarriableItem carriable)
             {
                 if (IsCarryingType(entity.GetType()) || !HasEmptySlot(carriable.SlotType))
@@ -53,7 +51,7 @@ namespace TTTReborn.Player
                     return false;
                 }
 
-                RPCs.ClientOnPlayerCarriableItemPickup(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == player)), entity);
+                RPCs.ClientOnPlayerCarriableItemPickup(To.Single(Owner), entity);
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
