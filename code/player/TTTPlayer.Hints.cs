@@ -47,7 +47,7 @@ namespace TTTReborn.Player
             {
                 if (hint.ShowGlow && hint is ModelEntity model && model.IsValid())
                 {
-                    model.GlowColor = Color.White;
+                    model.GlowColor = Color.White; // TODO: Let's let people change this in their settings.
                     model.GlowActive = true;
                 }
 
