@@ -82,20 +82,20 @@ namespace TTTReborn.Rounds
             {
                 if (player.Inventory.TryAdd(new Shotgun(), false))
                 {
-                    player.Inventory.Ammo.Give(AmmoTypes.Buckshot, 16);
+                    player.Inventory.Ammo.Give(AmmoType.Buckshot, 16);
                 }
             }
             else
             {
                 if (player.Inventory.TryAdd(new SMG(), false))
                 {
-                    player.Inventory.Ammo.Give(AmmoTypes.SMG, 60);
+                    player.Inventory.Ammo.Give(AmmoType.SMG, 60);
                 }
             }
 
             if (player.Inventory.TryAdd(new Pistol(), false))
             {
-                player.Inventory.Ammo.Give(AmmoTypes.Pistol, 30);
+                player.Inventory.Ammo.Give(AmmoType.Pistol, 30);
             }
         }
 

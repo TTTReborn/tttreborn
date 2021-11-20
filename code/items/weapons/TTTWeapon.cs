@@ -11,7 +11,7 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class WeaponAttribute : CarriableAttribute
     {
-        public AmmoTypes AmmoType = AmmoTypes.Pistol;
+        public AmmoType AmmoType = AmmoType.Pistol;
 
         public WeaponAttribute() : base()
         {
@@ -24,7 +24,7 @@ namespace TTTReborn.Items
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
-        public AmmoTypes AmmoType { get; } = AmmoTypes.Pistol;
+        public AmmoType AmmoType { get; } = AmmoType.Pistol;
 
         public virtual Type AmmoEntity => null;
         public virtual int ClipSize => 16;

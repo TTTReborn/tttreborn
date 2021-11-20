@@ -9,7 +9,7 @@ namespace TTTReborn.Player
 {
     public partial class AmmoInventory
     {
-        private Dictionary<AmmoTypes, int> AmmoList { get; } = new();
+        private Dictionary<AmmoType, int> AmmoList { get; } = new();
         private readonly TTTPlayer _owner;
 
         public AmmoInventory(TTTPlayer owner)
@@ -17,7 +17,7 @@ namespace TTTReborn.Player
             _owner = owner;
         }
 
-        public int Count(AmmoTypes ammoType)
+        public int Count(AmmoType ammoType)
         {
             if (AmmoList == null || !AmmoList.ContainsKey(ammoType))
             {
@@ -27,7 +27,7 @@ namespace TTTReborn.Player
             return AmmoList[ammoType];
         }
 
-        public bool Set(AmmoTypes ammoType, int amount)
+        public bool Set(AmmoType ammoType, int amount)
         {
             if (AmmoList == null)
             {
@@ -50,7 +50,7 @@ namespace TTTReborn.Player
             return true;
         }
 
-        public bool Give(AmmoTypes ammoType, int amount)
+        public bool Give(AmmoType ammoType, int amount)
         {
             if (AmmoList == null)
             {
@@ -62,7 +62,7 @@ namespace TTTReborn.Player
             return true;
         }
 
-        public int Take(AmmoTypes ammoType, int amount)
+        public int Take(AmmoType ammoType, int amount)
         {
             if (AmmoList == null)
             {

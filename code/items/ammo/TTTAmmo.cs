@@ -6,7 +6,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    public enum AmmoTypes
+    public enum AmmoType
     {
         Pistol,
         SMG,
@@ -19,7 +19,7 @@ namespace TTTReborn.Items
         /// <summary>
         /// The ammo type to use, should match TTTWeapon.AmmoType.
         /// </summary>
-        public virtual AmmoTypes AmmoType { get; set; }
+        public virtual AmmoType AmmoType { get; set; }
 
         /// <summary>
         /// Amount of Ammo within Entity.
