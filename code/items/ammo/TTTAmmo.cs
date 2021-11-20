@@ -12,9 +12,9 @@ namespace TTTReborn.Items
     public abstract partial class TTTAmmo : Prop, IEntityHint
     {
         /// <summary>
-        /// String definition of ammo type, should match TTTWeapon.AmmoType
+        /// The library name of the ammo.
         /// </summary>
-        public virtual string AmmoName { get; set; }
+        public string LibraryName { get; set; }
 
         /// <summary>
         /// Amount of Ammo within Entity.
@@ -36,6 +36,11 @@ namespace TTTReborn.Items
         protected Output OnPickup { get; set; }
 
         public override string ModelPath => "models/ammo/ammo_buckshot.vmdl";
+
+        public TTTAmmo() : base()
+        {
+            LibraryName = Utils.GetLibraryName(GetType());
+        }
 
         public override void Spawn()
         {
@@ -74,7 +79,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(AmmoName.ToUpper()) });
+        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(LibraryName.ToUpper()) });
 
         public bool CanHint(TTTPlayer client)
         {
@@ -105,7 +110,7 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                string ammoType = AmmoName.ToLower();
+                string ammoType = LibraryName.ToLower();
                 Inventory inventory = player.Inventory;
 
                 if (!inventory.GetAmmoTypes().Contains(ammoType))
