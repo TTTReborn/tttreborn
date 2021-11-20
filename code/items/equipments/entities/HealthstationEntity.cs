@@ -10,12 +10,10 @@ namespace TTTReborn.Items
 {
     [Library("entity_healthstation")]
     [Precached("models/entities/healthstation.vmdl")]
-    public partial class HealthstationEntity : Prop, IUse, IEntityHint
+    public partial class HealthstationEntity : Prop, IEntityHint
     {
         [Net]
         public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
-
-        public float HintDistance => 80f;
 
         public override string ModelPath => "models/entities/healthstation.vmdl";
 
@@ -51,17 +49,7 @@ namespace TTTReborn.Items
             return false;
         }
 
-        public bool OnUse(Entity user)
-        {
-            if (user is TTTPlayer player && NextHeal <= 0)
-            {
-                NextHeal = HealPlayer(player) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
-            }
-
-            return true;
-        }
-
-        public bool IsUsable(Entity user) => (user is TTTPlayer player && player.Health < player.MaxHealth);
+        public float HintDistance => 80f;
 
         public TranslationData TextOnTick => new("HEALTH_STATION", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}" });
 
@@ -73,6 +61,30 @@ namespace TTTReborn.Items
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
             return new Hint(TextOnTick);
+        }
+
+        public void Tick(TTTPlayer player)
+        {
+            if (IsClient)
+            {
+                return;
+            }
+
+            if (player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (Input.Down(InputButton.Use))
+                {
+                    if (player.Health < player.MaxHealth && NextHeal <= 0)
+                    {
+                        NextHeal = HealPlayer(player) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
+                    }
+                }
+            }
         }
     }
 }

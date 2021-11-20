@@ -15,7 +15,7 @@ namespace TTTReborn.Items
     [Library("entity_c4")]
     [Precached("models/entities/c4.vmdl", "particles/explosion_fireball.vpcf")]
     [Hammer.Skip]
-    public partial class C4Entity : Prop, IUse, IEntityHint
+    public partial class C4Entity : Prop, IEntityHint
     {
         public struct C4Preset
         {
@@ -64,8 +64,6 @@ namespace TTTReborn.Items
 
         public override string ModelPath => "models/entities/c4.vmdl";
 
-        public float HintDistance => 80f;
-
         [Net]
         public int AttachedBone { get; set; } = -1; // Defaults to -1, which indicates no bone attached as this value will not always be set.
 
@@ -93,27 +91,6 @@ namespace TTTReborn.Items
             SetModel(ModelPath);
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         }
-
-        public bool OnUse(Entity user)
-        {
-            if (user is not TTTPlayer player)
-            {
-                return false;
-            }
-
-            if (IsArmed)
-            {
-                TryDisarm();
-            }
-            else
-            {
-                ClientOpenC4Menu(To.Single(player), this);
-            }
-
-            return false;
-        }
-
-        public bool IsUsable(Entity user) => user is TTTPlayer;
 
         public override void Simulate(Client cl)
         {
@@ -316,6 +293,8 @@ namespace TTTReborn.Items
             }
         }
 
+        public float HintDistance => 80f;
+
         public TranslationData TextOnTick => new(IsArmed ? "C4_DEFUSE" : "C4_ARM", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 
         public bool CanHint(TTTPlayer client)
@@ -326,6 +305,34 @@ namespace TTTReborn.Items
         public EntityHintPanel DisplayHint(TTTPlayer client)
         {
             return new Hint(TextOnTick);
+        }
+
+        public void Tick(TTTPlayer player)
+        {
+            if (IsClient)
+            {
+                return;
+            }
+
+            if (player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (Input.Pressed(InputButton.Use))
+                {
+                    if (IsArmed)
+                    {
+                        TryDisarm();
+                    }
+                    else
+                    {
+                        ClientOpenC4Menu(To.Single(player), this);
+                    }
+                }
+            }
         }
 
         public void OnIsArmedChanged(bool oldValue, bool newValue)

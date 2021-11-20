@@ -2,7 +2,9 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
@@ -14,8 +16,13 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract partial class TTTAmmo : Prop
+    public abstract partial class TTTAmmo : Prop, IEntityHint
     {
+        /// <summary>
+        /// The library name of the ammo.
+        /// </summary>
+        public string LibraryName { get; set; }
+
         /// <summary>
         /// The ammo type to use, should match TTTWeapon.AmmoType.
         /// </summary>
@@ -42,6 +49,11 @@ namespace TTTReborn.Items
 
         public override string ModelPath => "models/ammo/ammo_buckshot.vmdl";
 
+        public TTTAmmo() : base()
+        {
+            LibraryName = Utils.GetLibraryName(GetType());
+        }
+
         public override void Spawn()
         {
             base.Spawn();
@@ -55,40 +67,6 @@ namespace TTTReborn.Items
             CurrentAmmo = Amount;
 
             Tags.Add(IItem.ITEM_TAG);
-        }
-
-        public override void Touch(Entity other)
-        {
-            base.Touch(other);
-
-            if (!IsServer || other is not TTTPlayer player)
-            {
-                return;
-            }
-
-            Inventory inventory = player.Inventory;
-
-            if (!inventory.GetAmmoTypes().Contains(AmmoType))
-            {
-                return;
-            }
-
-            int playerAmount = inventory.Ammo.Count(AmmoType);
-
-            if (!(Max >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25))))
-            {
-                return;
-            }
-
-            int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
-            inventory.Ammo.Give(AmmoType, amountGiven);
-            CurrentAmmo -= amountGiven;
-            OnPickup.Fire(other);
-
-            if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
-            {
-                Delete();
-            }
         }
 
         public void SetCurrentAmmo(int ammo)
@@ -108,6 +86,65 @@ namespace TTTReborn.Items
             if (body.IsValid() && !info.Flags.HasFlag(DamageFlags.PhysicsImpact))
             {
                 body.ApplyImpulseAt(info.Position, info.Force * 100);
+            }
+        }
+
+        public float HintDistance => 80f;
+
+        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(LibraryName.ToUpper()) });
+
+        public bool CanHint(TTTPlayer client)
+        {
+            return true;
+        }
+
+        public EntityHintPanel DisplayHint(TTTPlayer client)
+        {
+            return new Hint(TextOnTick);
+        }
+
+        public void Tick(TTTPlayer player)
+        {
+            if (IsClient)
+            {
+                return;
+            }
+
+            if (player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (!Input.Pressed(InputButton.Use))
+                {
+                    return;
+                }
+
+                Inventory inventory = player.Inventory;
+
+                if (!inventory.GetAmmoTypes().Contains(AmmoType))
+                {
+                    return;
+                }
+
+                int playerAmount = inventory.Ammo.Count(AmmoType);
+
+                if (Max < playerAmount + Math.Ceiling(CurrentAmmo * 0.25))
+                {
+                    return;
+                }
+
+                int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
+                inventory.Ammo.Give(AmmoType, amountGiven);
+                CurrentAmmo -= amountGiven;
+                OnPickup.Fire(player);
+
+                if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
+                {
+                    Delete();
+                }
             }
         }
     }

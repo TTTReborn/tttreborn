@@ -92,7 +92,7 @@ namespace TTTReborn.Globals
 
             if (playerCorpse.IsValid())
             {
-                playerCorpse.Player = deadPlayer;
+                playerCorpse.DeadPlayer = deadPlayer;
                 playerCorpse.KillerWeapon = killerWeapon;
                 playerCorpse.Perks = perks;
 

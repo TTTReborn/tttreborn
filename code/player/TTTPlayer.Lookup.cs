@@ -1,7 +1,5 @@
 using Sandbox;
 
-using TTTReborn.UI;
-
 namespace TTTReborn.Player
 {
     partial class TTTPlayer

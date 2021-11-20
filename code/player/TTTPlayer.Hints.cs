@@ -14,42 +14,64 @@ namespace TTTReborn.Player
 
         private void TickEntityHints()
         {
-            if (Local.Pawn is not TTTPlayer player || player.Camera is ThirdPersonSpectateCamera)
+            if (Camera is ThirdPersonSpectateCamera)
             {
                 DeleteHint();
 
                 return;
             }
 
-            IEntityHint hint = player.IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
+            IEntityHint hint = IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
 
-            if (hint == null || !hint.CanHint(player))
+            if (hint == null || !hint.CanHint(this))
             {
                 DeleteHint();
-
                 return;
             }
 
             if (hint == _currentHint)
             {
-                _currentHintPanel.UpdateHintPanel(hint.TextOnTick);
+                hint.Tick(this);
+
+                if (IsClient)
+                {
+                    _currentHintPanel.UpdateHintPanel(hint.TextOnTick);
+                }
 
                 return;
             }
 
             DeleteHint();
 
-            _currentHintPanel = hint.DisplayHint(player);
-            _currentHintPanel.Parent = HintDisplay.Instance;
-            _currentHintPanel.Enabled = true;
+            if (IsClient)
+            {
+                if (hint.ShowGlow && hint is ModelEntity model && model.IsValid())
+                {
+                    model.GlowColor = Color.White; // TODO: Let's let people change this in their settings.
+                    model.GlowActive = true;
+                }
+
+                _currentHintPanel = hint.DisplayHint(this);
+                _currentHintPanel.Parent = HintDisplay.Instance;
+                _currentHintPanel.Enabled = true;
+            }
 
             _currentHint = hint;
         }
 
         private void DeleteHint()
         {
-            _currentHintPanel?.Delete(true);
-            _currentHintPanel = null;
+            if (IsClient)
+            {
+                if (_currentHint != null && _currentHint is ModelEntity model && model.IsValid())
+                {
+                    model.GlowActive = false;
+                }
+
+                _currentHintPanel?.Delete(true);
+                _currentHintPanel = null;
+            }
+
             _currentHint = null;
         }
     }
