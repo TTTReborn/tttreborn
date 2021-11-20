@@ -80,16 +80,20 @@ namespace TTTReborn.Player
         }
 
         /// <summary>
-        /// Tries to add an `TTTReborn.Items.IItem` to the inventory. If it fails, the given item is deleted
+        /// Tries to add an `TTTReborn.Items.IItem` to the inventory.
         /// </summary>
-        /// <param name="item">`TTTReborn.Items.IItem` that will be added to the inventory or get removed on fail</param>
-        /// <param name="makeActive"></param>
+        /// <param name="item">`TTTReborn.Items.IItem` that will be added to the inventory if conditions are met.</param>
+        /// <param name="deleteIfFails">Delete `TTTReborn.Items.IItem` if it fails to add to inventory.</param>
+        /// <param name="makeActive">Make `TTTReborn.Items.IItem` the active item in the inventory.</param>
         /// <returns></returns>
-        public bool TryAdd(IItem item, bool makeActive = false)
+        public bool TryAdd(IItem item, bool deleteIfFails = false, bool makeActive = false)
         {
             if (Owner.LifeState != LifeState.Alive || !Add(item, makeActive))
             {
-                item.Delete();
+                if (deleteIfFails)
+                {
+                    item.Delete();
+                }
 
                 return false;
             }

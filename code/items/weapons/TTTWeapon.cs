@@ -3,15 +3,17 @@ using System;
 using Sandbox;
 using Sandbox.ScreenShake;
 
+using TTTReborn.Globalization;
 using TTTReborn.Globals;
 using TTTReborn.Player;
+using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class WeaponAttribute : CarriableAttribute
     {
-        public string AmmoType = "pistol";
+        public string AmmoType = "ammo_pistol";
 
         public WeaponAttribute() : base()
         {
@@ -20,11 +22,11 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem
+    public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem, IEntityHint
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
-        public string AmmoType { get; } = "pistol";
+        public string AmmoType { get; } = "ammo_pistol";
 
         public virtual Type AmmoEntity => null;
         public virtual int ClipSize => 16;
@@ -389,5 +391,40 @@ namespace TTTReborn.Items
         }
 
         public virtual bool CanDrop() => true;
+
+        public float HintDistance => 80f;
+
+        public TranslationData TextOnTick => new("GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(LibraryName.ToUpper()) });
+
+        public bool CanHint(TTTPlayer client)
+        {
+            return true;
+        }
+
+        public EntityHintPanel DisplayHint(TTTPlayer client)
+        {
+            return new Hint(TextOnTick);
+        }
+
+        public void Tick(TTTPlayer player)
+        {
+            if (IsClient)
+            {
+                return;
+            }
+
+            if (player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (Input.Pressed(InputButton.Use))
+                {
+                    player.Inventory.TryAdd(this, deleteIfFails: false, makeActive: true);
+                }
+            }
+        }
     }
 }
