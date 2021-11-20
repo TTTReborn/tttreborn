@@ -6,13 +6,20 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
+    public enum AmmoTypes
+    {
+        Pistol,
+        SMG,
+        Buckshot,
+    }
+
     [Hammer.Skip]
     public abstract partial class TTTAmmo : Prop
     {
         /// <summary>
-        /// String definition of ammo type, should match TTTWeapon.AmmoType
+        /// The ammo type to use, should match TTTWeapon.AmmoType.
         /// </summary>
-        public virtual string AmmoName { get; set; }
+        public virtual AmmoTypes AmmoType { get; set; }
 
         /// <summary>
         /// Amount of Ammo within Entity.
@@ -59,15 +66,14 @@ namespace TTTReborn.Items
                 return;
             }
 
-            string ammoType = AmmoName.ToLower();
             Inventory inventory = player.Inventory;
 
-            if (!inventory.GetAmmoTypes().Contains(ammoType))
+            if (!inventory.GetAmmoTypes().Contains(AmmoType))
             {
                 return;
             }
 
-            int playerAmount = inventory.Ammo.Count(ammoType);
+            int playerAmount = inventory.Ammo.Count(AmmoType);
 
             if (!(Max >= (playerAmount + Math.Ceiling(CurrentAmmo * 0.25))))
             {
@@ -75,7 +81,7 @@ namespace TTTReborn.Items
             }
 
             int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
-            inventory.Ammo.Give(ammoType, amountGiven);
+            inventory.Ammo.Give(AmmoType, amountGiven);
             CurrentAmmo -= amountGiven;
             OnPickup.Fire(other);
 

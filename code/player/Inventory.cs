@@ -123,9 +123,9 @@ namespace TTTReborn.Player
             return List.Any(x => x.GetType() == t);
         }
 
-        public IList<string> GetAmmoTypes()
+        public IList<AmmoTypes> GetAmmoTypes()
         {
-            List<string> types = new();
+            List<AmmoTypes> types = new();
 
             foreach (Entity entity in List)
             {

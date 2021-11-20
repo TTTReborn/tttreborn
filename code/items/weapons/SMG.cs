@@ -5,7 +5,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Library("weapon_smg")]
-    [Weapon(SlotType = SlotType.Primary, AmmoType = "smg")]
+    [Weapon(SlotType = SlotType.Primary, AmmoType = AmmoTypes.SMG)]
     [Spawnable]
     [Buyable(Price = 100)]
     [Precached("weapons/rust_smg/v_rust_smg.vmdl", "weapons/rust_smg/rust_smg.vmdl", "particles/pistol_muzzleflash.vpcf", "particles/pistol_ejectbrass.vpcf")]

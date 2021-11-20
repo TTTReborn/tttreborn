@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Items;
+
 namespace TTTReborn.Player
 {
     public partial class AmmoInventory
     {
-        private Dictionary<string, int> AmmoList { get; } = new();
+        private Dictionary<AmmoTypes, int> AmmoList { get; } = new();
         private readonly TTTPlayer _owner;
 
         public AmmoInventory(TTTPlayer owner)
@@ -15,58 +17,52 @@ namespace TTTReborn.Player
             _owner = owner;
         }
 
-        public int Count(string ammoType)
+        public int Count(AmmoTypes ammoType)
         {
-            string ammo = ammoType.ToLower();
-
-            if (AmmoList == null || !AmmoList.ContainsKey(ammo))
+            if (AmmoList == null || !AmmoList.ContainsKey(ammoType))
             {
                 return 0;
             }
 
-            return AmmoList[ammo];
+            return AmmoList[ammoType];
         }
 
-        public bool Set(string ammoType, int amount)
+        public bool Set(AmmoTypes ammoType, int amount)
         {
-            string ammo = ammoType.ToLower();
-
-            if (AmmoList == null || string.IsNullOrEmpty(ammo))
-            {
-                return false;
-            }
-
-            while (!AmmoList.ContainsKey(ammo))
-            {
-                AmmoList.Add(ammo, 0);
-            }
-
-            AmmoList[ammo] = amount;
-
-
-            if (Host.IsServer)
-            {
-                _owner.ClientSetAmmo(To.Single(_owner), ammo, amount);
-            }
-
-            return true;
-        }
-
-        public bool Give(string ammoType, int amount)
-        {
-            string ammo = ammoType.ToLower();
-
             if (AmmoList == null)
             {
                 return false;
             }
 
-            Set(ammo, Count(ammo) + amount);
+            while (!AmmoList.ContainsKey(ammoType))
+            {
+                AmmoList.Add(ammoType, 0);
+            }
+
+            AmmoList[ammoType] = amount;
+
+
+            if (Host.IsServer)
+            {
+                _owner.ClientSetAmmo(To.Single(_owner), ammoType, amount);
+            }
 
             return true;
         }
 
-        public int Take(string ammoType, int amount)
+        public bool Give(AmmoTypes ammoType, int amount)
+        {
+            if (AmmoList == null)
+            {
+                return false;
+            }
+
+            Set(ammoType, Count(ammoType) + amount);
+
+            return true;
+        }
+
+        public int Take(AmmoTypes ammoType, int amount)
         {
             if (AmmoList == null)
             {
