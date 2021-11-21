@@ -32,7 +32,7 @@ QuickShop {
             flex-wrap: wrap;
             max-width: 680px;
             overflow: scroll;
-            justify-content: start;
+            justify-content: flex-start;
             max-height: 700px;
         }
 
@@ -65,7 +65,7 @@ QuickShopItem {
     transition: transform 0.1s ease-in;
     box-shadow: 0 0 10px black;
     white-space: nowrap;
-    overflow: auto;
+    overflow: scroll;
 
     &:hover {
         transform: scale(1.05);

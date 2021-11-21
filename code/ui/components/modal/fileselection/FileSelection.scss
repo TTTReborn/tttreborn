@@ -13,7 +13,7 @@ FileSelection,
         flex-direction: column;
 
         > .selection {
-            justify-content: start;
+            justify-content: flex-start;
             flex-wrap: wrap;
             max-height: 400px;
             overflow: scroll;

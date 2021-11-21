@@ -1,7 +1,6 @@
 Menu {
     left: 40%;
     top: 15%;
-
     min-width: 400px;
     width: 20%;
     max-width: 1200px;
@@ -9,10 +8,8 @@ Menu {
     height: 70%;
     max-height: 800px;
     position: absolute;
-
     pointer-events: all;
     flex-direction: column;
-
     z-index: 10;
 
     .panel.header {
@@ -33,10 +30,9 @@ Menu {
     > PanelContent {
         flex-grow: 1;
         overflow: scroll;
-        justify-content: start;
+        justify-content: flex-start;
         flex-wrap: wrap;
         flex-direction: column;
-
         padding: 10px;
 
         &.home {
@@ -48,11 +44,9 @@ Menu {
                 width: 160px;
                 height: 160px;
                 margin: 10px;
-
                 justify-content: center;
                 flex-direction: column;
                 text-align: center;
-
                 font-size: 42px;
                 font-family: MaterialIcons;
                 color: white;
@@ -65,9 +59,8 @@ Menu {
             > Tabs {
                 min-height: 500px;
                 flex-grow: 1;
-
                 overflow: scroll;
-                justify-content: start;
+                justify-content: flex-start;
                 flex-wrap: wrap;
             }
 
@@ -80,7 +73,7 @@ Menu {
                 PanelContent {
                     flex-grow: 1;
                     overflow: scroll;
-                    justify-content: start;
+                    justify-content: flex-start;
                     flex-wrap: wrap;
                     flex-direction: column;
 
@@ -109,11 +102,9 @@ Menu {
                 .button {
                     flex-grow: 1;
                     justify-content: center;
-
                     background-color: #000c;
                     border: 1px solid #1b1b1b;
                     border-radius: 8px;
-
                     margin: 4px;
                     padding: 8px 0px;
                 }
@@ -123,7 +114,7 @@ Menu {
         &.keybindings {
             flex-direction: row;
             flex-wrap: wrap;
-            justify-content: start;
+            justify-content: flex-start;
             width: 100%;
 
             .binding-header {
@@ -161,7 +152,6 @@ Menu {
 
             .fileselectionbutton {
                 padding: 5px 10px;
-
                 background-color: #000c;
                 border: 1px solid #1b1b1b;
                 border-radius: 8px;
@@ -171,7 +161,7 @@ Menu {
         &.shopeditor {
             flex-direction: row;
             flex-wrap: wrap;
-            justify-content: start;
+            justify-content: flex-start;
 
             > Switch {
                 margin-top: 4px;
@@ -188,7 +178,6 @@ Menu {
                 border-radius: 8px;
                 padding: 10px;
                 width: 100%;
-
                 flex-wrap: wrap;
                 justify-content: center;
 
@@ -204,7 +193,7 @@ Menu {
                     transition: transform 0.1s ease-in;
                     box-shadow: 0 0 10px black;
                     white-space: nowrap;
-                    overflow: auto;
+                    overflow: scroll;
 
                     &:hover {
                         transform: scale(1.02);
