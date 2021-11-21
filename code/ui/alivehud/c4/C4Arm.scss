@@ -40,8 +40,8 @@ C4Arm {
 
         .action-button-panel {
             flex-direction: row;
-            justify-content: end;
-            align-items: end;
+            justify-content: flex-end;
+            align-items: flex-end;
         }
 
         .button {
@@ -52,7 +52,7 @@ C4Arm {
             align-items: center;
             justify-content: center;
             transition: transform 0.1s ease-in;
-            overflow: auto;
+            overflow: scroll;
             background-color: #1e1e1e;
             border-radius: 5px;
 

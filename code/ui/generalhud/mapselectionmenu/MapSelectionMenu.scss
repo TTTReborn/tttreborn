@@ -17,7 +17,7 @@ MapSelectionMenu {
         flex-wrap: wrap;
         max-width: 880px;
         overflow: scroll;
-        justify-content: start;
+        justify-content: flex-start;
         max-height: 700px;
     }
 
@@ -33,8 +33,7 @@ MapSelectionMenu {
         .map-name {
             font-weight: bold;
             height: 150px;
-            text-overflow:ellipsis;
-            white-space:nowrap;
+            white-space: nowrap;
         }
 
         .map-vote {
