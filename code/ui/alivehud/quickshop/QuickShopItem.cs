@@ -40,7 +40,18 @@ namespace TTTReborn.UI
             _itemNameLabel.SetTranslation(shopItemData.Name.ToUpper());
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
-            _itemIcon.Style.BackgroundImage = Texture.Load($"/ui/weapons/{shopItemData.Name}.png", false) ?? Texture.Load($"/ui/none.png");
+            Texture icon = null;
+
+            if (shopItemData.Type.IsSubclassOf(typeof(TTTWeapon)))
+            {
+                icon = Texture.Load($"/ui/weapons/{shopItemData.Name}.png", false);
+            }
+            else if (shopItemData.Type.IsSubclassOf(typeof(TTTPerk)))
+            {
+                icon = Texture.Load($"/ui/perks/{shopItemData.Name}.png", false);
+            }
+
+            _itemIcon.Style.BackgroundImage = icon ?? Texture.Load($"/ui/none.png");
         }
 
         public void Update()
