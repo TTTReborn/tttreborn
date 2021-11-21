@@ -1,15 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Map;
 using TTTReborn.Player;
-using TTTReborn.Roles;
 using TTTReborn.Settings;
 using TTTReborn.Teams;
 
@@ -186,7 +183,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        [Event(TTTReborn.Events.TTTEvent.Settings.Change)]
+        [Event(TTTEvent.Settings.Change)]
         private static void OnChangeSettings()
         {
             if (Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)

@@ -4,7 +4,6 @@ using System.Text.Json;
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 
 namespace TTTReborn.Settings
 {
@@ -270,7 +269,7 @@ namespace TTTReborn.Settings
 
                 SettingsManager.Instance = serverSettings;
 
-                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+                SaveSettings<ServerSettings>(ServerSettings.Instance);
             }
         }
 

@@ -1,7 +1,6 @@
 using System;
 
 using Sandbox;
-using Sandbox.UI;
 
 using TTTReborn.Settings;
 
@@ -55,13 +54,13 @@ namespace TTTReborn.UI.Menu
             ServerSettingsTabContent.SetPanelContent((menuContent) => CreateSettings(menuContent.Add.Tabs(), serverSettings));
         }
 
-        internal static TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null, params object[] translationData)
+        internal static Sandbox.UI.TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null, params object[] translationData)
         {
             Sandbox.UI.Panel wrapper = parent.Add.Panel();
             TranslationLabel textLabel = wrapper.Add.TryTranslationLabel(title);
             textLabel.AddTooltip(description, "", null, null, null, translationData);
 
-            TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
+            Sandbox.UI.TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
             textEntry.AddClass("setting");
             textEntry.AddClass("rounded");
             textEntry.AddClass("box-shadow");
