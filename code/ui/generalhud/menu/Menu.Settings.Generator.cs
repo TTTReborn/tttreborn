@@ -6,7 +6,6 @@ using Sandbox;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
@@ -84,7 +83,7 @@ namespace TTTReborn.UI.Menu
             Switch sw = uiPanel.Add.Switch(propertyName.ToLower(), Utils.GetPropertyValue<bool>(propertyObject, propertyName));
             sw.AddEventListener("onchange", (panelEvent) =>
             {
-                UpdateSettingsProperty(settings, propertyObject, propertyName, !Utils.GetPropertyValue<bool>(propertyObject, propertyName));
+                UpdateSettingsProperty(settings, propertyObject, propertyName, sw.Checked);
             });
         }
 
@@ -128,6 +127,11 @@ namespace TTTReborn.UI.Menu
         private static void UpdateSettingsProperty<T>(Settings.Settings settings, object propertyObject, string propertyName, T value)
         {
             Utils.SetPropertyValue(propertyObject, propertyName, value);
+
+            if (Gamemode.Game.Instance.Debug)
+            {
+                Log.Debug($"Set {propertyName} to {value}");
+            }
 
             if (settings is ServerSettings serverSettings)
             {

@@ -242,7 +242,14 @@ namespace TTTReborn.Globals
 
             if (propertyInfo != null && propertyInfo.CanWrite)
             {
-                propertyInfo.SetValue(obj, value);
+                try
+                {
+                    propertyInfo.SetValue(obj, Convert.ChangeType(value, propertyInfo.GetValue(obj).GetType()));
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Tried to write property '{propertyName}' of '{obj}' with '{value}' ({ex.Message})");
+                }
             }
             else
             {

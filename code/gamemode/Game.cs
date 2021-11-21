@@ -27,8 +27,8 @@ namespace TTTReborn.Gamemode
 
         public MapHandler MapHandler { get; private set; }
 
-        [ConVar.Replicated("ttt_debug")]
-        public bool Debug { get; set; } = false;
+        // [ConVar.Replicated("ttt_debug")]
+        public bool Debug { get; set; } = true;
 
         public Game()
         {
