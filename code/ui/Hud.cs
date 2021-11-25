@@ -5,6 +5,7 @@ using Sandbox.UI;
 
 using TTTReborn.Events;
 using TTTReborn.Player;
+using TTTReborn.UI.Menu;
 
 namespace TTTReborn.UI
 {
@@ -105,7 +106,7 @@ namespace TTTReborn.UI
                 AddChild<PostRoundMenu>();
                 AddChild<Scoreboard>();
                 AddChild<MapSelectionMenu>();
-                AddChild<Menu.Menu>();
+                AddChild<TTTMenu>();
             }
         }
 

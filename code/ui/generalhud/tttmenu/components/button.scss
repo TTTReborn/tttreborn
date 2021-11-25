@@ -1,0 +1,57 @@
+
+$button-inactive: red !default;
+$button-inactive-bottom: $button-inactive !default;
+$button-inactive-fg: white !default;
+
+$button-active: green !default;
+$button-active-fg: black !default;
+
+$button-size: 50px;
+
+button {
+	font-family: Poppins;
+	font-weight: 600;
+	font-size: 16px;
+	cursor: pointer;
+	background-color: $button-inactive;
+	padding: 8px 16px;
+	border-radius: 100px;
+	color: $button-inactive-fg;
+	align-items: center;
+	min-height: $button-size;
+
+	> iconpanel {
+		font-size: 22px;
+	}
+
+	&.has-label > iconpanel {
+		margin-right: 10px;
+	}
+
+	&:hover {
+		background-color: $button-active;
+		color: $button-active-fg;
+	}
+
+	&.active {
+		background-color: $button-active;
+		color: $button-active-fg;
+	}
+
+	&:active {
+		background-color: $button-active-fg;
+		color: $button-active;
+	}
+
+	&.tight {
+		padding: 8px 8px;
+		height: $button-size;
+		min-width: $button-size;
+		justify-content: center;
+	}
+
+	&.disabled {
+		opacity: 0.3;
+		pointer-events: none;
+	}
+}

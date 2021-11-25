@@ -1,3 +1,6 @@
+@import "/code/ui/generalhud/tttmenu/components/button.scss";
+@import "/code/ui/generalhud/tttmenu/components/checkbox.scss";
+
 $primary: #282828;
 $secondary: #1e1e1e;
 $alive: #009e07;
@@ -118,10 +121,6 @@ $info: #ffae00;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-}
-
-.button {
-    cursor: pointer;
 }
 
 .text-shadow {
