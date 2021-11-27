@@ -7,9 +7,12 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Build(params object[] input)
+        public override object[] Test(params object[] input)
         {
-            return base.Build(Utils.GetPlayers());
+            return new object[]
+            {
+                Utils.GetPlayers()
+            };
         }
     }
 }

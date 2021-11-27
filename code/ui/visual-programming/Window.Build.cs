@@ -32,7 +32,10 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Log.Debug("Building");
 
-                MainNode.Build();
+                if (!MainNode.Build())
+                {
+                    return;
+                }
 
                 Log.Debug("Uploading");
 

@@ -14,7 +14,7 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Build(params object[] input)
+        public override object[] Test(params object[] input)
         {
             if (input == null || input[0] is not List<TTTPlayer> playerList)
             {
@@ -31,7 +31,10 @@ namespace TTTReborn.VisualProgramming
                 Log.Info($"Selected '{player.Client.Name}' with role '{SelectedRole.Name}'");
             }
 
-            return base.Build(input[0]);
+            return new object[]
+            {
+                input[0]
+            };
         }
     }
 }

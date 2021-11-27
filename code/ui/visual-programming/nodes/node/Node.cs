@@ -127,7 +127,7 @@ namespace TTTReborn.UI.VisualProgramming
             return false;
         }
 
-        public virtual void Build(params object[] input)
+        public virtual bool Build(params object[] input)
         {
             NextNodes.Clear();
 
@@ -155,7 +155,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             try
             {
-                arr = StackNode.Build(input);
+                arr = StackNode.Test(input);
             }
             catch (Exception e)
             {
@@ -165,11 +165,13 @@ namespace TTTReborn.UI.VisualProgramming
                 {
                     Log.Warning($"Error in node '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
 
-                    return;
+                    return false;
                 }
 
                 throw;
             }
+
+            bool errors = false;
 
             for (int i = 0; i < NextNodes.Count; i++)
             {
@@ -177,7 +179,10 @@ namespace TTTReborn.UI.VisualProgramming
 
                 try
                 {
-                    node.Build(arr.Length > i ? arr[i] : null);
+                    if (!node.Build(arr.Length > i ? arr[i] : null))
+                    {
+                        errors = true;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -189,6 +194,8 @@ namespace TTTReborn.UI.VisualProgramming
                     throw;
                 }
             }
+
+            return !errors;
         }
 
         public virtual void HighlightError()

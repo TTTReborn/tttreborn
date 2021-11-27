@@ -16,7 +16,7 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Build(params object[] input)
+        public override object[] Test(params object[] input)
         {
             if (input == null || input[0] is not List<TTTPlayer> playerList)
             {
@@ -27,7 +27,7 @@ namespace TTTReborn.VisualProgramming
 
             if (percentListCount < 2)
             {
-                throw new NodeStackException("Missing values in RandomNode.");
+                throw new NodeStackException("Missing values in PercentageSelectionStackNode.");
             }
 
             int allPlayerAmount = Client.All.Count;
@@ -56,7 +56,7 @@ namespace TTTReborn.VisualProgramming
                 (buildArray[^1] as List<TTTPlayer>).AddRange(playerList);
             }
 
-            return base.Build(buildArray);
+            return buildArray;
         }
     }
 }
