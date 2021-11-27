@@ -22,7 +22,7 @@ namespace TTTReborn.UI.VisualProgramming
             HighlightError();
         }
 
-        public override void Build(params object[] input)
+        internal void OnChange()
         {
             PercentList.Clear();
 
@@ -34,7 +34,10 @@ namespace TTTReborn.UI.VisualProgramming
 
                 PercentList.Add(percent);
             }
+        }
 
+        public override void Build(params object[] input)
+        {
             (StackNode as PercentageSelectionStackNode).PercentList = PercentList;
 
             base.Build(input);

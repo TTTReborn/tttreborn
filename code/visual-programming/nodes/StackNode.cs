@@ -4,11 +4,12 @@ namespace TTTReborn.VisualProgramming
 {
     public partial class StackNode
     {
-        public List<StackNode> NextNodes = new();
+        public string Name { get; set; }
+        public List<StackNode> NextNodes { get; set; } = new();
 
         public StackNode()
         {
-
+            Name = Utils.GetTypeName(GetType());
         }
 
         public virtual void Reset()
