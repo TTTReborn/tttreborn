@@ -39,7 +39,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 Log.Debug("Uploading");
 
-                Log.Error(JsonSerializer.Serialize(MainNode.StackNode));
+                Log.Error(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
 
                 // TODO sync _nodeStack to server and save
                 // JsonSerializer.Serialize(MainNode.GetJsonData());

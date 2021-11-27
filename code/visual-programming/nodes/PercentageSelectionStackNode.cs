@@ -58,5 +58,13 @@ namespace TTTReborn.VisualProgramming
 
             return buildArray;
         }
+
+        public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        {
+            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            dict.Add("PercentList", PercentList);
+
+            return dict;
+        }
     }
 }

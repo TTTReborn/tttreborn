@@ -28,5 +28,26 @@ namespace TTTReborn.VisualProgramming
             //     NextNodes[i].Evaluate(input.Length > i ? input[i] : null);
             // }
         }
+
+        public virtual Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        {
+            if (proceedNodes != null)
+            {
+                proceedNodes.Add(this);
+            }
+
+            List<Dictionary<string, object>> nextNodesJsonList = new();
+
+            foreach (StackNode stackNode in NextNodes)
+            {
+                nextNodesJsonList.Add(stackNode.GetJsonData(proceedNodes));
+            }
+
+            return new Dictionary<string, object>()
+            {
+                ["Name"] = Name,
+                ["NextNodes"] = nextNodesJsonList,
+            };
+        }
     }
 }

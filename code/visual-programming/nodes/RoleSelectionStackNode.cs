@@ -36,5 +36,13 @@ namespace TTTReborn.VisualProgramming
                 input[0]
             };
         }
+
+        public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        {
+            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            dict.Add("SelectedRole", SelectedRole?.Name);
+
+            return dict;
+        }
     }
 }

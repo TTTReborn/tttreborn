@@ -130,6 +130,7 @@ namespace TTTReborn.UI.VisualProgramming
         public virtual bool Build(params object[] input)
         {
             NextNodes.Clear();
+            StackNode.NextNodes.Clear();
 
             for (int i = 0; i < NodeSettings.Count; i++)
             {
@@ -140,7 +141,7 @@ namespace TTTReborn.UI.VisualProgramming
                     continue;
                 }
 
-                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
+                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out _);
 
                 if (connectedNode == null)
                 {
