@@ -1,5 +1,3 @@
-using TTTReborn.Globals;
-
 namespace TTTReborn.VisualProgramming
 {
     public partial class AllPlayersStackNode : StackNode

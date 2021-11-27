@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 
 namespace TTTReborn.UI.VisualProgramming
 {
@@ -29,7 +30,13 @@ namespace TTTReborn.UI.VisualProgramming
 
             try
             {
+                Log.Debug("Building");
+
                 MainNode.Build();
+
+                Log.Debug("Uploading");
+
+                Log.Error(JsonSerializer.Serialize(MainNode.StackNode));
 
                 // TODO sync _nodeStack to server and save
                 // JsonSerializer.Serialize(MainNode.GetJsonData());

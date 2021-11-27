@@ -210,11 +210,11 @@ namespace TTTReborn.UI.VisualProgramming
 
             NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
 
-            NodeConnectionStartPoint startPoint = this.NodeSettings[index].Output.ConnectionPoint as NodeConnectionStartPoint;
+            NodeConnectionStartPoint startPoint = NodeSettings[index].Output.ConnectionPoint;
             startPoint.ConnectionWire = nodeConnectionWire;
             nodeConnectionWire.StartPoint = startPoint;
 
-            NodeConnectionEndPoint endPoint = node.NodeSettings[ConnectPositions[index]].Input.ConnectionPoint as NodeConnectionEndPoint;
+            NodeConnectionEndPoint endPoint = node.NodeSettings[ConnectPositions[index]].Input.ConnectionPoint;
             endPoint.ConnectionWire = nodeConnectionWire;
             nodeConnectionWire.EndPoint = endPoint;
         }
