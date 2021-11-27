@@ -161,7 +161,7 @@ namespace TTTReborn.Player
     {
         private void TickMenu()
         {
-            if (Input.Pressed(InputButton.Menu))
+            if (Input.Pressed(InputButton.Reload))
             {
                 Menu.Instance.Enabled = !Menu.Instance.Enabled;
             }
