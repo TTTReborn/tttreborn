@@ -9,5 +9,6 @@ namespace TTTReborn.UI.Menu
     public partial class ComponentTesting : Panel
     {
         public bool CheckedValue { get; set; } = true;
+        public float FloatValue { get; set; } = 0f;
     }
 }

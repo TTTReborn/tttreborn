@@ -22,5 +22,10 @@ namespace TTTReborn.UI
 
             SetClass("panel", true);
         }
+
+        public override Panel FindPopupPanel()
+        {
+            return this;
+        }
     }
 }
