@@ -1,10 +1,10 @@
 
-$button-inactive: red !default;
+$button-inactive: rgb(139, 139, 139) !default;
 $button-inactive-bottom: $button-inactive !default;
 $button-inactive-fg: white !default;
 
-$button-active: green !default;
-$button-active-fg: black !default;
+$button-active: rgb(116, 116, 116) !default;
+$button-active-fg: white !default;
 
 $button-size: 50px;
 
@@ -16,7 +16,7 @@ button
 	cursor: pointer;
 	background-color: $button-inactive;
 	padding: 8px 16px;
-	border-radius: 100px;
+	border-radius: 8px;
 	color: $button-inactive-fg;
 	align-items: center;
 	min-height: $button-size;
@@ -51,7 +51,7 @@ button
 
 	&.inactive
 	{
-		opacity: 0.3;
+		opacity: 0.2;
 		pointer-events: none;
 	}
 
