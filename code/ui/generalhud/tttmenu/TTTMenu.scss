@@ -1,10 +1,13 @@
-.root {
+.background-panel {
+    align-self: center;
     pointer-events: all;
+    height: 600px;
+    width: 950px;
+    background-color: black;
+    padding: 25px;
     flex-direction: column;
-    display: flex;
-	align-items: center;
-}
 
-br {
-	padding: 10px;
+    .disabled {
+        display: none;
+    }
 }

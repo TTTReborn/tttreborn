@@ -1,13 +1,10 @@
-<link rel="stylesheet" href="TTTMenu.scss" />
+<link rel="stylesheet" href="TTTMenu.scss">
 
-<div class="centered">
-    <div class="root">
-        <text>Button</text>
-        <button>Test Button</button>
-        <br>
-
-        <text>Check Box</text>
-        <checkbox @checked="CheckedValue">Enable this</checkbox>
-        <br>
+<div class="background-panel centered-horizontal rounded background-color-secondary box-shadow">
+    <div>
+        <button icon="arrow_back" onclick="PopPage()" @ref="BackButton"></button>
     </div>
+    <br />
+
+    <div @ref="Pages"></div>
 </div>

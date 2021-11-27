@@ -1,17 +1,62 @@
+using System.Collections.Generic;
+
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.Menu
 {
     [UseTemplate]
-    public partial class TTTMenu : Panel
+    public class TTTMenu : Panel
     {
-        public string TextValue { get; set; }
-        public bool CheckedValue { get; set; } = true;
+        public static TTTMenu Instance;
+
+        /// <summary>
+        /// "Children" is used as a "stack" where the last element in the list
+        /// is the page that is currently showing.
+        /// </summary>
+        private Sandbox.UI.Panel Pages { get; set; }
+
+        private bool HasPreviousPages { get => Pages.ChildrenCount > 1; }
+
+        private Button BackButton { get; set; }
 
         public TTTMenu()
         {
-            Style.PointerEvents = "all";
+            Instance = this;
+
+            AddPage(new HomePage());
+        }
+
+        /// <summary>
+        /// Add and show a new page to the menu.
+        /// <param name="page">The panel page to add and show.</param>
+        /// </summary>
+        public void AddPage(Panel page)
+        {
+            for (int i = 0; i < Pages.ChildrenCount; ++i)
+            {
+                Pages.GetChild(i).AddClass("disabled");
+            }
+
+            Pages.AddChild(page);
+            BackButton.SetClass("inactive", !HasPreviousPages);
+        }
+
+        /// <summary>
+        /// Deletes the current page and displays the next page in the stack.
+        /// </summary>
+        public void PopPage()
+        {
+            if (!HasPreviousPages)
+            {
+                return;
+            }
+
+            Pages.GetChild(Pages.ChildrenCount - 1).Delete(true);
+            Pages.GetChild(Pages.ChildrenCount - 1).RemoveClass("disabled");
+
+            BackButton.SetClass("inactive", !HasPreviousPages);
         }
 
         public override void Tick()

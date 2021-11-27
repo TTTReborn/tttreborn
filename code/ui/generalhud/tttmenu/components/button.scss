@@ -8,7 +8,8 @@ $button-active-fg: black !default;
 
 $button-size: 50px;
 
-button {
+button
+{
 	font-family: Poppins;
 	font-weight: 600;
 	font-size: 16px;
@@ -20,38 +21,45 @@ button {
 	align-items: center;
 	min-height: $button-size;
 
-	> iconpanel {
+	> iconpanel
+	{
 		font-size: 22px;
 	}
 
-	&.has-label > iconpanel {
+	&.has-label > iconpanel
+	{
 		margin-right: 10px;
 	}
 
-	&:hover {
+	&:hover
+	{
 		background-color: $button-active;
 		color: $button-active-fg;
 	}
 
-	&.active {
+	&.active
+	{
 		background-color: $button-active;
 		color: $button-active-fg;
 	}
 
-	&:active {
+	&:active
+	{
 		background-color: $button-active-fg;
 		color: $button-active;
 	}
 
-	&.tight {
+	&.inactive
+	{
+		opacity: 0.3;
+		pointer-events: none;
+	}
+
+	&.tight
+	{
 		padding: 8px 8px;
 		height: $button-size;
 		min-width: $button-size;
 		justify-content: center;
-	}
-
-	&.disabled {
-		opacity: 0.3;
-		pointer-events: none;
 	}
 }
