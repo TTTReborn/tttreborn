@@ -4,7 +4,6 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
@@ -152,7 +151,7 @@ namespace TTTReborn.UI.VisualProgramming
                 StackNode.NextNodes.Add(connectedNode.StackNode);
             }
 
-            object[] arr = null;
+            object[] arr;
 
             try
             {
@@ -164,14 +163,12 @@ namespace TTTReborn.UI.VisualProgramming
 
                 if (e is NodeStackException)
                 {
-                    Log.Warning($"Error in note '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
-                }
-                else
-                {
-                    Log.Error(e);
+                    Log.Warning($"Error in node '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
+
+                    return;
                 }
 
-                throw e;
+                throw;
             }
 
             for (int i = 0; i < NextNodes.Count; i++)
@@ -187,11 +184,9 @@ namespace TTTReborn.UI.VisualProgramming
                     if (e is not NodeStackException)
                     {
                         node.HighlightError();
-
-                        Log.Error(e);
                     }
 
-                    throw e;
+                    throw;
                 }
             }
         }
