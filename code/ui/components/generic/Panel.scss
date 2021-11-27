@@ -115,6 +115,15 @@ br {
     transform: translateX(-50%) translateY(-50%);
 }
 
+.centered-flex {
+    left: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+
 .centered-vertical-75 {
     position: absolute;
     left: 50%;

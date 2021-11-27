@@ -49,20 +49,27 @@ select
 	}
 }
 
-popup 
+popup
 {
     position: absolute;
-    transform: translateX(-139%) translateY(-670%);
+	flex-direction: column;
+	transform-origin: 0% 0%;
 
-    button {
-        border-radius: 0px;
-    }
+	&.below-stretch
+	{
+		transform-origin: 0% 0%;
 
-    button:first-child {
-        border-radius: 0px 0px 0px 8px;
-    }
+		&:intro
+		{
+			transform: scaleY( 0.1 );
+		}
+	}
+	
+	button {
+		border-radius: 0px;
+	}
     
     button:last-child {
-        border-radius: 0px 0px 8px 0px;
+        border-radius: 0px 0px 8px 8px;
     }
 }

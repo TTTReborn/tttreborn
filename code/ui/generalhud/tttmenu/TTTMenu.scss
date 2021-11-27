@@ -1,8 +1,8 @@
 .background-panel {
-    align-self: center;
+    display: flex;
     pointer-events: all;
     height: 600px;
-    width: 950px;
+    width: 500px;
     background-color: black;
     padding: 25px;
     flex-direction: column;

@@ -109,6 +109,11 @@ namespace TTTReborn.UI
                 AddChild<Menu.Menu>();
                 AddChild<TTTMenu>();
             }
+
+            public override Panel FindPopupPanel()
+            {
+                return this;
+            }
         }
 
         public class AliveHud
