@@ -87,6 +87,11 @@ namespace TTTReborn.UI.VisualProgramming
 
             foreach (Node node in Nodes)
             {
+                if (node is MainNode mainNode)
+                {
+                    MainNode = mainNode;
+                }
+
                 node.Display();
             }
         }
