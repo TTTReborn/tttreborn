@@ -123,7 +123,7 @@ namespace TTTReborn.Items
             {
                 if (e.Message.Trim() != "A task was canceled.")
                 {
-                    Log.Error($"{e.Message}: {e.StackTrace}");
+                    Log.Error($"[TASK] {e.Message}: {e.StackTrace}");
                 }
             }
             finally
