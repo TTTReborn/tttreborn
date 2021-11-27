@@ -71,12 +71,15 @@ namespace TTTReborn.UI.VisualProgramming
         {
             foreach (NodeSetting nodeSetting in NodeSettings)
             {
-                if (nodeSetting.Output == null)
+                if (nodeSetting.Output != null)
                 {
-                    continue;
+                    nodeSetting.Output.ConnectionPoint.ConnectionWire?.Delete(true);
                 }
 
-                nodeSetting.Output.ConnectionPoint.ConnectionWire?.Delete(true);
+                if (nodeSetting.Input != null)
+                {
+                    nodeSetting.Input.ConnectionPoint.ConnectionWire?.Delete(true);
+                }
             }
 
             base.Delete(immediate);

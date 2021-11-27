@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.VisualProgramming
