@@ -1,8 +1,7 @@
-using System.Threading.Tasks;
+using System;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
@@ -21,7 +20,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerKilled(TTTPlayer player)
         {
-            _ = StartRespawnTimer(player);
+            StartRespawnTimer(player);
 
             player.MakeSpectator();
 
@@ -42,13 +41,25 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private static async Task StartRespawnTimer(TTTPlayer player)
+        private static async void StartRespawnTimer(TTTPlayer player)
         {
-            await Task.Delay(1000);
-
-            if (player.IsValid() && Gamemode.Game.Instance.Round is WaitingRound)
+            try
             {
-                player.Respawn();
+                await GameTask.DelaySeconds(1);
+
+                if (player.IsValid() && Gamemode.Game.Instance.Round is WaitingRound)
+                {
+                    player.Respawn();
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Trim() == "A task was canceled.")
+                {
+                    return;
+                }
+
+                Log.Error($"[TASK] {e.Message}: {e.StackTrace}");
             }
         }
     }

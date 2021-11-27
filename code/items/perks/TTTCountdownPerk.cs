@@ -43,7 +43,7 @@ namespace TTTReborn.Items
                         return;
                     }
 
-                    Log.Error($"{e.Message}: {e.StackTrace}");
+                    Log.Error($"[TASK] {e.Message}: {e.StackTrace}");
                 }
             }
         }

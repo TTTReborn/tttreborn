@@ -19,7 +19,6 @@
 @PointClass base(BaseProperties_tttreborn) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
 [
 	credits(integer) : "Credits" : 1 : "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input ExchangeCredits(void) : ""
 
@@ -43,7 +42,6 @@
 	]
 	text_color(color255) : "Color" :  : ""
 	receiver_team_override(string) : "Receiver Team Override" : "Override Team Name" : ""
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input DisplayMessage(void) : ""
 ]
@@ -55,7 +53,6 @@
 [
 	team(string) : "Team" :  : "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams."
 	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input InnocentsWin(void) : ""
 	input TraitorsWin(void) : ""
@@ -68,7 +65,6 @@
 @PointClass base(BaseProperties_tttreborn) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
 [
 	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input Activate(void) : ""
 
@@ -81,7 +77,6 @@
 //
 @PointClass base(BaseProperties_tttreborn) = ttt_map_settings : ""
 [
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	output SettingsSpawned(void) : "Fired after PostLevelLoaded runs and MapSettings entity is found."
 	output RoundPreparation(void) : "Fired once Preround begins."
@@ -100,7 +95,6 @@
 	delay(integer) : "Delay" : 1 : "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers."
 	remove_on_press(boolean) : "Remove On Press" : 0 : "Only allows button to be pressed once per round."
 	locked(boolean) : "Locked" : 0 : "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input Press(void) : ""
 	input Lock(void) : ""
@@ -199,7 +193,6 @@
 //
 @PointClass base(BaseProperties_tttreborn) = entity_ammo_random : ""
 [
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 ]
 
 //
@@ -258,7 +251,6 @@
 @PointClass base(BaseProperties_tttreborn) = entity_weapon_random : ""
 [
 	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 ]
 
 //
