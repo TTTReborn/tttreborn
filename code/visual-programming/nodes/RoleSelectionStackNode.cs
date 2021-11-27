@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-using Sandbox;
-
 using TTTReborn.Player;
 using TTTReborn.Roles;
 

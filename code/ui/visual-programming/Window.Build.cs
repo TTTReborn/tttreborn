@@ -6,7 +6,7 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public void Build()
         {
-            _nodeStack.Reset();
+            MainNode.StackNode.Reset();
 
             bool hasError = false;
 

@@ -14,8 +14,6 @@ namespace TTTReborn.UI.VisualProgramming
         public WindowSidebar Sidebar;
         public PanelContent Workspace;
 
-        private NodeStack _nodeStack;
-
         public Window(Sandbox.UI.Panel parent = null) : base(parent)
         {
             Instance = this;
@@ -53,8 +51,6 @@ namespace TTTReborn.UI.VisualProgramming
                 MainNode = AddNode<MainNode>();
                 MainNode.Display();
             });
-
-            _nodeStack = new NodeStack(); // TODO move to server later
         }
 
         public T AddNode<T>() where T : Node, new()

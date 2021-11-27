@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using TTTReborn.Globals;
 using TTTReborn.Roles;
 using TTTReborn.VisualProgramming;
 
