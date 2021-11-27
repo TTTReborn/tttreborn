@@ -6,7 +6,5 @@ using Sandbox.UI.Construct;
 namespace TTTReborn.UI.Menu
 {
     [UseTemplate]
-    public partial class ComponentTesting : Panel
-    {
-    }
+    public partial class ComponentTesting : Panel { }
 }

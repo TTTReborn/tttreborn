@@ -20,6 +20,7 @@ namespace TTTReborn.UI.Menu
         private bool HasPreviousPages { get => Pages.ChildrenCount > 1; }
 
         private Button BackButton { get; set; }
+        private Button HomeButton { get; set; }
 
         public TTTMenu()
         {
@@ -40,7 +41,9 @@ namespace TTTReborn.UI.Menu
             }
 
             Pages.AddChild(page);
+
             BackButton.SetClass("inactive", !HasPreviousPages);
+            HomeButton.SetClass("inactive", !HasPreviousPages);
         }
 
         /// <summary>
@@ -57,6 +60,18 @@ namespace TTTReborn.UI.Menu
             Pages.GetChild(Pages.ChildrenCount - 1).RemoveClass("disabled");
 
             BackButton.SetClass("inactive", !HasPreviousPages);
+            HomeButton.SetClass("inactive", !HasPreviousPages);
+        }
+
+        /// <summary>
+        /// Deletes all pages and goes to the first page in the stack.
+        /// </summary>
+        public void PopToHomePage()
+        {
+            while (HasPreviousPages)
+            {
+                PopPage();
+            }
         }
 
         public override void Tick()
