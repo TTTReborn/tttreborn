@@ -273,32 +273,5 @@ namespace TTTReborn.Settings
                 SaveSettings<ServerSettings>(ServerSettings.Instance);
             }
         }
-
-        [ServerCmd]
-        public static void RequestServerSettings()
-        {
-            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
-            {
-                return;
-            }
-
-            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), SettingFunctions.GetJSON<ServerSettings>(ServerSettings.Instance, true));
-        }
-
-        [ClientRpc]
-        public static void ClientSendServerSettings(string serverSettingsJson)
-        {
-            ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
-
-            if (serverSettings == null)
-            {
-                return;
-            }
-
-            if (TTTMenu.Instance.ActivePage is SettingsPage settingsPage)
-            {
-                settingsPage.ProceedServerSettings(serverSettings);
-            }
-        }
     }
 }
