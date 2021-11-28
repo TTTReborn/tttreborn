@@ -146,6 +146,9 @@
     "MENU_KEYBINDINGS_MENU": "Menu",
     "MENU_KEYBINDINGS_QUICK_SHOP": "Quick Shop",
 
+    "MENU_VISUALPROGRAMMING_RESET": "Reset RoleSelection",
+    "MENU_VISUALPROGRAMMING_RESET_TEXT": "Are you sure that you want to reset the RoleSelection?",
+
     "WEAPON_PISTOL": "Pistol",
     "WEAPON_SMG": "SMG",
     "WEAPON_SHOTGUN": "Shotgun",
