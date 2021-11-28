@@ -20,6 +20,7 @@ namespace TTTReborn.VisualProgramming
         public string LibraryName { get; set; }
         public string NodeReference { get; set; }
         public List<StackNode> NextNodes { get; set; } = new();
+        public List<int> ConnectPositions { get; set; } = new();
 
         public StackNode()
         {
@@ -60,6 +61,7 @@ namespace TTTReborn.VisualProgramming
             return new Dictionary<string, object>()
             {
                 ["LibraryName"] = LibraryName,
+                ["ConnectPositions"] = ConnectPositions,
                 ["NodeReference"] = NodeReference,
                 ["NextNodes"] = nextNodesJsonList,
             };
@@ -67,7 +69,12 @@ namespace TTTReborn.VisualProgramming
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            // TODO add connect positions
+            jsonData.TryGetValue("ConnectPositions", out object connectPosition);
+
+            if (connectPosition != null)
+            {
+                ConnectPositions = JsonSerializer.Deserialize<List<int>>(((JsonElement) connectPosition).GetRawText());
+            }
 
             jsonData.TryGetValue("NextNodes", out object nextNodes);
 

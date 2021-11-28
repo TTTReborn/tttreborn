@@ -132,6 +132,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             NextNodes.Clear();
             StackNode.NextNodes.Clear();
+            StackNode.ConnectPositions.Clear();
 
             for (int i = 0; i < NodeSettings.Count; i++)
             {
@@ -142,7 +143,7 @@ namespace TTTReborn.UI.VisualProgramming
                     continue;
                 }
 
-                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out _);
+                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
 
                 if (connectedNode == null)
                 {
@@ -151,6 +152,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 NextNodes.Add(connectedNode);
                 StackNode.NextNodes.Add(connectedNode.StackNode);
+                StackNode.ConnectPositions.Add(connectPositionIndex);
             }
 
             object[] arr;
