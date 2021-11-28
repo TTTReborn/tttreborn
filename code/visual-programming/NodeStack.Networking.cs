@@ -68,7 +68,7 @@ namespace TTTReborn.VisualProgramming
         [ClientRpc]
         public static void ClientSendStackBuildResult()
         {
-            // TODO
+            // TODO send client feedback
         }
 
         [ServerCmd]
@@ -133,6 +133,24 @@ namespace TTTReborn.VisualProgramming
                     Log.Debug("NodeStack test failed!");
                 }
             }
+        }
+
+        [ServerCmd]
+        public static void ServerResetStack()
+        {
+            if (ConsoleSystem.Caller == null)
+            {
+                return;
+            }
+
+            if (!ConsoleSystem.Caller.HasPermission("visualprogramming"))
+            {
+                return;
+            }
+
+            Instance.Init();
+
+            ClientInitializeNodesFromStack(To.Single(ConsoleSystem.Caller), true, JsonSerializer.Serialize(Instance.GetJsonData()));
         }
     }
 }

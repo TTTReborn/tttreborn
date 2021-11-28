@@ -42,10 +42,6 @@ namespace TTTReborn.UI.VisualProgramming
                 Log.Debug("Uploading NodeStack");
 
                 NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
-
-                // TODO test on server again
-                // TODO if test passed, save stacknode and give feedback to client
-                // TODO add a reset button
             }
             catch (Exception e)
             {

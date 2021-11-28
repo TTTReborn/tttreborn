@@ -38,6 +38,11 @@ namespace TTTReborn.UI.VisualProgramming
                 playButton.AddClass("play");
 
                 header.AddChild(playButton);
+
+                Sandbox.UI.Button resetButton = new("delete", "", () => Reset());
+                resetButton.AddClass("reset");
+
+                header.AddChild(resetButton);
             };
 
             Header.NavigationHeader.Reload();
