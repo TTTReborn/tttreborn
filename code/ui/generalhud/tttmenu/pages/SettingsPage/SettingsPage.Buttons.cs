@@ -118,7 +118,7 @@ namespace TTTReborn.UI.Menu
             }
         }
 
-        internal static void AskOverwriteSelectedSettings(string folderPath, string fileName, Action onConfirm)
+        public static void AskOverwriteSelectedSettings(string folderPath, string fileName, Action onConfirm)
         {
             string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
@@ -184,6 +184,84 @@ namespace TTTReborn.UI.Menu
             else if (realm == Utils.Realm.Server)
             {
                 Player.TTTPlayer.RequestLoadFrom(fileSelection.CurrentFolderPath, fileName);
+            }
+        }
+    }
+}
+
+namespace TTTReborn.Player
+{
+    using TTTReborn.UI.Menu;
+
+    public partial class TTTPlayer
+    {
+        [ServerCmd(Name = "ttt_serversettings_saveas_request")]
+        public static void RequestSaveServerSettingsAs(string filePath, string fileName, bool overwrite = false)
+        {
+            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            {
+                return;
+            }
+
+            if (overwrite || !FileSystem.Data.FileExists(filePath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
+            {
+                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance, filePath, fileName);
+            }
+            else
+            {
+                ClientAskOverwriteSelectedSettings(To.Single(ConsoleSystem.Caller), filePath, fileName);
+            }
+        }
+
+        [ClientRpc]
+        public static void ClientAskOverwriteSelectedSettings(string filePath, string fileName)
+        {
+            if (TTTMenu.Instance.ActivePage is SettingsPage settingsPage)
+            {
+                SettingsPage.AskOverwriteSelectedSettings(filePath, fileName, () =>
+                {
+                    RequestSaveServerSettingsAs(filePath, fileName, true);
+                });
+            }
+        }
+
+        [ServerCmd(Name = "ttt_serversettings_loadfrom_request")]
+        public static void RequestLoadFrom(string filePath, string fileName)
+        {
+            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            {
+                return;
+            }
+
+            SettingsManager.Instance = SettingFunctions.LoadSettings<ServerSettings>(filePath, fileName);
+
+            if (SettingsManager.Instance.LoadingError != SettingsLoadingError.None)
+            {
+                Log.Error($"Settings file '{filePath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{SettingsManager.Instance.LoadingError.ToString()}'");
+
+                return;
+            }
+
+            SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+
+            ClientFinishServerSettingsLoading(To.Single(ConsoleSystem.Caller), filePath, fileName);
+        }
+
+        [ClientRpc]
+        public static void ClientFinishServerSettingsLoading(string filePath, string fileName)
+        {
+            if (TTTMenu.Instance.ActivePage is not SettingsPage settingsPage)
+            {
+                return;
+            }
+
+            if (settingsPage.Enabled && settingsPage.ServerSettingsTabContent != null)
+            {
+                // refresh settings
+                TTTMenu.Instance.PopPage();
+                TTTMenu.Instance.AddPage(new SettingsPage());
+
+                settingsPage.ServerSettingsFileSelection?.Close();
             }
         }
     }
