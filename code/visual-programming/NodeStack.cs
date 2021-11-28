@@ -23,7 +23,11 @@ namespace TTTReborn.VisualProgramming
 
         public void Init()
         {
-            // TODO create default file and Stack
+            // TODO create default Stack with useful settings
+
+            MainStackNode = new AllPlayersStackNode();
+
+            Save();
         }
 
         public void LoadFromJsonData(Dictionary<string, object> jsonData)
@@ -42,16 +46,17 @@ namespace TTTReborn.VisualProgramming
 
         private string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
 
+        private string DefaultSettingsFile => $"default{VISUALPROGRAMMING_FILE_EXTENSION}";
+
         public void Load()
         {
             string settingsPath = GetSettingsPathByData(Utils.Realm.Server);
-            string fileName = $"default{VISUALPROGRAMMING_FILE_EXTENSION}";
 
-            Dictionary<string, object> jsonData = Player.TTTPlayer.LoadVisualProgramming(settingsPath, fileName, Utils.Realm.Server);
+            Dictionary<string, object> jsonData = Player.TTTPlayer.LoadVisualProgramming(settingsPath, DefaultSettingsFile, Utils.Realm.Server);
 
             if (jsonData == null)
             {
-                Log.Warning($"VisualProgramming file '{settingsPath}{fileName}{VISUALPROGRAMMING_FILE_EXTENSION}' can't be loaded. Initializing new one...");
+                Log.Warning($"VisualProgramming file '{settingsPath}{DefaultSettingsFile}{VISUALPROGRAMMING_FILE_EXTENSION}' can't be loaded. Initializing new one...");
 
                 Init();
 
@@ -80,8 +85,7 @@ namespace TTTReborn.VisualProgramming
                 FileSystem.Data.CreateDirectory(settingsPath);
             }
 
-            string fileName = $"default{VISUALPROGRAMMING_FILE_EXTENSION}";
-            string path = $"{settingsPath}{fileName}{VISUALPROGRAMMING_FILE_EXTENSION}";
+            string path = $"{settingsPath}{DefaultSettingsFile}{VISUALPROGRAMMING_FILE_EXTENSION}";
 
             FileSystem.Data.WriteAllText(path, JsonSerializer.Serialize(GetJsonData()));
         }

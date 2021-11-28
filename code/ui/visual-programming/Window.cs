@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-using TTTReborn.VisualProgramming;
-
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window : UI.Window
@@ -57,7 +55,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public T AddNode<T>() where T : Node, new()
         {
-            T node = new T();
+            T node = new();
 
             AddNode(node);
 
