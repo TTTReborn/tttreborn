@@ -30,19 +30,21 @@ namespace TTTReborn.UI.VisualProgramming
 
             try
             {
-                Log.Debug("Building");
+                Log.Debug("Building NodeStack");
 
                 if (!MainNode.Build())
                 {
                     return;
                 }
 
-                Log.Debug("Uploading");
+                Log.Debug("Uploading NodeStack");
 
                 Log.Error(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
 
-                // TODO sync _nodeStack to server and save
-                // JsonSerializer.Serialize(MainNode.GetJsonData());
+                // TODO sync _nodeStack to server
+                // TODO test on server again
+                // TODO if test passed, save stacknode and give feedback to client
+                // TODO add a reset button
             }
             catch (Exception e)
             {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using TTTReborn.Player;
@@ -43,6 +44,23 @@ namespace TTTReborn.VisualProgramming
             dict.Add("SelectedRole", SelectedRole?.Name);
 
             return dict;
+        }
+
+        public override void LoadFromJsonData(Dictionary<string, object> jsonData)
+        {
+            jsonData.TryGetValue("SelectedRole", out object selectedRoleName);
+
+            if (selectedRoleName != null)
+            {
+                Type roleType = Utils.GetTypeByLibraryName<TTTRole>(selectedRoleName.ToString());
+
+                if (roleType != null)
+                {
+                    SelectedRole = Utils.GetObjectByType<TTTRole>(roleType);
+                }
+            }
+
+            base.LoadFromJsonData(jsonData);
         }
     }
 }

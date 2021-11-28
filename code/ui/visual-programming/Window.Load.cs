@@ -4,8 +4,6 @@ using System.Text.Json;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
-
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window
@@ -39,7 +37,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             fileName = fileName.Split('/')[^1].Split('.')[0];
 
-            if (Window.Instance == null)
+            if (Instance == null)
             {
                 fileSelection.Close();
 

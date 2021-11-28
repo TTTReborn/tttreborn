@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 using Sandbox;
 
@@ -65,6 +66,18 @@ namespace TTTReborn.VisualProgramming
             dict.Add("PercentList", PercentList);
 
             return dict;
+        }
+
+        public override void LoadFromJsonData(Dictionary<string, object> jsonData)
+        {
+            jsonData.TryGetValue("PercentList", out object percentList);
+
+            if (percentList != null)
+            {
+                PercentList = JsonSerializer.Deserialize<List<float>>(((JsonElement) percentList).GetRawText());
+            }
+
+            base.LoadFromJsonData(jsonData);
         }
     }
 }
