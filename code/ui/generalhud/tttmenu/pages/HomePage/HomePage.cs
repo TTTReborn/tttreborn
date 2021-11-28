@@ -18,6 +18,11 @@ namespace TTTReborn.UI.Menu
             TTTMenu.Instance.AddPage(new KeyBindingsPage());
         }
 
+        public void GoToShopEditor()
+        {
+            ShopEditorPage.ServerRequestShopEditorAccess();
+        }
+
         public void GoToRoleSelectionEditor()
         {
             new VisualProgramming.Window(Hud.Current.RootPanel);

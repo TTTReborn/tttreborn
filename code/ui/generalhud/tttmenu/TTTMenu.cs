@@ -11,6 +11,8 @@ namespace TTTReborn.UI.Menu
     {
         public static TTTMenu Instance;
 
+        public Panel ActivePage { get; private set; }
+
         /// <summary>
         /// "Children" is used as a "stack" where the last element in the list
         /// is the page that is currently showing.
@@ -44,6 +46,8 @@ namespace TTTReborn.UI.Menu
 
             BackButton.SetClass("inactive", !HasPreviousPages);
             HomeButton.SetClass("inactive", !HasPreviousPages);
+
+            ActivePage = page;
         }
 
         /// <summary>
@@ -61,6 +65,8 @@ namespace TTTReborn.UI.Menu
 
             BackButton.SetClass("inactive", !HasPreviousPages);
             HomeButton.SetClass("inactive", !HasPreviousPages);
+
+            ActivePage = Pages.GetChild(Pages.ChildrenCount - 1) as Panel;
         }
 
         /// <summary>

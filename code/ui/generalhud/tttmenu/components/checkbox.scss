@@ -44,4 +44,10 @@ checkbox
 	{
 		color: white;
 	}
+
+	&.inactive
+	{
+		opacity: 0.3;
+		pointer-events: none;
+	}
 }
