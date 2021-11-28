@@ -34,7 +34,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             try
             {
-                Log.Debug("Building NodeStack");
+                Log.Debug("Building and testing NodeStack");
 
                 if (!MainNode.Build())
                 {

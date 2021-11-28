@@ -131,9 +131,11 @@ namespace TTTReborn.VisualProgramming
 
                 if (Instance.Test())
                 {
-                    Log.Debug("Saved NodeStack");
+                    Log.Debug("NodeStack test passed");
 
                     Instance.Save();
+
+                    Log.Debug("Saved NodeStack");
                 }
                 else
                 {

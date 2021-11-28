@@ -30,7 +30,7 @@ namespace TTTReborn.VisualProgramming
 
             foreach (TTTPlayer player in playerList)
             {
-                Log.Info($"Selected '{player.Client.Name}' with role '{SelectedRole.Name}'");
+                Log.Debug($"Selected '{player.Client.Name}' with role '{SelectedRole.Name}'");
             }
 
             return new object[]
