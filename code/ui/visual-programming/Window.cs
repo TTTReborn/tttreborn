@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace TTTReborn.UI.VisualProgramming
 {
@@ -12,7 +13,7 @@ namespace TTTReborn.UI.VisualProgramming
         public WindowSidebar Sidebar;
         public PanelContent Workspace;
 
-        public Window(Sandbox.UI.Panel parent = null) : base(parent)
+        public Window(Sandbox.UI.Panel parent, string jsonData) : base(parent)
         {
             Instance = this;
 
@@ -46,10 +47,15 @@ namespace TTTReborn.UI.VisualProgramming
                 Workspace = new(panelContent);
                 Sidebar = new(panelContent);
 
-                MainNode = AddNode<MainNode>();
-                MainNode.Display();
+                LoadNodesFromStackJson(jsonData);
 
-                // TODO build from server's Stack
+                if (MainNode == null)
+                {
+                    MainNode = AddNode<MainNode>();
+                    MainNode.Display();
+
+                    Log.Warning("Missing main node in default visual programming stack");
+                }
             });
         }
 
@@ -66,6 +72,28 @@ namespace TTTReborn.UI.VisualProgramming
         {
             Workspace.AddChild(node);
             Nodes.Add(node);
+        }
+
+        private void LoadNodesFromStackJson(string jsonData)
+        {
+            Dictionary<string, object> jsonDataDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonData);
+
+            jsonDataDict.TryGetValue("MainStackNode", out object mainStackNode);
+
+            if (mainStackNode == null)
+            {
+                return;
+            }
+
+            Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) mainStackNode).GetRawText());
+
+            MainNode = AddNode<MainNode>();
+            MainNode.LoadFromJsonData(saveStackNode);
+
+            foreach (Node node in Nodes)
+            {
+                node.Display();
+            }
         }
     }
 }

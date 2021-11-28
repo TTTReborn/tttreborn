@@ -1,4 +1,7 @@
 using System;
+
+using TTTReborn.VisualProgramming;
+
 namespace TTTReborn.UI.Menu
 {
     using Sandbox.UI.Construct;
@@ -146,7 +149,7 @@ namespace TTTReborn.UI.Menu
 
         private void OpenRoleSelectionEditor(PanelContent menuContent)
         {
-            new VisualProgramming.Window(Hud.Current.RootPanel);
+            NodeStack.RequestStack();
         }
     }
 }

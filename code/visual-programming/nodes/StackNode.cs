@@ -8,6 +8,7 @@ namespace TTTReborn.VisualProgramming
     public abstract class StackNode
     {
         public string Name { get; set; }
+        public string NodeReference { get; set; }
         public List<StackNode> NextNodes { get; set; } = new();
 
         public StackNode()
@@ -49,6 +50,7 @@ namespace TTTReborn.VisualProgramming
             return new Dictionary<string, object>()
             {
                 ["Name"] = Name,
+                ["NodeReference"] = NodeReference,
                 ["NextNodes"] = nextNodesJsonList,
             };
         }
@@ -73,6 +75,13 @@ namespace TTTReborn.VisualProgramming
 
                     NextNodes.Add(stackNode);
                 }
+            }
+
+            jsonData.TryGetValue("NodeReference", out object nodeReference);
+
+            if (nodeReference != null)
+            {
+                NodeReference = nodeReference.ToString();
             }
         }
 

@@ -28,6 +28,7 @@ namespace TTTReborn.VisualProgramming
             // TODO create default Stack with useful settings
 
             MainStackNode = new AllPlayersStackNode();
+            MainStackNode.NodeReference = Utils.GetLibraryName(typeof(UI.VisualProgramming.MainNode));
 
             Save();
         }

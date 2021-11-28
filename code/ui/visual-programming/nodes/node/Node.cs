@@ -41,6 +41,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             StackNode = stackNode;
             LibraryName = Utils.GetLibraryName(GetType());
+            StackNode.NodeReference = LibraryName;
 
             Header.DragHeader.IsFreeDraggable = true;
             Header.DragHeader.IsLocked = false;
