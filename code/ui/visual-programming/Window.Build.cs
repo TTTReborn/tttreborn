@@ -36,19 +36,19 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Log.Debug("Building and testing NodeStack");
 
-                if (!MainNode.Build())
+                if (MainNode.Build())
                 {
-                    return;
+                    Log.Debug("Uploading NodeStack");
+
+                    NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
                 }
-
-                Log.Debug("Uploading NodeStack");
-
-                NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
             }
             catch (Exception e)
             {
                 Log.Error(e);
-
+            }
+            finally
+            {
                 BuildButton.Text = "play_arrow";
             }
         }

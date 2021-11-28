@@ -22,6 +22,10 @@ namespace TTTReborn.UI.VisualProgramming
                         {
                             percentageSelectionNode.OnChange();
                         }
+                        else if (Node is RandomSelectionNode randomSelectionNode)
+                        {
+                            randomSelectionNode.OnChange();
+                        }
 
                         Node?.RemoveHighlights();
                     }
