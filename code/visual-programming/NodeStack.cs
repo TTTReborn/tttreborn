@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -21,6 +22,52 @@ namespace TTTReborn.VisualProgramming
         public void Reset()
         {
             MainStackNode = null;
+        }
+
+        public bool Test(params object[] input)
+        {
+            return TestNode(MainStackNode, input);
+        }
+
+        private bool TestNode(StackNode stackNode, params object[] input)
+        {
+            object[] arr;
+
+            try
+            {
+                arr = stackNode.Test(input);
+            }
+            catch (Exception e)
+            {
+                if (e is NodeStackException)
+                {
+                    Log.Warning($"Error in node '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
+
+                    return false;
+                }
+
+                throw;
+            }
+
+            bool errors = false;
+
+            for (int i = 0; i < stackNode.NextNodes.Count; i++)
+            {
+                StackNode node = stackNode.NextNodes[i];
+
+                try
+                {
+                    TestNode(node, arr.Length > i ? arr[i] : null);
+                }
+                catch (Exception e)
+                {
+                    errors = true;
+
+                    Log.Warning(e);
+                }
+            }
+
+            return !errors;
         }
 
         public void Init()

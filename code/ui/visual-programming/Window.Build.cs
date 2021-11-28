@@ -1,6 +1,8 @@
 using System;
 using System.Text.Json;
 
+using TTTReborn.VisualProgramming;
+
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window
@@ -39,9 +41,8 @@ namespace TTTReborn.UI.VisualProgramming
 
                 Log.Debug("Uploading NodeStack");
 
-                Log.Error(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
+                NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
 
-                // TODO sync _nodeStack to server
                 // TODO test on server again
                 // TODO if test passed, save stacknode and give feedback to client
                 // TODO add a reset button

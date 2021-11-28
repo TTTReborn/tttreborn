@@ -76,6 +76,8 @@ namespace TTTReborn.UI.VisualProgramming
 
         private void LoadNodesFromStackJson(string jsonData)
         {
+            jsonData = jsonData.Replace("LibraryName", "StackNodeName").Replace("NodeReference", "LibraryName");
+
             Dictionary<string, object> jsonDataDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonData);
 
             jsonDataDict.TryGetValue("MainStackNode", out object mainStackNode);
@@ -94,6 +96,8 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 node.Display();
             }
+
+            Log.Debug($"Loaded: '{jsonData}'");
         }
     }
 }

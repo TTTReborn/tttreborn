@@ -149,7 +149,7 @@ namespace TTTReborn.UI.Menu
 
         private void OpenRoleSelectionEditor(PanelContent menuContent)
         {
-            NodeStack.RequestStack();
+            NodeStack.ServerRequestStack();
         }
     }
 }

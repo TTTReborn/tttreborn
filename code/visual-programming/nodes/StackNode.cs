@@ -1,19 +1,29 @@
 using System;
 using System.Text.Json;
-
 using System.Collections.Generic;
+
+using Sandbox;
 
 namespace TTTReborn.VisualProgramming
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class StackNodeAttribute : LibraryAttribute
+    {
+        public StackNodeAttribute(string name) : base("stacknode_" + name)
+        {
+
+        }
+    }
+
     public abstract class StackNode
     {
-        public string Name { get; set; }
+        public string LibraryName { get; set; }
         public string NodeReference { get; set; }
         public List<StackNode> NextNodes { get; set; } = new();
 
         public StackNode()
         {
-            Name = Utils.GetTypeName(GetType());
+            LibraryName = Utils.GetLibraryName(GetType());
         }
 
         public virtual void Reset()
@@ -49,7 +59,7 @@ namespace TTTReborn.VisualProgramming
 
             return new Dictionary<string, object>()
             {
-                ["Name"] = Name,
+                ["LibraryName"] = LibraryName,
                 ["NodeReference"] = NodeReference,
                 ["NextNodes"] = nextNodesJsonList,
             };
@@ -57,6 +67,8 @@ namespace TTTReborn.VisualProgramming
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
+            // TODO add connect positions
+
             jsonData.TryGetValue("NextNodes", out object nextNodes);
 
             if (nextNodes != null)
@@ -87,14 +99,14 @@ namespace TTTReborn.VisualProgramming
 
         public static T GetStackNodeFromJsonData<T>(Dictionary<string, object> jsonData) where T : StackNode
         {
-            jsonData.TryGetValue("Name", out object name);
+            jsonData.TryGetValue("LibraryName", out object libraryName);
 
-            if (name == null)
+            if (libraryName == null)
             {
                 return null;
             }
 
-            Type type = Utils.GetTypeByLibraryName<T>(name.ToString());
+            Type type = Utils.GetTypeByLibraryName<T>(libraryName.ToString());
 
             if (type == null)
             {

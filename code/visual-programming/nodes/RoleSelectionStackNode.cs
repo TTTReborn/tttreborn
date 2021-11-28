@@ -6,6 +6,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.VisualProgramming
 {
+    [StackNode("role_selection")]
     public partial class RoleSelectionStackNode : StackNode
     {
         public TTTRole SelectedRole { get; set; }

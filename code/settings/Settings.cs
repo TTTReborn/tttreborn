@@ -260,7 +260,7 @@ namespace TTTReborn.Settings
             {
                 _currentPacketHash = -1;
 
-                ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(string.Join("", _packetData));
+                ServerSettings serverSettings = GetSettings<ServerSettings>(string.Join("", _packetData));
 
                 if (serverSettings == null)
                 {
@@ -269,7 +269,7 @@ namespace TTTReborn.Settings
 
                 SettingsManager.Instance = serverSettings;
 
-                SaveSettings<ServerSettings>(ServerSettings.Instance);
+                SaveSettings(ServerSettings.Instance);
             }
         }
 
@@ -281,13 +281,13 @@ namespace TTTReborn.Settings
                 return;
             }
 
-            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), SettingFunctions.GetJSON<ServerSettings>(ServerSettings.Instance, true));
+            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), GetJSON<ServerSettings>(ServerSettings.Instance, true));
         }
 
         [ClientRpc]
         public static void ClientSendServerSettings(string serverSettingsJson)
         {
-            ServerSettings serverSettings = SettingFunctions.GetSettings<ServerSettings>(serverSettingsJson);
+            ServerSettings serverSettings = GetSettings<ServerSettings>(serverSettingsJson);
 
             if (serverSettings == null)
             {

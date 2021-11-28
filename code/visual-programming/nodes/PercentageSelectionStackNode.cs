@@ -8,6 +8,7 @@ using TTTReborn.Player;
 
 namespace TTTReborn.VisualProgramming
 {
+    [StackNode("percentage_selection")]
     public partial class PercentageSelectionStackNode : StackNode
     {
         public List<float> PercentList { get; set; } = new();
