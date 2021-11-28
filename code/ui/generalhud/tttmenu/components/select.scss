@@ -45,6 +45,22 @@ popup
 {
     position: absolute;
 	flex-direction: column;
+	transition: all 0.1s ease-out;
+
+	&:intro
+	{
+		transform: scale( 0 );
+		pointer-events: none;
+		opacity: 0;
+	}
+
+	&:outro
+	{
+		opacity: 0;
+		transition: all 0.1s ease-in;
+		margin-top: 50px;
+		pointer-events: none;
+	}
 	
 	button {
 		border-radius: 0px;
