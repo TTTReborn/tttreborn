@@ -50,6 +50,8 @@ namespace TTTReborn.UI.VisualProgramming
 
                 MainNode = AddNode<MainNode>();
                 MainNode.Display();
+
+                // TODO build from server's Stack
             });
         }
 

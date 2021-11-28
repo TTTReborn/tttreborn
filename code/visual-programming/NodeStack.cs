@@ -21,6 +21,11 @@ namespace TTTReborn.VisualProgramming
             MainStackNode = null;
         }
 
+        public void Init()
+        {
+            // TODO create default file and Stack
+        }
+
         public void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
             jsonData.TryGetValue("MainStackNode", out object saveListJson);
@@ -46,7 +51,9 @@ namespace TTTReborn.VisualProgramming
 
             if (jsonData == null)
             {
-                Log.Error($"VisualProgramming file '{settingsPath}{fileName}{VISUALPROGRAMMING_FILE_EXTENSION}' can't be loaded.");
+                Log.Warning($"VisualProgramming file '{settingsPath}{fileName}{VISUALPROGRAMMING_FILE_EXTENSION}' can't be loaded. Initializing new one...");
+
+                Init();
 
                 return;
             }
