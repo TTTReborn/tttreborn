@@ -1,6 +1,5 @@
 using Sandbox.UI;
 
-
 namespace TTTReborn.UI.Menu
 {
     [UseTemplate]
@@ -18,11 +17,13 @@ namespace TTTReborn.UI.Menu
 
         public void GoToShopEditor()
         {
+            // Server call which will later on add to the TTTMenu. 
             ShopEditorPage.ServerRequestShopEditorAccess();
         }
 
         public void GoToRoleSelectionEditor()
         {
+            // Launches a full screen panel.
             new VisualProgramming.Window(Hud.Current.RootPanel);
         }
 

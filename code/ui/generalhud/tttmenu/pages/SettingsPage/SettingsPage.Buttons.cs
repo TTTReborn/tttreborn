@@ -177,7 +177,7 @@ namespace TTTReborn.UI.Menu
 
                 fileSelection.Close();
 
-                // Refresh settings page
+                // Refresh the page by opening a new instance.
                 TTTMenu.Instance.PopPage();
                 TTTMenu.Instance.AddPage(new SettingsPage());
             }
@@ -257,7 +257,7 @@ namespace TTTReborn.Player
 
             if (settingsPage.Enabled && settingsPage.ServerSettingsTabContent != null)
             {
-                // refresh settings
+                // Refresh the page by opening a new instance.
                 TTTMenu.Instance.PopPage();
                 TTTMenu.Instance.AddPage(new SettingsPage());
 

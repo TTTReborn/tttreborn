@@ -31,14 +31,14 @@ namespace TTTReborn.UI.Menu
 
         private static Modal CreateItemEditModal(QuickShopItem item, TTTRole role)
         {
-            ShopEditorPage shopEditorPage = TTTMenu.Instance.ActivePage as ShopEditorPage;
-
-            if (shopEditorPage._currentDialogBox != null)
+            if (TTTMenu.Instance.ActivePage is not ShopEditorPage shopEditorPage)
             {
-                shopEditorPage._currentDialogBox.Delete(true);
+                return new DialogBox();
             }
 
-            DialogBox dialogBox = new DialogBox();
+            shopEditorPage._currentDialogBox?.Delete(true);
+
+            DialogBox dialogBox = new();
             dialogBox.Header.DragHeader.IsLocked = false;
             dialogBox.SetTranslationTitle("MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC", new TranslationData(item.ItemData.Name.ToUpper()));
             dialogBox.AddClass("itemeditwindow");
