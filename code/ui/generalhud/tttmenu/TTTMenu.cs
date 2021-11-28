@@ -20,6 +20,8 @@ namespace TTTReborn.UI.Menu
         /// </summary>
         private Sandbox.UI.Panel Pages { get; set; }
 
+        private Sandbox.UI.Panel BackgroundPanel { get; set; }
+
         private bool HasPreviousPages { get => Pages.ChildrenCount > 1; }
 
         private Button BackButton { get; set; }
@@ -30,6 +32,8 @@ namespace TTTReborn.UI.Menu
             Instance = this;
 
             AddPage(new HomePage());
+
+            BackgroundPanel.AddClass("disabled");
         }
 
         /// <summary>
@@ -87,7 +91,7 @@ namespace TTTReborn.UI.Menu
             {
                 if (Input.Pressed(InputButton.Menu))
                 {
-                    Enabled = !Enabled;
+                    BackgroundPanel.SetClass("disabled", !BackgroundPanel.HasClass("disabled"));
                 }
             }
         }
