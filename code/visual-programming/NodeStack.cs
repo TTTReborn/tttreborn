@@ -72,12 +72,10 @@ namespace TTTReborn.VisualProgramming
 
         public void Init()
         {
-            // TODO create default Stack with useful settings
+            string defaultNodeStackJsonData = "{\"MainStackNode\":{\"LibraryName\":\"stacknode_main\",\"ConnectPositions\":[0],\"NodeReference\":\"node_main\",\"NextNodes\":[{\"LibraryName\":\"stacknode_percentage_selection\",\"ConnectPositions\":[0,0],\"NodeReference\":\"node_percentage_selection\",\"NextNodes\":[{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1248,\"PosY\":202,\"SelectedRole\":\"role_traitor\"},{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1246,\"PosY\":671,\"SelectedRole\":\"role_innocent\"}],\"PosX\":809,\"PosY\":366,\"PercentList\":[30,70]}],\"PosX\":404,\"PosY\":452}}";
 
-            MainStackNode = new AllPlayersStackNode();
-            MainStackNode.NodeReference = Utils.GetLibraryName(typeof(UI.VisualProgramming.MainNode));
-
-            Save();
+            Save(defaultNodeStackJsonData);
+            LoadDefaultFile(false);
         }
 
         public void LoadFromJsonData(Dictionary<string, object> jsonData)
@@ -103,7 +101,7 @@ namespace TTTReborn.VisualProgramming
             new NodeStack().LoadDefaultFile();
         }
 
-        public void LoadDefaultFile()
+        public void LoadDefaultFile(bool initial = true)
         {
             string settingsPath = GetSettingsPathByData(Utils.Realm.Server);
 
@@ -111,9 +109,12 @@ namespace TTTReborn.VisualProgramming
 
             if (jsonData == null)
             {
-                Log.Warning($"VisualProgramming file '{settingsPath}{DefaultSettingsFile}' can't be loaded. Initializing new one...");
+                if (initial)
+                {
+                    Log.Warning($"VisualProgramming file '{settingsPath}{DefaultSettingsFile}' can't be loaded. Initializing new one...");
 
-                Init();
+                    Init();
+                }
 
                 return;
             }
@@ -121,14 +122,14 @@ namespace TTTReborn.VisualProgramming
             LoadFromJsonData(jsonData);
         }
 
-        public void Save()
+        public void Save(string jsonData = null)
         {
             if (!FileSystem.Data.DirectoryExists("settings"))
             {
                 FileSystem.Data.CreateDirectory("settings");
             }
 
-            if (MainStackNode == null)
+            if (MainStackNode == null && jsonData == null)
             {
                 return;
             }
@@ -142,7 +143,7 @@ namespace TTTReborn.VisualProgramming
 
             string path = $"{settingsPath}{DefaultSettingsFile}";
 
-            FileSystem.Data.WriteAllText(path, JsonSerializer.Serialize(GetJsonData()));
+            FileSystem.Data.WriteAllText(path, jsonData ?? JsonSerializer.Serialize(GetJsonData()));
         }
 
         public Dictionary<string, object> GetJsonData()
