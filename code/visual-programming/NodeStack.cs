@@ -120,6 +120,13 @@ namespace TTTReborn.VisualProgramming
             }
 
             LoadFromJsonData(jsonData);
+
+            if (!Instance.Test())
+            {
+                Log.Warning($"VisualProgramming file '{settingsPath}{DefaultSettingsFile}' test failed. Initializing new one...");
+
+                Init();
+            }
         }
 
         public void Save(string jsonData = null)
