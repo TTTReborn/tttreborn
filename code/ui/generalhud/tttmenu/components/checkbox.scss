@@ -15,7 +15,7 @@ checkbox
 	{
 		padding: 1px;
 		font-size: 22px;
-		border: 3px solid $button-inactive;
+		border: 3px solid $button-active;
 		border-radius: 4px;
 		text-align: center;
 		justify-content: center;
@@ -31,7 +31,7 @@ checkbox
 		> .checkmark
 		{
 			color: white;
-			background-color: $button-inactive;
+			background-color: $button-active;
 		}
 	}
 
@@ -47,7 +47,11 @@ checkbox
 
 	&.inactive
 	{
-		opacity: 0.2;
+		opacity: 0.35;
 		pointer-events: none;
+
+		> .checkmark {
+			border: 3px solid $button-inactive;
+		}
 	}
 }
