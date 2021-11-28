@@ -94,7 +94,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         private Node GetConnectedNode(NodeConnectionPoint connectionPoint, out int index)
         {
-            index = 0;
+            index = -1;
 
             NodeConnectionWire connectionWire = connectionPoint.ConnectionWire;
 
@@ -145,6 +145,8 @@ namespace TTTReborn.UI.VisualProgramming
 
                 Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
 
+                StackNode.ConnectPositions.Add(connectPositionIndex);
+
                 if (connectedNode == null)
                 {
                     continue;
@@ -152,7 +154,6 @@ namespace TTTReborn.UI.VisualProgramming
 
                 NextNodes.Add(connectedNode);
                 StackNode.NextNodes.Add(connectedNode.StackNode);
-                StackNode.ConnectPositions.Add(connectPositionIndex);
             }
 
             object[] arr;
@@ -212,11 +213,21 @@ namespace TTTReborn.UI.VisualProgramming
             RemoveClass("error");
         }
 
-        public void ConnectWithNode(Node node, int index)
+        public void ConnectWithNode(Node node, int index, int maxIndex)
         {
             if (node == this)
             {
                 return;
+            }
+
+            while (index <= maxIndex && ConnectPositions[index] == -1)
+            {
+                index++;
+
+                if (index == maxIndex)
+                {
+                    return;
+                }
             }
 
             NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
@@ -253,13 +264,14 @@ namespace TTTReborn.UI.VisualProgramming
 
                 Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
 
+                ConnectPositions.Add(connectPositionIndex);
+
                 if (connectedNode == null)
                 {
                     continue;
                 }
 
                 NextNodes.Add(connectedNode);
-                ConnectPositions.Add(connectPositionIndex);
             }
 
             foreach (Node node in NextNodes)
@@ -305,7 +317,7 @@ namespace TTTReborn.UI.VisualProgramming
                     }
 
                     NextNodes.Add(node);
-                    ConnectWithNode(node, i);
+                    ConnectWithNode(node, i, nextNodesList.Count - 1);
                 }
             }
 
