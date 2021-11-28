@@ -110,6 +110,7 @@ namespace TTTReborn.UI
                 AddChild<TTTMenu>();
             }
 
+            // Use "GeneralHud" as the Panel that displays any s&box popups.
             public override Panel FindPopupPanel()
             {
                 return this;

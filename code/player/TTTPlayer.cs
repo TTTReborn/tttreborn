@@ -167,8 +167,8 @@ namespace TTTReborn.Player
         {
             if (IsClient)
             {
-                TickMenu();
                 TickPlayerVoiceChat();
+                TickMenu();
             }
             else
             {

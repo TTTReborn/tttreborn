@@ -1,0 +1,15 @@
+KeyBindingsPage {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow: scroll;
+
+    .binding-header {
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .wrapper {
+        width: 100%;
+    }
+}

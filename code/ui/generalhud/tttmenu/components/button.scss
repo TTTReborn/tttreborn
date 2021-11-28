@@ -2,6 +2,7 @@ $button-size: 50px;
 
 button
 {
+	display: flex;
 	font-family: Poppins;
 	font-weight: 600;
 	font-size: 16px;
@@ -10,8 +11,8 @@ button
 	padding: 8px 16px;
 	border-radius: 8px;
 	color: $button-inactive-fg;
-	align-items: center;
 	min-height: $button-size;
+	align-items: center;
 
 	> iconpanel
 	{
@@ -45,13 +46,5 @@ button
 	{
 		opacity: 0.2;
 		pointer-events: none;
-	}
-
-	&.tight
-	{
-		padding: 8px 8px;
-		height: $button-size;
-		min-width: $button-size;
-		justify-content: center;
 	}
 }

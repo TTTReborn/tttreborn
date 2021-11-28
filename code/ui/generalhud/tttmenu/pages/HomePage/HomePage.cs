@@ -8,9 +8,14 @@ namespace TTTReborn.UI.Menu
     [UseTemplate]
     public partial class HomePage : Panel
     {
-        public void GoToCompontentTesting()
+        public void GoToComponentTesting()
         {
-            TTTMenu.Instance.AddPage(new ComponentTesting());
+            TTTMenu.Instance.AddPage(new ComponentTestingPage());
+        }
+
+        public void GoToKeyBindings()
+        {
+            TTTMenu.Instance.AddPage(new KeyBindingsPage());
         }
     }
 }
