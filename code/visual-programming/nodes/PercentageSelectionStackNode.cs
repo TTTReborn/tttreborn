@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.VisualProgramming
 {
+    [StackNode("percentage_selection")]
     public partial class PercentageSelectionStackNode : StackNode
     {
         public List<float> PercentList { get; set; } = new();
@@ -17,7 +18,7 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Build(params object[] input)
+        public override object[] Test(params object[] input)
         {
             if (input == null || input[0] is not List<TTTPlayer> playerList)
             {
@@ -28,7 +29,7 @@ namespace TTTReborn.VisualProgramming
 
             if (percentListCount < 2)
             {
-                throw new NodeStackException("Missing values in RandomNode.");
+                throw new NodeStackException("Missing values in PercentageSelectionStackNode.");
             }
 
             int allPlayerAmount = Client.All.Count;
@@ -37,7 +38,7 @@ namespace TTTReborn.VisualProgramming
 
             for (int i = 0; i < percentListCount; i++)
             {
-                int playerAmount = (int) MathF.Floor((float) allPlayerAmount * (PercentList[i] / 100f));
+                int playerAmount = Math.Clamp((int) MathF.Ceiling(allPlayerAmount * (PercentList[i] / 100f)), 0, playerList.Count);
 
                 List<TTTPlayer> selectedPlayers = new();
 
@@ -57,7 +58,27 @@ namespace TTTReborn.VisualProgramming
                 (buildArray[^1] as List<TTTPlayer>).AddRange(playerList);
             }
 
-            return base.Build(buildArray);
+            return buildArray;
+        }
+
+        public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        {
+            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            dict.Add("PercentList", PercentList);
+
+            return dict;
+        }
+
+        public override void LoadFromJsonData(Dictionary<string, object> jsonData)
+        {
+            jsonData.TryGetValue("PercentList", out object percentList);
+
+            if (percentList != null)
+            {
+                PercentList = JsonSerializer.Deserialize<List<float>>(((JsonElement) percentList).GetRawText());
+            }
+
+            base.LoadFromJsonData(jsonData);
         }
     }
 }

@@ -1,12 +1,12 @@
+using System;
 using System.Collections.Generic;
-
-using Sandbox;
 
 using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.VisualProgramming
 {
+    [StackNode("role_selection")]
     public partial class RoleSelectionStackNode : StackNode
     {
         public TTTRole SelectedRole { get; set; }
@@ -16,7 +16,7 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Build(params object[] input)
+        public override object[] Test(params object[] input)
         {
             if (input == null || input[0] is not List<TTTPlayer> playerList)
             {
@@ -33,7 +33,35 @@ namespace TTTReborn.VisualProgramming
                 Log.Info($"Selected '{player.Client.Name}' with role '{SelectedRole.Name}'");
             }
 
-            return base.Build(input[0]);
+            return new object[]
+            {
+                input[0]
+            };
+        }
+
+        public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        {
+            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            dict.Add("SelectedRole", SelectedRole?.Name);
+
+            return dict;
+        }
+
+        public override void LoadFromJsonData(Dictionary<string, object> jsonData)
+        {
+            jsonData.TryGetValue("SelectedRole", out object selectedRoleName);
+
+            if (selectedRoleName != null)
+            {
+                Type roleType = Utils.GetTypeByLibraryName<TTTRole>(selectedRoleName.ToString());
+
+                if (roleType != null)
+                {
+                    SelectedRole = Utils.GetObjectByType<TTTRole>(roleType);
+                }
+            }
+
+            base.LoadFromJsonData(jsonData);
         }
     }
 }
