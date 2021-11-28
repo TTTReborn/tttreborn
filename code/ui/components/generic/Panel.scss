@@ -6,12 +6,14 @@ $dead: #e12c3b;
 $spectator: #fcdb38;
 $info: #ffae00;
 
-$button-inactive: rgb(139, 139, 139) !default;
+$button-inactive: #455a64 !default;
 $button-inactive-bottom: $button-inactive !default;
 $button-inactive-fg: white !default;
 
-$button-active: rgb(116, 116, 116) !default;
+$button-active: #708690 !default;
 $button-active-fg: white !default;
+
+$button-dark: #1b3039 !default;
 
 @import "/code/ui/generalhud/tttmenu/components/button.scss";
 @import "/code/ui/generalhud/tttmenu/components/checkbox.scss";

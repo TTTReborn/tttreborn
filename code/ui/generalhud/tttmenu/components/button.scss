@@ -30,21 +30,15 @@ button
 		color: $button-active-fg;
 	}
 
-	&.active
-	{
-		background-color: $button-active;
-		color: $button-active-fg;
-	}
-
 	&:active
 	{
-		background-color: $button-active-fg;
-		color: $button-active;
+		background-color: $button-inactive;
+		color: $button-inactive-fg;
 	}
 
 	&.inactive
 	{
-		opacity: 0.2;
+		opacity: 0.3;
 		pointer-events: none;
 	}
 }

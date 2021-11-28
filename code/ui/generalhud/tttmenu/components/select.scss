@@ -39,31 +39,12 @@ select
 		opacity: 0.2;
 		pointer-events: none;
 	}
-
-	&.tight
-	{
-		padding: 8px 8px;
-		height: $button-size;
-		min-width: $button-size;
-		justify-content: center;
-	}
 }
 
 popup
 {
     position: absolute;
 	flex-direction: column;
-	transform-origin: 0% 0%;
-
-	&.below-stretch
-	{
-		transform-origin: 0% 0%;
-
-		&:intro
-		{
-			transform: scaleY( 0.1 );
-		}
-	}
 	
 	button {
 		border-radius: 0px;
