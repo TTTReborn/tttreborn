@@ -15,5 +15,7 @@ namespace TTTReborn.VisualProgramming
                 Utils.GetPlayers()
             };
         }
+
+        public override object[] Evaluate(params object[] input) => Test(input);
     }
 }

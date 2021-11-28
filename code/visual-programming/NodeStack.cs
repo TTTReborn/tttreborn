@@ -41,7 +41,7 @@ namespace TTTReborn.VisualProgramming
             {
                 if (e is NodeStackException)
                 {
-                    Log.Warning($"Error in node '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
+                    Log.Warning($"Error in node '{GetType()}' testing: ({e.Source}): {e.Message}\n{e.StackTrace}");
 
                     return false;
                 }
@@ -58,6 +58,52 @@ namespace TTTReborn.VisualProgramming
                 try
                 {
                     TestNode(node, arr.Length > i ? arr[i] : null);
+                }
+                catch (Exception e)
+                {
+                    errors = true;
+
+                    Log.Warning(e);
+                }
+            }
+
+            return !errors;
+        }
+
+        public bool Evaluate(params object[] input)
+        {
+            return EvaluateNode(MainStackNode, input);
+        }
+
+        private bool EvaluateNode(StackNode stackNode, params object[] input)
+        {
+            object[] arr;
+
+            try
+            {
+                arr = stackNode.Evaluate(input);
+            }
+            catch (Exception e)
+            {
+                if (e is NodeStackException)
+                {
+                    Log.Warning($"Error in node '{GetType()}' evaluation: ({e.Source}): {e.Message}\n{e.StackTrace}");
+
+                    return false;
+                }
+
+                throw;
+            }
+
+            bool errors = false;
+
+            for (int i = 0; i < stackNode.NextNodes.Count; i++)
+            {
+                StackNode node = stackNode.NextNodes[i];
+
+                try
+                {
+                    EvaluateNode(node, arr.Length > i ? arr[i] : null);
                 }
                 catch (Exception e)
                 {

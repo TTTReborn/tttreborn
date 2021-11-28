@@ -61,6 +61,8 @@ namespace TTTReborn.VisualProgramming
             return buildArray;
         }
 
+        public override object[] Evaluate(params object[] input) => Test(input);
+
         public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
         {
             Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
