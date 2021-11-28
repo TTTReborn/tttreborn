@@ -74,6 +74,11 @@ namespace TTTReborn.UI.VisualProgramming
             Nodes.Add(node);
         }
 
+        public void RemoveNode(Node node)
+        {
+            Nodes.Remove(node);
+        }
+
         private void LoadNodesFromStackJson(string jsonData)
         {
             jsonData = jsonData.Replace("LibraryName", "StackNodeName").Replace("NodeReference", "LibraryName");

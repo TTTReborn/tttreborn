@@ -87,6 +87,8 @@ namespace TTTReborn.UI.VisualProgramming
 
         protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
         {
+            Window.Instance?.RemoveNode(this);
+
             Delete(true);
 
             base.OnRightClick(e);
