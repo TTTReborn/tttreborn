@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-
 using Sandbox.UI;
-using Sandbox.UI.Construct;
+
 
 namespace TTTReborn.UI.Menu
 {
@@ -26,6 +24,11 @@ namespace TTTReborn.UI.Menu
         public void GoToRoleSelectionEditor()
         {
             new VisualProgramming.Window(Hud.Current.RootPanel);
+        }
+
+        public void GoToSettings()
+        {
+            TTTMenu.Instance.AddPage(new SettingsPage());
         }
     }
 }
