@@ -38,7 +38,7 @@ namespace TTTReborn.VisualProgramming
 
             for (int i = 0; i < percentListCount; i++)
             {
-                int playerAmount = (int) MathF.Floor((float) allPlayerAmount * (PercentList[i] / 100f));
+                int playerAmount = Math.Clamp((int) MathF.Ceiling(allPlayerAmount * (PercentList[i] / 100f)), 0, playerList.Count);
 
                 List<TTTPlayer> selectedPlayers = new();
 
