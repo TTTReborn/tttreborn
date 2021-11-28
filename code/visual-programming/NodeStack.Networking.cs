@@ -37,14 +37,14 @@ namespace TTTReborn.VisualProgramming
         [ClientRpc]
         public static void ClientInitializeNodesFromStack(bool access, string jsonData = null)
         {
-            Window window = Window.Instance;
-
             if (!access)
             {
                 Log.Info("No access to visual programming");
 
                 return;
             }
+
+            Window window = Window.Instance;
 
             if (window != null)
             {
@@ -68,7 +68,12 @@ namespace TTTReborn.VisualProgramming
         [ClientRpc]
         public static void ClientSendStackBuildResult()
         {
-            // TODO send client feedback
+            Window window = Window.Instance;
+
+            if (window != null)
+            {
+                window.BuildButton.Text = "play_arrow";
+            }
         }
 
         [ServerCmd]
@@ -80,6 +85,8 @@ namespace TTTReborn.VisualProgramming
             }
 
             ProceedPartialUpload(packetHash, packetNum, maxPackets, partialStack);
+
+            ClientSendStackBuildResult(To.Single(ConsoleSystem.Caller));
         }
 
         private static void ProceedPartialUpload(int packetHash, int packetNum, int maxPackets, string partialStack)

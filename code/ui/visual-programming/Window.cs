@@ -13,6 +13,8 @@ namespace TTTReborn.UI.VisualProgramming
         public WindowSidebar Sidebar;
         public PanelContent Workspace;
 
+        public Sandbox.UI.Button BuildButton;
+
         public Window(Sandbox.UI.Panel parent, string jsonData) : base(parent)
         {
             Instance = this;
@@ -34,10 +36,10 @@ namespace TTTReborn.UI.VisualProgramming
 
                 header.AddChild(loadButton);
 
-                Sandbox.UI.Button playButton = new("play_arrow", "", () => Build());
-                playButton.AddClass("play");
+                BuildButton = new("play_arrow", "", () => Build());
+                BuildButton.AddClass("play");
 
-                header.AddChild(playButton);
+                header.AddChild(BuildButton);
 
                 Sandbox.UI.Button resetButton = new("delete", "", () => Reset());
                 resetButton.AddClass("reset");

@@ -9,6 +9,8 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public void Build()
         {
+            BuildButton.Text = "hourglass_empty";
+
             MainNode.StackNode.Reset();
 
             bool hasError = false;
@@ -46,6 +48,8 @@ namespace TTTReborn.UI.VisualProgramming
             catch (Exception e)
             {
                 Log.Error(e);
+
+                BuildButton.Text = "play_arrow";
             }
         }
     }
