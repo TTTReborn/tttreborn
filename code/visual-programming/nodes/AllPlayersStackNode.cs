@@ -16,6 +16,6 @@ namespace TTTReborn.VisualProgramming
             };
         }
 
-        public override object[] Evaluate(params object[] input) => Test(input);
+        public override object[] Evaluate(params object[] input) => input;
     }
 }

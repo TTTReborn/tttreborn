@@ -78,31 +78,7 @@ namespace TTTReborn.Rounds
 
         private void AssignRolesAndRespawn(List<TTTPlayer> players)
         {
-            int traitorCount = (int) Math.Max(players.Count * 0.25f, 1f);
-
-            for (int i = 0; i < traitorCount; i++)
-            {
-                List<TTTPlayer> unassignedPlayers = players.Where(p => p.Role is NoneRole).ToList();
-                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
-
-                if (unassignedPlayers[randomId].Role is NoneRole)
-                {
-                    unassignedPlayers[randomId].SetRole(new TraitorRole());
-                }
-            }
-
-            int detectiveCount = (int) (players.Count * 0.125f);
-
-            for (int i = 0; i < detectiveCount; i++)
-            {
-                List<TTTPlayer> unassignedPlayers = players.Where(p => p.Role is NoneRole).ToList();
-                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
-
-                if (unassignedPlayers[randomId].Role is NoneRole)
-                {
-                    unassignedPlayers[randomId].SetRole(new DetectiveRole());
-                }
-            }
+            VisualProgramming.NodeStack.Instance.Evaluate(new List<TTTPlayer>(players));
 
             foreach (TTTPlayer player in players)
             {
