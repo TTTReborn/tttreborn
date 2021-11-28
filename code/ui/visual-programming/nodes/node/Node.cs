@@ -158,6 +158,8 @@ namespace TTTReborn.UI.VisualProgramming
                 StackNode.NextNodes.Add(connectedNode.StackNode);
             }
 
+            StackNode.SetPos(Box.Rect.left, Box.Rect.top);
+
             object[] arr;
 
             try

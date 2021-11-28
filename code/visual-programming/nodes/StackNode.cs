@@ -22,6 +22,8 @@ namespace TTTReborn.VisualProgramming
         public List<StackNode> NextNodes { get; set; } = new();
         public List<int> ConnectPositions { get; set; } = new();
 
+        private float _posX, _posY;
+
         public StackNode()
         {
             LibraryName = Utils.GetLibraryName(GetType());
@@ -30,6 +32,12 @@ namespace TTTReborn.VisualProgramming
         public virtual void Reset()
         {
             NextNodes.Clear();
+        }
+
+        internal void SetPos(float posX, float posY)
+        {
+            _posX = posX;
+            _posY = posY;
         }
 
         public abstract object[] Test(params object[] input);
@@ -64,6 +72,8 @@ namespace TTTReborn.VisualProgramming
                 ["ConnectPositions"] = ConnectPositions,
                 ["NodeReference"] = NodeReference,
                 ["NextNodes"] = nextNodesJsonList,
+                ["PosX"] = _posX,
+                ["PosY"] = _posY
             };
         }
 
@@ -101,6 +111,20 @@ namespace TTTReborn.VisualProgramming
             if (nodeReference != null)
             {
                 NodeReference = nodeReference.ToString();
+            }
+
+            jsonData.TryGetValue("PosX", out object posX);
+
+            if (posX != null)
+            {
+                _posX = float.Parse(posX.ToString());
+            }
+
+            jsonData.TryGetValue("PosY", out object posY);
+
+            if (posY != null)
+            {
+                _posY = float.Parse(posY.ToString());
             }
         }
 
