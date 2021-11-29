@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -11,6 +12,16 @@ namespace TTTReborn.UI
     public class TranslationLabel : Label
     {
         private readonly static List<TranslationLabel> _translationLabels = new();
+
+        [Property]
+        public string Key
+        {
+            set
+            {
+                TranslationKey = value;
+                SetTranslation(value, Array.Empty<object>());
+            }
+        }
 
         public string TranslationKey;
         public object[] TranslationParams;

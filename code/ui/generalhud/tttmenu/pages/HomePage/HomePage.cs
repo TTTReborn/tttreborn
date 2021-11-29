@@ -5,6 +5,11 @@ namespace TTTReborn.UI.Menu
     [UseTemplate]
     public partial class HomePage : Panel
     {
+        public void GoToSettingsPage()
+        {
+            TTTMenu.Instance.AddPage(new SettingsPage());
+        }
+
         public void GoToComponentTesting()
         {
             TTTMenu.Instance.AddPage(new ComponentTestingPage());

@@ -239,6 +239,30 @@ namespace TTTReborn.Settings
             ProceedPartialSettings(packetHash, packetNum, maxPackets, partialSettings);
         }
 
+        [ServerCmd]
+        public static void FetchAndOpenServerSettingsPage()
+        {
+            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            {
+                return;
+            }
+
+            ClientSendServerSettings(To.Single(ConsoleSystem.Caller), GetJSON(ServerSettings.Instance, true));
+        }
+
+        [ClientRpc]
+        public static void ClientSendServerSettings(string serverSettingsJson)
+        {
+            ServerSettings serverSettings = GetSettings<ServerSettings>(serverSettingsJson);
+
+            if (serverSettings == null)
+            {
+                return;
+            }
+
+            TTTMenu.Instance.AddPage(new ServerSettingsPage(serverSettings));
+        }
+
         private static void ProceedPartialSettings(int packetHash, int packetNum, int maxPackets, string partialSettings)
         {
             if (_currentPacketHash != packetHash)
