@@ -70,8 +70,8 @@
     "MENU_SETTINGS_GENERAL_LANGUAGE": "Language",
 
     "MENU_SUBMENU_SETTINGS": "Settings",
-    "MENU_SUBMENU_TESTING": "Testing",
-    "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
+    "MENU_SUBMENU_ROLE_SELECTION": "Role Selection Editor (WIP)",
+    "MENU_SUBMENU_COMPONENT_TESTING": "Component Testing",
 
     "MENU_SETTINGS_TAB_MAP": "Map",
     "MENU_SETTINGS_MAP_DEFAULTMAP": "Default Map",

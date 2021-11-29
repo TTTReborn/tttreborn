@@ -13,6 +13,16 @@ namespace TTTReborn.UI
     {
         private readonly static List<TranslationButton> _translationButtons = new();
 
+        [Property]
+        public string Key
+        {
+            set
+            {
+                TranslationKey = value;
+                SetTranslation(value, Array.Empty<object>());
+            }
+        }
+
         public string TranslationKey;
         public object[] TranslationParams;
         public bool IsTranslationDisabled = false;
@@ -29,6 +39,8 @@ namespace TTTReborn.UI
                 TranslationParams = null;
             }
         }
+
+        public TranslationButton() : base() { }
 
         public TranslationButton(string translationKey = null, string icon = null, Action onClick = null, string classname = null, bool tryTranslation = false, params object[] args) : base(translationKey, icon, onClick)
         {
