@@ -1,16 +1,17 @@
 <link rel="stylesheet" href="ComponentTestingPage.scss">
 
 <div class="root">
-    <translationbutton icon="home" key="MENU_SUBMENU_SETTINGS"></translationbutton>
+    <translationbutton icon="settings" key="MENU_SUBMENU_SETTINGS"></translationbutton>
     <br />
 
     <translationbutton class="inactive" key="MENU_SUBMENU_SETTINGS"></translationbutton>
     <br />
 
-    <checkbox @checked="CheckedValue">Enable some property.</checkbox>
+    <translationcheckbox @checked="CheckedValue" key="MENU_SUBMENU_COMPONENT_TESTING"></translationcheckbox>
     <br />
 
-    <checkbox class="inactive" @checked="CheckedValue">Inactive checkbox.</checkbox>
+    <translationcheckbox class="inactive" @checked="CheckedValue" key="MENU_SUBMENU_COMPONENT_TESTING">
+    </translationcheckbox>
     <br />
 
     <select @value="FloatValue">
