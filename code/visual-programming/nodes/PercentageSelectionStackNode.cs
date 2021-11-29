@@ -32,7 +32,7 @@ namespace TTTReborn.VisualProgramming
                 throw new NodeStackException("Missing values in PercentageSelectionStackNode.");
             }
 
-            int allPlayerAmount = Client.All.Count;
+            int allPlayerAmount = Client.All.Count; // TODO just use available players, not specs
 
             object[] buildArray = new object[percentListCount];
 
@@ -50,7 +50,7 @@ namespace TTTReborn.VisualProgramming
                     playerList.RemoveAt(rnd);
                 }
 
-                buildArray[i] = selectedPlayers;
+                buildArray[i] = selectedPlayers.Count > 0 ? selectedPlayers : null;
             }
 
             if (playerList.Count > 0)

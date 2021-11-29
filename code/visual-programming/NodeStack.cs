@@ -36,6 +36,11 @@ namespace TTTReborn.VisualProgramming
             try
             {
                 arr = stackNode.Test(input);
+
+                if (arr == null)
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {
@@ -82,6 +87,11 @@ namespace TTTReborn.VisualProgramming
             try
             {
                 arr = stackNode.Evaluate(input);
+
+                if (arr == null)
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {

@@ -165,6 +165,11 @@ namespace TTTReborn.UI.VisualProgramming
             try
             {
                 arr = StackNode.Test(input);
+
+                if (arr == null)
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {

@@ -26,6 +26,10 @@ namespace TTTReborn.UI.VisualProgramming
                         {
                             randomSelectionNode.OnChange();
                         }
+                        else if (Node is PlayerAmountSelectionNode playerAmountSelectionNode)
+                        {
+                            playerAmountSelectionNode.OnChange();
+                        }
 
                         Node?.RemoveHighlights();
                     }
