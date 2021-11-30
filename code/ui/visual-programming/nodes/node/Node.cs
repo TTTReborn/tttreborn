@@ -187,7 +187,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             bool errors = false;
 
-            for (int i = 0; i < NextNodes.Count; i++)
+            for (int i = 0, j = 0; i < NextNodes.Count; i++, j++)
             {
                 Node node = NextNodes[i];
 
@@ -197,8 +197,6 @@ namespace TTTReborn.UI.VisualProgramming
 
                     if (arr.Length > i)
                     {
-                        int j = i;
-
                         while (j < arr.Length)
                         {
                             data = arr[j];

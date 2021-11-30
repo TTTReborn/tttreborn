@@ -56,7 +56,7 @@ namespace TTTReborn.VisualProgramming
 
             bool errors = false;
 
-            for (int i = 0; i < stackNode.NextNodes.Count; i++)
+            for (int i = 0, j = 0; i < stackNode.NextNodes.Count; i++, j++)
             {
                 StackNode node = stackNode.NextNodes[i];
 
@@ -66,8 +66,6 @@ namespace TTTReborn.VisualProgramming
 
                     if (arr.Length > i)
                     {
-                        int j = i;
-
                         while (j < arr.Length)
                         {
                             data = arr[j];
@@ -126,7 +124,7 @@ namespace TTTReborn.VisualProgramming
 
             bool errors = false;
 
-            for (int i = 0; i < stackNode.NextNodes.Count; i++)
+            for (int i = 0, j = 0; i < stackNode.NextNodes.Count; i++, j++)
             {
                 StackNode node = stackNode.NextNodes[i];
 
@@ -136,8 +134,6 @@ namespace TTTReborn.VisualProgramming
 
                     if (arr.Length > i)
                     {
-                        int j = i;
-
                         while (j < arr.Length)
                         {
                             data = arr[j];
