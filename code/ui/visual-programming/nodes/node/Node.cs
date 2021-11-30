@@ -165,11 +165,6 @@ namespace TTTReborn.UI.VisualProgramming
             try
             {
                 arr = StackNode.Test(input);
-
-                if (arr == null)
-                {
-                    return true;
-                }
             }
             catch (Exception e)
             {
@@ -195,7 +190,7 @@ namespace TTTReborn.UI.VisualProgramming
                 {
                     object data = null;
 
-                    if (arr.Length > i)
+                    if (arr?.Length > i)
                     {
                         while (j < arr.Length)
                         {
