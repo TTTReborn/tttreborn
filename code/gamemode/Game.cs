@@ -24,6 +24,7 @@ using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Settings;
+using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.Gamemode
 {
@@ -62,6 +63,7 @@ namespace TTTReborn.Gamemode
             if (IsServer)
             {
                 ShopManager.Load();
+                NodeStack.Load();
             }
         }
 
@@ -245,7 +247,7 @@ namespace TTTReborn.Gamemode
                         return;
                     }
 
-                    Log.Error($"{e.Message}: {e.StackTrace}");
+                    Log.Error($"[TASK] {e.Message}: {e.StackTrace}");
                 }
             }
         }

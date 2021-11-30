@@ -27,7 +27,9 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            log.Info($"[DEBUG] {obj}");
+            string host = Host.IsServer ? "SERVER" : "CLIENT";
+
+            log.Info($"[DEBUG][{host}] {obj}");
         }
     }
 }

@@ -8,6 +8,8 @@ DialogBox,
 
     pointer-events: all;
 
+    z-index: 500;
+
     &.hide {
         display: none;
         pointer-events: none;

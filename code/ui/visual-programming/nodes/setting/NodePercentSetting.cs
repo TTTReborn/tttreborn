@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see https://github.com/TTTReborn/tttreborn/blob/master/LICENSE.
 
+using System;
+
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.VisualProgramming
@@ -28,6 +30,22 @@ namespace TTTReborn.UI.VisualProgramming
             Content.SetPanelContent((panelContent) =>
             {
                 PercentEntry = panelContent.Add.TextEntry(""); // TODO improve with validity checks and error toggling
+                PercentEntry.AddEventListener("onchange", (panelEvent) =>
+                {
+                    try
+                    {
+                        if (Node is PercentageSelectionNode percentageSelectionNode)
+                        {
+                            percentageSelectionNode.OnChange();
+                        }
+
+                        Node?.RemoveHighlights();
+                    }
+                    catch (Exception)
+                    {
+                        Node?.HighlightError();
+                    }
+                });
             });
         }
     }

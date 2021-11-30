@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 
-using TTTReborn.Globals;
 using TTTReborn.Roles;
 using TTTReborn.VisualProgramming;
 
@@ -52,11 +51,11 @@ namespace TTTReborn.UI.VisualProgramming
             Style.BackgroundColor = role.Color;
         }
 
-        public override void Build(params object[] input)
+        public override bool Build(params object[] input)
         {
             (StackNode as RoleSelectionStackNode).SelectedRole = SelectedRole;
 
-            base.Build(input);
+            return base.Build(input);
         }
 
         public override Dictionary<string, object> GetJsonData(List<Node> proceedNodes = null)

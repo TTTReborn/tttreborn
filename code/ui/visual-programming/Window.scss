@@ -6,7 +6,7 @@ Window.visualprogramming {
             position: absolute;
             border-radius: 0px;
             z-index: 1;
-            width: 210px;
+            width: 260px;
             right: 0px;
             top: -5px;
             padding: 5px;
@@ -16,12 +16,11 @@ Window.visualprogramming {
                 display: none;
             }
 
-            .play, .save, .load {
+            .play, .save, .load, .reset {
                 font-family: MaterialIcons;
                 font-size: 28px;
                 margin: 10px;
                 padding: 2px;
-
                 width: 28px;
                 height: 28px;
             }
@@ -38,15 +37,11 @@ Window.visualprogramming {
             > WindowSidebar {
                 position: absolute;
                 left: -190px;
-
                 transition: left 0.1s linear;
-
                 flex-direction: column;
-
                 width: 200px;
                 height: 100%;
                 overflow: scroll;
-
                 background-color: #383838;
                 padding: 10px;
 
@@ -58,15 +53,12 @@ Window.visualprogramming {
                 .label.category {
                     font-size: 21px;
                     padding: 1px;
-
                     border-bottom: 2px #fafafa solid;
-
                     margin-bottom: 10px;
                 }
 
                 SidebarEntry {
                     background-color: rgb(92, 92, 92);
-
                     border-radius: 16px;
                     padding: 10px;
                     margin: 2px;

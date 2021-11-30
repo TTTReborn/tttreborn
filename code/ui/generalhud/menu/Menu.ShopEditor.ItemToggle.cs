@@ -19,7 +19,6 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;

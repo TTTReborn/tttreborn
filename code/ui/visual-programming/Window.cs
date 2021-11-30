@@ -15,8 +15,7 @@
 // along with this program.  If not, see https://github.com/TTTReborn/tttreborn/blob/master/LICENSE.
 
 using System.Collections.Generic;
-
-using TTTReborn.VisualProgramming;
+using System.Text.Json;
 
 namespace TTTReborn.UI.VisualProgramming
 {
@@ -30,9 +29,9 @@ namespace TTTReborn.UI.VisualProgramming
         public WindowSidebar Sidebar;
         public PanelContent Workspace;
 
-        private NodeStack _nodeStack;
+        public Sandbox.UI.Button BuildButton;
 
-        public Window(Sandbox.UI.Panel parent = null) : base(parent)
+        public Window(Sandbox.UI.Panel parent, string jsonData) : base(parent)
         {
             Instance = this;
 
@@ -53,10 +52,15 @@ namespace TTTReborn.UI.VisualProgramming
 
                 header.AddChild(loadButton);
 
-                Sandbox.UI.Button playButton = new("play_arrow", "", () => Build());
-                playButton.AddClass("play");
+                BuildButton = new("play_arrow", "", () => Build());
+                BuildButton.AddClass("play");
 
-                header.AddChild(playButton);
+                header.AddChild(BuildButton);
+
+                Sandbox.UI.Button resetButton = new("delete", "", () => Reset());
+                resetButton.AddClass("reset");
+
+                header.AddChild(resetButton);
             };
 
             Header.NavigationHeader.Reload();
@@ -66,20 +70,21 @@ namespace TTTReborn.UI.VisualProgramming
                 Workspace = new(panelContent);
                 Sidebar = new(panelContent);
 
-                MainNode = AddNode<MainNode>();
-                MainNode.Display();
+                LoadNodesFromStackJson(jsonData);
 
-                AddNode<RoleSelectionNode>().Display();
-                AddNode<RoleSelectionNode>().Display();
-                AddNode<PercentageSelectionNode>().Display();
+                if (MainNode == null)
+                {
+                    MainNode = AddNode<MainNode>();
+                    MainNode.Display();
+
+                    Log.Warning("Missing main node in default visual programming stack");
+                }
             });
-
-            _nodeStack = new NodeStack(); // TODO move to server later
         }
 
         public T AddNode<T>() where T : Node, new()
         {
-            T node = new T();
+            T node = new();
 
             AddNode(node);
 
@@ -90,6 +95,37 @@ namespace TTTReborn.UI.VisualProgramming
         {
             Workspace.AddChild(node);
             Nodes.Add(node);
+        }
+
+        public void RemoveNode(Node node)
+        {
+            Nodes.Remove(node);
+        }
+
+        private void LoadNodesFromStackJson(string jsonData)
+        {
+            jsonData = jsonData.Replace("LibraryName", "StackNodeName").Replace("NodeReference", "LibraryName");
+
+            Dictionary<string, object> jsonDataDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonData);
+
+            jsonDataDict.TryGetValue("MainStackNode", out object mainStackNode);
+
+            if (mainStackNode == null)
+            {
+                return;
+            }
+
+            Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) mainStackNode).GetRawText());
+
+            MainNode = AddNode<MainNode>();
+            MainNode.LoadFromJsonData(saveStackNode);
+
+            foreach (Node node in Nodes)
+            {
+                node.Display();
+            }
+
+            Log.Debug($"Loaded: '{jsonData}'");
         }
     }
 }

@@ -20,7 +20,6 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
@@ -58,6 +57,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             StackNode = stackNode;
             LibraryName = Utils.GetLibraryName(GetType());
+            StackNode.NodeReference = LibraryName;
 
             Header.DragHeader.IsFreeDraggable = true;
             Header.DragHeader.IsLocked = false;
@@ -87,12 +87,15 @@ namespace TTTReborn.UI.VisualProgramming
         {
             foreach (NodeSetting nodeSetting in NodeSettings)
             {
-                if (nodeSetting.Output == null)
+                if (nodeSetting.Output != null)
                 {
-                    continue;
+                    nodeSetting.Output.ConnectionPoint.ConnectionWire?.Delete(true);
                 }
 
-                nodeSetting.Output.ConnectionPoint.ConnectionWire?.Delete(true);
+                if (nodeSetting.Input != null)
+                {
+                    nodeSetting.Input.ConnectionPoint.ConnectionWire?.Delete(true);
+                }
             }
 
             base.Delete(immediate);
@@ -100,6 +103,8 @@ namespace TTTReborn.UI.VisualProgramming
 
         protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
         {
+            Window.Instance?.RemoveNode(this);
+
             Delete(true);
 
             base.OnRightClick(e);
@@ -107,7 +112,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         private Node GetConnectedNode(NodeConnectionPoint connectionPoint, out int index)
         {
-            index = 0;
+            index = -1;
 
             NodeConnectionWire connectionWire = connectionPoint.ConnectionWire;
 
@@ -141,9 +146,11 @@ namespace TTTReborn.UI.VisualProgramming
             return false;
         }
 
-        public virtual void Build(params object[] input)
+        public virtual bool Build(params object[] input)
         {
             NextNodes.Clear();
+            StackNode.NextNodes.Clear();
+            StackNode.ConnectPositions.Clear();
 
             for (int i = 0; i < NodeSettings.Count; i++)
             {
@@ -156,6 +163,8 @@ namespace TTTReborn.UI.VisualProgramming
 
                 Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
 
+                StackNode.ConnectPositions.Add(connectPositionIndex);
+
                 if (connectedNode == null)
                 {
                     continue;
@@ -165,11 +174,13 @@ namespace TTTReborn.UI.VisualProgramming
                 StackNode.NextNodes.Add(connectedNode.StackNode);
             }
 
-            object[] arr = null;
+            StackNode.SetPos(Box.Rect.left, Box.Rect.top);
+
+            object[] arr;
 
             try
             {
-                arr = StackNode.Build(input);
+                arr = StackNode.Test(input);
             }
             catch (Exception e)
             {
@@ -177,15 +188,15 @@ namespace TTTReborn.UI.VisualProgramming
 
                 if (e is NodeStackException)
                 {
-                    Log.Warning($"Error in note '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
-                }
-                else
-                {
-                    Log.Error(e);
+                    Log.Warning($"Error in node '{GetType()}': ({e.Source}): {e.Message}\n{e.StackTrace}");
+
+                    return false;
                 }
 
-                throw e;
+                throw;
             }
+
+            bool errors = false;
 
             for (int i = 0; i < NextNodes.Count; i++)
             {
@@ -193,20 +204,23 @@ namespace TTTReborn.UI.VisualProgramming
 
                 try
                 {
-                    node.Build(arr.Length > i ? arr[i] : null);
+                    if (!node.Build(arr.Length > i ? arr[i] : null))
+                    {
+                        errors = true;
+                    }
                 }
                 catch (Exception e)
                 {
                     if (e is not NodeStackException)
                     {
                         node.HighlightError();
-
-                        Log.Error(e);
                     }
 
-                    throw e;
+                    throw;
                 }
             }
+
+            return !errors;
         }
 
         public virtual void HighlightError()
@@ -219,20 +233,30 @@ namespace TTTReborn.UI.VisualProgramming
             RemoveClass("error");
         }
 
-        public void ConnectWithNode(Node node, int index)
+        public void ConnectWithNode(Node node, int index, int maxIndex)
         {
             if (node == this)
             {
                 return;
             }
 
+            while (index <= maxIndex && ConnectPositions[index] == -1)
+            {
+                index++;
+
+                if (index == maxIndex)
+                {
+                    return;
+                }
+            }
+
             NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
 
-            NodeConnectionStartPoint startPoint = this.NodeSettings[index].Output.ConnectionPoint as NodeConnectionStartPoint;
+            NodeConnectionStartPoint startPoint = NodeSettings[index].Output.ConnectionPoint;
             startPoint.ConnectionWire = nodeConnectionWire;
             nodeConnectionWire.StartPoint = startPoint;
 
-            NodeConnectionEndPoint endPoint = node.NodeSettings[ConnectPositions[index]].Input.ConnectionPoint as NodeConnectionEndPoint;
+            NodeConnectionEndPoint endPoint = node.NodeSettings[ConnectPositions[index]].Input.ConnectionPoint;
             endPoint.ConnectionWire = nodeConnectionWire;
             nodeConnectionWire.EndPoint = endPoint;
         }
@@ -260,13 +284,14 @@ namespace TTTReborn.UI.VisualProgramming
 
                 Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
 
+                ConnectPositions.Add(connectPositionIndex);
+
                 if (connectedNode == null)
                 {
                     continue;
                 }
 
                 NextNodes.Add(connectedNode);
-                ConnectPositions.Add(connectPositionIndex);
             }
 
             foreach (Node node in NextNodes)
@@ -312,7 +337,7 @@ namespace TTTReborn.UI.VisualProgramming
                     }
 
                     NextNodes.Add(node);
-                    ConnectWithNode(node, i);
+                    ConnectWithNode(node, i, nextNodesList.Count - 1);
                 }
             }
 

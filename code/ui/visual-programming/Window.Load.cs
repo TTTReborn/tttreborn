@@ -20,8 +20,6 @@ using System.Text.Json;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
-
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window
@@ -55,14 +53,14 @@ namespace TTTReborn.UI.VisualProgramming
 
             fileName = fileName.Split('/')[^1].Split('.')[0];
 
-            if (Window.Instance == null)
+            if (Instance == null)
             {
                 fileSelection.Close();
 
                 return;
             }
 
-            Dictionary<string, object> jsonData = Player.TTTPlayer.LoadVisualProgramming(fileSelection.CurrentFolderPath, fileName, Utils.Realm.Client);
+            Dictionary<string, object> jsonData = Player.TTTPlayer.LoadVisualProgramming(fileSelection.CurrentFolderPath, fileName + VISUALPROGRAMMING_FILE_EXTENSION, Utils.Realm.Client);
 
             if (jsonData == null)
             {
@@ -103,6 +101,11 @@ namespace TTTReborn.UI.VisualProgramming
 
             foreach (Node node in Nodes)
             {
+                if (node is MainNode mainNode)
+                {
+                    MainNode = mainNode;
+                }
+
                 node.Display();
             }
         }
@@ -119,9 +122,9 @@ namespace TTTReborn.Player
         {
             path = Utils.GetSettingsFolderPath(realm, path);
 
-            if (FileSystem.Data.FileExists(path + fileName + Window.VISUALPROGRAMMING_FILE_EXTENSION))
+            if (FileSystem.Data.FileExists(path + fileName))
             {
-                string jsonData = FileSystem.Data.ReadAllText(path + fileName + Window.VISUALPROGRAMMING_FILE_EXTENSION);
+                string jsonData = FileSystem.Data.ReadAllText(path + fileName);
 
                 if (jsonData == null || string.IsNullOrEmpty(jsonData))
                 {

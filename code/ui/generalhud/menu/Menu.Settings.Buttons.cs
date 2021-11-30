@@ -121,11 +121,11 @@ namespace TTTReborn.UI.Menu
             {
                 if (!FileSystem.Data.FileExists(fileSelection.CurrentFolderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
                 {
-                    SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance, fileSelection.CurrentFolderPath, fileName);
+                    SettingFunctions.SaveSettings(ClientSettings.Instance, fileSelection.CurrentFolderPath, fileName);
                 }
                 else
                 {
-                    AskOverwriteSelectedSettings(fileSelection.CurrentFolderPath, fileName, () => SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance, fileSelection.CurrentFolderPath, fileName));
+                    AskOverwriteSelectedSettings(fileSelection.CurrentFolderPath, fileName, () => SettingFunctions.SaveSettings(ClientSettings.Instance, fileSelection.CurrentFolderPath, fileName));
                 }
             }
             else if (realm == Utils.Realm.Server)

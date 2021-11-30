@@ -20,13 +20,12 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
-
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class WindowSidebar : Panel
     {
         public List<SidebarEntry> SidebarEntries = new();
+
         public bool IsFullOpened
         {
             get => _isFullOpened;
@@ -76,11 +75,16 @@ namespace TTTReborn.UI.VisualProgramming
             base.OnMouseOver(e);
         }
 
-        protected override void OnMouseOut(Sandbox.UI.MousePanelEvent e)
+        public override void Tick()
         {
-            IsFullOpened = false;
+            base.Tick();
 
-            base.OnMouseOut(e);
+            if (IsInside(Mouse.Position))
+            {
+                return;
+            }
+
+            IsFullOpened = false;
         }
     }
 

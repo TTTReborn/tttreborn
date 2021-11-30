@@ -9,6 +9,8 @@ FileSelection,
 
     pointer-events: all;
 
+    z-index: 500;
+
     > .content {
         flex-direction: column;
 

@@ -15,6 +15,9 @@
 // along with this program.  If not, see https://github.com/TTTReborn/tttreborn/blob/master/LICENSE.
 
 using System;
+using System.Text.Json;
+
+using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
@@ -22,7 +25,9 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public void Build()
         {
-            _nodeStack.Reset();
+            BuildButton.Text = "hourglass_empty";
+
+            MainNode.StackNode.Reset();
 
             bool hasError = false;
 
@@ -45,14 +50,22 @@ namespace TTTReborn.UI.VisualProgramming
 
             try
             {
-                MainNode.Build();
+                Log.Debug("Building NodeStack");
 
-                // TODO sync _nodeStack to server and save
-                // JsonSerializer.Serialize(MainNode.GetJsonData());
+                if (!MainNode.Build())
+                {
+                    return;
+                }
+
+                Log.Debug("Uploading NodeStack");
+
+                NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
             }
             catch (Exception e)
             {
                 Log.Error(e);
+
+                BuildButton.Text = "play_arrow";
             }
         }
     }

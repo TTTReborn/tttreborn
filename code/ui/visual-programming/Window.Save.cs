@@ -21,8 +21,6 @@ using System.Text.Json;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
-
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window
@@ -124,25 +122,6 @@ namespace TTTReborn.Player
 
     public partial class TTTPlayer
     {
-        // TODO just save build data on server (valid data in a default place!)
-        // [ServerCmd(Name = "ttt_visualprogramming_saveas_request")]
-        // public static void RequestSaveVisualProgrammingAs(string filePath, string fileName, string jsonData, bool overwrite = false)
-        // {
-        //     if (!ConsoleSystem.Caller.HasPermission("visualprogramming"))
-        //     {
-        //         return;
-        //     }
-
-        //     if (overwrite || !FileSystem.Data.FileExists(filePath + fileName + VisualProgrammingWindow.VISUALPROGRAMMING_FILE_EXTENSION))
-        //     {
-        //         SaveVisualProgramming(filePath, fileName, jsonData);
-        //     }
-        //     else
-        //     {
-        //         ClientAskOverwriteSelectedVisualProgramming(To.Single(ConsoleSystem.Caller), filePath, fileName);
-        //     }
-        // }
-
         internal static void SaveVisualProgramming(string path, string fileName, string jsonData, Utils.Realm realm)
         {
             if (jsonData == null || string.IsNullOrEmpty(jsonData))
