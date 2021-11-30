@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.Menu
 {
@@ -28,6 +29,7 @@ namespace TTTReborn.UI.Menu
 
         public static void CreateSwitchSetting(Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject)
         {
+            TranslationCheckbox checkbox = parent.Add.TranslationCheckbox($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}");
         }
     }
 }

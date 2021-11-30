@@ -267,7 +267,6 @@ namespace TTTReborn.UI
             public ICarriableItem Carriable { get; init; }
             public Label SlotLabel;
             private readonly Label _ammoLabel;
-            private TranslationLabel _carriableLabel;
 
             public InventorySlot(Sandbox.UI.Panel parent, ICarriableItem carriable) : base(parent)
             {
@@ -279,7 +278,7 @@ namespace TTTReborn.UI
                 SlotLabel = Add.Label(((int) carriable.SlotType).ToString());
                 SlotLabel.AddClass("slot-label");
 
-                _carriableLabel = Add.TranslationLabel(carriable.LibraryName.ToUpper());
+                Add.TranslationLabel(new Globalization.TranslationData(carriable.LibraryName.ToUpper()));
 
                 _ammoLabel = Add.Label();
 

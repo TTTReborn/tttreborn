@@ -1,46 +1,46 @@
-using Sandbox.UI;
+// using Sandbox.UI;
 
-namespace TTTReborn.UI
-{
-    public partial class DropdownOptionHolder : Panel
-    {
-        public Dropdown RelatedPanel { get; private set; }
+// namespace TTTReborn.UI
+// {
+//     public partial class DropdownOptionHolder : Panel
+//     {
+//         public Dropdown RelatedPanel { get; private set; }
 
-        public DropdownOptionHolder(Dropdown relatedPanel) : base()
-        {
-            RelatedPanel = relatedPanel;
+//         public DropdownOptionHolder(Dropdown relatedPanel) : base()
+//         {
+//             RelatedPanel = relatedPanel;
 
-            Hud.Current.RootPanel.AddChild(this);
+//             Hud.Current.RootPanel.AddChild(this);
 
-            StyleSheet.Load("/ui/components/dropdown/DropdownOptionHolder.scss");
-        }
+//             StyleSheet.Load("/ui/components/dropdown/DropdownOptionHolder.scss");
+//         }
 
-        public override void Tick()
-        {
-            base.Tick();
+//         public override void Tick()
+//         {
+//             base.Tick();
 
-            if (RelatedPanel.IsDeleted)
-            {
-                Delete(true);
+//             if (RelatedPanel.IsDeleted)
+//             {
+//                 Delete(true);
 
-                return;
-            }
+//                 return;
+//             }
 
-            if (!RelatedPanel.IsVisible)
-            {
-                Enabled = false;
-            }
+//             if (!RelatedPanel.IsVisible)
+//             {
+//                 Enabled = false;
+//             }
 
-            if (!Enabled)
-            {
-                return;
-            }
+//             if (!Enabled)
+//             {
+//                 return;
+//             }
 
-            Rect rect = RelatedPanel.Box.Rect;
+//             Rect rect = RelatedPanel.Box.Rect;
 
-            Style.Left = Length.Pixels(rect.left);
-            Style.Top = Length.Pixels(rect.bottom);
-            Style.Width = Length.Pixels(rect.width);
-        }
-    }
-}
+//             Style.Left = Length.Pixels(rect.left);
+//             Style.Top = Length.Pixels(rect.bottom);
+//             Style.Width = Length.Pixels(rect.width);
+//         }
+//     }
+// }

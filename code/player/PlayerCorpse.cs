@@ -139,7 +139,7 @@ namespace TTTReborn.Player
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new(IsIdentified ? "CORPSE_INSPECT" : "CORPSE_IDENTIFY", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
+        public TranslationData TextOnTick => new(IsIdentified ? "CORPSE_INSPECT" : "CORPSE_IDENTIFY", false, new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
 
         public bool CanHint(TTTPlayer client) => true;
 

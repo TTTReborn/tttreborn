@@ -31,7 +31,7 @@ namespace TTTReborn.UI
                 {
                     Option o = new Option();
 
-                    o.Title = TTTLanguage.ActiveLanguage.TryFormattedTranslation(child.GetAttribute("key"), true, Array.Empty<object>());
+                    o.Title = TTTLanguage.ActiveLanguage.GetFormattedTranslation(new TranslationData(child.GetAttribute("key")));
                     o.Value = child.GetAttribute("value", o.Title);
                     o.Icon = child.GetAttribute("icon", null);
 

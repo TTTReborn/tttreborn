@@ -17,7 +17,7 @@ namespace TTTReborn.UI
             AddClass("text-color-info");
             AddClass("text-shadow");
 
-            _label = Add.TranslationLabel(translationData.Key, string.Empty, translationData.Data);
+            _label = Add.TranslationLabel(translationData);
             _label.Style.Padding = 10;
 
             Enabled = false;
@@ -30,7 +30,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _label.SetTranslation(translationData.Key, translationData.Data);
+            _label.SetTranslation(translationData);
         }
     }
 }

@@ -77,31 +77,26 @@ namespace TTTReborn.Globalization
             return _langDict.TryGetValue(key, out object translation) ? translation : null;
         }
 
-        public string GetFormattedTranslation(string key, params object[] args)
+        public string GetFormattedTranslation(TranslationData translationData)
         {
-            return TryFormattedTranslation(key, true, args);
-        }
+            string translation = GetTranslation(translationData.Key, translationData.ReturnError);
 
-        public string TryFormattedTranslation(string key, bool error = true, params object[] args)
-        {
-            string translation = GetTranslation(key, error);
-
-            if (args == null)
+            if (translationData.Args == null)
             {
                 return translation;
             }
 
-            object[] data = new object[args.Length];
+            object[] data = new object[translationData.Args.Length];
 
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 0; i < translationData.Args.Length; i++)
             {
-                if (args[i] is TranslationData translationKey)
+                if (translationData.Args[i] is TranslationData)
                 {
-                    data[i] = TryFormattedTranslation(translationKey.Key, error, translationKey.Data);
+                    data[i] = GetFormattedTranslation(translationData);
                 }
                 else
                 {
-                    data[i] = args[i];
+                    data[i] = translationData.Args[i];
                 }
             }
 

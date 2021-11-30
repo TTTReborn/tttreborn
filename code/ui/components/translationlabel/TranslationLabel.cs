@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
 using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
@@ -16,15 +12,9 @@ namespace TTTReborn.UI
         {
             set
             {
-                TranslationKey = value;
-                SetTranslation(value, Array.Empty<object>());
+                SetTranslation(new TranslationData(value));
             }
         }
-
-        public string TranslationKey;
-        public object[] TranslationParams;
-        public bool IsTranslationDisabled = false;
-        public bool IsTryTranslation;
 
         public new string Text
         {
@@ -32,17 +22,16 @@ namespace TTTReborn.UI
             set
             {
                 base.Text = value;
-
-                TranslationKey = null;
-                TranslationParams = null;
             }
         }
 
-        public TranslationLabel(string translationKey = null, string classname = null, bool tryTranslation = false, params object[] args) : base()
-        {
-            IsTryTranslation = tryTranslation;
+        private TranslationData _translationData = new();
 
-            SetTranslation(translationKey, args);
+        public TranslationLabel(TranslationData translationData, string classname = null) : base()
+        {
+            _translationData = translationData;
+
+            SetTranslation(_translationData);
             AddClass("label");
             AddClass(classname);
 
@@ -56,32 +45,15 @@ namespace TTTReborn.UI
             base.OnDeleted();
         }
 
-        public void SetTranslation(string translationKey, params object[] args)
+        public void SetTranslation(TranslationData translationData)
         {
-            if (string.IsNullOrWhiteSpace(translationKey))
-            {
-                translationKey = null;
-            }
-
-            TranslationKey = translationKey;
-            TranslationParams = args;
-
-            if (TranslationKey == null)
-            {
-                return;
-            }
-
-            base.Text = TTTLanguage.ActiveLanguage.TryFormattedTranslation(TranslationKey, !IsTryTranslation, TranslationParams);
+            _translationData = translationData;
+            base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
         }
 
         public void UpdateTranslation(Language language)
         {
-            if (TranslationKey == null || IsTranslationDisabled)
-            {
-                return;
-            }
-
-            base.Text = language.TryFormattedTranslation(TranslationKey, !IsTryTranslation, TranslationParams);
+            base.Text = language.GetFormattedTranslation(_translationData);
         }
     }
 }
@@ -92,18 +64,9 @@ namespace Sandbox.UI.Construct
 
     public static class TranslationLabelConstructor
     {
-        public static TranslationLabel TranslationLabel(this PanelCreator self, string translationKey = null, string classname = null, params object[] args)
+        public static TranslationLabel TranslationLabel(this PanelCreator self, TranslationData translationData, string classname = null)
         {
-            TranslationLabel translationLabel = new(translationKey, classname, false, args);
-
-            self.panel.AddChild(translationLabel);
-
-            return translationLabel;
-        }
-
-        public static TranslationLabel TryTranslationLabel(this PanelCreator self, string translationKey = null, string classname = null, params object[] args)
-        {
-            TranslationLabel translationLabel = new(translationKey, classname, true, args);
+            TranslationLabel translationLabel = new(translationData, classname);
 
             self.panel.AddChild(translationLabel);
 
