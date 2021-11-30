@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using Sandbox;
 
 using TTTReborn.Events;
+using TTTReborn.UI;
 
 namespace TTTReborn.Settings
 {
@@ -48,6 +49,8 @@ namespace TTTReborn.Globalization
     public static class TTTLanguage
     {
         public static readonly Dictionary<string, Language> Languages = new();
+
+        public static readonly List<ITranslatable> TranslationObjects = new();
 
         public const string FALLBACK_LANGUAGE = "en-US";
 
@@ -100,11 +103,12 @@ namespace TTTReborn.Globalization
                 return;
             }
 
-            Language oldLanguage = ActiveLanguage;
-
             ActiveLanguage = language;
 
-            Event.Run(TTTEvent.Settings.LanguageChange, oldLanguage, language);
+            TranslationObjects.ForEach((translationObject) =>
+            {
+                translationObject.UpdateTranslation(language);
+            });
         }
 
         [Event(TTTEvent.Settings.Change)]

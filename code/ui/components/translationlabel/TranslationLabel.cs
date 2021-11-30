@@ -9,10 +9,8 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
-    public class TranslationLabel : Label
+    public class TranslationLabel : Label, ITranslatable
     {
-        private readonly static List<TranslationLabel> _translationLabels = new();
-
         [Property]
         public string Key
         {
@@ -48,12 +46,12 @@ namespace TTTReborn.UI
             AddClass("label");
             AddClass(classname);
 
-            _translationLabels.Add(this);
+            TTTLanguage.TranslationObjects.Add(this);
         }
 
         public override void OnDeleted()
         {
-            _translationLabels.Remove(this);
+            TTTLanguage.TranslationObjects.Remove(this);
 
             base.OnDeleted();
         }
@@ -84,20 +82,6 @@ namespace TTTReborn.UI
             }
 
             base.Text = language.TryFormattedTranslation(TranslationKey, !IsTryTranslation, TranslationParams);
-        }
-
-        public static void UpdateLanguage(Language language)
-        {
-            foreach (TranslationLabel translationLabel in _translationLabels)
-            {
-                translationLabel.UpdateTranslation(language);
-            }
-        }
-
-        [Event(TTTEvent.Settings.LanguageChange)]
-        public static void OnLanguageChange(Language oldLanguage, Language newLanguage)
-        {
-            UI.TranslationLabel.UpdateLanguage(newLanguage);
         }
     }
 }

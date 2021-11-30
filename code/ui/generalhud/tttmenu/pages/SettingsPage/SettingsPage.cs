@@ -25,5 +25,9 @@ namespace TTTReborn.UI.Menu
         {
             Settings.SettingFunctions.FetchAndOpenServerSettingsPage();
         }
+
+        public static void CreateSwitchSetting(Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject)
+        {
+        }
     }
 }
