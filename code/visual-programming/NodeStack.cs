@@ -64,7 +64,26 @@ namespace TTTReborn.VisualProgramming
 
                 try
                 {
-                    TestNode(node, arr.Length > i ? arr[i] : null);
+                    object data = null;
+
+                    if (arr.Length > i)
+                    {
+                        int j = i;
+
+                        while (j < arr.Length)
+                        {
+                            data = arr[j];
+
+                            if (data != null)
+                            {
+                                break;
+                            }
+
+                            j++;
+                        }
+                    }
+
+                    TestNode(node, data);
                 }
                 catch (Exception e)
                 {
@@ -115,7 +134,26 @@ namespace TTTReborn.VisualProgramming
 
                 try
                 {
-                    EvaluateNode(node, arr.Length > i ? arr[i] : null);
+                    object data = null;
+
+                    if (arr.Length > i)
+                    {
+                        int j = i;
+
+                        while (j < arr.Length)
+                        {
+                            data = arr[j];
+
+                            if (data != null)
+                            {
+                                break;
+                            }
+
+                            j++;
+                        }
+                    }
+
+                    EvaluateNode(node, data);
                 }
                 catch (Exception e)
                 {

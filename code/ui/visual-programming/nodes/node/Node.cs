@@ -193,7 +193,26 @@ namespace TTTReborn.UI.VisualProgramming
 
                 try
                 {
-                    if (!node.Build(arr.Length > i ? arr[i] : null))
+                    object data = null;
+
+                    if (arr.Length > i)
+                    {
+                        int j = i;
+
+                        while (j < arr.Length)
+                        {
+                            data = arr[j];
+
+                            if (data != null)
+                            {
+                                break;
+                            }
+
+                            j++;
+                        }
+                    }
+
+                    if (!node.Build(data))
                     {
                         errors = true;
                     }
