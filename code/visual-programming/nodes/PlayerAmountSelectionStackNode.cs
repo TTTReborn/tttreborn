@@ -35,7 +35,7 @@ namespace TTTReborn.VisualProgramming
 
             object[] buildArray = new object[playerAmountListCount];
 
-            for (int i = 0; i < playerAmountListCount; i++)
+            for (int i = playerAmountListCount - 1; i > 0; i--)
             {
                 if (allPlayerAmount >= PlayerAmountList[i])
                 {

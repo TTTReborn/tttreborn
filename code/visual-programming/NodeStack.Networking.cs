@@ -147,12 +147,7 @@ namespace TTTReborn.VisualProgramming
         [ServerCmd]
         public static void ServerResetStack()
         {
-            if (ConsoleSystem.Caller == null)
-            {
-                return;
-            }
-
-            if (!ConsoleSystem.Caller.HasPermission("visualprogramming"))
+            if (!ConsoleSystem.Caller?.HasPermission("visualprogramming") ?? true)
             {
                 return;
             }

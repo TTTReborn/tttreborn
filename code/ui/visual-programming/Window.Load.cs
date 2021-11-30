@@ -98,8 +98,6 @@ namespace TTTReborn.UI.VisualProgramming
 
 namespace TTTReborn.Player
 {
-    using TTTReborn.UI.VisualProgramming;
-
     public partial class TTTPlayer
     {
         internal static Dictionary<string, object> LoadVisualProgramming(string path, string fileName, Utils.Realm realm)

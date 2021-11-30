@@ -39,6 +39,8 @@ namespace TTTReborn.VisualProgramming
 
                 if (arr == null)
                 {
+                    Log.Debug($"Is null: {stackNode.GetType()}");
+
                     return true;
                 }
             }

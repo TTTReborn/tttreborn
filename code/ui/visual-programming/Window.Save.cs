@@ -56,7 +56,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             string fullFilePath = folderPath + fileName + VISUALPROGRAMMING_FILE_EXTENSION;
 
-            DialogBox dialogBox = new DialogBox();
+            DialogBox dialogBox = new();
             dialogBox.SetTitle($"Overwrite '{fullFilePath}'");
             dialogBox.AddText($"Do you want to overwrite '{fullFilePath}' with the current settings? (If you agree, the settings defined in this file will be lost!)");
             dialogBox.OnAgree = () =>

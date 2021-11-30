@@ -300,8 +300,6 @@ namespace TTTReborn.UI.VisualProgramming
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            Window.Instance.AddNode(this);
-
             jsonData.TryGetValue("ConnectPositions", out object connectPosition);
 
             if (connectPosition != null)
@@ -367,6 +365,8 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 return null;
             }
+
+            Window.Instance.AddNode(node);
 
             node.LoadFromJsonData(jsonData);
             node.RemoveHighlights();
