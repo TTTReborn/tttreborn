@@ -31,7 +31,7 @@ namespace TTTReborn.UI
             _roundPanel = new(this);
             _roundPanel.AddClass("round-panel");
 
-            _roundLabel = _roundPanel.Add.TranslationLabel();
+            _roundLabel = _roundPanel.Add.TranslationLabel(new Globalization.TranslationData());
             _roundLabel.AddClass("round-label");
             _roundLabel.AddClass("text-color-info");
         }
@@ -45,7 +45,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _roundLabel.SetTranslation($"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}");
+            _roundLabel.SetTranslation(new Globalization.TranslationData($"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}"));
 
             _timerPanel.SetClass("disabled", Game.Instance.Round is Rounds.WaitingRound);
             _timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;

@@ -19,7 +19,7 @@ namespace TTTReborn.UI
             AddClass("opacity-heavy");
             AddClass("text-shadow");
 
-            _roleLabel = Add.TranslationLabel("");
+            _roleLabel = Add.TranslationLabel(new Globalization.TranslationData());
             _roleLabel.AddClass("centered");
             _roleLabel.AddClass("role-label");
 
@@ -48,7 +48,7 @@ namespace TTTReborn.UI
 
             Style.BackgroundColor = player.Role.Color;
 
-            _roleLabel.SetTranslation(player.Role.GetRoleTranslationKey("NAME"));
+            _roleLabel.SetTranslation(new Globalization.TranslationData(player.Role.GetRoleTranslationKey("NAME")));
         }
     }
 }

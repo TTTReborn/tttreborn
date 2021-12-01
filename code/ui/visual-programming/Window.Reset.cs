@@ -7,8 +7,8 @@ namespace TTTReborn.UI.VisualProgramming
         public void Reset()
         {
             DialogBox dialogBox = new();
-            dialogBox.SetTranslationTitle("MENU_VISUALPROGRAMMING_RESET");
-            dialogBox.AddTranslationText("MENU_VISUALPROGRAMMING_RESET_TEXT");
+            dialogBox.SetTranslationTitle(new Globalization.TranslationData("MENU_VISUALPROGRAMMING_RESET"));
+            dialogBox.AddTranslation(new Globalization.TranslationData("MENU_VISUALPROGRAMMING_RESET_TEXT"));
             dialogBox.OnAgree = () =>
             {
                 Log.Debug("Resetting NodeStack");

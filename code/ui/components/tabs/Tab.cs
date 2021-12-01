@@ -3,6 +3,8 @@ using System;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public partial class Tab : Panel
@@ -16,7 +18,7 @@ namespace TTTReborn.UI
 
         private readonly Tabs _parentTabs;
 
-        public Tab(Sandbox.UI.Panel parent, Tabs parentTabs, string title, Action<PanelContent> createContent, object value = null, Action onSelectTab = null) : base(parent)
+        public Tab(Sandbox.UI.Panel parent, Tabs parentTabs, TranslationData translationData, Action<PanelContent> createContent, object value = null, Action onSelectTab = null) : base(parent)
         {
             Parent = parent;
             _parentTabs = parentTabs;
@@ -24,7 +26,7 @@ namespace TTTReborn.UI
             Value = value;
             OnSelectTab = onSelectTab;
 
-            TitleLabel = Add.TryTranslationLabel(title, "title");
+            TitleLabel = Add.TranslationLabel(translationData, "title");
         }
 
         protected override void OnClick(MousePanelEvent e)

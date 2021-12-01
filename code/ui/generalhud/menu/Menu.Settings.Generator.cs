@@ -7,6 +7,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
 using TTTReborn.Settings;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.UI.Menu
 {
@@ -38,7 +39,7 @@ namespace TTTReborn.UI.Menu
                         continue;
                     }
 
-                    tabs.AddTab($"MENU_SETTINGS_TAB_{categoryName.ToUpper()}", (panelContent) =>
+                    tabs.AddTab(new TranslationData($"MENU_SETTINGS_TAB_{categoryName.ToUpper()}"), (panelContent) =>
                     {
                         foreach (PropertyInfo subPropertyInfo in propertyInfo.PropertyType.GetProperties())
                         {
@@ -78,7 +79,7 @@ namespace TTTReborn.UI.Menu
         private static void CreateSwitchSetting(Settings.Settings settings, PanelContent panelContent, string categoryName, string propertyName, object propertyObject)
         {
             Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
-            uiPanel.Add.TranslationLabel($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}").AddTooltip($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION");
+            uiPanel.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}")).AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
 
             Switch sw = uiPanel.Add.Switch(propertyName.ToLower(), Utils.GetPropertyValue<bool>(propertyObject, propertyName));
             sw.AddEventListener("onchange", (panelEvent) =>
@@ -98,7 +99,7 @@ namespace TTTReborn.UI.Menu
         private static void CreateDropdownSetting(Settings.Settings settings, PanelContent panelContent, string categoryName, string propertyName, object propertyObject, PropertyInfo propertyInfo, PropertyInfo subPropertyInfo)
         {
             Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
-            uiPanel.Add.TranslationLabel($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}").AddTooltip($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION");
+            uiPanel.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}")).AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
 
             Dropdown dropdownSelection = uiPanel.Add.Dropdown(propertyName.ToLower());
 
@@ -110,7 +111,7 @@ namespace TTTReborn.UI.Menu
                     {
                         foreach (KeyValuePair<string, object> keyValuePair in Utils.GetPropertyValue<Dictionary<string, object>>(propertyObject, possibleDropdownPropertyInfo.Name))
                         {
-                            dropdownSelection.AddOption(keyValuePair.Key, keyValuePair.Value);
+                            dropdownSelection.AddOption(new Globalization.TranslationData(keyValuePair.Key), keyValuePair.Value);
                         }
 
                         dropdownSelection.OnSelectOption = (option) =>

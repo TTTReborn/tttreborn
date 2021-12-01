@@ -54,13 +54,13 @@ namespace TTTReborn.UI
             _quickshopContainer = new Panel(this);
             _quickshopContainer.AddClass("quickshop-container");
 
-            _creditLabel = _quickshopContainer.Add.TranslationLabel();
+            _creditLabel = _quickshopContainer.Add.TranslationLabel(new TranslationData());
             _creditLabel.AddClass("credit-label");
 
             _itemPanel = new Panel(_quickshopContainer);
             _itemPanel.AddClass("item-panel");
 
-            _itemDescriptionLabel = _quickshopContainer.Add.TranslationLabel();
+            _itemDescriptionLabel = _quickshopContainer.Add.TranslationLabel(new TranslationData());
             _itemDescriptionLabel.AddClass("item-description-label");
 
             Reload();
@@ -134,7 +134,7 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            _creditLabel.SetTranslation("QUICKSHOP_CREDITS_DESCRIPTION", _credits);
+            _creditLabel.SetTranslation(new TranslationData("QUICKSHOP_CREDITS_DESCRIPTION", _credits));
 
             foreach (QuickShopItem item in _items)
             {
@@ -145,7 +145,7 @@ namespace TTTReborn.UI
 
             if (_selectedItemData != null)
             {
-                _itemDescriptionLabel.SetTranslation("QUICKSHOP_ITEM_DESCRIPTION", new TranslationData(_selectedItemData?.Name.ToUpper()));
+                _itemDescriptionLabel.SetTranslation(new TranslationData("QUICKSHOP_ITEM_DESCRIPTION", new TranslationData(_selectedItemData?.Name.ToUpper())));
             }
         }
 

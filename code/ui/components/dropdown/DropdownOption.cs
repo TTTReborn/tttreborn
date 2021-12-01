@@ -3,6 +3,8 @@ using System;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public partial class DropdownOption : Panel
@@ -15,10 +17,10 @@ namespace TTTReborn.UI
 
         public Action<Panel> OnSelect { get; set; }
 
-        public DropdownOption(Dropdown dropdown, Sandbox.UI.Panel parent = null, string text = "", object data = null, params object[] translationData) : base(parent)
+        public DropdownOption(Dropdown dropdown, Sandbox.UI.Panel parent, TranslationData translationData, object data = null) : base(parent)
         {
             Dropdown = dropdown;
-            TextLabel = Add.TryTranslationLabel(text, "optiontext", translationData);
+            TextLabel = Add.TranslationLabel(translationData, "optiontext");
             Data = data;
         }
 

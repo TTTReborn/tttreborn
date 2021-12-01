@@ -279,7 +279,7 @@ namespace TTTReborn.UI
                 SlotLabel = Add.Label(((int) carriable.SlotType).ToString());
                 SlotLabel.AddClass("slot-label");
 
-                _carriableLabel = Add.TranslationLabel(carriable.LibraryName.ToUpper());
+                _carriableLabel = Add.TranslationLabel(new Globalization.TranslationData(carriable.LibraryName.ToUpper()));
 
                 _ammoLabel = Add.Label();
 

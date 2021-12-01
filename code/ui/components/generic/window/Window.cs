@@ -1,5 +1,7 @@
 namespace TTTReborn.UI
 {
+    using TTTReborn.Globalization;
+
     public class Window : RichPanel
     {
         public WindowHeader Header;
@@ -34,9 +36,9 @@ namespace TTTReborn.UI
             Header.NavigationHeader.SetTitle(title);
         }
 
-        public void SetTranslationTitle(string translationKey, params object[] translationData)
+        public void SetTranslationTitle(TranslationData translationData)
         {
-            Header.NavigationHeader.SetTranslationTitle(translationKey, translationData);
+            Header.NavigationHeader.SetTranslationTitle(translationData);
         }
     }
 }

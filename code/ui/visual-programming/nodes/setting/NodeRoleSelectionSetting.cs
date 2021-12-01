@@ -19,7 +19,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 foreach (Type roleType in Utils.GetTypes<TTTRole>())
                 {
-                    Dropdown.AddOption($"{Utils.GetLibraryName(roleType).ToUpper()}_NAME", roleType, (panel) => OnSelectRole(roleType));
+                    Dropdown.AddOption(new Globalization.TranslationData($"{Utils.GetLibraryName(roleType).ToUpper()}_NAME"), roleType, (panel) => OnSelectRole(roleType));
                 }
             });
         }

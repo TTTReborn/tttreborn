@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
-using Sandbox;
-
 namespace TTTReborn.Globalization
 {
     public struct LanguageData
@@ -50,9 +48,35 @@ namespace TTTReborn.Globalization
             }
         }
 
-        public string GetTranslation(string key, bool returnError = true)
+        public string GetFormattedTranslation(TranslationData translationData)
         {
-            object translation = GetRawTranslation(key);
+            string translation = GetTranslation(translationData);
+
+            if (translationData.Args == null)
+            {
+                return translation;
+            }
+
+            object[] data = new object[translationData.Args.Length];
+
+            for (int i = 0; i < translationData.Args.Length; i++)
+            {
+                if (translationData.Args[i] is TranslationData nestedTranslationData)
+                {
+                    data[i] = GetFormattedTranslation(nestedTranslationData);
+                }
+                else
+                {
+                    data[i] = translationData.Args[i];
+                }
+            }
+
+            return string.Format(translation, data);
+        }
+
+        private string GetTranslation(TranslationData translationData)
+        {
+            object translation = GetRawTranslation(translationData);
 
             if (translation != null)
             {
@@ -61,59 +85,20 @@ namespace TTTReborn.Globalization
 
             if (TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
             {
-                return fallbackLanguage.GetTranslation(key, returnError);
+                return fallbackLanguage.GetTranslation(translationData);
             }
 
-            if (!returnError)
+            if (!Settings.SettingsManager.Instance.General.ReturnTranslationError)
             {
-                return key;
+                return translationData.Key;
             }
 
-            return $"[ERROR: Translation of '{key}' not found]";
+            return $"[ERROR: Translation of '{translationData.Key}' not found]";
         }
 
-        public object GetRawTranslation(string key)
+        private object GetRawTranslation(TranslationData translationData)
         {
-            return _langDict.TryGetValue(key, out object translation) ? translation : null;
-        }
-
-        public string GetFormattedTranslation(string key, params object[] args)
-        {
-            return TryFormattedTranslation(key, true, args);
-        }
-
-        public string TryFormattedTranslation(string key, bool error = true, params object[] args)
-        {
-            string translation = GetTranslation(key, error);
-
-            if (args == null)
-            {
-                return translation;
-            }
-
-            object[] data = new object[args.Length];
-
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i] is TranslationData translationKey)
-                {
-                    data[i] = TryFormattedTranslation(translationKey.Key, error, translationKey.Data);
-                }
-                else
-                {
-                    data[i] = args[i];
-                }
-            }
-
-            return String.Format(translation, data);
-        }
-
-        public void AddTranslationString(string key, string translation)
-        {
-            if (!_langDict.TryAdd(key, translation))
-            {
-                Log.Warning($"Couldn't add translation string ('{key}') to '{Data.Name}'");
-            }
+            return _langDict.TryGetValue(translationData.Key, out object translation) ? translation : null;
         }
     }
 }

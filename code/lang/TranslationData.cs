@@ -3,12 +3,12 @@ namespace TTTReborn.Globalization
     public class TranslationData
     {
         public string Key;
-        public object[] Data;
+        public object[] Args;
 
-        public TranslationData(string translationKey, params object[] translationData)
+        public TranslationData(string translationKey = null, params object[] args)
         {
-            Key = translationKey;
-            Data = translationData;
+            Key = translationKey ?? string.Empty;
+            Args = args ?? System.Array.Empty<object>();
         }
     }
 }

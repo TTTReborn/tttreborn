@@ -37,7 +37,7 @@ namespace TTTReborn.UI
             timerPanel.AddClass("opacity-heavy");
 
             _timer = timerPanel.Add.Label("00:00", "timer-label");
-            _defuseChance = contentPanel.Add.TranslationLabel("", "defuse-label");
+            _defuseChance = contentPanel.Add.TranslationLabel(new Globalization.TranslationData(), "defuse-label");
 
             Panel timerButtons = new Panel(contentPanel);
             timerButtons.AddClass("timer-button-panel");
@@ -60,17 +60,17 @@ namespace TTTReborn.UI
             Panel actionButtons = new Panel(contentPanel);
             actionButtons.AddClass("action-button-panel");
 
-            actionButtons.Add.TranslationButton("C4_UI_PICKUP", "button action-button", () =>
+            actionButtons.Add.TranslationButton(new Globalization.TranslationData("C4_UI_PICKUP"), null, "button action-button", () =>
             {
                 C4Entity.PickUp(Entity.NetworkIdent, Local.Pawn.NetworkIdent);
             });
 
-            actionButtons.Add.TranslationButton("C4_UI_DESTROY", "button action-button", () =>
+            actionButtons.Add.TranslationButton(new Globalization.TranslationData("C4_UI_DESTROY"), null, "button action-button", () =>
             {
                 C4Entity.Delete(Entity.NetworkIdent);
             });
 
-            actionButtons.Add.TranslationButton("C4_UI_ARM", "button arm-button", () =>
+            actionButtons.Add.TranslationButton(new Globalization.TranslationData("C4_UI_ARM"), null, "button arm-button", () =>
             {
                 C4Entity.Arm(Entity.NetworkIdent, _selectedPresetIndex);
             });
@@ -92,7 +92,7 @@ namespace TTTReborn.UI
 
             _timer.Text = Utils.TimerString(preset.Timer);
 
-            _defuseChance.SetTranslation("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 1000f).FloorToInt() / 10f);
+            _defuseChance.SetTranslation(new Globalization.TranslationData("C4_UI_DEFUSECHANCE", (1f / preset.Wires * 1000f).FloorToInt() / 10f));
         }
 
         public override void Tick()

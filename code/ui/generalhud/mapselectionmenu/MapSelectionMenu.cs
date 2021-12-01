@@ -25,7 +25,7 @@ namespace TTTReborn.UI
             AddClass("opacity-heavy");
             AddClass("fullscreen");
 
-            Add.TranslationLabel("VOTE_NEXT_MAP", "title");
+            Add.TranslationLabel(new Globalization.TranslationData("VOTE_NEXT_MAP"), "title");
 
             _mapPanels = new();
 

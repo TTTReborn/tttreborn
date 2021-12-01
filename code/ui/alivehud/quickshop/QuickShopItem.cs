@@ -29,7 +29,7 @@ namespace TTTReborn.UI
             _itemIcon = new Panel(this);
             _itemIcon.AddClass("item-icon");
 
-            _itemNameLabel = Add.TranslationLabel();
+            _itemNameLabel = Add.TranslationLabel(new Globalization.TranslationData());
             _itemNameLabel.AddClass("item-name-label");
         }
 
@@ -37,7 +37,7 @@ namespace TTTReborn.UI
         {
             ItemData = shopItemData;
 
-            _itemNameLabel.SetTranslation(shopItemData.Name.ToUpper());
+            _itemNameLabel.SetTranslation(new Globalization.TranslationData(shopItemData.Name.ToUpper()));
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
             _itemIcon.Style.BackgroundImage = Texture.Load($"/ui/icons/{shopItemData.Name}.png", false) ?? Texture.Load($"/ui/none.png");
