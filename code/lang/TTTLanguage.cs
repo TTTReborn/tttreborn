@@ -161,6 +161,8 @@ namespace TTTReborn.Player
             Settings.SettingsManager.Instance.General.ReturnTranslationError = !Settings.SettingsManager.Instance.General.ReturnTranslationError;
 
             Log.Info($"Return Translation Errors: {Settings.SettingsManager.Instance.General.ReturnTranslationError}");
+
+            TTTLanguage.UpdateLanguage(TTTLanguage.ActiveLanguage);
         }
     }
 }
