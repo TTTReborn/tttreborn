@@ -52,7 +52,7 @@ namespace TTTReborn.Globalization
         {
             string translation = GetTranslation(translationData);
 
-            if (translationData.Args == null)
+            if (translationData.Args == null || translationData.Args.Length == 0)
             {
                 return translation;
             }
