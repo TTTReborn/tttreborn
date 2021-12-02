@@ -83,21 +83,23 @@ namespace TTTReborn.Globalization
                 return translation.ToString();
             }
 
-            if (TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
+            bool returnError = Settings.SettingsManager.Instance.General.ReturnTranslationError;
+
+            if (!returnError && TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
             {
                 return fallbackLanguage.GetTranslation(translationData);
             }
 
-            if (!Settings.SettingsManager.Instance.General.ReturnTranslationError)
-            {
-                return translationData.Key;
-            }
-
-            return $"[ERROR: Translation of '{translationData.Key}' not found]";
+            return returnError ? $"[ERROR: Translation of '{translationData.Key}' not found]" : translationData.Key;
         }
 
         private object GetRawTranslation(TranslationData translationData)
         {
+            if (translationData.Key.Length == 0)
+            {
+                return string.Empty;
+            }
+
             return _langDict.TryGetValue(translationData.Key, out object translation) ? translation : null;
         }
     }
