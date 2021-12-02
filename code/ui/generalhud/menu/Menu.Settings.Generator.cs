@@ -5,9 +5,8 @@ using System.Reflection;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Events;
-using TTTReborn.Settings;
 using TTTReborn.Globalization;
+using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
 {
@@ -140,7 +139,7 @@ namespace TTTReborn.UI.Menu
             }
             else
             {
-                Event.Run(TTTEvent.Settings.Change);
+                Event.Run(Events.TTTEvent.Settings.Change);
             }
         }
     }
