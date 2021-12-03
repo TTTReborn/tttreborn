@@ -31,8 +31,8 @@ namespace TTTReborn.UI.VisualProgramming
     public abstract class Node : Modal
     {
         public string LibraryName { get; set; }
-        public List<Node> NextNodes { get; set; } = new();
-        public List<int> ConnectPositions { get; set; } = new();
+        public uint Id { get; set; }
+        public UVector2[] ConnectedIds { get; set; } = Array.Empty<UVector2>();
 
         public List<NodeSetting> NodeSettings = new();
         public StackNode StackNode;
@@ -132,9 +132,8 @@ namespace TTTReborn.UI.VisualProgramming
 
         public virtual bool Build(params object[] input)
         {
-            NextNodes.Clear();
-            StackNode.NextNodes.Clear();
-            StackNode.ConnectPositions.Clear();
+            NextNodes = new Node[NodeSettings.Count];
+            StackNode.NextNodes = new StackNode[NodeSettings.Count];
 
             for (int i = 0; i < NodeSettings.Count; i++)
             {
@@ -145,17 +144,10 @@ namespace TTTReborn.UI.VisualProgramming
                     continue;
                 }
 
-                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
+                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out _);
 
-                StackNode.ConnectPositions.Add(connectPositionIndex);
-
-                if (connectedNode == null)
-                {
-                    continue;
-                }
-
-                NextNodes.Add(connectedNode);
-                StackNode.NextNodes.Add(connectedNode.StackNode);
+                NextNodes[i] = connectedNode;
+                StackNode.NextNodes[i] = connectedNode.StackNode;
             }
 
             StackNode.SetPos(Box.Rect.left, Box.Rect.top);
@@ -182,30 +174,13 @@ namespace TTTReborn.UI.VisualProgramming
 
             bool errors = false;
 
-            for (int i = 0, j = 0; i < NextNodes.Count; i++, j++)
+            for (int i = 0; i < NextNodes.Length; i++)
             {
                 Node node = NextNodes[i];
 
                 try
                 {
-                    object data = null;
-
-                    if (arr?.Length > i)
-                    {
-                        while (j < arr.Length)
-                        {
-                            data = arr[j];
-
-                            if (data != null)
-                            {
-                                break;
-                            }
-
-                            j++;
-                        }
-                    }
-
-                    if (!node.Build(data))
+                    if (!node.Build(arr[i]))
                     {
                         errors = true;
                     }
