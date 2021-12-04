@@ -22,6 +22,26 @@ namespace TTTReborn.UI.VisualProgramming
             Window.Instance.ActiveNodeConnectionWire = null;
             ConnectionWire.StartPoint.IsDragging = false;
 
+            for (int i = 0; i < Node.NodeSettings.Count; i++)
+            {
+                NodeSetting nodeSetting = Node.NodeSettings[i];
+
+                if (nodeSetting.Input?.ConnectionPoint == this)
+                {
+                    Node.ConnectionInputIds[i] = currentConnectionWire.StartPoint.Node.Id;
+                }
+            }
+
+            for (int i = 0; i < currentConnectionWire.StartPoint.Node.NodeSettings.Count; i++)
+            {
+                NodeSetting nodeSetting = currentConnectionWire.StartPoint.Node.NodeSettings[i];
+
+                if (nodeSetting.Output?.ConnectionPoint == currentConnectionWire.StartPoint)
+                {
+                    currentConnectionWire.StartPoint.Node.ConnectionOutputIds[i] = Node.Id;
+                }
+            }
+
             base.OnMouseOver(e);
         }
     }

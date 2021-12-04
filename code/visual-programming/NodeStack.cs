@@ -12,7 +12,7 @@ namespace TTTReborn.VisualProgramming
 
         public static NodeStack Instance;
 
-        private StackNode MainStackNode { get; set; }
+        private List<StackNode> StackNodeList { get; set; } = new();
 
         public NodeStack()
         {
@@ -21,12 +21,12 @@ namespace TTTReborn.VisualProgramming
 
         public void Reset()
         {
-            MainStackNode = null;
+            StackNodeList.Clear();
         }
 
         public bool Test(params object[] input)
         {
-            return TestNode(MainStackNode, input);
+            // TODO
         }
 
         private bool TestNode(StackNode stackNode, params object[] input)

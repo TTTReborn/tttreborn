@@ -2,8 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-
 namespace TTTReborn.UI.VisualProgramming
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]

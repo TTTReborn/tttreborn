@@ -11,7 +11,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             BuildButton.Text = "hourglass_empty";
 
-            MainNode.StackNode.Reset();
+            NodeStack.Reset();
 
             bool hasError = false;
 

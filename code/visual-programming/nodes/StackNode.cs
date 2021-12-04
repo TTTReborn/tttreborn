@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 
 using Sandbox;
 
@@ -17,21 +16,17 @@ namespace TTTReborn.VisualProgramming
 
     public abstract class StackNode
     {
+        public string Id { get; set; }
         public string LibraryName { get; set; }
         public string NodeReference { get; set; }
-        public uint Id { get; set; }
-        public UVector2[] ConnectedIds { get; set; } = Array.Empty<UVector2>();
+        public string[] ConnectionOutputIds { get; set; } = Array.Empty<string>();
+        public string[] ConnectionInputIds { get; set; } = Array.Empty<string>();
 
         private Vector2 _pos;
 
         public StackNode()
         {
             LibraryName = Utils.GetLibraryName(GetType());
-        }
-
-        public virtual void Reset()
-        {
-            ConnectedIds = Array.Empty<UVector2>();
         }
 
         internal void SetPos(float posX, float posY)
@@ -43,45 +38,21 @@ namespace TTTReborn.VisualProgramming
 
         public abstract object[] Evaluate(params object[] input);
 
-        public virtual Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        public virtual Dictionary<string, object> GetJsonData()
         {
-            if (proceedNodes != null)
-            {
-                proceedNodes.Add(this);
-            }
-
-            List<Dictionary<string, object>> nextNodesJsonList = new();
-
-            foreach (StackNode stackNode in NextNodes)
-            {
-                nextNodesJsonList.Add(stackNode.GetJsonData(proceedNodes));
-            }
-
             return new Dictionary<string, object>()
             {
+                ["Id"] = Id,
                 ["LibraryName"] = LibraryName,
                 ["NodeReference"] = NodeReference,
-                ["NextNodes"] = nextNodesJsonList,
+                ["ConnectionInputIds"] = ConnectionInputIds,
+                ["ConnectionOutputIds"] = ConnectionOutputIds,
                 ["Pos"] = _pos,
             };
         }
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            jsonData.TryGetValue("NextNodes", out object nextNodes);
-
-            if (nextNodes != null)
-            {
-                JsonElement nextNodesElement = (JsonElement) nextNodes;
-                List<Dictionary<string, object>> nextNodesList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(nextNodesElement.GetRawText());
-                NextNodes = new StackNode[nextNodesList.Count];
-
-                for (int i = 0; i < nextNodesList.Count; i++)
-                {
-                    NextNodes[i] = GetStackNodeFromJsonData<StackNode>(nextNodesList[i]);
-                }
-            }
-
             jsonData.TryGetValue("NodeReference", out object nodeReference);
 
             if (nodeReference != null)

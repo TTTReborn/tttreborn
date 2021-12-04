@@ -35,6 +35,36 @@ namespace TTTReborn.UI.VisualProgramming
 
         public override void Delete(bool immediate = false)
         {
+            if (StartPoint != null && EndPoint != null)
+            {
+                Node startNode = StartPoint.Node;
+                Node endNode = StartPoint.Node;
+
+                string[] array = new string[startNode.ConnectionOutputIds.Length - 1];
+
+                for (int j = 0, index = 0; j < startNode.ConnectionOutputIds.Length; j++)
+                {
+                    if (startNode.ConnectionOutputIds[j] != endNode.Id)
+                    {
+                        array[index++] = startNode.ConnectionOutputIds[j];
+                    }
+                }
+
+                startNode.ConnectionOutputIds = array;
+
+                array = new string[endNode.ConnectionInputIds.Length - 1];
+
+                for (int j = 0, index = 0; j < endNode.ConnectionInputIds.Length; j++)
+                {
+                    if (endNode.ConnectionInputIds[j] != startNode.Id)
+                    {
+                        array[index++] = endNode.ConnectionInputIds[j];
+                    }
+                }
+
+                endNode.ConnectionInputIds = array;
+            }
+
             if (StartPoint != null)
             {
                 StartPoint.ConnectionWire = null;
