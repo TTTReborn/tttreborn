@@ -27,20 +27,15 @@ namespace TTTReborn.VisualProgramming
         public bool Test(params object[] input)
         {
             // TODO
+
+            return true;
         }
 
-        private bool TestNode(StackNode stackNode, params object[] input)
+        private object[] TestNode(StackNode stackNode, params object[] input)
         {
-            object[] arr;
-
             try
             {
-                arr = stackNode.Test(input);
-
-                if (arr == null)
-                {
-                    return true;
-                }
+                return stackNode.Test(input);
             }
             catch (Exception e)
             {
@@ -48,67 +43,26 @@ namespace TTTReborn.VisualProgramming
                 {
                     Log.Warning($"Error in node '{GetType()}' testing: ({e.Source}): {e.Message}\n{e.StackTrace}");
 
-                    return false;
+                    return null;
                 }
 
                 throw;
             }
-
-            bool errors = false;
-
-            for (int i = 0, j = 0; i < stackNode.NextNodes.Count; i++, j++)
-            {
-                StackNode node = stackNode.NextNodes[i];
-
-                try
-                {
-                    object data = null;
-
-                    if (arr.Length > i)
-                    {
-                        while (j < arr.Length)
-                        {
-                            data = arr[j];
-
-                            if (data != null)
-                            {
-                                break;
-                            }
-
-                            j++;
-                        }
-                    }
-
-                    TestNode(node, data);
-                }
-                catch (Exception e)
-                {
-                    errors = true;
-
-                    Log.Warning(e);
-                }
-            }
-
-            return !errors;
         }
 
         public bool Evaluate(params object[] input)
         {
-            return EvaluateNode(MainStackNode, input);
+            // TODO
+            //return EvaluateNode(MainStackNode, input);
+
+            return true;
         }
 
-        private bool EvaluateNode(StackNode stackNode, params object[] input)
+        private object[] EvaluateNode(StackNode stackNode, params object[] input)
         {
-            object[] arr;
-
             try
             {
-                arr = stackNode.Evaluate(input);
-
-                if (arr == null)
-                {
-                    return true;
-                }
+                return stackNode.Evaluate(input);
             }
             catch (Exception e)
             {
@@ -116,48 +70,11 @@ namespace TTTReborn.VisualProgramming
                 {
                     Log.Warning($"Error in node '{GetType()}' evaluation: ({e.Source}): {e.Message}\n{e.StackTrace}");
 
-                    return false;
+                    return null;
                 }
 
                 throw;
             }
-
-            bool errors = false;
-
-            for (int i = 0, j = 0; i < stackNode.NextNodes.Count; i++, j++)
-            {
-                StackNode node = stackNode.NextNodes[i];
-
-                try
-                {
-                    object data = null;
-
-                    if (arr.Length > i)
-                    {
-                        while (j < arr.Length)
-                        {
-                            data = arr[j];
-
-                            if (data != null)
-                            {
-                                break;
-                            }
-
-                            j++;
-                        }
-                    }
-
-                    EvaluateNode(node, data);
-                }
-                catch (Exception e)
-                {
-                    errors = true;
-
-                    Log.Warning(e);
-                }
-            }
-
-            return !errors;
         }
 
         public void Init()
@@ -179,7 +96,8 @@ namespace TTTReborn.VisualProgramming
 
             Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) saveListJson).GetRawText());
 
-            MainStackNode = StackNode.GetStackNodeFromJsonData<StackNode>(saveStackNode);
+            // TODO
+            //MainStackNode = StackNode.GetStackNodeFromJsonData<StackNode>(saveStackNode);
         }
 
         private string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
@@ -226,10 +144,13 @@ namespace TTTReborn.VisualProgramming
                 FileSystem.Data.CreateDirectory("settings");
             }
 
+            // TODO
+            /*
             if (MainStackNode == null && jsonData == null)
             {
                 return;
             }
+            */
 
             string settingsPath = GetSettingsPathByData(Utils.Realm.Server);
 
@@ -247,7 +168,8 @@ namespace TTTReborn.VisualProgramming
         {
             return new()
             {
-                ["MainStackNode"] = MainStackNode.GetJsonData()
+                // TODO
+                // ["MainStackNode"] = MainStackNode.GetJsonData()
             };
         }
     }

@@ -120,12 +120,14 @@ namespace TTTReborn.VisualProgramming
                     return;
                 }
 
+                /* TODO
                 Instance.MainStackNode = StackNode.GetStackNodeFromJsonData<StackNode>(jsonDataDict);
 
                 if (Instance.MainStackNode == null)
                 {
                     return;
                 }
+                */
 
                 Log.Debug("Test NodeStack");
 

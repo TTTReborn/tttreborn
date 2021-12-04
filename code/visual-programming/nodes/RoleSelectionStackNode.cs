@@ -52,9 +52,9 @@ namespace TTTReborn.VisualProgramming
             };
         }
 
-        public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        public override Dictionary<string, object> GetJsonData()
         {
-            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            Dictionary<string, object> dict = base.GetJsonData();
             dict.Add("SelectedRole", SelectedRole?.Name);
 
             return dict;

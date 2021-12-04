@@ -11,7 +11,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             BuildButton.Text = "hourglass_empty";
 
-            NodeStack.Reset();
+            NodeStack.Instance.Reset();
 
             bool hasError = false;
 
@@ -36,12 +36,15 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Log.Debug("Building and testing NodeStack");
 
+                // TODO
+                /*
                 if (MainNode.Build())
                 {
                     Log.Debug("Uploading NodeStack");
 
                     NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
                 }
+                */
             }
             catch (Exception e)
             {

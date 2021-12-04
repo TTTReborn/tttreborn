@@ -51,9 +51,9 @@ namespace TTTReborn.VisualProgramming
 
         public override object[] Evaluate(params object[] input) => Test(input);
 
-        public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        public override Dictionary<string, object> GetJsonData()
         {
-            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            Dictionary<string, object> dict = base.GetJsonData();
             dict.Add("PercentList", PercentList);
 
             return dict;
