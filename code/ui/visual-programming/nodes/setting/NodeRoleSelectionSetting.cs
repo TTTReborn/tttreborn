@@ -20,7 +20,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 Dropdown.AddEventListener("onchange", (e) =>
                 {
-                    if (Dropdown.HasSelected && Dropdown.Selected.Value is Type roleType)
+                    if (Dropdown?.Selected?.Value is Type roleType)
                     {
                         OnSelectRole(roleType);
                     }

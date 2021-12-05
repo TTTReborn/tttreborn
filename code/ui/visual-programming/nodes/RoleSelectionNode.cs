@@ -62,15 +62,8 @@ namespace TTTReborn.UI.VisualProgramming
                 {
                     if (NodeSettings[0] is NodeRoleSelectionSetting nodeRoleSelectionSetting)
                     {
-                        foreach (Sandbox.UI.Option option in nodeRoleSelectionSetting.Dropdown.Options)
-                        {
-                            if (option.GetType() == roleType)
-                            {
-                                // nodeRoleSelectionSetting.Dropdown.Selected = option;
-                                nodeRoleSelectionSetting.OnSelectRole(roleType);
-                                break;
-                            }
-                        }
+                        nodeRoleSelectionSetting.Dropdown?.Select(roleType);
+                        nodeRoleSelectionSetting.OnSelectRole(roleType);
                     }
                 }
             }

@@ -110,7 +110,7 @@ namespace TTTReborn.UI.Menu
 
                     dropdown.AddEventListener("onchange", (e) =>
                     {
-                        if (dropdown.HasSelected && dropdown.Selected.Value is TTTRole role)
+                        if (dropdown?.Selected?.Value is TTTRole role)
                         {
                             CreateShopContent(role);
                         }
