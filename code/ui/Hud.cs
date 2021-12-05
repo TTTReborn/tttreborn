@@ -107,6 +107,12 @@ namespace TTTReborn.UI
                 AddChild<MapSelectionMenu>();
                 AddChild<Menu.Menu>();
             }
+
+            // Use "GeneralHud" as the Panel that displays any s&box popups.
+            public override Panel FindPopupPanel()
+            {
+                return this;
+            }
         }
 
         public class AliveHud

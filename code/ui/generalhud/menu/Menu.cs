@@ -130,11 +130,13 @@ namespace TTTReborn.UI.Menu
 
                 panelContent.Add.Label("Dropdown:");
 
-                Dropdown dropdown = panelContent.Add.Dropdown();
-                dropdown.TextLabel.Text = "Choose entry...";
+                TranslationDropdown dropdown = panelContent.Add.TranslationDropdown();
+                TranslationOption selectedOption = new(new Globalization.TranslationData("Test One"), 1);
 
-                dropdown.AddOption(new Globalization.TranslationData("Test One"));
-                dropdown.AddOption(new Globalization.TranslationData("Test Two"));
+                dropdown.Options.Add(selectedOption);
+                dropdown.Options.Add(new TranslationOption(new Globalization.TranslationData("Test Two"), 2));
+
+                dropdown.Select(selectedOption);
 
                 panelContent.Add.Label("FileSelection:");
                 panelContent.Add.Button("Open FileSelection...", "fileselectionbutton", () => FindRootPanel().Add.FileSelection().Display());

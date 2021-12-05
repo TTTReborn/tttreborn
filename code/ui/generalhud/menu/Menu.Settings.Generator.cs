@@ -100,7 +100,7 @@ namespace TTTReborn.UI.Menu
             Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
             uiPanel.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}")).AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
 
-            Dropdown dropdownSelection = uiPanel.Add.Dropdown(propertyName.ToLower());
+            TranslationDropdown dropdownSelection = uiPanel.Add.TranslationDropdown();
 
             foreach (PropertyInfo possibleDropdownPropertyInfo in propertyInfo.PropertyType.GetProperties())
             {
@@ -108,20 +108,20 @@ namespace TTTReborn.UI.Menu
                 {
                     if (possibleDropdownAttribute is DropdownOptionsAttribute dropdownOptionsAttribute && dropdownOptionsAttribute.DropdownSetting.Equals(subPropertyInfo.Name))
                     {
+                        dropdownSelection.AddEventListener("onchange", (e) =>
+                        {
+                            UpdateSettingsProperty(settings, propertyObject, propertyName, dropdownSelection.Selected.Value);
+                        });
+
                         foreach (KeyValuePair<string, object> keyValuePair in Utils.GetPropertyValue<Dictionary<string, object>>(propertyObject, possibleDropdownPropertyInfo.Name))
                         {
-                            dropdownSelection.AddOption(new Globalization.TranslationData(keyValuePair.Key), keyValuePair.Value);
+                            dropdownSelection.Options.Add(new TranslationOption(new TranslationData(keyValuePair.Key), keyValuePair.Value));
                         }
-
-                        dropdownSelection.OnSelectOption = (option) =>
-                        {
-                            UpdateSettingsProperty(settings, propertyObject, propertyName, (string) option.Data);
-                        };
                     }
                 }
             }
 
-            dropdownSelection.SelectByData(Utils.GetPropertyValue<string>(propertyObject, propertyName));
+            dropdownSelection.Select(Utils.GetPropertyValue<string>(propertyObject, propertyName));
         }
 
         private static void UpdateSettingsProperty<T>(Settings.Settings settings, object propertyObject, string propertyName, T value)

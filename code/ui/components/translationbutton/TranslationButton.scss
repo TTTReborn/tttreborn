@@ -1,0 +1,44 @@
+$button-size: 50px;
+
+button, translationbutton
+{
+	display: flex;
+	font-family: Poppins;
+	font-weight: 600;
+	font-size: 16px;
+	cursor: pointer;
+	background-color: $button-inactive;
+	padding: 8px 16px;
+	border-radius: 8px;
+	color: $button-inactive-fg;
+	min-height: $button-size;
+	align-items: center;
+
+	> iconpanel
+	{
+		font-size: 22px;
+	}
+
+	&.has-label > iconpanel
+	{
+		margin-right: 10px;
+	}
+
+	&:hover
+	{
+		background-color: $button-active;
+		color: $button-active-fg;
+	}
+
+	&:active
+	{
+		background-color: $button-inactive;
+		color: $button-inactive-fg;
+	}
+
+	&.inactive
+	{
+		opacity: 0.3;
+		pointer-events: none;
+	}
+}

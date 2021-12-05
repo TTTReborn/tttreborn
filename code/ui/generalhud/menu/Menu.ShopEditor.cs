@@ -105,8 +105,16 @@ namespace TTTReborn.UI.Menu
 
                     _shopToggle.AddTooltip(new TranslationData("MENU_SHOPEDITOR_TOGGLEROLE"), "togglehint");
 
-                    Dropdown dropdown = panelContent.Add.Dropdown();
+                    TranslationDropdown dropdown = panelContent.Add.TranslationDropdown();
                     dropdown.AddTooltip(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"), "roleselection");
+
+                    dropdown.AddEventListener("onchange", (e) =>
+                    {
+                        if (dropdown.HasSelected && dropdown.Selected.Value is TTTRole role)
+                        {
+                            CreateShopContent(role);
+                        }
+                    });
 
                     foreach (Type roleType in Utils.GetTypes<TTTRole>())
                     {
@@ -117,10 +125,7 @@ namespace TTTReborn.UI.Menu
                             continue;
                         }
 
-                        dropdown.AddOption(new TranslationData(role.GetRoleTranslationKey("NAME")), role, (panel) =>
-                        {
-                            CreateShopContent(role);
-                        });
+                        dropdown.Options.Add(new TranslationOption(new TranslationData(role.GetRoleTranslationKey("NAME")), role));
                     }
 
                     _shopEditorWrapper = new(panelContent);
