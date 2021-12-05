@@ -17,6 +17,18 @@ namespace TTTReborn.UI
             }
         }
 
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                _enabled = value;
+
+                SetClass("inactive", !_enabled);
+            }
+        }
+        private bool _enabled = true;
+
         private readonly TranslationData _translationData = new();
 
         public TranslationCheckbox() : base() { }

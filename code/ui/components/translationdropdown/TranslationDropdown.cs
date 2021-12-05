@@ -11,11 +11,6 @@ namespace TTTReborn.UI
     {
         public TranslationDropdown() : base() { }
 
-        public bool HasSelected
-        {
-            get => Selected != null;
-        }
-
         public new Option Selected
         {
             get => base.Selected;

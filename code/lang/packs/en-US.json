@@ -110,6 +110,7 @@
     "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT": "Do you want to overwrite '{0}' with the current settings? (If you agree, the settings defined in this file will be lost!)",
 
     "MENU_SHOPEDITOR_TOGGLEROLE": "Toggle to de-/activate the shop for the currently selected role.",
+    "MENU_SHOPEDITOR_ENABLEROLE": "Shop enabled.",
     "MENU_SHOPEDITOR_SELECTROLE": "Select a role to modify the connected shop.",
     "MENU_SHOPEDITOR_NOPERMISSION": "You don't have permissions to access the ShopEditor.",
     "MENU_SHOPEDITOR_ITEM_ACTIVATE": "Activate this item in the {0} shop.",

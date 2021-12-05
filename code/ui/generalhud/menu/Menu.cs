@@ -112,7 +112,7 @@ namespace TTTReborn.UI.Menu
             {
                 panelContent.Add.Label("Switch:");
 
-                panelContent.AddChild(new Switch());
+                panelContent.Add.TranslationCheckbox(new Globalization.TranslationData("MENU_SHOPEDITOR_ENABLEROLE"));
 
                 panelContent.Add.Label("DragDrop:");
 

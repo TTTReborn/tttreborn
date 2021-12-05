@@ -15,7 +15,7 @@ namespace TTTReborn.UI.Menu
     public partial class Menu
     {
         private Panel _shopEditorWrapper;
-        private Switch _shopToggle;
+        private TranslationCheckbox _shopToggle;
         private List<QuickShopItem> _shopItems = new();
         private TTTRole _selectedRole;
 
@@ -100,11 +100,6 @@ namespace TTTReborn.UI.Menu
             {
                 Content.SetPanelContent((panelContent) =>
                 {
-                    _shopToggle = panelContent.Add.Switch("shoptoggle", false);
-                    _shopToggle.Disabled = true;
-
-                    _shopToggle.AddTooltip(new TranslationData("MENU_SHOPEDITOR_TOGGLEROLE"), "togglehint");
-
                     TranslationDropdown dropdown = panelContent.Add.TranslationDropdown();
                     dropdown.AddTooltip(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"), "roleselection");
 
@@ -113,6 +108,17 @@ namespace TTTReborn.UI.Menu
                         if (dropdown?.Selected?.Value is TTTRole role)
                         {
                             CreateShopContent(role);
+                        }
+                    });
+
+                    _shopToggle = panelContent.Add.TranslationCheckbox(new TranslationData("MENU_SHOPEDITOR_ENABLEROLE"));
+                    _shopToggle.Enabled = false;
+                    _shopToggle.AddTooltip(new TranslationData("MENU_SHOPEDITOR_TOGGLEROLE"), "togglehint");
+                    _shopToggle.AddEventListener("onchange", (e) =>
+                    {
+                        if (dropdown?.Selected?.Value is TTTRole role)
+                        {
+                            ServerToggleShop(role.Name, !_shopToggle.Checked);
                         }
                     });
 
@@ -131,7 +137,7 @@ namespace TTTReborn.UI.Menu
                     _shopEditorWrapper = new(panelContent);
                     _shopEditorWrapper.AddClass("wrapper");
 
-                    _shopEditorWrapper.Add.TranslationLabel(new Globalization.TranslationData("MENU_SHOPEDITOR_SELECTROLE"));
+                    _shopEditorWrapper.Add.TranslationLabel(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"));
                 }, "MENU_SUBMENU_SHOPEDITOR", "shopeditor");
             }
             else
@@ -155,14 +161,8 @@ namespace TTTReborn.UI.Menu
 
             _selectedRole = role;
 
-            _shopToggle.Disabled = false;
+            _shopToggle.Enabled = true;
             _shopToggle.Checked = role.Shop.Enabled;
-            _shopToggle.OnCheck = (e) =>
-            {
-                ServerToggleShop(role.Name, !_shopToggle.Checked);
-
-                return false;
-            };
 
             foreach (Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>())
             {

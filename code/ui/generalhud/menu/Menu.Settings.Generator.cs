@@ -77,13 +77,12 @@ namespace TTTReborn.UI.Menu
 
         private static void CreateSwitchSetting(Settings.Settings settings, PanelContent panelContent, string categoryName, string propertyName, object propertyObject)
         {
-            Sandbox.UI.Panel uiPanel = panelContent.Add.Panel(categoryName.ToLower());
-            uiPanel.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}")).AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
-
-            Switch sw = uiPanel.Add.Switch(propertyName.ToLower(), Utils.GetPropertyValue<bool>(propertyObject, propertyName));
-            sw.AddEventListener("onchange", (panelEvent) =>
+            TranslationCheckbox checkbox = panelContent.Add.TranslationCheckbox(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}"));
+            checkbox.AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
+            checkbox.Checked = Utils.GetPropertyValue<bool>(propertyObject, propertyName);
+            checkbox.AddEventListener("onchange", (panelEvent) =>
             {
-                UpdateSettingsProperty(settings, propertyObject, propertyName, sw.Checked);
+                UpdateSettingsProperty(settings, propertyObject, propertyName, checkbox.Checked);
             });
         }
 
