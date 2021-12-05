@@ -38,31 +38,23 @@ namespace TTTReborn.UI.VisualProgramming
             if (StartPoint != null && EndPoint != null)
             {
                 Node startNode = StartPoint.Node;
-                Node endNode = StartPoint.Node;
+                Node endNode = EndPoint.Node;
 
-                string[] array = new string[startNode.ConnectionOutputIds.Length - 1];
-
-                for (int j = 0, index = 0; j < startNode.ConnectionOutputIds.Length; j++)
+                for (int j = 0; j < startNode.ConnectionOutputIds.Length; j++)
                 {
-                    if (startNode.ConnectionOutputIds[j] != endNode.Id)
+                    if (startNode.ConnectionOutputIds[j] == endNode.Id)
                     {
-                        array[index++] = startNode.ConnectionOutputIds[j];
+                        startNode.ConnectionOutputIds[j] = null;
                     }
                 }
 
-                startNode.ConnectionOutputIds = array;
-
-                array = new string[endNode.ConnectionInputIds.Length - 1];
-
-                for (int j = 0, index = 0; j < endNode.ConnectionInputIds.Length; j++)
+                for (int j = 0; j < endNode.ConnectionInputIds.Length; j++)
                 {
-                    if (endNode.ConnectionInputIds[j] != startNode.Id)
+                    if (endNode.ConnectionInputIds[j] == startNode.Id)
                     {
-                        array[index++] = endNode.ConnectionInputIds[j];
+                        endNode.ConnectionInputIds[j] = null;
                     }
                 }
-
-                endNode.ConnectionInputIds = array;
             }
 
             if (StartPoint != null)
