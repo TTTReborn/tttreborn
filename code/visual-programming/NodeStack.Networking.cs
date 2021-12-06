@@ -51,7 +51,7 @@ namespace TTTReborn.VisualProgramming
                 window.Delete(true);
             }
 
-            new Window(UI.Hud.Current.RootPanel, jsonData);
+            new Window(UI.Hud.Current.GeneralHudPanel, jsonData);
         }
 
         public static void UploadStack(string jsonData)
