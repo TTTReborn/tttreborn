@@ -65,24 +65,8 @@ namespace TTTReborn.UI.Menu
         [ClientRpc]
         public static void ClientToggleShop(string roleName, bool toggle)
         {
-            if (ProcessShopToggle(roleName, toggle))
-            {
-                Menu menu = Menu.Instance;
-
-                if (menu == null || !menu.Enabled)
-                {
-                    return;
-                }
-
-                PanelContent menuContent = menu.Content;
-
-                if (menuContent == null || !menuContent.ClassName.Equals("shopeditor") || !roleName.Equals(menu._selectedRole?.Name) || menu._shopToggle == null)
-                {
-                    return;
-                }
-
-                menu._shopToggle.Checked = toggle;
-            }
+            ProcessShopToggle(roleName, toggle);
         }
     }
 }
+

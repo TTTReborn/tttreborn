@@ -193,7 +193,6 @@ Menu {
                     transition: transform 0.1s ease-in;
                     box-shadow: 0 0 10px black;
                     white-space: nowrap;
-                    overflow: scroll;
 
                     &:hover {
                         transform: scale(1.02);

@@ -118,7 +118,7 @@ namespace TTTReborn.UI.Menu
                     {
                         if (dropdown?.Selected?.Value is TTTRole role)
                         {
-                            ServerToggleShop(role.Name, !_shopToggle.Checked);
+                            ServerToggleShop(role.Name, _shopToggle.Checked);
                         }
                     });
 
