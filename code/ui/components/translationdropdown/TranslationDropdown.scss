@@ -4,37 +4,10 @@ TranslationDropdown
 	font-weight: 600;
 	font-size: 16px;
 	cursor: pointer;
+	background-color: $button-inactive;
 	padding: 8px 16px;
 	border-radius: 8px;
-	align-items: center;
-	min-width: 150px;
-	background-color: black;
-
-    &.has-label > iconpanel
-	{
-		margin-right: 10px;
-	}
-
-	&.active
-	{
-        border-radius: 8px 8px 0px 0px;
-	}
-
-	&.inactive
-	{
-		opacity: 0.2;
-		pointer-events: none;
-	}
-}
-
-select, translationselect
-{
-    font-family: Poppins;
-	font-weight: 600;
-	font-size: 16px;
-	cursor: pointer;
-	padding: 8px 16px;
-	border-radius: 8px;
+	color: $button-inactive-fg;
 	align-items: center;
 
     &.has-label > iconpanel
@@ -42,9 +15,23 @@ select, translationselect
 		margin-right: 10px;
 	}
 
+    &:hover
+	{
+		background-color: $button-active;
+		color: $button-active-fg;
+	}
+
 	&.active
 	{
+		background-color: $button-active;
+		color: $button-active-fg;
         border-radius: 8px 8px 0px 0px;
+	}
+
+	&:active
+	{
+		background-color: $button-active-fg;
+		color: $button-active;
 	}
 
 	&.inactive
@@ -59,8 +46,6 @@ popup
     position: absolute;
 	flex-direction: column;
 	transition: all 0.1s ease-out;
-	z-index: 200;
-	background-color: black;
 
 	&:intro
 	{

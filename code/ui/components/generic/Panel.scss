@@ -6,9 +6,17 @@ $dead: #e12c3b;
 $spectator: #fcdb38;
 $info: #ffae00;
 
+$button-inactive: #455a64 !default;
+$button-inactive-bottom: $button-inactive !default;
+$button-inactive-fg: white !default;
+$button-active: #708690 !default;
+$button-active-fg: white !default;
+$button-dark: #1b3039 !default;
+
 @import "/code/ui/components/translationbutton/TranslationButton.scss";
 @import "/code/ui/components/translationcheckbox/TranslationCheckbox.scss";
 @import "/code/ui/components/translationdropdown/TranslationDropdown.scss";
+@import "/code/ui/components/linebreak/LineBreak.scss";
 
 .panel {
     font-family: Poppins;
@@ -95,6 +103,15 @@ $info: #ffae00;
 
 .opacity-medium {
     opacity: 0.75;
+}
+
+.centered-flex {
+    left: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-self: center;
 }
 
 .centered {

@@ -53,11 +53,11 @@ namespace TTTReborn.UI
                     continue;
                 }
 
-                if (child.Name.Equals("option", StringComparison.OrdinalIgnoreCase))
+                if (child.Name.Equals("translationoption", StringComparison.OrdinalIgnoreCase))
                 {
                     Option o = new();
 
-                    o.Title = TTTLanguage.ActiveLanguage.GetFormattedTranslation(new TranslationData(child.GetAttribute("key")));
+                    o.Title = child.GetAttribute("key");
                     o.Value = child.GetAttribute("value", o.Title);
                     o.Icon = child.GetAttribute("icon", null);
 

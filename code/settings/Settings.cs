@@ -294,7 +294,8 @@ namespace TTTReborn.Settings
                 return;
             }
 
-            UI.Menu.Menu.Instance?.ProceedServerSettings(serverSettings);
+            // MZEGAR TODO
+            // UI.Menu.Menu.Instance?.ProceedServerSettings(serverSettings);
         }
     }
 }

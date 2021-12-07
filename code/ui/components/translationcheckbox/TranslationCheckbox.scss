@@ -1,9 +1,9 @@
-$form-control-size: 25px !default;
+$form-control-height: 24px !default;
 
-checkbox, translationcheckbox
+checkbox, TranslationCheckbox
 {
 	cursor: pointer;
-	color: white;
+	color: $button-active;
 	align-items: center;
 
 	label
@@ -13,19 +13,17 @@ checkbox, translationcheckbox
 
 	> .checkmark
 	{
-		text-shadow: 0px 0px 0px 0px transparent;
 		padding: 1px;
 		font-size: 22px;
-		border: 1px solid rgba(255, 255, 255, 0.452);
+		border: 3px solid $button-active;
 		border-radius: 4px;
 		text-align: center;
 		justify-content: center;
 		align-items: center;
 		color: transparent;
+		min-height: $form-control-height;
 		margin-right: 10px;
 		pointer-events: none;
-		width: $form-control-size;
-		height: $form-control-size;
 	}
 
 	&.checked
@@ -33,6 +31,7 @@ checkbox, translationcheckbox
 		> .checkmark
 		{
 			color: white;
+			background-color: $button-active;
 		}
 	}
 
@@ -50,5 +49,9 @@ checkbox, translationcheckbox
 	{
 		opacity: 0.35;
 		pointer-events: none;
+
+		> .checkmark {
+			border: 3px solid $button-inactive;
+		}
 	}
 }
