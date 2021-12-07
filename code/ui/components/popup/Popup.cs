@@ -8,9 +8,10 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
+            // Close any popups if the parent panel is closed.
             if (!PopupSource?.IsVisible ?? true)
             {
-                Success();
+                CloseAll();
             }
         }
     }
