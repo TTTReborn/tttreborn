@@ -10,6 +10,11 @@ namespace TTTReborn.UI.Menu
     {
         private TranslationButton RoleSelectionEditorButton { get; set; }
 
+        public void GoToSettingsPage()
+        {
+            TTTMenu.Instance.AddPage(new SettingsPage());
+        }
+
         public HomePage()
         {
             if (Local.Client.HasPermission("visualprogramming"))

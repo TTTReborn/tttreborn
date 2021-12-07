@@ -16,9 +16,9 @@ namespace TTTReborn.UI
         /// "Children" is used as a "stack" where the last element in the list
         /// is the page that is currently showing.
         /// </summary>
-        private Sandbox.UI.Panel Pages { get; set; }
+        private Panel Pages { get; set; }
 
-        private Sandbox.UI.Panel BackgroundPanel { get; set; }
+        private Panel BackgroundPanel { get; set; }
 
         private bool HasPreviousPages { get => Pages.ChildrenCount > 1; }
 
