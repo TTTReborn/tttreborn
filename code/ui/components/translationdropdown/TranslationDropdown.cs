@@ -68,6 +68,21 @@ namespace TTTReborn.UI
             Select(Value);
             return true;
         }
+
+        public override void Open()
+        {
+            Popup = new Popup(this, Sandbox.UI.Popup.PositionMode.BelowStretch, 0.0f);
+            Popup.AddClass("flat-top");
+
+            foreach (Option option in Options)
+            {
+                Sandbox.UI.Panel o = Popup.AddOption(option.Title, option.Icon, () => Select(option));
+                if (Selected != null && option.Value == Selected.Value)
+                {
+                    o.AddClass("active");
+                }
+            }
+        }
     }
 
     public class TranslationOption : Option
