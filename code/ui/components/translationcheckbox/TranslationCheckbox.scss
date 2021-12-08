@@ -5,6 +5,7 @@ checkbox, TranslationCheckbox
 	cursor: pointer;
 	color: $button-active;
 	align-items: center;
+	min-height: 30;
 
 	label
 	{

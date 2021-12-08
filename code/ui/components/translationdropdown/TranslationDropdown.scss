@@ -9,6 +9,7 @@ TranslationDropdown
 	border-radius: 8px;
 	color: $button-inactive-fg;
 	align-items: center;
+	min-height: $button-size;
 
     &.has-label > iconpanel
 	{

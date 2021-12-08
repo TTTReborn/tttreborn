@@ -12,6 +12,7 @@ $button-inactive-fg: white !default;
 $button-active: #708690 !default;
 $button-active-fg: white !default;
 $button-dark: #1b3039 !default;
+$button-size: 50px;
 
 @import "/code/ui/components/translationbutton/TranslationButton.scss";
 @import "/code/ui/components/translationcheckbox/TranslationCheckbox.scss";
