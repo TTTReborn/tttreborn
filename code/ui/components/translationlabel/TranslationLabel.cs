@@ -23,15 +23,12 @@ namespace TTTReborn.UI
 
         public TranslationLabel() : base()
         {
-            AddClass("label");
-
             TTTLanguage.Translatables.Add(this);
         }
 
         public TranslationLabel(TranslationData translationData, string classname = null) : base()
         {
             SetTranslation(translationData);
-            AddClass("label");
             AddClass(classname);
 
             TTTLanguage.Translatables.Add(this);

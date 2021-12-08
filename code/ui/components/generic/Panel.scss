@@ -195,30 +195,25 @@ $button-dark: #1b3039 !default;
     border-color: $spectator;
 }
 
-// TODO this should be moved somewhere else
-.itemeditwindow {
-    PanelContent {
-        flex-grow: 1;
-        overflow: scroll;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        flex-direction: column;
+.h1 {
+    color: white;
+    font-weight: bold;
+    font-family: Poppins;
+    text-decoration: underline;
+    margin-bottom: 5px;
 
-        Label,
-        .label {
-            flex-grow: 1;
-            margin-top: 7px;
-        }
+    &.label {
+        font-size: 25px;
+    }
+}
 
-        TextEntry,
-        Dropdown {
-            flex-shrink: 1;
-            min-width: 200px;
-        }
+.h2 {
+    color: white;
+    font-weight: normal;
+    font-family: Poppins;
+    margin-bottom: 5px;
 
-        .setting {
-            padding: 5px;
-            margin: 2px;
-        }
+    &.label {
+        font-size: 20px;
     }
 }

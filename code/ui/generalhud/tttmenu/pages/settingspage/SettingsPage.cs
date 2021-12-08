@@ -62,7 +62,7 @@ namespace TTTReborn.UI.Menu
                     continue;
                 }
 
-                parent.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_TAB_{categoryName.ToUpper()}"));
+                parent.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_TAB_{categoryName.ToUpper()}"), "h1");
 
                 foreach (PropertyInfo subPropertyInfo in propertyInfo.PropertyType.GetProperties())
                 {
@@ -121,7 +121,7 @@ namespace TTTReborn.UI.Menu
         private static void CreateDropdownSetting(Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject, PropertyInfo propertyInfo, PropertyInfo subPropertyInfo)
         {
             parent.Add.Panel(categoryName.ToLower());
-            parent.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}")).AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
+            parent.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}"), "h2").AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
 
             TranslationDropdown dropdownSelection = parent.Add.TranslationDropdown();
 
