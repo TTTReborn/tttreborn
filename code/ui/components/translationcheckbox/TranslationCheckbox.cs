@@ -42,6 +42,13 @@ namespace TTTReborn.UI
             TTTLanguage.Translatables.Add(this);
         }
 
+        public override void OnDeleted()
+        {
+            TTTLanguage.Translatables.Remove(this);
+
+            base.OnDeleted();
+        }
+
         public void SetTranslation()
         {
             LabelText = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
