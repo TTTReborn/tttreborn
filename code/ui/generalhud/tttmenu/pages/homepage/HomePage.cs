@@ -15,6 +15,11 @@ namespace TTTReborn.UI.Menu
             TTTMenu.Instance.AddPage(new SettingsPage());
         }
 
+        public void GoToKeyBindingsPage()
+        {
+            TTTMenu.Instance.AddPage(new KeyBindingsPage());
+        }
+
         public HomePage()
         {
             if (Local.Client.HasPermission("visualprogramming"))

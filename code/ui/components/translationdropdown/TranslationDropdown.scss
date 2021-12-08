@@ -10,6 +10,7 @@ TranslationDropdown
 	color: $button-inactive-fg;
 	align-items: center;
 	min-height: $button-size;
+	flex-shrink: 0;
 
     &.has-label > iconpanel
 	{

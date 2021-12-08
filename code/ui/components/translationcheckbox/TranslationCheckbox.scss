@@ -6,6 +6,7 @@ checkbox, TranslationCheckbox
 	color: $button-active;
 	align-items: center;
 	min-height: 30;
+	flex-shrink: 0;
 
 	label
 	{
