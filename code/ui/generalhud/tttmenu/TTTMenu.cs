@@ -58,16 +58,18 @@ namespace TTTReborn.UI
         /// </summary>
         public void PopPage()
         {
-            while (HasPreviousPages)
+            if (!HasPreviousPages)
             {
-                Pages.GetChild(Pages.ChildrenCount - 1).Delete(true);
-                Pages.GetChild(Pages.ChildrenCount - 1).RemoveClass("disabled");
-
-                BackButton.SetClass("inactive", !HasPreviousPages);
-                HomeButton.SetClass("inactive", !HasPreviousPages);
-
-                ActivePage = Pages.GetChild(Pages.ChildrenCount - 1) as Panel;
+                return;
             }
+
+            Pages.GetChild(Pages.ChildrenCount - 1).Delete(true);
+            Pages.GetChild(Pages.ChildrenCount - 1).RemoveClass("disabled");
+
+            BackButton.SetClass("inactive", !HasPreviousPages);
+            HomeButton.SetClass("inactive", !HasPreviousPages);
+
+            ActivePage = Pages.GetChild(Pages.ChildrenCount - 1) as Panel;
         }
 
         /// <summary>
