@@ -31,6 +31,8 @@ namespace TTTReborn.UI.Menu
 
         public void GoToServerSettings()
         {
+            // Call to server which sends down server data and then adds the ServerSettingsPage.
+            SettingFunctions.RequestServerSettings();
         }
 
         public static void CreateSettings(Panel parent, Settings.Settings settings, Type settingsType = null)
