@@ -15,7 +15,7 @@ namespace Sandbox.UI.Construct
 
     public static class LineBreakConstructor
     {
-        public static LineBreak TranslationButton(this PanelCreator self)
+        public static LineBreak LineBreak(this PanelCreator self)
         {
             LineBreak lineBreak = new();
 
