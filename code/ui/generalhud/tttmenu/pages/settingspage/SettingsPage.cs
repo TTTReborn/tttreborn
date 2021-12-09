@@ -172,8 +172,10 @@ namespace TTTReborn.UI.Menu
 
         private static TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null, params object[] translationData)
         {
-            TranslationTextEntry textEntry = parent.Add.TranslationTextEntryWithLabel(new TranslationData(title));
-            textEntry.AddTooltip(new TranslationData(description));
+            TranslationLabel textLabel = parent.Add.TranslationLabel(new TranslationData(title));
+            textLabel.AddTooltip(new TranslationData(description));
+
+            TranslationTextEntry textEntry = parent.Add.TranslationTextEntry();
             textEntry.Text = defaultValue.ToString();
 
             textEntry.AddEventListener("onsubmit", (panelEvent) =>
