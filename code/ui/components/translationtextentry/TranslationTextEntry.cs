@@ -55,9 +55,10 @@ namespace Sandbox.UI.Construct
 
         public static TranslationTextEntry TranslationTextEntryWithLabel(this PanelCreator self, TranslationData translationData, string classname = null)
         {
-            Panel wrapper = new();
+            Panel wrapper = new("translationTextWrapper");
 
             wrapper.Add.TranslationLabel(translationData, classname);
+            wrapper.Add.Label(" ");
 
             TranslationTextEntry translationTextEntry = wrapper.Add.TranslationTextEntry();
 

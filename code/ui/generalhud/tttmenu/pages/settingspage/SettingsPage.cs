@@ -97,6 +97,8 @@ namespace TTTReborn.UI.Menu
 
                         break;
                     }
+
+                    parent.Add.LineBreak();
                 }
             }
         }
@@ -168,18 +170,11 @@ namespace TTTReborn.UI.Menu
             }
         }
 
-        // MZEGAR TODO Let's create a component for this.
-        internal static TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null, params object[] translationData)
+        private static TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null, params object[] translationData)
         {
-            Sandbox.UI.Panel wrapper = parent.Add.Panel();
-            TranslationLabel textLabel = wrapper.Add.TranslationLabel(new TranslationData(title));
-            textLabel.AddTooltip(new TranslationData(description), null, null, null, null);
-
-            TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
-            textEntry.AddClass("setting");
-            textEntry.AddClass("rounded");
-            textEntry.AddClass("box-shadow");
-            textEntry.AddClass("background-color-secondary");
+            TranslationTextEntry textEntry = parent.Add.TranslationTextEntryWithLabel(new TranslationData(title));
+            textEntry.AddTooltip(new TranslationData(description));
+            textEntry.Text = defaultValue.ToString();
 
             textEntry.AddEventListener("onsubmit", (panelEvent) =>
             {

@@ -22,6 +22,11 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/components/generic/Panel.scss");
         }
 
+        public Panel(string classname) : base()
+        {
+            AddClass(classname);
+        }
+
         public Panel(Sandbox.UI.Panel parent = null) : base(parent)
         {
             Parent = parent ?? Parent;
