@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-
-using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
 using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
@@ -53,6 +49,19 @@ namespace Sandbox.UI.Construct
             TranslationTextEntry translationTextEntry = new();
 
             self.panel.AddChild(translationTextEntry);
+
+            return translationTextEntry;
+        }
+
+        public static TranslationTextEntry TranslationTextEntryWithLabel(this PanelCreator self, TranslationData translationData, string classname = null)
+        {
+            Panel wrapper = new();
+
+            wrapper.Add.TranslationLabel(translationData, classname);
+
+            TranslationTextEntry translationTextEntry = wrapper.Add.TranslationTextEntry();
+
+            self.panel.AddChild(wrapper);
 
             return translationTextEntry;
         }

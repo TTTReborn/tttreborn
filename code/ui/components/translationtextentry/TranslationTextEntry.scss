@@ -1,6 +1,5 @@
 TranslationTextEntry
 {
-	cursor: text;
 	align-items: center;
 	justify-content: center;
 	white-space: nowrap;
@@ -8,10 +7,10 @@ TranslationTextEntry
 	flex-direction: row;
     text-align: left;
     cursor: text;
-    flex-grow: 1;
     border: 3px solid rgba( $button-active, 0.2 );
     border-radius: 5px;
     flex-grow: 1;
+	flex-shrink: 0;
     padding: 5px 10px;
     color: white;
     font-family: Poppins;
