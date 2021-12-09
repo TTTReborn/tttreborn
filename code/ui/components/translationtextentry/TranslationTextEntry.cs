@@ -52,19 +52,5 @@ namespace Sandbox.UI.Construct
 
             return translationTextEntry;
         }
-
-        public static TranslationTextEntry TranslationTextEntryWithLabel(this PanelCreator self, TranslationData translationData, string classname = null)
-        {
-            Panel wrapper = new("translationTextWrapper");
-
-            wrapper.Add.TranslationLabel(translationData, classname);
-            wrapper.Add.Label(" ");
-
-            TranslationTextEntry translationTextEntry = wrapper.Add.TranslationTextEntry();
-
-            self.panel.AddChild(wrapper);
-
-            return translationTextEntry;
-        }
     }
 }
