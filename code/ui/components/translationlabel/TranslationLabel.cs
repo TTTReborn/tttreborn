@@ -19,7 +19,7 @@ namespace TTTReborn.UI
             }
         }
 
-        public TranslationData TranslationData;
+        private TranslationData _translationData = new();
 
         public TranslationLabel() : base()
         {
@@ -41,16 +41,28 @@ namespace TTTReborn.UI
             base.OnDeleted();
         }
 
+        public override void SetProperty(string name, string value)
+        {
+            base.SetProperty(name, value);
+
+            if (name == "key")
+            {
+                _translationData.Key = value;
+                SetTranslation(_translationData);
+                return;
+            }
+        }
+
         public void SetTranslation(TranslationData translationData)
         {
-            TranslationData = translationData;
+            _translationData = translationData;
 
-            base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(TranslationData);
+            base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
         }
 
         public void UpdateLanguage(Language language)
         {
-            base.Text = language.GetFormattedTranslation(TranslationData);
+            base.Text = language.GetFormattedTranslation(_translationData);
         }
     }
 }

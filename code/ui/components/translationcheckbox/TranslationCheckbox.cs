@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Globalization;
@@ -7,15 +6,6 @@ namespace TTTReborn.UI
 {
     public class TranslationCheckbox : Checkbox, ITranslatable
     {
-        [Property]
-        public string Key
-        {
-            set
-            {
-                _translationData.Key = value;
-                SetTranslation();
-            }
-        }
 
         public bool Enabled
         {
@@ -29,15 +19,13 @@ namespace TTTReborn.UI
         }
         private bool _enabled = true;
 
-        private readonly TranslationData _translationData = new();
+        private TranslationData _translationData = new();
 
         public TranslationCheckbox() : base() { }
 
         public TranslationCheckbox(TranslationData translationData) : base()
         {
-            _translationData = translationData;
-
-            SetTranslation();
+            SetTranslation(translationData);
 
             TTTLanguage.Translatables.Add(this);
         }
@@ -49,8 +37,21 @@ namespace TTTReborn.UI
             base.OnDeleted();
         }
 
-        public void SetTranslation()
+        public override void SetProperty(string name, string value)
         {
+            base.SetProperty(name, value);
+
+            if (name == "key")
+            {
+                _translationData.Key = value;
+                SetTranslation(_translationData);
+                return;
+            }
+        }
+
+        public void SetTranslation(TranslationData translationData)
+        {
+            _translationData = translationData;
             LabelText = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
         }
 

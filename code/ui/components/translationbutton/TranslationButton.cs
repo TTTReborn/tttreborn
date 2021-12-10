@@ -1,6 +1,7 @@
 using System;
 
 using Sandbox;
+using Sandbox.Html;
 using Sandbox.UI;
 
 using TTTReborn.Globalization;
@@ -9,25 +10,13 @@ namespace TTTReborn.UI
 {
     public class TranslationButton : Button, ITranslatable
     {
-        [Property]
-        public string Key
-        {
-            set
-            {
-                _translationData.Key = value;
-                SetTranslation();
-            }
-        }
-
-        private readonly TranslationData _translationData = new();
+        private TranslationData _translationData = new();
 
         public TranslationButton() : base() { }
 
         public TranslationButton(TranslationData translationData, string icon = null, string classname = null, Action onClick = null) : base(translationData.Key, icon, onClick)
         {
-            _translationData = translationData;
-
-            SetTranslation();
+            SetTranslation(translationData);
             AddClass(classname);
 
             TTTLanguage.Translatables.Add(this);
@@ -40,8 +29,21 @@ namespace TTTReborn.UI
             base.OnDeleted();
         }
 
-        public void SetTranslation()
+        public override void SetProperty(string name, string value)
         {
+            base.SetProperty(name, value);
+
+            if (name == "key")
+            {
+                _translationData.Key = value;
+                SetTranslation(_translationData);
+                return;
+            }
+        }
+
+        public void SetTranslation(TranslationData translationData)
+        {
+            _translationData = translationData;
             Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
         }
 
