@@ -42,12 +42,12 @@ namespace TTTReborn.UI
 
         public void SetTranslation()
         {
-            base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
+            Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
         }
 
         public void UpdateLanguage(Language language)
         {
-            base.Text = language.GetFormattedTranslation(_translationData);
+            Text = language.GetFormattedTranslation(_translationData);
         }
     }
 }
