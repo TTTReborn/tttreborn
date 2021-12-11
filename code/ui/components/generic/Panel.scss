@@ -222,3 +222,14 @@ $button-size: 50px;
         font-size: 20px;
     }
 }
+
+.h3 {
+    color: white;
+    font-weight: normal;
+    font-family: Poppins;
+    margin-bottom: 5px;
+
+    &.label {
+        font-size: 15px;
+    }
+}
