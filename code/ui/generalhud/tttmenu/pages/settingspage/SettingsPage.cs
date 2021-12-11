@@ -64,7 +64,7 @@ namespace TTTReborn.UI.Menu
                     continue;
                 }
 
-                Panel tab = new();
+                Panel tab = new("root");
 
                 foreach (PropertyInfo subPropertyInfo in propertyInfo.PropertyType.GetProperties())
                 {
