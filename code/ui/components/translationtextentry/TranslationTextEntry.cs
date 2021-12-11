@@ -6,7 +6,7 @@ namespace TTTReborn.UI
 {
     public class TranslationTextEntry : TextEntry, ITranslatable
     {
-        private readonly TranslationData _translationData = new();
+        private TranslationData _translationData = new();
 
         public TranslationTextEntry() : base()
         {
@@ -26,9 +26,15 @@ namespace TTTReborn.UI
 
             if (name == "placeholder_key")
             {
-                _translationData.Key = value;
-                Placeholder = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
+                SetTranslation(new TranslationData(value));
+                return;
             }
+        }
+
+        public void SetTranslation(TranslationData translationData)
+        {
+            _translationData = translationData;
+            Placeholder = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
         }
 
         public void UpdateLanguage(Language language)

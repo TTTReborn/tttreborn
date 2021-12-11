@@ -7,9 +7,19 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
-    public class TranslationDropdown : DropDown
+    public class TranslationDropdown : DropDown, ITranslatable
     {
-        public TranslationDropdown() : base() { }
+        public TranslationDropdown() : base()
+        {
+            TTTLanguage.Translatables.Add(this);
+        }
+
+        public override void OnDeleted()
+        {
+            TTTLanguage.Translatables.Remove(this);
+
+            base.OnDeleted();
+        }
 
         public new Option Selected
         {
@@ -42,6 +52,9 @@ namespace TTTReborn.UI
             }
         }
 
+        /// <summary>
+        /// Add support for HTML nesting of "translationoption" tags.
+        /// </summary>
         public override bool OnTemplateElement(INode element)
         {
             Options.Clear();
@@ -55,10 +68,8 @@ namespace TTTReborn.UI
 
                 if (child.Name.Equals("translationoption", StringComparison.OrdinalIgnoreCase))
                 {
-                    Option o = new();
+                    TranslationOption o = new(new TranslationData(child.GetAttribute("key")), child.GetAttribute("value"));
 
-                    o.Title = child.GetAttribute("key");
-                    o.Value = child.GetAttribute("value", o.Title);
                     o.Icon = child.GetAttribute("icon", null);
 
                     Options.Add(o);
@@ -83,11 +94,27 @@ namespace TTTReborn.UI
                 }
             }
         }
+
+        public void UpdateLanguage(Language language)
+        {
+            foreach (Option option in Options)
+            {
+                if (option is TranslationOption translatableOption)
+                {
+                    translatableOption.Title = language.GetFormattedTranslation(translatableOption.translationData);
+                }
+            }
+        }
     }
 
     public class TranslationOption : Option
     {
-        public TranslationOption(TranslationData titleData, object data) : base(TTTLanguage.ActiveLanguage.GetFormattedTranslation(titleData), data) { }
+        public TranslationData translationData;
+
+        public TranslationOption(TranslationData titleData, object data) : base(TTTLanguage.ActiveLanguage.GetFormattedTranslation(titleData), data)
+        {
+            translationData = titleData;
+        }
     }
 }
 

@@ -47,8 +47,7 @@ namespace TTTReborn.UI
 
             if (name == "key")
             {
-                _translationData.Key = value;
-                SetTranslation(_translationData);
+                SetTranslation(new TranslationData(value));
                 return;
             }
         }
@@ -56,7 +55,6 @@ namespace TTTReborn.UI
         public void SetTranslation(TranslationData translationData)
         {
             _translationData = translationData;
-
             base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
         }
 

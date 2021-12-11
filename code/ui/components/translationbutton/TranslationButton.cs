@@ -1,7 +1,5 @@
 using System;
 
-using Sandbox;
-using Sandbox.Html;
 using Sandbox.UI;
 
 using TTTReborn.Globalization;
@@ -35,8 +33,7 @@ namespace TTTReborn.UI
 
             if (name == "key")
             {
-                _translationData.Key = value;
-                SetTranslation(_translationData);
+                SetTranslation(new TranslationData(value));
                 return;
             }
         }

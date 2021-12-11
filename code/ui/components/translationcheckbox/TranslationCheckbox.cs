@@ -6,19 +6,6 @@ namespace TTTReborn.UI
 {
     public class TranslationCheckbox : Checkbox, ITranslatable
     {
-
-        public bool Enabled
-        {
-            get => _enabled;
-            set
-            {
-                _enabled = value;
-
-                SetClass("inactive", !_enabled);
-            }
-        }
-        private bool _enabled = true;
-
         private TranslationData _translationData = new();
 
         public TranslationCheckbox() : base() { }
@@ -43,8 +30,7 @@ namespace TTTReborn.UI
 
             if (name == "key")
             {
-                _translationData.Key = value;
-                SetTranslation(_translationData);
+                SetTranslation(new TranslationData(value));
                 return;
             }
         }
