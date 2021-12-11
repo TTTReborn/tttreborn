@@ -35,7 +35,7 @@ namespace TTTReborn.UI.Menu
             SettingFunctions.RequestServerSettings();
         }
 
-        public static void CreateSettings(Panel parent, Settings.Settings settings, Type settingsType = null)
+        public static void CreateSettings(TranslationTabContainer tabContainer, Settings.Settings settings, Type settingsType = null)
         {
             settingsType ??= settings.GetType();
 
@@ -43,13 +43,11 @@ namespace TTTReborn.UI.Menu
 
             if (settingsType != baseSettingsType)
             {
-                CreateSettings(parent, settings, settingsType.BaseType);
+                CreateSettings(tabContainer, settings, settingsType.BaseType);
             }
 
             PropertyInfo[] properties = settingsType.GetProperties();
             string nsp = typeof(Settings.Categories.Round).Namespace;
-
-            TranslationTabContainer tabContainer = parent.Add.TranslationTabContainer();
 
             foreach (PropertyInfo propertyInfo in properties)
             {

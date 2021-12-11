@@ -8,11 +8,11 @@ namespace TTTReborn.UI.Menu
     [UseTemplate]
     public partial class ServerSettingsPage : Panel
     {
-        private Panel Root { get; set; }
+        private TranslationTabContainer TabContainer { get; set; }
 
         public ServerSettingsPage(ServerSettings serverSettings)
         {
-            SettingsPage.CreateSettings(Root, serverSettings);
+            SettingsPage.CreateSettings(TabContainer, serverSettings);
         }
     }
 }
