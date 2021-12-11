@@ -79,3 +79,20 @@ namespace TTTReborn.UI
         }
     }
 }
+
+namespace Sandbox.UI.Construct
+{
+    using TTTReborn.UI;
+
+    public static class TranslationTabContainerConstructor
+    {
+        public static TranslationTabContainer TranslationTabContainer(this PanelCreator self)
+        {
+            TranslationTabContainer translationTabContainer = new();
+
+            self.panel.AddChild(translationTabContainer);
+
+            return translationTabContainer;
+        }
+    }
+}

@@ -49,6 +49,8 @@ namespace TTTReborn.UI.Menu
             PropertyInfo[] properties = settingsType.GetProperties();
             string nsp = typeof(Settings.Categories.Round).Namespace;
 
+            TranslationTabContainer tabContainer = parent.Add.TranslationTabContainer();
+
             foreach (PropertyInfo propertyInfo in properties)
             {
                 if (propertyInfo.DeclaringType.BaseType != baseSettingsType && settingsType != baseSettingsType || !propertyInfo.PropertyType.Namespace.Equals(nsp))
@@ -64,7 +66,7 @@ namespace TTTReborn.UI.Menu
                     continue;
                 }
 
-                parent.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_TAB_{categoryName.ToUpper()}"), "h1");
+                Panel tab = new();
 
                 foreach (PropertyInfo subPropertyInfo in propertyInfo.PropertyType.GetProperties())
                 {
@@ -80,17 +82,17 @@ namespace TTTReborn.UI.Menu
                         switch (settingAttribute)
                         {
                             case SwitchSettingAttribute:
-                                CreateSwitchSetting(parent, settings, categoryName, propertyName, propertyObject);
+                                CreateSwitchSetting(tab, settings, categoryName, propertyName, propertyObject);
 
                                 break;
 
                             case InputSettingAttribute:
-                                CreateInputSetting(parent, settings, categoryName, propertyName, propertyObject);
+                                CreateInputSetting(tab, settings, categoryName, propertyName, propertyObject);
 
                                 break;
 
                             case DropdownSettingAttribute:
-                                CreateDropdownSetting(parent, settings, categoryName, propertyName, propertyObject, propertyInfo, subPropertyInfo);
+                                CreateDropdownSetting(tab, settings, categoryName, propertyName, propertyObject, propertyInfo, subPropertyInfo);
 
                                 break;
                         }
@@ -98,8 +100,10 @@ namespace TTTReborn.UI.Menu
                         break;
                     }
 
-                    parent.Add.LineBreak();
+                    tab.Add.LineBreak();
                 }
+
+                tabContainer.AddTab(tab, new TranslationData($"MENU_SETTINGS_TAB_{categoryName.ToUpper()}"));
             }
         }
 
