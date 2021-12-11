@@ -74,6 +74,8 @@ namespace TTTReborn.UI
         : base(tabControl, TTTLanguage.ActiveLanguage.GetFormattedTranslation(tabTitle), icon, panel)
         {
             translationData = tabTitle;
+
+            Button.AddClass("translationtab");
         }
     }
 }
