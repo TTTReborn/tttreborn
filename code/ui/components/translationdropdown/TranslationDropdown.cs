@@ -109,7 +109,7 @@ namespace TTTReborn.UI
 
     public class TranslationOption : Option
     {
-        public TranslationData translationData;
+        public readonly TranslationData translationData;
 
         public TranslationOption(TranslationData titleData, object data) : base(TTTLanguage.ActiveLanguage.GetFormattedTranslation(titleData), data)
         {
