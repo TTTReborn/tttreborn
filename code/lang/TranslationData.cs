@@ -1,3 +1,5 @@
+using System;
+
 namespace TTTReborn.Globalization
 {
     public class TranslationData
@@ -8,7 +10,7 @@ namespace TTTReborn.Globalization
         public TranslationData(string translationKey = null, params object[] args)
         {
             Key = translationKey ?? string.Empty;
-            Args = args ?? System.Array.Empty<object>();
+            Args = args ?? Array.Empty<object>();
         }
     }
 }

@@ -110,10 +110,7 @@ namespace TTTReborn.Globalization
 
             ActiveLanguage = language;
 
-            Translatables.ForEach((translatable) =>
-            {
-                translatable.UpdateLanguage(ActiveLanguage);
-            });
+            Translatables.ForEach((translatable) => translatable.UpdateLanguage(ActiveLanguage));
         }
 
         [Event(TTTEvent.Settings.Change)]
