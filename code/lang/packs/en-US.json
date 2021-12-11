@@ -68,6 +68,9 @@
 
     "MENU_SETTINGS_TAB_GENERAL": "General",
     "MENU_SETTINGS_GENERAL_LANGUAGE": "Language",
+    "MENU_SETTINGS_GENERAL_LANGUAGE_DESCRIPTION": "The displayed language on the client",
+    "MENU_SETTINGS_GENERAL_RETURNTRANSLATIONERROR": "Return translation errors",
+    "MENU_SETTINGS_GENERAL_RETURNTRANSLATIONERROR_DESCRIPTION": "Return a translation error if the primary language doesn't find a key.",
 
     "MENU_SUBMENU_SETTINGS": "Settings",
     "MENU_SUBMENU_TESTING": "Testing",
