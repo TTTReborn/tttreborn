@@ -61,8 +61,7 @@ namespace TTTReborn.UI
             EntryPanelContent = new(Content);
             EntryPanelContent.AddClass("selection");
 
-            FileNameEntry = Content.Add.TextEntry("");
-            FileNameEntry.AddClass("filename");
+            FileNameEntry = Content.Add.TranslationTextEntry();
             FileNameEntry.AddClass("hide");
             FileNameEntry.AddEventListener("onfocus", (panelEvent) =>
             {
