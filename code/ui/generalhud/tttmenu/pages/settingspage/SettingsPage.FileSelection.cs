@@ -15,7 +15,7 @@ namespace TTTReborn.UI.Menu
         {
             Panel wrapper = new();
 
-            wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_SAVE"), null, null, () =>
+            wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_SAVE"), "save", null, () =>
             {
                 currentFileSelection?.Close();
 
@@ -29,7 +29,9 @@ namespace TTTReborn.UI.Menu
                 currentFileSelection = fileSelection;
             });
 
-            wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_LOAD"), null, null, () =>
+            wrapper.Add.Label();
+
+            wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_LOAD"), "upload_file", null, () =>
             {
                 currentFileSelection?.Close();
 
