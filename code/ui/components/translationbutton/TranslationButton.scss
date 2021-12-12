@@ -16,9 +16,25 @@ button, TranslationButton
 	> iconpanel
 	{
 		font-size: 22px;
+		display: none;
 	}
 
-	&.has-label > iconpanel
+	> .button-label
+	{
+		display: none;
+	}
+
+	&.has-icon > iconpanel
+	{
+		display: flex;
+	}
+
+	&.has-label > .button-label
+	{
+		display: flex;
+	}
+
+	&.has-label.has-icon > iconpanel
 	{
 		margin-right: 10px;
 	}

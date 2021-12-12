@@ -41,12 +41,18 @@ namespace TTTReborn.UI
         public void SetTranslation(TranslationData translationData)
         {
             _translationData = translationData;
-            Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
+            SetText(TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData));
         }
 
         public void UpdateLanguage(Language language)
         {
-            Text = language.GetFormattedTranslation(_translationData);
+            SetText(language.GetFormattedTranslation(_translationData));
+        }
+
+        private void SetText(string value)
+        {
+            Text = value;
+            SetClass("has-label", !string.IsNullOrEmpty(Text));
         }
     }
 }
