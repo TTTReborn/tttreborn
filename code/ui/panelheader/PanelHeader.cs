@@ -30,7 +30,7 @@ namespace TTTReborn.UI
 
             OnCreateHeader();
 
-            _closeButton = Add.Button("╳", "closeButton", () =>
+            _closeButton = Add.Button(" ╳ ", "closeButton", () =>
             {
                 OnClose?.Invoke(this);
             });
