@@ -10,9 +10,13 @@ namespace TTTReborn.UI.Menu
     {
         private TranslationTabContainer TabContainer { get; set; }
 
+        private FileSelection ServerSettingsFileSelection { get; set; }
+        private FileSelection _currentFileSelection;
+
         public ServerSettingsPage(ServerSettings serverSettings)
         {
             SettingsPage.CreateSettings(TabContainer, serverSettings);
+            SettingsPage.CreateFileSelectionButtons(this, _currentFileSelection, ServerSettingsFileSelection, true);
         }
     }
 }
