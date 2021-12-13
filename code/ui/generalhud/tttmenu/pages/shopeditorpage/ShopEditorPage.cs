@@ -13,11 +13,11 @@ namespace TTTReborn.UI
     [UseTemplate]
     public partial class ShopEditorPage : Panel
     {
+        public readonly List<QuickShopItem> ShopItems = new();
+
         private Panel Controls { get; set; }
         private Panel RoleShopContent { get; set; }
         private readonly TranslationCheckbox _translationCheckbox;
-
-        private readonly List<QuickShopItem> _shopItems = new();
 
         public ShopEditorPage()
         {
@@ -66,7 +66,7 @@ namespace TTTReborn.UI
         private void CreateRoleShopContent(TTTRole selectedRole)
         {
             RoleShopContent.DeleteChildren(true);
-            _shopItems.Clear();
+            ShopItems.Clear();
 
             _translationCheckbox.Checked = selectedRole.Shop.Enabled;
 
@@ -79,10 +79,15 @@ namespace TTTReborn.UI
                     continue;
                 }
 
-                QuickShopItem item = new(RoleShopContent);
-                item.SetItem(shopItemData);
+                Panel wrapper = new(RoleShopContent);
+                wrapper.AddClass("row");
 
-                // ON CLICK LEFT CLICK PLUS RIGHT CLICK
+                QuickShopItem item = new(wrapper);
+                item.SetItem(shopItemData);
+                item.AddEventListener("onclick", () =>
+                {
+                    ToggleItem(item, selectedRole);
+                });
 
                 foreach (ShopItemData loopItemData in selectedRole.Shop.Items)
                 {
@@ -94,6 +99,15 @@ namespace TTTReborn.UI
                         item.SetClass("selected", true);
                     }
                 }
+
+                wrapper.Add.HorizontalLineBreak();
+
+                wrapper.Add.TranslationButton(new TranslationData(), "edit", null, () =>
+                {
+
+                });
+
+                wrapper.Add.LineBreak();
             }
         }
     }
