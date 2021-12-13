@@ -96,9 +96,9 @@ namespace TTTReborn.UI.Menu
 
             if (isServerSettings)
             {
-                TTTMenu.Instance.PopPage();
+                // Refresh the page.
                 fileSelection.Close();
-
+                TTTMenu.Instance.PopPage();
                 Player.TTTPlayer.RequestLoadFrom(fileSelection.CurrentFolderPath, fileName);
             }
             else
@@ -114,10 +114,10 @@ namespace TTTReborn.UI.Menu
 
                 SettingFunctions.SaveSettings<ClientSettings>(ClientSettings.Instance);
 
+                // Refresh the page.
                 fileSelection.Close();
-
-                // refresh settings
-                // menuContent.SetPanelContent(OpenSettings);
+                TTTMenu.Instance.PopPage();
+                TTTMenu.Instance.AddPage(new ClientSettingsPage());
             }
         }
 
