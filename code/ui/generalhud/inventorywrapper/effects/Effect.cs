@@ -18,7 +18,7 @@ namespace TTTReborn.UI
             {
                 _item = value;
 
-                _nameLabel.SetTranslation(new Globalization.TranslationData(_item?.LibraryName.ToUpper() ?? ""));
+                _nameLabel.UpdateTranslation(new Globalization.TranslationData(_item?.LibraryName.ToUpper() ?? ""));
                 _effectImage.Texture = (_item != null ? Texture.Load($"/ui/weapons/{_item.LibraryName}.png", false) : null);
 
                 if (_effectImage.Texture == null)

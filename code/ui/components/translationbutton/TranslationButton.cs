@@ -17,7 +17,7 @@ namespace TTTReborn.UI
 
         public TranslationButton(TranslationData translationData, string icon = null, string classname = null, Action onClick = null) : base(translationData.Key, icon, onClick)
         {
-            SetTranslation(translationData);
+            UpdateTranslation(translationData);
             AddClass(classname);
 
             TTTLanguage.Translatables.Add(this);
@@ -36,12 +36,12 @@ namespace TTTReborn.UI
 
             if (name == "key")
             {
-                SetTranslation(new TranslationData(value));
+                UpdateTranslation(new TranslationData(value));
                 return;
             }
         }
 
-        public void SetTranslation(TranslationData translationData)
+        public void UpdateTranslation(TranslationData translationData)
         {
             _translationData = translationData;
             SetText(TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData));

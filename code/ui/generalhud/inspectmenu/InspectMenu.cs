@@ -138,7 +138,7 @@ namespace TTTReborn.UI
 
             _playerLabel.Text = _playerCorpse.DeadPlayer?.Client.Name;
 
-            _roleLabel.SetTranslation(new TranslationData(_playerCorpse.DeadPlayer?.Role.GetRoleTranslationKey("NAME")));
+            _roleLabel.UpdateTranslation(new TranslationData(_playerCorpse.DeadPlayer?.Role.GetRoleTranslationKey("NAME")));
             _roleLabel.Style.FontColor = _playerCorpse.DeadPlayer?.Role.Color;
 
             SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
@@ -207,7 +207,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _inspectDetailsLabel.SetTranslation(_selectedInspectEntry.TranslationData);
+            _inspectDetailsLabel.UpdateTranslation(_selectedInspectEntry.TranslationData);
         }
 
         public override void Tick()

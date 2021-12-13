@@ -25,7 +25,7 @@ namespace TTTReborn.UI
 
         public override void UpdateHintPanel(TranslationData translationData)
         {
-            _label.SetTranslation(translationData);
+            _label.UpdateTranslation(translationData);
         }
     }
 }

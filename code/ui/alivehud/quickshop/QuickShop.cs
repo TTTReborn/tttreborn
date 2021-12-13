@@ -134,7 +134,7 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            _creditLabel.SetTranslation(new TranslationData("QUICKSHOP_CREDITS_DESCRIPTION", _credits));
+            _creditLabel.UpdateTranslation(new TranslationData("QUICKSHOP_CREDITS_DESCRIPTION", _credits));
 
             foreach (QuickShopItem item in _items)
             {
@@ -145,7 +145,7 @@ namespace TTTReborn.UI
 
             if (_selectedItemData != null)
             {
-                _itemDescriptionLabel.SetTranslation(new TranslationData("QUICKSHOP_ITEM_DESCRIPTION", new TranslationData(_selectedItemData?.Name.ToUpper())));
+                _itemDescriptionLabel.UpdateTranslation(new TranslationData("QUICKSHOP_ITEM_DESCRIPTION", new TranslationData(_selectedItemData?.Name.ToUpper())));
             }
         }
 

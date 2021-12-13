@@ -15,7 +15,7 @@ namespace TTTReborn.UI
 
         public TranslationCheckbox(TranslationData translationData) : base()
         {
-            SetTranslation(translationData);
+            UpdateTranslation(translationData);
 
             TTTLanguage.Translatables.Add(this);
         }
@@ -33,12 +33,12 @@ namespace TTTReborn.UI
 
             if (name == "key")
             {
-                SetTranslation(new TranslationData(value));
+                UpdateTranslation(new TranslationData(value));
                 return;
             }
         }
 
-        public void SetTranslation(TranslationData translationData)
+        public void UpdateTranslation(TranslationData translationData)
         {
             _translationData = translationData;
             LabelText = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);

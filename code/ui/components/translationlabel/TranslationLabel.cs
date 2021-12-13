@@ -28,7 +28,7 @@ namespace TTTReborn.UI
 
         public TranslationLabel(TranslationData translationData, string classname = null) : base()
         {
-            SetTranslation(translationData);
+            UpdateTranslation(translationData);
             AddClass(classname);
 
             TTTLanguage.Translatables.Add(this);
@@ -47,12 +47,12 @@ namespace TTTReborn.UI
 
             if (name == "key")
             {
-                SetTranslation(new TranslationData(value));
+                UpdateTranslation(new TranslationData(value));
                 return;
             }
         }
 
-        public void SetTranslation(TranslationData translationData)
+        public void UpdateTranslation(TranslationData translationData)
         {
             _translationData = translationData;
             base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);

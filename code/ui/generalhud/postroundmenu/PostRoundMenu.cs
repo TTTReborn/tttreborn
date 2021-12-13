@@ -67,9 +67,9 @@ namespace TTTReborn.UI
             SetClass("fade-in", true);
             _containerPanel.SetClass("pop-in", true);
 
-            _contentLabel.SetTranslation(new Globalization.TranslationData("POST_ROUND_TEXT"));
+            _contentLabel.UpdateTranslation(new Globalization.TranslationData("POST_ROUND_TEXT"));
 
-            _headerLabel.SetTranslation(new Globalization.TranslationData($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}"));
+            _headerLabel.UpdateTranslation(new Globalization.TranslationData($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}"));
             _headerLabel.Style.FontColor = _stats.WinningColor;
         }
     }
