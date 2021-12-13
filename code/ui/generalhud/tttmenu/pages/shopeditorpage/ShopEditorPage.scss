@@ -21,10 +21,10 @@ QuickShopItem {
     justify-content: center;
     padding: 8px;
     transition: transform 0.1s ease-in;
-    box-shadow: 0 0 10px black;
     white-space: nowrap;
     flex-shrink: 0;
-    flex-grow: 4;
+    flex-grow: 1;
+    background-color: #282828;
 
     &:hover {
         transform: scale(1.01);
@@ -60,6 +60,5 @@ QuickShopItem {
 
     &.selected {
         box-shadow: 0 0 15px #ffae00;
-        background-color: #222;
     }
 }

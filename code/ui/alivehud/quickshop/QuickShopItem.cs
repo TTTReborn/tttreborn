@@ -20,7 +20,6 @@ namespace TTTReborn.UI
         {
             AddClass("rounded");
             AddClass("text-shadow");
-            AddClass("background-color-secondary");
 
             _itemPriceLabel = Add.Label();
             _itemPriceLabel.AddClass("item-price-label");
