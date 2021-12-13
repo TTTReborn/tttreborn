@@ -108,6 +108,8 @@ namespace TTTReborn.UI
                 });
 
                 wrapper.Add.LineBreak();
+
+                ShopItems.Add(item);
             }
         }
     }
