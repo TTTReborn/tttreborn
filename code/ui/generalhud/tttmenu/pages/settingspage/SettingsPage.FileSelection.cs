@@ -11,7 +11,7 @@ namespace TTTReborn.UI.Menu
 {
     public partial class SettingsPage : Panel
     {
-        public static void CreateFileSelectionButtons(Panel parent, FileSelection currentFileSelection, FileSelection serverSettingsFileSelection, bool isServerSettings)
+        public static void CreateFileSelectionButtons(Panel parent, FileSelection currentFileSelection, bool isServerSettings)
         {
             Panel wrapper = new();
 
@@ -39,25 +39,6 @@ namespace TTTReborn.UI.Menu
                 fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
                 fileSelection.OnAgree = () => OnAgreeLoadFrom(fileSelection, isServerSettings);
                 fileSelection.DefaultSelectionPath = GetSettingsPathByData(isServerSettings);
-
-                if (isServerSettings)
-                {
-                    fileSelection.Header.NavigationHeader.OnClose = (modal) =>
-                    {
-                        if (serverSettingsFileSelection != fileSelection)
-                        {
-                            return;
-                        }
-
-                        serverSettingsFileSelection = null;
-                    };
-
-                    serverSettingsFileSelection = fileSelection;
-                }
-                else
-                {
-                    serverSettingsFileSelection = null;
-                }
 
                 fileSelection.Display();
 
@@ -115,6 +96,9 @@ namespace TTTReborn.UI.Menu
 
             if (isServerSettings)
             {
+                TTTMenu.Instance.PopPage();
+                fileSelection.Close();
+
                 Player.TTTPlayer.RequestLoadFrom(fileSelection.CurrentFolderPath, fileName);
             }
             else
@@ -177,6 +161,7 @@ namespace TTTReborn.UI.Menu
 namespace TTTReborn.Player
 {
     using TTTReborn.UI.Menu;
+    using TTTReborn.Settings;
 
     public partial class TTTPlayer
     {
@@ -224,24 +209,9 @@ namespace TTTReborn.Player
                 return;
             }
 
-            SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance);
+            SettingFunctions.SaveSettings(ServerSettings.Instance);
 
-            ClientFinishServerSettingsLoading(To.Single(ConsoleSystem.Caller), filePath, fileName);
-        }
-
-        [ClientRpc]
-        public static void ClientFinishServerSettingsLoading(string filePath, string fileName)
-        {
-            // Menu menu = Menu.Instance;
-
-            // if (menu != null && menu.Enabled && menu.ServerSettingsTabContent != null)
-            // {
-            //     // refresh settings
-            //     menu.Content.SetPanelContent(menu.OpenSettings);
-            //     menu.SettingsTabs?.SelectByValue(Utils.Realm.Server);
-
-            //     menu.ServerSettingsFileSelection?.Close();
-            // }
+            SettingFunctions.ClientSendServerSettings(To.Single(ConsoleSystem.Caller), SettingFunctions.GetJSON(ServerSettings.Instance, true));
         }
     }
 }
