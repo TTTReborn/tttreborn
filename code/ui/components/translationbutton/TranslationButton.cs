@@ -10,7 +10,10 @@ namespace TTTReborn.UI
     {
         private TranslationData _translationData = new();
 
-        public TranslationButton() : base() { }
+        public TranslationButton()
+        {
+            TTTLanguage.Translatables.Add(this);
+        }
 
         public TranslationButton(TranslationData translationData, string icon = null, string classname = null, Action onClick = null) : base(translationData.Key, icon, onClick)
         {

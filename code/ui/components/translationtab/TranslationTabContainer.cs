@@ -8,7 +8,7 @@ namespace TTTReborn.UI
 {
     public class TranslationTabContainer : TabContainer, ITranslatable
     {
-        public TranslationTabContainer() : base()
+        public TranslationTabContainer()
         {
             TTTLanguage.Translatables.Add(this);
         }

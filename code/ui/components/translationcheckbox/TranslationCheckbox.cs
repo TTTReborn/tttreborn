@@ -8,7 +8,10 @@ namespace TTTReborn.UI
     {
         private TranslationData _translationData = new();
 
-        public TranslationCheckbox() : base() { }
+        public TranslationCheckbox()
+        {
+            TTTLanguage.Translatables.Add(this);
+        }
 
         public TranslationCheckbox(TranslationData translationData) : base()
         {

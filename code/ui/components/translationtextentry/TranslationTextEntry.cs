@@ -8,7 +8,7 @@ namespace TTTReborn.UI
     {
         private TranslationData _translationData = new();
 
-        public TranslationTextEntry() : base()
+        public TranslationTextEntry()
         {
             TTTLanguage.Translatables.Add(this);
         }

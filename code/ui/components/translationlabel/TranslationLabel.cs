@@ -21,7 +21,7 @@ namespace TTTReborn.UI
 
         private TranslationData _translationData = new();
 
-        public TranslationLabel() : base()
+        public TranslationLabel()
         {
             TTTLanguage.Translatables.Add(this);
         }

@@ -9,7 +9,7 @@ namespace TTTReborn.UI
 {
     public class TranslationDropdown : DropDown, ITranslatable
     {
-        public TranslationDropdown() : base()
+        public TranslationDropdown()
         {
             TTTLanguage.Translatables.Add(this);
         }
