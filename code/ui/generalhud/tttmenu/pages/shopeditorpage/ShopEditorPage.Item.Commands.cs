@@ -3,9 +3,11 @@ using System.Text.Json;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
+using TTTReborn.UI.Menu;
 
 namespace TTTReborn.UI
 {
@@ -159,6 +161,55 @@ namespace TTTReborn.UI
                     break;
                 }
             }
+        }
+
+        private static void EditItem(QuickShopItem item, TTTRole role)
+        {
+            if (!item.HasClass("selected"))
+            {
+                return;
+            }
+
+            Modal itemEditModal = CreateItemEditModal(item, role);
+
+            Hud.Current.RootPanel.AddChild(itemEditModal);
+
+            itemEditModal.Display();
+        }
+
+        private static Modal CreateItemEditModal(QuickShopItem item, TTTRole role)
+        {
+            DialogBox dialogBox = new();
+            dialogBox.Header.DragHeader.IsLocked = false;
+            dialogBox.SetTranslationTitle(new TranslationData("MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC", new TranslationData(item.ItemData.Name.ToUpper())));
+            dialogBox.AddClass("itemeditwindow");
+
+            dialogBox.OnAgree = () =>
+            {
+                ServerUpdateItem(item.ItemData.Name, true, JsonSerializer.Serialize(item.ItemData), role.Name);
+
+                dialogBox.Close();
+            };
+
+            dialogBox.OnDecline = () =>
+            {
+                dialogBox.Close();
+            };
+
+            PopulateEditWindowWithSettings(dialogBox, item);
+
+            return dialogBox;
+        }
+
+        private static void PopulateEditWindowWithSettings(DialogBox dialog, QuickShopItem item)
+        {
+            dialog.Content.SetPanelContent((panelContent) =>
+            {
+                SettingsPage.CreateSettingsEntry(panelContent, "MENU_SHOPEDITOR_ITEM_PRICE", item.ItemData.Price, "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC", null, (value) =>
+                {
+                    item.ItemData.Price = value;
+                }, new TranslationData(item.ItemData.Name.ToUpper()));
+            });
         }
     }
 }
