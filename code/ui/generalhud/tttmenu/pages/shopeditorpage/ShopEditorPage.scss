@@ -1,5 +1,60 @@
 .root {
     flex-direction: column;
-    overflow: scroll;
     width: 100%;
+}
+
+.content {
+    flex-direction: column;
+    overflow: scroll;
+    align-items: center;
+}
+
+QuickShopItem {
+    opacity: 1;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: transform 0.1s ease-in;
+    box-shadow: 0 0 10px black;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    &:hover {
+        transform: scale(1.02);
+        cursor: pointer;
+    }
+
+    &:active {
+        transform: scale(1);
+    }
+
+    .item-icon {
+        position: absolute;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 100%;
+        left: 20px;
+    }
+
+    .item-name-label {
+        position: absolute;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .item-price-label {
+        position: absolute;
+        font-weight: bold;
+        font-size: 20px;
+        right: 20px;
+    }
+
+    &.selected {
+        box-shadow: 0 0 15px #ffae00;
+        background-color: #222;
+    }
 }

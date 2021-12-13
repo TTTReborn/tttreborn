@@ -5,6 +5,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
+using TTTReborn.Items;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
@@ -68,6 +69,32 @@ namespace TTTReborn.UI
             _shopItems.Clear();
 
             _translationCheckbox.Checked = selectedRole.Shop.Enabled;
+
+            foreach (Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>())
+            {
+                ShopItemData shopItemData = ShopItemData.CreateItemData(itemType);
+
+                if (shopItemData == null)
+                {
+                    continue;
+                }
+
+                QuickShopItem item = new(RoleShopContent);
+                item.SetItem(shopItemData);
+
+                // ON CLICK LEFT CLICK PLUS RIGHT CLICK
+
+                foreach (ShopItemData loopItemData in selectedRole.Shop.Items)
+                {
+                    if (loopItemData.Name.Equals(shopItemData.Name))
+                    {
+                        shopItemData.CopyFrom(loopItemData);
+
+                        item.SetItem(shopItemData);
+                        item.SetClass("selected", true);
+                    }
+                }
+            }
         }
     }
 }

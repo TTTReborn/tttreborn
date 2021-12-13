@@ -35,7 +35,7 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/components/generic/Panel.scss");
 
-            SetClass("panel", true);
+            AddClass("panel");
         }
     }
 }
