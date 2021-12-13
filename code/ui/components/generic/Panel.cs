@@ -17,13 +17,15 @@ namespace TTTReborn.UI
         }
         protected bool IsEnabled = true;
 
-        public Panel() : base()
+        public Panel()
         {
             StyleSheet.Load("/ui/components/generic/Panel.scss");
         }
 
-        public Panel(string classname) : base()
+        public Panel(string classname)
         {
+            StyleSheet.Load("/ui/components/generic/Panel.scss");
+
             AddClass(classname);
         }
 

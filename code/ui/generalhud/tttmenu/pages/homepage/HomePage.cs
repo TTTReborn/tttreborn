@@ -9,6 +9,7 @@ namespace TTTReborn.UI.Menu
     public partial class HomePage : Panel
     {
         private TranslationButton RoleSelectionEditorButton { get; set; }
+        private TranslationButton ShopEditorButton { get; set; }
 
         public void GoToSettingsPage()
         {
@@ -20,11 +21,22 @@ namespace TTTReborn.UI.Menu
             TTTMenu.Instance.AddPage(new KeyBindingsPage());
         }
 
+
+        public void GoToShopEditor()
+        {
+            TTTMenu.Instance.AddPage(new ShopEditorPage());
+        }
+
         public HomePage()
         {
             if (Local.Client.HasPermission("visualprogramming"))
             {
                 RoleSelectionEditorButton.RemoveClass("inactive");
+            }
+
+            if (Local.Client.HasPermission("shopeditor"))
+            {
+                ShopEditorButton.RemoveClass("inactive");
             }
         }
 
