@@ -24,7 +24,8 @@ namespace TTTReborn.UI.Menu
 
         public void GoToShopEditor()
         {
-            TTTMenu.Instance.AddPage(new ShopEditorPage());
+            // Call to server which sends down server data and then adds the ShopEditorPage.
+            ShopEditorPage.ServerRequestShopEditorAccess();
         }
 
         public HomePage()

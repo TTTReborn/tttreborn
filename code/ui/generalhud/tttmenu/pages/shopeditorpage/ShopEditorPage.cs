@@ -1,32 +1,29 @@
 using System;
+using System.Collections.Generic;
 
-using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 using TTTReborn.Roles;
-using TTTReborn.UI.Menu;
 
 namespace TTTReborn.UI
 {
     [UseTemplate]
-    public class ShopEditorPage : Panel
+    public partial class ShopEditorPage : Panel
     {
-        private TranslationCheckbox _translationCheckbox;
+        private Panel Controls { get; set; }
+        private Panel RoleShopContent { get; set; }
+        private readonly TranslationCheckbox _translationCheckbox;
+
+        private readonly List<QuickShopItem> _shopItems = new();
 
         public ShopEditorPage()
         {
-            Panel wrapper = new(this);
-
-            _translationCheckbox = wrapper.Add.TranslationCheckbox(new TranslationData("MENU_SHOPEDITOR_ENABLEROLE"));
-            _translationCheckbox.AddClass("inactive");
-
-            wrapper.Add.HorizontalLineBreak();
+            Panel wrapper = new(Controls);
 
             TranslationDropdown roleDropdown = wrapper.Add.TranslationDropdown();
             roleDropdown.AddTooltip(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"), "roleselection");
-
             roleDropdown.AddEventListener("onchange", () =>
             {
                 bool hasRoleSelected = roleDropdown.Selected != null && roleDropdown.Selected.Value is TTTRole role;
@@ -34,7 +31,7 @@ namespace TTTReborn.UI
 
                 if (hasRoleSelected)
                 {
-
+                    CreateRoleShopContent(roleDropdown.Selected.Value as TTTRole);
                 }
             });
 
@@ -49,14 +46,28 @@ namespace TTTReborn.UI
 
                 TranslationOption option = new(new TranslationData(role.GetRoleTranslationKey("NAME")), role);
                 roleDropdown.Options.Add(option);
-
                 roleDropdown.Select(option);
             }
+
+            wrapper.Add.HorizontalLineBreak();
+
+            _translationCheckbox = wrapper.Add.TranslationCheckbox(new TranslationData("MENU_SHOPEDITOR_ENABLEROLE"));
+            _translationCheckbox.AddClass("inactive");
+            _translationCheckbox.AddEventListener("onchange", () =>
+            {
+                if (roleDropdown.Selected.Value is TTTRole role)
+                {
+                    ServerToggleShop(role.Name, _translationCheckbox.Checked);
+                }
+            });
         }
 
         private void CreateRoleShopContent(TTTRole selectedRole)
         {
+            RoleShopContent.DeleteChildren(true);
+            _shopItems.Clear();
 
+            _translationCheckbox.Checked = selectedRole.Shop.Enabled;
         }
     }
 }
