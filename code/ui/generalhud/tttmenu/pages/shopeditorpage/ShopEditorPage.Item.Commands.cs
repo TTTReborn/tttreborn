@@ -165,11 +165,6 @@ namespace TTTReborn.UI
 
         private static void EditItem(QuickShopItem item, TTTRole role)
         {
-            if (!item.HasClass("selected"))
-            {
-                return;
-            }
-
             Modal itemEditModal = CreateItemEditModal(item, role);
 
             Hud.Current.RootPanel.AddChild(itemEditModal);
