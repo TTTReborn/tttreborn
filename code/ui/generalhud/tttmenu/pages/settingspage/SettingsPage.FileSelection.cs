@@ -29,7 +29,7 @@ namespace TTTReborn.UI.Menu
                 currentFileSelection = fileSelection;
             });
 
-            wrapper.Add.Label();
+            wrapper.Add.HorizontalLineBreak();
 
             wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_LOAD"), "upload_file", null, () =>
             {

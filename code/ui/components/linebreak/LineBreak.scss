@@ -2,3 +2,8 @@ br, linebreak {
     min-height: 10px;
     flex-shrink: 0;
 }
+
+horizontallinebreak {
+    min-width: 10px;
+    flex-shrink: 0;
+}

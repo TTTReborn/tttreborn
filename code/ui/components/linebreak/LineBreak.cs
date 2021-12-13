@@ -7,6 +7,14 @@ namespace TTTReborn.UI
             AddClass("linebreak");
         }
     }
+
+    public class HorizontalLineBreak : Panel
+    {
+        public HorizontalLineBreak()
+        {
+            AddClass("horizontallinebreak");
+        }
+    }
 }
 
 namespace Sandbox.UI.Construct
@@ -22,6 +30,15 @@ namespace Sandbox.UI.Construct
             self.panel.AddChild(lineBreak);
 
             return lineBreak;
+        }
+
+        public static HorizontalLineBreak HorizontalLineBreak(this PanelCreator self)
+        {
+            HorizontalLineBreak horizontalLineBreak = new();
+
+            self.panel.AddChild(horizontalLineBreak);
+
+            return horizontalLineBreak;
         }
     }
 }
