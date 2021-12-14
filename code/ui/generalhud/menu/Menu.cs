@@ -1,7 +1,7 @@
 using System;
 
-using TTTReborn.VisualProgramming;
 using TTTReborn.Globalization;
+using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.Menu
 {

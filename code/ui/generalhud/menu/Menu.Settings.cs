@@ -2,8 +2,8 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Settings;
 using TTTReborn.Globalization;
+using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
 {

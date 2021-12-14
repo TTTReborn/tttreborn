@@ -7,9 +7,9 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Player;
-using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {

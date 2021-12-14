@@ -1,9 +1,8 @@
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Events;
-using TTTReborn.Player;
 using TTTReborn.Globalization;
+using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -39,7 +38,7 @@ namespace TTTReborn.UI
             Enabled = !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound;
         }
 
-        [Event(TTTEvent.Player.Role.Select)]
+        [Event(Events.TTTEvent.Player.Role.Select)]
         private void OnRoleUpdate(TTTPlayer player)
         {
             if (player == null || player != Local.Pawn as TTTPlayer)
