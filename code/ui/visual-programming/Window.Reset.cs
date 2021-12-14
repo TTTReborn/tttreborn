@@ -1,5 +1,5 @@
-using TTTReborn.VisualProgramming;
 using TTTReborn.Globalization;
+using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {

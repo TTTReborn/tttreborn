@@ -2,8 +2,8 @@ using System;
 
 using Sandbox.UI.Construct;
 
-using TTTReborn.Roles;
 using TTTReborn.Globalization;
+using TTTReborn.Roles;
 
 namespace TTTReborn.UI.VisualProgramming
 {
