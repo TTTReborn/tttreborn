@@ -23,7 +23,7 @@ namespace TTTReborn.UI
         {
             Panel wrapper = new(Controls);
 
-            TranslationDropdown roleDropdown = wrapper.Add.TranslationDropdown();
+            TranslationDropdown roleDropdown = wrapper.Add.TranslationDropdown("popup");
             roleDropdown.AddTooltip(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"), "roleselection");
             roleDropdown.AddEventListener("onchange", () =>
             {
