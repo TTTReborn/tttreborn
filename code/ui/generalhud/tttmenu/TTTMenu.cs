@@ -83,14 +83,12 @@ namespace TTTReborn.UI
             }
         }
 
-        public override void Tick()
+        [Event.BuildInput]
+        private void MenuInput(InputBuilder input)
         {
-            using (Prediction.Off())
+            if (input.Pressed(InputButton.Menu))
             {
-                if (Input.Pressed(InputButton.Menu))
-                {
-                    BackgroundPanel.SetClass("disabled", !BackgroundPanel.HasClass("disabled"));
-                }
+                BackgroundPanel.SetClass("disabled", !BackgroundPanel.HasClass("disabled"));
             }
         }
     }
