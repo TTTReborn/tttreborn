@@ -23,8 +23,8 @@ namespace TTTReborn.UI
 
             Header.DragHeader.IsLocked = true;
 
-            _agreeButton = Footer.Add.ButtonWithIcon("done", "", "agree", OnClickAgree);
-            _declineButton = Footer.Add.ButtonWithIcon("close", "", "decline", OnClickDecline);
+            _agreeButton = Footer.Add.ButtonWithIcon("", "done", "agree", OnClickAgree);
+            _declineButton = Footer.Add.ButtonWithIcon("", "close", "decline", OnClickDecline);
         }
 
         public virtual void OnClickAgree()
