@@ -11,7 +11,11 @@ PanelHeader {
 }
 
 .closeButton {
-    flex-shrink: 0;
-    cursor: pointer;
-    padding: 10px;
+    // background-color: transparent;
+    // padding: 10px;
+    
+    // &:hover, &:active {
+    //     background-color: transparent;
+    //     color: rgb(200, 200, 200);
+    // }
 }

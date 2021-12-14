@@ -26,22 +26,22 @@ namespace TTTReborn.UI.VisualProgramming
 
             Header.NavigationHeader.OnCreateWindowHeader = (header) =>
             {
-                Sandbox.UI.Button saveButton = new("save_as", "", () => Save());
+                Sandbox.UI.Button saveButton = new("", "save", () => Save());
                 saveButton.AddClass("save");
 
                 header.AddChild(saveButton);
 
-                Sandbox.UI.Button loadButton = new("folder_open", "", () => Load());
+                Sandbox.UI.Button loadButton = new("", "folder_open", () => Load());
                 loadButton.AddClass("load");
 
                 header.AddChild(loadButton);
 
-                BuildButton = new("play_arrow", "", () => Build());
+                BuildButton = new("", "play_arrow", () => Build());
                 BuildButton.AddClass("play");
 
                 header.AddChild(BuildButton);
 
-                Sandbox.UI.Button resetButton = new("delete", "", () => Reset());
+                Sandbox.UI.Button resetButton = new("", "delete", () => Reset());
                 resetButton.AddClass("reset");
 
                 header.AddChild(resetButton);

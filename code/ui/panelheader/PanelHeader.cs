@@ -28,7 +28,7 @@ namespace TTTReborn.UI
 
             OnCreateHeader();
 
-            Add.TranslationButton(new TranslationData(), "close", null, () =>
+            Add.ButtonWithIcon(null, "close", "closeButton", () =>
             {
                 OnClose?.Invoke(this);
             });
