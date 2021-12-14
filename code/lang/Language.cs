@@ -93,7 +93,7 @@ namespace TTTReborn.Globalization
 
             if (Settings.SettingsManager.Instance.General.ReturnMissingKeys)
             {
-                return $"[ERROR: Translation of '{translationData.Key}' not found]";
+                return $"[MISSING: Translation of '{translationData.Key}' not found]";
             }
 
             if (TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
