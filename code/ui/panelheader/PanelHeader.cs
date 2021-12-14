@@ -26,7 +26,7 @@ namespace TTTReborn.UI
         {
             DeleteChildren(true);
 
-            _title = Add.TranslationLabel(new Globalization.TranslationData(), "title");
+            _title = Add.TranslationLabel(new TranslationData(), "title");
 
             OnCreateHeader();
 

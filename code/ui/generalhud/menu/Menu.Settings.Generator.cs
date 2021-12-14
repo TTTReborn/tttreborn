@@ -110,7 +110,7 @@ namespace TTTReborn.UI.Menu
                     {
                         foreach (KeyValuePair<string, object> keyValuePair in Utils.GetPropertyValue<Dictionary<string, object>>(propertyObject, possibleDropdownPropertyInfo.Name))
                         {
-                            dropdownSelection.AddOption(new Globalization.TranslationData(keyValuePair.Key), keyValuePair.Value);
+                            dropdownSelection.AddOption(new TranslationData(keyValuePair.Key), keyValuePair.Value);
                         }
 
                         dropdownSelection.OnSelectOption = (option) =>

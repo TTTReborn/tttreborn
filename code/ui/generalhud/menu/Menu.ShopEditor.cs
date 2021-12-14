@@ -126,7 +126,7 @@ namespace TTTReborn.UI.Menu
                     _shopEditorWrapper = new(panelContent);
                     _shopEditorWrapper.AddClass("wrapper");
 
-                    _shopEditorWrapper.Add.TranslationLabel(new Globalization.TranslationData("MENU_SHOPEDITOR_SELECTROLE"));
+                    _shopEditorWrapper.Add.TranslationLabel(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"));
                 }, "MENU_SUBMENU_SHOPEDITOR", "shopeditor");
             }
             else

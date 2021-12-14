@@ -9,6 +9,7 @@ using Sandbox.UI.Construct;
 using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Player;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
@@ -279,7 +280,7 @@ namespace TTTReborn.UI
                 SlotLabel = Add.Label(((int) carriable.SlotType).ToString());
                 SlotLabel.AddClass("slot-label");
 
-                _carriableLabel = Add.TranslationLabel(new Globalization.TranslationData(carriable.LibraryName.ToUpper()));
+                _carriableLabel = Add.TranslationLabel(new TranslationData(carriable.LibraryName.ToUpper()));
 
                 _ammoLabel = Add.Label();
 

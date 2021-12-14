@@ -3,8 +3,8 @@ using System;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
 using TTTReborn.Settings;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.UI.Menu
 {
@@ -35,7 +35,7 @@ namespace TTTReborn.UI.Menu
         {
             Sandbox.UI.Panel buttonsWrapperPanel = menuContent.Add.Panel("wrapper");
 
-            buttonsWrapperPanel.Add.TranslationButton(new Globalization.TranslationData("MENU_SETTINGS_BUTTONS_SAVE"), null, "fileselectionbutton", () =>
+            buttonsWrapperPanel.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_SAVE"), null, "fileselectionbutton", () =>
             {
                 _currentFileSelection?.Close();
 
@@ -49,7 +49,7 @@ namespace TTTReborn.UI.Menu
                 _currentFileSelection = fileSelection;
             });
 
-            buttonsWrapperPanel.Add.TranslationButton(new Globalization.TranslationData("MENU_SETTINGS_BUTTONS_LOAD"), null, "fileselectionbutton", () =>
+            buttonsWrapperPanel.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_LOAD"), null, "fileselectionbutton", () =>
             {
                 _currentFileSelection?.Close();
 
@@ -123,8 +123,8 @@ namespace TTTReborn.UI.Menu
             string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
             DialogBox dialogBox = new DialogBox();
-            dialogBox.SetTranslationTitle(new Globalization.TranslationData("MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE", fullFilePath));
-            dialogBox.AddTranslation(new Globalization.TranslationData(fullFilePath));
+            dialogBox.SetTranslationTitle(new TranslationData("MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE", fullFilePath));
+            dialogBox.AddTranslation(new TranslationData(fullFilePath));
             dialogBox.OnAgree = () =>
             {
                 onConfirm();

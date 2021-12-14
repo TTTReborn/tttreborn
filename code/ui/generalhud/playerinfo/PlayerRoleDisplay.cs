@@ -3,6 +3,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
 using TTTReborn.Player;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
@@ -19,7 +20,7 @@ namespace TTTReborn.UI
             AddClass("opacity-heavy");
             AddClass("text-shadow");
 
-            _roleLabel = Add.TranslationLabel(new Globalization.TranslationData());
+            _roleLabel = Add.TranslationLabel(new TranslationData());
             _roleLabel.AddClass("centered");
             _roleLabel.AddClass("role-label");
 
@@ -48,7 +49,7 @@ namespace TTTReborn.UI
 
             Style.BackgroundColor = player.Role.Color;
 
-            _roleLabel.SetTranslation(new Globalization.TranslationData(player.Role.GetRoleTranslationKey("NAME")));
+            _roleLabel.SetTranslation(new TranslationData(player.Role.GetRoleTranslationKey("NAME")));
         }
     }
 }

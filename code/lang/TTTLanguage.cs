@@ -25,7 +25,7 @@ namespace TTTReborn.Settings
             public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
 
             [SwitchSetting]
-            public bool ReturnTranslationError { get; set; } = false;
+            public bool ReturnMissingKeys { get; set; } = false;
 
             [JsonIgnore]
             [DropdownOptions("Language")]

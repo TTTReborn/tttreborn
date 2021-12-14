@@ -1,6 +1,7 @@
 using System;
 
 using TTTReborn.VisualProgramming;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.UI.Menu
 {
@@ -49,7 +50,7 @@ namespace TTTReborn.UI.Menu
 
             Content.OnPanelContentUpdated = (panelContentData) =>
             {
-                SetTranslationTitle(new Globalization.TranslationData(panelContentData.Title ?? ""));
+                SetTranslationTitle(new TranslationData(panelContentData.Title ?? ""));
 
                 foreach (Sandbox.UI.Panel panel in Header.NavigationHeader.Children)
                 {
@@ -133,8 +134,8 @@ namespace TTTReborn.UI.Menu
                 Dropdown dropdown = panelContent.Add.Dropdown();
                 dropdown.TextLabel.Text = "Choose entry...";
 
-                dropdown.AddOption(new Globalization.TranslationData("Test One"));
-                dropdown.AddOption(new Globalization.TranslationData("Test Two"));
+                dropdown.AddOption(new TranslationData("Test One"));
+                dropdown.AddOption(new TranslationData("Test Two"));
 
                 panelContent.Add.Label("FileSelection:");
                 panelContent.Add.Button("Open FileSelection...", "fileselectionbutton", () => FindRootPanel().Add.FileSelection().Display());
@@ -142,8 +143,8 @@ namespace TTTReborn.UI.Menu
                 panelContent.Add.Label("Tabs:");
 
                 Tabs tabs = panelContent.Add.Tabs();
-                tabs.AddTab(new Globalization.TranslationData("Test1"), (contentPanel) => contentPanel.Add.Label("Test1"));
-                tabs.AddTab(new Globalization.TranslationData("Test2"), (contentPanel) => contentPanel.Add.Label("Test2"));
+                tabs.AddTab(new TranslationData("Test1"), (contentPanel) => contentPanel.Add.Label("Test1"));
+                tabs.AddTab(new TranslationData("Test2"), (contentPanel) => contentPanel.Add.Label("Test2"));
             }, "MENU_SUBMENU_TESTING", "testing");
         }
 

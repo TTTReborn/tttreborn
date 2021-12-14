@@ -49,7 +49,7 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/components/dropdown/Dropdown.scss");
 
-            TextLabel = Add.TranslationLabel(new Globalization.TranslationData("MENU_DROPDOWN_SELECT"), "textLabel");
+            TextLabel = Add.TranslationLabel(new TranslationData("MENU_DROPDOWN_SELECT"), "textLabel");
             _openLabel = Add.Label("expand_more", "openLabel");
 
             OptionHolder = new DropdownOptionHolder(this);
