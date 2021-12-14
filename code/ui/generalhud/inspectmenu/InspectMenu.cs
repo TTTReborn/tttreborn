@@ -173,7 +173,7 @@ namespace TTTReborn.UI
 
             if (_weaponEntry.Enabled)
             {
-                _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", new TranslationData("CORPSE_INSPECT_IDENTIFIER_WEAPON", killerWeapon.ToUpper()));
+                _weaponEntry.SetData($"/ui/weapons/{killerWeapon}.png", new TranslationData("CORPSE_INSPECT_IDENTIFIER_WEAPON", new TranslationData(killerWeapon.ToUpper())));
                 _weaponEntry.SetQuickInfo(new TranslationData(killerWeapon.ToUpper()));
             }
 
