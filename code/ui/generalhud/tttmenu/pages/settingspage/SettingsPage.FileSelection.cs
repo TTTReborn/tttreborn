@@ -1,5 +1,3 @@
-using System;
-
 using Sandbox;
 using Sandbox.UI.Construct;
 
@@ -120,7 +118,7 @@ namespace TTTReborn.UI.Menu
             }
         }
 
-        public static void AskOverwriteSelectedSettings(string folderPath, string fileName, Action onConfirm)
+        public static void AskOverwriteSelectedSettings(string folderPath, string fileName, System.Action onConfirm)
         {
             string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
