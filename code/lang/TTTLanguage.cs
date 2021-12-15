@@ -24,7 +24,8 @@ namespace TTTReborn.Settings
             [DropdownSetting]
             public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
 
-            public bool ReturnTranslationError = false;
+            [SwitchSetting]
+            public bool ReturnMissingKeys { get; set; } = false;
 
             [JsonIgnore]
             [DropdownOptions("Language")]
@@ -109,10 +110,7 @@ namespace TTTReborn.Globalization
 
             ActiveLanguage = language;
 
-            Translatables.ForEach((translatable) =>
-            {
-                translatable.UpdateLanguage(ActiveLanguage);
-            });
+            Translatables.ForEach((translatable) => translatable.UpdateLanguage(ActiveLanguage));
         }
 
         [Event(TTTEvent.Settings.Change)]
@@ -153,16 +151,6 @@ namespace TTTReborn.Player
             Settings.SettingsManager.Instance.General.Language = language.Data.Code;
 
             Event.Run(TTTEvent.Settings.Change);
-        }
-
-        [ClientCmd("ttt_return_translation_errors")]
-        public static void ToggleReturnTranslationError()
-        {
-            Settings.SettingsManager.Instance.General.ReturnTranslationError = !Settings.SettingsManager.Instance.General.ReturnTranslationError;
-
-            Log.Info($"Return Translation Errors: {Settings.SettingsManager.Instance.General.ReturnTranslationError}");
-
-            TTTLanguage.UpdateLanguage(TTTLanguage.ActiveLanguage);
         }
     }
 }

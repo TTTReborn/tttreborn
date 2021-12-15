@@ -1,5 +1,7 @@
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public class PostRoundStats
@@ -42,10 +44,10 @@ namespace TTTReborn.UI
             _containerPanel = new(_backgroundBannerPanel);
             _containerPanel.AddClass("container-panel");
 
-            _headerLabel = _containerPanel.Add.TranslationLabel(new Globalization.TranslationData());
+            _headerLabel = _containerPanel.Add.TranslationLabel(new TranslationData());
             _headerLabel.AddClass("header-label");
 
-            _contentLabel = _containerPanel.Add.TranslationLabel(new Globalization.TranslationData());
+            _contentLabel = _containerPanel.Add.TranslationLabel(new TranslationData());
             _contentLabel.AddClass("content-label");
         }
 
@@ -67,9 +69,9 @@ namespace TTTReborn.UI
             SetClass("fade-in", true);
             _containerPanel.SetClass("pop-in", true);
 
-            _contentLabel.UpdateTranslation(new Globalization.TranslationData("POST_ROUND_TEXT"));
+            _contentLabel.UpdateTranslation(new TranslationData("POST_ROUND_TEXT"));
 
-            _headerLabel.UpdateTranslation(new Globalization.TranslationData($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}"));
+            _headerLabel.UpdateTranslation(new TranslationData($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}"));
             _headerLabel.Style.FontColor = _stats.WinningColor;
         }
     }

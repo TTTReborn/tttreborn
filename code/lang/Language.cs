@@ -48,6 +48,14 @@ namespace TTTReborn.Globalization
             }
         }
 
+        public void AddTranslationString(string key, string translation)
+        {
+            if (!_langDict.TryAdd(key, translation))
+            {
+                Log.Warning($"Couldn't add translation string ('{key}') to '{Data.Name}'");
+            }
+        }
+
         public string GetFormattedTranslation(TranslationData translationData)
         {
             string translation = GetTranslation(translationData);
@@ -83,9 +91,9 @@ namespace TTTReborn.Globalization
                 return translation.ToString();
             }
 
-            if (Settings.SettingsManager.Instance.General.ReturnTranslationError)
+            if (Settings.SettingsManager.Instance.General.ReturnMissingKeys)
             {
-                return $"[ERROR: Translation of '{translationData.Key}' not found]";
+                return $"[MISSING: Translation of '{translationData.Key}' not found]";
             }
 
             if (TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
@@ -103,7 +111,7 @@ namespace TTTReborn.Globalization
                 return string.Empty;
             }
 
-            return _langDict.TryGetValue(translationData.Key, out object translation) ? translation : null;
+            return _langDict.GetValueOrDefault(translationData.Key);
         }
     }
 }
