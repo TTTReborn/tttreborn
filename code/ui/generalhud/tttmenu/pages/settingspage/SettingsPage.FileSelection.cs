@@ -3,8 +3,8 @@ using System;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
 using TTTReborn.Settings;
+using TTTReborn.Globalization;
 
 namespace TTTReborn.UI.Menu
 {
