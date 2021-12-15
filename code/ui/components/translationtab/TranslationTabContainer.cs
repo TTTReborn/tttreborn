@@ -64,18 +64,18 @@ namespace TTTReborn.UI
                 }
             }
         }
-    }
 
-    public class TranslationTab : TabContainer.Tab
-    {
-        public readonly TranslationData translationData;
-
-        public TranslationTab(TranslationTabContainer tabControl, TranslationData tabTitle, Sandbox.UI.Panel panel, string icon)
-        : base(tabControl, TTTLanguage.ActiveLanguage.GetFormattedTranslation(tabTitle), icon, panel)
+        private class TranslationTab : Tab
         {
-            translationData = tabTitle;
+            public readonly TranslationData translationData;
 
-            Button.AddClass("translationtab");
+            public TranslationTab(TranslationTabContainer tabControl, TranslationData tabTitle, Sandbox.UI.Panel panel, string icon)
+            : base(tabControl, TTTLanguage.ActiveLanguage.GetFormattedTranslation(tabTitle), icon, panel)
+            {
+                translationData = tabTitle;
+
+                Button.AddClass("translationtab");
+            }
         }
     }
 }

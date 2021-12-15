@@ -13,7 +13,7 @@ namespace TTTReborn.UI
             TTTLanguage.Translatables.Add(this);
         }
 
-        public TranslationCheckbox(TranslationData translationData) : base()
+        public TranslationCheckbox(TranslationData translationData)
         {
             UpdateTranslation(translationData);
 

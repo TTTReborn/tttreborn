@@ -1,6 +1,6 @@
 TranslationDropdown
 {
-    font-family: Poppins;
+	font-family: Poppins;
 	font-weight: 600;
 	font-size: 16px;
 	cursor: pointer;
@@ -12,7 +12,7 @@ TranslationDropdown
 	min-height: $button-size;
 	flex-shrink: 0;
 
-    &.has-label > iconpanel
+	&.has-label > iconpanel
 	{
 		margin-right: 10px;
 	}
@@ -45,7 +45,7 @@ TranslationDropdown
 
 popup
 {
-    position: absolute;
+	position: absolute;
 	flex-direction: column;
 	transition: all 0.1s ease-out;
 	z-index: 200;
@@ -69,7 +69,7 @@ popup
 		border-radius: 0px;
 	}
 
-    button:last-child {
-        border-radius: 0px 0px 8px 8px;
-    }
+	button:last-child {
+		border-radius: 0px 0px 8px 8px;
+	}
 }

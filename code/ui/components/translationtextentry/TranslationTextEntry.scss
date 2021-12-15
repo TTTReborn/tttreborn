@@ -5,14 +5,14 @@ TranslationTextEntry, textentry
 	white-space: nowrap;
 	overflow: hidden;
 	flex-direction: row;
-    text-align: left;
-    cursor: text;
-    border: 3px solid rgba( $button-active, 0.2 );
-    border-radius: 5px;
+	text-align: left;
+	cursor: text;
+	border: 3px solid rgba( $button-active, 0.2 );
+	border-radius: 5px;
 	flex-shrink: 0;
-    padding: 5px 10px;
-    color: white;
-    font-family: Poppins;
+	padding: 5px 10px;
+	color: white;
+	font-family: Poppins;
 
 	&.is-multiline
 	{
@@ -83,17 +83,17 @@ TranslationTextEntry, textentry
 		}
 	}
 
-    &:hover
-    {
-        border: 3px solid rgba( $button-active, 0.3 );
-        background-color: rgba( #fff, 0.01 );
-    }
+	&:hover
+	{
+		border: 3px solid rgba( $button-active, 0.3 );
+		background-color: rgba( #fff, 0.01 );
+	}
 
-    &:focus
-    {
-        border: 3px solid rgba( $button-active, 0.6 );
-        background-color: rgba( #fff, 0.01 );
-    }
+	&:focus
+	{
+		border: 3px solid rgba( $button-active, 0.6 );
+		background-color: rgba( #fff, 0.01 );
+	}
 
 	&.invalid
 	{
