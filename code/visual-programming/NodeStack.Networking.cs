@@ -58,7 +58,7 @@ namespace TTTReborn.VisualProgramming
 
             if (window != null)
             {
-                window.BuildButton.Text = "play_arrow";
+                window.BuildButton.Icon = "play_arrow";
             }
         }
 

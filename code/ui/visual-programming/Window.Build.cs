@@ -9,7 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public void Build()
         {
-            BuildButton.Text = "hourglass_empty";
+            BuildButton.Icon = "hourglass_empty";
 
             MainNode.StackNode.Reset();
 
@@ -49,7 +49,7 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Log.Error(e);
 
-                BuildButton.Text = "play_arrow";
+                BuildButton.Icon = "play_arrow";
             }
         }
     }
