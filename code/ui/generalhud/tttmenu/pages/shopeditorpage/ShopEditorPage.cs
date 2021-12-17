@@ -102,7 +102,7 @@ namespace TTTReborn.UI
 
                 wrapper.Add.HorizontalLineBreak();
 
-                wrapper.Add.TranslationButton(new TranslationData(), "edit", null, () =>
+                wrapper.Add.TranslationButton(new TranslationData(), "settings", null, () =>
                 {
                     EditItem(item, selectedRole);
                 });

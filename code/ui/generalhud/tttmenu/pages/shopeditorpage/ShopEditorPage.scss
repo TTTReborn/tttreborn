@@ -4,13 +4,13 @@
 }
 
 .content {
-    flex-direction: column;
+    flex-wrap: wrap;
     overflow: scroll;
     align-items: center;
 }
 
 .row {
-    width: 100%;
+    width: 33%;
     padding: 10px;
 }
 
