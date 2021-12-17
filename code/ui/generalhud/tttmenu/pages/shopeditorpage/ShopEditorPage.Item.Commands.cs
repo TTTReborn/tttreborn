@@ -203,7 +203,7 @@ namespace TTTReborn.UI
                 SettingsPage.CreateSettingsEntry(panelContent, "MENU_SHOPEDITOR_ITEM_PRICE", item.ItemData.Price, "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC", null, (value) =>
                 {
                     item.ItemData.Price = value;
-                }, new TranslationData(item.ItemData.Name.ToUpper()));
+                });
             });
         }
     }
