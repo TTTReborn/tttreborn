@@ -2,59 +2,59 @@ $form-control-height: 24px !default;
 
 checkbox, TranslationCheckbox
 {
-	cursor: pointer;
-	color: $button-active;
-	align-items: center;
-	min-height: 30;
-	flex-shrink: 0;
+    cursor: pointer;
+    color: $button-active;
+    align-items: center;
+    min-height: 30;
+    flex-shrink: 0;
 
-	label
-	{
-		font-family: Poppins;
-		pointer-events: none;
-	}
+    label
+    {
+        font-family: Poppins;
+        pointer-events: none;
+    }
 
-	> .checkmark
-	{
-		padding: 1px;
-		font-size: 22px;
-		border: 3px solid $button-active;
-		border-radius: 4px;
-		text-align: center;
-		justify-content: center;
-		align-items: center;
-		color: transparent;
-		min-height: $form-control-height;
-		margin-right: 10px;
-		pointer-events: none;
-	}
+    > .checkmark
+    {
+        padding: 1px;
+        font-size: 22px;
+        border: 3px solid $button-active;
+        border-radius: 4px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        color: transparent;
+        min-height: $form-control-height;
+        margin-right: 10px;
+        pointer-events: none;
+    }
 
-	&.checked
-	{
-		> .checkmark
-		{
-			color: white;
-			background-color: $button-active;
-		}
-	}
+    &.checked
+    {
+        > .checkmark
+        {
+            color: white;
+            background-color: $button-active;
+        }
+    }
 
-	&:active
-	{
-		color: white;
-	}
+    &:active
+    {
+        color: white;
+    }
 
-	&:hover
-	{
-		color: white;
-	}
+    &:hover
+    {
+        color: white;
+    }
 
-	&.inactive
-	{
-		opacity: 0.35;
-		pointer-events: none;
+    &.inactive
+    {
+        opacity: 0.35;
+        pointer-events: none;
 
-		> .checkmark {
-			border: 3px solid $button-inactive;
-		}
-	}
+        > .checkmark {
+            border: 3px solid $button-inactive;
+        }
+    }
 }

@@ -1,8 +1,8 @@
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Settings;
 using TTTReborn.Globalization;
+using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
 {
@@ -157,8 +157,8 @@ namespace TTTReborn.UI.Menu
 
 namespace TTTReborn.Player
 {
-    using TTTReborn.UI.Menu;
     using TTTReborn.Settings;
+    using TTTReborn.UI.Menu;
 
     public partial class TTTPlayer
     {
