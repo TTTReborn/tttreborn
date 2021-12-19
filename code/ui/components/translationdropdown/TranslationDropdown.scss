@@ -4,10 +4,10 @@ TranslationDropdown
     font-weight: 600;
     font-size: 16px;
     cursor: pointer;
-    background-color: $button-inactive;
+    background-color: $button-primary;
     padding: 8px 16px;
     border-radius: 8px;
-    color: $button-inactive-fg;
+    color: $button-primary-fg;
     align-items: center;
     min-height: $button-size;
     flex-shrink: 0;
@@ -19,21 +19,21 @@ TranslationDropdown
 
     &:hover
     {
-        background-color: $button-active;
-        color: $button-active-fg;
+        background-color: $button-secondary;
+        color: $button-secondary-fg;
     }
 
     &.active
     {
-        background-color: $button-active;
-        color: $button-active-fg;
+        background-color: $button-secondary;
+        color: $button-secondary-fg;
         border-radius: 8px 8px 0px 0px;
     }
 
     &:active
     {
-        background-color: $button-active-fg;
-        color: $button-active;
+        background-color: $button-secondary-fg;
+        color: $button-secondary;
     }
 
     &.inactive

@@ -7,7 +7,7 @@ TranslationTextEntry, textentry
     flex-direction: row;
     text-align: left;
     cursor: text;
-    border: 3px solid rgba( $button-active, 0.2 );
+    border: 3px solid rgba( $button-secondary, 0.2 );
     border-radius: 5px;
     flex-shrink: 0;
     padding: 5px 10px;
@@ -85,13 +85,13 @@ TranslationTextEntry, textentry
 
     &:hover
     {
-        border: 3px solid rgba( $button-active, 0.3 );
+        border: 3px solid rgba( $button-secondary, 0.3 );
         background-color: rgba( #fff, 0.01 );
     }
 
     &:focus
     {
-        border: 3px solid rgba( $button-active, 0.6 );
+        border: 3px solid rgba( $button-secondary, 0.6 );
         background-color: rgba( #fff, 0.01 );
     }
 

@@ -5,10 +5,10 @@ button, TranslationButton
 	font-weight: 600;
 	font-size: 16px;
 	cursor: pointer;
-	background-color: $button-inactive;
+	background-color: $button-primary;
 	padding: 8px 16px;
 	border-radius: 8px;
-	color: $button-inactive-fg;
+	color: $button-primary-fg;
 	min-height: $button-size;
 	flex-shrink: 0;
 	align-items: center;
@@ -41,14 +41,14 @@ button, TranslationButton
 
 	&:hover
 	{
-		background-color: $button-active;
-		color: $button-active-fg;
+		background-color: $button-secondary;
+		color: $button-secondary-fg;
 	}
 
 	&:active
 	{
-		background-color: $button-inactive;
-		color: $button-inactive-fg;
+		background-color: $button-primary;
+		color: $button-primary-fg;
 	}
 
 	&.inactive
