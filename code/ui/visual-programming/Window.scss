@@ -1,7 +1,8 @@
 Window.visualprogramming {
     z-index: 200;
+    color: #fafafa;
 
-    > .panel {
+    > Panel {
         &.header {
             position: absolute;
             border-radius: 0px;

@@ -45,7 +45,12 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            this.Enabled((Local.Pawn as TTTPlayer).CanBuy(ItemData) != BuyError.None);
+            if (Local.Pawn is not TTTPlayer player)
+            {
+                return;
+            }
+
+            this.Enabled(player.CanBuy(ItemData) == BuyError.None);
         }
     }
 }

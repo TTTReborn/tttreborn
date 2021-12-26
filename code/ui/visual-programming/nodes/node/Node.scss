@@ -1,4 +1,4 @@
-.panel.node {
+.node {
     width: 200px;
     min-height: 80px;
 
@@ -8,7 +8,7 @@
         box-shadow: 0px 0px 20px red;
     }
 
-    > .panel {
+    > Panel {
         &.header {
             padding: 4px;
             min-height: 30px;

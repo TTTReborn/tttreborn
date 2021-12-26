@@ -4,8 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using Steamworks;
-
 using TTTReborn.Player;
 using TTTReborn.Roles;
 
@@ -25,7 +23,7 @@ namespace TTTReborn.UI
 
         RealTimeSince timeSincePlayed;
 
-        public VoiceChatEntry(Sandbox.UI.Panel parent, Client client) : base(parent)
+        public VoiceChatEntry(Panel parent, Client client) : base(parent)
         {
             Parent = parent;
 
