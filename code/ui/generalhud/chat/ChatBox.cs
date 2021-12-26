@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 
 using Sandbox;
-using Sandbox.UI.Construct;
+using Sandbox.UI;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Teams;
 

@@ -122,13 +122,13 @@ namespace TTTReborn.UI
                     : String.Compare(s1.Carriable.LibraryName, s2.Carriable.LibraryName, StringComparison.Ordinal);
             });
 
-            Enabled = Children.Any();
+            this.Enabled(Children.Any());
         }
 
         [Event(TTTEvent.Player.Inventory.Drop)]
         private void OnCarriableItemDrop(ICarriableItem carriable)
         {
-            foreach (Sandbox.UI.Panel child in Children)
+            foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
                 {
@@ -139,7 +139,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            Enabled = Children.Any();
+            this.Enabled(Children.Any());
         }
 
         [Event(TTTEvent.Player.Spectating.Change)]

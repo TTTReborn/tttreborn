@@ -137,6 +137,16 @@ namespace TTTReborn.Globals
         /// <returns>Seconds as a string in the format "mm:ss"</returns>
         public static string TimerString(float seconds) => TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss");
 
+        public static void Enabled(this Panel panel, bool enabled)
+        {
+            panel.SetClass("disabled", !enabled);
+        }
+
+        public static bool IsEnabled(this Panel panel)
+        {
+            return !panel.HasClass("disabled");
+        }
+
         public static T GetHoveringPanel<T>(Panel excludePanel, Panel rootPanel = null) where T : Panel
         {
             rootPanel ??= UI.Hud.Current.RootPanel;

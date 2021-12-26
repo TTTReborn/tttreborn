@@ -1,5 +1,7 @@
 using System;
 
+using Sandbox.UI;
+
 namespace TTTReborn.UI
 {
     public partial class WindowHeader : Panel
@@ -34,7 +36,7 @@ namespace TTTReborn.UI
 
             OnClose = (panelHeader) =>
             {
-                Window.Enabled = false;
+                Window.Enabled(false);
             };
 
             AddClass("windownavigationheader");

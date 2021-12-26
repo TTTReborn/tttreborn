@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
@@ -8,7 +9,7 @@ namespace TTTReborn.UI
 {
     public class PlayerRoleDisplay : Panel
     {
-        private TranslationLabel _roleLabel;
+        private readonly TranslationLabel _roleLabel;
 
         public PlayerRoleDisplay() : base()
         {
@@ -35,7 +36,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Enabled = !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+            this.Enabled(!player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound);
         }
 
         [Event(Events.TTTEvent.Player.Role.Select)]

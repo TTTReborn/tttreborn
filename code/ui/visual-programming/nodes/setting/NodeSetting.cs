@@ -1,8 +1,7 @@
 using System;
 
 using Sandbox;
-
-using TTTReborn.Globals;
+using Sandbox.UI;
 
 namespace TTTReborn.UI.VisualProgramming
 {
@@ -70,12 +69,12 @@ namespace TTTReborn.UI.VisualProgramming
 
         public void ToggleInput(bool toggle)
         {
-            Input.Enabled = toggle;
+            Input.Enabled(toggle);
         }
 
         public void ToggleOutput(bool toggle)
         {
-            Output.Enabled = toggle;
+            Output.Enabled(toggle);
         }
     }
 }
