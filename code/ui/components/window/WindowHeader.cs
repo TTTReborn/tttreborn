@@ -14,7 +14,7 @@ namespace TTTReborn.UI
         {
             Parent = parent;
 
-            StyleSheet.Load("/ui/components/generic/window/WindowHeader.scss");
+            StyleSheet.Load("/ui/components/window/WindowHeader.scss");
 
             AddClass("windowheader");
 
