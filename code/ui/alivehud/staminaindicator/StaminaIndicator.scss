@@ -8,6 +8,7 @@ StaminaIndicator {
     transition: opacity 1s ease-out;
     justify-content: center;
     opacity: 0;
+    color: #fafafa;
 
     &.fade-in {
         opacity: 1;
