@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public partial class Dropdown : Panel
@@ -38,7 +40,7 @@ namespace TTTReborn.UI
             {
                 _selectedOption = value;
 
-                TextLabel.SetTranslation(_selectedOption.TextLabel.TranslationKey, _selectedOption.TextLabel.TranslationParams);
+                TextLabel.SetTranslation(_selectedOption.TextLabel.TranslationData);
             }
         }
         private DropdownOption _selectedOption;
@@ -47,7 +49,7 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/components/dropdown/Dropdown.scss");
 
-            TextLabel = Add.TryTranslationLabel("MENU_DROPDOWN_SELECT", "textLabel");
+            TextLabel = Add.TranslationLabel(new TranslationData("MENU_DROPDOWN_SELECT"), "textLabel");
             _openLabel = Add.Label("expand_more", "openLabel");
 
             OptionHolder = new DropdownOptionHolder(this);
@@ -55,9 +57,9 @@ namespace TTTReborn.UI
             IsOpen = false;
         }
 
-        public DropdownOption AddOption(string text, object data = null, Action<Panel> onSelect = null, params object[] translationData)
+        public DropdownOption AddOption(TranslationData translationData, object data = null, Action<Panel> onSelect = null)
         {
-            DropdownOption dropdownOption = new DropdownOption(this, OptionHolder, text, data, translationData)
+            DropdownOption dropdownOption = new DropdownOption(this, OptionHolder, translationData, data)
             {
                 OnSelect = onSelect
             };
@@ -71,7 +73,7 @@ namespace TTTReborn.UI
         {
             foreach (DropdownOption option in Options)
             {
-                if (option.TextLabel.TranslationKey.Equals(optionName) || option.TextLabel.Text.Equals(optionName))
+                if (option.TextLabel.TranslationData.Key.Equals(optionName) || option.TextLabel.Text.Equals(optionName))
                 {
                     SelectedOption = option;
 

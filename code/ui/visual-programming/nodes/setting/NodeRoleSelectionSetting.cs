@@ -2,6 +2,7 @@ using System;
 
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI.VisualProgramming
@@ -19,7 +20,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 foreach (Type roleType in Utils.GetTypes<TTTRole>())
                 {
-                    Dropdown.AddOption($"{Utils.GetLibraryName(roleType).ToUpper()}_NAME", roleType, (panel) => OnSelectRole(roleType));
+                    Dropdown.AddOption(new TranslationData($"{Utils.GetLibraryName(roleType).ToUpper()}_NAME"), roleType, (panel) => OnSelectRole(roleType));
                 }
             });
         }

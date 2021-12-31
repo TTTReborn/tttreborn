@@ -3,6 +3,8 @@ using System;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public partial class DialogBox : Modal
@@ -40,9 +42,9 @@ namespace TTTReborn.UI
             return Content.Add.Label(text, "text");
         }
 
-        public Label AddTranslationText(string translationKey, params object[] translationData)
+        public Label AddTranslation(TranslationData translationData)
         {
-            return Content.Add.TranslationLabel(translationKey, "text", translationData);
+            return Content.Add.TranslationLabel(translationData, "text");
         }
     }
 }

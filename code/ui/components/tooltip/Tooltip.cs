@@ -38,7 +38,6 @@ namespace TTTReborn.UI
             Style.MaxWidth = Length.Pixels(Math.Max(rect.width, 200f));
 
             Instance = this;
-            IsTryTranslation = true;
         }
 
         public override void OnDeleted()
@@ -64,11 +63,12 @@ namespace TTTReborn.UI
 
 namespace Sandbox.UI.Construct
 {
+    using TTTReborn.Globalization;
     using TTTReborn.UI;
 
     public static class TooltipConstructor
     {
-        public static void AddTooltip(this Sandbox.UI.Panel self, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null, params object[] translationData)
+        public static void AddTooltip(this Sandbox.UI.Panel self, TranslationData translationData, string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
         {
             self.AddEventListener("onmouseover", (panelEvent) =>
             {
@@ -77,7 +77,7 @@ namespace Sandbox.UI.Construct
                     return;
                 }
 
-                CreateTooltip(self, text, className, onCreate, onDelete, onTick, translationData);
+                CreateTooltip(self, translationData, className, onCreate, onDelete, onTick);
             });
 
             self.AddEventListener("onmouseout", (panelEvent) =>
@@ -92,16 +92,16 @@ namespace Sandbox.UI.Construct
 
             self.AddEventListener("onclick", (panelEvent) =>
             {
-                CreateTooltip(self, text, className, onCreate, onDelete, onTick, translationData);
+                CreateTooltip(self, translationData, className, onCreate, onDelete, onTick);
             });
         }
 
-        private static Tooltip CreateTooltip(Sandbox.UI.Panel panel, string text = "", string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null, params object[] translationData)
+        private static Tooltip CreateTooltip(Sandbox.UI.Panel panel, TranslationData translationData, string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
         {
             DeleteTooltip();
 
             Tooltip tooltip = new(panel, onCreate, onDelete, onTick);
-            tooltip.SetTranslation(text, translationData);
+            tooltip.SetTranslation(translationData);
 
             if (!string.IsNullOrEmpty(className))
             {

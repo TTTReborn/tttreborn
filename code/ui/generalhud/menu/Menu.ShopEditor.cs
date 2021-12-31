@@ -5,7 +5,7 @@ using System.Text.Json;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globals;
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
@@ -103,10 +103,10 @@ namespace TTTReborn.UI.Menu
                     _shopToggle = panelContent.Add.Switch("shoptoggle", false);
                     _shopToggle.Disabled = true;
 
-                    _shopToggle.AddTooltip("MENU_SHOPEDITOR_TOGGLEROLE", "togglehint");
+                    _shopToggle.AddTooltip(new TranslationData("MENU_SHOPEDITOR_TOGGLEROLE"), "togglehint");
 
                     Dropdown dropdown = panelContent.Add.Dropdown();
-                    dropdown.AddTooltip("MENU_SHOPEDITOR_SELECTROLE", "roleselection");
+                    dropdown.AddTooltip(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"), "roleselection");
 
                     foreach (Type roleType in Utils.GetTypes<TTTRole>())
                     {
@@ -117,7 +117,7 @@ namespace TTTReborn.UI.Menu
                             continue;
                         }
 
-                        dropdown.AddOption(role.GetRoleTranslationKey("NAME"), role, (panel) =>
+                        dropdown.AddOption(new TranslationData(role.GetRoleTranslationKey("NAME")), role, (panel) =>
                         {
                             CreateShopContent(role);
                         });
@@ -126,7 +126,7 @@ namespace TTTReborn.UI.Menu
                     _shopEditorWrapper = new(panelContent);
                     _shopEditorWrapper.AddClass("wrapper");
 
-                    _shopEditorWrapper.Add.TranslationLabel("MENU_SHOPEDITOR_SELECTROLE");
+                    _shopEditorWrapper.Add.TranslationLabel(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"));
                 }, "MENU_SUBMENU_SHOPEDITOR", "shopeditor");
             }
             else
@@ -192,7 +192,7 @@ namespace TTTReborn.UI.Menu
                     }
                 }
 
-                item.AddTooltip("", "buttons", null, (tooltip) =>
+                item.AddTooltip(new TranslationData(), "buttons", null, (tooltip) =>
                 {
                     item.SetClass("tooltip-right", false);
                     item.SetClass("tooltip-left", false);
@@ -212,11 +212,11 @@ namespace TTTReborn.UI.Menu
 
                         Sandbox.UI.Panel panel = tooltip.Add.Panel("span");
                         panel.Add.Label("keyboard_arrow_left", "icon");
-                        panel.Add.TranslationLabel("MENU_SHOPEDITOR_ITEM_DEACTIVATE", "", new Globalization.TranslationData(role.GetRoleTranslationKey("NAME")));
+                        panel.Add.TranslationLabel(new TranslationData("MENU_SHOPEDITOR_ITEM_DEACTIVATE", role.GetRoleTranslationKey("NAME")));
 
                         panel = tooltip.Add.Panel("span");
                         panel.Add.Icon("keyboard_arrow_right", "icon");
-                        panel.Add.TranslationLabel("MENU_SHOPEDITOR_ITEM_EDIT");
+                        panel.Add.TranslationLabel(new TranslationData("MENU_SHOPEDITOR_ITEM_EDIT"));
                     }
                     else if (!item.HasClass("tooltip-right"))
                     {
@@ -227,7 +227,7 @@ namespace TTTReborn.UI.Menu
 
                         Sandbox.UI.Panel panel = tooltip.Add.Panel("span");
                         panel.Add.Label("keyboard_arrow_left", "icon");
-                        panel.Add.TranslationLabel("MENU_SHOPEDITOR_ITEM_ACTIVATE", "", new Globalization.TranslationData(role.GetRoleTranslationKey("NAME")));
+                        panel.Add.TranslationLabel(new TranslationData("MENU_SHOPEDITOR_ITEM_ACTIVATE", role.GetRoleTranslationKey("NAME")));
                     }
                 });
 

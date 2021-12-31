@@ -1,7 +1,7 @@
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Events;
+using TTTReborn.Globalization;
 using TTTReborn.Player;
 
 namespace TTTReborn.UI
@@ -19,7 +19,7 @@ namespace TTTReborn.UI
             AddClass("opacity-heavy");
             AddClass("text-shadow");
 
-            _roleLabel = Add.TranslationLabel("");
+            _roleLabel = Add.TranslationLabel(new TranslationData());
             _roleLabel.AddClass("centered");
             _roleLabel.AddClass("role-label");
 
@@ -38,7 +38,7 @@ namespace TTTReborn.UI
             Enabled = !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound;
         }
 
-        [Event(TTTEvent.Player.Role.Select)]
+        [Event(Events.TTTEvent.Player.Role.Select)]
         private void OnRoleUpdate(TTTPlayer player)
         {
             if (player == null || player != Local.Pawn as TTTPlayer)
@@ -48,7 +48,7 @@ namespace TTTReborn.UI
 
             Style.BackgroundColor = player.Role.Color;
 
-            _roleLabel.SetTranslation(player.Role.GetRoleTranslationKey("NAME"));
+            _roleLabel.SetTranslation(new TranslationData(player.Role.GetRoleTranslationKey("NAME")));
         }
     }
 }

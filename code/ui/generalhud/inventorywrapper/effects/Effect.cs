@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 
 namespace TTTReborn.UI
@@ -18,7 +19,7 @@ namespace TTTReborn.UI
             {
                 _item = value;
 
-                _nameLabel.SetTranslation(_item?.LibraryName.ToUpper() ?? "");
+                _nameLabel.SetTranslation(new TranslationData(_item?.LibraryName.ToUpper() ?? ""));
                 _effectImage.Texture = (_item != null ? Texture.Load($"/ui/weapons/{_item.LibraryName}.png", false) : null);
 
                 if (_effectImage.Texture == null)
@@ -55,7 +56,7 @@ namespace TTTReborn.UI
             _effectImage = _effectIconPanel.Add.Image();
             _effectImage.AddClass("effect-image");
 
-            _nameLabel = Add.TranslationLabel();
+            _nameLabel = Add.TranslationLabel(new TranslationData());
             _nameLabel.AddClass("name-label");
 
             Item = effect;

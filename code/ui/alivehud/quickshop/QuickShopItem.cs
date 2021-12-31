@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
@@ -29,7 +30,7 @@ namespace TTTReborn.UI
             _itemIcon = new Panel(this);
             _itemIcon.AddClass("item-icon");
 
-            _itemNameLabel = Add.TranslationLabel();
+            _itemNameLabel = Add.TranslationLabel(new TranslationData());
             _itemNameLabel.AddClass("item-name-label");
         }
 
@@ -37,7 +38,7 @@ namespace TTTReborn.UI
         {
             ItemData = shopItemData;
 
-            _itemNameLabel.SetTranslation(shopItemData.Name.ToUpper());
+            _itemNameLabel.SetTranslation(new TranslationData(shopItemData.Name.ToUpper()));
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
             _itemIcon.Style.BackgroundImage = Texture.Load($"/ui/icons/{shopItemData.Name}.png", false) ?? Texture.Load($"/ui/none.png");

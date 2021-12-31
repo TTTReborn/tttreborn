@@ -2,6 +2,8 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public class ScoreboardHeader : Panel
@@ -24,13 +26,13 @@ namespace TTTReborn.UI
             _serverInfoPanel = new(this);
             _serverInfoPanel.AddClass("server-information-panel");
 
-            _serverNameLabel = _serverInfoPanel.Add.TranslationLabel();
+            _serverNameLabel = _serverInfoPanel.Add.TranslationLabel(new TranslationData());
             _serverNameLabel.AddClass("server-name-label");
-            _serverNameLabel.SetTranslation("SCOREBOARD_GAMEMODE", "Trouble in Terry's Town");
+            _serverNameLabel.SetTranslation(new TranslationData("SCOREBOARD_GAMEMODE", "Trouble in Terry's Town"));
 
-            _serverDescriptionLabel = _serverInfoPanel.Add.TranslationLabel();
+            _serverDescriptionLabel = _serverInfoPanel.Add.TranslationLabel(new TranslationData());
             _serverDescriptionLabel.AddClass("server-description-label");
-            _serverDescriptionLabel.SetTranslation("SCOREBOARD_CREATEDBY", "Neoxult");
+            _serverDescriptionLabel.SetTranslation(new TranslationData("SCOREBOARD_CREATEDBY", "Neoxult"));
 
             _serverDataPanel = new(this);
             _serverDataPanel.AddClass("server-data-panel");
@@ -38,7 +40,7 @@ namespace TTTReborn.UI
             _serverMapLabel = _serverDataPanel.Add.Label();
             _serverMapLabel.AddClass("server-map-label");
 
-            _serverPlayersLabel = _serverDataPanel.Add.TranslationLabel();
+            _serverPlayersLabel = _serverDataPanel.Add.TranslationLabel(new TranslationData());
             _serverPlayersLabel.AddClass("server-players-label");
 
             UpdateServerInfo();
@@ -49,7 +51,7 @@ namespace TTTReborn.UI
             int maxPlayers = ConsoleSystem.GetValue("maxplayers").ToInt(0);
 
             _serverMapLabel.Text = Global.MapName;
-            _serverPlayersLabel.SetTranslation("SCOREBOARD_SERVER_PLAYERAMOUNT", Client.All.Count, maxPlayers);
+            _serverPlayersLabel.SetTranslation(new TranslationData("SCOREBOARD_SERVER_PLAYERAMOUNT", Client.All.Count, maxPlayers));
         }
     }
 }

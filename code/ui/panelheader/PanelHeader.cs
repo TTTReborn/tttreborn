@@ -3,6 +3,8 @@ using System;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public partial class PanelHeader : Panel
@@ -24,7 +26,7 @@ namespace TTTReborn.UI
         {
             DeleteChildren(true);
 
-            _title = Add.TryTranslationLabel("", "title");
+            _title = Add.TranslationLabel(new TranslationData(), "title");
 
             OnCreateHeader();
 
@@ -39,9 +41,9 @@ namespace TTTReborn.UI
             _title.Text = text;
         }
 
-        public void SetTranslationTitle(string translationKey, params object[] translationData)
+        public void SetTranslationTitle(TranslationData translationdata)
         {
-            _title.SetTranslation(translationKey, translationData);
+            _title.SetTranslation(translationdata);
         }
 
         public virtual void OnCreateHeader()

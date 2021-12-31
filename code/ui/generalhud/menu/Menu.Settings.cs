@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Settings;
 
 namespace TTTReborn.UI.Menu
@@ -21,14 +22,14 @@ namespace TTTReborn.UI.Menu
             menuContent.SetPanelContent((menuContent) =>
             {
                 SettingsTabs = menuContent.Add.Tabs();
-                SettingsTabs.AddTab("REALM_CLIENT", (panelContent) =>
+                SettingsTabs.AddTab(new TranslationData("REALM_CLIENT"), (panelContent) =>
                 {
                     panelContent.SetPanelContent((content) => CreateSettings(content.Add.Tabs(), Settings.ClientSettings.Instance));
                 }, Utils.Realm.Client);
 
                 if (Local.Client.HasPermission("serversettings"))
                 {
-                    SettingsTabs.AddTab("REALM_SERVER", InitServerSettings, Utils.Realm.Server);
+                    SettingsTabs.AddTab(new TranslationData("REALM_SERVER"), InitServerSettings, Utils.Realm.Server);
                 }
 
                 CreateSettingsButtons(menuContent);
@@ -39,7 +40,7 @@ namespace TTTReborn.UI.Menu
         {
             ServerSettingsTabContent = tabContent;
 
-            tabContent.Add.TranslationLabel("MENU_SETTINGS_LOADING");
+            tabContent.Add.TranslationLabel(new TranslationData("MENU_SETTINGS_LOADING"));
 
             SettingFunctions.RequestServerSettings();
         }
@@ -57,8 +58,8 @@ namespace TTTReborn.UI.Menu
         internal static Sandbox.UI.TextEntry CreateSettingsEntry<T>(Sandbox.UI.Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null, params object[] translationData)
         {
             Sandbox.UI.Panel wrapper = parent.Add.Panel();
-            TranslationLabel textLabel = wrapper.Add.TryTranslationLabel(title);
-            textLabel.AddTooltip(description, "", null, null, null, translationData);
+            TranslationLabel textLabel = wrapper.Add.TranslationLabel(new TranslationData(title));
+            textLabel.AddTooltip(new TranslationData(description), null, null, null, null);
 
             Sandbox.UI.TextEntry textEntry = wrapper.Add.TextEntry(defaultValue.ToString());
             textEntry.AddClass("setting");

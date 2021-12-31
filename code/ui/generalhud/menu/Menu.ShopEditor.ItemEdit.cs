@@ -34,7 +34,7 @@ namespace TTTReborn.UI.Menu
 
             DialogBox dialogBox = new DialogBox();
             dialogBox.Header.DragHeader.IsLocked = false;
-            dialogBox.SetTranslationTitle("MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC", new TranslationData(item.ItemData.Name.ToUpper()));
+            dialogBox.SetTranslationTitle(new TranslationData("MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC", item.ItemData.Name.ToUpper()));
             dialogBox.AddClass("itemeditwindow");
 
             dialogBox.OnAgree = () =>

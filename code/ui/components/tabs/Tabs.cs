@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public partial class Tabs : Panel
@@ -24,9 +26,9 @@ namespace TTTReborn.UI
             PanelContent.AddClass("content");
         }
 
-        public Tab AddTab(string title, Action<PanelContent> createContent, object value = null, Action onSelectTab = null)
+        public Tab AddTab(TranslationData translationData, Action<PanelContent> createContent, object value = null, Action onSelectTab = null)
         {
-            Tab tab = new Tab(Header, this, title, createContent, value, onSelectTab);
+            Tab tab = new Tab(Header, this, translationData, createContent, value, onSelectTab);
 
             TabList.Add(tab);
 

@@ -1,13 +1,13 @@
 using Sandbox;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public class InspectEntry : Panel
     {
-        public string DescriptionTranslationKey;
-        public object[] Data;
-
+        public TranslationData TranslationData;
         private readonly Sandbox.UI.Image _inspectIcon;
         private readonly TranslationLabel _inspectQuickLabel;
 
@@ -22,26 +22,25 @@ namespace TTTReborn.UI
             _inspectIcon = Add.Image();
             _inspectIcon.AddClass("inspect-icon");
 
-            _inspectQuickLabel = Add.TranslationLabel();
+            _inspectQuickLabel = Add.TranslationLabel(new TranslationData());
             _inspectQuickLabel.AddClass("quick-label");
         }
 
-        public void SetData(string imagePath, string descriptionTranslationKey, params object[] args)
+        public void SetData(string imagePath, TranslationData translationData)
         {
-            SetTranslationData(descriptionTranslationKey, args);
+            SetTranslationData(translationData);
 
             _inspectIcon.Style.BackgroundImage = Texture.Load(imagePath, false) ?? Texture.Load($"/ui/none.png");
         }
 
-        public void SetTranslationData(string descriptionTranslationKey, params object[] args)
+        public void SetTranslationData(TranslationData translationData)
         {
-            DescriptionTranslationKey = descriptionTranslationKey;
-            Data = args;
+            TranslationData = translationData;
         }
 
-        public void SetQuickInfo(string translationKey, params object[] args)
+        public void SetQuickInfo(TranslationData translationData)
         {
-            _inspectQuickLabel.SetTranslation(translationKey, args);
+            _inspectQuickLabel.SetTranslation(translationData);
         }
     }
 }
