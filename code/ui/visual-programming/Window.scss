@@ -1,6 +1,10 @@
 Window.visualprogramming {
     z-index: 200;
 
+    button {
+        background-color: transparent;
+    }
+
     > .panel {
         &.header {
             position: absolute;
