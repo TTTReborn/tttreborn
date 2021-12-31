@@ -55,7 +55,7 @@ namespace TTTReborn.UI
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damage-indicator");
 
-            Enabled = false;
+            this.Enabled(false);
         }
 
         private HealthGroup GetHealthGroup(float health)
@@ -73,7 +73,7 @@ namespace TTTReborn.UI
 
         public override void UpdateHintPanel(TranslationData translationData)
         {
-            SetClass("fade-in", Enabled);
+            SetClass("fade-in", this.IsEnabled());
 
             bool isAlive = false;
 

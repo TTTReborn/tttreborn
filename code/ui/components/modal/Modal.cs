@@ -25,19 +25,19 @@ namespace TTTReborn.UI
 
             Content.Style.FlexDirection = Sandbox.UI.FlexDirection.Column;
 
-            Enabled = false;
+            this.Enabled(false);
         }
 
         public virtual void Display()
         {
             OnDisplay?.Invoke(this);
 
-            Enabled = true;
+            this.Enabled(true);
         }
 
         public virtual void Close()
         {
-            Enabled = false;
+            this.Enabled(false);
 
             Header.NavigationHeader.OnClose?.Invoke(Header.NavigationHeader);
         }
