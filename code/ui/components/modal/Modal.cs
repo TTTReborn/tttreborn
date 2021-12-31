@@ -23,6 +23,8 @@ namespace TTTReborn.UI
                 }
             };
 
+            Content.Style.FlexDirection = Sandbox.UI.FlexDirection.Column;
+
             Enabled = false;
         }
 

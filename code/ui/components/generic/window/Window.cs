@@ -17,7 +17,7 @@ namespace TTTReborn.UI
             Header = new(this);
             Header.AddClass("header");
             Header.AddClass("rounded-top");
-            Header.AddClass("background-color-secondary");
+            Header.AddClass("background-color-primary");
 
             Content = new(this);
             Content.AddClass("content");
@@ -26,7 +26,7 @@ namespace TTTReborn.UI
             Footer = new(this);
             Footer.AddClass("footer");
             Footer.AddClass("rounded-bottom");
-            Footer.AddClass("background-color-secondary");
+            Footer.AddClass("background-color-primary");
 
             IsDraggable = false;
         }

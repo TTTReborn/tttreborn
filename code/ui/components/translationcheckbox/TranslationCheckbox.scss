@@ -1,0 +1,60 @@
+$form-control-height: 24px !default;
+
+checkbox, TranslationCheckbox
+{
+    cursor: pointer;
+    color: $button-secondary;
+    align-items: center;
+    min-height: 30;
+    flex-shrink: 0;
+
+    label
+    {
+        font-family: Poppins;
+        pointer-events: none;
+    }
+
+    > .checkmark
+    {
+        padding: 1px;
+        font-size: 22px;
+        border: 3px solid $button-secondary;
+        border-radius: 4px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        color: transparent;
+        min-height: $form-control-height;
+        margin-right: 10px;
+        pointer-events: none;
+    }
+
+    &.checked
+    {
+        > .checkmark
+        {
+            color: white;
+            background-color: $button-secondary;
+        }
+    }
+
+    &:active
+    {
+        color: white;
+    }
+
+    &:hover
+    {
+        color: white;
+    }
+
+    &.inactive
+    {
+        opacity: 0.35;
+        pointer-events: none;
+
+        > .checkmark {
+            border: 3px solid $button-primary;
+        }
+    }
+}

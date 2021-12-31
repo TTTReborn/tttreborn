@@ -13,8 +13,6 @@ namespace TTTReborn.UI
 
         private TranslationLabel _title;
 
-        private Button _closeButton;
-
         public PanelHeader(Sandbox.UI.Panel parent = null) : base(parent)
         {
             StyleSheet.Load("/ui/panelheader/PanelHeader.scss");
@@ -30,7 +28,7 @@ namespace TTTReborn.UI
 
             OnCreateHeader();
 
-            _closeButton = Add.Button("╳", "closeButton", () =>
+            Add.ButtonWithIcon(null, "close", "closeButton", () =>
             {
                 OnClose?.Invoke(this);
             });
@@ -43,7 +41,7 @@ namespace TTTReborn.UI
 
         public void SetTranslationTitle(TranslationData translationdata)
         {
-            _title.SetTranslation(translationdata);
+            _title.UpdateTranslation(translationdata);
         }
 
         public virtual void OnCreateHeader()

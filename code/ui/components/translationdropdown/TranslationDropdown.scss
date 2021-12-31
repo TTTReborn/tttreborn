@@ -1,0 +1,75 @@
+TranslationDropdown
+{
+    font-family: Poppins;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: $button-primary;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: $button-primary-fg;
+    align-items: center;
+    min-height: $button-size;
+    flex-shrink: 0;
+
+    &.has-label > iconpanel
+    {
+        margin-right: 10px;
+    }
+
+    &:hover
+    {
+        background-color: $button-secondary;
+        color: $button-secondary-fg;
+    }
+
+    &.active
+    {
+        background-color: $button-secondary;
+        color: $button-secondary-fg;
+        border-radius: 8px 8px 0px 0px;
+    }
+
+    &:active
+    {
+        background-color: $button-secondary-fg;
+        color: $button-secondary;
+    }
+
+    &.inactive
+    {
+        opacity: 0.2;
+        pointer-events: none;
+    }
+}
+
+popup
+{
+    position: absolute;
+    flex-direction: column;
+    transition: all 0.1s ease-out;
+    z-index: 200;
+
+    &:intro
+    {
+        transform: scale( 0 );
+        pointer-events: none;
+        opacity: 0;
+    }
+
+    &:outro
+    {
+        opacity: 0;
+        transition: all 0.1s ease-in;
+        margin-top: 50px;
+        pointer-events: none;
+    }
+
+    button {
+        border-radius: 0px;
+    }
+
+    button:last-child {
+        border-radius: 0px 0px 8px 8px;
+    }
+}

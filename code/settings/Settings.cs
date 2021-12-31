@@ -4,6 +4,7 @@ using System.Text.Json;
 using Sandbox;
 
 using TTTReborn.Events;
+using TTTReborn.UI.Menu;
 
 namespace TTTReborn.Settings
 {
@@ -294,7 +295,7 @@ namespace TTTReborn.Settings
                 return;
             }
 
-            UI.Menu.Menu.Instance?.ProceedServerSettings(serverSettings);
+            UI.TTTMenu.Instance.AddPage(new ServerSettingsPage(serverSettings));
         }
     }
 }

@@ -21,7 +21,7 @@ namespace TTTReborn.UI
         {
             AddClass("rounded");
             AddClass("text-shadow");
-            AddClass("background-color-secondary");
+            AddClass("background-color-primary");
 
             _itemPriceLabel = Add.Label();
             _itemPriceLabel.AddClass("item-price-label");
@@ -38,7 +38,7 @@ namespace TTTReborn.UI
         {
             ItemData = shopItemData;
 
-            _itemNameLabel.SetTranslation(new TranslationData(shopItemData.Name.ToUpper()));
+            _itemNameLabel.UpdateTranslation(new TranslationData(shopItemData.Name.ToUpper()));
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
             _itemIcon.Style.BackgroundImage = Texture.Load($"/ui/icons/{shopItemData.Name}.png", false) ?? Texture.Load($"/ui/none.png");

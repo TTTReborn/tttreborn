@@ -19,7 +19,7 @@ namespace TTTReborn.UI
             {
                 _item = value;
 
-                _nameLabel.SetTranslation(new TranslationData(_item?.LibraryName.ToUpper() ?? ""));
+                _nameLabel.UpdateTranslation(new TranslationData(_item?.LibraryName.ToUpper() ?? ""));
                 _effectImage.Texture = (_item != null ? Texture.Load($"/ui/weapons/{_item.LibraryName}.png", false) : null);
 
                 if (_effectImage.Texture == null)
@@ -27,7 +27,7 @@ namespace TTTReborn.UI
                     _effectImage.Texture = Texture.Load($"/ui/none.png");
                 }
 
-                if (_item is TTTCountdownPerk countdownPerk)
+                if (_item is TTTCountdownPerk)
                 {
                     ActivateCountdown();
                 }

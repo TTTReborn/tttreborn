@@ -40,7 +40,7 @@ namespace TTTReborn.UI
 
         public void SetQuickInfo(TranslationData translationData)
         {
-            _inspectQuickLabel.SetTranslation(translationData);
+            _inspectQuickLabel.UpdateTranslation(translationData);
         }
     }
 }

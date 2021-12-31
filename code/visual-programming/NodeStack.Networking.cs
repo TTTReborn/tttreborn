@@ -24,26 +24,12 @@ namespace TTTReborn.VisualProgramming
 
             To to = To.Single(ConsoleSystem.Caller);
 
-            if (!ConsoleSystem.Caller.HasPermission("visualprogramming"))
-            {
-                ClientInitializeNodesFromStack(to, false);
-
-                return;
-            }
-
-            ClientInitializeNodesFromStack(to, true, JsonSerializer.Serialize(Instance.GetJsonData()));
+            ClientInitializeNodesFromStack(to, JsonSerializer.Serialize(Instance.GetJsonData()));
         }
 
         [ClientRpc]
-        public static void ClientInitializeNodesFromStack(bool access, string jsonData = null)
+        public static void ClientInitializeNodesFromStack(string jsonData = null)
         {
-            if (!access)
-            {
-                Log.Info("No access to visual programming");
-
-                return;
-            }
-
             Window window = Window.Instance;
 
             if (window != null)
@@ -51,7 +37,7 @@ namespace TTTReborn.VisualProgramming
                 window.Delete(true);
             }
 
-            new Window(UI.Hud.Current.RootPanel, jsonData);
+            new Window(UI.Hud.Current.GeneralHudPanel, jsonData);
         }
 
         public static void UploadStack(string jsonData)
@@ -72,7 +58,7 @@ namespace TTTReborn.VisualProgramming
 
             if (window != null)
             {
-                window.BuildButton.Text = "play_arrow";
+                window.BuildButton.Icon = "play_arrow";
             }
         }
 
@@ -157,7 +143,7 @@ namespace TTTReborn.VisualProgramming
 
             Instance.Init();
 
-            ClientInitializeNodesFromStack(To.Single(ConsoleSystem.Caller), true, JsonSerializer.Serialize(Instance.GetJsonData()));
+            ClientInitializeNodesFromStack(To.Single(ConsoleSystem.Caller), JsonSerializer.Serialize(Instance.GetJsonData()));
         }
     }
 }

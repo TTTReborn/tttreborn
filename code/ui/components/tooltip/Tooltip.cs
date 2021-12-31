@@ -101,7 +101,7 @@ namespace Sandbox.UI.Construct
             DeleteTooltip();
 
             Tooltip tooltip = new(panel, onCreate, onDelete, onTick);
-            tooltip.SetTranslation(translationData);
+            tooltip.UpdateTranslation(translationData);
 
             if (!string.IsNullOrEmpty(className))
             {

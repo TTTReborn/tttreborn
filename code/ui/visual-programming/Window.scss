@@ -8,25 +8,19 @@ Window.visualprogramming {
             z-index: 1;
             width: 260px;
             right: 0px;
-            top: -5px;
-            padding: 5px;
 
             Label.title,
             .label.title {
                 display: none;
             }
 
-            .play, .save, .load, .reset {
-                font-family: MaterialIcons;
+            .play, .save, .load, .reset, .closebutton {
                 font-size: 28px;
                 margin: 10px;
                 padding: 2px;
                 width: 28px;
                 height: 28px;
-            }
-
-            .closebutton {
-                margin: 10px 20px;
+                background-color: transparent;
             }
         }
 

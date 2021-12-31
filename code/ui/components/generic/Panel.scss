@@ -6,9 +6,25 @@ $dead: #e12c3b;
 $spectator: #fcdb38;
 $info: #ffae00;
 
+$button-primary: #455a64 !default;
+$button-primary-bottom: $button-primary !default;
+$button-primary-fg: white !default;
+$button-secondary: #708690 !default;
+$button-secondary-fg: white !default;
+$button-dark: #1b3039 !default;
+$button-size: 50px;
+
+@import "/code/ui/components/translationbutton/TranslationButton.scss";
+@import "/code/ui/components/translationcheckbox/TranslationCheckbox.scss";
+@import "/code/ui/components/translationdropdown/TranslationDropdown.scss";
+@import "/code/ui/components/translationlabel/TranslationLabel.scss";
+@import "/code/ui/components/translationtextentry/TranslationTextEntry.scss";
+@import "/code/ui/components/translationtab/TranslationTabContainer.scss";
+@import "/code/ui/components/linebreak/LineBreak.scss";
+
 .panel {
     font-family: Poppins;
-    font-weight: 400;
+    flex-shrink: 0;
     color: #fafafa;
     letter-spacing: 0.5px;
 }
@@ -93,6 +109,15 @@ $info: #ffae00;
     opacity: 0.75;
 }
 
+.centered-flex {
+    left: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+
 .centered {
     position: absolute;
     left: 50%;
@@ -174,30 +199,36 @@ $info: #ffae00;
     border-color: $spectator;
 }
 
-// TODO this should be moved somewhere else
-.itemeditwindow {
-    PanelContent {
-        flex-grow: 1;
-        overflow: scroll;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        flex-direction: column;
+.h1 {
+    color: white;
+    font-weight: bold;
+    font-family: Poppins;
+    text-decoration: underline;
+    margin-bottom: 5px;
 
-        Label,
-        .label {
-            flex-grow: 1;
-            margin-top: 7px;
-        }
+    &.label {
+        font-size: 25px;
+    }
+}
 
-        TextEntry,
-        Dropdown {
-            flex-shrink: 1;
-            min-width: 200px;
-        }
+.h2 {
+    color: white;
+    font-weight: normal;
+    font-family: Poppins;
+    margin-bottom: 5px;
 
-        .setting {
-            padding: 5px;
-            margin: 2px;
-        }
+    &.label {
+        font-size: 20px;
+    }
+}
+
+.h3 {
+    color: white;
+    font-weight: normal;
+    font-family: Poppins;
+    margin-bottom: 5px;
+
+    &.label {
+        font-size: 15px;
     }
 }

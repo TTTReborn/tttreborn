@@ -8,20 +8,16 @@ namespace TTTReborn.UI
 {
     public class TranslationButton : Button, ITranslatable
     {
-        public new string Text
-        {
-            get => base.Text;
-            set
-            {
-                base.Text = value;
-            }
-        }
+        private TranslationData _translationData = new();
 
-        private TranslationData _translationData;
+        public TranslationButton()
+        {
+            TTTLanguage.Translatables.Add(this);
+        }
 
         public TranslationButton(TranslationData translationData, string icon = null, string classname = null, Action onClick = null) : base(translationData.Key, icon, onClick)
         {
-            SetTranslation(translationData);
+            UpdateTranslation(translationData);
             AddClass(classname);
 
             TTTLanguage.Translatables.Add(this);
@@ -34,16 +30,32 @@ namespace TTTReborn.UI
             base.OnDeleted();
         }
 
-        public void SetTranslation(TranslationData translationData)
+        public override void SetProperty(string name, string value)
+        {
+            base.SetProperty(name, value);
+
+            if (name == "key")
+            {
+                UpdateTranslation(new TranslationData(value));
+                return;
+            }
+        }
+
+        public void UpdateTranslation(TranslationData translationData)
         {
             _translationData = translationData;
-
-            base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
+            SetText(TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData));
         }
 
         public void UpdateLanguage(Language language)
         {
-            base.Text = language.GetFormattedTranslation(_translationData);
+            SetText(language.GetFormattedTranslation(_translationData));
+        }
+
+        private new void SetText(string value)
+        {
+            Text = value;
+            SetClass("has-label", !string.IsNullOrEmpty(Text));
         }
     }
 }

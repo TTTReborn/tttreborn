@@ -55,7 +55,7 @@ namespace TTTReborn.UI
         // TODO: Implement logic for the player counter in the title
         public void UpdateLabel()
         {
-            _groupTitleLabel.SetTranslation(new TranslationData($"SCOREBOARD_GROUP_{GroupTitle.ToUpper()}", GroupMembers));
+            _groupTitleLabel.UpdateTranslation(new TranslationData($"SCOREBOARD_GROUP_{GroupTitle.ToUpper()}", GroupMembers));
         }
     }
 }
