@@ -52,7 +52,7 @@ namespace TTTReborn.UI
             SetText(language.GetFormattedTranslation(_translationData));
         }
 
-        private void SetText(string value)
+        private new void SetText(string value)
         {
             Text = value;
             SetClass("has-label", !string.IsNullOrEmpty(Text));
