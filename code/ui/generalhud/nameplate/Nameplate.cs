@@ -13,8 +13,8 @@ namespace TTTReborn.UI
     {
         public TTTPlayer Player;
 
-        private readonly Sandbox.UI.Panel _labelHolder;
-        private readonly Sandbox.UI.Panel _nameHolder;
+        private readonly Panel _labelHolder;
+        private readonly Panel _nameHolder;
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 

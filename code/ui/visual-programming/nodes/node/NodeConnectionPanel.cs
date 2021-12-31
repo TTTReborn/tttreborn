@@ -30,7 +30,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public T ConnectionPoint;
 
-        public NodeConnectionPanel(Sandbox.UI.Panel parent = null) : base(parent)
+        public NodeConnectionPanel(Panel parent = null) : base(parent)
         {
             ConnectionPoint = new();
 

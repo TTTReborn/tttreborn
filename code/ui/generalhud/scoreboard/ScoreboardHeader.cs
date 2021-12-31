@@ -16,7 +16,7 @@ namespace TTTReborn.UI
         private readonly Label _serverMapLabel;
         private readonly TranslationLabel _serverPlayersLabel;
 
-        public ScoreboardHeader(Sandbox.UI.Panel parent) : base(parent)
+        public ScoreboardHeader(Panel parent) : base(parent)
         {
             AddClass("text-shadow");
 

@@ -1,10 +1,11 @@
 using Sandbox;
+using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
-    public partial class ChatBoxTextEntry : Sandbox.UI.TextEntry
+    public partial class ChatBoxTextEntry : TextEntry
     {
-        public ChatBoxTextEntry(Sandbox.UI.Panel parent = null) : base()
+        public ChatBoxTextEntry(Panel parent = null) : base()
         {
             Parent = parent ?? Parent;
         }

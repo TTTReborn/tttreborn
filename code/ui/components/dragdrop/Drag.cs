@@ -67,7 +67,7 @@ namespace TTTReborn.UI
                 _dragBasePanel = value;
             }
         }
-        private Sandbox.UI.Panel _dragBasePanel;
+        private Panel _dragBasePanel;
 
         private Vector2 _draggingMouseStartPosition;
         private Vector2 _draggingStartPosition;

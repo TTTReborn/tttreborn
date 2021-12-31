@@ -7,7 +7,7 @@ namespace TTTReborn.UI
     {
         public readonly Label TextLabel;
 
-        public BarPanel(Sandbox.UI.Panel parent, string text, string name)
+        public BarPanel(Panel parent, string text, string name)
         {
             Parent = parent;
 

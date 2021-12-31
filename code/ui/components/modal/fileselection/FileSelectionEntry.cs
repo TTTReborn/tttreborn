@@ -13,7 +13,7 @@ namespace TTTReborn.UI
 
         private FileSelection _fileSelection;
 
-        public FileSelectionEntry(Sandbox.UI.Panel parent) : base(parent)
+        public FileSelectionEntry(Panel parent) : base(parent)
         {
             FileTypeIcon = Add.Icon(null, "filetype");
             FileNameLabel = Add.Label("", "filename");

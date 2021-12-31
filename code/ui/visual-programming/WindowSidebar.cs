@@ -23,7 +23,7 @@ namespace TTTReborn.UI.VisualProgramming
         }
         private bool _isFullOpened = false;
 
-        public WindowSidebar(Sandbox.UI.Panel parent = null) : base(parent)
+        public WindowSidebar(Panel parent = null) : base(parent)
         {
             Dictionary<string, List<Type>> nodeTypeCategories = new();
 
