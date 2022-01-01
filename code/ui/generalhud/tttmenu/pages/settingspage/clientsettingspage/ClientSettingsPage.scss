@@ -1,5 +1,8 @@
 .root {
     flex-direction: column;
-    overflow: scroll;
     width: 100%;
+}
+
+.scroll {
+    overflow: scroll;
 }
