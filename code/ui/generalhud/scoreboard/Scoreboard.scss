@@ -8,6 +8,7 @@ Scoreboard {
     transition: all 0.15s ease-out;
     justify-content: center;
     pointer-events: all;
+    z-index: 3;
 
     .scoreboard-container {
         width: 50%;
