@@ -9,12 +9,14 @@ namespace TTTReborn.UI.Menu
     public partial class ClientSettingsPage : Panel
     {
         private TranslationTabContainer TabContainer { get; set; }
+        private Panel Buttons { get; set; }
         private readonly FileSelection _currentFileSelection;
+
 
         public ClientSettingsPage()
         {
             SettingsPage.CreateSettings(TabContainer, ClientSettings.Instance);
-            SettingsPage.CreateFileSelectionButtons(this, _currentFileSelection, false);
+            SettingsPage.CreateFileSelectionButtons(Buttons, _currentFileSelection, false);
         }
     }
 }

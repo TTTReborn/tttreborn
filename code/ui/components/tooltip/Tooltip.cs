@@ -14,11 +14,11 @@ namespace TTTReborn.UI
         public readonly Action<Tooltip> OnCreate;
         public readonly Action<Tooltip> OnDelete;
         public readonly Action<Tooltip> OnTick;
-        public readonly Sandbox.UI.Panel RelatedPanel;
+        public readonly Panel RelatedPanel;
 
         private TimeSince _timeSinceMouseStopped = 0f;
 
-        public Tooltip(Sandbox.UI.Panel relatedPanel, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null) : base()
+        public Tooltip(Panel relatedPanel, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null) : base()
         {
             RelatedPanel = relatedPanel;
             Parent = Hud.Current.RootPanel;
@@ -68,7 +68,7 @@ namespace Sandbox.UI.Construct
 
     public static class TooltipConstructor
     {
-        public static void AddTooltip(this Sandbox.UI.Panel self, TranslationData translationData, string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
+        public static void AddTooltip(this Panel self, TranslationData translationData, string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
         {
             self.AddEventListener("onmouseover", (panelEvent) =>
             {
@@ -96,7 +96,7 @@ namespace Sandbox.UI.Construct
             });
         }
 
-        private static Tooltip CreateTooltip(Sandbox.UI.Panel panel, TranslationData translationData, string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
+        private static Tooltip CreateTooltip(Panel panel, TranslationData translationData, string className = null, Action<Tooltip> onCreate = null, Action<Tooltip> onDelete = null, Action<Tooltip> onTick = null)
         {
             DeleteTooltip();
 

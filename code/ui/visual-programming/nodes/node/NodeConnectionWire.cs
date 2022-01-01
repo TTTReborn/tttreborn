@@ -1,3 +1,5 @@
+using Sandbox.UI;
+
 namespace TTTReborn.UI.VisualProgramming
 {
     public class NodeConnectionWire : Panel
@@ -11,7 +13,7 @@ namespace TTTReborn.UI.VisualProgramming
         private const float MIN_OVERLAP_WIDTH = 60f;
         private const float LINE_THICKNESS = 10f;
 
-        public NodeConnectionWire(Sandbox.UI.Panel parent = null) : base(parent)
+        public NodeConnectionWire(Panel parent = null) : base(parent)
         {
             AddClass("nodeconnectionwire");
 
@@ -100,7 +102,7 @@ namespace TTTReborn.UI.VisualProgramming
             SetPanelMatrix(this, finalPos, finalSize);
         }
 
-        public static void SetPanelMatrix(Sandbox.UI.Panel panel, Vector2 pos, Vector2 size)
+        public static void SetPanelMatrix(Panel panel, Vector2 pos, Vector2 size)
         {
             panel.Style.Display = Sandbox.UI.DisplayMode.Flex;
             panel.Style.Left = Sandbox.UI.Length.Pixels(pos.x);

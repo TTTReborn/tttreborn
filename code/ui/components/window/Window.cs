@@ -1,15 +1,18 @@
+using Sandbox.UI;
+
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
-    using TTTReborn.Globalization;
-
     public class Window : RichPanel
     {
         public WindowHeader Header;
         public PanelContent Content;
         public Panel Footer;
 
-        public Window(Sandbox.UI.Panel parent = null) : base(parent)
+        public Window(Panel parent = null) : base(parent)
         {
+            AddClass("panel");
             AddClass("window");
             AddClass("rounded");
             AddClass("text-shadow");

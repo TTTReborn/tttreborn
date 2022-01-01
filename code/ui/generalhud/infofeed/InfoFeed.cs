@@ -17,7 +17,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/infofeed/InfoFeed.scss");
         }
 
-        public virtual Sandbox.UI.Panel AddEntry(Client leftClient, string method)
+        public virtual Panel AddEntry(Client leftClient, string method)
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 
@@ -43,7 +43,7 @@ namespace TTTReborn.UI
             return e;
         }
 
-        public virtual Sandbox.UI.Panel AddEntry(Client leftClient, Client rightClient, string method, string postfix = "")
+        public virtual Panel AddEntry(Client leftClient, Client rightClient, string method, string postfix = "")
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 

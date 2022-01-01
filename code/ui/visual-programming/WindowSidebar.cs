@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Sandbox;
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.VisualProgramming
@@ -22,7 +23,7 @@ namespace TTTReborn.UI.VisualProgramming
         }
         private bool _isFullOpened = false;
 
-        public WindowSidebar(Sandbox.UI.Panel parent = null) : base(parent)
+        public WindowSidebar(Panel parent = null) : base(parent)
         {
             Dictionary<string, List<Type>> nodeTypeCategories = new();
 

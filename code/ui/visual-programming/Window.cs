@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 
+using Sandbox.UI;
+
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window : UI.Window
@@ -15,7 +17,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public Sandbox.UI.Button BuildButton;
 
-        public Window(Sandbox.UI.Panel parent, string jsonData) : base(parent)
+        public Window(Panel parent, string jsonData) : base(parent)
         {
             Instance = this;
 

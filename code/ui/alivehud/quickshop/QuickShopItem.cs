@@ -17,7 +17,7 @@ namespace TTTReborn.UI
         private TranslationLabel _itemNameLabel;
         private Label _itemPriceLabel;
 
-        public QuickShopItem(Sandbox.UI.Panel parent) : base(parent)
+        public QuickShopItem(Panel parent) : base(parent)
         {
             AddClass("rounded");
             AddClass("text-shadow");
@@ -47,7 +47,7 @@ namespace TTTReborn.UI
         public void Update()
         {
             IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(ItemData) != BuyError.None;
-            Enabled = !IsDisabled;
+            this.Enabled(!IsDisabled);
         }
     }
 }

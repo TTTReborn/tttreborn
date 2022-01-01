@@ -55,7 +55,7 @@ namespace TTTReborn.UI
             }
 
             Vector3 screenPos = Position.ToScreen();
-            Enabled = screenPos.z > 0f;
+            this.Enabled(screenPos.z > 0f);
 
             // If our entity is locked, delayed or removed, let's not show it.
             if (_entity.IsDisabled)
@@ -68,12 +68,12 @@ namespace TTTReborn.UI
                     TTTPlayer.FocusedButton = null;
                 }
 
-                Enabled = false;
+                this.Enabled(false);
 
                 return;
             }
 
-            if (Enabled)
+            if (this.IsEnabled())
             {
                 Style.Display = DisplayMode.Flex;
                 Style.Left = Length.Fraction(screenPos.x);
