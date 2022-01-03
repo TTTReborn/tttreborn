@@ -51,7 +51,7 @@ namespace TTTReborn.VisualProgramming
                 window.Delete(true);
             }
 
-            new Window(UI.Hud.Current.RootPanel, jsonData);
+            new Window(UI.Hud.Current.GeneralHudPanel, jsonData);
         }
 
         public static void UploadStack(string jsonData)
@@ -72,7 +72,7 @@ namespace TTTReborn.VisualProgramming
 
             if (window != null)
             {
-                window.BuildButton.Text = "play_arrow";
+                window.BuildButton.Icon = "play_arrow";
             }
         }
 

@@ -6,6 +6,7 @@ MapSelectionMenu {
     align-items: center;
     justify-content: center;
     pointer-events: all;
+    z-index: 5;
 
     .title {
         font-size: 30px;

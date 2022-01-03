@@ -1,0 +1,14 @@
+<link rel="stylesheet" href="TTTMenu.scss">
+
+<div class="centered-flex">
+    <div class="background-panel rounded background-color-secondary box-shadow" @ref="BackgroundPanel">
+        <div style="margin-bottom: 30px;">
+            <button icon="arrow_back" onclick="PopPage()" @ref="BackButton"></button>
+            <div style="padding: 5px" />
+
+            <button icon="home" onclick="PopToHomePage()" @ref="HomeButton"></button>
+        </div>
+
+        <div @ref="Pages"></div>
+    </div>
+</div>

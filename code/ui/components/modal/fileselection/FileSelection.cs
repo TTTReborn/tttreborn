@@ -47,7 +47,7 @@ namespace TTTReborn.UI
         public PanelContent EntryPanelContent;
         public TextEntry FileNameEntry;
 
-        public FileSelection(Sandbox.UI.Panel parent = null) : base(parent)
+        public FileSelection(Panel parent = null) : base(parent)
         {
             Header.DragHeader.IsLocked = false;
             Header.DragHeader.IsFreeDraggable = true;
@@ -61,8 +61,7 @@ namespace TTTReborn.UI
             EntryPanelContent = new(Content);
             EntryPanelContent.AddClass("selection");
 
-            FileNameEntry = Content.Add.TextEntry("");
-            FileNameEntry.AddClass("filename");
+            FileNameEntry = Content.Add.TranslationTextEntry();
             FileNameEntry.AddClass("hide");
             FileNameEntry.AddEventListener("onfocus", (panelEvent) =>
             {

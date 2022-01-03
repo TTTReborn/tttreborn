@@ -7,6 +7,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Events;
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
@@ -62,7 +63,7 @@ namespace TTTReborn.UI
 
             bool invalidSlot = false;
 
-            foreach (Sandbox.UI.Panel child in Children)
+            foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
                 {
@@ -121,13 +122,13 @@ namespace TTTReborn.UI
                     : String.Compare(s1.Carriable.LibraryName, s2.Carriable.LibraryName, StringComparison.Ordinal);
             });
 
-            Enabled = Children.Any();
+            this.Enabled(Children.Any());
         }
 
         [Event(TTTEvent.Player.Inventory.Drop)]
         private void OnCarriableItemDrop(ICarriableItem carriable)
         {
-            foreach (Sandbox.UI.Panel child in Children)
+            foreach (Panel child in Children)
             {
                 if (child is InventorySlot slot)
                 {
@@ -138,7 +139,7 @@ namespace TTTReborn.UI
                 }
             }
 
-            Enabled = Children.Any();
+            this.Enabled(Children.Any());
         }
 
         [Event(TTTEvent.Player.Spectating.Change)]
@@ -172,7 +173,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            List<Sandbox.UI.Panel> childrenList = Children.ToList();
+            List<Panel> childrenList = Children.ToList();
 
             ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
 
@@ -269,7 +270,7 @@ namespace TTTReborn.UI
             private readonly Label _ammoLabel;
             private TranslationLabel _carriableLabel;
 
-            public InventorySlot(Sandbox.UI.Panel parent, ICarriableItem carriable) : base(parent)
+            public InventorySlot(Panel parent, ICarriableItem carriable) : base(parent)
             {
                 Parent = parent;
                 Carriable = carriable;
@@ -279,7 +280,7 @@ namespace TTTReborn.UI
                 SlotLabel = Add.Label(((int) carriable.SlotType).ToString());
                 SlotLabel.AddClass("slot-label");
 
-                _carriableLabel = Add.TranslationLabel(carriable.LibraryName.ToUpper());
+                _carriableLabel = Add.TranslationLabel(new TranslationData(carriable.LibraryName.ToUpper()));
 
                 _ammoLabel = Add.Label();
 

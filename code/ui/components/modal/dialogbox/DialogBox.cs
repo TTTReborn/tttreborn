@@ -3,6 +3,8 @@ using System;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public partial class DialogBox : Modal
@@ -13,7 +15,7 @@ namespace TTTReborn.UI
         private Button _agreeButton;
         private Button _declineButton;
 
-        public DialogBox(Sandbox.UI.Panel parent = null) : base(parent)
+        public DialogBox(Panel parent = null) : base(parent)
         {
             StyleSheet.Load("/ui/components/modal/dialogbox/DialogBox.scss");
 
@@ -21,8 +23,8 @@ namespace TTTReborn.UI
 
             Header.DragHeader.IsLocked = true;
 
-            _agreeButton = Footer.Add.ButtonWithIcon("done", "", "agree", OnClickAgree);
-            _declineButton = Footer.Add.ButtonWithIcon("close", "", "decline", OnClickDecline);
+            _agreeButton = Footer.Add.ButtonWithIcon("", "done", "agree", OnClickAgree);
+            _declineButton = Footer.Add.ButtonWithIcon("", "close", "decline", OnClickDecline);
         }
 
         public virtual void OnClickAgree()
@@ -40,9 +42,9 @@ namespace TTTReborn.UI
             return Content.Add.Label(text, "text");
         }
 
-        public Label AddTranslationText(string translationKey, params object[] translationData)
+        public Label AddTranslation(TranslationData translationData)
         {
-            return Content.Add.TranslationLabel(translationKey, "text", translationData);
+            return Content.Add.TranslationLabel(translationData, "text");
         }
     }
 }

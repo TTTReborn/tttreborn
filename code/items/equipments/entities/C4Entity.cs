@@ -369,7 +369,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            C4Arm.Instance.Enabled = false;
+            C4Arm.Instance.Enabled(false);
         }
     }
 }

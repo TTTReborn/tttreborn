@@ -9,7 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public void Build()
         {
-            BuildButton.Text = "hourglass_empty";
+            BuildButton.Icon = "hourglass_empty";
 
             NodeStack.Instance.Reset();
 

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 
+using Sandbox.UI;
+
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window : UI.Window
@@ -15,7 +17,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public Sandbox.UI.Button BuildButton;
 
-        public Window(Sandbox.UI.Panel parent, string jsonData) : base(parent)
+        public Window(Panel parent, string jsonData) : base(parent)
         {
             Instance = this;
 
@@ -26,22 +28,22 @@ namespace TTTReborn.UI.VisualProgramming
 
             Header.NavigationHeader.OnCreateWindowHeader = (header) =>
             {
-                Sandbox.UI.Button saveButton = new("save_as", "", () => Save());
+                Sandbox.UI.Button saveButton = new("", "save", () => Save());
                 saveButton.AddClass("save");
 
                 header.AddChild(saveButton);
 
-                Sandbox.UI.Button loadButton = new("folder_open", "", () => Load());
+                Sandbox.UI.Button loadButton = new("", "folder_open", () => Load());
                 loadButton.AddClass("load");
 
                 header.AddChild(loadButton);
 
-                BuildButton = new("play_arrow", "", () => Build());
+                BuildButton = new("", "play_arrow", () => Build());
                 BuildButton.AddClass("play");
 
                 header.AddChild(BuildButton);
 
-                Sandbox.UI.Button resetButton = new("delete", "", () => Reset());
+                Sandbox.UI.Button resetButton = new("", "delete", () => Reset());
                 resetButton.AddClass("reset");
 
                 header.AddChild(resetButton);
