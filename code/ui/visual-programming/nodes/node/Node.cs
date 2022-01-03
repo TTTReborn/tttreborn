@@ -181,11 +181,9 @@ namespace TTTReborn.UI.VisualProgramming
 
             StackNode.SetPos(Box.Rect.left, Box.Rect.top);
 
-            object[] arr;
-
             try
             {
-                arr = StackNode.Test(input);
+                return StackNode.Test(input);
             }
             catch (Exception e)
             {
@@ -200,10 +198,6 @@ namespace TTTReborn.UI.VisualProgramming
 
                 throw;
             }
-
-            return arr;
-
-            // TODO no autocall anymore
         }
 
         public virtual void HighlightError()

@@ -27,6 +27,7 @@ namespace TTTReborn.VisualProgramming
         public bool Test(params object[] input)
         {
             // TODO
+            //return TestNode(MainStackNode, input);
 
             return true;
         }
