@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.ScreenShake;
@@ -318,6 +319,25 @@ namespace TTTReborn.Items
 
                     tr.Entity.TakeDamage(damageInfo);
                 }
+            }
+        }
+
+        public override IEnumerable<TraceResult> TraceBullet(Vector3 start, Vector3 end, float radius = 2.0f)
+        {
+            using (LagCompensation())
+            {
+                bool InWater = Physics.TestPointContents(start, CollisionLayer.Water);
+
+                TraceResult tr = Trace.Ray(start, end)
+                        .UseHitboxes()
+                        .HitLayer(CollisionLayer.Water, !InWater)
+                        .HitLayer(CollisionLayer.Debris)
+                        .Ignore(Owner)
+                        .Ignore(this)
+                        .Size(radius)
+                        .Run();
+
+                yield return tr;
             }
         }
 
