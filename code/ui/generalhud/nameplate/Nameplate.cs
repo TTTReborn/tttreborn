@@ -13,8 +13,8 @@ namespace TTTReborn.UI
     {
         public TTTPlayer Player;
 
-        private readonly Panel _labelHolder;
-        private readonly Panel _nameHolder;
+        private readonly Sandbox.UI.Panel _labelHolder;
+        private readonly Sandbox.UI.Panel _nameHolder;
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
 
@@ -55,7 +55,7 @@ namespace TTTReborn.UI
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damage-indicator");
 
-            this.Enabled(false);
+            Enabled = false;
         }
 
         private HealthGroup GetHealthGroup(float health)
@@ -73,7 +73,7 @@ namespace TTTReborn.UI
 
         public override void UpdateHintPanel(TranslationData translationData)
         {
-            SetClass("fade-in", this.IsEnabled());
+            SetClass("fade-in", Enabled);
 
             bool isAlive = false;
 

@@ -1,5 +1,4 @@
 using Sandbox;
-using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
@@ -17,7 +16,7 @@ namespace TTTReborn.UI
         private readonly TranslationLabel _groupPingLabel;
         private readonly Panel _groupContent;
 
-        public ScoreboardGroup(Panel parent, string groupName) : base(parent)
+        public ScoreboardGroup(Sandbox.UI.Panel parent, string groupName) : base(parent)
         {
             GroupTitle = groupName;
 

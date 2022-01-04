@@ -44,7 +44,7 @@ namespace TTTReborn.UI
         private readonly Image _effectImage;
         private Label _countdownLabel;
 
-        public Effect(Panel parent, IItem effect) : base(parent)
+        public Effect(Sandbox.UI.Panel parent, IItem effect) : base(parent)
         {
             Parent = parent;
 

@@ -1,5 +1,3 @@
-using Sandbox.UI;
-
 namespace TTTReborn.UI
 {
     public class LineBreak : Panel

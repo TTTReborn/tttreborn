@@ -1,7 +1,5 @@
 using System;
 
-using Sandbox.UI;
-
 namespace TTTReborn.UI
 {
     public partial class WindowHeader : Panel
@@ -14,7 +12,7 @@ namespace TTTReborn.UI
         {
             Parent = parent;
 
-            StyleSheet.Load("/ui/components/window/WindowHeader.scss");
+            StyleSheet.Load("/ui/components/generic/window/WindowHeader.scss");
 
             AddClass("windowheader");
 
@@ -29,14 +27,14 @@ namespace TTTReborn.UI
 
         public readonly Window Window;
 
-        public WindowNavigationHeader(Panel parent, Window window) : base(parent)
+        public WindowNavigationHeader(Sandbox.UI.Panel parent, Window window) : base(parent)
         {
             Parent = parent;
             Window = window;
 
             OnClose = (panelHeader) =>
             {
-                Window.Enabled(false);
+                Window.Enabled = false;
             };
 
             AddClass("windownavigationheader");
@@ -52,7 +50,7 @@ namespace TTTReborn.UI
 
     public partial class WindowDragHeader : Drag
     {
-        public WindowDragHeader(Panel parent, Window window) : base(parent)
+        public WindowDragHeader(Sandbox.UI.Panel parent, Window window) : base(parent)
         {
             Parent = parent;
             DragBasePanel = window;

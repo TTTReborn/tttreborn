@@ -1,5 +1,3 @@
-using Sandbox.UI;
-
 namespace TTTReborn.UI.VisualProgramming
 {
     public class NodeConnectionPanel<T> : Panel where T : NodeConnectionPoint, new()
@@ -16,7 +14,7 @@ namespace TTTReborn.UI.VisualProgramming
         }
         private Node _node;
 
-        public bool Enabled
+        public new bool Enabled
         {
             get => _enabled;
             set
@@ -30,7 +28,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public T ConnectionPoint;
 
-        public NodeConnectionPanel(Panel parent = null) : base(parent)
+        public NodeConnectionPanel(Sandbox.UI.Panel parent = null) : base(parent)
         {
             ConnectionPoint = new();
 

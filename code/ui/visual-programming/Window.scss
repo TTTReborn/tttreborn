@@ -1,69 +1,68 @@
 Window.visualprogramming {
     z-index: 200;
 
-    button {
-        background-color: transparent;
-    }
+    > .panel {
+        &.header {
+            position: absolute;
+            border-radius: 0px;
+            z-index: 1;
+            width: 260px;
+            right: 0px;
 
-    translationdropdown {
-        min-width: 130px;
-    }
+            Label.title,
+            .label.title {
+                display: none;
+            }
 
-    WindowSidebar {
-        position: absolute;
-        left: -190px;
-        transition: left 0.1s linear;
-        flex-direction: column;
-        width: 200px;
-        height: 100%;
-        overflow: scroll;
-        background-color: #383838;
-        padding: 10px;
-
-        &.open {
-            left: 0px;
+            .play, .save, .load, .reset, .closebutton {
+                font-size: 28px;
+                margin: 10px;
+                padding: 2px;
+                width: 28px;
+                height: 28px;
+                background-color: transparent;
+            }
         }
 
-        Label.category,
-        .label.category {
-            font-size: 21px;
-            padding: 1px;
-            border-bottom: 2px #fafafa solid;
-            margin-bottom: 10px;
+        &.content {
+            flex-direction: row;
+            background-color: #282828;
+
+            > WindowSidebar {
+                position: absolute;
+                left: -190px;
+                transition: left 0.1s linear;
+                flex-direction: column;
+                width: 200px;
+                height: 100%;
+                overflow: scroll;
+                background-color: #383838;
+                padding: 10px;
+
+                &.open {
+                    left: 0px;
+                }
+
+                Label.category,
+                .label.category {
+                    font-size: 21px;
+                    padding: 1px;
+                    border-bottom: 2px #fafafa solid;
+                    margin-bottom: 10px;
+                }
+
+                SidebarEntry {
+                    background-color: rgb(92, 92, 92);
+                    border-radius: 16px;
+                    padding: 10px;
+                    margin: 2px;
+                }
+            }
         }
 
-        SidebarEntry {
-            background-color: rgb(92, 92, 92);
-            border-radius: 16px;
-            padding: 10px;
-            margin: 2px;
-        }
-    }
-
-    > .header {
-        position: absolute;
-        border-radius: 0px;
-        z-index: 1;
-        width: 260px;
-        right: 0px;
-
-        Label.title,
-        .label.title {
+        &.footer {
             display: none;
         }
-
-        .play, .save, .load, .reset, .closebutton {
-            font-size: 28px;
-            margin: 10px;
-            padding: 2px;
-            width: 28px;
-            height: 28px;
-            background-color: transparent;
-        }
-    }
-
-    > .footer {
-        display: none;
     }
 
     .nodeconnectionwire {

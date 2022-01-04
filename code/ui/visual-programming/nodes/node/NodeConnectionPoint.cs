@@ -1,5 +1,3 @@
-using Sandbox.UI;
-
 namespace TTTReborn.UI.VisualProgramming
 {
     public class NodeConnectionPoint : Panel

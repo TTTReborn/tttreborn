@@ -22,7 +22,7 @@ $button-size: 50px;
 @import "/code/ui/components/translationtab/TranslationTabContainer.scss";
 @import "/code/ui/components/linebreak/LineBreak.scss";
 
-Panel, .panel {
+.panel {
     font-family: Poppins;
     flex-shrink: 0;
     color: #fafafa;

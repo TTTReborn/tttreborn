@@ -75,13 +75,13 @@ namespace TTTReborn.UI
                 C4Entity.Arm(Entity.NetworkIdent, _selectedPresetIndex);
             });
 
-            this.Enabled(false);
+            Enabled = false;
         }
 
         public void Open(C4Entity entity)
         {
             Entity = entity;
-            this.Enabled(true);
+            Enabled = true;
         }
 
         private void SetTimer(int presetIndex)
@@ -97,9 +97,9 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            if (this.IsEnabled() && Entity?.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
+            if (Enabled && Entity?.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
             {
-                this.Enabled(false);
+                Enabled = false;
             }
 
             base.Tick();

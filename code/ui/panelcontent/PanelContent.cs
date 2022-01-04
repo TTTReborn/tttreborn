@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using Sandbox.UI;
-
 namespace TTTReborn.UI
 {
     public struct PanelContentData
@@ -49,7 +47,7 @@ namespace TTTReborn.UI
 
         private int _historyIndex = 0;
 
-        public PanelContent(Panel parent = null) : base(parent)
+        public PanelContent(Sandbox.UI.Panel parent = null) : base(parent)
         {
 
         }

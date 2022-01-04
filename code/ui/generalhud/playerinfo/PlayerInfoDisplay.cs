@@ -41,7 +41,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            this.Enabled(Local.Pawn is TTTPlayer || (player.IsSpectator && player.IsSpectatingPlayer));
+            Enabled = Local.Pawn is TTTPlayer || (player.IsSpectator && player.IsSpectatingPlayer);
 
             _healthLabel.SetClass("hidden", player.CurrentPlayer.LifeState == LifeState.Alive);
             _healthLabel.Text = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";

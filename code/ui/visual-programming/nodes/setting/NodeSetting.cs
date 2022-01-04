@@ -1,7 +1,8 @@
 using System;
 
 using Sandbox;
-using Sandbox.UI;
+
+using TTTReborn.Globals;
 
 namespace TTTReborn.UI.VisualProgramming
 {

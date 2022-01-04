@@ -15,7 +15,7 @@ namespace TTTReborn.UI
         private Button _agreeButton;
         private Button _declineButton;
 
-        public DialogBox(Panel parent = null) : base(parent)
+        public DialogBox(Sandbox.UI.Panel parent = null) : base(parent)
         {
             StyleSheet.Load("/ui/components/modal/dialogbox/DialogBox.scss");
 

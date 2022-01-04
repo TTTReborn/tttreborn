@@ -50,9 +50,9 @@ namespace TTTReborn.UI
             _distanceLabel.Text = $"{Globals.Utils.SourceUnitsToMeters(player.Position.Distance(_position)):n0}m";
 
             Vector3 screenPos = _position.ToScreen();
-            this.Enabled(screenPos.z > 0f);
+            Enabled = screenPos.z > 0f;
 
-            if (!this.IsEnabled())
+            if (!Enabled)
             {
                 return;
             }

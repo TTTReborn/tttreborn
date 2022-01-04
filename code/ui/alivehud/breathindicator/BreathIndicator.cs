@@ -29,7 +29,7 @@ namespace TTTReborn.UI
             _breathLabel = Add.Label();
             _breathLabel.AddClass("breath-label");
 
-            this.Enabled(true);
+            Enabled = true;
 
             Style.ZIndex = -1;
         }

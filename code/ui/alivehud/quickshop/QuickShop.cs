@@ -26,15 +26,15 @@ namespace TTTReborn.UI
 
         private int _credits = 0;
 
-        public bool Enabled
+        public new bool Enabled
         {
-            get => this.IsEnabled();
+            get => base.IsEnabled;
             set
             {
-                this.Enabled(value);
+                base.IsEnabled = value;
 
-                SetClass("fade-in", this.IsEnabled());
-                _quickshopContainer.SetClass("pop-in", this.IsEnabled());
+                SetClass("fade-in", base.IsEnabled);
+                _quickshopContainer.SetClass("pop-in", base.IsEnabled);
             }
         }
 

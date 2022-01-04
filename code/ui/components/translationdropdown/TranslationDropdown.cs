@@ -87,7 +87,7 @@ namespace TTTReborn.UI
 
             foreach (Option option in Options)
             {
-                Panel o = Popup.AddOption(option.Title, option.Icon, () => Select(option));
+                Sandbox.UI.Panel o = Popup.AddOption(option.Title, option.Icon, () => Select(option));
                 if (Selected != null && option.Value == Selected.Value)
                 {
                     o.AddClass("active");

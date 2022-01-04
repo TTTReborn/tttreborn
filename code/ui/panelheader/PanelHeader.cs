@@ -13,7 +13,7 @@ namespace TTTReborn.UI
 
         private TranslationLabel _title;
 
-        public PanelHeader(Panel parent = null) : base(parent)
+        public PanelHeader(Sandbox.UI.Panel parent = null) : base(parent)
         {
             StyleSheet.Load("/ui/panelheader/PanelHeader.scss");
 

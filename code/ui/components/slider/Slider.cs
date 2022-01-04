@@ -32,7 +32,7 @@ namespace TTTReborn.UI
         /// </summary>
         public float Step { get; set; } = 1.0f;
 
-        public Slider(Panel parent) : base(parent)
+        public Slider(Sandbox.UI.Panel parent) : base(parent)
         {
             StyleSheet.Load("ui/components/slider/Slider.scss");
 

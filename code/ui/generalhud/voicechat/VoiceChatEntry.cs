@@ -25,7 +25,7 @@ namespace TTTReborn.UI
 
         RealTimeSince timeSincePlayed;
 
-        public VoiceChatEntry(Panel parent, Client client) : base(parent)
+        public VoiceChatEntry(Sandbox.UI.Panel parent, Client client) : base(parent)
         {
             Parent = parent;
 

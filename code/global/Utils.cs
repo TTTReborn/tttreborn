@@ -175,16 +175,6 @@ namespace TTTReborn.Globals
             return highestPanel;
         }
 
-        public static void Enabled(this Panel panel, bool enabled)
-        {
-            panel.SetClass("disabled", !enabled);
-        }
-
-        public static bool IsEnabled(this Panel panel)
-        {
-            return !panel.HasClass("disabled");
-        }
-
         public static string GetTypeName(Type type) => type.FullName.Replace(type.Namespace, "").TrimStart('.');
 
         public enum Realm
