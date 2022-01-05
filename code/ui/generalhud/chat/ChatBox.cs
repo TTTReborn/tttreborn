@@ -37,9 +37,7 @@ namespace TTTReborn.UI
 
             _canvas = new Panel(this);
             _canvas.AddClass("chat-canvas");
-            _canvas.AddClass("background-color-primary");
             _canvas.AddClass("rounded");
-            _canvas.AddClass("opacity-heavy");
             _canvas.PreferScrollToBottom = true;
 
             _inputPanel = new Panel(this);
@@ -111,7 +109,7 @@ namespace TTTReborn.UI
         {
             IsOpened = true;
 
-            _inputPanel.SetClass("opacity-heavy", true);
+            _inputPanel.SetClass("opacity-medium", true);
             _inputPanel.SetClass("open", true);
 
             _inputField.Focus();
@@ -122,7 +120,7 @@ namespace TTTReborn.UI
             IsTeamChatting = false;
             IsOpened = false;
 
-            _inputPanel.SetClass("opacity-heavy", false);
+            _inputPanel.SetClass("opacity-medium", false);
             _inputPanel.SetClass("open", false);
 
             _inputField.Text = "";
