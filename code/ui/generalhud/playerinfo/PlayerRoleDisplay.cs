@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
@@ -35,7 +36,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Enabled = !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+            this.Enabled(!player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound);
         }
 
         [Event(Events.TTTEvent.Player.Role.Select)]

@@ -36,7 +36,7 @@ namespace TTTReborn.UI
 
             InitMapPanels();
 
-            Enabled = false;
+            this.Enabled(false);
         }
 
         [Event(Events.TTTEvent.Game.MapImagesChange)]
@@ -68,7 +68,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (!Enabled)
+            if (!this.IsEnabled())
             {
                 return;
             }

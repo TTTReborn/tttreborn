@@ -53,7 +53,7 @@ namespace TTTReborn.Player
 
                 _currentHintPanel = hint.DisplayHint(this);
                 _currentHintPanel.Parent = HintDisplay.Instance;
-                _currentHintPanel.Enabled = true;
+                _currentHintPanel.Enabled(true);
             }
 
             _currentHint = hint;
