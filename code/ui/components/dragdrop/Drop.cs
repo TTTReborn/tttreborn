@@ -10,7 +10,7 @@ namespace TTTReborn.UI
     {
         public static List<Drop> List { get; private set; } = new();
 
-        public Drop(Sandbox.UI.Panel parent = null) : base(parent)
+        public Drop(Panel parent = null) : base(parent)
         {
             List.Add(this);
 

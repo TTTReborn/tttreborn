@@ -96,7 +96,7 @@ namespace TTTReborn.UI
             shadow.Color = Color.Black;
 
             #region Update Crosshair Dot
-            _crosshairDot.Enabled = ShowDot;
+            _crosshairDot.Enabled(ShowDot);
 
             if (ShowDot)
             {
@@ -133,7 +133,7 @@ namespace TTTReborn.UI
                         _crosshairLines[i].Style.MarginLeft = (Size / 2 + Gap);
                         break;
                     case 3: // Top
-                        _crosshairLines[i].Enabled = ShowTop;
+                        _crosshairLines[i].Enabled(ShowTop);
                         _crosshairLines[i].Style.MarginTop = -(Size / 2 + Gap);
                         break;
                 }

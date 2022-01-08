@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
@@ -8,7 +9,7 @@ namespace TTTReborn.UI
     public class InspectEntry : Panel
     {
         public TranslationData TranslationData;
-        private readonly Sandbox.UI.Image _inspectIcon;
+        private readonly Image _inspectIcon;
         private readonly TranslationLabel _inspectQuickLabel;
 
         public InspectEntry(Panel parent) : base(parent)

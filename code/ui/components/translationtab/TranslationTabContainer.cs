@@ -20,7 +20,7 @@ namespace TTTReborn.UI
             base.OnDeleted();
         }
 
-        public Tab AddTab(Sandbox.UI.Panel panel, TranslationData tabTitle, string icon = null)
+        public Tab AddTab(Panel panel, TranslationData tabTitle, string icon = null)
         {
             int index = Tabs.Count;
 
@@ -43,7 +43,7 @@ namespace TTTReborn.UI
             return tab;
         }
 
-        public override void OnTemplateSlot(INode element, string slotName, Sandbox.UI.Panel panel)
+        public override void OnTemplateSlot(INode element, string slotName, Panel panel)
         {
             if (slotName == "tab")
             {
@@ -69,7 +69,7 @@ namespace TTTReborn.UI
         {
             public readonly TranslationData translationData;
 
-            public TranslationTab(TranslationTabContainer tabControl, TranslationData tabTitle, Sandbox.UI.Panel panel, string icon)
+            public TranslationTab(TranslationTabContainer tabControl, TranslationData tabTitle, Panel panel, string icon)
             : base(tabControl, TTTLanguage.ActiveLanguage.GetFormattedTranslation(tabTitle), icon, panel)
             {
                 translationData = tabTitle;

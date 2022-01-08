@@ -20,7 +20,7 @@ namespace TTTReborn.UI
             _label = Add.TranslationLabel(translationData);
             _label.Style.Padding = 10;
 
-            Enabled = false;
+            this.Enabled(false);
         }
 
         public override void UpdateHintPanel(TranslationData translationData)

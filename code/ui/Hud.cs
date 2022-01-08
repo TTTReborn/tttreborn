@@ -22,6 +22,9 @@ namespace TTTReborn.UI
                 return;
             }
 
+            RootPanel.StyleSheet.Load("/ui/Hud.scss");
+            RootPanel.AddClass("panel");
+
             GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
             AliveHudInstance = new(RootPanel);
             Current = this;

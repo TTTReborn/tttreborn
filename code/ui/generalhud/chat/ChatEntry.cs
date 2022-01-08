@@ -5,7 +5,7 @@ namespace TTTReborn.UI
 {
     public partial class ChatEntry : Panel
     {
-        public readonly Sandbox.UI.Panel Message;
+        public readonly Panel Message;
         public readonly Image Avatar;
         public readonly Label Header;
         public readonly Label Content;
