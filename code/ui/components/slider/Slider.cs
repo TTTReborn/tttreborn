@@ -1,4 +1,7 @@
-public class Slider : Sandbox.UI.Slider
+namespace TTTReborn.UI
 {
+    public class Slider : Sandbox.UI.Slider
+    {
 
+    }
 }
