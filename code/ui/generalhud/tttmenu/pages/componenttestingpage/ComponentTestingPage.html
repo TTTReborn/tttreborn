@@ -7,17 +7,20 @@
     <translationbutton class="inactive" key="MENU_SUBMENU_SETTINGS"></translationbutton>
     <br />
 
-    <translationcheckbox @checked="CheckedValue" key="MENU_SUBMENU_COMPONENT_TESTING"></translationcheckbox>
+    <translationcheckbox @checked="CheckedValue" key="MENU_SUBMENU_SETTINGS"></translationcheckbox>
     <br />
 
-    <translationcheckbox class="inactive" @checked="CheckedValue" key="MENU_SUBMENU_COMPONENT_TESTING">
+    <translationcheckbox class="inactive" @checked="CheckedValue" key="MENU_SUBMENU_SETTINGS">
     </translationcheckbox>
     <br />
 
     <translationdropdown @value="FloatValue">
         <translationoption value="0" key="MENU_SUBMENU_SETTINGS"></translationoption>
-        <translationoption value="10" key="MENU_SUBMENU_COMPONENT_TESTING"></translationoption>
+        <translationoption value="10" key="MENU_SUBMENU_SETTINGS"></translationoption>
     </translationdropdown>
+    <br />
+
+    <SliderEntry min="0" max="100" @value="SliderValue"></SliderEntry>
     <br />
 
     <translationtextentry placeholder_key="MENU_SUBMENU_SETTINGS" @value="TextValue"></translationtextentry>
