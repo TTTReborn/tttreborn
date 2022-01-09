@@ -442,6 +442,11 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Use))
                 {
+                    if (player.Inventory.Active is ICarriableItem carriable && carriable.SlotType == SlotType)
+                    {
+                        player.Inventory.DropActive();
+                    }
+
                     player.Inventory.TryAdd(this, deleteIfFails: false, makeActive: true);
                 }
             }
