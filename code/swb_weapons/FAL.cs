@@ -4,11 +4,60 @@ using Sandbox;
 
 using SWB_Base;
 
+using TTTReborn.Globalization;
+using TTTReborn.Items;
+using TTTReborn.Player;
+using TTTReborn.UI;
+
 namespace SWB_WEAPONS
 {
     [Library("swb_fal", Title = "FN FAL")]
-    public class FAL : WeaponBase
+    public class FAL : WeaponBase, ICarriableItem, IEntityHint
     {
+        public SlotType SlotType { get; } = SlotType.Primary;
+        public new bool CanDrop() => true;
+        public string LibraryName { get; }
+        public void Equip(TTTPlayer player) { }
+        public void OnEquip() { }
+        public void Remove() { }
+        public void OnRemove() { }
+        public bool CanHint(TTTPlayer client)
+        {
+            return true;
+        }
+
+        public TranslationData TextOnTick => new("GENERIC_PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(LibraryName.ToUpper()));
+        public EntityHintPanel DisplayHint(TTTPlayer client)
+        {
+            return new Hint(TextOnTick);
+        }
+        public void Tick(TTTPlayer player)
+        {
+            if (IsClient)
+            {
+                return;
+            }
+
+            if (player.LifeState != LifeState.Alive)
+            {
+                return;
+            }
+
+            using (Prediction.Off())
+            {
+                if (Input.Pressed(InputButton.Use))
+                {
+                    if (player.Inventory.Active is ICarriableItem carriable && carriable.SlotType == SlotType)
+                    {
+                        player.Inventory.DropActive();
+                    }
+
+                    player.Inventory.TryAdd(this, deleteIfFails: false, makeActive: true);
+                }
+            }
+        }
+
+
         public override int Bucket => 3;
         public override HoldType HoldType => HoldType.Rifle;
         public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";

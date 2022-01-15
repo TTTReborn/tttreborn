@@ -61,6 +61,7 @@ namespace TTTReborn.Rounds
                 {
                     foreach (TTTPlayer player in Players)
                     {
+                        Log.Info("called");
                         GiveFixedLoadout(player);
                     }
                 }
@@ -75,22 +76,22 @@ namespace TTTReborn.Rounds
             Log.Debug($"Added Fixed Loadout to {player.Client.Name}");
 
             // Randomize between SMG and shotgun
-            if (Utils.RNG.Next() % 2 == 0)
-            {
-                if (player.Inventory.TryAdd(new Shotgun(), deleteIfFails: true, makeActive: false))
-                {
-                    player.Inventory.Ammo.Give("ammo_buckshot", 16);
-                }
-            }
-            else
-            {
-                if (player.Inventory.TryAdd(new SMG(), deleteIfFails: true, makeActive: false))
-                {
-                    player.Inventory.Ammo.Give("ammo_smg", 60);
-                }
-            }
+            // if (Utils.RNG.Next() % 2 == 0)
+            // {
+            //     if (player.Inventory.TryAdd(new SWB_WEAPONS.FAL(), deleteIfFails: true, makeActive: false))
+            //     {
+            //         player.Inventory.Ammo.Give("ammo_buckshot", 16);
+            //     }
+            // }
+            // else
+            // {
+            //     if (player.Inventory.TryAdd(new SWB_WEAPONS.FAL(), deleteIfFails: true, makeActive: false))
+            //     {
+            //         player.Inventory.Ammo.Give("ammo_smg", 60);
+            //     }
+            // }
 
-            if (player.Inventory.TryAdd(new Pistol(), deleteIfFails: true, makeActive: false))
+            if (player.Inventory.TryAdd(new SWB_WEAPONS.FAL(), deleteIfFails: true, makeActive: false))
             {
                 player.Inventory.Ammo.Give("ammo_pistol", 30);
             }
