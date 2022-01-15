@@ -1,0 +1,64 @@
+﻿sniperScope {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    //left: 400px;
+    transition: margin 0.2s ease-out 0s;
+    overflow: visible;
+
+    .lensWrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .lens {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .scope {
+        height: 100%;
+        width: 100%;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .leftBar {
+        position: absolute;
+        background-color: black;
+        height: 100%;
+        width: 10000px;
+        margin-left: -9578px;
+        overflow: visible;
+    }
+
+    .rightBar {
+        position: absolute;
+        background-color: black;
+        height: 100%;
+        width: 22%;
+        margin-left: 78%;
+    }
+
+    .topBar {
+        position: absolute;
+        background-color: black;
+        //width: 10000px;
+        //height: 10000px;
+        //transform: translateX( -50% ) translateY( -104.85% );
+    }
+
+    .bottomBar {
+        position: absolute;
+        background-color: black;
+        //width: 10000px;
+        //height: 10000px;
+        //transform: translateX( -50% ) translateY( 4.85% );
+    }
+}
