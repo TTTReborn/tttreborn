@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.ScreenShake;
@@ -321,6 +322,25 @@ namespace TTTReborn.Items
             }
         }
 
+        public override IEnumerable<TraceResult> TraceBullet(Vector3 start, Vector3 end, float radius = 2.0f)
+        {
+            using (LagCompensation())
+            {
+                bool InWater = Physics.TestPointContents(start, CollisionLayer.Water);
+
+                TraceResult tr = Trace.Ray(start, end)
+                        .UseHitboxes()
+                        .HitLayer(CollisionLayer.Water, !InWater)
+                        .HitLayer(CollisionLayer.Debris)
+                        .Ignore(Owner)
+                        .Ignore(this)
+                        .Size(radius)
+                        .Run();
+
+                yield return tr;
+            }
+        }
+
         public bool TakeAmmo(int amount)
         {
             if (AmmoClip < amount)
@@ -422,6 +442,11 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Use))
                 {
+                    if (player.Inventory.Active is ICarriableItem carriable && carriable.SlotType == SlotType)
+                    {
+                        player.Inventory.DropActive();
+                    }
+
                     player.Inventory.TryAdd(this, deleteIfFails: false, makeActive: true);
                 }
             }

@@ -1,23 +1,15 @@
 {
-    "name": "Trouble in Terry's Town",
-    "version": "1.0",
-    "sharedassets": "*.*",
-    "ident": "neox.tttreborn",
-
-    "depends": [
-        "base",
-        "citizen",
-        "rust"
-    ],
-
-    //
-    // Addons can contain multiple addons, describe them here
-    //
-    "gamemodes": [
-        {
-            "name": "tttreborn",
-            "title": "Trouble in Terry's Town",
-            "description": "Find and kill the traitors before they kill you"
-        }
-    ]
+  "SharedAssets": "*.*",
+  "Title": "tttreborn",
+  "Type": "game",
+  "Org": "local",
+  "Ident": "tttreborn",
+  "FullIdent": "local.tttreborn",
+  "Schema": 1,
+  "NeedsUpgrade": false,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "HasCode": true,
+  "CodePath": "code",
+  "RootNamespace": "Sandbox"
 }
