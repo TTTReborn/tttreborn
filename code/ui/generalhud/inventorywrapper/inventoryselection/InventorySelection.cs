@@ -255,12 +255,14 @@ namespace TTTReborn.UI
 
         private static string FormatAmmo(TTTWeapon weapon, Inventory inventory)
         {
-            if (weapon.UnlimitedAmmo)
-            {
-                return $"{weapon.AmmoClip} + ∞";
-            }
+            // TODO MZEGAR Revert.
+            // if (weapon.UnlimitedAmmo)
+            // {
+            //     return $"{weapon.AmmoClip} + ∞";
+            // }
 
-            return $"{weapon.AmmoClip} + {(inventory.Ammo.Count(weapon.AmmoType))}";
+            // return $"{weapon.AmmoClip} + {(inventory.Ammo.Count(weapon.AmmoType))}";
+            return "WIP";
         }
 
         private class InventorySlot : Panel

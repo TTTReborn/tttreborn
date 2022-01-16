@@ -1,10 +1,11 @@
 ﻿using Sandbox;
+
 using SWB_Base;
 
-namespace SWB_CSS
+namespace TTTReborn.Items
 {
     [Library("swb_css_deagle", Title = "Desert Eagle")]
-    public class Deagle : WeaponBase
+    public class Deagle : TTTWeapon
     {
         public override int Bucket => 1;
         public override HoldType HoldType => HoldType.Pistol;
@@ -24,7 +25,7 @@ namespace SWB_CSS
             Primary = new ClipInfo
             {
                 Ammo = 7,
-                AmmoType = AmmoType.Revolver,
+                AmmoType = SWB_Base.AmmoType.Revolver,
                 ClipSize = 7,
 
                 BulletSize = 6f,

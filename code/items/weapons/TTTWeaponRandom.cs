@@ -33,24 +33,25 @@ namespace TTTReborn.Items
             weapon.Rotation = Rotation;
             weapon.Spawn();
 
-            if (weapon.AmmoEntity == null)
-            {
-                return; // If the choosen weapon doesn't use ammo we don't need to spawn any.
-            }
+            // MZEGAR TODO Revert.
+            // if (weapon.AmmoEntity == null)
+            // {
+            //     return; // If the choosen weapon doesn't use ammo we don't need to spawn any.
+            // }
 
-            if (!weapon.AmmoEntity.IsSubclassOf(typeof(TTTAmmo)))
-            {
-                Log.Error($"The defined ammo type {weapon.AmmoEntity.Name} for the weapon {weapon.LibraryName} is not a descendant of {typeof(TTTAmmo).Name}.");
+            // if (!weapon.AmmoEntity.IsSubclassOf(typeof(TTTAmmo)))
+            // {
+            //     Log.Error($"The defined ammo type {weapon.AmmoEntity.Name} for the weapon {weapon.LibraryName} is not a descendant of {typeof(TTTAmmo).Name}.");
 
-                return;
-            }
+            //     return;
+            // }
 
-            for (int i = 0; i < AmmoToSpawn; i++)
-            {
-                TTTAmmo ammo = Utils.GetObjectByType<TTTAmmo>(weapon.AmmoEntity);
-                ammo.Position = weapon.Position + Vector3.Up * AMMO_DISTANCE_UP;
-                ammo.Spawn();
-            }
+            // for (int i = 0; i < AmmoToSpawn; i++)
+            // {
+            //     TTTAmmo ammo = Utils.GetObjectByType<TTTAmmo>(weapon.AmmoEntity);
+            //     ammo.Position = weapon.Position + Vector3.Up * AMMO_DISTANCE_UP;
+            //     ammo.Spawn();
+            // }
         }
     }
 }

@@ -91,7 +91,7 @@ namespace TTTReborn.Rounds
             //     }
             // }
 
-            if (player.Inventory.TryAdd(new SWB_WEAPONS.FAL(), deleteIfFails: true, makeActive: false))
+            if (player.Inventory.TryAdd(new Deagle(), deleteIfFails: true, makeActive: false))
             {
                 player.Inventory.Ammo.Give("ammo_pistol", 30);
             }
