@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -15,7 +16,7 @@ namespace TTTReborn.UI.VisualProgramming
         public WindowSidebar Sidebar;
         public PanelContent Workspace;
 
-        public Sandbox.UI.Button BuildButton;
+        public Button BuildButton;
 
         public Window(Panel parent, string jsonData) : base(parent)
         {
@@ -28,12 +29,12 @@ namespace TTTReborn.UI.VisualProgramming
 
             Header.NavigationHeader.OnCreateWindowHeader = (header) =>
             {
-                Sandbox.UI.Button saveButton = new("", "save", () => Save());
+                Button saveButton = new("", "save", () => Save());
                 saveButton.AddClass("save");
 
                 header.AddChild(saveButton);
 
-                Sandbox.UI.Button loadButton = new("", "folder_open", () => Load());
+                Button loadButton = new("", "folder_open", () => Load());
                 loadButton.AddClass("load");
 
                 header.AddChild(loadButton);
@@ -43,7 +44,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 header.AddChild(BuildButton);
 
-                Sandbox.UI.Button resetButton = new("", "delete", () => Reset());
+                Button resetButton = new("", "delete", () => Reset());
                 resetButton.AddClass("reset");
 
                 header.AddChild(resetButton);
@@ -57,6 +58,16 @@ namespace TTTReborn.UI.VisualProgramming
                 Sidebar = new(panelContent);
 
                 LoadNodesFromStackJson(jsonData);
+
+                foreach (Node node in Nodes)
+                {
+                    if (node is MainNode mainNode)
+                    {
+                        MainNode = mainNode;
+
+                        break;
+                    }
+                }
 
                 if (MainNode == null)
                 {
@@ -92,19 +103,34 @@ namespace TTTReborn.UI.VisualProgramming
         {
             jsonData = jsonData.Replace("LibraryName", "StackNodeName").Replace("NodeReference", "LibraryName");
 
-            Dictionary<string, object> jsonDataDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonData);
+            List<object> jsonDataList = JsonSerializer.Deserialize<List<object>>(jsonData);
 
-            jsonDataDict.TryGetValue("MainStackNode", out object mainStackNode);
-
-            if (mainStackNode == null)
+            foreach (object stackNode in jsonDataList)
             {
-                return;
+                Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) stackNode).GetRawText());
+
+                if (!saveStackNode.TryGetValue("LibraryName", out object libraryName))
+                {
+                    continue;
+                }
+
+                Type type = Utils.GetTypeByLibraryName<Node>(libraryName.ToString());
+
+                if (type == null)
+                {
+                    continue;
+                }
+
+                Node node = Utils.GetObjectByType<Node>(type);
+
+                if (node == null)
+                {
+                    continue;
+                }
+
+                AddNode(node);
+                node.LoadFromJsonData(saveStackNode);
             }
-
-            Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) mainStackNode).GetRawText());
-
-            MainNode = AddNode<MainNode>();
-            MainNode.LoadFromJsonData(saveStackNode);
 
             foreach (Node node in Nodes)
             {

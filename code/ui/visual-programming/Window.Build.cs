@@ -19,7 +19,7 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 node.RemoveHighlights();
 
-                if (!node.HasInput() && node != MainNode)
+                if (!node.HasInput() && node.HasInputEnabled())
                 {
                     node.HighlightError();
 
@@ -29,6 +29,8 @@ namespace TTTReborn.UI.VisualProgramming
 
             if (hasError)
             {
+                BuildButton.Icon = "play_arrow";
+
                 return;
             }
 
@@ -52,7 +54,7 @@ namespace TTTReborn.UI.VisualProgramming
             }
             finally
             {
-                BuildButton.Text = "play_arrow";
+                BuildButton.Icon = "play_arrow";
             }
         }
     }

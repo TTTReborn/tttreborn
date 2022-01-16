@@ -150,6 +150,19 @@ namespace TTTReborn.UI.VisualProgramming
             return false;
         }
 
+        public bool HasInputEnabled()
+        {
+            foreach (NodeSetting nodeSetting in NodeSettings)
+            {
+                if (nodeSetting.Input.Enabled)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public virtual object[] Build(params object[] input)
         {
             ConnectionInputIds = new string[ConnectionInputIds.Length];
@@ -309,7 +322,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             if (pos != null)
             {
-                Vector2 vector2 = (Vector2) pos;
+                Vector2 vector2 = JsonSerializer.Deserialize<Vector2>(((JsonElement) pos).GetRawText());
 
                 Style.Left = Sandbox.UI.Length.Pixels(vector2.x);
                 Style.Top = Sandbox.UI.Length.Pixels(vector2.y);

@@ -47,8 +47,9 @@ namespace TTTReborn.Gamemode
             if (IsServer)
             {
                 ShopManager.Load();
-                NodeStack.Load();
             }
+
+            NodeStack.Load();
         }
 
         public override void Shutdown()

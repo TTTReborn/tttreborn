@@ -26,8 +26,14 @@ namespace TTTReborn.VisualProgramming
 
         public bool Test(params object[] input)
         {
-            // TODO
-            //return TestNode(MainStackNode, input);
+            foreach (StackNode stackNode in StackNodeList)
+            {
+                // TODO check / update input / process connected nodes?
+                if (TestNode(stackNode, input) == null)
+                {
+                    return false;
+                }
+            }
 
             return true;
         }
@@ -53,8 +59,8 @@ namespace TTTReborn.VisualProgramming
 
         public bool Evaluate(params object[] input)
         {
-            // TODO
-            //return EvaluateNode(MainStackNode, input);
+            // TODO // See Test()
+            //return EvaluateNode(stackNode, input);
 
             return true;
         }
@@ -80,7 +86,9 @@ namespace TTTReborn.VisualProgramming
 
         public void Init()
         {
-            string defaultNodeStackJsonData = "{\"MainStackNode\":{\"LibraryName\":\"stacknode_main\",\"ConnectPositions\":[0],\"NodeReference\":\"node_main\",\"NextNodes\":[{\"LibraryName\":\"stacknode_percentage_selection\",\"ConnectPositions\":[0,0],\"NodeReference\":\"node_percentage_selection\",\"NextNodes\":[{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1248,\"PosY\":202,\"SelectedRole\":\"role_traitor\"},{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1246,\"PosY\":671,\"SelectedRole\":\"role_innocent\"}],\"PosX\":809,\"PosY\":366,\"PercentList\":[30,70]}],\"PosX\":404,\"PosY\":452}}";
+            // TODO
+            // string defaultNodeStackJsonData = "{\"MainStackNode\":{\"LibraryName\":\"stacknode_main\",\"ConnectPositions\":[0],\"NodeReference\":\"node_main\",\"NextNodes\":[{\"LibraryName\":\"stacknode_percentage_selection\",\"ConnectPositions\":[0,0],\"NodeReference\":\"node_percentage_selection\",\"NextNodes\":[{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1248,\"PosY\":202,\"SelectedRole\":\"role_traitor\"},{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1246,\"PosY\":671,\"SelectedRole\":\"role_innocent\"}],\"PosX\":809,\"PosY\":366,\"PercentList\":[30,70]}],\"PosX\":404,\"PosY\":452}}";
+            string defaultNodeStackJsonData = "{Nodes:[{\"LibraryName\":\"stacknode_main\",\"ConnectPositions\":[],\"NodeReference\":\"node_main\",\"NextNodes\":[],\"PosX\":404,\"PosY\":452}]}";
 
             Save(defaultNodeStackJsonData);
             LoadDefaultFile(false);
@@ -88,17 +96,28 @@ namespace TTTReborn.VisualProgramming
 
         public void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            jsonData.TryGetValue("MainStackNode", out object saveListJson);
+            jsonData.TryGetValue("Nodes", out object jsonNodesData);
 
-            if (saveListJson == null)
+            if (jsonNodesData == null)
             {
+                Log.Error("Malformed data in visual programming json");
+
                 return;
             }
 
-            Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) saveListJson).GetRawText());
+            List<object> jsonNodeList = JsonSerializer.Deserialize<List<object>>((JsonElement) jsonNodesData);
 
-            // TODO
-            //MainStackNode = StackNode.GetStackNodeFromJsonData<StackNode>(saveStackNode);
+            foreach (object stackNodeJson in jsonNodeList)
+            {
+                if (stackNodeJson == null)
+                {
+                    continue;
+                }
+
+                Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) stackNodeJson).GetRawText());
+
+                StackNodeList.Add(StackNode.GetStackNodeFromJsonData<StackNode>(saveStackNode));
+            }
         }
 
         private string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
@@ -145,13 +164,10 @@ namespace TTTReborn.VisualProgramming
                 FileSystem.Data.CreateDirectory("settings");
             }
 
-            // TODO
-            /*
-            if (MainStackNode == null && jsonData == null)
+            if (StackNodeList.Count == 0 && jsonData == null)
             {
                 return;
             }
-            */
 
             string settingsPath = GetSettingsPathByData(Utils.Realm.Server);
 
@@ -165,13 +181,16 @@ namespace TTTReborn.VisualProgramming
             FileSystem.Data.WriteAllText(path, jsonData ?? JsonSerializer.Serialize(GetJsonData()));
         }
 
-        public Dictionary<string, object> GetJsonData()
+        public List<object> GetJsonData()
         {
-            return new()
+            List<object> jsonData = new();
+
+            foreach (StackNode stackNode in StackNodeList)
             {
-                // TODO
-                // ["MainStackNode"] = MainStackNode.GetJsonData()
-            };
+                jsonData.Add(stackNode.GetJsonData());
+            }
+
+            return jsonData;
         }
     }
 }
