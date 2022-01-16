@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+
 using Sandbox;
+
 using SWB_Base;
 
 partial class InventoryBase : BaseInventory
@@ -28,7 +30,6 @@ partial class InventoryBase : BaseInventory
                 if (showNotice)
                 {
                     Sound.FromWorld("dm.pickup_ammo", ent.Position);
-                    PickupFeed.OnPickup(To.Single(player), $"+{ammo} {ammoType}");
                 }
             }
 

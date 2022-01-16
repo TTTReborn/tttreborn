@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+
 using Sandbox;
 
 namespace SWB_Base
@@ -174,7 +175,7 @@ namespace SWB_Base
             if (info.Attacker is PlayerBase attacker && attacker != this)
             {
                 // Note - sending this only to the attacker!
-                attacker.DidDamage(To.Single(attacker), info.Position, info.Damage, Health, ((float)Health).LerpInverse(100, 0));
+                attacker.DidDamage(To.Single(attacker), info.Position, info.Damage, Health, ((float) Health).LerpInverse(100, 0));
 
                 // Hitmarker
                 var weapon = info.Weapon as WeaponBase;
@@ -202,8 +203,8 @@ namespace SWB_Base
         public void TookDamage(Vector3 pos)
         {
             //DebugOverlay.Sphere( pos, 5.0f, Color.Red, false, 50.0f );
-
-            DamageIndicator.Current?.OnHit(pos);
+            // TODO: Potentially use.
+            // DamageIndicator.Current?.OnHit(pos);
         }
 
         [ClientRpc]
