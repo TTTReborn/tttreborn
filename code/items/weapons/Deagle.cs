@@ -6,7 +6,12 @@ using SWB_Base;
 
 namespace TTTReborn.Items
 {
-    [Library("swb_deagle", Title = "Desert Eagle")]
+    [Library("weapon_deagle")]
+    [Weapon(SlotType = SlotType.Secondary, AmmoType = "ammo_pistol")]
+    [Spawnable]
+    [Buyable(Price = 100)]
+    [Precached("weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl")]
+    [Hammer.EditorModel("weapons/swb/pistols/deagle/w_deagle.vmdl")]
     public class Deagle : TTTWeapon
     {
         public override int Bucket => 1;
@@ -59,7 +64,7 @@ namespace TTTReborn.Items
                 BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
                 MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
 
-                InfiniteAmmo = InfiniteAmmoType.reserve
+                InfiniteAmmo = InfiniteAmmoType.normal
             };
 
             ZoomAnimData = new AngPos

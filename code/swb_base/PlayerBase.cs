@@ -46,16 +46,17 @@ namespace SWB_Base
         {
             base.OnKilled();
 
-            Inventory.DropActive();
-            Inventory.DeleteContents();
+            // Reborn override
+            // Inventory.DropActive();
+            // Inventory.DeleteContents();
 
-            BecomeRagdollOnClient(LastDamage.Force, GetHitboxBone(LastDamage.HitboxIndex));
+            // BecomeRagdollOnClient(LastDamage.Force, GetHitboxBone(LastDamage.HitboxIndex));
 
-            Controller = null;
-            Camera = new SpectateRagdollCamera();
+            // Controller = null;
+            // Camera = new SpectateRagdollCamera();
 
-            EnableAllCollisions = false;
-            EnableDrawing = false;
+            // EnableAllCollisions = false;
+            // EnableDrawing = false;
         }
 
 
