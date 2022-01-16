@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+
 using Sandbox;
+
 using SWB_Base;
 
 namespace SWB_CSS

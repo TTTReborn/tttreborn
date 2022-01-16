@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using Sandbox.UI;
 
 namespace SWB_Base

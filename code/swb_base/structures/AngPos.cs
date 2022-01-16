@@ -1,4 +1,4 @@
-﻿namespace SWB_Base
+namespace SWB_Base
 {
     public struct AngPos
     {

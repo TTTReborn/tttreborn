@@ -1,6 +1,7 @@
-﻿using Sandbox;
 using System;
 using System.Collections.Generic;
+
+using Sandbox;
 
 namespace SWB_Base
 {
@@ -39,16 +40,16 @@ namespace SWB_Base
 
         public int AmmoCount(AmmoType type)
         {
-            var iType = (int)type;
+            var iType = (int) type;
             if (Ammo == null) return 0;
             if (Ammo.Count <= iType) return 0;
 
-            return Ammo[(int)type];
+            return Ammo[(int) type];
         }
 
         public bool SetAmmo(AmmoType type, int amount)
         {
-            var iType = (int)type;
+            var iType = (int) type;
             if (!Host.IsServer) return false;
             if (Ammo == null) return false;
 
@@ -57,7 +58,7 @@ namespace SWB_Base
                 Ammo.Add(0);
             }
 
-            Ammo[(int)type] = amount;
+            Ammo[(int) type] = amount;
             return true;
         }
 

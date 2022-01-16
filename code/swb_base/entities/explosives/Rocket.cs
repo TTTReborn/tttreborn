@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+
 using Sandbox;
 
 /* 
@@ -52,7 +53,7 @@ namespace SWB_Base
             // Rocket flight
             var downForce = Rotation.Down * 4;
             var random = new Random();
-            var timeSinceMod = (int)Math.Max(0, Inaccuracy * timeSince);
+            var timeSinceMod = (int) Math.Max(0, Inaccuracy * timeSince);
             var sideForce = Rotation.Left * (random.Next(0, timeSinceMod) * 2 - timeSinceMod);
 
             Velocity += downForce + sideForce;

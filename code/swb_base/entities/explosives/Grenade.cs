@@ -1,6 +1,7 @@
-﻿using Sandbox;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using Sandbox;
 
 /* 
  * High explosive grenade

@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+
 using SWB_Base.Translations;
 
 namespace SWB_Base
@@ -128,9 +130,9 @@ namespace SWB_Base
             }
 
             var attachP = catP.GetChild(catActiveAttachPIndex);
-            Label attachLabel = (Label)attachP.GetChild(catActiveAttachPLabelIndex);
+            Label attachLabel = (Label) attachP.GetChild(catActiveAttachPLabelIndex);
             var attachIconWrapper = attachP.GetChild(catActiveAttachPIconWrapperIndex);
-            var attachIcon = (Image)attachIconWrapper.GetChild(0);
+            var attachIcon = (Image) attachIconWrapper.GetChild(0);
 
             attachLabel.Text = attach.Name;
             attachIcon.SetTexture(attach.IconPath);

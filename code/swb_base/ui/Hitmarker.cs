@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
+
 using Sandbox.UI;
 
 namespace SWB_Base

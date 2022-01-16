@@ -1,4 +1,4 @@
-﻿namespace SWB_Base
+namespace SWB_Base
 {
     public class StatModifier
     {
@@ -15,7 +15,7 @@
             weapon.Primary.Damage += weapon.InitialStats.Damage * Damage;
             weapon.Primary.Recoil += weapon.InitialStats.Recoil * Recoil;
             weapon.Primary.Spread += weapon.InitialStats.Spread * Spread;
-            weapon.Primary.RPM += (int)(weapon.InitialStats.RPM * RPM);
+            weapon.Primary.RPM += (int) (weapon.InitialStats.RPM * RPM);
 
             // Temp bullet velocity
             weapon.Primary.Damage += weapon.InitialStats.Damage * BulletVelocity;
@@ -26,7 +26,7 @@
             weapon.Primary.Damage -= weapon.InitialStats.Damage * Damage;
             weapon.Primary.Recoil -= weapon.InitialStats.Recoil * Recoil;
             weapon.Primary.Spread -= weapon.InitialStats.Spread * Spread;
-            weapon.Primary.RPM -= (int)(weapon.InitialStats.RPM * RPM);
+            weapon.Primary.RPM -= (int) (weapon.InitialStats.RPM * RPM);
 
             // Temp bullet velocity
             weapon.Primary.Damage -= weapon.InitialStats.Damage * BulletVelocity;

@@ -1,4 +1,4 @@
-﻿/* 
+/* 
  * Weapon base attachments support
 */
 
