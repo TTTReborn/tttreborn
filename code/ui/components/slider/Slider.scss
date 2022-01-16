@@ -20,7 +20,7 @@ slider
 
 		&:hover
 		{
-			background-color: $primary-alt;
+			background-color: $primary;
 		}
 	}
 
@@ -28,7 +28,7 @@ slider
 	{
 		> .thumb
 		{
-			background-color: $primary-alt;
+			background-color: $primary;
 		}
 	}
 
@@ -74,7 +74,7 @@ slider
 		border-color: transparent;
 		text-align: center;
 		background-color: rgba( black, 0.5 );
-		color: $primary-alt;
+		color: #fafafa;
 	}
 }
 
