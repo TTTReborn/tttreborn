@@ -12,14 +12,15 @@ namespace SWB_Base
 
         public PlayerBase(IBaseInventory inventory = null)
         {
-            if (inventory != null)
-            {
-                Inventory = inventory;
-            }
-            else
-            {
-                Inventory = new InventoryBase(this);
-            }
+            // Reborn override
+            // if (inventory != null)
+            // {
+            //     Inventory = inventory;
+            // }
+            // else
+            // {
+            //     Inventory = new InventoryBase(this);
+            // }
         }
 
         public override void Respawn()
