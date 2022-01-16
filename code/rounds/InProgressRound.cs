@@ -93,7 +93,7 @@ namespace TTTReborn.Rounds
 
             if (player.Inventory.TryAdd(new Deagle(), deleteIfFails: true, makeActive: false))
             {
-                player.Inventory.Ammo.Give("ammo_pistol", 30);
+                player.GiveAmmo(SWB_Base.AmmoType.Revolver, 30);
             }
         }
 

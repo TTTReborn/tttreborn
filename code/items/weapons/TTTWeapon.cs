@@ -14,7 +14,6 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class WeaponAttribute : CarriableAttribute
     {
-        public string AmmoType = "ammo_pistol";
 
         public WeaponAttribute() : base()
         {
@@ -27,7 +26,6 @@ namespace TTTReborn.Items
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
-        public string AmmoType { get; } = "ammo_pistol";
 
         public TTTWeapon() : base()
         {
@@ -38,7 +36,6 @@ namespace TTTReborn.Items
                 if (obj is WeaponAttribute weaponAttribute)
                 {
                     SlotType = weaponAttribute.SlotType;
-                    AmmoType = weaponAttribute.AmmoType;
                 }
             }
 

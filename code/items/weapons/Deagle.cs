@@ -7,7 +7,7 @@ using SWB_Base;
 namespace TTTReborn.Items
 {
     [Library("weapon_deagle")]
-    [Weapon(SlotType = SlotType.Secondary, AmmoType = "ammo_pistol")]
+    [Weapon(SlotType = SlotType.Secondary)]
     [Spawnable]
     [Buyable(Price = 100)]
     [Precached("weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl")]
@@ -40,7 +40,7 @@ namespace TTTReborn.Items
             Primary = new ClipInfo
             {
                 Ammo = 7,
-                AmmoType = SWB_Base.AmmoType.Revolver,
+                AmmoType = AmmoType.Revolver,
                 ClipSize = 7,
 
                 BulletSize = 6f,

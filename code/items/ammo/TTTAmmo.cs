@@ -17,6 +17,11 @@ namespace TTTReborn.Items
         public string LibraryName { get; set; }
 
         /// <summary>
+        /// The ammo type to use.
+        /// </summary>
+        public virtual SWB_Base.AmmoType AmmoType { get; set; }
+
+        /// <summary>
         /// Amount of Ammo within Entity.
         /// </summary>
         public virtual int Amount { get; set; }
@@ -111,14 +116,13 @@ namespace TTTReborn.Items
                 }
 
                 string ammoType = LibraryName.ToLower();
-                Inventory inventory = player.Inventory;
 
-                if (!inventory.GetAmmoTypes().Contains(ammoType))
+                if (!player.HasAmmo(AmmoType))
                 {
                     return;
                 }
 
-                int playerAmount = inventory.Ammo.Count(ammoType);
+                int playerAmount = player.AmmoCount(AmmoType);
 
                 if (Max < playerAmount + Math.Ceiling(CurrentAmmo * 0.25))
                 {
@@ -126,7 +130,7 @@ namespace TTTReborn.Items
                 }
 
                 int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
-                inventory.Ammo.Give(ammoType, amountGiven);
+                player.GiveAmmo(AmmoType, amountGiven);
                 CurrentAmmo -= amountGiven;
                 OnPickup.Fire(player);
 

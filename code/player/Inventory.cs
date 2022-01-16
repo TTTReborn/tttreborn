@@ -12,7 +12,6 @@ namespace TTTReborn.Player
     public partial class Inventory : BaseInventory
     {
         public readonly PerksInventory Perks;
-        public readonly AmmoInventory Ammo;
         public readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 
         private const int DROPPOSITIONOFFSET = 50;
@@ -20,7 +19,6 @@ namespace TTTReborn.Player
 
         public Inventory(TTTPlayer player) : base(player)
         {
-            Ammo = new(player);
             Perks = new(player);
         }
 
@@ -37,7 +35,7 @@ namespace TTTReborn.Player
             RPCs.ClientClearInventory(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as TTTPlayer)));
 
             Perks.Clear();
-            Ammo.Clear();
+            (Owner as TTTPlayer).Ammo.Clear();
 
             base.DeleteContents();
         }
@@ -125,24 +123,6 @@ namespace TTTReborn.Player
         public bool IsCarryingType(Type t)
         {
             return List.Any(x => x.GetType() == t);
-        }
-
-        public IList<string> GetAmmoTypes()
-        {
-            List<string> types = new();
-
-            foreach (Entity entity in List)
-            {
-                if (entity is TTTWeapon wep)
-                {
-                    if (!types.Contains(wep.AmmoType))
-                    {
-                        types.Add(wep.AmmoType);
-                    }
-                }
-            }
-
-            return types;
         }
 
         public override bool Drop(Entity entity)

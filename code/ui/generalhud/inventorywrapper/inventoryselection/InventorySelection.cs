@@ -85,7 +85,7 @@ namespace TTTReborn.UI
 
                     if (slot.Carriable is TTTWeapon weapon && weapon.SlotType != SlotType.Melee)
                     {
-                        slot.UpdateAmmo(FormatAmmo(weapon, player.CurrentPlayer.Inventory));
+                        slot.UpdateAmmo(FormatAmmo(weapon, player.CurrentPlayer.AmmoCount(weapon.Primary.AmmoType)));
                     }
                 }
             }
@@ -253,14 +253,14 @@ namespace TTTReborn.UI
             return -1;
         }
 
-        private static string FormatAmmo(TTTWeapon weapon, Inventory inventory)
+        private static string FormatAmmo(TTTWeapon weapon, int ammoCount)
         {
-            if (weapon.Primary.InfiniteAmmo == SWB_Base.InfiniteAmmoType.normal)
+            if (weapon.Primary.InfiniteAmmo != SWB_Base.InfiniteAmmoType.normal)
             {
                 return $"{weapon.Primary.AmmoType} + ∞";
             }
 
-            return $"{weapon.Primary.ClipSize} + {inventory.Ammo.Count(weapon.AmmoType)}";
+            return $"{weapon.Primary.Ammo} + {ammoCount}";
         }
 
         private class InventorySlot : Panel
@@ -288,7 +288,7 @@ namespace TTTReborn.UI
                 {
                     if (carriable is TTTWeapon weapon && carriable.SlotType != SlotType.Melee)
                     {
-                        _ammoLabel.Text = FormatAmmo(weapon, player.Inventory);
+                        _ammoLabel.Text = FormatAmmo(weapon, player.AmmoCount(weapon.Primary.AmmoType));
                         _ammoLabel.AddClass("ammo-label");
                     }
                 }

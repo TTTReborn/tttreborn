@@ -152,7 +152,7 @@
     "MENU_VISUALPROGRAMMING_RESET": "Reset RoleSelection",
     "MENU_VISUALPROGRAMMING_RESET_TEXT": "Are you sure that you want to reset the RoleSelection?",
 
-    "WEAPON_PISTOL": "Pistol",
+    "WEAPON_DEAGLE": "Deagle",
     "WEAPON_SMG": "SMG",
     "WEAPON_SHOTGUN": "Shotgun",
     "WEAPON_KNIFE": "Knife",
@@ -160,6 +160,7 @@
 
     "AMMO_BUCKSHOT": "Buckshot ammo",
     "AMMO_PISTOL": "Pistol ammo",
+    "AMMO_REVOLVER": "Revolver ammo",
     "AMMO_SMG": "SMG ammo",
 
     "EQUIPMENT_HANDS": "Hands",

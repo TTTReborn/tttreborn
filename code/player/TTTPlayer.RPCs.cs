@@ -16,15 +16,15 @@ namespace TTTReborn.Player
         }
 
         [ClientRpc]
-        public void ClientSetAmmo(string ammoType, int amount)
+        public void ClientSetAmmo(SWB_Base.AmmoType ammoType, int amount)
         {
-            Inventory.Ammo.Set(ammoType, amount);
+            SetAmmo(ammoType, amount);
         }
 
         [ClientRpc]
         public void ClientClearAmmo()
         {
-            Inventory.Ammo.Clear();
+            ClearAmmo();
         }
 
         [ClientRpc]
