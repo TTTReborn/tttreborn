@@ -26,6 +26,9 @@ namespace TTTReborn.Items
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
+        public virtual Type AmmoEntity => null;
+        private const int AMMO_DROP_POSITION_OFFSET = 50;
+        private const int AMMO_DROP_VELOCITY = 500;
 
         public TTTWeapon() : base()
         {
@@ -42,6 +45,26 @@ namespace TTTReborn.Items
             EnableShadowInFirstPerson = false;
 
             Tags.Add(IItem.ITEM_TAG);
+        }
+
+        public override void Simulate(Client owner)
+        {
+            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && Primary.Ammo > 0 && Primary.InfiniteAmmo == SWB_Base.InfiniteAmmoType.normal)
+            {
+                if (IsServer && AmmoEntity != null)
+                {
+                    TTTAmmo ammoBox = Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
+
+                    ammoBox.Position = Owner.EyePos + Owner.EyeRot.Forward * AMMO_DROP_POSITION_OFFSET;
+                    ammoBox.Rotation = Owner.EyeRot;
+                    ammoBox.Velocity = Owner.EyeRot.Forward * AMMO_DROP_VELOCITY;
+                    ammoBox.SetCurrentAmmo(Primary.Ammo);
+                }
+
+                Primary.Ammo -= Primary.Ammo;
+            }
+
+            base.Simulate(owner);
         }
 
         public new bool CanDrop() => true;
