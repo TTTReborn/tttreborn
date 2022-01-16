@@ -24,21 +24,22 @@ namespace SWB_Base
 
         public override void Respawn()
         {
-            SetModel("models/citizen/citizen.vmdl");
-            //SetModel( "playermodels/css_playermodels/css_t_arctic.vmdl" );
+            // Reborn override
+            // SetModel("models/citizen/citizen.vmdl");
+            // //SetModel( "playermodels/css_playermodels/css_t_arctic.vmdl" );
 
-            Controller = new WalkController();
-            Animator = new StandardPlayerAnimator();
-            Camera = new FirstPersonCamera();
+            // Controller = new WalkController();
+            // Animator = new StandardPlayerAnimator();
+            // Camera = new FirstPersonCamera();
 
-            EnableAllCollisions = true;
-            EnableDrawing = true;
-            EnableHideInFirstPerson = true;
-            EnableShadowInFirstPerson = true;
+            // EnableAllCollisions = true;
+            // EnableDrawing = true;
+            // EnableHideInFirstPerson = true;
+            // EnableShadowInFirstPerson = true;
 
-            Health = 100;
+            // Health = 100;
 
-            ClearAmmo();
+            // ClearAmmo();
 
             base.Respawn();
         }
