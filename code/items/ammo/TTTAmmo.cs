@@ -115,8 +115,6 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                string ammoType = LibraryName.ToLower();
-
                 if (!player.HasAmmo(AmmoType))
                 {
                     return;
