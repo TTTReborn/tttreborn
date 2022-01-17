@@ -94,6 +94,11 @@ namespace TTTReborn.Rounds
             {
                 player.GiveAmmo(SWB_Base.AmmoType.Revolver, 40);
             }
+
+            if (player.Inventory.TryAdd(new FAL(), deleteIfFails: true, makeActive: false))
+            {
+                player.GiveAmmo(SWB_Base.AmmoType.Rifle, 40);
+            }
         }
 
         protected override void OnTimeUp()
