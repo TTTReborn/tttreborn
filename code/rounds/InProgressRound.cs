@@ -61,7 +61,6 @@ namespace TTTReborn.Rounds
                 {
                     foreach (TTTPlayer player in Players)
                     {
-                        Log.Info("called");
                         GiveFixedLoadout(player);
                     }
                 }
@@ -93,7 +92,7 @@ namespace TTTReborn.Rounds
 
             if (player.Inventory.TryAdd(new Deagle(), deleteIfFails: true, makeActive: false))
             {
-                player.GiveAmmo(SWB_Base.AmmoType.Revolver, 30);
+                player.GiveAmmo(SWB_Base.AmmoType.Revolver, 40);
             }
         }
 

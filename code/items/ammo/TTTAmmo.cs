@@ -115,11 +115,6 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                if (!player.HasAmmo(AmmoType))
-                {
-                    return;
-                }
-
                 int playerAmount = player.AmmoCount(AmmoType);
 
                 if (Max < playerAmount + Math.Ceiling(CurrentAmmo * 0.25))

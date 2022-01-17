@@ -47,10 +47,10 @@ namespace TTTReborn.Items
                 ClipSize = 7,
 
                 BulletSize = 6f,
-                Damage = 50f,
-                Force = 5f,
+                Damage = 30f,
+                Force = 2f,
                 Spread = 0.06f,
-                Recoil = 1f,
+                Recoil = 4f,
                 RPM = 300,
                 FiringType = FiringType.semi,
                 ScreenShake = new ScreenShake
