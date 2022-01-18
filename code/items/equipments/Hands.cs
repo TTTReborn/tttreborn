@@ -172,7 +172,7 @@ namespace TTTReborn.Items
                 case PlayerCorpse corpse:
                     GrabbedEntity = new GrabbableCorpse(player, corpse, tr.Body, tr.Bone);
                     break;
-                case TTTWeapon: // Ignore any size requirements, any weapon can be picked up.
+                case SWB_Base.WeaponBase: // Ignore any size requirements, any weapon can be picked up.
                     GrabbedEntity = new GrabbableProp(player, tr.Entity);
                     break;
                 case ModelEntity model:

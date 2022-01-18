@@ -155,6 +155,7 @@
     "WEAPON_DEAGLE": "Deagle",
     "WEAPON_SMG": "SMG",
     "WEAPON_SHOTGUN": "Shotgun",
+    "WEAPON_FAL": "FAL",
     "WEAPON_KNIFE": "Knife",
     "WEAPON_NEWTONLAUNCHER": "Newtonlauncher",
 
@@ -162,6 +163,7 @@
     "AMMO_PISTOL": "Pistol ammo",
     "AMMO_REVOLVER": "Revolver ammo",
     "AMMO_SMG": "SMG ammo",
+    "AMMO_RIFLE": "Rifle ammo",
 
     "EQUIPMENT_HANDS": "Hands",
     "EQUIPMENT_C4": "C4",
