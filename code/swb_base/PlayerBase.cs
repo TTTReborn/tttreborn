@@ -213,7 +213,7 @@ namespace SWB_Base
         [ClientRpc]
         public void ShowHitmarker(bool isKill, bool playSound)
         {
-            Hitmarker.Current?.Create(isKill);
+            // Hitmarker.Current?.Create(isKill);
 
             if (playSound)
                 PlaySound("swb_hitmarker");

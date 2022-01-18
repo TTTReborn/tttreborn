@@ -21,42 +21,42 @@ namespace SWB_Base
             // Reborn override
             return;
 
-            var showHUDCL = GetSetting<bool>("swb_cl_showhud", true);
-            var showHUDSV = GetSetting<bool>("swb_sv_showhud", true);
+            // var showHUDCL = GetSetting<bool>("swb_cl_showhud", true);
+            // var showHUDSV = GetSetting<bool>("swb_sv_showhud", true);
 
-            if (Local.Hud == null || !showHUDCL || !showHUDSV) return;
+            // if (Local.Hud == null || !showHUDCL || !showHUDSV) return;
 
-            if (UISettings.ShowCrosshair)
-            {
-                CrosshairPanel = new Crosshair
-                {
-                    Parent = Local.Hud
-                };
-            }
+            // if (UISettings.ShowCrosshair)
+            // {
+            //     CrosshairPanel = new Crosshair
+            //     {
+            //         Parent = Local.Hud
+            //     };
+            // }
 
-            if (UISettings.ShowHitmarker)
-            {
-                hitmarker = new Hitmarker
-                {
-                    Parent = Local.Hud
-                };
-            }
+            // if (UISettings.ShowHitmarker)
+            // {
+            //     hitmarker = new Hitmarker
+            //     {
+            //         Parent = Local.Hud
+            //     };
+            // }
 
-            if (UISettings.ShowHealthCount || UISettings.ShowHealthIcon)
-            {
-                healthDisplay = new HealthDisplay(UISettings)
-                {
-                    Parent = Local.Hud
-                };
-            }
+            // if (UISettings.ShowHealthCount || UISettings.ShowHealthIcon)
+            // {
+            //     healthDisplay = new HealthDisplay(UISettings)
+            //     {
+            //         Parent = Local.Hud
+            //     };
+            // }
 
-            if (UISettings.ShowAmmoCount || UISettings.ShowWeaponIcon || UISettings.ShowFireMode)
-            {
-                ammoDisplay = new AmmoDisplay(UISettings)
-                {
-                    Parent = Local.Hud
-                };
-            }
+            // if (UISettings.ShowAmmoCount || UISettings.ShowWeaponIcon || UISettings.ShowFireMode)
+            // {
+            //     ammoDisplay = new AmmoDisplay(UISettings)
+            //     {
+            //         Parent = Local.Hud
+            //     };
+            // }
         }
 
         public override void DestroyHudElements()
@@ -71,22 +71,23 @@ namespace SWB_Base
 
         public void UISimulate(Client player)
         {
+            // Reborn override
             // Cutomization menu
-            if (Input.Pressed(InputButton.Menu) && AttachmentCategories != null)
-            {
-                if (customizationMenu == null)
-                {
-                    customizationMenu = new CustomizationMenu();
-                    customizationMenu.Parent = Local.Hud;
-                }
-                else
-                {
-                    customizationMenu.Delete();
-                    customizationMenu = null;
-                }
-            }
+            // if (Input.Pressed(InputButton.Menu) && AttachmentCategories != null)
+            // {
+            //     if (customizationMenu == null)
+            //     {
+            //         customizationMenu = new CustomizationMenu();
+            //         customizationMenu.Parent = Local.Hud;
+            //     }
+            //     else
+            //     {
+            //         customizationMenu.Delete();
+            //         customizationMenu = null;
+            //     }
+            // }
 
-            IsCustomizing = customizationMenu != null;
+            // IsCustomizing = customizationMenu != null;
         }
     }
 }
