@@ -10,7 +10,7 @@ namespace TTTReborn.Items
     [Library("weapon_rpg")]
     [Weapon(SlotType = SlotType.Primary)]
     [Spawnable]
-    [Buyable(Price = 100)]
+    [Buyable(Price = 300)]
     [Precached("weapons/swb/explosives/rpg-7/swb_v_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl")]
     [Hammer.EditorModel("weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl")]
     public class RPG : TTTWeaponBaseEntity

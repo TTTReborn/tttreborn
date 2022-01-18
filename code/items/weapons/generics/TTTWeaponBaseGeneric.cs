@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Globalization;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -37,6 +38,11 @@ namespace TTTReborn.Items
 
                 clip.Ammo -= clip.Ammo;
             }
+        }
+
+        public static TranslationData PickupText(string LibraryName)
+        {
+            return new("GENERIC_PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(LibraryName.ToUpper()));
         }
 
         public static void Tick(TTTPlayer player, ICarriableItem item)
