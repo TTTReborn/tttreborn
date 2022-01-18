@@ -61,7 +61,7 @@ namespace TTTReborn.Items
                 BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
                 MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
 
-                InfiniteAmmo = InfiniteAmmoType.reserve
+                InfiniteAmmo = InfiniteAmmoType.normal
             };
 
             ZoomAnimData = new AngPos
