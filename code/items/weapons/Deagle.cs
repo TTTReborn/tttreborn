@@ -15,6 +15,8 @@ namespace TTTReborn.Items
     [Hammer.EditorModel("weapons/swb/pistols/deagle/w_deagle.vmdl")]
     public class Deagle : TTTWeaponBase
     {
+        public override Type AmmoEntity => typeof(RevolverAmmo);
+
         public override int Bucket => 1;
         public override HoldType HoldType => HoldType.Pistol;
         public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";

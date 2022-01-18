@@ -8,8 +8,18 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class WeaponAttribute : CarriableAttribute
+    {
+
+        public WeaponAttribute() : base()
+        {
+
+        }
+    }
+
     [Hammer.Skip]
-    public abstract partial class TTTSniperWeaponBase : SWB_Base.WeaponBaseSniper, ICarriableItem, IEntityHint
+    public partial class TTTWeaponBase : SWB_Base.WeaponBase, ICarriableItem, IEntityHint
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
@@ -17,7 +27,7 @@ namespace TTTReborn.Items
         private const int AMMO_DROP_POSITION_OFFSET = 50;
         private const int AMMO_DROP_VELOCITY = 500;
 
-        public TTTSniperWeaponBase() : base()
+        public TTTWeaponBase() : base()
         {
             LibraryName = Utils.GetLibraryName(GetType());
 

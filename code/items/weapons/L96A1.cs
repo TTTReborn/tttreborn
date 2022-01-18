@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -12,8 +13,10 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Precached("weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/rifles/fal/v_fal.vmdl", "weapons/swb/rifles/fal/w_fal.vmdl")]
     [Hammer.EditorModel("weapons/swb/rifles/fal/w_fal.vmdl")]
-    public class L96A1 : TTTSniperWeaponBase
+    public class L96A1 : TTTWeaponBaseSniper
     {
+        public override Type AmmoEntity => typeof(SniperAmmo);
+
         public override int Bucket => 5;
         public override HoldType HoldType => HoldType.Rifle;
         public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";
@@ -80,7 +83,7 @@ namespace TTTReborn.Items
                 MuzzleFlashParticle = "particles/swb/muzzle/flash_large.vpcf",
                 BulletTracerParticle = "particles/swb/tracer/tracer_large.vpcf",
 
-                InfiniteAmmo = InfiniteAmmoType.reserve
+                InfiniteAmmo = InfiniteAmmoType.normal
             };
 
             ZoomAnimData = new AngPos
