@@ -153,17 +153,18 @@
     "MENU_VISUALPROGRAMMING_RESET_TEXT": "Are you sure that you want to reset the RoleSelection?",
 
     "WEAPON_DEAGLE": "Deagle",
-    "WEAPON_SMG": "SMG",
-    "WEAPON_SHOTGUN": "Shotgun",
+    "WEAPON_L96A1": "L96A1",
+    "WEAPON_SPAS12": "SPAS12",
     "WEAPON_FAL": "FAL",
     "WEAPON_KNIFE": "Knife",
-    "WEAPON_NEWTONLAUNCHER": "Newtonlauncher",
+    "WEAPON_RPG": "RPG",
 
     "AMMO_BUCKSHOT": "Buckshot ammo",
     "AMMO_PISTOL": "Pistol ammo",
     "AMMO_REVOLVER": "Revolver ammo",
-    "AMMO_SMG": "SMG ammo",
+    "AMMO_SNIPER": "Sniper ammo",
     "AMMO_RIFLE": "Rifle ammo",
+    "AMMO_RPG": "RPG ammo",
 
     "EQUIPMENT_HANDS": "Hands",
     "EQUIPMENT_C4": "C4",
