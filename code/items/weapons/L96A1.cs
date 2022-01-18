@@ -11,8 +11,8 @@ namespace TTTReborn.Items
     [Weapon(SlotType = SlotType.Primary)]
     [Spawnable]
     [Buyable(Price = 100)]
-    [Precached("weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/rifles/fal/v_fal.vmdl", "weapons/swb/rifles/fal/w_fal.vmdl")]
-    [Hammer.EditorModel("weapons/swb/rifles/fal/w_fal.vmdl")]
+    [Precached("weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/snipers/l96a1/v_l96a1.vmdl", "weapons/swb/snipers/l96a1/w_l96a1.vmdl")]
+    [Hammer.EditorModel("weapons/swb/snipers/l96a1/w_l96a1.vmdl")]
     public class L96A1 : TTTWeaponBaseSniper
     {
         public override Type AmmoEntity => typeof(SniperAmmo);

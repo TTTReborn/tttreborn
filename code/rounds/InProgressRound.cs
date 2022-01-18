@@ -100,9 +100,9 @@ namespace TTTReborn.Rounds
             //     player.GiveAmmo(SWB_Base.AmmoType.Rifle, 40);
             // }
 
-            if (player.Inventory.TryAdd(new SPAS12(), deleteIfFails: true, makeActive: false))
+            if (player.Inventory.TryAdd(new RPG(), deleteIfFails: true, makeActive: false))
             {
-                player.GiveAmmo(SWB_Base.AmmoType.Shotgun, 40);
+                player.GiveAmmo(SWB_Base.AmmoType.RPG, 40);
             }
         }
 

@@ -25,7 +25,7 @@ namespace TTTReborn.Items
         {
             if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && clip.Ammo > 0 && clip.InfiniteAmmo == SWB_Base.InfiniteAmmoType.normal)
             {
-                if (Host.IsServer)
+                if (Host.IsServer && AmmoEntity != null)
                 {
                     TTTAmmo ammoBox = Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
 
