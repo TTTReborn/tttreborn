@@ -279,13 +279,6 @@
 ]
 
 //
-// TTTReborn.Items.TTTAmmoRandom
-//
-@PointClass base(BaseProperties_local_tttreborn) = entity_ammo_random : ""
-[
-]
-
-//
 // TTTReborn.Items.Deagle
 //
 @PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/swb/pistols/deagle/w_deagle.vmdl" ) = weapon_deagle : ""
@@ -313,6 +306,13 @@
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input SetColor(string) : ""
+]
+
+//
+// TTTReborn.Items.TTTAmmoRandom
+//
+@PointClass base(BaseProperties_local_tttreborn) = entity_ammo_random : ""
+[
 ]
 
 //

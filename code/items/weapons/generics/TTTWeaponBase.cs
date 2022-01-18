@@ -8,16 +8,6 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class WeaponAttribute : CarriableAttribute
-    {
-
-        public WeaponAttribute() : base()
-        {
-
-        }
-    }
-
     [Hammer.Skip]
     public partial class TTTWeaponBase : SWB_Base.WeaponBase, ICarriableItem, IEntityHint
     {

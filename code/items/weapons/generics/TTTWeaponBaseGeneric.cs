@@ -2,12 +2,20 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Globalization;
 using TTTReborn.Player;
-using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class WeaponAttribute : CarriableAttribute
+    {
+
+        public WeaponAttribute() : base()
+        {
+
+        }
+    }
+
     public static partial class TTTWeaponBaseGeneric
     {
         private const int AMMO_DROP_POSITION_OFFSET = 50;
