@@ -9,7 +9,7 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Hammer.Skip]
-    public partial class TTTWeaponBaseShotty : SWB_Base.WeaponBaseSniper, ICarriableItem, IEntityHint
+    public partial class TTTWeaponBaseShotty : SWB_Base.WeaponBaseShotty, ICarriableItem, IEntityHint
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;

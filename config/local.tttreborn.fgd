@@ -309,6 +309,16 @@
 ]
 
 //
+// TTTReborn.Items.SPAS12
+//
+@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/swb/shotguns/spas/w_spas12.vmdl" ) = weapon_spas12 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : ""
+]
+
+//
 // TTTReborn.Items.TTTAmmoRandom
 //
 @PointClass base(BaseProperties_local_tttreborn) = entity_ammo_random : ""
