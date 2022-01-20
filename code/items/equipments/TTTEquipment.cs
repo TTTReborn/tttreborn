@@ -21,6 +21,7 @@ namespace TTTReborn.Items
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.UtilityEquipment;
+        public Type DroppedType { get; set; } = null;
 
         protected TTTEquipment()
         {

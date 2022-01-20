@@ -15,8 +15,6 @@ namespace TTTReborn.Items
     [Hammer.EditorModel("weapons/swb/snipers/l96a1/w_l96a1.vmdl")]
     public class L96A1 : TTTWeaponBaseSniper
     {
-        public override Type AmmoEntity => typeof(SniperAmmo);
-
         public override int Bucket => 5;
         public override HoldType HoldType => HoldType.Rifle;
         public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";
@@ -41,6 +39,8 @@ namespace TTTReborn.Items
 
         public L96A1()
         {
+            DroppedType = typeof(SniperAmmo);
+
             UISettings = new UISettings
             {
                 ShowCrosshair = false

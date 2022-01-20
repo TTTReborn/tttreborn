@@ -15,8 +15,6 @@ namespace TTTReborn.Items
     [Hammer.EditorModel("weapons/swb/rifles/fal/w_fal.vmdl")]
     public class FAL : TTTWeaponBase
     {
-        public override Type AmmoEntity => typeof(RifleAmmo);
-
         public override int Bucket => 3;
         public override HoldType HoldType => HoldType.Rifle;
         public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";
@@ -34,6 +32,8 @@ namespace TTTReborn.Items
 
         public FAL()
         {
+            DroppedType = typeof(RifleAmmo);
+
             General = new WeaponInfo
             {
                 DrawTime = 1f,

@@ -26,6 +26,7 @@ namespace TTTReborn.Items
     public interface ICarriableItem : IItem
     {
         SlotType SlotType { get; }
+        Type DroppedType { get; set; }
 
         bool CanDrop();
     }

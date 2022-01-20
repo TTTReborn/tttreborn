@@ -35,6 +35,8 @@ namespace TTTReborn.Items
 
         public RPG()
         {
+            DroppedType = typeof(RPGAmmo);
+
             UISettings = new UISettings
             {
                 ShowFireMode = false,

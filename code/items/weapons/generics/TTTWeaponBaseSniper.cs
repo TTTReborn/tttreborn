@@ -13,7 +13,7 @@ namespace TTTReborn.Items
     {
         public string LibraryName { get; }
         public SlotType SlotType { get; } = SlotType.Secondary;
-        public virtual Type AmmoEntity => null;
+        public Type DroppedType { get; set; } = null;
 
         public TTTWeaponBaseSniper() : base()
         {
@@ -34,7 +34,7 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client owner)
         {
-            TTTWeaponBaseGeneric.Simulate(owner, AmmoEntity, Primary);
+            TTTWeaponBaseGeneric.Simulate(owner, DroppedType, Primary);
 
             base.Simulate(owner);
         }

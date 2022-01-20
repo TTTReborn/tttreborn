@@ -15,8 +15,6 @@ namespace TTTReborn.Items
     [Hammer.EditorModel("weapons/swb/shotguns/spas/w_spas12.vmdl")]
     public class SPAS12 : TTTWeaponBaseShotty
     {
-        public override Type AmmoEntity => typeof(ShotgunAmmo);
-
         public override int Bucket => 2;
         public override HoldType HoldType => HoldType.Shotgun;
         public override string HandsModelPath => "weapons/swb/hands/swat/v_hands_swat.vmdl";
@@ -33,6 +31,8 @@ namespace TTTReborn.Items
 
         public SPAS12()
         {
+            DroppedType = typeof(ShotgunAmmo);
+
             Primary = new ClipInfo
             {
                 Ammo = 8,
