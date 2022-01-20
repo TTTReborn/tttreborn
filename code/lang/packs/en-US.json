@@ -159,12 +159,13 @@
     "WEAPON_KNIFE": "Knife",
     "WEAPON_RPG": "RPG",
 
-    "AMMO_BUCKSHOT": "Buckshot ammo",
     "AMMO_PISTOL": "Pistol ammo",
     "AMMO_REVOLVER": "Revolver ammo",
-    "AMMO_SNIPER": "Sniper ammo",
     "AMMO_RIFLE": "Rifle ammo",
     "AMMO_RPG": "RPG ammo",
+    "AMMO_SHOTGUN": "Shotgun ammo",
+    "AMMO_SMG": "SMG ammo",
+    "AMMO_SNIPER": "Sniper ammo",
 
     "EQUIPMENT_HANDS": "Hands",
     "EQUIPMENT_C4": "C4",
