@@ -55,7 +55,7 @@ namespace TTTReborn.Player
                 Rotation = Rotation
             };
 
-            // corpse.KillerWeapon = LastDamageWeapon?.LibraryName;
+            corpse.KillerWeapon = LastDamageWeapon?.LibraryName;
             corpse.WasHeadshot = LastDamageWasHeadshot;
             corpse.Distance = LastDistanceToAttacker;
             corpse.Suicide = LastAttacker == this;

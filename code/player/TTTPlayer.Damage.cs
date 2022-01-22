@@ -49,7 +49,7 @@ namespace TTTReborn.Player
         [Net]
         public float MaxHealth { get; set; } = 100f;
 
-        public SWB_Base.WeaponBase LastDamageWeapon { get; private set; }
+        public ICarriableItem LastDamageWeapon { get; private set; }
 
         public bool LastDamageWasHeadshot { get; private set; } = false;
 
@@ -78,7 +78,7 @@ namespace TTTReborn.Player
                 info.Damage *= ArmorReductionPercentage;
             }
 
-            LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as SWB_Base.WeaponBase : null;
+            LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as ICarriableItem : null;
 
             To client = To.Single(this);
 
