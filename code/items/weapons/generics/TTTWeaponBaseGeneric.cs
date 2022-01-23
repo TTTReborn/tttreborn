@@ -22,13 +22,13 @@ namespace TTTReborn.Items
         private const int AMMO_DROP_POSITION_OFFSET = 50;
         private const int AMMO_DROP_VELOCITY = 500;
 
-        public static void Simulate(Client owner, Type AmmoEntity, SWB_Base.ClipInfo clip)
+        public static void Simulate(Client owner, Type AmmoType, SWB_Base.ClipInfo clip)
         {
             if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && clip.Ammo > 0 && clip.InfiniteAmmo == SWB_Base.InfiniteAmmoType.normal)
             {
-                if (Host.IsServer && AmmoEntity != null)
+                if (Host.IsServer && AmmoType != null)
                 {
-                    TTTAmmo ammoBox = Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
+                    TTTAmmo ammoBox = Utils.GetObjectByType<TTTAmmo>(AmmoType);
 
                     ammoBox.Position = owner.Pawn.EyePos + owner.Pawn.EyeRot.Forward * AMMO_DROP_POSITION_OFFSET;
                     ammoBox.Rotation = owner.Pawn.EyeRot;

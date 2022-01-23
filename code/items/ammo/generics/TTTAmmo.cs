@@ -115,6 +115,24 @@ namespace TTTReborn.Items
                     return;
                 }
 
+                bool hasWeaponOfAmmoType = false;
+                for (int i = 0; i < player.Inventory.Count(); ++i)
+                {
+                    if (player.Inventory.GetSlot(i) is SWB_Base.WeaponBase weapon)
+                    {
+                        if (weapon.Primary.AmmoType == AmmoType)
+                        {
+                            hasWeaponOfAmmoType = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!hasWeaponOfAmmoType)
+                {
+                    return;
+                }
+
                 int playerAmount = player.AmmoCount(AmmoType);
 
                 if (Max < playerAmount + Math.Ceiling(CurrentAmmo * 0.25))
