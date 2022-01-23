@@ -61,6 +61,10 @@ namespace TTTReborn.Map
                 {
                     button.Cleanup();
                 }
+                else if (entity is PathPlatformEntity path)
+                {
+                    path.WarpToPoint(0);
+                }
 
                 entity.RemoveAllDecals();
             }
