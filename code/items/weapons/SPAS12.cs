@@ -11,7 +11,8 @@ namespace TTTReborn.Items
     [Weapon(SlotType = SlotType.Primary)]
     [Spawnable]
     [Buyable(Price = 100)]
-    [Precached("weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/shotguns/spas/v_spas12.vmdl", "weapons/swb/shotguns/spas/w_spas12.vmdl")]
+    [Precached("weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/shotguns/spas/v_spas12.vmdl", "weapons/swb/shotguns/spas/w_spas12.vmdl",
+    "particles/swb/muzzle/flash_medium.vpcf", "particles/swb/tracer/tracer_medium.vpcf", "particles/pistol_ejectbrass.vpcf")]
     [Hammer.EditorModel("weapons/swb/shotguns/spas/w_spas12.vmdl")]
     public class SPAS12 : TTTWeaponBaseShotty
     {

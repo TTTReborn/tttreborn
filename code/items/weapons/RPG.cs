@@ -11,7 +11,8 @@ namespace TTTReborn.Items
     [Weapon(SlotType = SlotType.Primary)]
     [Spawnable]
     [Buyable(Price = 300)]
-    [Precached("weapons/swb/explosives/rpg-7/swb_v_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl")]
+    [Precached("weapons/swb/explosives/rpg-7/swb_v_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl"
+    , "particles/swb/smoke/swb_smokepuff_1.vpcf", "particles/swb/smoke/swb_smoketrail_1.vpcf", "particles/swb/fire/swb_fire_rocket_1.vpcf", "weapons/swb/explosives/rpg-7/temp_particles/grenade_he_explosion.vpcf")]
     [Hammer.EditorModel("weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl")]
     public class RPG : TTTWeaponBaseEntity
     {

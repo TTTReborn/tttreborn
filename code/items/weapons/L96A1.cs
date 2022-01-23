@@ -11,7 +11,8 @@ namespace TTTReborn.Items
     [Weapon(SlotType = SlotType.Primary)]
     [Spawnable]
     [Buyable(Price = 100)]
-    [Precached("weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/snipers/l96a1/v_l96a1.vmdl", "weapons/swb/snipers/l96a1/w_l96a1.vmdl")]
+    [Precached("weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/snipers/l96a1/v_l96a1.vmdl", "weapons/swb/snipers/l96a1/w_l96a1.vmdl",
+    "particles/swb/muzzle/flash_large.vpcf", "particles/swb/tracer/tracer_large.vpcf")]
     [Hammer.EditorModel("weapons/swb/snipers/l96a1/w_l96a1.vmdl")]
     public class L96A1 : TTTWeaponBaseSniper
     {
