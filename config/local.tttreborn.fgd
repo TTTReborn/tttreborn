@@ -1,0 +1,286 @@
+
+@BaseClass = BaseProperties_local_tttreborn
+[
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	parentAttachmentName(parentAttachment) [ group="Hierarchy" ] : "Parent Model Bone/Attachment Name" : : "The name of the bone or attachment to attach to on the entity's parent in the movement hierarchy. Use !bonemerge to use bone-merge style attachment."
+
+	useLocalOffset(boolean) [ group="Hierarchy" ] : "Use Model Attachment offsets" : 0 : "Whether to respect the specified local offset when doing the initial hierarchical attachment to its parent."
+	local.origin(vector) [ group="Hierarchy" ] : "Model Attachment position offset" : : "Offset in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+	local.angles(angle) [ group="Hierarchy" ] : "Model Attachment angular offset" : : "Angular offset in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+	local.scales(vector) [ group="Hierarchy" ] : "Model Attachment scale" : : "Scale in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	tags(tags) : "Tags" : "" : "A list of general purpose tags for this entity, for interactions with other entities such as triggers."
+]
+
+//
+// TTTReborn.Map.TTTChangeCredits
+//
+@PointClass base(BaseProperties_local_tttreborn) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
+[
+	credits(integer) : "Credits" : 1 : "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default."
+
+	input ExchangeCredits(void) : ""
+
+	output OnSuccess(void) : "Fires when credits are successfully added or removed from activator."
+	output OnFailure(void) : "Fires if credits cannot be removed or added to activator. Such as not having enough credits for removal as a player cannot have 'negative' credits."
+]
+
+//
+// TTTReborn.Map.TTTFeedEntry
+//
+@PointClass base(BaseProperties_local_tttreborn) = ttt_feed_entry : "Add text entry to the game feed when input fired."
+[
+	message(string) : "Message" : "" : ""
+	receiver(choices) : "Receiver" : 1 : "Who will this message go to? If using a custom team, choose `Other` and set the `Receiver Team Override` to the name of your team." =
+	[
+		0 : "All"
+		1 : "Activator"
+		2 : "Innocents"
+		3 : "Traitors"
+		4 : "Other"
+	]
+	text_color(color255) : "Color" :  : ""
+	receiver_team_override(string) : "Receiver Team Override" : "Override Team Name" : ""
+
+	input DisplayMessage(void) : ""
+]
+
+//
+// TTTReborn.Map.TTTForceWin
+//
+@PointClass base(BaseProperties_local_tttreborn) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
+[
+	team(string) : "Team" :  : "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams."
+	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player."
+
+	input InnocentsWin(void) : ""
+	input TraitorsWin(void) : ""
+	input ForceWin(void) : ""
+]
+
+//
+// TTTReborn.Map.TTTLogicAssigned
+//
+@PointClass base(BaseProperties_local_tttreborn) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
+[
+	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`."
+
+	input Activate(void) : ""
+
+	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+]
+
+//
+// TTTReborn.Map.TTTMapSettings
+//
+@PointClass base(BaseProperties_local_tttreborn) = ttt_map_settings : ""
+[
+
+	output SettingsSpawned(void) : "Fired after PostLevelLoaded runs and MapSettings entity is found."
+	output RoundPreparation(void) : "Fired once Preround begins."
+	output RoundStart(void) : "Fired once round starts and roles are assigned."
+	output RoundEnd(void) : "Fired once a win condition is met."
+]
+
+//
+// TTTReborn.Map.TTTLogicButton
+//
+@PointClass base(BaseProperties_local_tttreborn) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
+[
+	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Team` for `team_traitors`, but check the `Role` for `role_traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team."
+	description(string) : "Description" :  : "On screen tooltip shown on button"
+	range(integer) : "Range" : 1024 : "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 uniques."
+	delay(integer) : "Delay" : 1 : "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers."
+	remove_on_press(boolean) : "Remove On Press" : 0 : "Only allows button to be pressed once per round."
+	locked(boolean) : "Locked" : 0 : "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input."
+
+	input Press(void) : ""
+	input Lock(void) : ""
+	input Unlock(void) : ""
+	input Toggle(void) : ""
+
+	output OnPressed(void) : ""
+]
+
+//
+// TTTReborn.Items.BuckshotAmmo
+//
+@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ammo_buckshot : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnPickup(void) : "Fired when a player picks up any amount of ammo from the entity."
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTTReborn.Items.PistolAmmo
+//
+@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_pistol : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnPickup(void) : "Fired when a player picks up any amount of ammo from the entity."
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTTReborn.Items.SMGAmmo
+//
+@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_smg : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnPickup(void) : "Fired when a player picks up any amount of ammo from the entity."
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTTReborn.Items.TTTAmmoRandom
+//
+@PointClass base(BaseProperties_local_tttreborn) = entity_ammo_random : ""
+[
+]
+
+//
+// TTTReborn.Items.Knife
+//
+@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/rust_boneknife/rust_boneknife.vmdl" ) = weapon_knife : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTTReborn.Items.NewtonLauncher
+//
+@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = weapon_newtonlauncher : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTTReborn.Items.Pistol
+//
+@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = weapon_pistol : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTTReborn.Items.Shotgun
+//
+@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl" ) = weapon_shotgun : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTTReborn.Items.SMG
+//
+@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/rust_smg/rust_smg.vmdl" ) = weapon_smg : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTTReborn.Items.TTTWeaponRandom
+//
+@PointClass base(BaseProperties_local_tttreborn) = entity_weapon_random : ""
+[
+	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
+]
+
+//
+// TTTReborn.Items.HealthstationEntity
+//
+@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) model() = entity_healthstation : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
