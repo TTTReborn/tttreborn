@@ -29,14 +29,27 @@ namespace TTTReborn.VisualProgramming
             LibraryName = Utils.GetLibraryName(GetType());
         }
 
+        public virtual void Reset()
+        {
+            ResetData();
+
+            _pos = Vector2.Zero;
+        }
+
+        public virtual void ResetData()
+        {
+            ConnectionOutputIds = Array.Empty<string>();
+            ConnectionInputIds = Array.Empty<string>();
+        }
+
         internal void SetPos(float posX, float posY)
         {
             _pos = new Vector2(posX, posY);
         }
 
-        public abstract object[] Test(params object[] input);
+        public abstract object[] Test(object[] input);
 
-        public abstract object[] Evaluate(params object[] input);
+        public abstract object[] Evaluate(object[] input);
 
         public virtual Dictionary<string, object> GetJsonData()
         {

@@ -35,11 +35,11 @@ namespace TTTReborn.UI.VisualProgramming
             Style.BackgroundColor = role.Color;
         }
 
-        public override object[] Build(params object[] input)
+        public override void Prepare()
         {
             (StackNode as RoleSelectionStackNode).SelectedRole = SelectedRole;
 
-            return base.Build(input);
+            base.Prepare();
         }
 
         public override Dictionary<string, object> GetJsonData()

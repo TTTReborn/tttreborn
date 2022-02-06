@@ -17,7 +17,7 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Test(params object[] input)
+        public override object[] Test(object[] input)
         {
             if (input == null || input[0] is not List<TTTPlayer> playerList)
             {
@@ -48,7 +48,7 @@ namespace TTTReborn.VisualProgramming
             return buildArray;
         }
 
-        public override object[] Evaluate(params object[] input) => Test(input);
+        public override object[] Evaluate(object[] input) => Test(input);
 
         public override Dictionary<string, object> GetJsonData()
         {

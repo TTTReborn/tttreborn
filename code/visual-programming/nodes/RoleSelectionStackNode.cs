@@ -16,7 +16,7 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Test(params object[] input)
+        public override object[] Test(object[] input)
         {
             if (input == null || input[0] is not List<TTTPlayer> playerList)
             {
@@ -39,7 +39,7 @@ namespace TTTReborn.VisualProgramming
             };
         }
 
-        public override object[] Evaluate(params object[] input)
+        public override object[] Evaluate(object[] input)
         {
             foreach (TTTPlayer player in input[0] as List<TTTPlayer>)
             {

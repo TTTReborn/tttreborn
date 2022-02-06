@@ -8,7 +8,7 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Test(params object[] input)
+        public override object[] Test(object[] input)
         {
             return new object[]
             {
@@ -16,6 +16,6 @@ namespace TTTReborn.VisualProgramming
             };
         }
 
-        public override object[] Evaluate(params object[] input) => input;
+        public override object[] Evaluate(object[] input) => input;
     }
 }

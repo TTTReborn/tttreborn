@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 
 using TTTReborn.VisualProgramming;
@@ -15,16 +16,26 @@ namespace TTTReborn.UI.VisualProgramming
 
             bool hasError = false;
 
+            List<Node> startingNodeList = new();
+
             foreach (Node node in Nodes)
             {
-                node.RemoveHighlights();
+                node.Reset();
 
-                if (!node.HasInput() && node.HasInputEnabled())
+                if (!node.HasInputsFilled())
                 {
                     node.HighlightError();
 
                     hasError = true;
+
+                    continue;
                 }
+                else if (!node.HasInputEnabled())
+                {
+                    startingNodeList.Add(node);
+                }
+
+                node.Prepare();
             }
 
             if (hasError)
@@ -38,12 +49,18 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Log.Debug("Building and testing NodeStack");
 
+                foreach (Node node in startingNodeList)
+                {
+                    node.Build(0);
+                }
+
                 // TODO
                 /*
                 if (MainNode.Build())
                 {
                     Log.Debug("Uploading NodeStack");
 
+                    // TODO add "Nodes" and List
                     NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
                 }
                 */

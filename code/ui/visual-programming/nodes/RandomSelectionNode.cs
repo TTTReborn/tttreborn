@@ -36,11 +36,11 @@ namespace TTTReborn.UI.VisualProgramming
             }
         }
 
-        public override object[] Build(params object[] input)
+        public override void Prepare()
         {
             (StackNode as RandomSelectionStackNode).PercentList = PercentList;
 
-            return base.Build(input);
+            base.Prepare();
         }
 
         public override Dictionary<string, object> GetJsonData()
