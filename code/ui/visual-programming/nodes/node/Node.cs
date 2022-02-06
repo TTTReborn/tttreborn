@@ -56,6 +56,7 @@ namespace TTTReborn.UI.VisualProgramming
             AddClass("box-shadow");
 
             Id = Guid.NewGuid().ToString();
+            StackNode.Id = Id;
 
             NodeList.Add(this);
         }
@@ -462,8 +463,6 @@ namespace TTTReborn.UI.VisualProgramming
                 Style.Left = Sandbox.UI.Length.Pixels(vector2.x);
                 Style.Top = Sandbox.UI.Length.Pixels(vector2.y);
             }
-
-            // TODO connect nodes
         }
 
         public static T GetNodeFromJsonData<T>(Dictionary<string, object> jsonData) where T : Node

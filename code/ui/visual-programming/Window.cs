@@ -139,6 +139,24 @@ namespace TTTReborn.UI.VisualProgramming
                     MainNode = mainNode;
                 }
 
+                // connect nodes
+                foreach (string id in node.ConnectionInputIds)
+                {
+                    if (id == null)
+                    {
+                        continue;
+                    }
+
+                    Node idNode = Node.GetById(id);
+
+                    if (idNode == null)
+                    {
+                        continue;
+                    }
+
+                    idNode.ConnectWithNode(node);
+                }
+
                 node.Display();
             }
 
@@ -155,6 +173,8 @@ namespace TTTReborn.UI.VisualProgramming
 
             foreach (Node node in Nodes)
             {
+                node.Prepare();
+
                 saveList.Add(node.StackNode.GetJsonData());
             }
 
