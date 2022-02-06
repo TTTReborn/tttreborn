@@ -77,23 +77,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         private void SaveWorkspace(string path, string fileName)
         {
-            Dictionary<string, object> jsonDict = new();
-
-            // TODO add workspace settings to jsonDict as well
-
-            List<Dictionary<string, object>> saveList = new();
-
-            foreach (Node node in Nodes)
-            {
-                if (node.HasInput())
-                {
-                    continue;
-                }
-
-                saveList.Add(node.GetJsonData());
-            }
-
-            jsonDict.Add("Nodes", saveList);
+            Dictionary<string, object> jsonDict = GetStackNodesJsonDictionary();
 
             Player.TTTPlayer.SaveVisualProgramming(path, fileName, JsonSerializer.Serialize(jsonDict), Utils.Realm.Client);
         }

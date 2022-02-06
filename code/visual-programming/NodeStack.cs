@@ -8,7 +8,7 @@ namespace TTTReborn.VisualProgramming
 {
     public partial class NodeStack
     {
-        public static string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
+        public const string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
 
         public static NodeStack Instance;
 
@@ -24,12 +24,14 @@ namespace TTTReborn.VisualProgramming
             StackNodeList.Clear();
         }
 
-        public bool Test(params object[] input)
+        public bool Test(List<StackNode> stackNodesList)
         {
-            foreach (StackNode stackNode in StackNodeList)
+            // TODO check for integrity (no missing connections)
+
+            // check for functionality (data set etc.)
+            foreach (StackNode stackNode in stackNodesList)
             {
-                // TODO check / update input / process connected nodes?
-                if (TestNode(stackNode, input) == null)
+                if (stackNode.ConnectionInputIds.Length == 0 && !TestNode(stackNode)) // enter recursion
                 {
                     return false;
                 }
@@ -38,11 +40,13 @@ namespace TTTReborn.VisualProgramming
             return true;
         }
 
-        private object[] TestNode(StackNode stackNode, params object[] input)
+        private bool TestNode(StackNode stackNode, object[] input = null)
         {
             try
             {
-                return stackNode.Test(input);
+                object[] array = stackNode.Test(input);
+
+                // TODO pass to connected nodes!
             }
             catch (Exception e)
             {
@@ -50,11 +54,13 @@ namespace TTTReborn.VisualProgramming
                 {
                     Log.Warning($"Error in node '{GetType()}' testing: ({e.Source}): {e.Message}\n{e.StackTrace}");
 
-                    return null;
+                    return false;
                 }
 
                 throw;
             }
+
+            return true;
         }
 
         public bool Evaluate(params object[] input)
@@ -88,7 +94,7 @@ namespace TTTReborn.VisualProgramming
         {
             // TODO
             // string defaultNodeStackJsonData = "{\"MainStackNode\":{\"LibraryName\":\"stacknode_main\",\"ConnectPositions\":[0],\"NodeReference\":\"node_main\",\"NextNodes\":[{\"LibraryName\":\"stacknode_percentage_selection\",\"ConnectPositions\":[0,0],\"NodeReference\":\"node_percentage_selection\",\"NextNodes\":[{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1248,\"PosY\":202,\"SelectedRole\":\"role_traitor\"},{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1246,\"PosY\":671,\"SelectedRole\":\"role_innocent\"}],\"PosX\":809,\"PosY\":366,\"PercentList\":[30,70]}],\"PosX\":404,\"PosY\":452}}";
-            string defaultNodeStackJsonData = "{Nodes:[{\"LibraryName\":\"stacknode_main\",\"ConnectPositions\":[],\"NodeReference\":\"node_main\",\"NextNodes\":[],\"PosX\":404,\"PosY\":452}]}";
+            string defaultNodeStackJsonData = "{\"Nodes\":[{\"Id\":\"fcc2671c-7d11-4711-9ab0-58545f8a989d\",\"LibraryName\":\"stacknode_main\",\"NodeReference\":\"node_main\",\"ConnectionInputIds\":[],\"ConnectionOutputIds\":[null],\"Pos\":\"0,0\"}]}";
 
             Save(defaultNodeStackJsonData);
             LoadDefaultFile(false);
@@ -120,9 +126,9 @@ namespace TTTReborn.VisualProgramming
             }
         }
 
-        private string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
+        private static string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
 
-        private string DefaultSettingsFile => $"default{VISUALPROGRAMMING_FILE_EXTENSION}";
+        private static string DefaultSettingsFile => $"default{VISUALPROGRAMMING_FILE_EXTENSION}";
 
         public static void Load()
         {
@@ -149,7 +155,7 @@ namespace TTTReborn.VisualProgramming
 
             LoadFromJsonData(jsonData);
 
-            if (!Instance.Test())
+            if (!Instance.Test(StackNodeList))
             {
                 Log.Warning($"VisualProgramming file '{settingsPath}{DefaultSettingsFile}' test failed. Initializing new one...");
 

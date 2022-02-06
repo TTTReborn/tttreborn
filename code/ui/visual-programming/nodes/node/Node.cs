@@ -323,9 +323,7 @@ namespace TTTReborn.UI.VisualProgramming
                         {
                             if (GetConnectedNode(nodeSetting.Input.ConnectionPoint) == this)
                             {
-                                idNode.Build(inputCount, array[o]);
-
-                                break;
+                                return idNode.Build(inputCount, array[o]);
                             }
 
                             inputCount++;

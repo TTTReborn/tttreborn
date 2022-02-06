@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 using Sandbox;
 
@@ -66,6 +67,13 @@ namespace TTTReborn.VisualProgramming
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
+            jsonData.TryGetValue("Id", out object id);
+
+            if (id != null)
+            {
+                Id = id.ToString();
+            }
+
             jsonData.TryGetValue("NodeReference", out object nodeReference);
 
             if (nodeReference != null)
@@ -73,11 +81,25 @@ namespace TTTReborn.VisualProgramming
                 NodeReference = nodeReference.ToString();
             }
 
+            jsonData.TryGetValue("ConnectionInputIds", out object connectionInputIds);
+
+            if (connectionInputIds != null)
+            {
+                ConnectionInputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionInputIds).GetRawText());
+            }
+
+            jsonData.TryGetValue("ConnectionOutputIds", out object connectionOutputIds);
+
+            if (connectionOutputIds != null)
+            {
+                ConnectionOutputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionOutputIds).GetRawText());
+            }
+
             jsonData.TryGetValue("Pos", out object pos);
 
             if (pos != null)
             {
-                _pos = (Vector2) pos;
+                _pos = JsonSerializer.Deserialize<Vector2>(((JsonElement) pos).GetRawText());
             }
         }
 

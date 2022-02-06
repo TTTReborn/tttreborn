@@ -51,7 +51,7 @@ namespace TTTReborn.VisualProgramming
                 window.Delete(true);
             }
 
-            new Window(UI.Hud.Current.GeneralHudPanel, jsonData);
+            _ = new Window(UI.Hud.Current.GeneralHudPanel, jsonData);
         }
 
         public static void UploadStack(string jsonData)
@@ -117,31 +117,61 @@ namespace TTTReborn.VisualProgramming
 
                 if (jsonDataDict == null)
                 {
+                    Log.Debug("Unable to deserialize NodeStack's json dictionary.");
+
                     return;
                 }
 
-                Instance.StackNodeList = new();
+                jsonDataDict.TryGetValue("Nodes", out object nodesList);
 
-                // Nodes ?
-
-                Log.Warning(string.Join("", _packetData));
-
-                return;
-                /*
-                for TODO
-
-                if (Instance.MainStackNode == null)
+                if (nodesList == null)
                 {
+                    Log.Debug("No 'Nodes' entry in NodeStack's json dictionary.");
+
                     return;
                 }
-                */
+
+                List<Dictionary<string, object>> nodesJsonDict = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(((JsonElement) nodesList).GetRawText());
+
+                if (nodesJsonDict == null)
+                {
+                    Log.Debug("Unable to deserialize NodeStack's nodes json dictionary.");
+
+                    return;
+                }
+
+                List<StackNode> stackNodesList = new();
+
+                bool startingNode = false;
+
+                foreach (Dictionary<string, object> nodeJsonDict in nodesJsonDict)
+                {
+                    StackNode stackNode = StackNode.GetStackNodeFromJsonData<StackNode>(nodeJsonDict);
+
+                    stackNodesList.Add(stackNode);
+
+                    if (stackNode is AllPlayersStackNode)
+                    {
+                        startingNode = true;
+                    }
+                }
+
+                if (!startingNode)
+                {
+                    Log.Debug("Unable to locate a starting main node in the NodeStack.");
+
+                    return;
+                }
 
                 Log.Debug("Test NodeStack");
 
-                if (Instance.Test())
+                if (Instance.Test(stackNodesList))
                 {
                     Log.Debug("NodeStack test passed");
 
+                    return;
+
+                    Instance.StackNodeList = stackNodesList;
                     Instance.Save();
 
                     Log.Debug("Saved NodeStack");

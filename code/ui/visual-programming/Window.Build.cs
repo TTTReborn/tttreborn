@@ -49,21 +49,22 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Log.Debug("Building and testing NodeStack");
 
+                bool successful = true;
+
                 foreach (Node node in startingNodeList)
                 {
-                    node.Build(0);
+                    if (!node.Build(0))
+                    {
+                        successful = false;
+                    }
                 }
 
-                // TODO
-                /*
-                if (MainNode.Build())
+                if (successful)
                 {
                     Log.Debug("Uploading NodeStack");
 
-                    // TODO add "Nodes" and List
-                    NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
+                    NodeStack.UploadStack(JsonSerializer.Serialize(GetStackNodesJsonDictionary()));
                 }
-                */
             }
             catch (Exception e)
             {

@@ -134,10 +134,33 @@ namespace TTTReborn.UI.VisualProgramming
 
             foreach (Node node in Nodes)
             {
+                if (node is MainNode mainNode)
+                {
+                    MainNode = mainNode;
+                }
+
                 node.Display();
             }
 
             Log.Debug($"Loaded: '{jsonData}'");
+        }
+
+        private Dictionary<string, object> GetStackNodesJsonDictionary()
+        {
+            Dictionary<string, object> jsonDict = new();
+
+            // TODO add workspace settings to jsonDict as well
+
+            List<Dictionary<string, object>> saveList = new();
+
+            foreach (Node node in Nodes)
+            {
+                saveList.Add(node.StackNode.GetJsonData());
+            }
+
+            jsonDict.Add("Nodes", saveList);
+
+            return jsonDict;
         }
     }
 }
