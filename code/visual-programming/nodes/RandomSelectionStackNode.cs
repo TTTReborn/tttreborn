@@ -17,16 +17,16 @@ namespace TTTReborn.VisualProgramming
 
         public override object[] Test(object[] input)
         {
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
-            {
-                return null;
-            }
-
             int percentListCount = PercentList.Count;
 
             if (percentListCount < 2)
             {
                 throw new NodeStackException("Missing values in RandomSelectionStackNode.");
+            }
+
+            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            {
+                return null;
             }
 
             int value = 0;

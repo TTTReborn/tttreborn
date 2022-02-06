@@ -169,8 +169,6 @@ namespace TTTReborn.VisualProgramming
                 {
                     Log.Debug("NodeStack test passed");
 
-                    return;
-
                     Instance.StackNodeList = stackNodesList;
                     Instance.Save();
 

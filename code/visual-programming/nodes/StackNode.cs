@@ -17,17 +17,40 @@ namespace TTTReborn.VisualProgramming
 
     public abstract class StackNode
     {
+        public static readonly List<StackNode> StackNodeList = new();
+
         public string Id { get; set; }
         public string LibraryName { get; set; }
         public string NodeReference { get; set; }
         public string[] ConnectionOutputIds { get; set; } = Array.Empty<string>();
         public string[] ConnectionInputIds { get; set; } = Array.Empty<string>();
+        public object[] PreparedInputData { get; set; } = null;
 
         private Vector2 _pos;
 
         public StackNode()
         {
             LibraryName = Utils.GetLibraryName(GetType());
+
+            StackNodeList.Add(this);
+        }
+
+        public static StackNode GetById(string id)
+        {
+            foreach (StackNode stackNode in StackNodeList)
+            {
+                if (stackNode.Id == id)
+                {
+                    return stackNode;
+                }
+            }
+
+            return null;
+        }
+
+        public virtual void Delete()
+        {
+            StackNodeList.Remove(this);
         }
 
         public virtual void Reset()
@@ -41,6 +64,7 @@ namespace TTTReborn.VisualProgramming
         {
             ConnectionOutputIds = Array.Empty<string>();
             ConnectionInputIds = Array.Empty<string>();
+            PreparedInputData = null;
         }
 
         internal void SetPos(float posX, float posY)

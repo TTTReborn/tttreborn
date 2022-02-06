@@ -111,6 +111,8 @@ namespace TTTReborn.UI.VisualProgramming
 
             Reset();
 
+            StackNode.Delete();
+
             base.Delete(immediate);
         }
 
@@ -292,6 +294,8 @@ namespace TTTReborn.UI.VisualProgramming
                 };
             }
 
+            bool successful = true;
+
             try
             {
                 object[] array = StackNode.Test(buildInput);
@@ -324,7 +328,12 @@ namespace TTTReborn.UI.VisualProgramming
                         {
                             if (GetConnectedNode(nodeSetting.Input.ConnectionPoint) == this)
                             {
-                                return idNode.Build(inputCount, array[o]);
+                                if (!idNode.Build(inputCount, array[o]))
+                                {
+                                    successful = false;
+                                }
+
+                                break;
                             }
 
                             inputCount++;
@@ -346,7 +355,7 @@ namespace TTTReborn.UI.VisualProgramming
                 throw;
             }
 
-            return true;
+            return successful;
         }
 
         public virtual void HighlightError()
@@ -376,13 +385,39 @@ namespace TTTReborn.UI.VisualProgramming
                         {
                             NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
 
-                            NodeConnectionStartPoint startPoint = node.NodeSettings[outIndex].Output.ConnectionPoint;
-                            startPoint.ConnectionWire = nodeConnectionWire;
-                            nodeConnectionWire.StartPoint = startPoint;
+                            int outCount = 0;
 
-                            NodeConnectionEndPoint endPoint = NodeSettings[inIndex].Input.ConnectionPoint;
-                            endPoint.ConnectionWire = nodeConnectionWire;
-                            nodeConnectionWire.EndPoint = endPoint;
+                            foreach (NodeSetting nodeSetting in node.NodeSettings)
+                            {
+                                if (nodeSetting.Output.Enabled)
+                                {
+                                    if (outCount == outIndex)
+                                    {
+                                        NodeConnectionStartPoint startPoint = nodeSetting.Output.ConnectionPoint;
+                                        startPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.StartPoint = startPoint;
+                                    }
+
+                                    outCount++;
+                                }
+                            }
+
+                            int inCount = 0;
+
+                            foreach (NodeSetting nodeSetting in NodeSettings)
+                            {
+                                if (nodeSetting.Input.Enabled)
+                                {
+                                    if (inCount == inIndex)
+                                    {
+                                        NodeConnectionEndPoint endPoint = nodeSetting.Input.ConnectionPoint;
+                                        endPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.EndPoint = endPoint;
+                                    }
+
+                                    inCount++;
+                                }
+                            }
 
                             return;
                         }
@@ -402,13 +437,39 @@ namespace TTTReborn.UI.VisualProgramming
                         {
                             NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
 
-                            NodeConnectionStartPoint startPoint = NodeSettings[outIndex].Output.ConnectionPoint;
-                            startPoint.ConnectionWire = nodeConnectionWire;
-                            nodeConnectionWire.StartPoint = startPoint;
+                            int outCount = 0;
 
-                            NodeConnectionEndPoint endPoint = node.NodeSettings[inIndex].Input.ConnectionPoint;
-                            endPoint.ConnectionWire = nodeConnectionWire;
-                            nodeConnectionWire.EndPoint = endPoint;
+                            foreach (NodeSetting nodeSetting in NodeSettings)
+                            {
+                                if (nodeSetting.Output.Enabled)
+                                {
+                                    if (outCount == outIndex)
+                                    {
+                                        NodeConnectionStartPoint startPoint = nodeSetting.Output.ConnectionPoint;
+                                        startPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.StartPoint = startPoint;
+                                    }
+
+                                    outCount++;
+                                }
+                            }
+
+                            int inCount = 0;
+
+                            foreach (NodeSetting nodeSetting in node.NodeSettings)
+                            {
+                                if (nodeSetting.Input.Enabled)
+                                {
+                                    if (inCount == inIndex)
+                                    {
+                                        NodeConnectionEndPoint endPoint = nodeSetting.Input.ConnectionPoint;
+                                        endPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.EndPoint = endPoint;
+                                    }
+
+                                    inCount++;
+                                }
+                            }
 
                             return;
                         }

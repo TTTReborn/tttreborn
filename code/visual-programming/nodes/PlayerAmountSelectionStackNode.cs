@@ -19,16 +19,16 @@ namespace TTTReborn.VisualProgramming
 
         public override object[] Test(object[] input)
         {
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
-            {
-                return null;
-            }
-
             int playerAmountListCount = PlayerAmountList.Count;
 
             if (playerAmountListCount < 2)
             {
                 throw new NodeStackException("Missing values in PlayerAmountSelectionStackNode.");
+            }
+
+            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            {
+                return null;
             }
 
             int allPlayerAmount = Client.All.Count; // TODO just use available players, not specs

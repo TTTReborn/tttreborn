@@ -20,16 +20,16 @@ namespace TTTReborn.VisualProgramming
 
         public override object[] Test(object[] input)
         {
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
-            {
-                return null;
-            }
-
             int percentListCount = PercentList.Count;
 
             if (percentListCount < 2)
             {
                 throw new NodeStackException("Missing values in PercentageSelectionStackNode.");
+            }
+
+            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            {
+                return null;
             }
 
             int allPlayerAmount = Client.All.Count; // TODO just use available players, not specs

@@ -28,10 +28,15 @@ namespace TTTReborn.VisualProgramming
         {
             // TODO check for integrity (no missing connections)
 
+            foreach (StackNode stackNode in stackNodesList)
+            {
+                stackNode.PreparedInputData = null;
+            }
+
             // check for functionality (data set etc.)
             foreach (StackNode stackNode in stackNodesList)
             {
-                if (stackNode.ConnectionInputIds.Length == 0 && !TestNode(stackNode)) // enter recursion
+                if (stackNode.ConnectionInputIds.Length == 0 && !TestNode(stackNode, 0))
                 {
                     return false;
                 }
@@ -40,13 +45,77 @@ namespace TTTReborn.VisualProgramming
             return true;
         }
 
-        private bool TestNode(StackNode stackNode, object[] input = null)
+        private bool TestNode(StackNode stackNode, int inputIndex, object input = null)
         {
+            if (stackNode.ConnectionInputIds.Length > 0)
+            {
+                if (stackNode.PreparedInputData == null)
+                {
+                    int count = 0;
+
+                    for (int i = 0; i < stackNode.ConnectionInputIds.Length; i++)
+                    {
+                        if (stackNode.ConnectionInputIds[i] != null)
+                        {
+                            count++;
+                        }
+                    }
+
+                    stackNode.PreparedInputData = new object[count];
+                }
+
+                stackNode.PreparedInputData[inputIndex] = input;
+
+                for (int i = 0; i < stackNode.PreparedInputData.Length; i++)
+                {
+                    if (stackNode.PreparedInputData[i] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                stackNode.PreparedInputData = new object[]
+                {
+                    input
+                };
+            }
+
+            bool successful = true;
+
             try
             {
-                object[] array = stackNode.Test(input);
+                object[] array = stackNode.Test(stackNode.PreparedInputData);
 
-                // TODO pass to connected nodes!
+                for (int o = 0; o < stackNode.ConnectionOutputIds.Length; o++)
+                {
+                    string id = stackNode.ConnectionOutputIds[o];
+
+                    if (id == null)
+                    {
+                        continue;
+                    }
+
+                    StackNode idStackNode = StackNode.GetById(id);
+
+                    if (idStackNode == null)
+                    {
+                        Log.Warning($"Error in testing NodeStack with node {stackNode.Id} ('{stackNode.LibraryName}')");
+
+                        return false;
+                    }
+
+                    for (int i = 0; i < idStackNode.ConnectionInputIds.Length; i++)
+                    {
+                        string inputId = idStackNode.ConnectionInputIds[i];
+
+                        if (inputId == stackNode.Id && !TestNode(idStackNode, i, array[o]))
+                        {
+                            successful = false;
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -60,22 +129,98 @@ namespace TTTReborn.VisualProgramming
                 throw;
             }
 
+            return successful;
+        }
+
+        public bool Evaluate(object input = null)
+        {
+            foreach (StackNode stackNode in StackNodeList)
+            {
+                stackNode.PreparedInputData = null;
+            }
+
+            foreach (StackNode stackNode in StackNodeList)
+            {
+                if (stackNode.ConnectionInputIds.Length == 0 && !EvaluateNode(stackNode, 0, input))
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
-        public bool Evaluate(params object[] input)
+        private bool EvaluateNode(StackNode stackNode, int inputIndex, object input = null)
         {
-            // TODO // See Test()
-            //return EvaluateNode(stackNode, input);
+            if (stackNode.ConnectionInputIds.Length > 0)
+            {
+                if (stackNode.PreparedInputData == null)
+                {
+                    int count = 0;
 
-            return true;
-        }
+                    for (int i = 0; i < stackNode.ConnectionInputIds.Length; i++)
+                    {
+                        if (stackNode.ConnectionInputIds[i] != null)
+                        {
+                            count++;
+                        }
+                    }
 
-        private object[] EvaluateNode(StackNode stackNode, params object[] input)
-        {
+                    stackNode.PreparedInputData = new object[count];
+                }
+
+                stackNode.PreparedInputData[inputIndex] = input;
+
+                for (int i = 0; i < stackNode.PreparedInputData.Length; i++)
+                {
+                    if (stackNode.PreparedInputData[i] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                stackNode.PreparedInputData = new object[]
+                {
+                    input
+                };
+            }
+
+            bool successful = true;
+
             try
             {
-                return stackNode.Evaluate(input);
+                object[] array = stackNode.Evaluate(stackNode.PreparedInputData);
+
+                for (int o = 0; o < stackNode.ConnectionOutputIds.Length; o++)
+                {
+                    string id = stackNode.ConnectionOutputIds[o];
+
+                    if (id == null)
+                    {
+                        continue;
+                    }
+
+                    StackNode idStackNode = StackNode.GetById(id);
+
+                    if (idStackNode == null)
+                    {
+                        Log.Warning($"Error in evaluating NodeStack with node {stackNode.Id} ('{stackNode.LibraryName}')");
+
+                        return false;
+                    }
+
+                    for (int i = 0; i < idStackNode.ConnectionInputIds.Length; i++)
+                    {
+                        string inputId = idStackNode.ConnectionInputIds[i];
+
+                        if (inputId == stackNode.Id && !EvaluateNode(idStackNode, i, array[o]))
+                        {
+                            successful = false;
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -83,11 +228,13 @@ namespace TTTReborn.VisualProgramming
                 {
                     Log.Warning($"Error in node '{GetType()}' evaluation: ({e.Source}): {e.Message}\n{e.StackTrace}");
 
-                    return null;
+                    return false;
                 }
 
                 throw;
             }
+
+            return successful;
         }
 
         public void Init()
@@ -184,7 +331,17 @@ namespace TTTReborn.VisualProgramming
 
             string path = $"{settingsPath}{DefaultSettingsFile}";
 
-            FileSystem.Data.WriteAllText(path, jsonData ?? JsonSerializer.Serialize(GetJsonData()));
+            if (jsonData == null)
+            {
+                Dictionary<string, object> jsonDict = new();
+                jsonDict.Add("Nodes", GetJsonData());
+
+                FileSystem.Data.WriteAllText(path, JsonSerializer.Serialize(jsonDict));
+            }
+            else
+            {
+                FileSystem.Data.WriteAllText(path, jsonData);
+            }
         }
 
         public List<object> GetJsonData()

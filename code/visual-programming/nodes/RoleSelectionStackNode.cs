@@ -18,14 +18,14 @@ namespace TTTReborn.VisualProgramming
 
         public override object[] Test(object[] input)
         {
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
-            {
-                return null;
-            }
-
             if (SelectedRole == null)
             {
                 throw new NodeStackException("No selected role in RoleSelectionNode.");
+            }
+
+            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            {
+                return null;
             }
 
             foreach (TTTPlayer player in playerList)
