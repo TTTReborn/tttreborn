@@ -302,9 +302,11 @@ namespace TTTReborn.VisualProgramming
 
             LoadFromJsonData(jsonData);
 
-            if (!Instance.Test(StackNodeList))
+            bool test = false;
+
+            try
             {
-                test = Instance.Test();
+                test = Instance.Test(StackNodeList);
             }
             catch (Exception) {}
 
