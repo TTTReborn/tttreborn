@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.Player;
 
@@ -16,11 +17,11 @@ namespace TTTReborn.UI
         private TranslationLabel _itemNameLabel;
         private Label _itemPriceLabel;
 
-        public QuickShopItem(Sandbox.UI.Panel parent) : base(parent)
+        public QuickShopItem(Panel parent) : base(parent)
         {
             AddClass("rounded");
             AddClass("text-shadow");
-            AddClass("background-color-secondary");
+            AddClass("background-color-primary");
 
             _itemPriceLabel = Add.Label();
             _itemPriceLabel.AddClass("item-price-label");
@@ -29,7 +30,7 @@ namespace TTTReborn.UI
             _itemIcon = new Panel(this);
             _itemIcon.AddClass("item-icon");
 
-            _itemNameLabel = Add.TranslationLabel();
+            _itemNameLabel = Add.TranslationLabel(new TranslationData());
             _itemNameLabel.AddClass("item-name-label");
         }
 
@@ -37,16 +38,16 @@ namespace TTTReborn.UI
         {
             ItemData = shopItemData;
 
-            _itemNameLabel.SetTranslation(shopItemData.Name.ToUpper());
+            _itemNameLabel.UpdateTranslation(new TranslationData(shopItemData.Name.ToUpper()));
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
-            _itemIcon.Style.BackgroundImage = Texture.Load($"/ui/icons/{shopItemData.Name}.png", false) ?? Texture.Load($"/ui/none.png");
+            _itemIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, $"/ui/icons/{shopItemData.Name}.png") ?? Texture.Load(FileSystem.Mounted, $"/ui/none.png");
         }
 
         public void Update()
         {
             IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(ItemData) != BuyError.None;
-            Enabled = !IsDisabled;
+            this.Enabled(!IsDisabled);
         }
     }
 }

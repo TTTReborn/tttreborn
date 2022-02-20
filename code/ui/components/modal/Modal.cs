@@ -1,5 +1,7 @@
 using System;
 
+using Sandbox.UI;
+
 namespace TTTReborn.UI
 {
     public partial class Modal : Window
@@ -7,7 +9,7 @@ namespace TTTReborn.UI
         public Action<Modal> OnDisplay;
         public bool IsDeletedOnClose;
 
-        public Modal(Sandbox.UI.Panel parent = null, bool isDeletedOnClose = true) : base(parent)
+        public Modal(Panel parent = null, bool isDeletedOnClose = true) : base(parent)
         {
             IsDeletedOnClose = isDeletedOnClose;
 
@@ -23,19 +25,21 @@ namespace TTTReborn.UI
                 }
             };
 
-            Enabled = false;
+            Content.Style.FlexDirection = Sandbox.UI.FlexDirection.Column;
+
+            this.Enabled(false);
         }
 
         public virtual void Display()
         {
             OnDisplay?.Invoke(this);
 
-            Enabled = true;
+            this.Enabled(true);
         }
 
         public virtual void Close()
         {
-            Enabled = false;
+            this.Enabled(false);
 
             Header.NavigationHeader.OnClose?.Invoke(Header.NavigationHeader);
         }

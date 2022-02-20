@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
-using Sandbox;
-
 namespace TTTReborn.Globalization
 {
     public struct LanguageData
@@ -50,70 +48,70 @@ namespace TTTReborn.Globalization
             }
         }
 
-        public string GetTranslation(string key, bool returnError = true)
-        {
-            object translation = GetRawTranslation(key);
-
-            if (translation != null)
-            {
-                return translation.ToString();
-            }
-
-            if (TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
-            {
-                return fallbackLanguage.GetTranslation(key, returnError);
-            }
-
-            if (!returnError)
-            {
-                return key;
-            }
-
-            return $"[ERROR: Translation of '{key}' not found]";
-        }
-
-        public object GetRawTranslation(string key)
-        {
-            return _langDict.TryGetValue(key, out object translation) ? translation : null;
-        }
-
-        public string GetFormattedTranslation(string key, params object[] args)
-        {
-            return TryFormattedTranslation(key, true, args);
-        }
-
-        public string TryFormattedTranslation(string key, bool error = true, params object[] args)
-        {
-            string translation = GetTranslation(key, error);
-
-            if (args == null)
-            {
-                return translation;
-            }
-
-            object[] data = new object[args.Length];
-
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i] is TranslationData translationKey)
-                {
-                    data[i] = TryFormattedTranslation(translationKey.Key, error, translationKey.Data);
-                }
-                else
-                {
-                    data[i] = args[i];
-                }
-            }
-
-            return String.Format(translation, data);
-        }
-
         public void AddTranslationString(string key, string translation)
         {
             if (!_langDict.TryAdd(key, translation))
             {
                 Log.Warning($"Couldn't add translation string ('{key}') to '{Data.Name}'");
             }
+        }
+
+        public string GetFormattedTranslation(TranslationData translationData)
+        {
+            string translation = GetTranslation(translationData);
+
+            if (translationData.Args == null || translationData.Args.Length == 0)
+            {
+                return translation;
+            }
+
+            object[] data = new object[translationData.Args.Length];
+
+            for (int i = 0; i < translationData.Args.Length; i++)
+            {
+                if (translationData.Args[i] is TranslationData nestedTranslationData)
+                {
+                    data[i] = GetFormattedTranslation(nestedTranslationData);
+                }
+                else
+                {
+                    data[i] = translationData.Args[i];
+                }
+            }
+
+            return string.Format(translation, data);
+        }
+
+        private string GetTranslation(TranslationData translationData)
+        {
+            object translation = GetRawTranslation(translationData);
+
+            if (translation != null)
+            {
+                return translation.ToString();
+            }
+
+            if (Settings.SettingsManager.Instance.General.ReturnMissingKeys)
+            {
+                return $"[MISSING: Translation of '{translationData.Key}' not found]";
+            }
+
+            if (TTTLanguage.Languages.TryGetValue(TTTLanguage.FALLBACK_LANGUAGE, out Language fallbackLanguage) && fallbackLanguage != this)
+            {
+                return fallbackLanguage.GetTranslation(translationData);
+            }
+
+            return translationData.Key;
+        }
+
+        private object GetRawTranslation(TranslationData translationData)
+        {
+            if (translationData.Key.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            return _langDict.GetValueOrDefault(translationData.Key);
         }
     }
 }

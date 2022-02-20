@@ -1,0 +1,102 @@
+TranslationTextEntry, textentry
+{
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    flex-direction: row;
+    text-align: left;
+    cursor: text;
+    border: 3px solid rgba( $button-secondary, 0.2 );
+    border-radius: 5px;
+    flex-shrink: 0;
+    padding: 5px 10px;
+    color: white;
+    font-family: Poppins;
+
+    &.is-multiline
+    {
+        align-items: flex-start;
+        white-space: normal;
+    }
+
+    .content-label,
+    .placeholder
+    {
+        flex-grow: 1;
+    }
+
+    .placeholder
+    {
+        opacity: 0.2;
+        pointer-events: none;
+        display: none;
+    }
+
+    .iconpanel
+    {
+        position: absolute;
+        right: 0;
+        font-size: 24px;
+        padding-right: 10px;
+        pointer-events: none;
+    }
+
+    &.has-icon
+    {
+        padding-right: 30px;
+    }
+
+    .content-label,
+    .prefix-label,
+    .suffix-label,
+    .placeholder
+    {
+        padding: 3px;
+        overflow: hidden;
+    }
+
+    .prefix-label,
+    .suffix-label
+    {
+        flex-shrink: 0;
+        opacity: 0.5;
+        background-color: rgba( black, 0.8 );
+    }
+
+    .prefix-label
+    {
+        order: -1;
+        flex-shrink: 0;
+    }
+
+    &.has-placeholder
+    {
+        .placeholder
+        {
+            display: flex;
+        }
+
+        .content-label
+        {
+            display: none;
+        }
+    }
+
+    &:hover
+    {
+        border: 3px solid rgba( $button-secondary, 0.3 );
+        background-color: rgba( #fff, 0.01 );
+    }
+
+    &:focus
+    {
+        border: 3px solid rgba( $button-secondary, 0.6 );
+        background-color: rgba( #fff, 0.01 );
+    }
+
+    &.invalid
+    {
+        box-shadow: 0px 0px 1px 2px #f8356b;
+    }
+}

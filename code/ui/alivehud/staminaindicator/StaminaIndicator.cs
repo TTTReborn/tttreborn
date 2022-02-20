@@ -29,7 +29,7 @@ namespace TTTReborn.UI
             _staminaLabel = Add.Label();
             _staminaLabel.AddClass("stamina-label");
 
-            Enabled = true;
+            this.Enabled(true);
 
             Style.ZIndex = -1;
         }

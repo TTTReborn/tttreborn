@@ -1,21 +1,11 @@
 PanelHeader {
     width: 100%;
-    height: 50px;
-
-    flex-direction: row;
 }
 
-.title,
-.closeButton {
+.title {
     padding: 5px;
-    margin: 10px;
 }
 
 .title {
     flex-grow: 1;
-}
-
-.closeButton {
-    flex-shrink: 1;
-    cursor: pointer;
 }

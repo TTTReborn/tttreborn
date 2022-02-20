@@ -4,6 +4,8 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.UI
 {
     public class MapSelectionMenu : Panel
@@ -25,7 +27,7 @@ namespace TTTReborn.UI
             AddClass("opacity-heavy");
             AddClass("fullscreen");
 
-            Add.TranslationLabel("VOTE_NEXT_MAP", "title");
+            Add.TranslationLabel(new TranslationData("VOTE_NEXT_MAP"), "title");
 
             _mapPanels = new();
 
@@ -34,7 +36,7 @@ namespace TTTReborn.UI
 
             InitMapPanels();
 
-            Enabled = false;
+            this.Enabled(false);
         }
 
         [Event(Events.TTTEvent.Game.MapImagesChange)]
@@ -66,7 +68,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (!Enabled)
+            if (!this.IsEnabled())
             {
                 return;
             }

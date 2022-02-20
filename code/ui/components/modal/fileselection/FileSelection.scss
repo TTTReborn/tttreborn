@@ -3,12 +3,9 @@ FileSelection,
     width: 600px;
     left: 50%;
     top: 50%;
-    //transform: translateX(-50%) translateY(-50%);
     position: absolute;
     flex-direction: column;
-
     pointer-events: all;
-
     z-index: 500;
 
     > .content {
@@ -21,8 +18,6 @@ FileSelection,
             overflow: scroll;
 
             FileSelectionEntry {
-                background-color: #000c;
-                border: 2px solid #1b1b1b;
                 border-radius: 8px;
 
                 min-width: 80px;
@@ -36,13 +31,13 @@ FileSelection,
                 margin: 0px 0px 4px 4px;
 
                 &:hover {
-                    border: 2px solid rgb(50, 137, 236);
+                    border: 2px solid #708690;
                     cursor: pointer;
                 }
 
                 &:active,
                 &.selected {
-                    border: 2px solid rgb(4, 74, 155);
+                    border: 2px solid #455a64;
                 }
 
                 .filetype {
@@ -59,10 +54,6 @@ FileSelection,
         }
 
         TextEntry {
-            background-color: #000c;
-            border: 2px solid #1b1b1b;
-            border-radius: 8px;
-
             &.hide {
                 display: none;
             }

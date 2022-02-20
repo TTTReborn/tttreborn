@@ -23,7 +23,7 @@ namespace TTTReborn.UI
 
             StyleSheet.Load("/ui/alivehud/damageindicator/DamageIndicator.scss");
 
-            Style.SetBackgroundImage(Texture.Load("/ui/damageindicator/default.png"));
+            Style.SetBackgroundImage(Texture.Load(FileSystem.Mounted, "/ui/damageindicator/default.png"));
 
             Style.ZIndex = -1;
         }

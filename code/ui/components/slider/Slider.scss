@@ -1,44 +1,114 @@
-.slider {
-    flex-grow: 1;
-    cursor: pointer;
-    min-height: 24px;
-    align-items: center;
-    padding-right: 24px;
+$switch-padding: 6px !default;
 
-    > .thumb {
-        background-color: black;
-        position: absolute;
-        width: 24px;
-        height: 24px;
-        border-radius: 1000px;
-        box-shadow: 2px 2px 10px black;
-        transition: all 0.2s ease-out;
+slider
+{
+	flex-grow: 1;
+	cursor: pointer;
+	min-height: $form-control-height;
+	align-items: center;
+	padding-right: $form-control-height;
 
-        &:hover {
-            background-color: white;
-        }
-    }
+	> .thumb
+	{
+		background-color: $button-primary;
+		position: absolute;
+		width: $form-control-height;
+		height: $form-control-height;
+		border-radius: 1000px;
+		box-shadow: 2px 2px 10px black;
+		transition: all 0.2s ease-out;
 
-    &:active {
-        > .thumb {
-            background-color: white;
-        }
-    }
+		&:hover
+		{
+			background-color: $primary;
+		}
+	}
 
-    > .track {
-        position: absolute;
-        left: 10px;
-        right: 10px;
-        height: 10px;
-        background-color: #000c;
-        border-radius: 5px;
+	&:active
+	{
+		> .thumb
+		{
+			background-color: $primary;
+		}
+	}
 
-        > .inner {
-            border-radius: 4px;
-            background-color: black;
-            width: 200px;
-            height: 10px;
-            transition: all 0.2s ease-out;
-        }
-    }
+	> .track
+	{
+		position: absolute;
+		left: 10px;
+		right: 10px;
+		height: 10px;
+		background-color: rgba( $button-primary, 0.1 );
+		border-radius: 5px;
+
+		> .inner
+		{
+			border-radius: 4px;
+			background-color: $button-primary;
+			width: 200px;
+			height: 10px;
+			transition: all 0.2s ease-out;
+		}
+	}
+}
+
+
+.sliderentry
+{
+	> .slider
+	{
+		flex-grow: 1;
+		flex-shrink: 0;
+	}
+
+	> .textentry:not( .one.two )
+	{
+		flex-grow: 0;
+		flex-shrink: 0;
+		width: 60px;
+		min-width: 60px;
+		max-width: 60px;
+		white-space: nowrap;
+		overflow: hidden;
+		margin-left: 10px;
+		border-color: transparent;
+		text-align: center;
+		background-color: rgba( black, 0.5 );
+		color: #fafafa;
+	}
+}
+
+.slider2d
+{
+	flex-grow: 1;
+	cursor: pointer;
+	min-height: $form-control-height;
+	align-items: center;
+	padding-right: $form-control-height;
+	height: 200px;
+	background-color: red;
+
+	> .thumb
+	{
+		position: absolute;
+		width: 12px;
+		height: 12px;
+		border-radius: 1000px;
+		transition: all 0.2s ease-out;
+		transform: translateX( -50% ) translateY( -50% );
+		border: 2px solid rgba( white, 1 );
+
+		&:hover
+		{
+		}
+	}
+
+	&:active
+	{
+		> .thumb
+		{
+			width: 40px;
+			height: 40px;
+		}
+	}
 }

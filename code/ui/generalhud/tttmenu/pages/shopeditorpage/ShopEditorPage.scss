@@ -1,0 +1,63 @@
+.root {
+    flex-direction: column;
+    width: 100%;
+}
+
+.content {
+    flex-wrap: wrap;
+    overflow: scroll;
+    align-items: center;
+}
+
+.row {
+    width: 33%;
+    padding: 10px;
+}
+
+QuickShopItem {
+    opacity: 1;
+    height: 55px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: transform 0.1s ease-in;
+    white-space: nowrap;
+    flex-shrink: 0;
+    flex-grow: 1;
+
+    &:hover {
+        transform: scale(1.01);
+        cursor: pointer;
+    }
+
+    &:active {
+        transform: scale(1);
+    }
+
+    .item-icon {
+        position: absolute;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 100%;
+        left: 20px;
+    }
+
+    .item-name-label {
+        position: absolute;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .item-price-label {
+        position: absolute;
+        font-weight: bold;
+        font-size: 20px;
+        right: 20px;
+    }
+
+    &.selected {
+        box-shadow: 0 0 15px #ffae00;
+    }
+}

@@ -1,92 +1,61 @@
 using System;
-using System.Collections.Generic;
 
-using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
 using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
-    public class TranslationButton : Button
+    public class TranslationButton : Button, ITranslatable
     {
-        private readonly static List<TranslationButton> _translationButtons = new();
+        private TranslationData _translationData = new();
 
-        public string TranslationKey;
-        public object[] TranslationParams;
-        public bool IsTranslationDisabled = false;
-        public bool IsTryTranslation;
-
-        public new string Text
+        public TranslationButton()
         {
-            get => base.Text;
-            set
-            {
-                base.Text = value;
-
-                TranslationKey = null;
-                TranslationParams = null;
-            }
+            TTTLanguage.Translatables.Add(this);
         }
 
-        public TranslationButton(string translationKey = null, string icon = null, Action onClick = null, string classname = null, bool tryTranslation = false, params object[] args) : base(translationKey, icon, onClick)
+        public TranslationButton(TranslationData translationData, string icon = null, string classname = null, Action onClick = null) : base(translationData.Key, icon, onClick)
         {
-            IsTryTranslation = tryTranslation;
-
-            SetTranslation(translationKey, args);
+            UpdateTranslation(translationData);
             AddClass(classname);
 
-            _translationButtons.Add(this);
+            TTTLanguage.Translatables.Add(this);
         }
 
         public override void OnDeleted()
         {
-            _translationButtons.Remove(this);
+            TTTLanguage.Translatables.Remove(this);
 
             base.OnDeleted();
         }
 
-        public void SetTranslation(string translationKey, params object[] args)
+        public override void SetProperty(string name, string value)
         {
-            if (string.IsNullOrWhiteSpace(translationKey))
-            {
-                translationKey = null;
-            }
+            base.SetProperty(name, value);
 
-            TranslationKey = translationKey;
-            TranslationParams = args;
-
-            if (TranslationKey == null)
+            if (name == "key")
             {
+                UpdateTranslation(new TranslationData(value));
                 return;
             }
-
-            base.Text = TTTLanguage.ActiveLanguage.TryFormattedTranslation(TranslationKey, !IsTryTranslation, TranslationParams);
         }
 
-        public void UpdateTranslation(Language language)
+        public void UpdateTranslation(TranslationData translationData)
         {
-            if (TranslationKey == null || IsTranslationDisabled)
-            {
-                return;
-            }
-
-            base.Text = language.TryFormattedTranslation(TranslationKey, !IsTryTranslation, TranslationParams);
+            _translationData = translationData;
+            SetText(TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData));
         }
 
-        public static void UpdateLanguage(Language language)
+        public void UpdateLanguage(Language language)
         {
-            foreach (TranslationButton translationButton in _translationButtons)
-            {
-                translationButton.UpdateTranslation(language);
-            }
+            SetText(language.GetFormattedTranslation(_translationData));
         }
 
-        [Event(TTTEvent.Settings.LanguageChange)]
-        public static void OnLanguageChange(Language oldLanguage, Language newLanguage)
+        private new void SetText(string value)
         {
-            UI.TranslationButton.UpdateLanguage(newLanguage);
+            Text = value;
+            SetClass("has-label", !string.IsNullOrEmpty(Text));
         }
     }
 }
@@ -97,18 +66,9 @@ namespace Sandbox.UI.Construct
 
     public static class TranslationButtonConstructor
     {
-        public static TranslationButton TranslationButton(this PanelCreator self, string translationKey = null, string classname = null, Action onClick = null, params object[] args)
+        public static TranslationButton TranslationButton(this PanelCreator self, TranslationData translationData, string icon = null, string classname = null, Action onClick = null)
         {
-            TranslationButton translationButton = new(translationKey, null, onClick, classname, false, args);
-
-            self.panel.AddChild(translationButton);
-
-            return translationButton;
-        }
-
-        public static TranslationButton TryTranslationButton(this PanelCreator self, string translationKey = null, string classname = null, Action onClick = null, params object[] args)
-        {
-            TranslationButton translationButton = new(translationKey, null, onClick, classname, true, args);
+            TranslationButton translationButton = new(translationData, icon, classname, onClick);
 
             self.panel.AddChild(translationButton);
 

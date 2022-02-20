@@ -1,0 +1,98 @@
+.translationtab {
+    &.button
+    {
+        border: none;
+        padding: 5px 20px 20px 0px;
+        min-height: 0px;
+        opacity: 0.1;
+        transition: all 0.2s ease;
+        background-color: transparent;
+        mix-blend-mode: lighten;
+        font-size: 20px;
+        color: white;
+        font-weight: normal;
+        font-family: Poppins;
+        margin-bottom: 5px;
+
+        .iconpanel
+        {
+            margin: 0;
+            margin-right: 5px;
+        }
+
+        &.tight
+        {
+            padding: 0;
+            height: 20px; // hack
+            min-width: 0px;
+            justify-content: center;
+        }
+
+        &:hover
+        {
+            border: none;
+            opacity: 0.15;
+        }
+
+        &.active
+        {
+            border: none;
+            opacity: 1;
+        }
+    }
+}
+
+TranslationTabContainer, .tabcontainer
+{
+    flex-grow: 1;
+    flex-direction: column;
+
+    > .sheets
+    {
+        > :not( .active )
+        {
+            display: none;
+        }
+    }
+
+    &.tabs-bottom
+    {
+        flex-direction: column-reverse;
+
+        > .tabs
+        {
+            padding-left: 5px;
+        }
+
+        > .tabs .button
+        {
+            border-radius: 0px 0px 4px 4px;
+        }
+
+        > .sheet
+        {
+            border-radius: 3px 3px 3px 0px;
+        }
+    }
+
+    &.tabs-left
+    {
+        flex-direction: row;
+
+        > .tabs
+        {
+            padding-top: 5px;
+            flex-direction: column;
+        }
+
+        > .tabs .button
+        {
+            border-radius: 4px 0 0px 4px;
+        }
+
+        > .sheet
+        {
+            border-radius: 0px 3px 3px 3px;
+        }
+    }
+}

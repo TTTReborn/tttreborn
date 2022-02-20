@@ -62,7 +62,7 @@ namespace TTTReborn.UI.VisualProgramming
                 {
                     if (NodeSettings[0] is NodeRoleSelectionSetting nodeRoleSelectionSetting)
                     {
-                        nodeRoleSelectionSetting.Dropdown?.SelectByData(roleType);
+                        nodeRoleSelectionSetting.Dropdown?.Select(roleType);
                         nodeRoleSelectionSetting.OnSelectRole(roleType);
                     }
                 }

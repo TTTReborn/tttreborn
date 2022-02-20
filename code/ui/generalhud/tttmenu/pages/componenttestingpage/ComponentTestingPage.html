@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="ComponentTestingPage.scss">
+
+<div class="root">
+    <translationbutton icon="settings" key="MENU_SUBMENU_SETTINGS"></translationbutton>
+    <br />
+
+    <translationbutton class="inactive" key="MENU_SUBMENU_SETTINGS"></translationbutton>
+    <br />
+
+    <translationcheckbox @checked="CheckedValue" key="MENU_SUBMENU_SETTINGS"></translationcheckbox>
+    <br />
+
+    <translationcheckbox class="inactive" @checked="CheckedValue" key="MENU_SUBMENU_SETTINGS">
+    </translationcheckbox>
+    <br />
+
+    <translationdropdown @value="FloatValue">
+        <translationoption value="0" key="MENU_SUBMENU_SETTINGS"></translationoption>
+        <translationoption value="10" key="MENU_SUBMENU_SETTINGS"></translationoption>
+    </translationdropdown>
+    <br />
+
+    <SliderEntry min="0" max="100" @value="SliderValue"></SliderEntry>
+    <br />
+
+    <translationtextentry placeholder_key="MENU_SUBMENU_SETTINGS" @value="TextValue"></translationtextentry>
+    <br />
+
+    <translationtabcontainer>
+        <translationtab slot="tab" tab_key="MENU_SUBMENU_SETTINGS" tabicon="emoji_people">
+            <translationbutton class="inactive" key="MENU_SUBMENU_SETTINGS"></translationbutton>
+        </translationtab>
+
+        <translationtab slot="tab" tab_key="MENU_SUBMENU_SETTINGS" tabicon="settings">
+            <translationbutton icon="settings" key="MENU_SUBMENU_SETTINGS"></translationbutton>
+        </translationtab>
+    </translationtabcontainer>
+</div>

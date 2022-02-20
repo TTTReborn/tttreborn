@@ -68,10 +68,17 @@
 
     "MENU_SETTINGS_TAB_GENERAL": "General",
     "MENU_SETTINGS_GENERAL_LANGUAGE": "Language",
+    "MENU_SETTINGS_GENERAL_LANGUAGE_DESCRIPTION": "The displayed language on the client",
+    "MENU_SETTINGS_GENERAL_RETURNMISSINGKEYS": "Return missing key",
+    "MENU_SETTINGS_GENERAL_RETURNMISSINGKEYS_DESCRIPTION": "If the displayed language has a missing key, return it.",
 
+    "MENU_SUBMENU_KEYBINDINGS": "Keybindings",
     "MENU_SUBMENU_SETTINGS": "Settings",
-    "MENU_SUBMENU_TESTING": "Testing",
-    "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
+    "MENU_SUBMENU_SETTINGS_CLIENT": "Client Settings",
+    "MENU_SUBMENU_SETTINGS_SERVER": "Server Settings",
+    "MENU_SUBMENU_TESTING": "Component Testing",
+    "MENU_SUBMENU_SHOPEDITOR": "Shop Editor",
+    "MENU_SUBMENU_ROLEEDITOR": "Role Editor",
 
     "MENU_SETTINGS_TAB_MAP": "Map",
     "MENU_SETTINGS_MAP_DEFAULTMAP": "Default Map",
@@ -109,17 +116,13 @@
     "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE": "Overwrite '{0}'",
     "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT": "Do you want to overwrite '{0}' with the current settings? (If you agree, the settings defined in this file will be lost!)",
 
-    "MENU_SHOPEDITOR_TOGGLEROLE": "Toggle to de-/activate the shop for the currently selected role.",
+    "MENU_SHOPEDITOR_ENABLEROLE": "Is shop enabled?",
     "MENU_SHOPEDITOR_SELECTROLE": "Select a role to modify the connected shop.",
-    "MENU_SHOPEDITOR_NOPERMISSION": "You don't have permissions to access the ShopEditor.",
-    "MENU_SHOPEDITOR_ITEM_ACTIVATE": "Activate this item in the {0} shop.",
-    "MENU_SHOPEDITOR_ITEM_DEACTIVATE": "Deactivate this item in the {0} shop.",
     "MENU_SHOPEDITOR_ITEM_EDIT": "Edit this item.",
     "MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC": "Edit item '{0}'",
     "MENU_SHOPEDITOR_ITEM_PRICE": "Price",
     "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC": "The price of the '{0}'.",
 
-    "MENU_KEYBINDINGS": "Keybindings",
     "MENU_KEYBINDINGS_DESCRIPTION": "You can change your bindings in the s&box options menu or through console.",
     "MENU_KEYBINDINGS_MOVEMENT": "Movement",
     "MENU_KEYBINDINGS_FORWARD": "Forward",

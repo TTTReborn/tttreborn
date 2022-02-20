@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="SettingsPage.scss">
+
+<div class="root">
+    <translationbutton icon="settings" key="MENU_SUBMENU_SETTINGS_CLIENT" onclick="GoToClientSettings()">
+    </translationbutton>
+    <br />
+
+    <translationbutton icon="settings" key="MENU_SUBMENU_SETTINGS_SERVER" class="inactive"
+        onclick="GoToServerSettings()" @ref="ServerSettingsButton">
+    </translationbutton>
+    <br />
+</div>
