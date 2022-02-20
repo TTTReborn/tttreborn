@@ -308,7 +308,7 @@ namespace TTTReborn.VisualProgramming
             {
                 test = Instance.Test(StackNodeList);
             }
-            catch (Exception) {}
+            catch (Exception) { }
 
             if (!test)
             {
