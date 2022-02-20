@@ -4,7 +4,6 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.Rounds;
@@ -145,7 +144,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            TTTPlayer player = null;
+            TTTPlayer player;
 
             if (id == null)
             {

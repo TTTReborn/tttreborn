@@ -9,7 +9,7 @@ namespace TTTReborn.UI
 {
     public class PlayerRoleDisplay : Panel
     {
-        private TranslationLabel _roleLabel;
+        private readonly TranslationLabel _roleLabel;
 
         public PlayerRoleDisplay() : base()
         {
@@ -39,7 +39,7 @@ namespace TTTReborn.UI
             this.Enabled(!player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound);
         }
 
-        [Event(Events.TTTEvent.Player.Role.Select)]
+        [Event(Events.TTTEvent.Player.Role.SELECT)]
         private void OnRoleUpdate(TTTPlayer player)
         {
             if (player == null || player != Local.Pawn as TTTPlayer)

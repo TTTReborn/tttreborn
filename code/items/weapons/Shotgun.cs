@@ -59,7 +59,7 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                new Perlin(1.0f, 1.5f, 2.0f);
+                _ = new Perlin(1.0f, 1.5f, 2.0f);
             }
         }
 

@@ -23,7 +23,7 @@ namespace TTTReborn.Rounds
             if (Host.IsServer && RoundDuration > 0)
             {
                 RoundEndTime = Time.Now + RoundDuration;
-                TimeLeftFormatted = Globals.Utils.TimerString(TimeLeft);
+                TimeLeftFormatted = Utils.TimerString(TimeLeft);
             }
 
             OnStart();

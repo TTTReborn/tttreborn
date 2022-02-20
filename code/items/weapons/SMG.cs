@@ -10,7 +10,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Precached("weapons/rust_smg/v_rust_smg.vmdl", "weapons/rust_smg/rust_smg.vmdl", "particles/pistol_muzzleflash.vpcf", "particles/pistol_ejectbrass.vpcf")]
     [Hammer.EditorModel("weapons/rust_smg/rust_smg.vmdl")]
-    partial class SMG : TTTWeapon
+    public partial class SMG : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
         public override string ModelPath => "weapons/rust_smg/rust_smg.vmdl";
@@ -49,7 +49,7 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                new Sandbox.ScreenShake.Perlin(0.5f, 4.0f, 1.0f, 0.5f);
+                _ = new Sandbox.ScreenShake.Perlin(0.5f, 4.0f, 1.0f, 0.5f);
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);

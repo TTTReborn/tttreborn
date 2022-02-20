@@ -27,6 +27,7 @@ namespace TTTReborn.UI
             if (name == "placeholder_key")
             {
                 UpdateTranslation(new TranslationData(value));
+
                 return;
             }
         }

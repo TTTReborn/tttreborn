@@ -18,6 +18,7 @@ namespace TTTReborn.Items
             }
 
             Type typeToSpawn = ammoTypes[Utils.RNG.Next(ammoTypes.Count)];
+
             TTTAmmo ent = Utils.GetObjectByType<TTTAmmo>(typeToSpawn);
             ent.Position = Position;
             ent.Rotation = Rotation;

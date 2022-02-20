@@ -94,7 +94,7 @@ namespace TTTReborn.UI.VisualProgramming
             base.OnRightClick(e);
         }
 
-        private Node GetConnectedNode(NodeConnectionPoint connectionPoint, out int index)
+        private static Node GetConnectedNode(NodeConnectionPoint connectionPoint, out int index)
         {
             index = -1;
 

@@ -5,7 +5,6 @@ using Sandbox;
 using Sandbox.ScreenShake;
 
 using TTTReborn.Globalization;
-using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -62,8 +61,8 @@ namespace TTTReborn.Items
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        private const int AmmoDropPositionOffset = 50;
-        private const int AmmoDropVelocity = 500;
+        private const int AMMO_DROP_POSITION_OFFSET = 50;
+        private const int AMMO_DROP_VELOCITY = 500;
 
         public TTTWeapon() : base()
         {
@@ -186,9 +185,9 @@ namespace TTTReborn.Items
                 {
                     TTTAmmo ammoBox = Globals.Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
 
-                    ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AmmoDropPositionOffset;
+                    ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
                     ammoBox.Rotation = Owner.EyeRotation;
-                    ammoBox.Velocity = Owner.EyeRotation.Forward * AmmoDropVelocity;
+                    ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
                     ammoBox.SetCurrentAmmo(AmmoClip);
                 }
 
@@ -289,7 +288,7 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                new Perlin();
+                _ = new Perlin();
             }
 
             ViewModelEntity?.SetAnimBool("fire", true);

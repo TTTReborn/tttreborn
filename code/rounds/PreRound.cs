@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Sandbox;
 
@@ -76,7 +75,7 @@ namespace TTTReborn.Rounds
             });
         }
 
-        private void AssignRolesAndRespawn(List<TTTPlayer> players)
+        private static void AssignRolesAndRespawn(List<TTTPlayer> players)
         {
             VisualProgramming.NodeStack.Instance.Evaluate(new List<TTTPlayer>(players));
 

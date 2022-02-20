@@ -3,14 +3,13 @@ using System;
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 using TTTReborn.Items;
 
 namespace TTTReborn.Gamemode
 {
     public partial class Game
     {
-        public void PrecacheFiles()
+        public static void PrecacheFiles()
         {
             Host.AssertServer();
 
@@ -28,7 +27,7 @@ namespace TTTReborn.Gamemode
                 }
             }
 
-            Event.Run(TTTEvent.Game.Precache);
+            Event.Run(TTTEvent.Game.PRECACHE);
         }
     }
 }

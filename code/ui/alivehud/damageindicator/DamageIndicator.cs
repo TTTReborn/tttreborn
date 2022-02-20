@@ -28,7 +28,7 @@ namespace TTTReborn.UI
             Style.ZIndex = -1;
         }
 
-        [Event(TTTEvent.Player.TakeDamage)]
+        [Event(TTTEvent.Player.TAKE_DAMAGE)]
         private void OnTakeDamage(TTTPlayer player, float damage)
         {
             if (Host.IsServer)
@@ -40,7 +40,7 @@ namespace TTTReborn.UI
             _timeSinceLastDamage = 0f;
         }
 
-        [Event(TTTEvent.Player.Spawned)]
+        [Event(TTTEvent.Player.SPAWNED)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
             if (Host.IsServer || player != Local.Client.Pawn)

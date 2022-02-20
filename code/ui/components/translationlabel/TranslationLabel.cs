@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-
-using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
 using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
@@ -48,6 +44,7 @@ namespace TTTReborn.UI
             if (name == "key")
             {
                 UpdateTranslation(new TranslationData(value));
+
                 return;
             }
         }

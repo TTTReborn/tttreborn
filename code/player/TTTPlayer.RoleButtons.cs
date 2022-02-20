@@ -4,7 +4,6 @@ using System.Linq;
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 using TTTReborn.Map;
 using TTTReborn.Roles;
 using TTTReborn.UI;
@@ -16,7 +15,7 @@ namespace TTTReborn.Player
         public static Dictionary<int, TTTLogicButtonData> LogicButtons = new();
         public static Dictionary<int, LogicButtonPoint> LogicButtonPoints = new();
         public static LogicButtonPoint FocusedButton;
-        public bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
+        public static bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
 
         public void SendLogicButtonsToClient()
         {
@@ -53,7 +52,7 @@ namespace TTTReborn.Player
             }
         }
 
-        [Event(TTTEvent.UI.Reloaded)]
+        [Event(TTTEvent.UI.RELOADED)]
         public static void OnUIReloaded()
         {
             LogicButtonPoints = new();
@@ -84,7 +83,7 @@ namespace TTTReborn.Player
             Clear();
         }
 
-        private void Clear()
+        private static void Clear()
         {
             foreach (LogicButtonPoint logicButtonPoint in LogicButtonPoints.Values)
             {

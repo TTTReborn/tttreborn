@@ -26,6 +26,7 @@ namespace TTTReborn.Player
             if (hint == null || !hint.CanHint(this))
             {
                 DeleteHint();
+
                 return;
             }
 

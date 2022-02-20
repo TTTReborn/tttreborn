@@ -86,13 +86,13 @@ namespace TTTReborn.UI
             UpdateScoreboardGroups();
         }
 
-        [Event(TTTEvent.Player.Spawned)]
+        [Event(TTTEvent.Player.SPAWNED)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
             UpdateClient(player.Client);
         }
 
-        [Event(TTTEvent.Player.Connected)]
+        [Event(TTTEvent.Player.CONNECTED)]
         public void OnPlayerConnected(Client client)
         {
             AddClient(client);
@@ -100,7 +100,7 @@ namespace TTTReborn.UI
             UpdateScoreboardGroups();
         }
 
-        [Event(TTTEvent.Player.Disconnected)]
+        [Event(TTTEvent.Player.DISCONNECTED)]
         private void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
         {
             RemoveClient(playerId);
@@ -116,7 +116,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (_entries.TryGetValue(client.PlayerId, out ScoreboardEntry panel))
+            if (_entries.TryGetValue(client.PlayerId, out ScoreboardEntry _))
             {
                 return;
             }
@@ -216,7 +216,7 @@ namespace TTTReborn.UI
                 return _scoreboardGroups[groupName];
             }
 
-            ScoreboardGroup scoreboardGroup = new ScoreboardGroup(_scoreboardContent, groupName);
+            ScoreboardGroup scoreboardGroup = new(_scoreboardContent, groupName);
             scoreboardGroup.UpdateLabel();
 
             _scoreboardGroups.Add(groupName, scoreboardGroup);

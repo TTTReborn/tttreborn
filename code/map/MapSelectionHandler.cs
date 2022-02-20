@@ -58,7 +58,7 @@ namespace TTTReborn.Map
 
         public static void OnMapImagesChanged()
         {
-            Event.Run(Events.TTTEvent.Game.MapImagesChange);
+            Event.Run(Events.TTTEvent.Game.MAP_IMAGES_CHANGE);
         }
     }
 }

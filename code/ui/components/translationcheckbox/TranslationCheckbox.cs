@@ -34,6 +34,7 @@ namespace TTTReborn.UI
             if (name == "key")
             {
                 UpdateTranslation(new TranslationData(value));
+
                 return;
             }
         }

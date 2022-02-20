@@ -3,7 +3,6 @@ using System;
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 using TTTReborn.Items;
 
 namespace TTTReborn.Player
@@ -100,7 +99,7 @@ namespace TTTReborn.Player
 
             ClientTookDamage(client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage);
 
-            Event.Run(TTTEvent.Player.TakeDamage, this, info.Damage);
+            Event.Run(TTTEvent.Player.TAKE_DAMAGE, this, info.Damage);
 
             // Play pain sounds
             if ((info.Flags & DamageFlags.Fall) == DamageFlags.Fall)

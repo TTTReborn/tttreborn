@@ -6,7 +6,6 @@ using Sandbox;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
-using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -362,7 +361,7 @@ namespace TTTReborn.Items
             CloseC4Menu(c4Entity);
         }
 
-        private void CloseC4Menu(C4Entity c4Entity)
+        private static void CloseC4Menu(C4Entity c4Entity)
         {
             if (C4Arm.Instance == null || c4Entity == null || !c4Entity.IsValid || C4Arm.Instance.Entity != c4Entity)
             {

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -20,7 +19,7 @@ namespace TTTReborn.Items
     [Equipment(SlotType = SlotType.UtilityEquipment)]
     [Precached("particles/rope.vpcf")]
     [Hammer.Skip]
-    partial class Hands : TTTEquipment
+    public partial class Hands : TTTEquipment
     {
         public override string ViewModelPath => "";
         public override bool CanDrop() => false;

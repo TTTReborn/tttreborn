@@ -159,7 +159,7 @@ namespace TTTReborn.Rounds
         {
             TTTTeam result = IsRoundOver();
 
-            if (result != null && !Settings.ServerSettings.Instance.Debug.PreventWin)
+            if (result != null && !ServerSettings.Instance.Debug.PreventWin)
             {
                 LoadPostRound(result);
 
@@ -169,7 +169,7 @@ namespace TTTReborn.Rounds
             return false;
         }
 
-        [Event(TTTEvent.Player.Role.Select)]
+        [Event(TTTEvent.Player.Role.SELECT)]
         private static void OnPlayerRoleChange(TTTPlayer player)
         {
             if (Host.IsClient)
@@ -183,7 +183,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        [Event(TTTEvent.Settings.Change)]
+        [Event(TTTEvent.Settings.CHANGE)]
         private static void OnChangeSettings()
         {
             if (Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)

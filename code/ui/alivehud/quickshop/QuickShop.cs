@@ -149,16 +149,16 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event(TTTEvent.Shop.Change)]
+        [Event(TTTEvent.Shop.CHANGE)]
         public static void OnShopChanged()
         {
-            QuickShop.Instance?.Reload();
+            Instance?.Reload();
         }
 
-        [Event(TTTEvent.Player.Role.Select)]
+        [Event(TTTEvent.Player.Role.SELECT)]
         public static void OnRoleChanged(TTTPlayer player)
         {
-            QuickShop quickShop = QuickShop.Instance;
+            QuickShop quickShop = Instance;
 
             if (quickShop != null)
             {

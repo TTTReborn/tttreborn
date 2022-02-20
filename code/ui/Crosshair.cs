@@ -61,8 +61,8 @@ namespace TTTReborn.UI
         }
         private Color _color = Color.White;
 
-        private Panel _crosshairDot;
-        private Panel[] _crosshairLines;
+        private readonly Panel _crosshairDot;
+        private readonly Panel[] _crosshairLines;
 
         public Crosshair()
         {
@@ -88,7 +88,7 @@ namespace TTTReborn.UI
 
         public void UpdateCrosshair()
         {
-            Shadow shadow = new Shadow();
+            Shadow shadow = new();
             shadow.OffsetX = 0;
             shadow.OffsetY = 0;
             shadow.Blur = OutlineBlur;

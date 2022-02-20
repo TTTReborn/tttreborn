@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Items;
 
 namespace TTTReborn.Map

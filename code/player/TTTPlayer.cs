@@ -63,7 +63,7 @@ namespace TTTReborn.Player
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
 
-                Event.Run(TTTEvent.Player.InitialSpawn, Client);
+                Event.Run(TTTEvent.Player.INITIAL_SPAWN, Client);
 
                 ClientInitialSpawn();
             }
@@ -93,7 +93,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                Event.Run(TTTEvent.Player.Spawned, this);
+                Event.Run(TTTEvent.Player.SPAWNED, this);
 
                 RPCs.ClientOnPlayerSpawned(this);
                 SendClientRole();

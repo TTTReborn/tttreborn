@@ -169,7 +169,7 @@ namespace TTTReborn.UI.Menu
             }
             else
             {
-                Event.Run(Events.TTTEvent.Settings.Change);
+                Event.Run(Events.TTTEvent.Settings.CHANGE);
             }
         }
 

@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
@@ -38,23 +37,24 @@ namespace TTTReborn.Map
             {
                 if (player.Role.Name.Equals(CheckValue))
                 {
-                    OnPass.Fire(this);
+                    _ = OnPass.Fire(this);
 
                     return;
                 }
                 else if (player.Team.Name.Equals(CheckValue))
                 {
-                    OnPass.Fire(this);
+                    _ = OnPass.Fire(this);
 
                     return;
                 }
 
-                OnFail.Fire(this);
+                _ = OnFail.Fire(this);
             }
             else
             {
                 Log.Warning("ttt_logic_assigned: Activator is not player.");
-                OnFail.Fire(this);
+
+                _ = OnFail.Fire(this);
             }
         }
     }

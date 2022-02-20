@@ -19,19 +19,19 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Event.Run(TTTEvent.Player.Died, player);
+            Event.Run(TTTEvent.Player.DIED, player);
         }
 
         [ClientRpc]
         public static void ClientOnPlayerConnected(Client client)
         {
-            Event.Run(TTTEvent.Player.Connected, client);
+            Event.Run(TTTEvent.Player.CONNECTED, client);
         }
 
         [ClientRpc]
         public static void ClientOnPlayerDisconnect(long playerId, NetworkDisconnectionReason reason)
         {
-            Event.Run(TTTEvent.Player.Disconnected, playerId, reason);
+            Event.Run(TTTEvent.Player.DISCONNECTED, playerId, reason);
         }
 
         [ClientRpc]
@@ -48,7 +48,7 @@ namespace TTTReborn.Globals
 
             player.SetRole(new NoneRole());
 
-            Event.Run(TTTEvent.Player.Spawned, player);
+            Event.Run(TTTEvent.Player.SPAWNED, player);
         }
 
         /// <summary>
@@ -164,19 +164,19 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
-            Event.Run(TTTEvent.Player.Inventory.PickUp, carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.PICK_UP, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
-            Event.Run(TTTEvent.Player.Inventory.Drop, carriable as ICarriableItem);
+            Event.Run(TTTEvent.Player.Inventory.DROP, carriable as ICarriableItem);
         }
 
         [ClientRpc]
         public static void ClientClearInventory()
         {
-            Event.Run(TTTEvent.Player.Inventory.Clear);
+            Event.Run(TTTEvent.Player.Inventory.CLEAR);
         }
 
         [ClientRpc]

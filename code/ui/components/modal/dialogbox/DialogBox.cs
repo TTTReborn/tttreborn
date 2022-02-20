@@ -12,9 +12,6 @@ namespace TTTReborn.UI
         public Action OnAgree { get; set; }
         public Action OnDecline { get; set; }
 
-        private Button _agreeButton;
-        private Button _declineButton;
-
         public DialogBox(Panel parent = null) : base(parent)
         {
             StyleSheet.Load("/ui/components/modal/dialogbox/DialogBox.scss");
@@ -23,8 +20,8 @@ namespace TTTReborn.UI
 
             Header.DragHeader.IsLocked = true;
 
-            _agreeButton = Footer.Add.ButtonWithIcon("", "done", "agree", OnClickAgree);
-            _declineButton = Footer.Add.ButtonWithIcon("", "close", "decline", OnClickDecline);
+            _ = Footer.Add.ButtonWithIcon("", "done", "agree", OnClickAgree);
+            _ = Footer.Add.ButtonWithIcon("", "close", "decline", OnClickDecline);
         }
 
         public virtual void OnClickAgree()

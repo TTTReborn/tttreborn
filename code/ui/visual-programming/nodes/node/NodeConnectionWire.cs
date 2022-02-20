@@ -8,7 +8,7 @@ namespace TTTReborn.UI.VisualProgramming
         public NodeConnectionEndPoint EndPoint;
 
         private Vector2 _startPos, _endPos;
-        private NodeConnectionWirePart _startLine, _endLine, _midLine, _startMidLine, _endMidLine;
+        private readonly NodeConnectionWirePart _startLine, _endLine, _midLine, _startMidLine, _endMidLine;
 
         private const float MIN_OVERLAP_WIDTH = 60f;
         private const float LINE_THICKNESS = 10f;
@@ -32,7 +32,7 @@ namespace TTTReborn.UI.VisualProgramming
             _endLine = new(this);
             _endLine.AddClass("end");
 
-            Style.Position = Sandbox.UI.PositionMode.Absolute;
+            Style.Position = PositionMode.Absolute;
         }
 
         public override void Delete(bool immediate = false)
@@ -57,14 +57,14 @@ namespace TTTReborn.UI.VisualProgramming
 
         public void UpdateMousePosition(Vector2 vector2)
         {
-            _startMidLine.Style.Display = Sandbox.UI.DisplayMode.None;
-            _midLine.Style.Display = Sandbox.UI.DisplayMode.None;
-            _endMidLine.Style.Display = Sandbox.UI.DisplayMode.None;
+            _startMidLine.Style.Display = DisplayMode.None;
+            _midLine.Style.Display = DisplayMode.None;
+            _endMidLine.Style.Display = DisplayMode.None;
 
             Vector2 pos = StartPoint.Position;
             Vector2 delta = vector2 - pos;
-            Vector2 finalPos = new Vector2(pos);
-            Vector2 finalSize = new Vector2(delta);
+            Vector2 finalPos = new(pos);
+            Vector2 finalSize = new(delta);
 
             float halfLineThickness = LINE_THICKNESS * 0.5f;
 
@@ -104,11 +104,11 @@ namespace TTTReborn.UI.VisualProgramming
 
         public static void SetPanelMatrix(Panel panel, Vector2 pos, Vector2 size)
         {
-            panel.Style.Display = Sandbox.UI.DisplayMode.Flex;
-            panel.Style.Left = Sandbox.UI.Length.Pixels(pos.x);
-            panel.Style.Top = Sandbox.UI.Length.Pixels(pos.y);
-            panel.Style.Width = Sandbox.UI.Length.Pixels(size.x);
-            panel.Style.Height = Sandbox.UI.Length.Pixels(size.y);
+            panel.Style.Display = DisplayMode.Flex;
+            panel.Style.Left = Length.Pixels(pos.x);
+            panel.Style.Top = Length.Pixels(pos.y);
+            panel.Style.Width = Length.Pixels(size.x);
+            panel.Style.Height = Length.Pixels(size.y);
         }
 
         public override void Tick()

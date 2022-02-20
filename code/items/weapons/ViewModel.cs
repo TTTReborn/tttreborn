@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    partial class ViewModel : BaseViewModel
+    public partial class ViewModel : BaseViewModel
     {
         private float _walkBob = 0;
 

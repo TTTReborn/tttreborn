@@ -133,8 +133,8 @@ namespace TTTReborn.UI
 
             Vector2 position = new()
             {
-                x = (Mouse.Position.x - _draggingMouseStartPosition.x) + _draggingStartPosition.x,
-                y = (Mouse.Position.y - _draggingMouseStartPosition.y) + _draggingStartPosition.y
+                x = Mouse.Position.x - _draggingMouseStartPosition.x + _draggingStartPosition.x,
+                y = Mouse.Position.y - _draggingMouseStartPosition.y + _draggingStartPosition.y
             };
 
             float screenWidth = Screen.Width;
@@ -231,7 +231,7 @@ namespace TTTReborn.UI
             DragBasePanel.Style.Top = _oldPositionTop;
         }
 
-        private Drop GetDropPanel()
+        private static Drop GetDropPanel()
         {
             foreach (Drop drop in Drop.List)
             {
