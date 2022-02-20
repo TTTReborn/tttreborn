@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Items;
 
 namespace TTTReborn.Map
@@ -72,7 +71,7 @@ namespace TTTReborn.Map
                 prop.Rotation = modelEntityData.Rotation;
                 prop.Scale = modelEntityData.Scale;
                 prop.RenderColor = modelEntityData.Color;
-                prop.SetModel(modelEntityData.Model);
+                prop.Model = modelEntityData.Model;
                 prop.Spawn();
             }
 
@@ -99,7 +98,7 @@ namespace TTTReborn.Map
                 Rotation = modelEntity.Rotation,
                 Scale = modelEntity.Scale,
                 Color = modelEntity.RenderColor,
-                Model = modelEntity.GetModel(),
+                Model = modelEntity.Model,
             };
         }
     }

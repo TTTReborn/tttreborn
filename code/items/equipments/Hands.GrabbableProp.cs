@@ -65,7 +65,7 @@ namespace TTTReborn.Items
 
             GrabbedEntity.SetParent(null);
             GrabbedEntity.EnableHideInFirstPerson = true;
-            GrabbedEntity.Velocity += _owner.EyeRot.Forward * THROW_FORCE;
+            GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
 
             _ = WaitForAnimationFinish();
         }

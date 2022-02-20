@@ -42,7 +42,7 @@ namespace TTTReborn.Gamemode
 
             TTTLanguage.Load();
             SettingsManager.Load();
-            MapSelection.Load();
+            _ = MapSelection.Load();
 
             if (IsServer)
             {

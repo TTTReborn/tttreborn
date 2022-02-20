@@ -4,12 +4,12 @@ using System.Text.Json;
 
 using Sandbox.UI;
 
-/// <summary>
-///  TODO
-/// - connecNodes: when loading not greening the output dots
-/// - detecting main node when loading file
-/// - clean workspace on reset
-/// </summary>
+/*
+  TODO
+ - connecNodes: when loading not greening the output dots
+ - detecting main node when loading file
+ - clean workspace on reset
+*/
 
 namespace TTTReborn.UI.VisualProgramming
 {

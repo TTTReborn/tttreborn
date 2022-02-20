@@ -46,7 +46,7 @@ namespace TTTReborn.Player.Camera
                 return DefaultPosition;
             }
 
-            return player.CurrentPlayer.EyePos;
+            return player.CurrentPlayer.EyePosition;
         }
 
         public override void BuildInput(InputBuilder input)

@@ -231,7 +231,7 @@ namespace TTTReborn.Player
                 {
                     if (droppedEntity.PhysicsGroup != null)
                     {
-                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * CarriableDropVelocity;
+                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * CarriableDropVelocity;
                     }
                 }
             }
