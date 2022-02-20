@@ -15,13 +15,8 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Test(params object[] input)
+        public override object[] Test(object[] input)
         {
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
-            {
-                return null;
-            }
-
             int percentListCount = PercentList.Count;
 
             if (percentListCount < 2)
@@ -29,8 +24,15 @@ namespace TTTReborn.VisualProgramming
                 throw new NodeStackException("Missing values in RandomSelectionStackNode.");
             }
 
+            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            {
+                return null;
+            }
+
             int value = 0;
             int rnd = Utils.RNG.Next(100) + 1;
+
+            Log.Debug($"Selected random integer: '{rnd}'");
 
             object[] buildArray = new object[percentListCount];
 
@@ -49,11 +51,11 @@ namespace TTTReborn.VisualProgramming
             return buildArray;
         }
 
-        public override object[] Evaluate(params object[] input) => Test(input);
+        public override object[] Evaluate(object[] input) => Test(input);
 
-        public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        public override Dictionary<string, object> GetJsonData()
         {
-            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            Dictionary<string, object> dict = base.GetJsonData();
             dict.Add("PercentList", PercentList);
 
             return dict;

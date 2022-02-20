@@ -37,6 +37,28 @@ namespace TTTReborn.UI.VisualProgramming
 
         public override void Delete(bool immediate = false)
         {
+            if (StartPoint != null && EndPoint != null)
+            {
+                Node startNode = StartPoint.Node;
+                Node endNode = EndPoint.Node;
+
+                for (int j = 0; j < startNode.ConnectionOutputIds.Length; j++)
+                {
+                    if (startNode.ConnectionOutputIds[j] == endNode.Id)
+                    {
+                        startNode.ConnectionOutputIds[j] = null;
+                    }
+                }
+
+                for (int j = 0; j < endNode.ConnectionInputIds.Length; j++)
+                {
+                    if (endNode.ConnectionInputIds[j] == startNode.Id)
+                    {
+                        endNode.ConnectionInputIds[j] = null;
+                    }
+                }
+            }
+
             if (StartPoint != null)
             {
                 StartPoint.ConnectionWire = null;
@@ -144,7 +166,7 @@ namespace TTTReborn.UI.VisualProgramming
             AddClass("nodeconnectionwirepart");
         }
 
-        protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
+        protected override void OnRightClick(MousePanelEvent e)
         {
             base.OnRightClick(e);
 

@@ -1,7 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
 using Sandbox.UI;
+
+/*
+  TODO
+ - connecNodes: when loading not greening the output dots
+ - detecting main node when loading file
+ - clean workspace on reset
+*/
 
 namespace TTTReborn.UI.VisualProgramming
 {
@@ -58,6 +66,16 @@ namespace TTTReborn.UI.VisualProgramming
 
                 LoadNodesFromStackJson(jsonData);
 
+                foreach (Node node in Nodes)
+                {
+                    if (node is MainNode mainNode)
+                    {
+                        MainNode = mainNode;
+
+                        break;
+                    }
+                }
+
                 if (MainNode == null)
                 {
                     MainNode = AddNode<MainNode>();
@@ -92,26 +110,84 @@ namespace TTTReborn.UI.VisualProgramming
         {
             jsonData = jsonData.Replace("LibraryName", "StackNodeName").Replace("NodeReference", "LibraryName");
 
-            Dictionary<string, object> jsonDataDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonData);
+            List<object> jsonDataList = JsonSerializer.Deserialize<List<object>>(jsonData);
 
-            jsonDataDict.TryGetValue("MainStackNode", out object mainStackNode);
-
-            if (mainStackNode == null)
+            foreach (object stackNode in jsonDataList)
             {
-                return;
+                Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) stackNode).GetRawText());
+
+                if (!saveStackNode.TryGetValue("LibraryName", out object libraryName))
+                {
+                    continue;
+                }
+
+                Type type = Utils.GetTypeByLibraryName<Node>(libraryName.ToString());
+
+                if (type == null)
+                {
+                    continue;
+                }
+
+                Node node = Utils.GetObjectByType<Node>(type);
+
+                if (node == null)
+                {
+                    continue;
+                }
+
+                AddNode(node);
+                node.LoadFromJsonData(saveStackNode);
             }
-
-            Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) mainStackNode).GetRawText());
-
-            MainNode = AddNode<MainNode>();
-            MainNode.LoadFromJsonData(saveStackNode);
 
             foreach (Node node in Nodes)
             {
+                if (node is MainNode mainNode)
+                {
+                    MainNode = mainNode;
+                }
+
+                // connect nodes
+                foreach (string id in node.ConnectionInputIds)
+                {
+                    if (id == null)
+                    {
+                        continue;
+                    }
+
+                    Node idNode = Node.GetById(id);
+
+                    if (idNode == null)
+                    {
+                        continue;
+                    }
+
+                    idNode.ConnectWithNode(node);
+                }
+
                 node.Display();
             }
 
             Log.Debug($"Loaded: '{jsonData}'");
+        }
+
+        private Dictionary<string, object> GetStackNodesJsonDictionary()
+        {
+            Dictionary<string, object> jsonDict = new();
+
+            // TODO add workspace settings to jsonDict as well
+
+            List<Dictionary<string, object>> saveList = new();
+
+            foreach (Node node in Nodes)
+            {
+                node.Prepare();
+
+                saveList.Add(node.StackNode.GetJsonData());
+            }
+
+            jsonDict.Add("Nodes", saveList);
+
+            return jsonDict;
         }
     }
 }

@@ -69,8 +69,6 @@ namespace TTTReborn.UI.VisualProgramming
                 return;
             }
 
-            List<Dictionary<string, object>> saveList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(((JsonElement) saveListJson).GetRawText());
-
             foreach (Node node in Nodes)
             {
                 node.Delete(true);
@@ -78,20 +76,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             Nodes.Clear();
 
-            foreach (Dictionary<string, object> nodeJsonData in saveList)
-            {
-                Node.GetNodeFromJsonData<Node>(nodeJsonData);
-            }
-
-            foreach (Node node in Nodes)
-            {
-                if (node is MainNode mainNode)
-                {
-                    MainNode = mainNode;
-                }
-
-                node.Display();
-            }
+            LoadNodesFromStackJson(((JsonElement) saveListJson).GetRawText());
         }
     }
 }

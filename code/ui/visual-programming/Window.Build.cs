@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 
 using TTTReborn.VisualProgramming;
@@ -11,20 +12,30 @@ namespace TTTReborn.UI.VisualProgramming
         {
             BuildButton.Icon = "hourglass_empty";
 
-            MainNode.StackNode.Reset();
+            NodeStack.Instance.Reset();
 
             bool hasError = false;
 
+            List<Node> startingNodeList = new();
+
             foreach (Node node in Nodes)
             {
-                node.RemoveHighlights();
+                node.Reset();
 
-                if (!node.HasInput() && node != MainNode)
+                if (!node.HasInputsFilled())
                 {
                     node.HighlightError();
 
                     hasError = true;
+
+                    continue;
                 }
+                else if (!node.HasInputEnabled())
+                {
+                    startingNodeList.Add(node);
+                }
+
+                node.Prepare();
             }
 
             if (hasError)
@@ -38,11 +49,21 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Log.Debug("Building and testing NodeStack");
 
-                if (MainNode.Build())
+                bool successful = true;
+
+                foreach (Node node in startingNodeList)
+                {
+                    if (!node.Build(0))
+                    {
+                        successful = false;
+                    }
+                }
+
+                if (successful)
                 {
                     Log.Debug("Uploading NodeStack");
 
-                    NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
+                    NodeStack.UploadStack(JsonSerializer.Serialize(GetStackNodesJsonDictionary()));
                 }
             }
             catch (Exception e)

@@ -12,7 +12,7 @@ namespace TTTReborn.VisualProgramming
 
         public static NodeStack Instance;
 
-        private StackNode MainStackNode { get; set; }
+        private List<StackNode> StackNodeList { get; set; } = new();
 
         public NodeStack()
         {
@@ -21,25 +21,100 @@ namespace TTTReborn.VisualProgramming
 
         public void Reset()
         {
-            MainStackNode = null;
+            StackNodeList.Clear();
         }
 
-        public bool Test(params object[] input)
+        public bool Test(List<StackNode> stackNodesList)
         {
-            return TestNode(MainStackNode, input);
+            // TODO check for integrity (no missing connections)
+
+            foreach (StackNode stackNode in stackNodesList)
+            {
+                stackNode.PreparedInputData = null;
+            }
+
+            // check for functionality (data set etc.)
+            foreach (StackNode stackNode in stackNodesList)
+            {
+                if (stackNode.ConnectionInputIds.Length == 0 && !TestNode(stackNode, 0))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
-        private bool TestNode(StackNode stackNode, params object[] input)
+        private bool TestNode(StackNode stackNode, int inputIndex, object input = null)
         {
-            object[] arr;
+            if (stackNode.ConnectionInputIds.Length > 0)
+            {
+                if (stackNode.PreparedInputData == null)
+                {
+                    int count = 0;
+
+                    for (int i = 0; i < stackNode.ConnectionInputIds.Length; i++)
+                    {
+                        if (stackNode.ConnectionInputIds[i] != null)
+                        {
+                            count++;
+                        }
+                    }
+
+                    stackNode.PreparedInputData = new object[count];
+                }
+
+                stackNode.PreparedInputData[inputIndex] = input;
+
+                for (int i = 0; i < stackNode.PreparedInputData.Length; i++)
+                {
+                    if (stackNode.PreparedInputData[i] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                stackNode.PreparedInputData = new object[]
+                {
+                    input
+                };
+            }
+
+            bool successful = true;
 
             try
             {
-                arr = stackNode.Test(input);
+                object[] array = stackNode.Test(stackNode.PreparedInputData);
 
-                if (arr == null)
+                for (int o = 0; o < stackNode.ConnectionOutputIds.Length; o++)
                 {
-                    return true;
+                    string id = stackNode.ConnectionOutputIds[o];
+
+                    if (id == null)
+                    {
+                        continue;
+                    }
+
+                    StackNode idStackNode = StackNode.GetById(id);
+
+                    if (idStackNode == null)
+                    {
+                        Log.Warning($"Error in testing NodeStack with node {stackNode.Id} ('{stackNode.LibraryName}')");
+
+                        return false;
+                    }
+
+                    for (int i = 0; i < idStackNode.ConnectionInputIds.Length; i++)
+                    {
+                        string inputId = idStackNode.ConnectionInputIds[i];
+
+                        if (inputId == stackNode.Id && !TestNode(idStackNode, i, array[o]))
+                        {
+                            successful = false;
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -54,60 +129,97 @@ namespace TTTReborn.VisualProgramming
                 throw;
             }
 
-            bool errors = false;
+            return successful;
+        }
 
-            for (int i = 0, j = 0; i < stackNode.NextNodes.Count; i++, j++)
+        public bool Evaluate(object input = null)
+        {
+            foreach (StackNode stackNode in StackNodeList)
             {
-                StackNode node = stackNode.NextNodes[i];
+                stackNode.PreparedInputData = null;
+            }
 
-                try
+            foreach (StackNode stackNode in StackNodeList)
+            {
+                if (stackNode.ConnectionInputIds.Length == 0 && !EvaluateNode(stackNode, 0, input))
                 {
-                    object data = null;
-
-                    if (arr.Length > i)
-                    {
-                        while (j < arr.Length)
-                        {
-                            data = arr[j];
-
-                            if (data != null)
-                            {
-                                break;
-                            }
-
-                            j++;
-                        }
-                    }
-
-                    TestNode(node, data);
-                }
-                catch (Exception e)
-                {
-                    errors = true;
-
-                    Log.Warning(e);
+                    return false;
                 }
             }
 
-            return !errors;
+            return true;
         }
 
-        public bool Evaluate(params object[] input)
+        private bool EvaluateNode(StackNode stackNode, int inputIndex, object input = null)
         {
-            return EvaluateNode(MainStackNode, input);
-        }
+            if (stackNode.ConnectionInputIds.Length > 0)
+            {
+                if (stackNode.PreparedInputData == null)
+                {
+                    int count = 0;
 
-        private bool EvaluateNode(StackNode stackNode, params object[] input)
-        {
-            object[] arr;
+                    for (int i = 0; i < stackNode.ConnectionInputIds.Length; i++)
+                    {
+                        if (stackNode.ConnectionInputIds[i] != null)
+                        {
+                            count++;
+                        }
+                    }
+
+                    stackNode.PreparedInputData = new object[count];
+                }
+
+                stackNode.PreparedInputData[inputIndex] = input;
+
+                for (int i = 0; i < stackNode.PreparedInputData.Length; i++)
+                {
+                    if (stackNode.PreparedInputData[i] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                stackNode.PreparedInputData = new object[]
+                {
+                    input
+                };
+            }
+
+            bool successful = true;
 
             try
             {
-                arr = stackNode.Evaluate(input);
+                object[] array = stackNode.Evaluate(stackNode.PreparedInputData);
 
-                if (arr == null)
+                for (int o = 0; o < stackNode.ConnectionOutputIds.Length; o++)
                 {
-                    return true;
+                    string id = stackNode.ConnectionOutputIds[o];
+
+                    if (id == null)
+                    {
+                        continue;
+                    }
+
+                    StackNode idStackNode = StackNode.GetById(id);
+
+                    if (idStackNode == null)
+                    {
+                        Log.Warning($"Error in evaluating NodeStack with node {stackNode.Id} ('{stackNode.LibraryName}')");
+
+                        return false;
+                    }
+
+                    for (int i = 0; i < idStackNode.ConnectionInputIds.Length; i++)
+                    {
+                        string inputId = idStackNode.ConnectionInputIds[i];
+
+                        if (inputId == stackNode.Id && !EvaluateNode(idStackNode, i, array[o]))
+                        {
+                            successful = false;
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -122,47 +234,14 @@ namespace TTTReborn.VisualProgramming
                 throw;
             }
 
-            bool errors = false;
-
-            for (int i = 0, j = 0; i < stackNode.NextNodes.Count; i++, j++)
-            {
-                StackNode node = stackNode.NextNodes[i];
-
-                try
-                {
-                    object data = null;
-
-                    if (arr.Length > i)
-                    {
-                        while (j < arr.Length)
-                        {
-                            data = arr[j];
-
-                            if (data != null)
-                            {
-                                break;
-                            }
-
-                            j++;
-                        }
-                    }
-
-                    EvaluateNode(node, data);
-                }
-                catch (Exception e)
-                {
-                    errors = true;
-
-                    Log.Warning(e);
-                }
-            }
-
-            return !errors;
+            return successful;
         }
 
         public void Init()
         {
-            string defaultNodeStackJsonData = "{\"MainStackNode\":{\"LibraryName\":\"stacknode_main\",\"ConnectPositions\":[0],\"NodeReference\":\"node_main\",\"NextNodes\":[{\"LibraryName\":\"stacknode_percentage_selection\",\"ConnectPositions\":[0,0],\"NodeReference\":\"node_percentage_selection\",\"NextNodes\":[{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1248,\"PosY\":202,\"SelectedRole\":\"role_traitor\"},{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1246,\"PosY\":671,\"SelectedRole\":\"role_innocent\"}],\"PosX\":809,\"PosY\":366,\"PercentList\":[30,70]}],\"PosX\":404,\"PosY\":452}}";
+            // TODO
+            // string defaultNodeStackJsonData = "{\"MainStackNode\":{\"LibraryName\":\"stacknode_main\",\"ConnectPositions\":[0],\"NodeReference\":\"node_main\",\"NextNodes\":[{\"LibraryName\":\"stacknode_percentage_selection\",\"ConnectPositions\":[0,0],\"NodeReference\":\"node_percentage_selection\",\"NextNodes\":[{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1248,\"PosY\":202,\"SelectedRole\":\"role_traitor\"},{\"LibraryName\":\"stacknode_role_selection\",\"ConnectPositions\":[-1],\"NodeReference\":\"node_role_selection\",\"NextNodes\":[],\"PosX\":1246,\"PosY\":671,\"SelectedRole\":\"role_innocent\"}],\"PosX\":809,\"PosY\":366,\"PercentList\":[30,70]}],\"PosX\":404,\"PosY\":452}}";
+            string defaultNodeStackJsonData = "{\"Nodes\":[{\"Id\":\"fcc2671c-7d11-4711-9ab0-58545f8a989d\",\"LibraryName\":\"stacknode_main\",\"NodeReference\":\"node_main\",\"ConnectionInputIds\":[],\"ConnectionOutputIds\":[null],\"Pos\":\"0,0\"}]}";
 
             Save(defaultNodeStackJsonData);
             LoadDefaultFile(false);
@@ -170,16 +249,28 @@ namespace TTTReborn.VisualProgramming
 
         public void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            jsonData.TryGetValue("MainStackNode", out object saveListJson);
+            jsonData.TryGetValue("Nodes", out object jsonNodesData);
 
-            if (saveListJson == null)
+            if (jsonNodesData == null)
             {
+                Log.Error("Malformed data in visual programming json");
+
                 return;
             }
 
-            Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) saveListJson).GetRawText());
+            List<object> jsonNodeList = JsonSerializer.Deserialize<List<object>>((JsonElement) jsonNodesData);
 
-            MainStackNode = StackNode.GetStackNodeFromJsonData<StackNode>(saveStackNode);
+            foreach (object stackNodeJson in jsonNodeList)
+            {
+                if (stackNodeJson == null)
+                {
+                    continue;
+                }
+
+                Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) stackNodeJson).GetRawText());
+
+                StackNodeList.Add(StackNode.GetStackNodeFromJsonData<StackNode>(saveStackNode));
+            }
         }
 
         private static string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
@@ -211,9 +302,7 @@ namespace TTTReborn.VisualProgramming
 
             LoadFromJsonData(jsonData);
 
-            bool test = false;
-
-            try
+            if (!Instance.Test(StackNodeList))
             {
                 test = Instance.Test();
             }
@@ -234,7 +323,7 @@ namespace TTTReborn.VisualProgramming
                 FileSystem.Data.CreateDirectory("settings");
             }
 
-            if (MainStackNode == null && jsonData == null)
+            if (StackNodeList.Count == 0 && jsonData == null)
             {
                 return;
             }
@@ -248,15 +337,29 @@ namespace TTTReborn.VisualProgramming
 
             string path = $"{settingsPath}{DefaultSettingsFile}";
 
-            FileSystem.Data.WriteAllText(path, jsonData ?? JsonSerializer.Serialize(GetJsonData()));
+            if (jsonData == null)
+            {
+                Dictionary<string, object> jsonDict = new();
+                jsonDict.Add("Nodes", GetJsonData());
+
+                FileSystem.Data.WriteAllText(path, JsonSerializer.Serialize(jsonDict));
+            }
+            else
+            {
+                FileSystem.Data.WriteAllText(path, jsonData);
+            }
         }
 
-        public Dictionary<string, object> GetJsonData()
+        public List<object> GetJsonData()
         {
-            return new()
+            List<object> jsonData = new();
+
+            foreach (StackNode stackNode in StackNodeList)
             {
-                ["MainStackNode"] = MainStackNode.GetJsonData()
-            };
+                jsonData.Add(stackNode.GetJsonData());
+            }
+
+            return jsonData;
         }
     }
 }
