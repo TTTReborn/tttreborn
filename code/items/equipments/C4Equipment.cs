@@ -45,7 +45,7 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Attack1))
                 {
-                    TraceResult placementTrace = Trace.Ray(Owner.EyePos, Owner.EyePos + Owner.EyeRot.Forward * PLACE_DISTANCE)
+                    TraceResult placementTrace = Trace.Ray(Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * PLACE_DISTANCE)
                        .Ignore(owner)
                        .UseHitboxes()
                        .Run();
@@ -55,7 +55,7 @@ namespace TTTReborn.Items
                         return;
                     }
 
-                    C4Entity bomb = new C4Entity();
+                    C4Entity bomb = new();
                     bomb.PhysicsEnabled = false;
                     bomb.Position = placementTrace.EndPos;
                     bomb.Rotation = Rotation.From(placementTrace.Normal.EulerAngles);

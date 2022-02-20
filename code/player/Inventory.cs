@@ -173,9 +173,9 @@ namespace TTTReborn.Player
         public bool DropEntity(Entity self, Type entity)
         {
             Entity droppedEntity = Utils.GetObjectByType<Entity>(entity);
-            droppedEntity.Position = Owner.EyePos + Owner.EyeRot.Forward * DROPPOSITIONOFFSET;
-            droppedEntity.Rotation = Owner.EyeRot;
-            droppedEntity.Velocity = Owner.EyeRot.Forward * DROPVELOCITY;
+            droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
+            droppedEntity.Rotation = Owner.EyeRotation;
+            droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
             droppedEntity.Tags.Add(IItem.ITEM_TAG);
 
             return Remove(self);

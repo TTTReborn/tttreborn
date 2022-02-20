@@ -18,10 +18,10 @@ namespace TTTReborn.Items
 
         public virtual void MeleeStrike(float damage, float force)
         {
-            Vector3 forward = Owner.EyeRot.Forward;
+            Vector3 forward = Owner.EyeRotation.Forward;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * MeleeDistance, 10f))
+            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * MeleeDistance, 10f))
             {
                 if (!tr.Entity.IsValid())
                 {

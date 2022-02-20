@@ -16,7 +16,7 @@ namespace TTTReborn.Player
             }
             else
             {
-                trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * distance);
+                trace = Trace.Ray(EyePosition, EyePosition + EyeRotation.Forward * distance);
             }
 
             trace = trace.HitLayer(CollisionLayer.Debris).Ignore(this);
@@ -50,7 +50,7 @@ namespace TTTReborn.Player
             }
             else
             {
-                trace = Trace.Ray(EyePos, EyePos + EyeRot.Forward * maxHintDistance);
+                trace = Trace.Ray(EyePosition, EyePosition + EyeRotation.Forward * maxHintDistance);
             }
 
             trace = trace.HitLayer(CollisionLayer.Debris).Ignore(this);

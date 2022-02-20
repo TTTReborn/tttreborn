@@ -75,7 +75,7 @@ namespace TTTReborn.Items
 
         public void SecondaryAction()
         {
-            TraceResult tr = Trace.Ray(_owner.EyePos, _owner.EyePos + _owner.EyeRot.Forward * Hands.MAX_INTERACT_DISTANCE)
+            TraceResult tr = Trace.Ray(_owner.EyePosition, _owner.EyePosition + _owner.EyeRotation.Forward * Hands.MAX_INTERACT_DISTANCE)
                 .Ignore(_owner)
                 .Run();
 

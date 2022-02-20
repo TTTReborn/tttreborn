@@ -186,9 +186,9 @@ namespace TTTReborn.Items
                 {
                     TTTAmmo ammoBox = Globals.Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
 
-                    ammoBox.Position = Owner.EyePos + Owner.EyeRot.Forward * AmmoDropPositionOffset;
-                    ammoBox.Rotation = Owner.EyeRot;
-                    ammoBox.Velocity = Owner.EyeRot.Forward * AmmoDropVelocity;
+                    ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AmmoDropPositionOffset;
+                    ammoBox.Rotation = Owner.EyeRotation;
+                    ammoBox.Velocity = Owner.EyeRotation.Forward * AmmoDropVelocity;
                     ammoBox.SetCurrentAmmo(AmmoClip);
                 }
 
@@ -297,11 +297,11 @@ namespace TTTReborn.Items
 
         public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
         {
-            Vector3 forward = Owner.EyeRot.Forward;
+            Vector3 forward = Owner.EyeRotation.Forward;
             forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
+            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
             {
                 if (!IsServer || !tr.Entity.IsValid())
                 {

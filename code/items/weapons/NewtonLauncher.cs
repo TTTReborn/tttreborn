@@ -63,11 +63,11 @@ namespace TTTReborn.Items
 
         public override void ShootBullet(float spread, float force, float damage, float bulletSize)
         {
-            Vector3 forward = Owner.EyeRot.Forward;
+            Vector3 forward = Owner.EyeRotation.Forward;
             forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
+            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
             {
                 if (!IsServer || !tr.Entity.IsValid() || tr.Entity.IsWorld)
                 {
