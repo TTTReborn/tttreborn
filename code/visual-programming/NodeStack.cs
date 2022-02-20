@@ -8,7 +8,7 @@ namespace TTTReborn.VisualProgramming
 {
     public partial class NodeStack
     {
-        public static string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
+        public const string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
 
         public static NodeStack Instance;
 
@@ -182,9 +182,9 @@ namespace TTTReborn.VisualProgramming
             MainStackNode = StackNode.GetStackNodeFromJsonData<StackNode>(saveStackNode);
         }
 
-        private string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
+        private static string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
 
-        private string DefaultSettingsFile => $"default{VISUALPROGRAMMING_FILE_EXTENSION}";
+        private static string DefaultSettingsFile => $"default{VISUALPROGRAMMING_FILE_EXTENSION}";
 
         public static void Load()
         {
@@ -211,7 +211,15 @@ namespace TTTReborn.VisualProgramming
 
             LoadFromJsonData(jsonData);
 
-            if (!Instance.Test())
+            bool test = false;
+
+            try
+            {
+                test = Instance.Test();
+            }
+            catch (Exception) {}
+
+            if (!test)
             {
                 Log.Warning($"VisualProgramming file '{settingsPath}{DefaultSettingsFile}' test failed. Initializing new one...");
 

@@ -5,7 +5,7 @@ namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window
     {
-        public void Reset()
+        public static void Reset()
         {
             DialogBox dialogBox = new();
             dialogBox.SetTranslationTitle(new TranslationData("MENU_VISUALPROGRAMMING_RESET"));

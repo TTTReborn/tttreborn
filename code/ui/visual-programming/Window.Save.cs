@@ -9,7 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window
     {
-        public static string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
+        public const string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
 
         private FileSelection _currentFileSelection;
 
@@ -27,7 +27,7 @@ namespace TTTReborn.UI.VisualProgramming
             _currentFileSelection = fileSelection;
         }
 
-        private string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
+        private static string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
 
         private void OnAgreeSaveAs(FileSelection fileSelection)
         {
