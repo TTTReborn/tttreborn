@@ -18,8 +18,6 @@ namespace TTTReborn.UI.VisualProgramming
             AddSetting<NodePercentSetting>();
             AddSetting<NodePercentSetting>().ToggleInput(false);
             // TODO add a way to add new entries via GUI
-
-            HighlightError();
         }
 
         internal void OnChange()

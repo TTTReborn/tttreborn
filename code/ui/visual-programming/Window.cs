@@ -6,9 +6,7 @@ using Sandbox.UI;
 
 /*
   TODO
- - connecNodes: when loading not greening the output dots
- - detecting main node when loading file
- - clean workspace on reset
+ - fix matrix issues
 */
 
 namespace TTTReborn.UI.VisualProgramming

@@ -17,8 +17,6 @@ namespace TTTReborn.UI.VisualProgramming
             SetTitle("RoleSelection Node");
 
             AddSetting<NodeRoleSelectionSetting>();
-
-            HighlightError();
         }
 
         internal void OnSelectRole(Type roleType)

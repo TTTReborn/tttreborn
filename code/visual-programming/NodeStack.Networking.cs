@@ -44,12 +44,7 @@ namespace TTTReborn.VisualProgramming
                 return;
             }
 
-            Window window = Window.Instance;
-
-            if (window != null)
-            {
-                window.Delete(true);
-            }
+            Window.Instance?.Delete(true);
 
             _ = new Window(UI.Hud.Current.GeneralHudPanel, jsonData);
         }

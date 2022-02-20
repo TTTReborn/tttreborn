@@ -34,9 +34,9 @@ namespace TTTReborn.UI.VisualProgramming
 
         public string Id { get; set; }
         public string LibraryName { get; set; }
-        public string[] ConnectionOutputIds { get; set; } = Array.Empty<string>();
-        public string[] ConnectionInputIds { get; set; } = Array.Empty<string>();
-        public object[] InputData { get; set; } = Array.Empty<object>();
+        public string[] ConnectionOutputIds { get; set; }
+        public string[] ConnectionInputIds { get; set; }
+        public object[] InputData { get; set; }
 
         public List<NodeSetting> NodeSettings = new();
         public StackNode StackNode;
@@ -57,6 +57,10 @@ namespace TTTReborn.UI.VisualProgramming
 
             Id = Guid.NewGuid().ToString();
             StackNode.Id = Id;
+
+            ConnectionOutputIds = Array.Empty<string>();
+            ConnectionInputIds = Array.Empty<string>();
+            InputData = Array.Empty<object>();
 
             NodeList.Add(this);
         }
@@ -88,12 +92,26 @@ namespace TTTReborn.UI.VisualProgramming
 
             if (nodeSetting.Input.Enabled)
             {
+                string[] oldArr = ConnectionInputIds;
+
                 ConnectionInputIds = new string[ConnectionInputIds.Length + 1];
+
+                for (int i = 0; i < oldArr.Length; i++)
+                {
+                    ConnectionInputIds[i] = oldArr[i];
+                }
             }
 
             if (nodeSetting.Output.Enabled)
             {
+                string[] oldArr = ConnectionOutputIds;
+
                 ConnectionOutputIds = new string[ConnectionOutputIds.Length + 1];
+
+                for (int i = 0; i < oldArr.Length; i++)
+                {
+                    ConnectionOutputIds[i] = oldArr[i];
+                }
             }
 
             return nodeSetting;
@@ -375,58 +393,6 @@ namespace TTTReborn.UI.VisualProgramming
                 return;
             }
 
-            for (int inIndex = 0; inIndex < ConnectionInputIds.Length; inIndex++)
-            {
-                if (ConnectionInputIds[inIndex] == node.Id)
-                {
-                    for (int outIndex = 0; outIndex < node.ConnectionOutputIds.Length; outIndex++)
-                    {
-                        if (node.ConnectionOutputIds[outIndex] == Id)
-                        {
-                            NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
-
-                            int outCount = 0;
-
-                            foreach (NodeSetting nodeSetting in node.NodeSettings)
-                            {
-                                if (nodeSetting.Output.Enabled)
-                                {
-                                    if (outCount == outIndex)
-                                    {
-                                        NodeConnectionStartPoint startPoint = nodeSetting.Output.ConnectionPoint;
-                                        startPoint.ConnectionWire = nodeConnectionWire;
-                                        nodeConnectionWire.StartPoint = startPoint;
-                                    }
-
-                                    outCount++;
-                                }
-                            }
-
-                            int inCount = 0;
-
-                            foreach (NodeSetting nodeSetting in NodeSettings)
-                            {
-                                if (nodeSetting.Input.Enabled)
-                                {
-                                    if (inCount == inIndex)
-                                    {
-                                        NodeConnectionEndPoint endPoint = nodeSetting.Input.ConnectionPoint;
-                                        endPoint.ConnectionWire = nodeConnectionWire;
-                                        nodeConnectionWire.EndPoint = endPoint;
-                                    }
-
-                                    inCount++;
-                                }
-                            }
-
-                            return;
-                        }
-                    }
-
-                    break;
-                }
-            }
-
             for (int outIndex = 0; outIndex < ConnectionOutputIds.Length; outIndex++)
             {
                 if (ConnectionOutputIds[outIndex] == node.Id)
@@ -478,6 +444,58 @@ namespace TTTReborn.UI.VisualProgramming
                     break;
                 }
             }
+
+            for (int inIndex = 0; inIndex < ConnectionInputIds.Length; inIndex++)
+            {
+                if (ConnectionInputIds[inIndex] == node.Id)
+                {
+                    for (int outIndex = 0; outIndex < node.ConnectionOutputIds.Length; outIndex++)
+                    {
+                        if (node.ConnectionOutputIds[outIndex] == Id)
+                        {
+                            NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
+
+                            int outCount = 0;
+
+                            foreach (NodeSetting nodeSetting in node.NodeSettings)
+                            {
+                                if (nodeSetting.Output.Enabled)
+                                {
+                                    if (outCount == outIndex)
+                                    {
+                                        NodeConnectionStartPoint startPoint = nodeSetting.Output.ConnectionPoint;
+                                        startPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.StartPoint = startPoint;
+                                    }
+
+                                    outCount++;
+                                }
+                            }
+
+                            int inCount = 0;
+
+                            foreach (NodeSetting nodeSetting in NodeSettings)
+                            {
+                                if (nodeSetting.Input.Enabled)
+                                {
+                                    if (inCount == inIndex)
+                                    {
+                                        NodeConnectionEndPoint endPoint = nodeSetting.Input.ConnectionPoint;
+                                        endPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.EndPoint = endPoint;
+                                    }
+
+                                    inCount++;
+                                }
+                            }
+
+                            return;
+                        }
+                    }
+
+                    break;
+                }
+            }
         }
 
         public virtual Dictionary<string, object> GetJsonData()
@@ -498,7 +516,8 @@ namespace TTTReborn.UI.VisualProgramming
 
             if (id != null)
             {
-                Id = id.ToString();
+                Id = ((JsonElement) id).ToString();
+                StackNode.Id = Id;
             }
 
             jsonData.TryGetValue("ConnectionInputIds", out object connectionInputIds);

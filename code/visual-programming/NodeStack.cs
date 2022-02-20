@@ -284,6 +284,8 @@ namespace TTTReborn.VisualProgramming
 
         public void LoadDefaultFile(bool initial = true)
         {
+            Reset();
+
             string settingsPath = GetSettingsPathByData(Utils.Realm.Server);
 
             Dictionary<string, object> jsonData = Player.TTTPlayer.LoadVisualProgramming(settingsPath, DefaultSettingsFile, Utils.Realm.Server);
@@ -344,12 +346,12 @@ namespace TTTReborn.VisualProgramming
                 Dictionary<string, object> jsonDict = new();
                 jsonDict.Add("Nodes", GetJsonData());
 
-                FileSystem.Data.WriteAllText(path, JsonSerializer.Serialize(jsonDict));
+                jsonData = JsonSerializer.Serialize(jsonDict);
             }
-            else
-            {
-                FileSystem.Data.WriteAllText(path, jsonData);
-            }
+
+            FileSystem.Data.WriteAllText(path, jsonData);
+
+            Log.Debug($"Saved '{jsonData}' into '{path}'.");
         }
 
         public List<object> GetJsonData()
