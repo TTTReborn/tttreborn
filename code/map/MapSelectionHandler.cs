@@ -30,7 +30,8 @@ namespace TTTReborn.Map
 
         private static async Task<List<string>> GetTTTMapNames()
         {
-            Package result = await Package.Fetch(Global.GameName, true);
+            Package result = await Package.Fetch(Global.GameIdent, true);
+
             return result.GameConfiguration.MapList;
         }
 
@@ -55,7 +56,7 @@ namespace TTTReborn.Map
             return indexToVoteCount;
         }
 
-        public void OnMapImagesChanged()
+        public static void OnMapImagesChanged()
         {
             Event.Run(Events.TTTEvent.Game.MapImagesChange);
         }

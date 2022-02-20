@@ -24,12 +24,12 @@ namespace TTTReborn.UI.Menu
             }
         }
 
-        public void GoToClientSettings()
+        public static void GoToClientSettings()
         {
             TTTMenu.Instance.AddPage(new ClientSettingsPage());
         }
 
-        public void GoToServerSettings()
+        public static void GoToServerSettings()
         {
             // Call to server which sends down server data and then adds the ServerSettingsPage.
             SettingFunctions.RequestServerSettings();

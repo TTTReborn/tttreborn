@@ -9,13 +9,15 @@ namespace TTTReborn.UI.Menu
 {
     public partial class SettingsPage : Panel
     {
-        public static void CreateFileSelectionButtons(Panel parent, FileSelection currentFileSelection, bool isServerSettings)
+        private static FileSelection _fileSelection;
+
+        public static void CreateFileSelectionButtons(Panel parent, bool isServerSettings)
         {
             Panel wrapper = new();
 
             wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_SAVE"), "save", null, () =>
             {
-                currentFileSelection?.Close();
+                _fileSelection?.Close();
 
                 FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
                 fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
@@ -24,14 +26,14 @@ namespace TTTReborn.UI.Menu
                 fileSelection.EnableFileNameEntry();
                 fileSelection.Display();
 
-                currentFileSelection = fileSelection;
+                _fileSelection = fileSelection;
             });
 
             wrapper.Add.HorizontalLineBreak();
 
             wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_LOAD"), "upload_file", null, () =>
             {
-                currentFileSelection?.Close();
+                _fileSelection?.Close();
 
                 FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
                 fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
@@ -40,7 +42,7 @@ namespace TTTReborn.UI.Menu
 
                 fileSelection.Display();
 
-                currentFileSelection = fileSelection;
+                _fileSelection = fileSelection;
             });
 
             parent.AddChild(wrapper);

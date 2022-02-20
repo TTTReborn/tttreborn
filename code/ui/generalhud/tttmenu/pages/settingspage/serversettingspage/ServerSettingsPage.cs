@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Settings;
@@ -10,12 +9,11 @@ namespace TTTReborn.UI.Menu
     {
         private TranslationTabContainer TabContainer { get; set; }
         private Panel Buttons { get; set; }
-        private readonly FileSelection _currentFileSelection;
 
         public ServerSettingsPage(ServerSettings serverSettings)
         {
             SettingsPage.CreateSettings(TabContainer, serverSettings);
-            SettingsPage.CreateFileSelectionButtons(Buttons, _currentFileSelection, true);
+            SettingsPage.CreateFileSelectionButtons(Buttons, true);
         }
     }
 }
