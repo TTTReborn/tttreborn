@@ -38,7 +38,7 @@ namespace TTTReborn.UI.VisualProgramming
         public string[] ConnectionInputIds { get; set; }
         public object[] InputData { get; set; }
 
-        public List<NodeSetting> NodeSettings = new();
+        public List<NodeSetting> NodeSettings;
         public StackNode StackNode;
 
         public Node(StackNode stackNode) : base()
@@ -61,6 +61,8 @@ namespace TTTReborn.UI.VisualProgramming
             ConnectionOutputIds = Array.Empty<string>();
             ConnectionInputIds = Array.Empty<string>();
             InputData = Array.Empty<object>();
+
+            NodeSettings = new();
 
             NodeList.Add(this);
         }

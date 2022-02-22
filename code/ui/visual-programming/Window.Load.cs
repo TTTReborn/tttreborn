@@ -75,6 +75,7 @@ namespace TTTReborn.UI.VisualProgramming
             }
 
             Nodes.Clear();
+            MainNode = null;
 
             LoadNodesFromStackJson(((JsonElement) saveListJson).GetRawText());
         }

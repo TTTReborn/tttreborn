@@ -57,7 +57,7 @@ namespace TTTReborn.Items
 
                     C4Entity bomb = new();
                     bomb.PhysicsEnabled = false;
-                    bomb.Position = placementTrace.EndPos;
+                    bomb.Position = placementTrace.EndPosition;
                     bomb.Rotation = Rotation.From(placementTrace.Normal.EulerAngles);
                     bomb.Rotation = bomb.Rotation.RotateAroundAxis(Vector3.Right, -90);
                     bomb.Rotation = bomb.Rotation.RotateAroundAxis(Vector3.Up, 90);

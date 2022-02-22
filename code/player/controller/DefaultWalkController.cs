@@ -90,7 +90,7 @@ namespace TTTReborn.Player
             #endregion
 
             #region Drowning
-            IsUnderwater = Pawn.WaterLevel.Fraction == 1f;
+            IsUnderwater = Pawn.WaterLevel == 1f;
 
             if (IsUnderwater)
             {

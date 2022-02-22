@@ -174,8 +174,7 @@ namespace TTTReborn.UI
             }
 
             List<Panel> childrenList = Children.ToList();
-
-            ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
+            ICarriableItem activeCarriable = player.ActiveChild as ICarriableItem;
 
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
             if (keyboardIndexPressed != -1)

@@ -150,7 +150,7 @@ namespace TTTReborn.Items
 
             IsReloading = true;
 
-            (Owner as AnimEntity).SetAnimBool("b_reload", true);
+            (Owner as AnimEntity).SetAnimParameter("b_reload", true);
 
             DoClientReload();
         }
@@ -263,7 +263,7 @@ namespace TTTReborn.Items
         [ClientRpc]
         public virtual void DoClientReload()
         {
-            ViewModelEntity?.SetAnimBool("reload", true);
+            ViewModelEntity?.SetAnimParameter("reload", true);
         }
 
         public override void AttackPrimary()
@@ -291,7 +291,7 @@ namespace TTTReborn.Items
                 _ = new Perlin();
             }
 
-            ViewModelEntity?.SetAnimBool("fire", true);
+            ViewModelEntity?.SetAnimParameter("fire", true);
         }
 
         public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
@@ -311,7 +311,7 @@ namespace TTTReborn.Items
                 {
                     tr.Surface.DoBulletImpact(tr);
 
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
+                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)
                         .WithWeapon(this);
@@ -325,7 +325,7 @@ namespace TTTReborn.Items
         {
             using (LagCompensation())
             {
-                bool InWater = Physics.TestPointContents(start, CollisionLayer.Water);
+                bool InWater = Sandbox.Internal.GlobalGameNamespace.Map.Physics.IsPointWater(start);
 
                 TraceResult tr = Trace.Ray(start, end)
                         .UseHitboxes()

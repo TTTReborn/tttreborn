@@ -104,7 +104,7 @@ namespace TTTReborn.Player
             if (!IsForcedSpectator)
             {
                 Controller = new DefaultWalkController();
-                Camera = new FirstPersonCamera();
+                CameraMode = new FirstPersonCamera();
 
                 EnableAllCollisions = true;
                 EnableDrawing = true;
@@ -239,20 +239,20 @@ namespace TTTReborn.Player
 
         private void TickPlayerChangeSpectateCamera()
         {
-            if (!Input.Pressed(InputButton.Jump) || !IsServer)
+            if (!Input.Pressed(InputButton.Jump))
             {
                 return;
             }
 
             using (Prediction.Off())
             {
-                Camera = Camera switch
+                CameraMode = CameraMode switch
                 {
                     RagdollSpectateCamera => new FreeSpectateCamera(),
                     FreeSpectateCamera => new ThirdPersonSpectateCamera(),
                     ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
                     FirstPersonSpectatorCamera => new FreeSpectateCamera(),
-                    _ => Camera
+                    _ => CameraMode
                 };
             }
         }

@@ -37,7 +37,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
 
             ShootEffects();
 

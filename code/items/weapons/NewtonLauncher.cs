@@ -53,7 +53,7 @@ namespace TTTReborn.Items
 
         public void ReleaseCharge()
         {
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
             ShootEffects();
             PlaySound("rust_pistol.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0f, 0f, BaseDamage, 0f);
@@ -76,7 +76,7 @@ namespace TTTReborn.Items
 
                 using (Prediction.Off())
                 {
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
+                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)
                         .WithWeapon(this);

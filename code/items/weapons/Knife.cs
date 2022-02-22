@@ -37,7 +37,7 @@ namespace TTTReborn.Items
 
                 using (Prediction.Off())
                 {
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
+                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)
                         .WithWeapon(this);
@@ -49,7 +49,7 @@ namespace TTTReborn.Items
 
         public override void AttackPrimary()
         {
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
 
             ShootEffects();
 

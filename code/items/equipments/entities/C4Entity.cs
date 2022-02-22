@@ -204,7 +204,7 @@ namespace TTTReborn.Items
                 Particles.Create("particles/explosion_fireball.vpcf", PhysicsBody.MassCenter);
 
                 Vector3 sourcePos = PhysicsBody.MassCenter;
-                IEnumerable<Entity> overlaps = Physics.GetEntitiesInSphere(sourcePos, BOMB_RADIUS);
+                IEnumerable<Entity> overlaps = FindInSphere(sourcePos, BOMB_RADIUS);
 
                 foreach (Entity overlap in overlaps)
                 {

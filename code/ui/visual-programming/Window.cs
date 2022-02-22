@@ -6,6 +6,7 @@ using Sandbox.UI;
 
 /*
   TODO
+ - connecNodes: when loading not greening the output dots
  - fix matrix issues
 */
 
@@ -133,8 +134,8 @@ namespace TTTReborn.UI.VisualProgramming
                     continue;
                 }
 
-                AddNode(node);
                 node.LoadFromJsonData(saveStackNode);
+                AddNode(node);
             }
 
             foreach (Node node in Nodes)

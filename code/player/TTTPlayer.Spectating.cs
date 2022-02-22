@@ -28,7 +28,7 @@ namespace TTTReborn.Player
 
         public bool IsSpectator
         {
-            get => Camera is IObservationCamera;
+            get => CameraMode is IObservationCamera;
         }
 
         private int _targetIdx = 0;
@@ -65,7 +65,7 @@ namespace TTTReborn.Player
                 CurrentPlayer = players[_targetIdx];
             }
 
-            if (Camera is IObservationCamera camera)
+            if (CameraMode is IObservationCamera camera)
             {
                 camera.OnUpdateObservatedPlayer(oldObservatedPlayer, CurrentPlayer);
             }
@@ -76,7 +76,7 @@ namespace TTTReborn.Player
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+            CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
             LifeState = LifeState.Dead;
             Health = 0f;
             ShowFlashlight(false, false);
@@ -91,7 +91,7 @@ namespace TTTReborn.Player
                 MakeSpectator(false);
                 OnKilled();
 
-                if (!Client.GetValue<bool>("forcedspectator", false))
+                if (!Client.GetValue("forcedspectator", false))
                 {
                     Client.SetValue("forcedspectator", true);
                 }

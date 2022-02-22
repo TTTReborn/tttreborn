@@ -34,7 +34,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
 
             ShootEffects();
 
@@ -54,7 +54,7 @@ namespace TTTReborn.Items
             Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
             Particles.Create("particles/pistol_ejectbrass.vpcf", EffectEntity, "ejection_point");
 
-            ViewModelEntity?.SetAnimBool("fire", true);
+            ViewModelEntity?.SetAnimParameter("fire", true);
             CrosshairPanel?.CreateEvent("fire");
 
             if (IsLocalPawn)
@@ -100,13 +100,13 @@ namespace TTTReborn.Items
         [ClientRpc]
         protected virtual void FinishReload()
         {
-            ViewModelEntity?.SetAnimBool("reload_finished", true);
+            ViewModelEntity?.SetAnimParameter("reload_finished", true);
         }
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetParam("holdtype", 3);
-            anim.SetParam("aimat_weight", 1.0f);
+            anim.SetAnimParameter("holdtype", 3);
+            anim.SetAnimParameter("aim_body_weight", 1.0f);
         }
     }
 }

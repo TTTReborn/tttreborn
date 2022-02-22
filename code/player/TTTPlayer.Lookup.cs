@@ -10,9 +10,7 @@ namespace TTTReborn.Player
 
             if (IsClient)
             {
-                Sandbox.Camera camera = Camera as Sandbox.Camera;
-
-                trace = Trace.Ray(camera.Position, camera.Position + camera.Rotation.Forward * distance);
+                trace = Trace.Ray(CameraMode.Position, CameraMode.Position + CameraMode.Rotation.Forward * distance);
             }
             else
             {
@@ -44,9 +42,7 @@ namespace TTTReborn.Player
 
             if (IsClient)
             {
-                Sandbox.Camera camera = Camera as Sandbox.Camera;
-
-                trace = Trace.Ray(camera.Position, camera.Position + camera.Rotation.Forward * maxHintDistance);
+                trace = Trace.Ray(CameraMode.Position, CameraMode.Position + CameraMode.Rotation.Forward * maxHintDistance);
             }
             else
             {
@@ -62,7 +58,7 @@ namespace TTTReborn.Player
 
             TraceResult tr = trace.UseHitboxes().Run();
 
-            if (tr.Hit && tr.Entity is IEntityHint hint && tr.StartPos.Distance(tr.EndPos) <= hint.HintDistance)
+            if (tr.Hit && tr.Entity is IEntityHint hint && tr.StartPosition.Distance(tr.EndPosition) <= hint.HintDistance)
             {
                 return hint;
             }
