@@ -38,7 +38,7 @@ slider
 		left: 10px;
 		right: 10px;
 		height: 10px;
-		background-color: rgba( $button-primary, 0.1 );
+		background-color: rgba($button-primary, 0.1);
 		border-radius: 5px;
 
 		> .inner
@@ -61,7 +61,7 @@ slider
 		flex-shrink: 0;
 	}
 
-	> .textentry:not( .one.two )
+	> .textentry:not(.one.two)
 	{
 		flex-grow: 0;
 		flex-shrink: 0;
@@ -73,7 +73,7 @@ slider
 		margin-left: 10px;
 		border-color: transparent;
 		text-align: center;
-		background-color: rgba( black, 0.5 );
+		background-color: rgba(black, 0.5);
 		color: #fafafa;
 	}
 }
@@ -95,12 +95,8 @@ slider
 		height: 12px;
 		border-radius: 1000px;
 		transition: all 0.2s ease-out;
-		transform: translateX( -50% ) translateY( -50% );
-		border: 2px solid rgba( white, 1 );
-
-		&:hover
-		{
-		}
+		transform: translateX(-50%) translateY(-50%);
+		border: 2px solid rgba(white, 1);
 	}
 
 	&:active
