@@ -128,7 +128,8 @@ namespace TTTReborn.Items
                 int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
                 inventory.Ammo.Give(ammoType, amountGiven);
                 CurrentAmmo -= amountGiven;
-                OnPickup.Fire(player);
+
+                _ = OnPickup.Fire(player);
 
                 if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
                 {

@@ -9,7 +9,7 @@ namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window
     {
-        public static string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
+        public const string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
 
         private FileSelection _currentFileSelection;
 
@@ -27,7 +27,7 @@ namespace TTTReborn.UI.VisualProgramming
             _currentFileSelection = fileSelection;
         }
 
-        private string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
+        private static string GetSettingsPathByData(Utils.Realm realm) => Utils.GetSettingsFolderPath(realm, null, "visualprogramming/");
 
         private void OnAgreeSaveAs(FileSelection fileSelection)
         {
@@ -56,7 +56,7 @@ namespace TTTReborn.UI.VisualProgramming
         {
             string fullFilePath = folderPath + fileName + VISUALPROGRAMMING_FILE_EXTENSION;
 
-            DialogBox dialogBox = new DialogBox();
+            DialogBox dialogBox = new();
             dialogBox.SetTitle($"Overwrite '{fullFilePath}'");
             dialogBox.AddText($"Do you want to overwrite '{fullFilePath}' with the current settings? (If you agree, the settings defined in this file will be lost!)");
             dialogBox.OnAgree = () =>
@@ -77,23 +77,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         private void SaveWorkspace(string path, string fileName)
         {
-            Dictionary<string, object> jsonDict = new();
-
-            // TODO add workspace settings to jsonDict as well
-
-            List<Dictionary<string, object>> saveList = new();
-
-            foreach (Node node in Nodes)
-            {
-                if (node.HasInput())
-                {
-                    continue;
-                }
-
-                saveList.Add(node.GetJsonData());
-            }
-
-            jsonDict.Add("Nodes", saveList);
+            Dictionary<string, object> jsonDict = GetStackNodesJsonDictionary();
 
             Player.TTTPlayer.SaveVisualProgramming(path, fileName, JsonSerializer.Serialize(jsonDict), Utils.Realm.Client);
         }

@@ -17,8 +17,6 @@ namespace TTTReborn.UI.VisualProgramming
             SetTitle("RoleSelection Node");
 
             AddSetting<NodeRoleSelectionSetting>();
-
-            HighlightError();
         }
 
         internal void OnSelectRole(Type roleType)
@@ -35,16 +33,16 @@ namespace TTTReborn.UI.VisualProgramming
             Style.BackgroundColor = role.Color;
         }
 
-        public override bool Build(params object[] input)
+        public override void Prepare()
         {
             (StackNode as RoleSelectionStackNode).SelectedRole = SelectedRole;
 
-            return base.Build(input);
+            base.Prepare();
         }
 
-        public override Dictionary<string, object> GetJsonData(List<Node> proceedNodes = null)
+        public override Dictionary<string, object> GetJsonData()
         {
-            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            Dictionary<string, object> dict = base.GetJsonData();
             dict.Add("SelectedRole", SelectedRole?.Name);
 
             return dict;

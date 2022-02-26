@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-using Sandbox;
-
-using TTTReborn.Globals;
 using TTTReborn.Map;
 using TTTReborn.Player;
 using TTTReborn.Settings;

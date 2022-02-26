@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    partial class ViewModel : BaseViewModel
+    public partial class ViewModel : BaseViewModel
     {
         private float _walkBob = 0;
 
@@ -17,7 +17,7 @@ namespace TTTReborn.Items
 
         private void AddCameraEffects(ref CameraSetup camSetup)
         {
-            Rotation = Local.Pawn.EyeRot;
+            Rotation = Local.Pawn.EyeRotation;
 
             float speed = Owner.Velocity.Length.LerpInverse(0, 320);
             Vector3 left = camSetup.Rotation.Left;

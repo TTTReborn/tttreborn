@@ -1,19 +1,16 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
-
-using Sandbox;
 
 using TTTReborn.Player;
 
 namespace TTTReborn.VisualProgramming
 {
-    [StackNode("percentage_selection")]
-    public partial class PercentageSelectionStackNode : StackNode
+    [StackNode("random_selection")]
+    public partial class RandomSelectionStackNode : StackNode
     {
         public List<float> PercentList { get; set; } = new();
 
-        public PercentageSelectionStackNode() : base()
+        public RandomSelectionStackNode() : base()
         {
 
         }
@@ -24,7 +21,7 @@ namespace TTTReborn.VisualProgramming
 
             if (percentListCount < 2)
             {
-                throw new NodeStackException("Missing values in PercentageSelectionStackNode.");
+                throw new NodeStackException("Missing values in RandomSelectionStackNode.");
             }
 
             if (input == null || input[0] is not List<TTTPlayer> playerList)
@@ -32,30 +29,23 @@ namespace TTTReborn.VisualProgramming
                 return null;
             }
 
-            int allPlayerAmount = Client.All.Count; // TODO just use available players, not specs
+            int value = 0;
+            int rnd = Utils.RNG.Next(100) + 1;
+
+            Log.Debug($"Selected random integer: '{rnd}'");
 
             object[] buildArray = new object[percentListCount];
 
             for (int i = 0; i < percentListCount; i++)
             {
-                int playerAmount = Math.Clamp((int) MathF.Ceiling(allPlayerAmount * (PercentList[i] / 100f)), 0, playerList.Count);
+                value += (int) PercentList[i];
 
-                List<TTTPlayer> selectedPlayers = new();
-
-                for (int index = 0; index < playerAmount; index++)
+                if (rnd <= value)
                 {
-                    int rnd = Utils.RNG.Next(playerList.Count);
+                    buildArray[i] = playerList;
 
-                    selectedPlayers.Add(playerList[rnd]);
-                    playerList.RemoveAt(rnd);
+                    return buildArray;
                 }
-
-                buildArray[i] = selectedPlayers.Count > 0 ? selectedPlayers : null;
-            }
-
-            if (playerList.Count > 0)
-            {
-                (buildArray[^1] as List<TTTPlayer>).AddRange(playerList);
             }
 
             return buildArray;

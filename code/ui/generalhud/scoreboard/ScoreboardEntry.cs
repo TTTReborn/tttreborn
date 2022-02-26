@@ -12,7 +12,7 @@ namespace TTTReborn.UI
         public string ScoreboardGroupName;
         public Client Client;
 
-        private Image _playerAvatar;
+        private readonly Image _playerAvatar;
         private readonly Label _playerName;
 
         private readonly Label _karma;

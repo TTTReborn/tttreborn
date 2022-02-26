@@ -42,7 +42,7 @@ namespace TTTReborn.Items
 
         public ShopItemData Clone()
         {
-            ShopItemData shopItemData = new ShopItemData(Name);
+            ShopItemData shopItemData = new(Name);
             shopItemData.CopyFrom(this);
 
             return shopItemData;
@@ -53,7 +53,7 @@ namespace TTTReborn.Items
             LibraryAttribute attribute = Library.GetAttribute(type);
             bool buyable = false;
 
-            ShopItemData shopItemData = new ShopItemData(attribute.Name)
+            ShopItemData shopItemData = new(attribute.Name)
             {
                 Type = type
             };

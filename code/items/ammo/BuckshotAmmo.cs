@@ -5,7 +5,7 @@ namespace TTTReborn.Items
     [Library("ammo_buckshot")]
     [Spawnable]
     [Hammer.EditorModel("models/ammo/ammo_buckshot.vmdl")]
-    partial class BuckshotAmmo : TTTAmmo
+    public partial class BuckshotAmmo : TTTAmmo
     {
         public override int Amount => 12;
         public override int Max => 36;

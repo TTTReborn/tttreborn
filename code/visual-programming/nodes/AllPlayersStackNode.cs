@@ -8,12 +8,14 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Test(params object[] input)
+        public override object[] Test(object[] input)
         {
             return new object[]
             {
                 Utils.GetPlayers()
             };
         }
+
+        public override object[] Evaluate(object[] input) => input;
     }
 }

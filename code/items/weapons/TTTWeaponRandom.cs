@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-
 namespace TTTReborn.Items
 {
     [Library("entity_weapon_random")]

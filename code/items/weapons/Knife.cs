@@ -7,7 +7,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Precached("weapons/rust_boneknife/v_rust_boneknife.vmdl", "weapons/rust_boneknife/rust_boneknife.vmdl")]
     [Hammer.EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
-    partial class Knife : TTTWeapon
+    public partial class Knife : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override string ModelPath => "weapons/rust_boneknife/rust_boneknife.vmdl";
@@ -18,10 +18,10 @@ namespace TTTReborn.Items
 
         public virtual void MeleeStrike(float damage, float force)
         {
-            Vector3 forward = Owner.EyeRot.Forward;
+            Vector3 forward = Owner.EyeRotation.Forward;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * MeleeDistance, 10f))
+            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * MeleeDistance, 10f))
             {
                 if (!tr.Entity.IsValid())
                 {
@@ -37,7 +37,7 @@ namespace TTTReborn.Items
 
                 using (Prediction.Off())
                 {
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
+                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)
                         .WithWeapon(this);
@@ -49,7 +49,7 @@ namespace TTTReborn.Items
 
         public override void AttackPrimary()
         {
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
 
             ShootEffects();
 

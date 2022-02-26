@@ -9,7 +9,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Precached("weapons/rust_pistol/v_rust_pistol.vmdl", "weapons/rust_pistol/rust_pistol.vmdl")]
     [Hammer.EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
-    partial class NewtonLauncher : TTTWeapon
+    public partial class NewtonLauncher : TTTWeapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
@@ -53,7 +53,7 @@ namespace TTTReborn.Items
 
         public void ReleaseCharge()
         {
-            (Owner as AnimEntity).SetAnimBool("b_attack", true);
+            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
             ShootEffects();
             PlaySound("rust_pistol.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0f, 0f, BaseDamage, 0f);
@@ -63,11 +63,11 @@ namespace TTTReborn.Items
 
         public override void ShootBullet(float spread, float force, float damage, float bulletSize)
         {
-            Vector3 forward = Owner.EyeRot.Forward;
+            Vector3 forward = Owner.EyeRotation.Forward;
             forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
+            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
             {
                 if (!IsServer || !tr.Entity.IsValid() || tr.Entity.IsWorld)
                 {
@@ -76,7 +76,7 @@ namespace TTTReborn.Items
 
                 using (Prediction.Off())
                 {
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
+                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)
                         .WithWeapon(this);

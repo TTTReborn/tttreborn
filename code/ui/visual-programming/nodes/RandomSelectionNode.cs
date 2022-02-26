@@ -6,14 +6,14 @@ using TTTReborn.VisualProgramming;
 namespace TTTReborn.UI.VisualProgramming
 {
     [Spawnable]
-    [Node("percentage_selection")]
-    public class PercentageSelectionNode : Node
+    [Node("random_selection")]
+    public class RandomSelectionNode : Node
     {
         public List<float> PercentList { get; set; } = new();
 
-        public PercentageSelectionNode() : base(new PercentageSelectionStackNode())
+        public RandomSelectionNode() : base(new RandomSelectionStackNode())
         {
-            SetTitle("PercentageSelection Node");
+            SetTitle("RandomSelection Node");
 
             AddSetting<NodePercentSetting>();
             AddSetting<NodePercentSetting>().ToggleInput(false);
@@ -36,7 +36,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public override void Prepare()
         {
-            (StackNode as PercentageSelectionStackNode).PercentList = PercentList;
+            (StackNode as RandomSelectionStackNode).PercentList = PercentList;
 
             base.Prepare();
         }

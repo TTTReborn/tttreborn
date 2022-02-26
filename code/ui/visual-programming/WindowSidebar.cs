@@ -53,7 +53,7 @@ namespace TTTReborn.UI.VisualProgramming
             }
         }
 
-        protected override void OnMouseOver(Sandbox.UI.MousePanelEvent e)
+        protected override void OnMouseOver(MousePanelEvent e)
         {
             IsFullOpened = true;
 
@@ -75,7 +75,7 @@ namespace TTTReborn.UI.VisualProgramming
 
     public class SidebarEntry : Panel
     {
-        public Sandbox.UI.Label TextLabel;
+        public Label TextLabel;
 
         public Type NodeType;
 
@@ -90,7 +90,7 @@ namespace TTTReborn.UI.VisualProgramming
             TextLabel = Add.Label(Utils.GetLibraryName(nodeType), "entry");
         }
 
-        protected override void OnMouseDown(Sandbox.UI.MousePanelEvent e)
+        protected override void OnMouseDown(MousePanelEvent e)
         {
             if (!_mouseDown)
             {
@@ -98,6 +98,7 @@ namespace TTTReborn.UI.VisualProgramming
                 Window.Instance.AddNode(_currentNode);
 
                 _currentNode.Display();
+                _currentNode.HighlightError();
 
                 _mouseDown = true;
             }
@@ -105,7 +106,7 @@ namespace TTTReborn.UI.VisualProgramming
             base.OnMouseDown(e);
         }
 
-        protected override void OnMouseUp(Sandbox.UI.MousePanelEvent e)
+        protected override void OnMouseUp(MousePanelEvent e)
         {
             if (_mouseDown)
             {
@@ -120,8 +121,8 @@ namespace TTTReborn.UI.VisualProgramming
         {
             if (_mouseDown)
             {
-                _currentNode.Style.Left = Sandbox.UI.Length.Pixels(Mouse.Position.x);
-                _currentNode.Style.Top = Sandbox.UI.Length.Pixels(Mouse.Position.y);
+                _currentNode.Style.Left = Length.Pixels(Mouse.Position.x);
+                _currentNode.Style.Top = Length.Pixels(Mouse.Position.y);
             }
 
             base.Tick();

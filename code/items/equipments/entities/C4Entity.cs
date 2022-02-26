@@ -6,7 +6,6 @@ using Sandbox;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
-using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -205,7 +204,7 @@ namespace TTTReborn.Items
                 Particles.Create("particles/explosion_fireball.vpcf", PhysicsBody.MassCenter);
 
                 Vector3 sourcePos = PhysicsBody.MassCenter;
-                IEnumerable<Entity> overlaps = Physics.GetEntitiesInSphere(sourcePos, BOMB_RADIUS);
+                IEnumerable<Entity> overlaps = FindInSphere(sourcePos, BOMB_RADIUS);
 
                 foreach (Entity overlap in overlaps)
                 {
@@ -362,7 +361,7 @@ namespace TTTReborn.Items
             CloseC4Menu(c4Entity);
         }
 
-        private void CloseC4Menu(C4Entity c4Entity)
+        private static void CloseC4Menu(C4Entity c4Entity)
         {
             if (C4Arm.Instance == null || c4Entity == null || !c4Entity.IsValid || C4Arm.Instance.Entity != c4Entity)
             {

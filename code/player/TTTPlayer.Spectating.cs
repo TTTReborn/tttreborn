@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 using TTTReborn.Player.Camera;
 
 namespace TTTReborn.Player
@@ -18,7 +17,7 @@ namespace TTTReborn.Player
             {
                 _spectatingPlayer = value == this ? null : value;
 
-                Event.Run(TTTEvent.Player.Spectating.Change, this);
+                Event.Run(TTTEvent.Player.Spectating.CHANGE, this);
             }
         }
 
@@ -29,12 +28,12 @@ namespace TTTReborn.Player
 
         public bool IsSpectator
         {
-            get => (Camera is IObservationCamera);
+            get => CameraMode is IObservationCamera;
         }
 
         private int _targetIdx = 0;
 
-        [Event(TTTEvent.Player.Died)]
+        [Event(TTTEvent.Player.DIED)]
         private static void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (!Host.IsClient || Local.Pawn is not TTTPlayer player)
@@ -66,7 +65,7 @@ namespace TTTReborn.Player
                 CurrentPlayer = players[_targetIdx];
             }
 
-            if (Camera is IObservationCamera camera)
+            if (CameraMode is IObservationCamera camera)
             {
                 camera.OnUpdateObservatedPlayer(oldObservatedPlayer, CurrentPlayer);
             }
@@ -77,7 +76,7 @@ namespace TTTReborn.Player
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+            CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
             LifeState = LifeState.Dead;
             Health = 0f;
             ShowFlashlight(false, false);
@@ -92,7 +91,7 @@ namespace TTTReborn.Player
                 MakeSpectator(false);
                 OnKilled();
 
-                if (!Client.GetValue<bool>("forcedspectator", false))
+                if (!Client.GetValue("forcedspectator", false))
                 {
                     Client.SetValue("forcedspectator", true);
                 }

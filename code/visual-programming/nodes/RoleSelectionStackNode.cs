@@ -16,21 +16,21 @@ namespace TTTReborn.VisualProgramming
 
         }
 
-        public override object[] Test(params object[] input)
+        public override object[] Test(object[] input)
         {
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
-            {
-                return null;
-            }
-
             if (SelectedRole == null)
             {
                 throw new NodeStackException("No selected role in RoleSelectionNode.");
             }
 
+            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            {
+                return null;
+            }
+
             foreach (TTTPlayer player in playerList)
             {
-                Log.Info($"Selected '{player.Client.Name}' with role '{SelectedRole.Name}'");
+                Log.Debug($"Selected '{player.Client.Name}' with role '{SelectedRole.Name}'");
             }
 
             return new object[]
@@ -39,9 +39,22 @@ namespace TTTReborn.VisualProgramming
             };
         }
 
-        public override Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
+        public override object[] Evaluate(object[] input)
         {
-            Dictionary<string, object> dict = base.GetJsonData(proceedNodes);
+            foreach (TTTPlayer player in input[0] as List<TTTPlayer>)
+            {
+                player.SetRole(SelectedRole);
+            }
+
+            return new object[]
+            {
+                input[0]
+            };
+        }
+
+        public override Dictionary<string, object> GetJsonData()
+        {
+            Dictionary<string, object> dict = base.GetJsonData();
             dict.Add("SelectedRole", SelectedRole?.Name);
 
             return dict;

@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
@@ -54,7 +53,7 @@ namespace TTTReborn.Map
             Log.Warning($"ttt_force_win: Failed to grant win to team: {Team}, invalid or nonexistant team name.");
         }
 
-        private void ForceEndRound(TTTTeam team)
+        private static void ForceEndRound(TTTTeam team)
         {
             if (Gamemode.Game.Instance.Round is InProgressRound)
             {

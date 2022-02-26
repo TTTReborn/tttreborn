@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.Html;
 using Sandbox.UI;
 
@@ -48,6 +47,7 @@ namespace TTTReborn.UI
             if (slotName == "tab")
             {
                 AddTab(panel, new TranslationData(element.GetAttribute("tab_key", null)), element.GetAttribute("tabicon", null));
+
                 return;
             }
 

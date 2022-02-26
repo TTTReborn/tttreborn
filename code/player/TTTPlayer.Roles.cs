@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Roles;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;

@@ -4,7 +4,6 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Teams

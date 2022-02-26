@@ -15,15 +15,13 @@ namespace TTTReborn.UI
         public TTTLogicButtonData Data { get; private set; }
 
         // Our specific assigned Entity.
-        private TTTLogicButton _entity;
+        private readonly TTTLogicButton _entity;
 
         // Position pulled from Data
         public Vector3 Position { get; private set; }
 
-        private readonly Label _descriptionLabel;
-
         // If the distance from the player to the button is less than this value, the element is fully visible.
-        private int _minViewDistance = 512;
+        private static int _minViewDistance = 512;
 
         // Between MINVIEWDISTANCE and this value, the element will slowly become transparent.
         // Past this distance, the button is unusuable.
@@ -42,7 +40,7 @@ namespace TTTReborn.UI
 
             _entity = Entity.FindByIndex(Data.NetworkIdent) as TTTLogicButton;
 
-            _descriptionLabel = Add.Label(_entity.Description);
+            _ = Add.Label(_entity.Description);
         }
 
         public override void Tick()
@@ -97,17 +95,17 @@ namespace TTTReborn.UI
 
         // Our "screen focus" size, roughly %5 of the screen around the cross hair.
         // It might be worth considering using an alternate method to percentages for larger screens. Hoping we can test that with someone who has a UHD monitor.
-        private float _focusSize = 2.5f;
-        private const int _centerPercent = 50;
+        private const float FOCUS_SIZE = 2.5f;
+        private const int CENTER_PERCENT = 50;
 
         public bool IsLengthWithinCamerasFocus()
         {
             // We have to adjust the top check by the screen's aspect ratio in order to compensate for screen size
-            float topHeight = _focusSize * Screen.Aspect;
+            float topHeight = FOCUS_SIZE * Screen.Aspect;
 
             // I think we could alternatively use
-            return Style.Left.Value.Value > _centerPercent - _focusSize && Style.Left.Value.Value < _centerPercent + _focusSize
-                && Style.Top.Value.Value > _centerPercent - topHeight && Style.Top.Value.Value < _centerPercent + topHeight;
+            return Style.Left.Value.Value > CENTER_PERCENT - FOCUS_SIZE && Style.Left.Value.Value < CENTER_PERCENT + FOCUS_SIZE
+                && Style.Top.Value.Value > CENTER_PERCENT - topHeight && Style.Top.Value.Value < CENTER_PERCENT + topHeight;
         }
 
         // Check to make sure player is within range and our button is not disabled.

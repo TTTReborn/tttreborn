@@ -8,7 +8,7 @@ namespace TTTReborn.Events
             /// Occurs when server or client settings are changed.
             /// <para>No data is passed to this event.</para>
             /// </summary>
-            public const string Change = "tttreborn.settings.change";
+            public const string CHANGE = "tttreborn.settings.change";
         }
     }
 }

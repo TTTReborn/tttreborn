@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Map

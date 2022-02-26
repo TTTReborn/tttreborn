@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 
 using TTTReborn.VisualProgramming;
@@ -11,44 +12,66 @@ namespace TTTReborn.UI.VisualProgramming
         {
             BuildButton.Icon = "hourglass_empty";
 
-            MainNode.StackNode.Reset();
+            NodeStack.Instance.Reset();
 
             bool hasError = false;
 
+            List<Node> startingNodeList = new();
+
             foreach (Node node in Nodes)
             {
-                node.RemoveHighlights();
+                node.Reset();
 
-                if (!node.HasInput() && node != MainNode)
+                if (!node.HasInputsFilled())
                 {
                     node.HighlightError();
 
                     hasError = true;
+
+                    continue;
                 }
+                else if (!node.HasInputEnabled())
+                {
+                    startingNodeList.Add(node);
+                }
+
+                node.Prepare();
             }
 
             if (hasError)
             {
+                BuildButton.Icon = "play_arrow";
+
                 return;
             }
 
             try
             {
-                Log.Debug("Building NodeStack");
+                Log.Debug("Building and testing NodeStack");
 
-                if (!MainNode.Build())
+                bool successful = true;
+
+                foreach (Node node in startingNodeList)
                 {
-                    return;
+                    if (!node.Build(0))
+                    {
+                        successful = false;
+                    }
                 }
 
-                Log.Debug("Uploading NodeStack");
+                if (successful)
+                {
+                    Log.Debug("Uploading NodeStack");
 
-                NodeStack.UploadStack(JsonSerializer.Serialize(MainNode.StackNode.GetJsonData()));
+                    NodeStack.UploadStack(JsonSerializer.Serialize(GetStackNodesJsonDictionary()));
+                }
             }
             catch (Exception e)
             {
                 Log.Error(e);
-
+            }
+            finally
+            {
                 BuildButton.Icon = "play_arrow";
             }
         }

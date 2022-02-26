@@ -63,7 +63,7 @@ namespace TTTReborn.Player
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
 
-                Event.Run(TTTEvent.Player.InitialSpawn, Client);
+                Event.Run(TTTEvent.Player.INITIAL_SPAWN, Client);
 
                 ClientInitialSpawn();
             }
@@ -93,7 +93,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                Event.Run(TTTEvent.Player.Spawned, this);
+                Event.Run(TTTEvent.Player.SPAWNED, this);
 
                 RPCs.ClientOnPlayerSpawned(this);
                 SendClientRole();
@@ -104,7 +104,7 @@ namespace TTTReborn.Player
             if (!IsForcedSpectator)
             {
                 Controller = new DefaultWalkController();
-                Camera = new FirstPersonCamera();
+                CameraMode = new FirstPersonCamera();
 
                 EnableAllCollisions = true;
                 EnableDrawing = true;
@@ -231,7 +231,7 @@ namespace TTTReborn.Player
                 {
                     if (droppedEntity.PhysicsGroup != null)
                     {
-                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * CarriableDropVelocity;
+                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * CarriableDropVelocity;
                     }
                 }
             }
@@ -246,13 +246,13 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                Camera = Camera switch
+                CameraMode = CameraMode switch
                 {
                     RagdollSpectateCamera => new FreeSpectateCamera(),
                     FreeSpectateCamera => new ThirdPersonSpectateCamera(),
                     ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
                     FirstPersonSpectatorCamera => new FreeSpectateCamera(),
-                    _ => Camera
+                    _ => CameraMode
                 };
             }
         }

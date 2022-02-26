@@ -5,7 +5,6 @@ using System.Text.Json;
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.Rounds;
 using TTTReborn.UI;
@@ -28,7 +27,7 @@ namespace TTTReborn.Player
 
                 _shop = value;
 
-                Event.Run(TTTEvent.Shop.Change);
+                Event.Run(TTTEvent.Shop.CHANGE);
             }
         }
         private Shop _shop;
@@ -104,7 +103,7 @@ namespace TTTReborn.Player
             ClientBoughtItem(To.Single(this), itemData.Name);
         }
 
-        [Event(TTTEvent.Game.RoundChange)]
+        [Event(TTTEvent.Game.ROUND_CHANGE)]
         private static void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
         {
             if (newRound is PreRound preRound)

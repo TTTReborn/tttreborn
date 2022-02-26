@@ -24,20 +24,27 @@ namespace TTTReborn.VisualProgramming
 
             To to = To.Single(ConsoleSystem.Caller);
 
-            ClientInitializeNodesFromStack(to, JsonSerializer.Serialize(Instance.GetJsonData()));
+            if (!ConsoleSystem.Caller.HasPermission("visualprogramming"))
+            {
+                ClientInitializeNodesFromStack(to, false);
+
+                return;
+            }
+
+            ClientInitializeNodesFromStack(to, true, JsonSerializer.Serialize(Instance.GetJsonData()));
         }
 
         [ClientRpc]
-        public static void ClientInitializeNodesFromStack(string jsonData = null)
+        public static void ClientInitializeNodesFromStack(bool access, string jsonData = null)
         {
-            Window window = Window.Instance;
-
-            if (window != null)
+            if (!access)
             {
-                window.Delete(true);
+                Log.Info("No access to visual programming");
+
+                return;
             }
 
-            new Window(UI.Hud.Current.GeneralHudPanel, jsonData);
+            Window.Init(UI.Hud.Current.GeneralHudPanel, jsonData);
         }
 
         public static void UploadStack(string jsonData)
@@ -103,23 +110,62 @@ namespace TTTReborn.VisualProgramming
 
                 if (jsonDataDict == null)
                 {
+                    Log.Debug("Unable to deserialize NodeStack's json dictionary.");
+
                     return;
                 }
 
-                Instance.MainStackNode = StackNode.GetStackNodeFromJsonData<StackNode>(jsonDataDict);
+                jsonDataDict.TryGetValue("Nodes", out object nodesList);
 
-                if (Instance.MainStackNode == null)
+                if (nodesList == null)
                 {
+                    Log.Debug("No 'Nodes' entry in NodeStack's json dictionary.");
+
+                    return;
+                }
+
+                List<Dictionary<string, object>> nodesJsonDict = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(((JsonElement) nodesList).GetRawText());
+
+                if (nodesJsonDict == null)
+                {
+                    Log.Debug("Unable to deserialize NodeStack's nodes json dictionary.");
+
+                    return;
+                }
+
+                List<StackNode> stackNodesList = new();
+
+                bool startingNode = false;
+
+                foreach (Dictionary<string, object> nodeJsonDict in nodesJsonDict)
+                {
+                    StackNode stackNode = StackNode.GetStackNodeFromJsonData<StackNode>(nodeJsonDict);
+
+                    stackNodesList.Add(stackNode);
+
+                    if (stackNode is AllPlayersStackNode)
+                    {
+                        startingNode = true;
+                    }
+                }
+
+                if (!startingNode)
+                {
+                    Log.Debug("Unable to locate a starting main node in the NodeStack.");
+
                     return;
                 }
 
                 Log.Debug("Test NodeStack");
 
-                if (Instance.Test())
+                if (Instance.Test(stackNodesList))
                 {
-                    Log.Debug("Saved NodeStack");
+                    Log.Debug("NodeStack test passed");
 
+                    Instance.StackNodeList = stackNodesList;
                     Instance.Save();
+
+                    Log.Debug("Saved NodeStack");
                 }
                 else
                 {
@@ -131,19 +177,14 @@ namespace TTTReborn.VisualProgramming
         [ServerCmd]
         public static void ServerResetStack()
         {
-            if (ConsoleSystem.Caller == null)
-            {
-                return;
-            }
-
-            if (!ConsoleSystem.Caller.HasPermission("visualprogramming"))
+            if (!ConsoleSystem.Caller?.HasPermission("visualprogramming") ?? true)
             {
                 return;
             }
 
             Instance.Init();
 
-            ClientInitializeNodesFromStack(To.Single(ConsoleSystem.Caller), JsonSerializer.Serialize(Instance.GetJsonData()));
+            ClientInitializeNodesFromStack(To.Single(ConsoleSystem.Caller), true, JsonSerializer.Serialize(Instance.GetJsonData()));
         }
     }
 }

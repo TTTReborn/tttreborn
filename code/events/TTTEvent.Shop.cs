@@ -8,7 +8,7 @@ namespace TTTReborn.Events
             /// Occurs when the shop is changed.
             /// <para>No data is passed to this event.</para>
             /// </summary>
-            public const string Change = "tttreborn.shop.change";
+            public const string CHANGE = "tttreborn.shop.change";
         }
     }
 }

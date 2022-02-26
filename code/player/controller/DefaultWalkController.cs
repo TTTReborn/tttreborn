@@ -90,7 +90,7 @@ namespace TTTReborn.Player
             #endregion
 
             #region Drowning
-            IsUnderwater = Pawn.WaterLevel.Fraction == 1f;
+            IsUnderwater = Pawn.WaterLevel == 1f;
 
             if (IsUnderwater)
             {
@@ -165,7 +165,7 @@ namespace TTTReborn.Player
             }
         }
 
-        [Event(TTTEvent.Player.InitialSpawn)]
+        [Event(TTTEvent.Player.INITIAL_SPAWN)]
         private static void OnInitialSpawn(Client client)
         {
             if (Host.IsClient)
@@ -176,7 +176,7 @@ namespace TTTReborn.Player
             Update(client);
         }
 
-        [Event(TTTEvent.Settings.Change)]
+        [Event(TTTEvent.Settings.CHANGE)]
         public static void OnSettingsChange()
         {
             if (Host.IsClient)

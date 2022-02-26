@@ -96,13 +96,13 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event(TTTEvent.Player.Inventory.Clear)]
+        [Event(TTTEvent.Player.Inventory.CLEAR)]
         private void OnCarriableItemClear()
         {
             DeleteChildren(true);
         }
 
-        [Event(TTTEvent.Player.Inventory.PickUp)]
+        [Event(TTTEvent.Player.Inventory.PICK_UP)]
         private void OnCarriableItemPickup(ICarriableItem carriable)
         {
             if (carriable == null)
@@ -119,13 +119,13 @@ namespace TTTReborn.UI
                 int result = s1.Carriable.SlotType.CompareTo(s2.Carriable.SlotType);
                 return result != 0
                     ? result
-                    : String.Compare(s1.Carriable.LibraryName, s2.Carriable.LibraryName, StringComparison.Ordinal);
+                    : string.Compare(s1.Carriable.LibraryName, s2.Carriable.LibraryName, StringComparison.Ordinal);
             });
 
             this.Enabled(Children.Any());
         }
 
-        [Event(TTTEvent.Player.Inventory.Drop)]
+        [Event(TTTEvent.Player.Inventory.DROP)]
         private void OnCarriableItemDrop(ICarriableItem carriable)
         {
             foreach (Panel child in Children)
@@ -142,7 +142,7 @@ namespace TTTReborn.UI
             this.Enabled(Children.Any());
         }
 
-        [Event(TTTEvent.Player.Spectating.Change)]
+        [Event(TTTEvent.Player.Spectating.CHANGE)]
         private void OnSpectatingChange(TTTPlayer player)
         {
             OnCarriableItemClear();
@@ -174,8 +174,7 @@ namespace TTTReborn.UI
             }
 
             List<Panel> childrenList = Children.ToList();
-
-            ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
+            ICarriableItem activeCarriable = player.ActiveChild as ICarriableItem;
 
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
             if (keyboardIndexPressed != -1)
@@ -230,12 +229,12 @@ namespace TTTReborn.UI
         }
 
         // Keyboard selection can only increment the index by 1.
-        private int GetNextWeaponIndex(int index, int count)
+        private static int GetNextWeaponIndex(int index, int count)
         {
             return NormalizeSlotIndex(index + 1, count - 1);
         }
 
-        private int NormalizeSlotIndex(int index, int maxIndex)
+        private static int NormalizeSlotIndex(int index, int maxIndex)
         {
             return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
         }
@@ -268,7 +267,6 @@ namespace TTTReborn.UI
             public ICarriableItem Carriable { get; init; }
             public Label SlotLabel;
             private readonly Label _ammoLabel;
-            private TranslationLabel _carriableLabel;
 
             public InventorySlot(Panel parent, ICarriableItem carriable) : base(parent)
             {
@@ -280,7 +278,7 @@ namespace TTTReborn.UI
                 SlotLabel = Add.Label(((int) carriable.SlotType).ToString());
                 SlotLabel.AddClass("slot-label");
 
-                _carriableLabel = Add.TranslationLabel(new TranslationData(carriable.LibraryName.ToUpper()));
+                _ = Add.TranslationLabel(new TranslationData(carriable.LibraryName.ToUpper()));
 
                 _ammoLabel = Add.Label();
 

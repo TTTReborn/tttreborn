@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Component;
 
 using TTTReborn.Player.Camera;
 using TTTReborn.UI;
@@ -14,7 +15,7 @@ namespace TTTReborn.Player
 
         private void TickEntityHints()
         {
-            if (Camera is ThirdPersonSpectateCamera)
+            if (CameraMode is ThirdPersonSpectateCamera)
             {
                 DeleteHint();
 
@@ -26,6 +27,7 @@ namespace TTTReborn.Player
             if (hint == null || !hint.CanHint(this))
             {
                 DeleteHint();
+
                 return;
             }
 
@@ -47,8 +49,9 @@ namespace TTTReborn.Player
             {
                 if (hint.ShowGlow && hint is ModelEntity model && model.IsValid())
                 {
-                    model.GlowColor = Color.White; // TODO: Let's let people change this in their settings.
-                    model.GlowActive = true;
+                    Glow glow = model.Components.GetOrCreate<Glow>();
+                    glow.Color = Color.White; // TODO: Let's let people change this in their settings.
+                    glow.Active = true;
                 }
 
                 _currentHintPanel = hint.DisplayHint(this);
@@ -65,7 +68,12 @@ namespace TTTReborn.Player
             {
                 if (_currentHint != null && _currentHint is ModelEntity model && model.IsValid())
                 {
-                    model.GlowActive = false;
+                    Glow glow = model.Components.Get<Glow>();
+
+                    if (glow != null)
+                    {
+                        glow.Active = false;
+                    }
                 }
 
                 _currentHintPanel?.Delete(true);

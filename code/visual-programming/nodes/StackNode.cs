@@ -17,93 +17,85 @@ namespace TTTReborn.VisualProgramming
 
     public abstract class StackNode
     {
+        public static readonly List<StackNode> StackNodeList = new();
+
+        public string Id { get; set; }
         public string LibraryName { get; set; }
         public string NodeReference { get; set; }
-        public List<StackNode> NextNodes { get; set; } = new();
-        public List<int> ConnectPositions { get; set; } = new();
+        public string[] ConnectionOutputIds { get; set; } = Array.Empty<string>();
+        public string[] ConnectionInputIds { get; set; } = Array.Empty<string>();
+        public object[] PreparedInputData { get; set; } = null;
 
-        private float _posX, _posY;
+        private Vector2 _pos;
 
         public StackNode()
         {
             LibraryName = Utils.GetLibraryName(GetType());
+
+            StackNodeList.Add(this);
+        }
+
+        public static StackNode GetById(string id)
+        {
+            foreach (StackNode stackNode in StackNodeList)
+            {
+                if (stackNode.Id == id)
+                {
+                    return stackNode;
+                }
+            }
+
+            return null;
+        }
+
+        public virtual void Delete()
+        {
+            StackNodeList.Remove(this);
         }
 
         public virtual void Reset()
         {
-            NextNodes.Clear();
+            ResetData();
+
+            _pos = Vector2.Zero;
+        }
+
+        public virtual void ResetData()
+        {
+            ConnectionOutputIds = Array.Empty<string>();
+            ConnectionInputIds = Array.Empty<string>();
+            PreparedInputData = null;
         }
 
         internal void SetPos(float posX, float posY)
         {
-            _posX = posX;
-            _posY = posY;
+            _pos = new Vector2(posX, posY);
         }
 
-        public abstract object[] Test(params object[] input);
+        public abstract object[] Test(object[] input);
 
-        public virtual void Evaluate(params object[] input)
+        public abstract object[] Evaluate(object[] input);
+
+        public virtual Dictionary<string, object> GetJsonData()
         {
-            // TODO handle this in/by the stack at a later time
-
-            // for (int i = 0; i < NextNodes.Count; i++)
-            // {
-            //     NextNodes[i].Evaluate(input.Length > i ? input[i] : null);
-            // }
-        }
-
-        public virtual Dictionary<string, object> GetJsonData(List<StackNode> proceedNodes = null)
-        {
-            if (proceedNodes != null)
-            {
-                proceedNodes.Add(this);
-            }
-
-            List<Dictionary<string, object>> nextNodesJsonList = new();
-
-            foreach (StackNode stackNode in NextNodes)
-            {
-                nextNodesJsonList.Add(stackNode.GetJsonData(proceedNodes));
-            }
-
             return new Dictionary<string, object>()
             {
+                ["Id"] = Id,
                 ["LibraryName"] = LibraryName,
-                ["ConnectPositions"] = ConnectPositions,
                 ["NodeReference"] = NodeReference,
-                ["NextNodes"] = nextNodesJsonList,
-                ["PosX"] = _posX,
-                ["PosY"] = _posY
+                ["ConnectionInputIds"] = ConnectionInputIds,
+                ["ConnectionOutputIds"] = ConnectionOutputIds,
+                ["Pos"] = _pos,
             };
         }
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            jsonData.TryGetValue("ConnectPositions", out object connectPosition);
+            jsonData.TryGetValue("Id", out object id);
 
-            if (connectPosition != null)
+            if (id != null)
             {
-                ConnectPositions = JsonSerializer.Deserialize<List<int>>(((JsonElement) connectPosition).GetRawText());
-            }
-
-            jsonData.TryGetValue("NextNodes", out object nextNodes);
-
-            if (nextNodes != null)
-            {
-                JsonElement nextNodesElement = (JsonElement) nextNodes;
-                List<Dictionary<string, object>> nextNodesList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(nextNodesElement.GetRawText());
-
-                for (int i = 0; i < nextNodesList.Count; i++)
-                {
-                    StackNode stackNode = GetStackNodeFromJsonData<StackNode>(nextNodesList[i]);
-
-                    if (stackNode == null)
-                    {
-                        continue;
-                    }
-
-                    NextNodes.Add(stackNode);
-                }
+                Id = id.ToString();
             }
 
             jsonData.TryGetValue("NodeReference", out object nodeReference);
@@ -113,18 +105,25 @@ namespace TTTReborn.VisualProgramming
                 NodeReference = nodeReference.ToString();
             }
 
-            jsonData.TryGetValue("PosX", out object posX);
+            jsonData.TryGetValue("ConnectionInputIds", out object connectionInputIds);
 
-            if (posX != null)
+            if (connectionInputIds != null)
             {
-                _posX = float.Parse(posX.ToString());
+                ConnectionInputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionInputIds).GetRawText());
             }
 
-            jsonData.TryGetValue("PosY", out object posY);
+            jsonData.TryGetValue("ConnectionOutputIds", out object connectionOutputIds);
 
-            if (posY != null)
+            if (connectionOutputIds != null)
             {
-                _posY = float.Parse(posY.ToString());
+                ConnectionOutputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionOutputIds).GetRawText());
+            }
+
+            jsonData.TryGetValue("Pos", out object pos);
+
+            if (pos != null)
+            {
+                _pos = JsonSerializer.Deserialize<Vector2>(((JsonElement) pos).GetRawText());
             }
         }
 

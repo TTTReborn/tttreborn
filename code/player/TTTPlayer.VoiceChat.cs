@@ -121,7 +121,7 @@ namespace TTTReborn.Player
             ConsoleSystem.Run((toggle ? "+" : "-") + "iv_voice");
         }
 
-        [Event(TTTEvent.Player.Role.Select)]
+        [Event(TTTEvent.Player.Role.SELECT)]
         private static void OnSelectRole(TTTPlayer player)
         {
             if (!Host.IsServer)

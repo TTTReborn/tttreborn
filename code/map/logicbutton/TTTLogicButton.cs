@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.Teams;
 
@@ -92,7 +91,7 @@ namespace TTTReborn.Map
 
             if (!IsDisabled) // Make sure button is not delayed, locked or removed.
             {
-                OnPressed.Fire(activator); // Fire Hammer IO
+                _ = OnPressed.Fire(activator); // Fire Hammer IO
 
                 if (RemoveOnPress)
                 {

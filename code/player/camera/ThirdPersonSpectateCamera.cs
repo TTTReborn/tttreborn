@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Player.Camera
 {
-    public partial class ThirdPersonSpectateCamera : Sandbox.Camera, IObservationCamera
+    public partial class ThirdPersonSpectateCamera : CameraMode, IObservationCamera
     {
         private Vector3 DefaultPosition { get; set; }
 
@@ -46,7 +46,7 @@ namespace TTTReborn.Player.Camera
                 return DefaultPosition;
             }
 
-            return player.CurrentPlayer.EyePos;
+            return player.CurrentPlayer.EyePosition;
         }
 
         public override void BuildInput(InputBuilder input)

@@ -30,11 +30,15 @@ namespace TTTReborn.UI.VisualProgramming
 
     public abstract class Node : Modal
     {
-        public string LibraryName { get; set; }
-        public List<Node> NextNodes { get; set; } = new();
-        public List<int> ConnectPositions { get; set; } = new();
+        public static readonly List<Node> NodeList = new();
 
-        public List<NodeSetting> NodeSettings = new();
+        public string Id { get; set; }
+        public string LibraryName { get; set; }
+        public string[] ConnectionOutputIds { get; set; }
+        public string[] ConnectionInputIds { get; set; }
+        public object[] InputData { get; set; }
+
+        public List<NodeSetting> NodeSettings;
         public StackNode StackNode;
 
         public Node(StackNode stackNode) : base()
@@ -50,6 +54,30 @@ namespace TTTReborn.UI.VisualProgramming
 
             AddClass("node");
             AddClass("box-shadow");
+
+            Id = Guid.NewGuid().ToString();
+            StackNode.Id = Id;
+
+            ConnectionOutputIds = Array.Empty<string>();
+            ConnectionInputIds = Array.Empty<string>();
+            InputData = Array.Empty<object>();
+
+            NodeSettings = new();
+
+            NodeList.Add(this);
+        }
+
+        public static Node GetById(string id)
+        {
+            foreach (Node node in NodeList)
+            {
+                if (node.Id == id)
+                {
+                    return node;
+                }
+            }
+
+            return null;
         }
 
         public static NodeAttribute GetAttribute<T>() where T : Node => Library.GetAttribute(typeof(T)) as NodeAttribute;
@@ -64,25 +92,63 @@ namespace TTTReborn.UI.VisualProgramming
             Content.AddChild(nodeSetting);
             NodeSettings.Add(nodeSetting);
 
+            if (nodeSetting.Input.Enabled)
+            {
+                string[] oldArr = ConnectionInputIds;
+
+                ConnectionInputIds = new string[ConnectionInputIds.Length + 1];
+
+                for (int i = 0; i < oldArr.Length; i++)
+                {
+                    ConnectionInputIds[i] = oldArr[i];
+                }
+            }
+
+            if (nodeSetting.Output.Enabled)
+            {
+                string[] oldArr = ConnectionOutputIds;
+
+                ConnectionOutputIds = new string[ConnectionOutputIds.Length + 1];
+
+                for (int i = 0; i < oldArr.Length; i++)
+                {
+                    ConnectionOutputIds[i] = oldArr[i];
+                }
+            }
+
             return nodeSetting;
         }
 
         public override void Delete(bool immediate = false)
         {
+            NodeList.Remove(this);
+
             foreach (NodeSetting nodeSetting in NodeSettings)
             {
-                if (nodeSetting.Output != null)
-                {
-                    nodeSetting.Output.ConnectionPoint.ConnectionWire?.Delete(true);
-                }
-
-                if (nodeSetting.Input != null)
-                {
-                    nodeSetting.Input.ConnectionPoint.ConnectionWire?.Delete(true);
-                }
+                nodeSetting.Input.ConnectionPoint.ConnectionWire?.Delete(true);
+                nodeSetting.Output.ConnectionPoint.ConnectionWire?.Delete(true);
             }
 
+            Reset();
+
+            StackNode.Delete();
+
             base.Delete(immediate);
+        }
+
+        public virtual void Reset()
+        {
+            ResetData();
+            RemoveHighlights();
+
+            StackNode.Reset();
+        }
+
+        public virtual void ResetData()
+        {
+            ConnectionInputIds = Array.Empty<string>();
+            ConnectionOutputIds = Array.Empty<string>();
+            InputData = Array.Empty<object>();
         }
 
         protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
@@ -94,10 +160,8 @@ namespace TTTReborn.UI.VisualProgramming
             base.OnRightClick(e);
         }
 
-        private Node GetConnectedNode(NodeConnectionPoint connectionPoint, out int index)
+        private static Node GetConnectedNode(NodeConnectionPoint connectionPoint)
         {
-            index = -1;
-
             NodeConnectionWire connectionWire = connectionPoint.ConnectionWire;
 
             if (connectionWire == null)
@@ -105,16 +169,36 @@ namespace TTTReborn.UI.VisualProgramming
                 return null;
             }
 
-            NodeConnectionPoint connectedPoint = connectionWire.EndPoint;
+            NodeConnectionPoint connectedPoint;
+
+            if (connectionPoint is NodeConnectionStartPoint)
+            {
+                connectedPoint = connectionWire.EndPoint;
+            }
+            else
+            {
+                connectedPoint = connectionWire.StartPoint;
+            }
 
             if (connectedPoint == null)
             {
                 return null;
             }
 
-            index = connectedPoint.GetSettingsIndex();
-
             return connectedPoint.Node;
+        }
+
+        public bool HasInputsFilled()
+        {
+            foreach (NodeSetting nodeSetting in NodeSettings)
+            {
+                if (nodeSetting.Input.Enabled && nodeSetting.Input.ConnectionPoint.ConnectionWire == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public bool HasInput()
@@ -130,41 +214,152 @@ namespace TTTReborn.UI.VisualProgramming
             return false;
         }
 
-        public virtual bool Build(params object[] input)
+        public bool HasInputEnabled()
         {
-            NextNodes.Clear();
-            StackNode.NextNodes.Clear();
-            StackNode.ConnectPositions.Clear();
-
-            for (int i = 0; i < NodeSettings.Count; i++)
+            foreach (NodeSetting nodeSetting in NodeSettings)
             {
-                NodeSetting nodeSetting = NodeSettings[i];
-
-                if (nodeSetting.Output == null)
+                if (nodeSetting.Input.Enabled)
                 {
-                    continue;
+                    return true;
                 }
-
-                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
-
-                StackNode.ConnectPositions.Add(connectPositionIndex);
-
-                if (connectedNode == null)
-                {
-                    continue;
-                }
-
-                NextNodes.Add(connectedNode);
-                StackNode.NextNodes.Add(connectedNode.StackNode);
             }
 
-            StackNode.SetPos(Box.Rect.left, Box.Rect.top);
+            return false;
+        }
 
-            object[] arr;
+        public virtual void Prepare()
+        {
+            if (StackNode.ConnectionInputIds.Length == 0 || StackNode.ConnectionOutputIds.Length == 0)
+            {
+                int inputCount = 0, outputCount = 0;
+
+                for (int i = 0; i < NodeSettings.Count; i++)
+                {
+                    NodeSetting nodeSetting = NodeSettings[i];
+
+                    if (nodeSetting.Input.Enabled)
+                    {
+                        inputCount++;
+                    }
+
+                    if (nodeSetting.Output.Enabled)
+                    {
+                        outputCount++;
+                    }
+                }
+
+                ConnectionInputIds = new string[inputCount];
+                StackNode.ConnectionInputIds = new string[inputCount];
+
+                ConnectionOutputIds = new string[outputCount];
+                StackNode.ConnectionOutputIds = new string[outputCount];
+
+                int inputConnectionCount = 0;
+
+                for (int i = 0; i < NodeSettings.Count; i++)
+                {
+                    NodeSetting nodeSetting = NodeSettings[i];
+
+                    if (nodeSetting.Input.Enabled)
+                    {
+                        Node connectedNode = GetConnectedNode(nodeSetting.Input.ConnectionPoint);
+
+                        ConnectionInputIds[i] = connectedNode?.Id;
+                        StackNode.ConnectionInputIds[i] = connectedNode?.StackNode.Id;
+
+                        if (connectedNode != null)
+                        {
+                            inputConnectionCount++;
+                        }
+                    }
+
+                    if (nodeSetting.Output.Enabled)
+                    {
+                        Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint);
+
+                        ConnectionOutputIds[i] = connectedNode?.Id;
+                        StackNode.ConnectionOutputIds[i] = connectedNode?.StackNode.Id;
+                    }
+                }
+
+                InputData = new object[inputConnectionCount];
+
+                StackNode.SetPos(Box.Rect.left, Box.Rect.top);
+            }
+        }
+
+        public virtual bool Build(int inputIndex, object input = null)
+        {
+            object[] buildInput;
+
+            if (InputData.Length > 0)
+            {
+                InputData[inputIndex] = input;
+
+                for (int i = 0; i < InputData.Length; i++)
+                {
+                    if (InputData[i] == null)
+                    {
+                        return true;
+                    }
+                }
+
+                buildInput = InputData;
+            }
+            else
+            {
+                buildInput = new object[]
+                {
+                    input
+                };
+            }
+
+            bool successful = true;
 
             try
             {
-                arr = StackNode.Test(input);
+                object[] array = StackNode.Test(buildInput);
+
+                for (int o = 0; o < ConnectionOutputIds.Length; o++)
+                {
+                    string id = ConnectionOutputIds[o];
+
+                    if (id == null)
+                    {
+                        continue;
+                    }
+
+                    Node idNode = GetById(id);
+
+                    if (idNode == null)
+                    {
+                        Log.Warning($"Error in building NodeStack with node {Id} ('{LibraryName}')");
+
+                        return false;
+                    }
+
+                    int inputCount = 0;
+
+                    for (int i = 0; i < idNode.NodeSettings.Count; i++)
+                    {
+                        NodeSetting nodeSetting = idNode.NodeSettings[i];
+
+                        if (nodeSetting.Input.Enabled)
+                        {
+                            if (GetConnectedNode(nodeSetting.Input.ConnectionPoint) == this)
+                            {
+                                if (!idNode.Build(inputCount, array[o]))
+                                {
+                                    successful = false;
+                                }
+
+                                break;
+                            }
+
+                            inputCount++;
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -180,31 +375,7 @@ namespace TTTReborn.UI.VisualProgramming
                 throw;
             }
 
-            bool errors = false;
-
-            for (int i = 0; i < NextNodes.Count; i++)
-            {
-                Node node = NextNodes[i];
-
-                try
-                {
-                    if (!node.Build(arr.Length > i ? arr[i] : null))
-                    {
-                        errors = true;
-                    }
-                }
-                catch (Exception e)
-                {
-                    if (e is not NodeStackException)
-                    {
-                        node.HighlightError();
-                    }
-
-                    throw;
-                }
-            }
-
-            return !errors;
+            return successful;
         }
 
         public virtual void HighlightError()
@@ -217,126 +388,162 @@ namespace TTTReborn.UI.VisualProgramming
             RemoveClass("error");
         }
 
-        public void ConnectWithNode(Node node, int index, int maxIndex)
+        public void ConnectWithNode(Node node)
         {
             if (node == this)
             {
                 return;
             }
 
-            while (index <= maxIndex && ConnectPositions[index] == -1)
+            for (int outIndex = 0; outIndex < ConnectionOutputIds.Length; outIndex++)
             {
-                index++;
-
-                if (index == maxIndex)
+                if (ConnectionOutputIds[outIndex] == node.Id)
                 {
-                    return;
+                    for (int inIndex = 0; inIndex < node.ConnectionInputIds.Length; inIndex++)
+                    {
+                        if (node.ConnectionInputIds[inIndex] == Id)
+                        {
+                            NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
+
+                            int outCount = 0;
+
+                            foreach (NodeSetting nodeSetting in NodeSettings)
+                            {
+                                if (nodeSetting.Output.Enabled)
+                                {
+                                    if (outCount == outIndex)
+                                    {
+                                        NodeConnectionStartPoint startPoint = nodeSetting.Output.ConnectionPoint;
+                                        startPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.StartPoint = startPoint;
+                                    }
+
+                                    outCount++;
+                                }
+                            }
+
+                            int inCount = 0;
+
+                            foreach (NodeSetting nodeSetting in node.NodeSettings)
+                            {
+                                if (nodeSetting.Input.Enabled)
+                                {
+                                    if (inCount == inIndex)
+                                    {
+                                        NodeConnectionEndPoint endPoint = nodeSetting.Input.ConnectionPoint;
+                                        endPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.EndPoint = endPoint;
+                                    }
+
+                                    inCount++;
+                                }
+                            }
+
+                            return;
+                        }
+                    }
+
+                    break;
                 }
             }
 
-            NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
+            for (int inIndex = 0; inIndex < ConnectionInputIds.Length; inIndex++)
+            {
+                if (ConnectionInputIds[inIndex] == node.Id)
+                {
+                    for (int outIndex = 0; outIndex < node.ConnectionOutputIds.Length; outIndex++)
+                    {
+                        if (node.ConnectionOutputIds[outIndex] == Id)
+                        {
+                            NodeConnectionWire nodeConnectionWire = NodeConnectionWire.Create();
 
-            NodeConnectionStartPoint startPoint = NodeSettings[index].Output.ConnectionPoint;
-            startPoint.ConnectionWire = nodeConnectionWire;
-            nodeConnectionWire.StartPoint = startPoint;
+                            int outCount = 0;
 
-            NodeConnectionEndPoint endPoint = node.NodeSettings[ConnectPositions[index]].Input.ConnectionPoint;
-            endPoint.ConnectionWire = nodeConnectionWire;
-            nodeConnectionWire.EndPoint = endPoint;
+                            foreach (NodeSetting nodeSetting in node.NodeSettings)
+                            {
+                                if (nodeSetting.Output.Enabled)
+                                {
+                                    if (outCount == outIndex)
+                                    {
+                                        NodeConnectionStartPoint startPoint = nodeSetting.Output.ConnectionPoint;
+                                        startPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.StartPoint = startPoint;
+                                    }
+
+                                    outCount++;
+                                }
+                            }
+
+                            int inCount = 0;
+
+                            foreach (NodeSetting nodeSetting in NodeSettings)
+                            {
+                                if (nodeSetting.Input.Enabled)
+                                {
+                                    if (inCount == inIndex)
+                                    {
+                                        NodeConnectionEndPoint endPoint = nodeSetting.Input.ConnectionPoint;
+                                        endPoint.ConnectionWire = nodeConnectionWire;
+                                        nodeConnectionWire.EndPoint = endPoint;
+                                    }
+
+                                    inCount++;
+                                }
+                            }
+
+                            return;
+                        }
+                    }
+
+                    break;
+                }
+            }
         }
 
-        public virtual Dictionary<string, object> GetJsonData(List<Node> proceedNodes = null)
+        public virtual Dictionary<string, object> GetJsonData()
         {
-            if (proceedNodes != null)
-            {
-                proceedNodes.Add(this);
-            }
-
-            List<Dictionary<string, object>> nextNodesJsonList = new();
-
-            NextNodes.Clear();
-            ConnectPositions.Clear();
-
-            for (int i = 0; i < NodeSettings.Count; i++)
-            {
-                NodeSetting nodeSetting = NodeSettings[i];
-
-                if (nodeSetting.Output == null)
-                {
-                    continue;
-                }
-
-                Node connectedNode = GetConnectedNode(nodeSetting.Output.ConnectionPoint, out int connectPositionIndex);
-
-                ConnectPositions.Add(connectPositionIndex);
-
-                if (connectedNode == null)
-                {
-                    continue;
-                }
-
-                NextNodes.Add(connectedNode);
-            }
-
-            foreach (Node node in NextNodes)
-            {
-                nextNodesJsonList.Add(node.GetJsonData(proceedNodes));
-            }
-
             return new Dictionary<string, object>()
             {
+                ["Id"] = Id,
                 ["LibraryName"] = LibraryName,
-                ["ConnectPositions"] = ConnectPositions,
-                ["NextNodes"] = nextNodesJsonList,
-                ["PosX"] = Box.Rect.left,
-                ["PosY"] = Box.Rect.top
+                ["ConnectionInputIds"] = ConnectionInputIds,
+                ["ConnectionOutputIds"] = ConnectionOutputIds,
+                ["Pos"] = new Vector2(Box.Rect.left, Box.Rect.top),
             };
         }
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            Window.Instance.AddNode(this);
+            jsonData.TryGetValue("Id", out object id);
 
-            jsonData.TryGetValue("ConnectPositions", out object connectPosition);
-
-            if (connectPosition != null)
+            if (id != null)
             {
-                ConnectPositions = JsonSerializer.Deserialize<List<int>>(((JsonElement) connectPosition).GetRawText());
+                Id = ((JsonElement) id).ToString();
+                StackNode.Id = Id;
             }
 
-            jsonData.TryGetValue("NextNodes", out object nextNodes);
+            jsonData.TryGetValue("ConnectionInputIds", out object connectionInputIds);
 
-            if (nextNodes != null)
+            if (connectionInputIds != null)
             {
-                JsonElement nextNodesElement = (JsonElement) nextNodes;
-                List<Dictionary<string, object>> nextNodesList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(nextNodesElement.GetRawText());
-
-                for (int i = 0; i < nextNodesList.Count; i++)
-                {
-                    Node node = GetNodeFromJsonData<Node>(nextNodesList[i]);
-
-                    if (node == null)
-                    {
-                        continue;
-                    }
-
-                    NextNodes.Add(node);
-                    ConnectWithNode(node, i, nextNodesList.Count - 1);
-                }
+                ConnectionInputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionInputIds).GetRawText());
             }
 
-            jsonData.TryGetValue("PosX", out object posX);
+            jsonData.TryGetValue("ConnectionOutputIds", out object connectionOutputIds);
 
-            if (posX != null)
+            if (connectionOutputIds != null)
             {
-                Style.Left = Sandbox.UI.Length.Pixels(float.Parse(posX.ToString()));
+                ConnectionOutputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionOutputIds).GetRawText());
             }
 
-            jsonData.TryGetValue("PosY", out object posY);
+            jsonData.TryGetValue("Pos", out object pos);
 
-            if (posY != null)
+            if (pos != null)
             {
-                Style.Top = Sandbox.UI.Length.Pixels(float.Parse(posY.ToString()));
+                Vector2 vector2 = JsonSerializer.Deserialize<Vector2>(((JsonElement) pos).GetRawText());
+
+                Style.Left = Sandbox.UI.Length.Pixels(vector2.x);
+                Style.Top = Sandbox.UI.Length.Pixels(vector2.y);
             }
         }
 
@@ -362,6 +569,8 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 return null;
             }
+
+            Window.Instance.AddNode(node);
 
             node.LoadFromJsonData(jsonData);
             node.RemoveHighlights();

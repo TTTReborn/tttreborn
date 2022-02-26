@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Globalization;
-using TTTReborn.Globals;
 using TTTReborn.Items;
 using TTTReborn.UI;
 

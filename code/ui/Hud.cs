@@ -38,19 +38,19 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Hud.Current?.Delete();
+            Current?.Delete();
 
-            Hud hud = new();
+            _ = new Hud();
 
             if (Local.Client.Pawn is TTTPlayer player)
             {
                 Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
             }
 
-            Event.Run(TTTEvent.UI.Reloaded);
+            Event.Run(TTTEvent.UI.RELOADED);
         }
 
-        [Event(TTTEvent.Player.Spawned)]
+        [Event(TTTEvent.Player.SPAWNED)]
         private void OnPlayerSpawned(TTTPlayer player)
         {
             if (IsServer || player != Local.Client.Pawn)
@@ -61,7 +61,7 @@ namespace TTTReborn.UI
             AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
         }
 
-        [Event(TTTEvent.Player.Died)]
+        [Event(TTTEvent.Player.DIED)]
         private void OnPlayerDied(TTTPlayer deadPlayer)
         {
             if (deadPlayer != Local.Client.Pawn)
@@ -72,7 +72,7 @@ namespace TTTReborn.UI
             AliveHudInstance.Enabled = false;
         }
 
-        [Event(TTTEvent.Player.InitialSpawn)]
+        [Event(TTTEvent.Player.INITIAL_SPAWN)]
         public static void Initialize(Client client)
         {
             if (Host.IsServer || client != Local.Client)
@@ -80,8 +80,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            Hud hud = new();
-            hud.OnPlayerSpawned(client.Pawn as TTTPlayer); // InitialSpawn event is called after Spawned event, so we have to initialize manually
+            new Hud().OnPlayerSpawned(client.Pawn as TTTPlayer); // InitialSpawn event is called after Spawned event, so we have to initialize manually
         }
 
         public class GeneralHud : Panel
@@ -139,7 +138,7 @@ namespace TTTReborn.UI
             }
             private bool _enabled = false;
 
-            private RootPanel _rootPanel;
+            private readonly RootPanel _rootPanel;
 
             private List<Panel> _panelList = new();
 

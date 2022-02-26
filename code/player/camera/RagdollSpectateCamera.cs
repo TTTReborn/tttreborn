@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Player.Camera
 {
-    public class RagdollSpectateCamera : Sandbox.Camera, IObservationCamera
+    public class RagdollSpectateCamera : CameraMode, IObservationCamera
     {
         private Vector3 FocusPoint;
 

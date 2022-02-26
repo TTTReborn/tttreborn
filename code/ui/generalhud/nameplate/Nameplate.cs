@@ -75,7 +75,7 @@ namespace TTTReborn.UI
         {
             SetClass("fade-in", this.IsEnabled());
 
-            bool isAlive = false;
+            bool isAlive;
 
             // needed regarding https://github.com/Facepunch/sbox-issues/issues/1197
             try

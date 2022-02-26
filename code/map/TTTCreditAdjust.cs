@@ -19,11 +19,11 @@ namespace TTTReborn.Map
                 {
                     player.Credits -= Credits;
 
-                    OnSuccess.Fire(activator);
+                    _ = OnSuccess.Fire(activator);
                 }
                 else
                 {
-                    OnFailure.Fire(activator);
+                    _ = OnFailure.Fire(activator);
                 }
             }
         }

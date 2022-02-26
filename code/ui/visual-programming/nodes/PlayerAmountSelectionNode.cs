@@ -6,14 +6,14 @@ using TTTReborn.VisualProgramming;
 namespace TTTReborn.UI.VisualProgramming
 {
     [Spawnable]
-    [Node("percentage_selection")]
-    public class PercentageSelectionNode : Node
+    [Node("playeramount_selection")]
+    public class PlayerAmountSelectionNode : Node
     {
-        public List<float> PercentList { get; set; } = new();
+        public List<int> PlayerAmountList { get; set; } = new();
 
-        public PercentageSelectionNode() : base(new PercentageSelectionStackNode())
+        public PlayerAmountSelectionNode() : base(new PlayerAmountSelectionStackNode())
         {
-            SetTitle("PercentageSelection Node");
+            SetTitle("PlayerAmountSelection Node");
 
             AddSetting<NodePercentSetting>();
             AddSetting<NodePercentSetting>().ToggleInput(false);
@@ -22,21 +22,21 @@ namespace TTTReborn.UI.VisualProgramming
 
         internal void OnChange()
         {
-            PercentList.Clear();
+            PlayerAmountList.Clear();
 
             foreach (NodeSetting nodeSetting in NodeSettings)
             {
                 NodePercentSetting nodePercentSetting = nodeSetting as NodePercentSetting;
 
-                float percent = float.Parse(nodePercentSetting.PercentEntry.Text);
+                int playerAmount = int.Parse(nodePercentSetting.PercentEntry.Text);
 
-                PercentList.Add(percent);
+                PlayerAmountList.Add(playerAmount);
             }
         }
 
         public override void Prepare()
         {
-            (StackNode as PercentageSelectionStackNode).PercentList = PercentList;
+            (StackNode as PlayerAmountSelectionStackNode).PlayerAmountList = PlayerAmountList;
 
             base.Prepare();
         }
@@ -44,22 +44,22 @@ namespace TTTReborn.UI.VisualProgramming
         public override Dictionary<string, object> GetJsonData()
         {
             Dictionary<string, object> dict = base.GetJsonData();
-            dict.Add("PercentList", PercentList);
+            dict.Add("PlayerAmountList", PlayerAmountList);
 
             return dict;
         }
 
         public override void LoadFromJsonData(Dictionary<string, object> jsonData)
         {
-            jsonData.TryGetValue("PercentList", out object percentList);
+            jsonData.TryGetValue("PlayerAmountList", out object playerAmountList);
 
-            if (percentList != null)
+            if (playerAmountList != null)
             {
-                PercentList = JsonSerializer.Deserialize<List<float>>(((JsonElement) percentList).GetRawText());
+                PlayerAmountList = JsonSerializer.Deserialize<List<int>>(((JsonElement) playerAmountList).GetRawText());
 
-                if (NodeSettings.Count < PercentList.Count)
+                if (NodeSettings.Count < PlayerAmountList.Count)
                 {
-                    for (int i = 0; i < PercentList.Count - NodeSettings.Count; i++)
+                    for (int i = 0; i < PlayerAmountList.Count - NodeSettings.Count; i++)
                     {
                         AddSetting<NodePercentSetting>().ToggleInput(false);
                     }
@@ -67,7 +67,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 for (int i = 0; i < NodeSettings.Count; i++)
                 {
-                    (NodeSettings[i] as NodePercentSetting).PercentEntry.Text = PercentList.Count > i ? PercentList[i].ToString() : "";
+                    (NodeSettings[i] as NodePercentSetting).PercentEntry.Text = PlayerAmountList.Count > i ? PlayerAmountList[i].ToString() : "";
                 }
             }
 

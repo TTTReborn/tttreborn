@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTTReborn.Globals;
 using TTTReborn.Player;
 
 namespace TTTReborn.Items
@@ -20,7 +19,7 @@ namespace TTTReborn.Items
     [Equipment(SlotType = SlotType.UtilityEquipment)]
     [Precached("particles/rope.vpcf")]
     [Hammer.Skip]
-    partial class Hands : TTTEquipment
+    public partial class Hands : TTTEquipment
     {
         public override string ViewModelPath => "";
         public override bool CanDrop() => false;
@@ -92,7 +91,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            TraceResult tr = Trace.Ray(player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_INTERACT_DISTANCE)
+            TraceResult tr = Trace.Ray(player.EyePosition, player.EyePosition + player.EyeRotation.Forward * MAX_INTERACT_DISTANCE)
                     .EntitiesOnly()
                     .Ignore(player)
                     .Run();
@@ -104,11 +103,11 @@ namespace TTTReborn.Items
 
             IsPushingEntity = true;
 
-            player.SetAnimBool("b_attack", true);
-            player.SetAnimInt("holdtype", 4);
-            player.SetAnimInt("holdtype_handedness", 0);
+            player.SetAnimParameter("b_attack", true);
+            player.SetAnimParameter("holdtype", 4);
+            player.SetAnimParameter("holdtype_handedness", 0);
 
-            tr.Entity.Velocity += player.EyeRot.Forward * PUSHING_FORCE;
+            tr.Entity.Velocity += player.EyeRotation.Forward * PUSHING_FORCE;
 
             _ = WaitForAnimationFinish();
         }
@@ -139,8 +138,8 @@ namespace TTTReborn.Items
                 return;
             }
 
-            Vector3 eyePos = player.EyePos;
-            Vector3 eyeDir = player.EyeRot.Forward;
+            Vector3 eyePos = player.EyePosition;
+            Vector3 eyeDir = player.EyeRotation.Forward;
 
             TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * MAX_INTERACT_DISTANCE)
                 .UseHitboxes()
@@ -212,12 +211,12 @@ namespace TTTReborn.Items
 
             if (IsHoldingEntity)
             {
-                anim.SetParam("holdtype", 4);
-                anim.SetParam("holdtype_handedness", 0);
+                anim.SetAnimParameter("holdtype", 4);
+                anim.SetAnimParameter("holdtype_handedness", 0);
             }
             else
             {
-                anim.SetParam("holdtype", 0);
+                anim.SetAnimParameter("holdtype", 0);
             }
         }
     }

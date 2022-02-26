@@ -1,17 +1,15 @@
 .node {
-    width: 200px;
+    min-width: 250px;
     min-height: 80px;
-
     background-color: rgb(61, 118, 243);
 
-    .error {
+    &.error {
         box-shadow: 0px 0px 20px red;
     }
 
     .header {
         padding: 4px;
         min-height: 30px;
-
         background-color: #000c;
 
         .button.closebutton {
@@ -22,7 +20,6 @@
         .label.title {
             height: 20px;
             top: -5px;
-
             font-size: 10px;
         }
     }
@@ -30,11 +27,11 @@
     .content {
         background-color: rgb(61, 118, 243);
         flex-direction: column;
+        padding: 4px;
     }
 
     .footer {
         background-color: #000c;
-
         min-height: 10px;
         padding: 4px;
     }
@@ -45,7 +42,6 @@
 
         > .nodeconnectionpanel {
             flex-shrink: 1;
-
             width: 18px;
             align-items: center;
 
@@ -57,9 +53,7 @@
                 width: 10px;
                 height: 10px;
                 margin-left: 4px;
-
                 background-color: rgb(207, 57, 57);
-
                 border-radius: 100%;
 
                 &.connected {
@@ -70,14 +64,12 @@
 
         > PanelContent {
             flex-grow: 1;
-
             padding: 8px;
 
             .textentry {
                 background-color: #000c;
                 width: 100%;
                 padding: 4px 12px;
-
                 border-radius: 16px;
             }
         }

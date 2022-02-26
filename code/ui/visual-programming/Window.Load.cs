@@ -69,37 +69,21 @@ namespace TTTReborn.UI.VisualProgramming
                 return;
             }
 
-            List<Dictionary<string, object>> saveList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(((JsonElement) saveListJson).GetRawText());
-
             foreach (Node node in Nodes)
             {
                 node.Delete(true);
             }
 
             Nodes.Clear();
+            MainNode = null;
 
-            foreach (Dictionary<string, object> nodeJsonData in saveList)
-            {
-                Node.GetNodeFromJsonData<Node>(nodeJsonData);
-            }
-
-            foreach (Node node in Nodes)
-            {
-                if (node is MainNode mainNode)
-                {
-                    MainNode = mainNode;
-                }
-
-                node.Display();
-            }
+            LoadNodesFromStackJson(((JsonElement) saveListJson).GetRawText());
         }
     }
 }
 
 namespace TTTReborn.Player
 {
-    using TTTReborn.UI.VisualProgramming;
-
     public partial class TTTPlayer
     {
         internal static Dictionary<string, object> LoadVisualProgramming(string path, string fileName, Utils.Realm realm)

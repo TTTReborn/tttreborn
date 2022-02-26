@@ -5,7 +5,6 @@ using Sandbox;
 using Sandbox.ScreenShake;
 
 using TTTReborn.Globalization;
-using TTTReborn.Globals;
 using TTTReborn.Player;
 using TTTReborn.UI;
 
@@ -62,8 +61,8 @@ namespace TTTReborn.Items
 
         public PickupTrigger PickupTrigger { get; protected set; }
 
-        private const int AmmoDropPositionOffset = 50;
-        private const int AmmoDropVelocity = 500;
+        private const int AMMO_DROP_POSITION_OFFSET = 50;
+        private const int AMMO_DROP_VELOCITY = 500;
 
         public TTTWeapon() : base()
         {
@@ -151,7 +150,7 @@ namespace TTTReborn.Items
 
             IsReloading = true;
 
-            (Owner as AnimEntity).SetAnimBool("b_reload", true);
+            (Owner as AnimEntity).SetAnimParameter("b_reload", true);
 
             DoClientReload();
         }
@@ -186,9 +185,9 @@ namespace TTTReborn.Items
                 {
                     TTTAmmo ammoBox = Globals.Utils.GetObjectByType<TTTAmmo>(AmmoEntity);
 
-                    ammoBox.Position = Owner.EyePos + Owner.EyeRot.Forward * AmmoDropPositionOffset;
-                    ammoBox.Rotation = Owner.EyeRot;
-                    ammoBox.Velocity = Owner.EyeRot.Forward * AmmoDropVelocity;
+                    ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
+                    ammoBox.Rotation = Owner.EyeRotation;
+                    ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
                     ammoBox.SetCurrentAmmo(AmmoClip);
                 }
 
@@ -264,7 +263,7 @@ namespace TTTReborn.Items
         [ClientRpc]
         public virtual void DoClientReload()
         {
-            ViewModelEntity?.SetAnimBool("reload", true);
+            ViewModelEntity?.SetAnimParameter("reload", true);
         }
 
         public override void AttackPrimary()
@@ -289,19 +288,19 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                new Perlin();
+                _ = new Perlin();
             }
 
-            ViewModelEntity?.SetAnimBool("fire", true);
+            ViewModelEntity?.SetAnimParameter("fire", true);
         }
 
         public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
         {
-            Vector3 forward = Owner.EyeRot.Forward;
+            Vector3 forward = Owner.EyeRotation.Forward;
             forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePos, Owner.EyePos + forward * 5000, bulletSize))
+            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
             {
                 if (!IsServer || !tr.Entity.IsValid())
                 {
@@ -312,7 +311,7 @@ namespace TTTReborn.Items
                 {
                     tr.Surface.DoBulletImpact(tr);
 
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPos, forward * 100 * force, damage)
+                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
                         .UsingTraceResult(tr)
                         .WithAttacker(Owner)
                         .WithWeapon(this);
@@ -326,7 +325,7 @@ namespace TTTReborn.Items
         {
             using (LagCompensation())
             {
-                bool InWater = Physics.TestPointContents(start, CollisionLayer.Water);
+                bool InWater = Sandbox.Internal.GlobalGameNamespace.Map.Physics.IsPointWater(start);
 
                 TraceResult tr = Trace.Ray(start, end)
                         .UseHitboxes()

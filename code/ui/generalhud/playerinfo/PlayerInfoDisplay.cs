@@ -8,10 +8,10 @@ namespace TTTReborn.UI
 {
     public class PlayerInfoDisplay : Panel
     {
-        private Panel _healthPanel;
-        private Label _healthLabel;
-        private Panel _creditPanel;
-        private Label _creditLabel;
+        private readonly Panel _healthPanel;
+        private readonly Label _healthLabel;
+        private readonly Panel _creditPanel;
+        private readonly Label _creditLabel;
 
         public PlayerInfoDisplay() : base()
         {
