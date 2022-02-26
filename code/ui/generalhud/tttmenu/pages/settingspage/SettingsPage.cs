@@ -145,7 +145,18 @@ namespace TTTReborn.UI.Menu
 
                         foreach (KeyValuePair<string, object> keyValuePair in Utils.GetPropertyValue<Dictionary<string, object>>(propertyObject, possibleDropdownPropertyInfo.Name))
                         {
-                            dropdownSelection.Options.Add(new TranslationOption(new TranslationData(keyValuePair.Key), keyValuePair.Value));
+                            Option option;
+
+                            if (dropdownOptionsAttribute.AvoidTranslation)
+                            {
+                                option = new Option(keyValuePair.Key, keyValuePair.Value);
+                            }
+                            else
+                            {
+                                option = new TranslationOption(new TranslationData(keyValuePair.Key), keyValuePair.Value);
+                            }
+
+                            dropdownSelection.Options.Add(option);
                         }
                     }
                 }
