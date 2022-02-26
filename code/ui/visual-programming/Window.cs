@@ -6,7 +6,6 @@ using Sandbox.UI;
 
 /*
   TODO
- - connecNodes: when loading not greening the output dots
  - fix matrix issues
 */
 
@@ -17,16 +16,17 @@ namespace TTTReborn.UI.VisualProgramming
         public static Window Instance;
 
         public MainNode MainNode;
-        public List<Node> Nodes = new();
+        public List<Node> Nodes;
         public NodeConnectionWire ActiveNodeConnectionWire;
         public WindowSidebar Sidebar;
         public PanelContent Workspace;
 
         public Button BuildButton;
 
-        public Window(Panel parent, string jsonData) : base(parent)
+        private Window(Panel parent, string jsonData) : base(parent)
         {
             Instance = this;
+            Nodes = new();
 
             StyleSheet.Load("/ui/visual-programming/Window.scss");
 
@@ -83,6 +83,22 @@ namespace TTTReborn.UI.VisualProgramming
                     Log.Warning("Missing main node in default visual programming stack");
                 }
             });
+        }
+
+        public static Window Init(Panel parent, string jsonData)
+        {
+            if (Instance != null)
+            {
+                foreach (Node node in Instance.Nodes)
+                {
+                    node.Delete(true);
+                }
+
+                Instance.Nodes.Clear();
+                Instance.Delete(true);
+            }
+
+            return new Window(parent, jsonData);
         }
 
         public T AddNode<T>() where T : Node, new()

@@ -16,6 +16,8 @@ namespace TTTReborn.VisualProgramming
 
         public NodeStack()
         {
+            Instance?.Reset();
+
             Instance = this;
         }
 
