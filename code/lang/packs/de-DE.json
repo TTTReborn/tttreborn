@@ -65,10 +65,17 @@
 
     "MENU_SETTINGS_TAB_GENERAL": "Allgemein",
     "MENU_SETTINGS_GENERAL_LANGUAGE": "Sprache",
+    "MENU_SETTINGS_GENERAL_LANGUAGE_DESCRIPTION": "Die Anzeige-Sprache für den Nutzer",
+    "MENU_SETTINGS_GENERAL_RETURNMISSINGKEYS": "Debuggung: Gebe fehlende Language-Keys zurück",
+    "MENU_SETTINGS_GENERAL_RETURNMISSINGKEYS_DESCRIPTION": "Falls es einen fehlenden Language-Key gibt, gebe diesen statt des Fallbacks zurück.",
 
+    "MENU_SUBMENU_KEYBINDINGS": "Tastaturbelegung",
     "MENU_SUBMENU_SETTINGS": "Einstellungen",
+    "MENU_SUBMENU_SETTINGS_CLIENT": "Client Settings",
+    "MENU_SUBMENU_SETTINGS_SERVER": "Server Settings",
     "MENU_SUBMENU_TESTING": "Testen",
     "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
+    "MENU_SUBMENU_ROLEEDITOR": "Rollen Editor",
 
     "MENU_SETTINGS_LOADING": "Lade...",
     "MENU_SETTINGS_TAB_DEBUG": "Debug",
@@ -91,8 +98,15 @@
     "MENU_SETTINGS_ROUND_ROUNDTIME_DESCRIPTION": "Die Zeit, wie lange die Hauptrunde gehen soll.",
     "MENU_SETTINGS_ROUND_POSTROUNDTIME": "Nachrundenzeit",
     "MENU_SETTINGS_ROUND_POSTROUNDTIME_DESCRIPTION": "Die Zeit, bevor die nächste Runde startet.",
+    "MENU_SETTINGS_ROUND_MAPSELECTIONROUNDTIME": "Mapauswahl: Rundenzeit",
+    "MENU_SETTINGS_ROUND_MAPSELECTIONROUNDTIME_DESCRIPTION": "Die Zeit für die Mapauswahl",
+    "MENU_SETTINGS_ROUND_TOTALROUNDS": "Maximale Rundenanzahl",
+    "MENU_SETTINGS_ROUND_TOTALROUNDS_DESCRIPTION": "Maximale Rundenanzahl, bis es zur Mapauswahl kommt",
     "MENU_SETTINGS_ROUND_KILLTIMEREWARD": "Belohnungszeit für Tötung",
     "MENU_SETTINGS_ROUND_KILLTIMEREWARD_DESCRIPTION": "Die Extrazeit, die ein Verräter für das Töten von Unschuldigen bekommt.",
+    "MENU_SETTINGS_TAB_MAP": "Map",
+    "MENU_SETTINGS_MAP_DEFAULTMAP": "Standard-Map",
+    "MENU_SETTINGS_MAP_DEFAULTMAP_DESCRIPTION": "Wähle eine Map aus, welche standardmäßig ausgewählt wird.",
     "MENU_SETTINGS_LANGUAGE_SELECTION": "Sprache:",
     "MENU_SETTINGS_FORCESPECTATOR": "Zuschauen erzwingen?",
 
@@ -103,9 +117,8 @@
 
     "MENU_SHOPEDITOR_TOGGLEROLE": "Umschalten, um den Shop für die aktuell ausgewählte Rolle zu de-/aktivieren.",
     "MENU_SHOPEDITOR_SELECTROLE": "Wähle eine Rolle aus, um den damit verbundenen Shop zu modifizieren.",
+    "MENU_SHOPEDITOR_ENABLEROLE": "Aktiviert",
     "MENU_SHOPEDITOR_NOPERMISSION": "Du hast keine Berechtigungen, um auf den ShopEditor zuzugreifen.",
-    "MENU_SHOPEDITOR_ITEM_ACTIVATE": "Aktiviere das Item in dem {0} Shop.",
-    "MENU_SHOPEDITOR_ITEM_DEACTIVATE": "Deaktiviere das Item in dem {0} Shop.",
     "MENU_SHOPEDITOR_ITEM_EDIT": "Bearbeite das Item.",
     "MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC": "Bearbeite Item '{0}'",
     "MENU_SHOPEDITOR_ITEM_PRICE": "Preis",
@@ -151,6 +164,7 @@
     "AMMO_PISTOL": "Pistole",
     "AMMO_SMG": "SMG",
 
+    "EQUIPMENT_HANDS": "Hände",
     "EQUIPMENT_C4": "C4",
     "EQUIPMENT_DECOY": "Köder",
     "EQUIPMENT_HEALTHSTATION": "HealthStation",

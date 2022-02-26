@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
@@ -22,13 +21,13 @@ namespace TTTReborn.Settings
         public partial class General
         {
             [DropdownSetting]
-            public string Language { get; set; } = Globalization.TTTLanguage.FALLBACK_LANGUAGE;
+            public string Language { get; set; } = TTTLanguage.FALLBACK_LANGUAGE;
 
             [SwitchSetting]
             public bool ReturnMissingKeys { get; set; } = false;
 
             [JsonIgnore]
-            [DropdownOptions("Language")]
+            [DropdownOptions("Language", true)]
             public Dictionary<string, object> LanguageOptions
             {
                 get
@@ -88,7 +87,7 @@ namespace TTTReborn.Globalization
         {
             Language lang = null;
 
-            if (Languages != null && !String.IsNullOrEmpty(name))
+            if (Languages != null && !string.IsNullOrEmpty(name))
             {
                 if (!Languages.TryGetValue(name, out lang))
                 {
