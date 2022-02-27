@@ -1,5 +1,3 @@
-using System;
-
 using Sandbox;
 using Sandbox.ScreenShake;
 
@@ -8,7 +6,7 @@ using TTTReborn.Player;
 namespace TTTReborn.Items
 {
     [Library("weapon_shotgun")]
-    [Weapon(SlotType = SlotType.Primary, AmmoType = "ammo_buckshot")]
+    [Weapon(CarriableCategories.Shotgun)]
     [Spawnable]
     [Buyable(Price = 100)]
     [Precached("weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl", "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl", "particles/pistol_muzzleflash.vpcf", "particles/pistol_ejectbrass.vpcf")]
@@ -19,7 +17,6 @@ namespace TTTReborn.Items
         public override string ModelPath => "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl";
         public override float PrimaryRate => 1;
         public override float SecondaryRate => 1;
-        public override Type AmmoEntity => typeof(BuckshotAmmo);
         public override int ClipSize => 8;
         public override float ReloadTime => 0.5f;
         public override float DeployTime => 0.6f;
@@ -82,7 +79,7 @@ namespace TTTReborn.Items
 
             if (Owner is TTTPlayer player)
             {
-                int ammo = player.Inventory.Ammo.Take(AmmoType, 1);
+                int ammo = player.Inventory.Ammo.Take(AmmoName, 1);
 
                 if (ammo == 0)
                 {

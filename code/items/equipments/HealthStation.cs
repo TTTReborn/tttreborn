@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     /// Healthkit equipment definition, for the physical entity, see items/equipments/entities/HealthstationEntity.cs
     /// </summary>
     [Library("equipment_healthstation")]
-    [Equipment(SlotType = SlotType.UtilityEquipment)]
+    [Equipment(CarriableCategories.UtilityEquipment)]
     [Buyable(Price = 100)]
     [Hammer.Skip]
     public partial class HealthStation : TTTEquipment

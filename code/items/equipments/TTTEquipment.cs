@@ -9,7 +9,7 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class EquipmentAttribute : CarriableAttribute
     {
-        public EquipmentAttribute() : base()
+        public EquipmentAttribute(CarriableCategories category = CarriableCategories.UtilityEquipment) : base(category)
         {
 
         }
@@ -19,7 +19,7 @@ namespace TTTReborn.Items
     public abstract class TTTEquipment : BaseCarriable, ICarriableItem
     {
         public string LibraryName { get; }
-        public SlotType SlotType { get; } = SlotType.UtilityEquipment;
+        public CarriableCategories Category { get; }
 
         protected TTTEquipment()
         {
@@ -29,7 +29,7 @@ namespace TTTReborn.Items
             {
                 if (obj is EquipmentAttribute equipmentAttribute)
                 {
-                    SlotType = equipmentAttribute.SlotType;
+                    Category = equipmentAttribute.Category;
                 }
             }
 

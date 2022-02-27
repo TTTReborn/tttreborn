@@ -16,7 +16,7 @@ namespace TTTReborn.Items
     }
 
     [Library("equipment_hands")]
-    [Equipment(SlotType = SlotType.UtilityEquipment)]
+    [Equipment(CarriableCategories.UtilityEquipment)]
     [Precached("particles/rope.vpcf")]
     [Hammer.Skip]
     public partial class Hands : TTTEquipment

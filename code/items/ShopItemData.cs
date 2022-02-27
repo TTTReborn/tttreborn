@@ -22,7 +22,7 @@ namespace TTTReborn.Items
         public string Name { get; set; }
         public string Description = "";
         public int Price { get; set; } = 0;
-        public SlotType? SlotType = null;
+        public CarriableCategories? Category = null;
         public Type Type = null;
         public bool IsLimited { get; set; } = true;
 
@@ -35,7 +35,7 @@ namespace TTTReborn.Items
         {
             Price = shopItemData.Price;
             Description = shopItemData.Description ?? Description;
-            SlotType = shopItemData.SlotType ?? SlotType;
+            Category = shopItemData.Category ?? Category;
             Type = shopItemData.Type ?? Type;
             IsLimited = shopItemData.IsLimited;
         }
@@ -67,7 +67,7 @@ namespace TTTReborn.Items
                 }
                 else if (obj is CarriableAttribute carriableAttribute)
                 {
-                    shopItemData.SlotType = carriableAttribute.SlotType;
+                    shopItemData.Category = carriableAttribute.Category;
                 }
             }
 
@@ -87,17 +87,17 @@ namespace TTTReborn.Items
             {
                 return !player.Inventory.Perks.Has(Name);
             }
-            else if (SlotType == null)
+            else if (Category == null)
             {
                 return false;
             }
             else if (Type.IsSubclassOf(typeof(TTTWeapon)))
             {
-                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(SlotType.Value);
+                return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(Category.Value);
             }
             else if (Type.IsSubclassOf(typeof(TTTEquipment)))
             {
-                return player.Inventory.HasEmptySlot(SlotType.Value);
+                return player.Inventory.HasEmptySlot(Category.Value);
             }
 
             return false;

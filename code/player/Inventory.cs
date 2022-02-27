@@ -23,6 +23,20 @@ namespace TTTReborn.Player
             Perks = new(player);
         }
 
+        public static int GetSlotByCategory(CarriableCategories category)
+        {
+            return category switch
+            {
+                CarriableCategories.Melee => 1,
+                CarriableCategories.Pistol => 2,
+                CarriableCategories.SMG or CarriableCategories.Shotgun or CarriableCategories.Sniper => 3,
+                CarriableCategories.OffensiveEquipment => 4,
+                CarriableCategories.UtilityEquipment => 5,
+                CarriableCategories.Grenade => 6,
+                _ => 7,
+            };
+        }
+
         public override void DeleteContents()
         {
             foreach (Entity entity in List)
@@ -47,7 +61,7 @@ namespace TTTReborn.Player
 
             if (entity is ICarriableItem carriable)
             {
-                if (IsCarryingType(entity.GetType()) || !HasEmptySlot(carriable.SlotType))
+                if (IsCarryingType(entity.GetType()) || !HasEmptySlot(carriable.Category))
                 {
                     return false;
                 }
@@ -114,11 +128,11 @@ namespace TTTReborn.Player
             return false;
         }
 
-        public bool HasEmptySlot(SlotType slotType)
+        public bool HasEmptySlot(CarriableCategories category)
         {
-            int itemsInSlot = List.Count(x => ((ICarriableItem) x).SlotType == slotType);
+            int itemsInSlot = List.Count(x => ((ICarriableItem) x).Category == category);
 
-            return SlotCapacity[(int) slotType - 1] - itemsInSlot > 0;
+            return SlotCapacity[GetSlotByCategory(category) - 1] - itemsInSlot > 0;
         }
 
         public bool IsCarryingType(Type t)
@@ -126,7 +140,7 @@ namespace TTTReborn.Player
             return List.Any(x => x.GetType() == t);
         }
 
-        public IList<string> GetAmmoTypes()
+        public IList<string> GetAmmoNames()
         {
             List<string> types = new();
 
@@ -134,9 +148,9 @@ namespace TTTReborn.Player
             {
                 if (entity is TTTWeapon wep)
                 {
-                    if (!types.Contains(wep.AmmoType))
+                    if (!types.Contains(wep.AmmoName))
                     {
-                        types.Add(wep.AmmoType);
+                        types.Add(wep.AmmoName);
                     }
                 }
             }
