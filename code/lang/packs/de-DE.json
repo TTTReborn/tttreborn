@@ -13,6 +13,7 @@
     "ROUND_STATE_PREPARING": "Vorbereitung",
     "ROUND_STATE_IN_PROGRESS": "Im Gange",
     "ROUND_STATE_POST": "Runde vorbei",
+    "ROUND_STATE_MAP_SELECTION": "Wähle eine Map",
 
     "POST_ROUND_WIN_TEAM_INNOCENTS": "DIE UNSCHULDIGEN GEWINNEN!",
     "POST_ROUND_WIN_TEAM_TRAITORS": "DIE VERRÄTER GEWINNEN!",
@@ -169,6 +170,8 @@
     "EQUIPMENT_DECOY": "Köder",
     "EQUIPMENT_HEALTHSTATION": "HealthStation",
     "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
+
+    "GENERIC_PICKUP": "Drücke {0} um {1} aufzuheben",
 
     "HEALTH_STATION": "Halte {0} um die HealthStation zu nutzen",
 
