@@ -232,7 +232,7 @@ namespace TTTReborn.Gamemode
                         return;
                     }
 
-                    Log.Error($"[TASK] {e.Message}: {e.StackTrace}");
+                    throw;
                 }
             }
         }
