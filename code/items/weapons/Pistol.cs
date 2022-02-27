@@ -39,7 +39,10 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimParameter("b_attack", true);
 
-            ShootEffects();
+            if (IsClient)
+            {
+                ShootEffects();
+            }
 
             PlaySound("rust_pistol.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);

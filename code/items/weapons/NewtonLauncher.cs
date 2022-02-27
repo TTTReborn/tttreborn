@@ -54,9 +54,15 @@ namespace TTTReborn.Items
         public void ReleaseCharge()
         {
             (Owner as AnimEntity).SetAnimParameter("b_attack", true);
-            ShootEffects();
+
+            if (IsClient)
+            {
+                ShootEffects();
+            }
+
             PlaySound("rust_pistol.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0f, 0f, BaseDamage, 0f);
+
             IsCharging = false;
             TimeSincePrimaryAttack = 0;
         }
@@ -107,6 +113,7 @@ namespace TTTReborn.Items
         public override void Simulate(Client owner)
         {
             base.Simulate(owner);
+
             if (IsCharging)
             {
                 if (!Input.Down(InputButton.Attack1))

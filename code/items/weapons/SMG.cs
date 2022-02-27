@@ -33,13 +33,15 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimParameter("b_attack", true);
 
-            ShootEffects();
+            if (IsClient)
+            {
+                ShootEffects();
+            }
 
             PlaySound("rust_smg.shoot").SetPosition(Position).SetVolume(0.8f);
             ShootBullet(0.1f, 1.5f, BaseDamage, 3.0f);
         }
 
-        [ClientRpc]
         protected override void ShootEffects()
         {
             Host.AssertClient();
@@ -49,7 +51,10 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                _ = new Sandbox.ScreenShake.Perlin(0.5f, 4.0f, 1.0f, 0.5f);
+                using (Prediction.Off())
+                {
+                    _ = new Sandbox.ScreenShake.Perlin(0.5f, 4.0f, 1.0f, 0.5f);
+                }
             }
 
             ViewModelEntity?.SetAnimParameter("fire", true);
