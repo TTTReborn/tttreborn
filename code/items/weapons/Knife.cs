@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Library("weapon_knife")]
-    [Weapon(SlotType = SlotType.Melee)]
+    [Weapon(CarriableCategories.Melee)]
     [Buyable(Price = 100)]
     [Precached("weapons/rust_boneknife/v_rust_boneknife.vmdl", "weapons/rust_boneknife/rust_boneknife.vmdl")]
     [Hammer.EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]

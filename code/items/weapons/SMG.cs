@@ -1,11 +1,9 @@
-using System;
-
 using Sandbox;
 
 namespace TTTReborn.Items
 {
     [Library("weapon_smg")]
-    [Weapon(SlotType = SlotType.Primary, AmmoType = "ammo_smg")]
+    [Weapon(CarriableCategories.SMG)]
     [Spawnable]
     [Buyable(Price = 100)]
     [Precached("weapons/rust_smg/v_rust_smg.vmdl", "weapons/rust_smg/rust_smg.vmdl", "particles/pistol_muzzleflash.vpcf", "particles/pistol_ejectbrass.vpcf")]
@@ -20,7 +18,6 @@ namespace TTTReborn.Items
         public override float ReloadTime => 2.8f;
         public override float DeployTime => 0.6f;
         public override int BaseDamage => 8;
-        public override Type AmmoEntity => typeof(SMGAmmo);
 
         public override void AttackPrimary()
         {

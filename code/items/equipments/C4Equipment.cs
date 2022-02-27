@@ -9,7 +9,7 @@ namespace TTTReborn.Items
     /// </summary>
     [Library("equipment_c4")]
     [Buyable(Price = 100)]
-    [Equipment(SlotType = SlotType.OffensiveEquipment)]
+    [Equipment(CarriableCategories.OffensiveEquipment)]
     [Hammer.Skip]
     public partial class C4Equipment : TTTEquipment
     {
