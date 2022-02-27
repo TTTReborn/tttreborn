@@ -121,8 +121,10 @@ namespace TTTReborn.UI.VisualProgramming
         {
             if (_mouseDown)
             {
-                _currentNode.Style.Left = Length.Pixels(Mouse.Position.x);
-                _currentNode.Style.Top = Length.Pixels(Mouse.Position.y);
+                float scale = _currentNode.ScaleToScreen;
+
+                _currentNode.Style.Left = Length.Pixels(Mouse.Position.x / scale);
+                _currentNode.Style.Top = Length.Pixels(Mouse.Position.y / scale);
             }
 
             base.Tick();

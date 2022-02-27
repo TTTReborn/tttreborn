@@ -3,8 +3,6 @@ using System.Numerics;
 using Sandbox;
 using Sandbox.UI;
 
-// TODO use M4x4 transform
-
 namespace TTTReborn.UI
 {
     public partial class Drag : DragDrop
@@ -202,8 +200,10 @@ namespace TTTReborn.UI
 
         public virtual void OnDragPanel(float left, float top)
         {
-            DragBasePanel.Style.Left = Length.Pixels(left);
-            DragBasePanel.Style.Top = Length.Pixels(top);
+            float scale = DragBasePanel.ScaleToScreen;
+
+            DragBasePanel.Style.Left = Length.Pixels(left / scale);
+            DragBasePanel.Style.Top = Length.Pixels(top / scale);
         }
 
         public virtual void OnDragPanelFinished()

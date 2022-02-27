@@ -541,9 +541,10 @@ namespace TTTReborn.UI.VisualProgramming
             if (pos != null)
             {
                 Vector2 vector2 = JsonSerializer.Deserialize<Vector2>(((JsonElement) pos).GetRawText());
+                float scale = Hud.Current.GeneralHudPanel.ScaleToScreen;
 
-                Style.Left = Sandbox.UI.Length.Pixels(vector2.x);
-                Style.Top = Sandbox.UI.Length.Pixels(vector2.y);
+                Style.Left = Sandbox.UI.Length.Pixels(vector2.x / scale);
+                Style.Top = Sandbox.UI.Length.Pixels(vector2.y / scale);
             }
         }
 
