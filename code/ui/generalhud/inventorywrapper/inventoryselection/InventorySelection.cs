@@ -59,6 +59,50 @@ namespace TTTReborn.UI
                 return;
             }
 
+            // Due to S&Box RPC ent syncing bugs, we have to run some checks and fixes
+            bool invalidList = false;
+
+            foreach (Entity entity in player.CurrentPlayer.Inventory.List)
+            {
+                if (entity is not ICarriableItem carriableItem)
+                {
+                    continue;
+                }
+
+                string entName = carriableItem.LibraryName;
+                bool found = false;
+
+                foreach (Panel panel in Children)
+                {
+                    if (panel is InventorySlot inventorySlot && inventorySlot.Carriable.LibraryName.Equals(entName))
+                    {
+                        found = true;
+
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    invalidList = true;
+
+                    break;
+                }
+            }
+
+            if (invalidList)
+            {
+                OnCarriableItemClear();
+
+                foreach (Entity entity in player.Inventory.List)
+                {
+                    if (entity is ICarriableItem carriableItem)
+                    {
+                        OnCarriableItemPickup(carriableItem);
+                    }
+                }
+            }
+
             ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
 
             bool invalidSlot = false;
