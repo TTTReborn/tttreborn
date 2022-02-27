@@ -171,12 +171,12 @@
     "EQUIPMENT_HEALTHSTATION": "HealthStation",
     "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
 
-    "GENERIC_PICKUP": "Drücke {0} um {1} aufzuheben",
+    "GENERIC_PICKUP": "Drücke [{0}] um '{1}' aufzuheben",
 
-    "HEALTH_STATION": "Halte {0} um die HealthStation zu nutzen",
+    "HEALTH_STATION": "Halte [{0}] um die HealthStation zu nutzen ({1} Aufladungen)",
 
-    "C4_ARM": "Halte {0}, um das C4 scharf zu machen",
-    "C4_DEFUSE": "Drücke {0}, um das C4 zu entschärfen",
+    "C4_ARM": "Halte [{0}], um das C4 scharf zu machen",
+    "C4_DEFUSE": "Drücke [{0}], um das C4 zu entschärfen",
     "C4_UI_PICKUP": "Aufheben",
     "C4_UI_DESTROY": "Zerstören",
     "C4_UI_ARM": "Schärfen",
