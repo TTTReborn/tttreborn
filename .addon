@@ -6,9 +6,7 @@
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "ResourcePaths": [
-    "/ui/*"
-  ],
+  "ResourcePaths": [],
   "HasCode": true,
   "CodePath": "code",
   "RootNamespace": "TTTReborn"

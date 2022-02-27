@@ -31,7 +31,7 @@ namespace TTTReborn.UI
         {
             SetTranslationData(translationData);
 
-            _inspectIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, imagePath, false) ?? Texture.Load(FileSystem.Mounted, $"/ui/none.png");
+            _inspectIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, imagePath, false) ?? Texture.Load(FileSystem.Mounted, $"assets/none.png");
         }
 
         public void SetTranslationData(TranslationData translationData)
