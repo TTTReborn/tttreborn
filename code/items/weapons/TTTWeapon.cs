@@ -271,12 +271,14 @@ namespace TTTReborn.Items
             TimeSincePrimaryAttack = 0;
             TimeSinceSecondaryAttack = 0;
 
-            ShootEffects();
+            if (IsClient)
+            {
+                ShootEffects();
+            }
 
             ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);
         }
 
-        [ClientRpc]
         protected virtual void ShootEffects()
         {
             Host.AssertClient();
@@ -288,7 +290,10 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                _ = new Perlin();
+                using (Prediction.Off())
+                {
+                    _ = new Perlin();
+                }
             }
 
             ViewModelEntity?.SetAnimParameter("fire", true);

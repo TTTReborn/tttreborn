@@ -17,52 +17,51 @@ namespace TTTReborn.UI.Menu
             Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_DESCRIPTION"));
             Add.Label("");
 
-            Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_MOVEMENT"), "h1");
-            CreateBinding(this, "MENU_KEYBINDINGS_FORWARD", new() { "+iv_forward" });
-            CreateBinding(this, "MENU_KEYBINDINGS_BACK", new() { "+iv_back" });
-            CreateBinding(this, "MENU_KEYBINDINGS_LEFT", new() { "+iv_left" });
-            CreateBinding(this, "MENU_KEYBINDINGS_RIGHT", new() { "+iv_right" });
-            CreateBinding(this, "MENU_KEYBINDINGS_JUMP", new() { "+iv_jump" });
-            CreateBinding(this, "MENU_KEYBINDINGS_CROUCH", new() { "+iv_duck" });
-            CreateBinding(this, "MENU_KEYBINDINGS_SPRINT", new() { "+iv_sprint" });
-            Add.Label("");
+            TranslationTabContainer translationTabContainer = Add.TranslationTabContainer();
 
-            Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_WEAPONS"), "h1");
-            CreateBinding(this, "MENU_KEYBINDINGS_FIRE", new() { "+iv_attack" });
-            CreateBinding(this, "MENU_KEYBINDINGS_RELOAD", new() { "+iv_reload" });
-            CreateBinding(this, "MENU_KEYBINDINGS_DROP_WEAPON", new() { "+iv_drop" });
-            CreateBinding(this, "MENU_KEYBINDINGS_DROP_AMMO", new() { "+iv_sprint", "+iv_drop" });
-            Add.Label("");
+            Panel movementPanel = new();
+            CreateBinding(movementPanel, "MENU_KEYBINDINGS_FORWARD", new() { "+iv_forward" });
+            CreateBinding(movementPanel, "MENU_KEYBINDINGS_BACK", new() { "+iv_back" });
+            CreateBinding(movementPanel, "MENU_KEYBINDINGS_LEFT", new() { "+iv_left" });
+            CreateBinding(movementPanel, "MENU_KEYBINDINGS_RIGHT", new() { "+iv_right" });
+            CreateBinding(movementPanel, "MENU_KEYBINDINGS_JUMP", new() { "+iv_jump" });
+            CreateBinding(movementPanel, "MENU_KEYBINDINGS_CROUCH", new() { "+iv_duck" });
+            CreateBinding(movementPanel, "MENU_KEYBINDINGS_SPRINT", new() { "+iv_sprint" });
 
-            Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_ACTIONS"), "h1");
-            CreateBinding(this, "MENU_KEYBINDINGS_USE", new() { "+iv_use" });
-            CreateBinding(this, "MENU_KEYBINDINGS_FLASHLIGHT", new() { "+iv_flashlight" });
-            Add.Label("");
+            translationTabContainer.AddTab(movementPanel, new TranslationData("MENU_KEYBINDINGS_MOVEMENT"));
 
-            Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_COMMUNICATION"), "h1");
-            CreateBinding(this, "MENU_KEYBINDINGS_VOICE_CHAT", new() { "+iv_voice" });
-            CreateBinding(this, "MENU_KEYBINDINGS_TEAM_VOICE_CHAT", new() { "+iv_walk" });
-            CreateBinding(this, "MENU_KEYBINDINGS_TEAM_TEXT_CHAT", new() { "+iv_score" });
-            Add.Label("");
+            Panel weaponsPanel = new();
+            CreateBinding(weaponsPanel, "MENU_KEYBINDINGS_FIRE", new() { "+iv_attack" });
+            CreateBinding(weaponsPanel, "MENU_KEYBINDINGS_RELOAD", new() { "+iv_reload" });
+            CreateBinding(weaponsPanel, "MENU_KEYBINDINGS_DROP_WEAPON", new() { "+iv_drop" });
+            CreateBinding(weaponsPanel, "MENU_KEYBINDINGS_DROP_AMMO", new() { "+iv_sprint", "+iv_drop" });
 
-            Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_MENUS"), "h1");
-            CreateBinding(this, "MENU_KEYBINDINGS_SCOREBOARD", new() { "+iv_score" });
-            CreateBinding(this, "MENU_KEYBINDINGS_MENU", new() { "+iv_menu" });
-            CreateBinding(this, "MENU_KEYBINDINGS_QUICK_SHOP", new() { "+iv_view" });
-            Add.Label("");
+            translationTabContainer.AddTab(weaponsPanel, new TranslationData("MENU_KEYBINDINGS_WEAPONS"));
 
-            Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_MENUS"), "h1");
-            CreateBinding(this, "MENU_KEYBINDINGS_SCOREBOARD", new() { "+iv_score" });
-            CreateBinding(this, "MENU_KEYBINDINGS_MENU", new() { "+iv_menu" });
-            CreateBinding(this, "MENU_KEYBINDINGS_QUICK_SHOP", new() { "+iv_view" });
-            Add.Label("");
+            Panel actionsPanel = new();
+            CreateBinding(actionsPanel, "MENU_KEYBINDINGS_USE", new() { "+iv_use" });
+            CreateBinding(actionsPanel, "MENU_KEYBINDINGS_FLASHLIGHT", new() { "+iv_flashlight" });
+
+            translationTabContainer.AddTab(actionsPanel, new TranslationData("MENU_KEYBINDINGS_ACTIONS"));
+
+            Panel communicationsPanel = new();
+            CreateBinding(communicationsPanel, "MENU_KEYBINDINGS_VOICE_CHAT", new() { "+iv_voice" });
+            CreateBinding(communicationsPanel, "MENU_KEYBINDINGS_TEAM_VOICE_CHAT", new() { "+iv_walk" });
+            CreateBinding(communicationsPanel, "MENU_KEYBINDINGS_TEAM_TEXT_CHAT", new() { "+iv_score" });
+
+            translationTabContainer.AddTab(communicationsPanel, new TranslationData("MENU_KEYBINDINGS_COMMUNICATION"));
+
+            Panel menusPanel = new();
+            CreateBinding(menusPanel, "MENU_KEYBINDINGS_SCOREBOARD", new() { "+iv_score" });
+            CreateBinding(menusPanel, "MENU_KEYBINDINGS_MENU", new() { "+iv_menu" });
+            CreateBinding(menusPanel, "MENU_KEYBINDINGS_QUICK_SHOP", new() { "+iv_view" });
+
+            translationTabContainer.AddTab(menusPanel, new TranslationData("MENU_KEYBINDINGS_MENUS"));
         }
 
         private static void CreateBinding(Panel parent, string actionName, List<string> bindings)
         {
-            Panel wrapper = new(parent);
-            wrapper.AddClass("wrapper");
-
+            Panel wrapper = parent.Add.Panel("wrapper");
             wrapper.Add.TranslationLabel(new TranslationData(actionName));
             wrapper.Add.Label(": ");
 

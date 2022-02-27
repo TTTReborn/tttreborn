@@ -78,7 +78,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            bool isAlive = Local.Pawn.LifeState == LifeState.Alive;
+            bool isAlive = Local.Pawn != null && Local.Pawn.LifeState == LifeState.Alive;
 
             if (isAlive && Local.Pawn is TTTPlayer player && IsTeamChatting)
             {

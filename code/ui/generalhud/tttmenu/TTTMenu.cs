@@ -69,18 +69,16 @@ namespace TTTReborn.UI
             BackButton.SetClass("inactive", !HasPreviousPages);
             HomeButton.SetClass("inactive", !HasPreviousPages);
 
-            ActivePage = Pages.GetChild(Pages.ChildrenCount - 1) as Panel;
+            ActivePage = Pages.GetChild(Pages.ChildrenCount - 1);
         }
 
         /// <summary>
-        /// Deletes all pages and goes to the first page in the stack.
+        /// Deletes all pages and recreates the homepage.
         /// </summary>
         public void PopToHomePage()
         {
-            while (HasPreviousPages)
-            {
-                PopPage();
-            }
+            Pages.DeleteChildren(true);
+            AddPage(new HomePage());
         }
 
         [Event.BuildInput]
@@ -88,7 +86,14 @@ namespace TTTReborn.UI
         {
             if (input.Pressed(InputButton.Menu))
             {
-                BackgroundPanel.SetClass("disabled", !BackgroundPanel.HasClass("disabled"));
+                bool enabled = !BackgroundPanel.HasClass("disabled");
+
+                if (enabled)
+                {
+                    PopToHomePage();
+                }
+
+                BackgroundPanel.SetClass("disabled", enabled);
             }
         }
     }

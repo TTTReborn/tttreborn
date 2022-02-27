@@ -117,10 +117,10 @@
     "EQUIPMENT_HEALTHSTATION": "StazionediCura",
     "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
 
-    "HEALTH_STATION": "Tieni {0} per usare la stazione di cura",
+    "HEALTH_STATION": "Tieni [{0}] per usare la stazione di cura ({1})",
 
-    "C4_ARM": "Tieni {0} per amare la C4",
-    "C4_DEFUSE": "Premi {0} per disarmare la C4",
+    "C4_ARM": "Tieni [{0}] per amare la C4",
+    "C4_DEFUSE": "Premi [{0}] per disarmare la C4",
 
     "PERK_BODYARMOR": "Armatura",
     "PERK_RADAR": "Radar"

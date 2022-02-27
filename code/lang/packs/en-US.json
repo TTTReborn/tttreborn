@@ -126,7 +126,7 @@
     "MENU_SHOPEDITOR_ITEM_PRICE": "Price",
     "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC": "The price of the '{0}'.",
 
-    "MENU_KEYBINDINGS_DESCRIPTION": "You can change your bindings in the s&box options menu or through console.",
+    "MENU_KEYBINDINGS_DESCRIPTION": "Because of restrictions by the S&Box developers you can change your bindings just in the s&box options menu or through console.",
     "MENU_KEYBINDINGS_MOVEMENT": "Movement",
     "MENU_KEYBINDINGS_FORWARD": "Forward",
     "MENU_KEYBINDINGS_BACK": "Back",
@@ -171,12 +171,12 @@
     "EQUIPMENT_HEALTHSTATION": "HealthStation",
     "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
 
-    "GENERIC_PICKUP": "Press {0} to pickup {1}",
+    "GENERIC_PICKUP": "Press [{0}] to pickup '{1}'",
 
-    "HEALTH_STATION": "Hold {0} to use the HealthStation ({1} charges)",
+    "HEALTH_STATION": "Hold [{0}] to use the HealthStation ({1} charges)",
 
-    "C4_ARM": "Hold {0} to arm the C4",
-    "C4_DEFUSE": "Press {0} to defuse the C4",
+    "C4_ARM": "Hold [{0}] to arm the C4",
+    "C4_DEFUSE": "Press [{0}] to defuse the C4",
     "C4_UI_PICKUP": "Pick Up",
     "C4_UI_DESTROY": "Destroy",
     "C4_UI_ARM": "Arm",

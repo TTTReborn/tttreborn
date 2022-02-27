@@ -36,7 +36,10 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimParameter("b_attack", true);
 
-            ShootEffects();
+            if (IsClient)
+            {
+                ShootEffects();
+            }
 
             PlaySound("rust_pumpshotgun.shoot").SetPosition(Position).SetVolume(0.8f);
 
@@ -46,7 +49,6 @@ namespace TTTReborn.Items
             }
         }
 
-        [ClientRpc]
         protected override void ShootEffects()
         {
             Host.AssertClient();
@@ -59,7 +61,10 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn)
             {
-                _ = new Perlin(1.0f, 1.5f, 2.0f);
+                using (Prediction.Off())
+                {
+                    _ = new Perlin(1.0f, 1.5f, 2.0f);
+                }
             }
         }
 

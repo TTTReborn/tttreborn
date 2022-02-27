@@ -13,6 +13,7 @@
     "ROUND_STATE_PREPARING": "Vorbereitung",
     "ROUND_STATE_IN_PROGRESS": "Im Gange",
     "ROUND_STATE_POST": "Runde vorbei",
+    "ROUND_STATE_MAP_SELECTION": "Wähle eine Map",
 
     "POST_ROUND_WIN_TEAM_INNOCENTS": "DIE UNSCHULDIGEN GEWINNEN!",
     "POST_ROUND_WIN_TEAM_TRAITORS": "DIE VERRÄTER GEWINNEN!",
@@ -125,7 +126,7 @@
     "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC": "Der Preis von: '{0}'.",
 
     "MENU_KEYBINDINGS": "Keybindings",
-    "MENU_KEYBINDINGS_DESCRIPTION": "Du kannst deine Keybindings im S&Box Optionsmenü oder über die Konsole ändern.",
+    "MENU_KEYBINDINGS_DESCRIPTION": "Wegen Restriktionen der S&Box Entwickler kannst Du deine Keybindings leider nur im S&Box Optionsmenü oder über die Konsole ändern.",
     "MENU_KEYBINDINGS_MOVEMENT": "Bewegung",
     "MENU_KEYBINDINGS_FORWARD": "Vorwärts",
     "MENU_KEYBINDINGS_BACK": "Rückwärts",
@@ -170,10 +171,12 @@
     "EQUIPMENT_HEALTHSTATION": "HealthStation",
     "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
 
-    "HEALTH_STATION": "Halte {0} um die HealthStation zu nutzen",
+    "GENERIC_PICKUP": "Drücke [{0}] um '{1}' aufzuheben",
 
-    "C4_ARM": "Halte {0}, um das C4 scharf zu machen",
-    "C4_DEFUSE": "Drücke {0}, um das C4 zu entschärfen",
+    "HEALTH_STATION": "Halte [{0}] um die HealthStation zu nutzen ({1} Aufladungen)",
+
+    "C4_ARM": "Halte [{0}], um das C4 scharf zu machen",
+    "C4_DEFUSE": "Drücke [{0}], um das C4 zu entschärfen",
     "C4_UI_PICKUP": "Aufheben",
     "C4_UI_DESTROY": "Zerstören",
     "C4_UI_ARM": "Schärfen",
