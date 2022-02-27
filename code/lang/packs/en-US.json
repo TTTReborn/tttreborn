@@ -126,7 +126,7 @@
     "MENU_SHOPEDITOR_ITEM_PRICE": "Price",
     "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC": "The price of the '{0}'.",
 
-    "MENU_KEYBINDINGS_DESCRIPTION": "You can change your bindings in the s&box options menu or through console.",
+    "MENU_KEYBINDINGS_DESCRIPTION": "Because of restrictions by the S&Box developers you can change your bindings just in the s&box options menu or through console.",
     "MENU_KEYBINDINGS_MOVEMENT": "Movement",
     "MENU_KEYBINDINGS_FORWARD": "Forward",
     "MENU_KEYBINDINGS_BACK": "Back",

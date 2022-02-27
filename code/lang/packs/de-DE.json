@@ -125,7 +125,7 @@
     "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC": "Der Preis von: '{0}'.",
 
     "MENU_KEYBINDINGS": "Keybindings",
-    "MENU_KEYBINDINGS_DESCRIPTION": "Du kannst deine Keybindings im S&Box Optionsmenü oder über die Konsole ändern.",
+    "MENU_KEYBINDINGS_DESCRIPTION": "Wegen Restriktionen der S&Box Entwickler kannst Du deine Keybindings leider nur im S&Box Optionsmenü oder über die Konsole ändern.",
     "MENU_KEYBINDINGS_MOVEMENT": "Bewegung",
     "MENU_KEYBINDINGS_FORWARD": "Vorwärts",
     "MENU_KEYBINDINGS_BACK": "Rückwärts",
