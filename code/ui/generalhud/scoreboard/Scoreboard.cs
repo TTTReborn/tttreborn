@@ -92,20 +92,20 @@ namespace TTTReborn.UI
             UpdateClient(player.Client);
         }
 
-        [Event(TTTEvent.Player.CONNECTED)]
-        public void OnPlayerConnected(Client client)
-        {
-            AddClient(client);
+        // unreliable currently due to S&Box issues
+        // [Event(TTTEvent.Player.CONNECTED)]
+        // public void OnPlayerConnected(Client client)
+        // {
+        //     AddClient(client);
+        //     UpdateScoreboardGroups();
+        // }
 
-            UpdateScoreboardGroups();
-        }
-
-        [Event(TTTEvent.Player.DISCONNECTED)]
-        private void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
-        {
-            RemoveClient(playerId);
-            UpdateScoreboardGroups();
-        }
+        // [Event(TTTEvent.Player.DISCONNECTED)]
+        // private void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
+        // {
+        //     RemoveClient(playerId);
+        //     UpdateScoreboardGroups();
+        // }
 
         public void AddClient(Client client)
         {
@@ -187,26 +187,63 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            // Due to not having a `client.GetValue` change callback, we have to handle it differently
+            if (!Input.Down(InputButton.Score))
+            {
+                SetClass("fade-in", false);
+
+                return;
+            }
+
+            bool invalidList = false;
+
             foreach (Client client in Client.All)
             {
-                bool newIsForcedSpectator = client.GetValue<bool>("forcedspectator");
-
-                if (!_forcedSpecList.TryGetValue(client.PlayerId, out bool isForcedSpectator))
+                if (!_entries.ContainsKey(client.PlayerId))
                 {
-                    _forcedSpecList.Add(client.PlayerId, newIsForcedSpectator);
-                }
-                else if (isForcedSpectator != newIsForcedSpectator)
-                {
-                    _forcedSpecList[client.PlayerId] = newIsForcedSpectator;
+                    invalidList = true;
 
-                    UpdateClient(client);
+                    break;
                 }
             }
 
-            SetClass("fade-in", Input.Down(InputButton.Score));
+            if (!invalidList)
+            {
+                // Due to not having a `client.GetValue` change callback, we have to handle it differently
+                foreach (Client client in Client.All)
+                {
+                    bool newIsForcedSpectator = client.GetValue<bool>("forcedspectator");
 
-            _scoreboardContainer.SetClass("pop-in", Input.Down(InputButton.Score));
+                    if (!_forcedSpecList.TryGetValue(client.PlayerId, out bool isForcedSpectator))
+                    {
+                        _forcedSpecList.Add(client.PlayerId, newIsForcedSpectator);
+                    }
+                    else if (isForcedSpectator != newIsForcedSpectator)
+                    {
+                        _forcedSpecList[client.PlayerId] = newIsForcedSpectator;
+
+                        UpdateClient(client);
+                    }
+                }
+            }
+            else
+            {
+                foreach (ScoreboardEntry scoreboardEntry in _entries.Values)
+                {
+                    scoreboardEntry.Delete(true);
+                }
+
+                _entries.Clear();
+
+                foreach (Client client in Client.All)
+                {
+                    AddClient(client);
+                }
+
+                UpdateScoreboardGroups();
+            }
+
+            SetClass("fade-in", true);
+            _scoreboardContainer.SetClass("pop-in", true);
         }
 
         private ScoreboardGroup AddScoreboardGroup(string groupName)

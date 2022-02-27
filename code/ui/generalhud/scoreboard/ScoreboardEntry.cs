@@ -18,6 +18,8 @@ namespace TTTReborn.UI
         private readonly Label _karma;
         private readonly Label _ping;
 
+        private float _nextUpdate = 0f;
+
         public ScoreboardEntry()
         {
             AddClass("text-shadow");
@@ -67,8 +69,10 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Client != null)
+            if (Client != null && _nextUpdate < Time.Now)
             {
+                _nextUpdate = Time.Now + 1f;
+
                 _ping.Text = Client.Ping.ToString();
             }
         }
