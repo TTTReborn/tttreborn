@@ -126,6 +126,11 @@ namespace TTTReborn.UI.VisualProgramming
 
         public static void SetPanelMatrix(Panel panel, Vector2 pos, Vector2 size)
         {
+            float scale = panel.ScaleToScreen;
+
+            pos /= scale;
+            size /= scale;
+
             panel.Style.Display = DisplayMode.Flex;
             panel.Style.Left = Length.Pixels(pos.x);
             panel.Style.Top = Length.Pixels(pos.y);
