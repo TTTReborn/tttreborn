@@ -13,13 +13,13 @@ button, TranslationButton
 	flex-shrink: 0;
 	align-items: center;
 
-	> iconpanel
+	& > iconpanel
 	{
 		font-size: 22px;
 		display: none;
 	}
 
-	> .button-label
+	& > .button-label
 	{
 		display: none;
 	}

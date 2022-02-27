@@ -3,7 +3,7 @@
 Scoreboard {
     position: absolute;
     width: 100%;
-    height: 100%;      
+    height: 100%;
     opacity: 0;
     transition: all 0.15s ease-out;
     justify-content: center;
@@ -51,7 +51,7 @@ ScoreboardHeader {
     padding: 16px;
 
     .game-logo {
-        background-image: url("/assets/TTT-Reborn-Logo.png");
+        background-image: url("assets/logos/ttt_reborn_logo.png");
         background-repeat: no-repeat;
         background-size: contain;
         width: 75px;
@@ -117,7 +117,7 @@ ScoreboardGroup {
         font-size: 14px;
         flex-grow: 1;
     }
-        
+
     .group-karma-label,
     .group-ping-label {
         text-align: center;

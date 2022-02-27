@@ -14,14 +14,14 @@ $button-secondary-fg: white !default;
 $button-dark: #1b3039 !default;
 $button-size: 50px;
 
-@import "/code/ui/components/translationbutton/TranslationButton.scss";
-@import "/code/ui/components/translationcheckbox/TranslationCheckbox.scss";
-@import "/code/ui/components/translationdropdown/TranslationDropdown.scss";
-@import "/code/ui/components/translationlabel/TranslationLabel.scss";
-@import "/code/ui/components/translationtextentry/TranslationTextEntry.scss";
-@import "/code/ui/components/translationtab/TranslationTabContainer.scss";
-@import "/code/ui/components/linebreak/LineBreak.scss";
-@import "/code/ui/components/slider/slider.scss";
+@import "./components/translationbutton/TranslationButton.scss";
+@import "./components/translationcheckbox/TranslationCheckbox.scss";
+@import "./components/translationdropdown/TranslationDropdown.scss";
+@import "./components/translationlabel/TranslationLabel.scss";
+@import "./components/translationtextentry/TranslationTextEntry.scss";
+@import "./components/translationtab/TranslationTabContainer.scss";
+@import "./components/linebreak/LineBreak.scss";
+@import "./components/slider/slider.scss";
 
 Panel, .panel {
     font-family: Poppins;

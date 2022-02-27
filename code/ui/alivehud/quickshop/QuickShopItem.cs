@@ -41,7 +41,7 @@ namespace TTTReborn.UI
             _itemNameLabel.UpdateTranslation(new TranslationData(shopItemData.Name.ToUpper()));
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
-            _itemIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, $"/ui/icons/{shopItemData.Name}.png") ?? Texture.Load(FileSystem.Mounted, $"/ui/none.png");
+            _itemIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, $"assets/icons/{shopItemData.Name}.png") ?? Texture.Load(FileSystem.Mounted, $"assets/none.png");
         }
 
         public void Update()

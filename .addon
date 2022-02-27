@@ -1,5 +1,4 @@
 {
-  "SharedAssets": "*.*",
   "Title": "tttreborn",
   "Type": "game",
   "Org": "neox",
@@ -7,7 +6,8 @@
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
+  "ResourcePaths": [],
   "HasCode": true,
   "CodePath": "code",
-  "RootNamespace": "Sandbox"
+  "RootNamespace": "TTTReborn"
 }

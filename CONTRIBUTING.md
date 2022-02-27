@@ -1,4 +1,4 @@
-<h1 align="center"><img src="assets/TTT-Reborn-Logo.png" alt="TTTReborn logo" height="200"/></h1>
+<h1 align="center"><img src="code/assets/logos/ttt_reborn_logo.png" alt="TTTReborn logo" height="200"/></h1>
 
 ## Contributing to TTTReborn
 
