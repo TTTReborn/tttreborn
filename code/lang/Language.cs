@@ -30,7 +30,7 @@ namespace TTTReborn.Globalization
             {
                 Dictionary<string, string> dict = JsonSerializer.Deserialize<Dictionary<string, string>>(dictJson.ToString());
 
-                if (!dict.TryGetValue("NAME", out string name) || String.IsNullOrEmpty(name))
+                if (!dict.TryGetValue("NAME", out string name) || string.IsNullOrEmpty(name))
                 {
                     Log.Error($"Language '{language}' is missing '__LANGUAGE__.NAME' (language name)!");
                 }

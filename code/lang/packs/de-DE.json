@@ -3,185 +3,281 @@
         "NAME": "Deutsch",
         "CODE": "de-DE"
     },
-
-    "ROLE_NONE_NAME": "Unbekannt",
-    "ROLE_INNOCENT_NAME": "Unschuldiger",
-    "ROLE_TRAITOR_NAME": "Verräter",
-    "ROLE_DETECTIVE_NAME": "Detektiv",
-
-    "ROUND_STATE_WAITING": "Warten",
-    "ROUND_STATE_PREPARING": "Vorbereitung",
-    "ROUND_STATE_IN_PROGRESS": "Im Gange",
-    "ROUND_STATE_POST": "Runde vorbei",
-    "ROUND_STATE_MAP_SELECTION": "Wähle eine Map",
-
-    "POST_ROUND_WIN_TEAM_INNOCENTS": "DIE UNSCHULDIGEN GEWINNEN!",
-    "POST_ROUND_WIN_TEAM_TRAITORS": "DIE VERRÄTER GEWINNEN!",
-    "POST_ROUND_WIN_TEAM_NONES": "UNENTSCHIEDEN!",
-    "POST_ROUND_TEXT": "Danke, dass Du TTT Reborn spielst, weitere Updates und Statistiken werden folgen!",
-
-    "PLAYER_STATUS_HEALTH_HEALTHY": "Gesund",
-    "PLAYER_STATUS_HEALTH_HURT": "Verletzt",
-    "PLAYER_STATUS_HEALTH_WOUNDED": "Verwundet",
-    "PLAYER_STATUS_HEALTH_BADLY_WOUNDED": "Schwer verwundet",
-    "PLAYER_STATUS_HEALTH_NEAR_DEATH": "Dem Tode nahe",
-    "PLAYER_STATUS_HEALTH_DEAD": "Tot",
-
-    "CORPSE_IDENTIFY": "Halte {0} um die Leiche zu identifizieren",
-    "CORPSE_INSPECT": "Halte {0} um die Leiche zu inspizieren",
-    "CORPSE_INSPECT_QUICKINFO_HEADSHOT": "Kopfschuss",
-    "CORPSE_INSPECT_QUICKINFO_SUICIDE": "Selbstmord",
-    "CORPSE_INSPECT_QUICKINFO_DISTANCE": "{0}m",
-    "CORPSE_INSPECT_QUICKINFO_TIME": "{0}",
-    "CORPSE_INSPECT_IDENTIFIER_TIMESINCEDEATH": "Er/Sie starb vor ungefähr {0}.",
-    "CORPSE_INSPECT_IDENTIFIER_HEADSHOT": "Die tötliche Wunde war ein Kopfschuss. Keine Zeit zum Schreien.",
-    "CORPSE_INSPECT_IDENTIFIER_SUICIDE": "Du kannst keinen spezifischen Grund für den Tod dieses Terry's finden.",
-    "CORPSE_INSPECT_IDENTIFIER_KILLED": "Er/Sie wurde von etwa {0}m entfernt getötet.",
-    "CORPSE_INSPECT_IDENTIFIER_WEAPON": "Es scheint, als wäre '{0}' genutzt worden, um Ihn/Sie zu töten.",
-    "CORPSE_INSPECT_IDENTIFIER_PERK": "Er/Sie trug '{0}'.",
-
-    "SCOREBOARD_GAMEMODE": "{0} Server",
-    "SCOREBOARD_CREATEDBY": "Erstellt von {0}",
-    "SCOREBOARD_SERVER_PLAYERAMOUNT": "{0} / {1} Spieler",
-    "SCOREBOARD_SERVER_INFO": "{0} Spieler. Map: {1}",
-    "SCOREBOARD_GAME_STATUS_PLAYERS_LEFT": "{0} Spieler verbleibend",
-
-    "SCOREBOARD_GROUP_ALIVE": "Lebendig",
-    "SCOREBOARD_GROUP_DEAD": "Bestätigte Tode",
-    "SCOREBOARD_GROUP_MISSING": "Vermisst",
-    "SCOREBOARD_GROUP_SPECTATOR": "Zuschauer",
-
-    "SCOREBOARD_PLAYER_STATUS_KARMA": "Karma",
-    "SCOREBOARD_PLAYER_STATUS_DEATHS": "Tode",
-    "SCOREBOARD_PLAYER_STATUS_SCORE": "Punkte",
-    "SCOREBOARD_PLAYER_STATUS_PING": "Ping",
-
-    "QUICKSHOP_CREDITS_DESCRIPTION": "Du hast ${0}",
-    "QUICKSHOP_ITEM_DESCRIPTION": "Die Beschreibung für das Item '{0}' wird sich später an dieser Stelle befinden.",
-
-    "REALM_CLIENT": "Client",
-    "REALM_SERVER": "Server",
-
-    "MENU_DROPDOWN_SELECT": "Auswählen...",
-
-    "MENU_SETTINGS_TAB_GENERAL": "Allgemein",
-    "MENU_SETTINGS_GENERAL_LANGUAGE": "Sprache",
-    "MENU_SETTINGS_GENERAL_LANGUAGE_DESCRIPTION": "Die Anzeige-Sprache für den Nutzer",
-    "MENU_SETTINGS_GENERAL_RETURNMISSINGKEYS": "Debuggung: Gebe fehlende Language-Keys zurück",
-    "MENU_SETTINGS_GENERAL_RETURNMISSINGKEYS_DESCRIPTION": "Falls es einen fehlenden Language-Key gibt, gebe diesen statt des Fallbacks zurück.",
-
-    "MENU_SUBMENU_KEYBINDINGS": "Tastaturbelegung",
-    "MENU_SUBMENU_SETTINGS": "Einstellungen",
-    "MENU_SUBMENU_SETTINGS_CLIENT": "Client Settings",
-    "MENU_SUBMENU_SETTINGS_SERVER": "Server Settings",
-    "MENU_SUBMENU_TESTING": "Testen",
-    "MENU_SUBMENU_SHOPEDITOR": "ShopEditor",
-    "MENU_SUBMENU_ROLEEDITOR": "Rollen Editor",
-
-    "MENU_SETTINGS_LOADING": "Lade...",
-    "MENU_SETTINGS_TAB_DEBUG": "Debug",
-    "MENU_SETTINGS_DEBUG_PREVENTWIN": "Sieg unterbinden",
-    "MENU_SETTINGS_DEBUG_PREVENTWIN_DESCRIPTION": "Soll das Rundenende aufgrund eines Sieges basierend auf Zeitablauf oder erfüllte Siegbedingung unterbunden werden? (Map-Trigger ausgenommen)",
-    "MENU_SETTINGS_TAB_AFK": "AFK",
-    "MENU_SETTINGS_AFK_SECONDSTILLKICK": "AFK Zeit",
-    "MENU_SETTINGS_AFK_SECONDSTILLKICK_DESCRIPTION": "Die Zeit bevor der Spieler als AFK markiert wird.",
-    "MENU_SETTINGS_AFK_SHOULDKICKPLAYERS": "Sollen AFK-Spieler gekickt werden?",
-    "MENU_SETTINGS_AFK_SHOULDKICKPLAYERS_DESCRIPTION": "Ob ein Spieler gekickt oder (falls deaktiviert) als Zuschauer gesetzt werden soll.",
-    "MENU_SETTINGS_TAB_MOVEMENT": "Sprinten",
-    "MENU_SETTINGS_MOVEMENT_ISSPRINTENABLED": "Sprinten aktivieren?",
-    "MENU_SETTINGS_MOVEMENT_ISSPRINTENABLED_DESCRIPTION": "Ob Sprinten auf dem Server aktiviert sein soll.",
-    "MENU_SETTINGS_TAB_ROUND": "Runden",
-    "MENU_SETTINGS_ROUND_MINPLAYERS": "Minimum Spieler",
-    "MENU_SETTINGS_ROUND_MINPLAYERS_DESCRIPTION": "Die minimale Anzahl an Spielern, die für den Start des Spiels benötigt werden. Falls die Spielerzahl unterhalb der gesetzten Zahl fällt, wird das Spiel abgebrochen, sofern es bereits gestartet ist.",
-    "MENU_SETTINGS_ROUND_PREROUNDTIME": "Vorbereitungszeit",
-    "MENU_SETTINGS_ROUND_PREROUNDTIME_DESCRIPTION": "Die Zeit, wie lange die Vorbereitungsrunde gehen soll.",
-    "MENU_SETTINGS_ROUND_ROUNDTIME": "Rundenzeit",
-    "MENU_SETTINGS_ROUND_ROUNDTIME_DESCRIPTION": "Die Zeit, wie lange die Hauptrunde gehen soll.",
-    "MENU_SETTINGS_ROUND_POSTROUNDTIME": "Nachrundenzeit",
-    "MENU_SETTINGS_ROUND_POSTROUNDTIME_DESCRIPTION": "Die Zeit, bevor die nächste Runde startet.",
-    "MENU_SETTINGS_ROUND_MAPSELECTIONROUNDTIME": "Mapauswahl: Rundenzeit",
-    "MENU_SETTINGS_ROUND_MAPSELECTIONROUNDTIME_DESCRIPTION": "Die Zeit für die Mapauswahl",
-    "MENU_SETTINGS_ROUND_TOTALROUNDS": "Maximale Rundenanzahl",
-    "MENU_SETTINGS_ROUND_TOTALROUNDS_DESCRIPTION": "Maximale Rundenanzahl, bis es zur Mapauswahl kommt",
-    "MENU_SETTINGS_ROUND_KILLTIMEREWARD": "Belohnungszeit für Tötung",
-    "MENU_SETTINGS_ROUND_KILLTIMEREWARD_DESCRIPTION": "Die Extrazeit, die ein Verräter für das Töten von Unschuldigen bekommt.",
-    "MENU_SETTINGS_TAB_MAP": "Map",
-    "MENU_SETTINGS_MAP_DEFAULTMAP": "Standard-Map",
-    "MENU_SETTINGS_MAP_DEFAULTMAP_DESCRIPTION": "Wähle eine Map aus, welche standardmäßig ausgewählt wird.",
-    "MENU_SETTINGS_LANGUAGE_SELECTION": "Sprache:",
-    "MENU_SETTINGS_FORCESPECTATOR": "Zuschauen erzwingen?",
-
-    "MENU_SETTINGS_BUTTONS_SAVE": "Speichern als",
-    "MENU_SETTINGS_BUTTONS_LOAD": "Laden von",
-    "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE": "Überschreibe '{0}'",
-    "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT": "Möchtest du '{0}' mit den aktuellen Einstellungen überschreiben? (Falls du zustimmst, gehen die Einstellungen, die in der ausgewählten Datei gespeichert sind, verloren!)",
-
-    "MENU_SHOPEDITOR_TOGGLEROLE": "Umschalten, um den Shop für die aktuell ausgewählte Rolle zu de-/aktivieren.",
-    "MENU_SHOPEDITOR_SELECTROLE": "Wähle eine Rolle aus, um den damit verbundenen Shop zu modifizieren.",
-    "MENU_SHOPEDITOR_ENABLEROLE": "Aktiviert",
-    "MENU_SHOPEDITOR_NOPERMISSION": "Du hast keine Berechtigungen, um auf den ShopEditor zuzugreifen.",
-    "MENU_SHOPEDITOR_ITEM_EDIT": "Bearbeite das Item.",
-    "MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC": "Bearbeite Item '{0}'",
-    "MENU_SHOPEDITOR_ITEM_PRICE": "Preis",
-    "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC": "Der Preis von: '{0}'.",
-
-    "MENU_KEYBINDINGS": "Keybindings",
-    "MENU_KEYBINDINGS_DESCRIPTION": "Wegen Restriktionen der S&Box Entwickler kannst Du deine Keybindings leider nur im S&Box Optionsmenü oder über die Konsole ändern.",
-    "MENU_KEYBINDINGS_MOVEMENT": "Bewegung",
-    "MENU_KEYBINDINGS_FORWARD": "Vorwärts",
-    "MENU_KEYBINDINGS_BACK": "Rückwärts",
-    "MENU_KEYBINDINGS_LEFT": "Links",
-    "MENU_KEYBINDINGS_RIGHT": "Rechts",
-    "MENU_KEYBINDINGS_JUMP": "Springen",
-    "MENU_KEYBINDINGS_CROUCH": "Ducken",
-    "MENU_KEYBINDINGS_SPRINT": "Sprinten",
-    "MENU_KEYBINDINGS_WEAPONS": "Waffen",
-    "MENU_KEYBINDINGS_FIRE": "Feuern",
-    "MENU_KEYBINDINGS_RELOAD": "Nachladen",
-    "MENU_KEYBINDINGS_DROP_WEAPON": "Waffe fallenlassen",
-    "MENU_KEYBINDINGS_DROP_AMMO": "Munition fallenlassen",
-    "MENU_KEYBINDINGS_ACTIONS": "Aktionen",
-    "MENU_KEYBINDINGS_USE": "Nutzen",
-    "MENU_KEYBINDINGS_FLASHLIGHT": "Taschenlampe",
-    "MENU_KEYBINDINGS_COMMUNICATION": "Kommunikation",
-    "MENU_KEYBINDINGS_VOICE_CHAT": "Sprachchat",
-    "MENU_KEYBINDINGS_TEAM_VOICE_CHAT": "Team-Sprachchat",
-    "MENU_KEYBINDINGS_TEAM_TEXT_CHAT": "Team-Textchat",
-    "MENU_KEYBINDINGS_MENUS": "Menüs",
-    "MENU_KEYBINDINGS_SCOREBOARD": "Scoreboard",
-    "MENU_KEYBINDINGS_MENU": "Menü",
-    "MENU_KEYBINDINGS_QUICK_SHOP": "Quick Shop",
-
-    "MENU_VISUALPROGRAMMING_RESET": "RoleSelection zurücksetzen",
-    "MENU_VISUALPROGRAMMING_RESET_TEXT": "Bist du dir sicher, dass du die RoleSelection zurücksetzen willst?",
-
-    "WEAPON_PISTOL": "Pistole",
-    "WEAPON_SMG": "SMG",
-    "WEAPON_SHOTGUN": "Schrot",
-    "WEAPON_KNIFE": "Messer",
-    "WEAPON_NEWTONLAUNCHER": "Newtonlauncher",
-
-    "AMMO_BUCKSHOT": "Schrot",
-    "AMMO_PISTOL": "Pistole",
-    "AMMO_SMG": "SMG",
-
-    "EQUIPMENT_HANDS": "Hände",
-    "EQUIPMENT_C4": "C4",
-    "EQUIPMENT_DECOY": "Köder",
-    "EQUIPMENT_HEALTHSTATION": "HealthStation",
-    "EQUIPMENT_MAGNETOSTICK": "MagnetoStick",
-
-    "GENERIC_PICKUP": "Drücke [{0}] um '{1}' aufzuheben",
-
-    "HEALTH_STATION": "Halte [{0}] um die HealthStation zu nutzen ({1} Aufladungen)",
-
-    "C4_ARM": "Halte [{0}], um das C4 scharf zu machen",
-    "C4_DEFUSE": "Drücke [{0}], um das C4 zu entschärfen",
-    "C4_UI_PICKUP": "Aufheben",
-    "C4_UI_DESTROY": "Zerstören",
-    "C4_UI_ARM": "Schärfen",
-    "C4_UI_DEFUSECHANCE": "{0}% Chance zu entschärfen",
-
-    "PERK_BODYARMOR": "Körperschild",
-    "PERK_RADAR": "Radar"
+    "ROLE": {
+        "NONE": {
+            "NAME": "Unbekannt"
+        },
+        "INNOCENT": {
+            "NAME": "Unschuldiger"
+        },
+        "TRAITOR": {
+            "NAME": "Verräter"
+        },
+        "DETECTIVE": {
+            "NAME": "Detektiv"
+        }
+    },
+    "ROUND": {
+        "STATE": {
+            "WAITING": "Warten",
+            "PREPARING": "Vorbereitung",
+            "IN_PROGRESS": "Im Gange",
+            "POST": "Runde vorbei",
+            "MAPSELECTION": "Wähle eine Map"
+        }
+    },
+    "WIN": {
+        "INNOCENTS": "DIE UNSCHULDIGEN GEWINNEN!",
+        "TRAITORS": "DIE VERRÄTER GEWINNEN!",
+        "NONES": "UNENTSCHIEDEN!",
+        "DESCRIPTION": "Danke, dass Du TTT Reborn spielst, weitere Updates und Statistiken werden folgen!"
+    },
+    "PLAYER": {
+        "STATUS": {
+            "HEALTH": {
+                "HEALTHY": "Gesund",
+                "HURT": "Verletzt",
+                "WOUNDED": "Verwundet",
+                "BADLY_WOUNDED": "Schwer verwundet",
+                "NEAR_DEATH": "Dem Tode nahe",
+                "DEAD": "Tot"
+            }
+        }
+    },
+    "CORPSE": {
+        "IDENTIFY": "Halte {0} um die Leiche zu identifizieren",
+        "INSPECT": {
+            "TEXT": "Halte {0} um die Leiche zu inspizieren",
+            "QUICKINFO": {
+                "HEADSHOT": "Kopfschuss",
+                "SUICIDE": "Selbstmord",
+                "DISTANCE": "{0}m",
+                "TIME": "{0}"
+            },
+            "IDENTIFIER": {
+                "TIMESINCEDEATH": "Er/Sie starb vor ungefähr {0}.",
+                "HEADSHOT": "Die tötliche Wunde war ein Kopfschuss. Keine Zeit zum Schreien.",
+                "SUICIDE": "Du kannst keinen spezifischen Grund für den Tod dieses Terry's finden.",
+                "KILLED": "Er/Sie wurde von etwa {0}m entfernt getötet.",
+                "WEAPON": "Es scheint, als wäre '{0}' genutzt worden, um Ihn/Sie zu töten.",
+                "PERK": "Er/Sie trug '{0}'."
+            }
+        }
+    },
+    "SCOREBOARD": {
+        "HEADER": {
+            "GAMEMODE": "{0} Server",
+            "CREATEDBY": "Erstellt von {0}",
+            "PLAYERAMOUNT": "{0} / {1} Spieler",
+            "SERVERINFO": "{0} Spieler. Map: {1}",
+            "PLAYERSLEFT": "{0} Spieler verbleibend"
+        },
+        "GROUP": {
+            "ALIVE": "Lebendig",
+            "DEAD": "Bestätigte Tode",
+            "MISSING": "Vermisst",
+            "SPECTATOR": "Zuschauer"
+        },
+        "COLUMNS": {
+            "KARMA": "Karma",
+            "DEATHS": "Tode",
+            "SCORE": "Punkte",
+            "PING": "Ping"
+        }
+    },
+    "QUICKSHOP": {
+        "CREDITS": {
+            "DESCRIPTION": "Du hast ${0}"
+        },
+        "ITEM": {
+            "DESCRIPTION": "Die Beschreibung für das Item '{0}' wird sich später an dieser Stelle befinden."
+        }
+    },
+    "REALM": {
+        "CLIENT": "Client",
+        "SERVER": "Server"
+    },
+    "MENU": {
+        "SETTINGS": {
+            "TITLE": "Einstellungen",
+            "CLIENT": "Client Einstellungen",
+            "SERVER": "Server Einstellungen",
+            "LOADING": "Lade...",
+            "TABS": {
+                "GENERAL": {
+                    "TITLE": "Allgemein",
+                    "LANGUAGE": {
+                        "TITLE" : "Sprache",
+                        "DESCRIPTION": "Die Anzeige-Sprache für den Nutzer"
+                    },
+                    "RETURNMISSINGKEYS": {
+                        "TITLE": "Debuggung: Gebe fehlende Language-Keys zurück",
+                        "DESCRIPTION": "Falls es einen fehlenden Language-Key gibt, gebe diesen statt des Fallbacks zurück."
+                    }
+                },
+                "DEBUG": {
+                    "TITLE": "Debug",
+                    "PREVENTWIN": {
+                        "TITLE": "Sieg unterbinden",
+                        "DESCRIPTION": "Soll das Rundenende aufgrund eines Sieges basierend auf Zeitablauf oder erfüllte Siegbedingung unterbunden werden? (Map-Trigger ausgenommen)"
+                    }
+                },
+                "AFK": {
+                    "TITLE": "AFK",
+                    "SECONDSTILLKICK": {
+                        "TITLE": "AFK Zeit",
+                        "DESCRIPTION": "Die Zeit bevor der Spieler als AFK markiert wird."
+                    },
+                    "SHOULDKICKPLAYERS": {
+                        "TITLE": "Sollen AFK-Spieler gekickt werden?",
+                        "DESCRIPTION": "Ob ein Spieler gekickt oder (falls deaktiviert) als Zuschauer gesetzt werden soll."
+                    }
+                },
+                "MOVEMENT": {
+                    "TITLE": "Sprinten",
+                    "ISSPRINTENABLED": {
+                        "TITLE" : "Sprinten aktivieren?",
+                        "DESCRIPTION": "Ob Sprinten auf dem Server aktiviert sein soll."
+                    }
+                },
+                "ROUND": {
+                    "TITLE": "Runden",
+                    "MINPLAYERS": {
+                        "TITLE": "Minimum Spieler",
+                        "DESCRIPTION": "Die minimale Anzahl an Spielern, die für den Start des Spiels benötigt werden. Falls die Spielerzahl unterhalb der gesetzten Zahl fällt, wird das Spiel abgebrochen, sofern es bereits gestartet ist."
+                    },
+                    "PREROUNDTIME": {
+                        "TITLE": "Vorbereitungszeit",
+                        "DESCRIPTION": "Die Zeit, wie lange die Vorbereitungsrunde gehen soll."
+                    },
+                    "ROUNDTIME": {
+                        "TITLE": "Rundenzeit",
+                        "DESCRIPTION": "Die Zeit, wie lange die Hauptrunde gehen soll."
+                    },
+                    "POSTROUNDTIME": {
+                        "TITLE": "Nachrundenzeit",
+                        "DESCRIPTION": "Die Zeit, bevor die nächste Runde startet."
+                    },
+                    "MAPSELECTIONROUNDTIME": {
+                        "TITLE": "Mapauswahl: Rundenzeit",
+                        "DESCRIPTION": "Die Zeit für die Mapauswahl"
+                    },
+                    "TOTALROUNDS": {
+                        "TITLE": "Maximale Rundenanzahl",
+                        "DESCRIPTION": "Maximale Rundenanzahl, bis es zur Mapauswahl kommt"
+                    },
+                    "KILLTIMEREWARD": {
+                        "TITLE": "Belohnungszeit für Tötung",
+                        "DESCRIPTION": "Die Extrazeit, die ein Verräter für das Töten von Unschuldigen bekommt."
+                    }
+                },
+                "MAP": {
+                    "TITLE": "Map",
+                    "DEFAULTMAP": {
+                        "TITLE": "Standard-Map",
+                        "DESCRIPTION": "Wähle eine Map aus, welche standardmäßig ausgewählt wird."
+                    }
+                }
+            },
+            "BUTTONS": {
+                "SAVE": "Speichern",
+                "LOAD": "Laden",
+                "OVERWRITE": {
+                    "TITLE": "Überschreibe '{0}'",
+                    "DESCRIPTION": "Möchtest du '{0}' mit den aktuellen Einstellungen überschreiben? (Falls du zustimmst, gehen die Einstellungen, die in der ausgewählten Datei gespeichert sind, verloren!)"
+                }
+            }
+        },
+        "KEYBINDINGS": {
+            "TITLE": "Tastaturbelegung",
+            "ACTIONS": {
+                "RESTRICTION": "Wegen Restriktionen der S&Box Entwickler kannst Du deine Keybindings leider nur im S&Box Optionsmenü oder über die Konsole ändern.",
+                "MOVEMENT": "Bewegung",
+                "FORWARD": "Vorwärts",
+                "BACK": "Rückwärts",
+                "LEFT": "Links",
+                "RIGHT": "Rechts",
+                "JUMP": "Springen",
+                "CROUCH": "Ducken",
+                "SPRINT": "Sprinten",
+                "WEAPONS": "Waffen",
+                "FIRE": "Feuern",
+                "RELOAD": "Nachladen",
+                "DROP_WEAPON": "Waffe fallenlassen",
+                "DROP_AMMO": "Munition fallenlassen",
+                "ACTIONS": "Aktionen",
+                "USE": "Nutzen",
+                "FLASHLIGHT": "Taschenlampe",
+                "COMMUNICATION": "Kommunikation",
+                "VOICECHAT": "Sprachchat",
+                "TEAMVOICECHAT": "Team-Sprachchat",
+                "TEAMTEXTCHAT": "Team-Textchat",
+                "MENUS": "Menüs",
+                "SCOREBOARD": "Scoreboard",
+                "MENU": "Menü",
+                "QUICKSHOP": "QuickShop"
+            }
+        },
+        "TESTING": {
+            "TITLE": "Testen"
+        },
+        "SHOPEDITOR": {
+            "TITLE": "Shop Editor",
+            "TOGGLEROLE": "Umschalten, um den Shop für die aktuell ausgewählte Rolle zu de-/aktivieren.",
+            "SELECTROLE": "Wähle eine Rolle aus, um den damit verbundenen Shop zu modifizieren.",
+            "ENABLEROLE": "Aktiviert",
+            "NOPERMISSION": "Du hast keine Berechtigungen, um auf den ShopEditor zuzugreifen.",
+            "EDIT": {
+                "TITLE": "Bearbeite das Item.",
+                "DESCRIPTION": "Bearbeite das Item '{0}'"
+            },
+            "PRICE": {
+                "TITLE": "Preis",
+                "DESCRIPTION": "Der Preis von: '{0}'."
+            }
+        },
+        "ROLEEDITOR": {
+            "TITLE": "Role Editor",
+            "RESET": {
+                "TITLE": "RoleSelection zurücksetzen",
+                "DESCRIPTION": "Bist du dir sicher, dass du die RoleSelection zurücksetzen willst?"
+            }
+        }
+    },
+    "ITEM": {
+        "WEAPON": {
+            "PISTOL": "Pistole",
+            "SMG": "SMG",
+            "SHOTGUN": "Schrot",
+            "KNIFE": "Messer",
+            "NEWTONLAUNCHER": "Newtonlauncher"
+        },
+        "EQUIPMENT": {
+            "HANDS": "Hände",
+            "C4": {
+                "NAME": "C4",
+                "UI": {
+                    "PICKUP": "Aufheben",
+                    "DESTROY": "Zerstören",
+                    "ARM": "Schärfen",
+                    "DEFUSECHANCE": "{0}% Chance zu entschärfen"
+                }
+            },
+            "DECOY": "Köder",
+            "HEALTHSTATION": "HealthStation",
+            "MAGNETOSTICK": "MagnetoStick"
+        },
+        "PERK": {
+            "BODYARMOR": "Körperschild",
+            "RADAR": "Radar"
+        }
+    },
+    "USE": {
+        "PICKUP": "Drücke [{0}] um '{1}' aufzuheben",
+        "HEALTHSTATION": "Halte [{0}] um die HealthStation zu nutzen ({1} Aufladungen)",
+        "C4": {
+            "ARM": "Halte [{0}], um das C4 scharf zu machen",
+            "DEFUSE": "Drücke [{0}], um das C4 zu entschärfen"
+        }
+    }
 }
