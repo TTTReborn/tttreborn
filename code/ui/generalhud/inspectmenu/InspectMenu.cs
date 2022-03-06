@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Items;
 using TTTReborn.Globalization;
 using TTTReborn.Player;
 
@@ -138,7 +138,7 @@ namespace TTTReborn.UI
 
             _playerLabel.Text = _playerCorpse.DeadPlayer?.Client.Name;
 
-            _roleLabel.UpdateTranslation(new TranslationData(_playerCorpse.DeadPlayer?.Role.GetRoleTranslationKey("NAME")));
+            _roleLabel.UpdateTranslation(new TranslationData(_playerCorpse.DeadPlayer?.Role.GetTranslationKey("NAME")));
             _roleLabel.Style.FontColor = _playerCorpse.DeadPlayer?.Role.Color;
 
             SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
@@ -158,23 +158,25 @@ namespace TTTReborn.UI
             _confirmationData = confirmationData;
 
             _headshotEntry.Enabled(confirmationData.Headshot);
-            _headshotEntry.SetData("assets/inspectmenu/headshot.png", new TranslationData("CORPSE_INSPECT_IDENTIFIER_HEADSHOT"));
-            _headshotEntry.SetQuickInfo(new TranslationData("CORPSE_INSPECT_QUICKINFO_HEADSHOT"));
+            _headshotEntry.SetData("assets/inspectmenu/headshot.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.HEADSHOT"));
+            _headshotEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.HEADSHOT"));
 
             _suicideEntry.Enabled(confirmationData.Suicide);
-            _suicideEntry.SetData(string.Empty, new TranslationData("CORPSE_INSPECT_IDENTIFIER_SUICIDE"));
-            _suicideEntry.SetQuickInfo(new TranslationData("CORPSE_INSPECT_QUICKINFO_SUICIDE"));
+            _suicideEntry.SetData(string.Empty, new TranslationData("CORPSE.INSPECT.IDENTIFIER.SUICIDE"));
+            _suicideEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.SUICIDE"));
 
             _distanceEntry.Enabled(!confirmationData.Suicide);
-            _distanceEntry.SetData("assets/inspectmenu/distance.png", new TranslationData("CORPSE_INSPECT_IDENTIFIER_KILLED", $"{confirmationData.Distance:n0}"));
-            _distanceEntry.SetQuickInfo(new TranslationData("CORPSE_INSPECT_QUICKINFO_DISTANCE", $"{confirmationData.Distance:n0}"));
+            _distanceEntry.SetData("assets/inspectmenu/distance.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.KILLED", $"{confirmationData.Distance:n0}"));
+            _distanceEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.DISTANCE", $"{confirmationData.Distance:n0}"));
 
             _weaponEntry.Enabled(!string.IsNullOrEmpty(killerWeapon));
 
             if (_weaponEntry.IsEnabled())
             {
-                _weaponEntry.SetData($"assets/icons/{killerWeapon}.png", new TranslationData("CORPSE_INSPECT_IDENTIFIER_WEAPON", new TranslationData(killerWeapon.ToUpper())));
-                _weaponEntry.SetQuickInfo(new TranslationData(killerWeapon.ToUpper()));
+                TranslationData translationData = new(IItem.GetTranslationKey(killerWeapon, "NAME"));
+
+                _weaponEntry.SetData($"assets/icons/{killerWeapon}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.WEAPON", translationData));
+                _weaponEntry.SetQuickInfo(translationData);
             }
 
             // Clear and delete all perks
@@ -191,7 +193,7 @@ namespace TTTReborn.UI
                 foreach (string perkName in perks)
                 {
                     InspectEntry perkEntry = new(this);
-                    perkEntry.SetData($"assets/icons/{perkName}.png", new TranslationData("CORPSE_INSPECT_IDENTIFIER_PERK", perkName));
+                    perkEntry.SetData($"assets/icons/{perkName}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.PERK", new TranslationData(IItem.GetTranslationKey(perkName, "NAME"))));
 
                     _perkEntries.Add(perkEntry);
                 }
@@ -220,8 +222,8 @@ namespace TTTReborn.UI
             }
 
             string timeSinceDeath = Utils.TimerString(Time.Now - _confirmationData.Time);
-            _timeSinceDeathEntry.SetTranslationData(new TranslationData("CORPSE_INSPECT_IDENTIFIER_TIMESINCEDEATH", timeSinceDeath));
-            _timeSinceDeathEntry.SetQuickInfo(new TranslationData("CORPSE_INSPECT_QUICKINFO_TIME", timeSinceDeath));
+            _timeSinceDeathEntry.SetTranslationData(new TranslationData("CORPSE.INSPECT.IDENTIFIER.TIMESINCEDEATH", timeSinceDeath));
+            _timeSinceDeathEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.TIME", timeSinceDeath));
 
             if (_selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry)
             {

@@ -39,5 +39,12 @@ namespace TTTReborn.Items
         {
             player.Inventory.TryAdd(this, deleteIfFails: true, makeActive: false);
         }
+
+        public static string GetTranslationKey(string libraryName, string key)
+        {
+            string[] splits = libraryName.Split('_');
+
+            return $"ITEM.{splits[0].ToUpper()}.{string.Join('_', splits[1..]).ToUpper()}.{key.ToUpper()}";
+        }
     }
 }

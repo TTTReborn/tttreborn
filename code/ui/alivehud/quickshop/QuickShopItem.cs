@@ -13,9 +13,9 @@ namespace TTTReborn.UI
         public ShopItemData ItemData;
         public bool IsDisabled = false;
 
-        private Panel _itemIcon;
-        private TranslationLabel _itemNameLabel;
-        private Label _itemPriceLabel;
+        private readonly Panel _itemIcon;
+        private readonly TranslationLabel _itemNameLabel;
+        private readonly Label _itemPriceLabel;
 
         public QuickShopItem(Panel parent) : base(parent)
         {
@@ -38,7 +38,7 @@ namespace TTTReborn.UI
         {
             ItemData = shopItemData;
 
-            _itemNameLabel.UpdateTranslation(new TranslationData(shopItemData.Name.ToUpper()));
+            _itemNameLabel.UpdateTranslation(new TranslationData(shopItemData.GetTranslationKey("NAME")));
             _itemPriceLabel.Text = $"${shopItemData.Price}";
 
             _itemIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, $"assets/icons/{shopItemData.Name}.png") ?? Texture.Load(FileSystem.Mounted, $"assets/none.png");

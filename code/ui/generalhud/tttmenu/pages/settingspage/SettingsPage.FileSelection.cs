@@ -15,7 +15,7 @@ namespace TTTReborn.UI.Menu
         {
             Panel wrapper = new();
 
-            wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_SAVE"), "save", null, () =>
+            wrapper.Add.TranslationButton(new TranslationData("MENU.SETTINGS.BUTTONS.SAVE"), "save", null, () =>
             {
                 _fileSelection?.Close();
 
@@ -31,7 +31,7 @@ namespace TTTReborn.UI.Menu
 
             wrapper.Add.HorizontalLineBreak();
 
-            wrapper.Add.TranslationButton(new TranslationData("MENU_SETTINGS_BUTTONS_LOAD"), "upload_file", null, () =>
+            wrapper.Add.TranslationButton(new TranslationData("MENU.SETTINGS.BUTTONS.LOAD"), "upload_file", null, () =>
             {
                 _fileSelection?.Close();
 
@@ -107,7 +107,7 @@ namespace TTTReborn.UI.Menu
 
                 if (SettingsManager.Instance.LoadingError != SettingsLoadingError.None)
                 {
-                    Log.Error($"Settings file '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{SettingsManager.Instance.LoadingError.ToString()}'");
+                    Log.Error($"Settings file '{fileSelection.CurrentFolderPath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{SettingsManager.Instance.LoadingError}'");
 
                     return;
                 }
@@ -126,8 +126,8 @@ namespace TTTReborn.UI.Menu
             string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
             DialogBox dialogBox = new();
-            dialogBox.SetTranslationTitle(new TranslationData("MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE", fullFilePath));
-            dialogBox.AddTranslation(new TranslationData("MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT", fullFilePath));
+            dialogBox.SetTranslationTitle(new TranslationData("MENU.SETTINGS.BUTTONS.OVERWRITE.TITLE", fullFilePath));
+            dialogBox.AddTranslation(new TranslationData("MENU.SETTINGS.BUTTONS.OVERWRITE.DESCRIPTION", fullFilePath));
             dialogBox.OnAgree = () =>
             {
                 onConfirm();
@@ -175,7 +175,7 @@ namespace TTTReborn.Player
 
             if (overwrite || !FileSystem.Data.FileExists(filePath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
             {
-                SettingFunctions.SaveSettings<ServerSettings>(ServerSettings.Instance, filePath, fileName);
+                SettingFunctions.SaveSettings(ServerSettings.Instance, filePath, fileName);
             }
             else
             {

@@ -449,7 +449,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("GENERIC_PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(LibraryName.ToUpper()));
+        public TranslationData TextOnTick => new("USE.PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(IItem.GetTranslationKey(LibraryName, "NAME")));
 
         public bool CanHint(TTTPlayer client)
         {

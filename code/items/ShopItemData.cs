@@ -102,5 +102,7 @@ namespace TTTReborn.Items
 
             return false;
         }
+
+        public string GetTranslationKey(string key) => IItem.GetTranslationKey(Name, key);
     }
 }

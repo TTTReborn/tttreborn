@@ -294,7 +294,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new(IsArmed ? "C4_DEFUSE" : "C4_ARM", new object[] { Input.GetKeyWithBinding("+iv_use").ToUpper() });
+        public TranslationData TextOnTick => new(IsArmed ? "USE.C4.DEFUSE" : "USE.C4.ARM", Input.GetKeyWithBinding("+iv_use").ToUpper());
 
         public bool CanHint(TTTPlayer client)
         {

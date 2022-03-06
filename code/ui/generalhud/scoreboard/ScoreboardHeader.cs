@@ -28,11 +28,11 @@ namespace TTTReborn.UI
 
             _serverNameLabel = _serverInfoPanel.Add.TranslationLabel(new TranslationData());
             _serverNameLabel.AddClass("server-name-label");
-            _serverNameLabel.UpdateTranslation(new TranslationData("SCOREBOARD_GAMEMODE", "Trouble in Terry's Town"));
+            _serverNameLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.GAMEMODE", "Trouble in Terry's Town"));
 
             _serverDescriptionLabel = _serverInfoPanel.Add.TranslationLabel(new TranslationData());
             _serverDescriptionLabel.AddClass("server-description-label");
-            _serverDescriptionLabel.UpdateTranslation(new TranslationData("SCOREBOARD_CREATEDBY", "Neoxult"));
+            _serverDescriptionLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.CREATEDBY", "Neoxult"));
 
             _serverDataPanel = new(this);
             _serverDataPanel.AddClass("server-data-panel");
@@ -51,7 +51,7 @@ namespace TTTReborn.UI
             int maxPlayers = ConsoleSystem.GetValue("maxplayers").ToInt(0);
 
             _serverMapLabel.Text = Global.MapName;
-            _serverPlayersLabel.UpdateTranslation(new TranslationData("SCOREBOARD_SERVER_PLAYERAMOUNT", Client.All.Count, maxPlayers));
+            _serverPlayersLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.PLAYERAMOUNT", Client.All.Count, maxPlayers));
         }
     }
 }

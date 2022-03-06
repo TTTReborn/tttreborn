@@ -24,7 +24,7 @@ namespace TTTReborn.UI
             Panel wrapper = new(Controls);
 
             TranslationDropdown roleDropdown = wrapper.Add.TranslationDropdown();
-            roleDropdown.AddTooltip(new TranslationData("MENU_SHOPEDITOR_SELECTROLE"), "roleselection");
+            roleDropdown.AddTooltip(new TranslationData("MENU.SHOPEDITOR.SELECTROLE"), "roleselection");
             roleDropdown.AddEventListener("onchange", () =>
             {
                 bool hasRoleSelected = roleDropdown.Selected != null && roleDropdown.Selected.Value is TTTRole role;
@@ -45,14 +45,14 @@ namespace TTTReborn.UI
                     continue;
                 }
 
-                TranslationOption option = new(new TranslationData(role.GetRoleTranslationKey("NAME")), role);
+                TranslationOption option = new(new TranslationData(role.GetTranslationKey("NAME")), role);
                 roleDropdown.Options.Add(option);
                 roleDropdown.Select(option);
             }
 
             wrapper.Add.HorizontalLineBreak();
 
-            _translationCheckbox = wrapper.Add.TranslationCheckbox(new TranslationData("MENU_SHOPEDITOR_ENABLEROLE"));
+            _translationCheckbox = wrapper.Add.TranslationCheckbox(new TranslationData("MENU.SHOPEDITOR.ENABLEROLE"));
             _translationCheckbox.AddClass("inactive");
             _translationCheckbox.AddEventListener("onchange", () =>
             {

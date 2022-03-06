@@ -23,7 +23,7 @@
             "PREPARING": "Vorbereitung",
             "IN_PROGRESS": "Im Gange",
             "POST": "Runde vorbei",
-            "MAPSELECTION": "Wähle eine Map"
+            "MAP_SELECTION": "Wähle eine Map"
         }
     },
     "WIN": {
@@ -45,9 +45,7 @@
         }
     },
     "CORPSE": {
-        "IDENTIFY": "Halte {0} um die Leiche zu identifizieren",
         "INSPECT": {
-            "TEXT": "Halte {0} um die Leiche zu inspizieren",
             "QUICKINFO": {
                 "HEADSHOT": "Kopfschuss",
                 "SUICIDE": "Selbstmord",
@@ -190,36 +188,45 @@
         },
         "KEYBINDINGS": {
             "TITLE": "Tastaturbelegung",
-            "ACTIONS": {
-                "RESTRICTION": "Wegen Restriktionen der S&Box Entwickler kannst Du deine Keybindings leider nur im S&Box Optionsmenü oder über die Konsole ändern.",
-                "MOVEMENT": "Bewegung",
+            "RESTRICTION": "Wegen Restriktionen der S&Box Entwickler kannst Du deine Keybindings leider nur im S&Box Optionsmenü oder über die Konsole ändern.",
+            "MOVEMENT": {
+                "TITLE": "Bewegung",
                 "FORWARD": "Vorwärts",
                 "BACK": "Rückwärts",
                 "LEFT": "Links",
                 "RIGHT": "Rechts",
                 "JUMP": "Springen",
                 "CROUCH": "Ducken",
-                "SPRINT": "Sprinten",
-                "WEAPONS": "Waffen",
+                "SPRINT": "Sprinten"
+            },
+            "WEAPONS": {
+                "TITLE": "Waffen",
                 "FIRE": "Feuern",
                 "RELOAD": "Nachladen",
                 "DROP_WEAPON": "Waffe fallenlassen",
-                "DROP_AMMO": "Munition fallenlassen",
-                "ACTIONS": "Aktionen",
+                "DROP_AMMO": "Munition fallenlassen"
+            },
+            "ACTIONS": {
+                "TITLE": "Aktionen",
                 "USE": "Nutzen",
-                "FLASHLIGHT": "Taschenlampe",
-                "COMMUNICATION": "Kommunikation",
+                "FLASHLIGHT": "Taschenlampe"
+            },
+            "COMMUNICATION": {
+                "TITLE": "Kommunikation",
                 "VOICECHAT": "Sprachchat",
                 "TEAMVOICECHAT": "Team-Sprachchat",
-                "TEAMTEXTCHAT": "Team-Textchat",
-                "MENUS": "Menüs",
+                "TEAMTEXTCHAT": "Team-Textchat"
+            },
+            "MENUS": {
+                "TITLE": "Menüs",
                 "SCOREBOARD": "Scoreboard",
                 "MENU": "Menü",
                 "QUICKSHOP": "QuickShop"
             }
         },
         "TESTING": {
-            "TITLE": "Testen"
+            "TITLE": "Testen",
+            "FILESELECTION": "Explorer"
         },
         "SHOPEDITOR": {
             "TITLE": "Shop Editor",
@@ -244,16 +251,35 @@
             }
         }
     },
+    "MAPSELECTION": {
+        "VOTE": "Wähle die nächste Map!"
+    },
     "ITEM": {
         "WEAPON": {
-            "PISTOL": "Pistole",
-            "SMG": "SMG",
-            "SHOTGUN": "Schrot",
-            "KNIFE": "Messer",
-            "NEWTONLAUNCHER": "Newtonlauncher"
+            "PISTOL": {
+                "NAME": "Pistole"
+            },
+            "SMG": {
+                "NAME": "SMG"
+            },
+            "SHOTGUN": {
+                "NAME": "Schrot"
+            },
+            "KNIFE": {
+                "NAME": "Messer"
+            },
+            "NEWTONLAUNCHER": {
+                "NAME": "Newtonlauncher"
+            },
+            "AMMO": {
+                "NAME": "Munition",
+                "WEAPON": "{0} Munition"
+            }
         },
         "EQUIPMENT": {
-            "HANDS": "Hände",
+            "HANDS": {
+                "NAME": "Hände"
+            },
             "C4": {
                 "NAME": "C4",
                 "UI": {
@@ -263,13 +289,23 @@
                     "DEFUSECHANCE": "{0}% Chance zu entschärfen"
                 }
             },
-            "DECOY": "Köder",
-            "HEALTHSTATION": "HealthStation",
-            "MAGNETOSTICK": "MagnetoStick"
+            "DECOY": {
+                "NAME": "Köder"
+            },
+            "HEALTHSTATION": {
+                "NAME": "HealthStation"
+            },
+            "MAGNETOSTICK": {
+                "NAME": "MagnetoStick"
+            }
         },
         "PERK": {
-            "BODYARMOR": "Körperschild",
-            "RADAR": "Radar"
+            "BODYARMOR": {
+                "NAME": "Körperschild"
+            },
+            "RADAR": {
+                "NAME": "Radar"
+            }
         }
     },
     "USE": {
@@ -278,6 +314,10 @@
         "C4": {
             "ARM": "Halte [{0}], um das C4 scharf zu machen",
             "DEFUSE": "Drücke [{0}], um das C4 zu entschärfen"
+        },
+        "CORPSE": {
+            "IDENTIFY": "Halte [{0}] um die Leiche zu identifizieren",
+            "INSPECT": "Halte [{0}] um die Leiche zu inspizieren"
         }
     }
 }

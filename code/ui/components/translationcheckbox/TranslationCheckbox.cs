@@ -42,6 +42,7 @@ namespace TTTReborn.UI
         public void UpdateTranslation(TranslationData translationData)
         {
             _translationData = translationData;
+
             LabelText = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
         }
 

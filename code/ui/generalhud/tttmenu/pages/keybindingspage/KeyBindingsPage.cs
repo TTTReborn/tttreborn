@@ -14,65 +14,65 @@ namespace TTTReborn.UI.Menu
         {
             StyleSheet.Load("/ui/generalhud/tttmenu/pages/KeyBindingsPage/KeyBindingsPage.scss");
 
-            Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_DESCRIPTION"));
+            Add.TranslationLabel(new TranslationData("MENU.KEYBINDINGS.RESTRICTION"));
             Add.Label("");
 
             TranslationTabContainer translationTabContainer = Add.TranslationTabContainer();
 
             Panel movementPanel = new();
-            CreateBinding(movementPanel, "MENU_KEYBINDINGS_FORWARD", new() { "+iv_forward" });
-            CreateBinding(movementPanel, "MENU_KEYBINDINGS_BACK", new() { "+iv_back" });
-            CreateBinding(movementPanel, "MENU_KEYBINDINGS_LEFT", new() { "+iv_left" });
-            CreateBinding(movementPanel, "MENU_KEYBINDINGS_RIGHT", new() { "+iv_right" });
-            CreateBinding(movementPanel, "MENU_KEYBINDINGS_JUMP", new() { "+iv_jump" });
-            CreateBinding(movementPanel, "MENU_KEYBINDINGS_CROUCH", new() { "+iv_duck" });
-            CreateBinding(movementPanel, "MENU_KEYBINDINGS_SPRINT", new() { "+iv_sprint" });
+            CreateBinding(movementPanel, "MENU.KEYBINDINGS.MOVEMENT.FORWARD", "+iv_forward");
+            CreateBinding(movementPanel, "MENU.KEYBINDINGS.MOVEMENT.BACK", "+iv_back");
+            CreateBinding(movementPanel, "MENU.KEYBINDINGS.MOVEMENT.LEFT", "+iv_left");
+            CreateBinding(movementPanel, "MENU.KEYBINDINGS.MOVEMENT.RIGHT", "+iv_right");
+            CreateBinding(movementPanel, "MENU.KEYBINDINGS.MOVEMENT.JUMP", "+iv_jump");
+            CreateBinding(movementPanel, "MENU.KEYBINDINGS.MOVEMENT.CROUCH", "+iv_duck");
+            CreateBinding(movementPanel, "MENU.KEYBINDINGS.MOVEMENT.SPRINT", "+iv_sprint");
 
-            translationTabContainer.AddTab(movementPanel, new TranslationData("MENU_KEYBINDINGS_MOVEMENT"));
+            translationTabContainer.AddTab(movementPanel, new TranslationData("MENU.KEYBINDINGS.MOVEMENT.TITLE"));
 
             Panel weaponsPanel = new();
-            CreateBinding(weaponsPanel, "MENU_KEYBINDINGS_FIRE", new() { "+iv_attack" });
-            CreateBinding(weaponsPanel, "MENU_KEYBINDINGS_RELOAD", new() { "+iv_reload" });
-            CreateBinding(weaponsPanel, "MENU_KEYBINDINGS_DROP_WEAPON", new() { "+iv_drop" });
-            CreateBinding(weaponsPanel, "MENU_KEYBINDINGS_DROP_AMMO", new() { "+iv_sprint", "+iv_drop" });
+            CreateBinding(weaponsPanel, "MENU.KEYBINDINGS.WEAPONS.FIRE", "+iv_attack");
+            CreateBinding(weaponsPanel, "MENU.KEYBINDINGS.WEAPONS.RELOAD", "+iv_reload");
+            CreateBinding(weaponsPanel, "MENU.KEYBINDINGS.WEAPONS.DROP_WEAPON", "+iv_drop");
+            CreateBinding(weaponsPanel, "MENU.KEYBINDINGS.WEAPONS.DROP_AMMO", "+iv_sprint", "+iv_drop");
 
-            translationTabContainer.AddTab(weaponsPanel, new TranslationData("MENU_KEYBINDINGS_WEAPONS"));
+            translationTabContainer.AddTab(weaponsPanel, new TranslationData("MENU.KEYBINDINGS.WEAPONS.TITLE"));
 
             Panel actionsPanel = new();
-            CreateBinding(actionsPanel, "MENU_KEYBINDINGS_USE", new() { "+iv_use" });
-            CreateBinding(actionsPanel, "MENU_KEYBINDINGS_FLASHLIGHT", new() { "+iv_flashlight" });
+            CreateBinding(actionsPanel, "MENU.KEYBINDINGS.ACTIONS.USE", "+iv_use");
+            CreateBinding(actionsPanel, "MENU.KEYBINDINGS.ACTIONS.FLASHLIGHT", "+iv_flashlight");
 
-            translationTabContainer.AddTab(actionsPanel, new TranslationData("MENU_KEYBINDINGS_ACTIONS"));
+            translationTabContainer.AddTab(actionsPanel, new TranslationData("MENU.KEYBINDINGS.ACTIONS.TITLE"));
 
             Panel communicationsPanel = new();
-            CreateBinding(communicationsPanel, "MENU_KEYBINDINGS_VOICE_CHAT", new() { "+iv_voice" });
-            CreateBinding(communicationsPanel, "MENU_KEYBINDINGS_TEAM_VOICE_CHAT", new() { "+iv_walk" });
-            CreateBinding(communicationsPanel, "MENU_KEYBINDINGS_TEAM_TEXT_CHAT", new() { "+iv_score" });
+            CreateBinding(communicationsPanel, "MENU.KEYBINDINGS.COMMUNICATION.VOICECHAT", "+iv_voice");
+            CreateBinding(communicationsPanel, "MENU.KEYBINDINGS.COMMUNICATION.TEAMVOICECHAT", "+iv_walk");
+            CreateBinding(communicationsPanel, "MENU.KEYBINDINGS.COMMUNICATION.TEAMTEXTCHAT", "+iv_score");
 
-            translationTabContainer.AddTab(communicationsPanel, new TranslationData("MENU_KEYBINDINGS_COMMUNICATION"));
+            translationTabContainer.AddTab(communicationsPanel, new TranslationData("MENU.KEYBINDINGS.COMMUNICATION.TITLE"));
 
             Panel menusPanel = new();
-            CreateBinding(menusPanel, "MENU_KEYBINDINGS_SCOREBOARD", new() { "+iv_score" });
-            CreateBinding(menusPanel, "MENU_KEYBINDINGS_MENU", new() { "+iv_menu" });
-            CreateBinding(menusPanel, "MENU_KEYBINDINGS_QUICK_SHOP", new() { "+iv_view" });
+            CreateBinding(menusPanel, "MENU.KEYBINDINGS.MENUS.SCOREBOARD", "+iv_score");
+            CreateBinding(menusPanel, "MENU.KEYBINDINGS.MENUS.MENU", "+iv_menu");
+            CreateBinding(menusPanel, "MENU.KEYBINDINGS.MENUS.QUICKSHOP", "+iv_view");
 
-            translationTabContainer.AddTab(menusPanel, new TranslationData("MENU_KEYBINDINGS_MENUS"));
+            translationTabContainer.AddTab(menusPanel, new TranslationData("MENU.KEYBINDINGS.MENUS.TITLE"));
         }
 
-        private static void CreateBinding(Panel parent, string actionName, List<string> bindings)
+        private static void CreateBinding(Panel parent, string actionName, params string[] bindings)
         {
             Panel wrapper = parent.Add.Panel("wrapper");
             wrapper.Add.TranslationLabel(new TranslationData(actionName));
             wrapper.Add.Label(": ");
 
-            for (int i = 0; i < bindings.Count; ++i)
+            for (int i = 0; i < bindings.Length; ++i)
             {
                 string binding = bindings[i];
                 wrapper.Add.Label(Input.GetKeyWithBinding(binding).ToUpper(), "text-color-info");
                 wrapper.Add.Label($" ({binding}) ");
 
                 // Don't show a + if it's the last binding in the list.
-                if (i != bindings.Count - 1)
+                if (i != bindings.Length - 1)
                 {
                     wrapper.Add.Label(" + ", "text-color-info");
                 }

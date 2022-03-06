@@ -23,7 +23,7 @@
             "PREPARING": "Preparing",
             "IN_PROGRESS": "In progress",
             "POST": "Round over",
-            "MAPSELECTION": "Selecting next map"
+            "MAP_SELECTION": "Selecting next map"
         }
     },
     "WIN": {
@@ -45,9 +45,7 @@
         }
     },
     "CORPSE": {
-        "IDENTIFY": "Hold {0} to identify the corpse",
         "INSPECT": {
-            "TEXT": "Hold {0} to inspect the corpse",
             "QUICKINFO": {
                 "HEADSHOT": "Headshot",
                 "SUICIDE": "Suicide",
@@ -190,36 +188,45 @@
         },
         "KEYBINDINGS": {
             "TITLE": "Keybindings",
-            "ACTIONS": {
-                "RESTRICTION": "Because of restrictions by the S&Box developers you can change your bindings just in the s&box options menu or through console.",
-                "MOVEMENT": "Movement",
+            "RESTRICTION": "Because of restrictions by the S&Box developers you can change your bindings just in the s&box options menu or through console.",
+            "MOVEMENT": {
+                "TITLE": "Movement",
                 "FORWARD": "Forward",
                 "BACK": "Back",
                 "LEFT": "Left",
                 "RIGHT": "Right",
                 "JUMP": "Jump",
                 "CROUCH": "Crouch",
-                "SPRINT": "Sprint",
-                "WEAPONS": "Weapons",
+                "SPRINT": "Sprint"
+            },
+            "WEAPONS": {
+                "TITLE": "Weapons",
                 "FIRE": "Fire",
                 "RELOAD": "Reload",
                 "DROP_WEAPON": "Drop Weapon",
-                "DROP_AMMO": "Drop Ammo",
-                "ACTIONS": "Actions",
+                "DROP_AMMO": "Drop Ammo"
+            },
+            "ACTIONS": {
+                "TITLE": "Actions",
                 "USE": "Use",
-                "FLASHLIGHT": "Flashlight",
-                "COMMUNICATION": "Communication",
+                "FLASHLIGHT": "Flashlight"
+            },
+            "COMMUNICATION": {
+                "TITLE": "Communication",
                 "VOICECHAT": "Voice Chat",
                 "TEAMVOICECHAT": "Team Voice Chat",
-                "TEAMTEXTCHAT": "Team Text Chat",
-                "MENUS": "Menus",
+                "TEAMTEXTCHAT": "Team Text Chat"
+            },
+            "MENUS": {
+                "TITLE": "Menus",
                 "SCOREBOARD": "Scoreboard",
                 "MENU": "Menu",
                 "QUICKSHOP": "QuickShop"
             }
         },
         "TESTING": {
-            "TITLE": "Testing"
+            "TITLE": "Testing",
+            "FILESELECTION": "Explorer"
         },
         "SHOPEDITOR": {
             "TITLE": "Shop Editor",
@@ -244,16 +251,35 @@
             }
         }
     },
+    "MAPSELECTION": {
+        "VOTE": "Vote for the next map!"
+    },
     "ITEM": {
         "WEAPON": {
-            "PISTOL": "Pistol",
-            "SMG": "SMG",
-            "SHOTGUN": "Shotgun",
-            "KNIFE": "Knife",
-            "NEWTONLAUNCHER": "Newtonlauncher"
+            "PISTOL": {
+                "NAME": "Pistol"
+            },
+            "SMG": {
+                "NAME": "SMG"
+            },
+            "SHOTGUN": {
+                "NAME": "Shotgun"
+            },
+            "KNIFE": {
+                "NAME": "Knife"
+            },
+            "NEWTONLAUNCHER": {
+                "NAME": "Newtonlauncher"
+            },
+            "AMMO": {
+                "NAME": "Ammo",
+                "WEAPON": "{0} Ammo"
+            }
         },
         "EQUIPMENT": {
-            "HANDS": "Hands",
+            "HANDS": {
+                "NAME": "Hands"
+            },
             "C4": {
                 "NAME": "C4",
                 "UI": {
@@ -263,13 +289,23 @@
                     "DEFUSECHANCE": "{0}% chance to defuse"
                 }
             },
-            "DECOY": "Decoy",
-            "HEALTHSTATION": "HealthStation",
-            "MAGNETOSTICK": "MagnetoStick"
+            "DECOY": {
+                "NAME": "Decoy"
+            },
+            "HEALTHSTATION": {
+                "NAME": "HealthStation"
+            },
+            "MAGNETOSTICK": {
+                "NAME": "MagnetoStick"
+            }
         },
         "PERK": {
-            "BODYARMOR": "Bodyarmor",
-            "RADAR": "Radar"
+            "BODYARMOR": {
+                "NAME": "Bodyarmor"
+            },
+            "RADAR": {
+                "NAME": "Radar"
+            }
         }
     },
     "USE": {
@@ -278,6 +314,10 @@
         "C4": {
             "ARM": "Hold [{0}] to arm the C4",
             "DEFUSE": "Press [{0}] to defuse the C4"
+        },
+        "CORPSE": {
+            "IDENTIFY": "Hold [{0}] to identify the corpse",
+            "INSPECT": "Hold [{0}] to inspect the corpse"
         }
     }
 }

@@ -102,14 +102,14 @@ namespace TTTReborn.UI.Menu
                     tab.Add.LineBreak();
                 }
 
-                tabContainer.AddTab(tab, new TranslationData($"MENU_SETTINGS_TAB_{categoryName.ToUpper()}"));
+                tabContainer.AddTab(tab, new TranslationData($"MENU.SETTINGS.TABS.{categoryName.ToUpper()}.TITLE"));
             }
         }
 
         private static void CreateSwitchSetting(Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject)
         {
-            TranslationCheckbox checkbox = parent.Add.TranslationCheckbox(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}"));
-            checkbox.AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
+            TranslationCheckbox checkbox = parent.Add.TranslationCheckbox(new TranslationData($"MENU.SETTINGS.TABS.{categoryName.ToUpper()}.{propertyName.ToUpper()}.TITLE"));
+            checkbox.AddTooltip(new TranslationData($"MENU.SETTINGS.TABS.{categoryName.ToUpper()}.{propertyName.ToUpper()}.DESCRIPTION"));
             checkbox.Checked = Utils.GetPropertyValue<bool>(propertyObject, propertyName);
             checkbox.AddEventListener("onchange", (panelEvent) =>
             {
@@ -119,7 +119,7 @@ namespace TTTReborn.UI.Menu
 
         private static void CreateInputSetting(Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject)
         {
-            CreateSettingsEntry(parent, $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}", Utils.GetPropertyValue(propertyObject, propertyName).ToString(), $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION", (value) =>
+            CreateSettingsEntry(parent, $"MENU.SETTINGS.TABS.{categoryName.ToUpper()}.{propertyName.ToUpper()}.TITLE", Utils.GetPropertyValue(propertyObject, propertyName).ToString(), $"MENU.SETTINGS.TABS.{categoryName.ToUpper()}.{propertyName.ToUpper()}.DESCRIPTION", (value) =>
             {
                 UpdateSettingsProperty(settings, propertyObject, propertyName, value);
             });
@@ -128,7 +128,7 @@ namespace TTTReborn.UI.Menu
         private static void CreateDropdownSetting(Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject, PropertyInfo propertyInfo, PropertyInfo subPropertyInfo)
         {
             parent.Add.Panel(categoryName.ToLower());
-            parent.Add.TranslationLabel(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}"), "h3").AddTooltip(new TranslationData($"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION"));
+            parent.Add.TranslationLabel(new TranslationData($"MENU.SETTINGS.TABS.{categoryName.ToUpper()}.{propertyName.ToUpper()}.TITLE"), "h3").AddTooltip(new TranslationData($"MENU.SETTINGS.TABS.{categoryName.ToUpper()}.{propertyName.ToUpper()}.DESCRIPTION"));
 
             TranslationDropdown dropdownSelection = parent.Add.TranslationDropdown();
 

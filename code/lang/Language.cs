@@ -20,13 +20,13 @@ namespace TTTReborn.Globalization
     {
         public readonly LanguageData Data;
 
-        private readonly Dictionary<string, object> _langDict;
+        private readonly Dictionary<string, string> _langDict;
 
         public Language(string language, string json)
         {
-            _langDict = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+            Dictionary<string, object> languageDictionary = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
 
-            if (_langDict.TryGetValue("__LANGUAGE__", out object dictJson))
+            if (languageDictionary.TryGetValue("__LANGUAGE__", out object dictJson))
             {
                 Dictionary<string, string> dict = JsonSerializer.Deserialize<Dictionary<string, string>>(dictJson.ToString());
 
@@ -35,7 +35,7 @@ namespace TTTReborn.Globalization
                     Log.Error($"Language '{language}' is missing '__LANGUAGE__.NAME' (language name)!");
                 }
 
-                if (!dict.TryGetValue("CODE", out string code) || String.IsNullOrEmpty(code))
+                if (!dict.TryGetValue("CODE", out string code) || string.IsNullOrEmpty(code))
                 {
                     Log.Error($"Language '{language}' is missing '__LANGUAGE__.CODE' (language ISO (tag) code)!");
                 }
@@ -46,11 +46,44 @@ namespace TTTReborn.Globalization
                     Code = code
                 };
             }
+
+            try {
+                _langDict = TransformDictionary(languageDictionary);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Language parser registered error '{e.Message}' during processing the language '{language}': {e.StackTrace}");
+
+                throw;
+            }
         }
 
-        public void AddTranslationString(string key, string translation)
+        private Dictionary<string, string> TransformDictionary(Dictionary<string, object> languageDictionary)
         {
-            if (!_langDict.TryAdd(key, translation))
+            Dictionary<string, string> dictionary = new();
+
+            foreach (KeyValuePair<string, object> translationEntry in languageDictionary)
+            {
+                try {
+                    dictionary.Add(translationEntry.Key, JsonSerializer.Deserialize<string>((JsonElement) translationEntry.Value));
+                }
+                catch (Exception)
+                {
+                    Dictionary<string, string> transformedDictionary = TransformDictionary(JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) translationEntry.Value).GetRawText()));
+
+                    foreach (KeyValuePair<string, string> transformedEntry in transformedDictionary)
+                    {
+                        dictionary.Add(translationEntry.Key + '.' + transformedEntry.Key, transformedEntry.Value);
+                    }
+                }
+            }
+
+            return dictionary;
+        }
+
+        public void AddTranslationString(string key, string value)
+        {
+            if (!_langDict.TryAdd(key, value))
             {
                 Log.Warning($"Couldn't add translation string ('{key}') to '{Data.Name}'");
             }
@@ -104,7 +137,7 @@ namespace TTTReborn.Globalization
             return translationData.Key;
         }
 
-        private object GetRawTranslation(TranslationData translationData)
+        private string GetRawTranslation(TranslationData translationData)
         {
             if (translationData.Key.Length == 0)
             {
