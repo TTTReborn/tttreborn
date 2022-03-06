@@ -9,17 +9,12 @@ namespace TTTReborn.Map
     public partial class MapHandler
     {
         public MapSettings MapSettings { get; private set; }
-
-        public int RandomWeaponCount, RandomAmmoCount;
-
-        public List<AmmoRandom> RandomAmmos = new();
-        public List<WeaponRandom> RandomWeapons = new();
-        public List<LogicButton> LogicButtons = new();
+        public List<AmmoRandom> RandomAmmos { get; private set; } = new();
+        public List<WeaponRandom> RandomWeapons { get; private set; } = new();
+        public List<LogicButton> LogicButtons { get; private set; } = new();
 
         public MapHandler()
         {
-            RandomWeaponCount = 0;
-
             foreach (Entity entity in Entity.All)
             {
                 if (entity is MapSettings mapSettings)
@@ -27,29 +22,44 @@ namespace TTTReborn.Map
                     MapSettings = mapSettings;
                     MapSettings.FireSettingsSpawn();
                 }
-                else if (entity is WeaponRandom weaponRandom)
-                {
-                    RandomWeapons.Add(weaponRandom);
-                }
-                else if (entity is AmmoRandom ammoRandom)
-                {
-                    RandomAmmos.Add(ammoRandom);
-                }
-                else if (entity is LogicButton button)
-                {
-                    LogicButtons.Add(button);
-                }
+
+                Init(entity);
             }
         }
 
         public void Reset()
         {
             Sandbox.Internal.GlobalGameNamespace.Map.Reset(Game.DefaultCleanupFilter);
-		    Sandbox.Internal.Decals.RemoveFromWorld();
+            Sandbox.Internal.Decals.RemoveFromWorld();
+
+            RandomAmmos.Clear();
+            RandomWeapons.Clear();
+            LogicButtons.Clear();
+
+            foreach (Entity entity in Entity.All)
+            {
+                Init(entity);
+            }
 
             RandomWeapons.ForEach(x => x.Activate());
             RandomAmmos.ForEach(x => x.Activate());
             LogicButtons.ForEach(x => x.Cleanup());
+        }
+
+        private void Init(Entity entity)
+        {
+            if (entity is WeaponRandom weaponRandom)
+            {
+                RandomWeapons.Add(weaponRandom);
+            }
+            else if (entity is AmmoRandom ammoRandom)
+            {
+                RandomAmmos.Add(ammoRandom);
+            }
+            else if (entity is LogicButton button)
+            {
+                LogicButtons.Add(button);
+            }
         }
     }
 }

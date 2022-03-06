@@ -7,7 +7,7 @@ namespace TTTReborn.Roles
     {
         public override Color Color => Color.Transparent;
 
-        public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
+        public override Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
 
         public override bool IsSelectable => false;
 

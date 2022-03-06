@@ -32,7 +32,7 @@ namespace TTTReborn.Map
         [Input]
         public void Force(Entity activator)
         {
-            TTTTeam winningTeam;
+            Team winningTeam;
 
             if (UseActivatorsTeam && activator is TTTPlayer player)
             {
@@ -53,7 +53,7 @@ namespace TTTReborn.Map
             Log.Warning($"ttt_force_win: Failed to grant win to team: {Team}, invalid or nonexistant team name.");
         }
 
-        private static void ForceEndRound(TTTTeam team)
+        private static void ForceEndRound(Team team)
         {
             if (Gamemode.Game.Instance.Round is InProgressRound)
             {

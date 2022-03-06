@@ -24,7 +24,7 @@ namespace TTTReborn.Roles
 
         public virtual Color Color => Color.Black;
 
-        public virtual TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
+        public virtual Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
 
         public virtual int DefaultCredits => 50;
 

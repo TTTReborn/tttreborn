@@ -165,6 +165,7 @@ namespace TTTReborn.Items
             PickupTrigger = new();
             PickupTrigger.Parent = this;
             PickupTrigger.Position = Position;
+            PickupTrigger.Rotation = Rotation;
         }
 
         public override void Reload()

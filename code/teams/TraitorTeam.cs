@@ -1,7 +1,7 @@
 namespace TTTReborn.Teams
 {
     [Team("traitors")]
-    public class TraitorTeam : TTTTeam
+    public class TraitorTeam : Team
     {
         public override Color Color => Color.FromBytes(223, 41, 53);
 

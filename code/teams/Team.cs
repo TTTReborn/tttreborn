@@ -17,7 +17,7 @@ namespace TTTReborn.Teams
         }
     }
 
-    public abstract class TTTTeam
+    public abstract class Team
     {
         public readonly string Name;
 
@@ -25,9 +25,9 @@ namespace TTTReborn.Teams
 
         public readonly List<TTTPlayer> Members = new();
 
-        public static Dictionary<string, TTTTeam> Teams = new();
+        public static Dictionary<string, Team> Teams = new();
 
-        public TTTTeam()
+        public Team()
         {
             Name = Utils.GetLibraryName(GetType());
 
@@ -46,9 +46,9 @@ namespace TTTReborn.Teams
 
     public static class TeamFunctions
     {
-        public static TTTTeam TryGetTeam(string teamname)
+        public static Team TryGetTeam(string teamname)
         {
-            if (teamname == null || !TTTTeam.Teams.TryGetValue(teamname, out TTTTeam team))
+            if (teamname == null || !Team.Teams.TryGetValue(teamname, out Team team))
             {
                 return null;
             }
@@ -56,24 +56,24 @@ namespace TTTReborn.Teams
             return team;
         }
 
-        public static TTTTeam GetTeam(string teamname)
+        public static Team GetTeam(string teamname)
         {
             if (teamname == null)
             {
                 return null;
             }
 
-            if (!TTTTeam.Teams.TryGetValue(teamname, out TTTTeam team))
+            if (!Team.Teams.TryGetValue(teamname, out Team team))
             {
-                team = Utils.GetObjectByType<TTTTeam>(Utils.GetTypeByLibraryName<TTTTeam>(teamname));
+                team = Utils.GetObjectByType<Team>(Utils.GetTypeByLibraryName<Team>(teamname));
             }
 
             return team;
         }
 
-        public static TTTTeam GetTeam(Type teamType)
+        public static Team GetTeam(Type teamType)
         {
-            foreach (TTTTeam team in TTTTeam.Teams.Values)
+            foreach (Team team in Team.Teams.Values)
             {
                 if (team.GetType() == teamType)
                 {
@@ -81,7 +81,7 @@ namespace TTTReborn.Teams
                 }
             }
 
-            return Utils.GetObjectByType<TTTTeam>(teamType);
+            return Utils.GetObjectByType<Team>(teamType);
         }
     }
 }

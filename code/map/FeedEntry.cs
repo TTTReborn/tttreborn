@@ -45,7 +45,7 @@ namespace TTTReborn.Map
                     break;
 
                 case FeedEntryType.Other:
-                    TTTTeam team = TeamFunctions.TryGetTeam(ReceiverTeamOverride);
+                    Team team = TeamFunctions.TryGetTeam(ReceiverTeamOverride);
 
                     if (team != null)
                     {

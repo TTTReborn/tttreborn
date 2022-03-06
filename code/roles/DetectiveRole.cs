@@ -15,7 +15,7 @@ namespace TTTReborn.Roles
 
         public override int DefaultCredits => 100;
 
-        public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(InnocentTeam));
+        public override Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(InnocentTeam));
 
         public DetectiveRole() : base()
         {
