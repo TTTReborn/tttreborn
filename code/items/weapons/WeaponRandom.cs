@@ -53,7 +53,7 @@ namespace TTTReborn.Items
 
             if (weapon == null || !weapon.IsValid)
             {
-                Log.Debug($"Failed to initialize random weapon '{weaponTypeToSpawn}'");
+                Log.Debug($"Failed to initialize random weapon of type '{weaponTypeToSpawn}': {weapon}");
 
                 return;
             }

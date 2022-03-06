@@ -465,12 +465,7 @@ namespace TTTReborn.Items
 
         public void Tick(TTTPlayer player)
         {
-            if (IsClient)
-            {
-                return;
-            }
-
-            if (player.LifeState != LifeState.Alive)
+            if (IsClient || player.LifeState != LifeState.Alive)
             {
                 return;
             }
