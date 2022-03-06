@@ -85,9 +85,9 @@ namespace TTTReborn.Roles
 
         }
 
-        public string GetRoleTranslationKey(string key)
+        public string GetTranslationKey(string key)
         {
-            return $"{Name.ToUpper()}_{key}";
+            return $"ROLE.{Name[5..].ToUpper()}.{key}";
         }
     }
 }

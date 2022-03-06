@@ -70,9 +70,9 @@ namespace TTTReborn.UI
             SetClass("fade-in", true);
             _containerPanel.SetClass("pop-in", true);
 
-            _contentLabel.UpdateTranslation(new TranslationData("POST_ROUND_TEXT"));
+            _contentLabel.UpdateTranslation(new TranslationData("WIN.DESCRIPTION"));
 
-            _headerLabel.UpdateTranslation(new TranslationData($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}"));
+            _headerLabel.UpdateTranslation(new TranslationData($"WIN.{_stats.WinningRole[5..].ToUpper()}"));
             _headerLabel.Style.FontColor = _stats.WinningColor;
         }
     }

@@ -177,7 +177,7 @@ namespace TTTReborn.UI
         {
             DialogBox dialogBox = new();
             dialogBox.Header.DragHeader.IsLocked = false;
-            dialogBox.SetTranslationTitle(new TranslationData("MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC", new TranslationData(item.ItemData.Name.ToUpper())));
+            dialogBox.SetTranslationTitle(new TranslationData("MENU.SHOPEDITOR.EDIT.DESCRIPTION", new TranslationData(IItem.GetTranslationKey(item.ItemData.Name, "NAME"))));
             dialogBox.AddClass("itemeditwindow");
 
             dialogBox.OnAgree = () =>
@@ -201,7 +201,7 @@ namespace TTTReborn.UI
         {
             dialog.Content.SetPanelContent((panelContent) =>
             {
-                SettingsPage.CreateSettingsEntry(panelContent, "MENU_SHOPEDITOR_ITEM_PRICE", item.ItemData.Price, "MENU_SHOPEDITOR_ITEM_PRICE_SPECIFIC", null, (value) =>
+                SettingsPage.CreateSettingsEntry(panelContent, "MENU.SHOPEDITOR.PRICE.TITLE", item.ItemData.Price, "MENU.SHOPEDITOR.PRICE.DESCRIPTION", null, (value) =>
                 {
                     item.ItemData.Price = value;
                 });

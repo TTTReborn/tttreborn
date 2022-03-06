@@ -68,6 +68,8 @@ namespace TTTReborn.Globalization
 
         public static void Load()
         {
+            Languages.Clear();
+
             foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
             {
                 string name = Path.GetFileNameWithoutExtension(file);
@@ -81,6 +83,21 @@ namespace TTTReborn.Globalization
             }
 
             ActiveLanguage = GetLanguageByCode(FALLBACK_LANGUAGE);
+
+            FileSystem.Mounted.Watch().OnChangedFile += (fileName) =>
+            {
+                foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
+                {
+                    if (fileName.Equals(file))
+                    {
+                        Load();
+
+                        // TODO reload HUD
+
+                        break;
+                    }
+                }
+            };
         }
 
         public static Language GetLanguageByCode(string name)

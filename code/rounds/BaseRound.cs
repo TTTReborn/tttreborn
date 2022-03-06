@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Items;
 using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
@@ -41,7 +42,9 @@ namespace TTTReborn.Rounds
 
         public virtual void OnPlayerSpawn(TTTPlayer player)
         {
+            bool handsAdded = player.Inventory.TryAdd(new Hands(), deleteIfFails: true, makeActive: true);
 
+            Log.Debug($"Attempted to add Hands to {player.Client.Name}. Result: '{handsAdded}'");
         }
 
         public virtual void OnPlayerKilled(TTTPlayer player)

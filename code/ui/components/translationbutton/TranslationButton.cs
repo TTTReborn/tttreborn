@@ -45,6 +45,7 @@ namespace TTTReborn.UI
         public void UpdateTranslation(TranslationData translationData)
         {
             _translationData = translationData;
+
             SetText(TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData));
         }
 
@@ -56,6 +57,7 @@ namespace TTTReborn.UI
         private new void SetText(string value)
         {
             Text = value;
+
             SetClass("has-label", !string.IsNullOrEmpty(Text));
         }
     }

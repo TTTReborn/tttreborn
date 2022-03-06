@@ -46,7 +46,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _roundLabel.UpdateTranslation(new TranslationData($"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}"));
+            _roundLabel.UpdateTranslation(new TranslationData($"ROUND.STATE.{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}"));
 
             _timerPanel.SetClass("disabled", Game.Instance.Round is Rounds.WaitingRound);
             _timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;
