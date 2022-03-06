@@ -124,7 +124,7 @@ namespace TTTReborn.VisualProgramming
                     return;
                 }
 
-                List<Dictionary<string, object>> nodesJsonDict = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(((JsonElement) nodesList).GetRawText());
+                List<Dictionary<string, object>> nodesJsonDict = JsonSerializer.Deserialize<List<Dictionary<string, object>>>((JsonElement) nodesList);
 
                 if (nodesJsonDict == null)
                 {

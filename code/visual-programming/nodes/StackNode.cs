@@ -109,21 +109,21 @@ namespace TTTReborn.VisualProgramming
 
             if (connectionInputIds != null)
             {
-                ConnectionInputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionInputIds).GetRawText());
+                ConnectionInputIds = JsonSerializer.Deserialize<string[]>((JsonElement) connectionInputIds);
             }
 
             jsonData.TryGetValue("ConnectionOutputIds", out object connectionOutputIds);
 
             if (connectionOutputIds != null)
             {
-                ConnectionOutputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionOutputIds).GetRawText());
+                ConnectionOutputIds = JsonSerializer.Deserialize<string[]>((JsonElement) connectionOutputIds);
             }
 
             jsonData.TryGetValue("Pos", out object pos);
 
             if (pos != null)
             {
-                _pos = JsonSerializer.Deserialize<Vector2>(((JsonElement) pos).GetRawText());
+                _pos = JsonSerializer.Deserialize<Vector2>((JsonElement) pos);
             }
         }
 

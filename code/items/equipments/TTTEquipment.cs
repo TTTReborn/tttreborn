@@ -56,6 +56,8 @@ namespace TTTReborn.Items
 
         }
 
+        public string GetTranslationKey(string key) => IItem.GetTranslationKey(LibraryName, key);
+
         public virtual bool CanDrop() => true;
     }
 }

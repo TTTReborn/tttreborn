@@ -145,7 +145,7 @@ namespace TTTReborn.UI
 
             if (_selectedItemData != null)
             {
-                _itemDescriptionLabel.UpdateTranslation(new TranslationData("QUICKSHOP.ITEM.DESCRIPTION", new TranslationData(IItem.GetTranslationKey(_selectedItemData?.Name, "NAME"))));
+                _itemDescriptionLabel.UpdateTranslation(new TranslationData("QUICKSHOP.ITEM.DESCRIPTION", new TranslationData(_selectedItemData?.GetTranslationKey("NAME"))));
             }
         }
 

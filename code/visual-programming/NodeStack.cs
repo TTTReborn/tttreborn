@@ -268,7 +268,7 @@ namespace TTTReborn.VisualProgramming
                     continue;
                 }
 
-                Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) stackNodeJson).GetRawText());
+                Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>((JsonElement) stackNodeJson);
 
                 StackNodeList.Add(StackNode.GetStackNodeFromJsonData<StackNode>(saveStackNode));
             }

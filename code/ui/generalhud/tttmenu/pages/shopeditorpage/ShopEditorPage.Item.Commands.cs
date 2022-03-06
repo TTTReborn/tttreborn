@@ -177,7 +177,7 @@ namespace TTTReborn.UI
         {
             DialogBox dialogBox = new();
             dialogBox.Header.DragHeader.IsLocked = false;
-            dialogBox.SetTranslationTitle(new TranslationData("MENU.SHOPEDITOR.EDIT.DESCRIPTION", new TranslationData(IItem.GetTranslationKey(item.ItemData.Name, "NAME"))));
+            dialogBox.SetTranslationTitle(new TranslationData("MENU.SHOPEDITOR.EDIT.DESCRIPTION", new TranslationData(item.ItemData.GetTranslationKey("NAME"))));
             dialogBox.AddClass("itemeditwindow");
 
             dialogBox.OnAgree = () =>

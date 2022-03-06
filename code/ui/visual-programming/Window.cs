@@ -129,7 +129,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             foreach (object stackNode in jsonDataList)
             {
-                Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) stackNode).GetRawText());
+                Dictionary<string, object> saveStackNode = JsonSerializer.Deserialize<Dictionary<string, object>>((JsonElement) stackNode);
 
                 if (!saveStackNode.TryGetValue("LibraryName", out object libraryName))
                 {

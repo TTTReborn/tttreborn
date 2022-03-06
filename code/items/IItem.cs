@@ -31,6 +31,8 @@ namespace TTTReborn.Items
 
         void OnRemove();
 
+        string GetTranslationKey(string key);
+
         void Delete();
 
         void Simulate(Client owner);
@@ -44,7 +46,7 @@ namespace TTTReborn.Items
         {
             string[] splits = libraryName.Split('_');
 
-            return $"ITEM.{splits[0].ToUpper()}.{string.Join('_', splits[1..]).ToUpper()}.{key.ToUpper()}";
+            return $"ITEM.{splits[0]}.{string.Join('_', splits[1..])}.{key}".ToUpper();
         }
     }
 }

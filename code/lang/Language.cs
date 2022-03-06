@@ -71,7 +71,7 @@ namespace TTTReborn.Globalization
                 }
                 catch (Exception)
                 {
-                    Dictionary<string, string> transformedDictionary = TransformDictionary(JsonSerializer.Deserialize<Dictionary<string, object>>(((JsonElement) translationEntry.Value).GetRawText()));
+                    Dictionary<string, string> transformedDictionary = TransformDictionary(JsonSerializer.Deserialize<Dictionary<string, object>>((JsonElement) translationEntry.Value));
 
                     foreach (KeyValuePair<string, string> transformedEntry in transformedDictionary)
                     {
@@ -119,11 +119,11 @@ namespace TTTReborn.Globalization
 
         private string GetTranslation(TranslationData translationData)
         {
-            object translation = GetRawTranslation(translationData);
+            string translation = GetRawTranslation(translationData);
 
             if (translation != null)
             {
-                return translation.ToString();
+                return translation;
             }
 
             if (Settings.SettingsManager.Instance.General.ReturnMissingKeys)

@@ -64,7 +64,7 @@ namespace TTTReborn.VisualProgramming
 
             if (playerAmountList != null)
             {
-                PlayerAmountList = JsonSerializer.Deserialize<List<int>>(((JsonElement) playerAmountList).GetRawText());
+                PlayerAmountList = JsonSerializer.Deserialize<List<int>>((JsonElement) playerAmountList);
             }
 
             base.LoadFromJsonData(jsonData);

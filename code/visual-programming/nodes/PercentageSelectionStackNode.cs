@@ -41,26 +41,39 @@ namespace TTTReborn.VisualProgramming
 
             int allPlayerAmount = Client.All.Count; // TODO just use available players, not specs
             int[] playerAmounts = new int[percentListCount];
+            int count = 0;
 
             for (int i = 0; i < percentListCount; i++)
             {
-                if (playerList.Count == 0)
+                playerAmounts[i] = Math.Clamp((int) MathF.Round(allPlayerAmount * (PercentList[i] / 100f)), 1, playerList.Count);
+                count += playerAmounts[i];
+            }
+
+            int loopIndex = 0;
+            bool loopFound = false;
+
+            while (count > playerList.Count)
+            {
+                if (playerAmounts[loopIndex] > 1)
                 {
-                    return buildArray;
+                    playerAmounts[loopIndex]--;
+                    count--;
+                    loopFound = true;
                 }
 
-                playerAmounts[i] = Math.Clamp((int) MathF.Ceiling(allPlayerAmount * (PercentList[i] / 100f)), 1, playerList.Count) - 1;
+                loopIndex++;
 
-                int rnd = Utils.RNG.Next(playerList.Count);
-
-                List<TTTPlayer> selectedPlayers = new()
+                if (loopIndex == percentListCount)
                 {
-                    playerList[rnd]
-                };
-
-                playerList.RemoveAt(rnd);
-
-                buildArray[i] = selectedPlayers;
+                    if (loopFound)
+                    {
+                        loopIndex = 0;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
             }
 
             for (int i = 0; i < percentListCount; i++)
@@ -112,7 +125,7 @@ namespace TTTReborn.VisualProgramming
 
             if (percentList != null)
             {
-                PercentList = JsonSerializer.Deserialize<List<float>>(((JsonElement) percentList).GetRawText());
+                PercentList = JsonSerializer.Deserialize<List<float>>((JsonElement) percentList);
             }
 
             base.LoadFromJsonData(jsonData);

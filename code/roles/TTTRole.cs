@@ -87,7 +87,7 @@ namespace TTTReborn.Roles
 
         public string GetTranslationKey(string key)
         {
-            return $"ROLE.{Name[5..].ToUpper()}.{key}";
+            return $"ROLE.{Name[5..]}.{key}".ToUpper();
         }
 
         public bool CheckWin(TTTPlayer player)

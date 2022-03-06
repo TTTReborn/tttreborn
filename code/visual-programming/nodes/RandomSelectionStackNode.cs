@@ -67,7 +67,7 @@ namespace TTTReborn.VisualProgramming
 
             if (percentList != null)
             {
-                PercentList = JsonSerializer.Deserialize<List<float>>(((JsonElement) percentList).GetRawText());
+                PercentList = JsonSerializer.Deserialize<List<float>>((JsonElement) percentList);
             }
 
             base.LoadFromJsonData(jsonData);

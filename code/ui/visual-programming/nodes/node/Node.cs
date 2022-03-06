@@ -526,21 +526,21 @@ namespace TTTReborn.UI.VisualProgramming
 
             if (connectionInputIds != null)
             {
-                ConnectionInputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionInputIds).GetRawText());
+                ConnectionInputIds = JsonSerializer.Deserialize<string[]>((JsonElement) connectionInputIds);
             }
 
             jsonData.TryGetValue("ConnectionOutputIds", out object connectionOutputIds);
 
             if (connectionOutputIds != null)
             {
-                ConnectionOutputIds = JsonSerializer.Deserialize<string[]>(((JsonElement) connectionOutputIds).GetRawText());
+                ConnectionOutputIds = JsonSerializer.Deserialize<string[]>((JsonElement) connectionOutputIds);
             }
 
             jsonData.TryGetValue("Pos", out object pos);
 
             if (pos != null)
             {
-                Vector2 vector2 = JsonSerializer.Deserialize<Vector2>(((JsonElement) pos).GetRawText());
+                Vector2 vector2 = JsonSerializer.Deserialize<Vector2>((JsonElement) pos);
                 float scale = Hud.Current.GeneralHudPanel.ScaleToScreen;
 
                 Style.Left = Sandbox.UI.Length.Pixels(vector2.x / scale);
