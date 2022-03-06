@@ -89,5 +89,15 @@ namespace TTTReborn.Roles
         {
             return $"ROLE.{Name[5..].ToUpper()}.{key}";
         }
+
+        public bool CheckWin(TTTPlayer player)
+        {
+            return player.Team != null && player.Team.CheckWin(player);
+        }
+
+        public bool CheckPreventWin(TTTPlayer player)
+        {
+            return player.Team != null && player.Team.CheckPreventWin(player);
+        }
     }
 }

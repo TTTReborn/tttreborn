@@ -40,6 +40,8 @@ namespace TTTReborn.Teams
         }
 
         public virtual bool CheckWin(TTTPlayer player) => true;
+
+        public virtual bool CheckPreventWin(TTTPlayer player) => false;
     }
 
     public static class TeamFunctions
