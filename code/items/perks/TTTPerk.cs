@@ -52,6 +52,8 @@ namespace TTTReborn.Items
             Owner = null;
         }
 
+        public string GetTranslationKey(string key) => IItem.GetTranslationKey(LibraryName, key);
+
         public void Delete()
         {
             if (Host.IsClient)

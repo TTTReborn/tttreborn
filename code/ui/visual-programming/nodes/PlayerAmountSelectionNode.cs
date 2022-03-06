@@ -55,7 +55,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             if (playerAmountList != null)
             {
-                PlayerAmountList = JsonSerializer.Deserialize<List<int>>(((JsonElement) playerAmountList).GetRawText());
+                PlayerAmountList = JsonSerializer.Deserialize<List<int>>((JsonElement) playerAmountList);
 
                 if (NodeSettings.Count < PlayerAmountList.Count)
                 {

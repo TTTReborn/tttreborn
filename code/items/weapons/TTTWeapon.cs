@@ -133,6 +133,8 @@ namespace TTTReborn.Items
 
         }
 
+        public string GetTranslationKey(string key) => IItem.GetTranslationKey(LibraryName, key);
+
         public int AvailableAmmo()
         {
             if (Owner is not TTTPlayer owner || AmmoName == null)
@@ -449,7 +451,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("USE.PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(IItem.GetTranslationKey(LibraryName, "NAME")));
+        public TranslationData TextOnTick => new("USE.PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData(GetTranslationKey("NAME")));
 
         public bool CanHint(TTTPlayer client)
         {
