@@ -9,7 +9,7 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Hammer.Skip]
-    public abstract partial class Ammo : Prop, IEntityHint
+    public abstract partial class Ammo : Prop, IEntityHint, IPickupable
     {
         /// <summary>
         /// The library name of the ammo.
@@ -34,6 +34,11 @@ namespace TTTReborn.Items
         [Net]
         private int CurrentAmmo { get; set; }
         private int AmmoEntMax { get; set; }
+
+        public PickupTrigger PickupTrigger { get; set; }
+
+        public Entity LastDropOwner { get; set; }
+        public TimeSince SinceLastDrop { get; set; }
 
         /// <summary>
         /// Fired when a player picks up any amount of ammo from the entity.
@@ -61,6 +66,11 @@ namespace TTTReborn.Items
             CurrentAmmo = Amount;
 
             Tags.Add(IItem.ITEM_TAG);
+
+            PickupTrigger = new();
+            PickupTrigger.Parent = this;
+            PickupTrigger.Position = Position;
+            PickupTrigger.Rotation = Rotation;
         }
 
         public void SetCurrentAmmo(int ammo)
@@ -97,14 +107,25 @@ namespace TTTReborn.Items
             return new Hint(TextOnTick);
         }
 
+        public virtual void PickupStartTouch(Entity other)
+        {
+            if (other != LastDropOwner && other is TTTPlayer player)
+            {
+                Pickup(player);
+            }
+        }
+
+        public virtual void PickupEndTouch(Entity other)
+        {
+            if (other is TTTPlayer)
+            {
+                LastDropOwner = null;
+            }
+        }
+
         public void Tick(TTTPlayer player)
         {
-            if (IsClient)
-            {
-                return;
-            }
-
-            if (player.LifeState != LifeState.Alive)
+            if (IsClient || player.LifeState != LifeState.Alive)
             {
                 return;
             }
@@ -116,32 +137,47 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                string ammoType = LibraryName.ToLower();
-                Inventory inventory = player.Inventory;
-
-                if (!inventory.GetAmmoNames().Contains(ammoType))
-                {
-                    return;
-                }
-
-                int playerAmount = inventory.Ammo.Count(ammoType);
-
-                if (Max < playerAmount + Math.Ceiling(CurrentAmmo * 0.25))
-                {
-                    return;
-                }
-
-                int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
-                inventory.Ammo.Give(ammoType, amountGiven);
-                CurrentAmmo -= amountGiven;
-
-                _ = OnPickup.Fire(player);
-
-                if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
-                {
-                    Delete();
-                }
+                Pickup(player);
             }
+        }
+
+        public void Pickup(TTTPlayer player)
+        {
+            string ammoType = LibraryName.ToLower();
+            Inventory inventory = player.Inventory;
+
+            if (!inventory.GetAmmoNames().Contains(ammoType))
+            {
+                return;
+            }
+
+            int playerAmount = inventory.Ammo.Count(ammoType);
+
+            if (Max < playerAmount + Math.Ceiling(CurrentAmmo * 0.25))
+            {
+                return;
+            }
+
+            int amountGiven = Math.Min(CurrentAmmo, Max - playerAmount);
+            inventory.Ammo.Give(ammoType, amountGiven);
+            CurrentAmmo -= amountGiven;
+
+            _ = OnPickup.Fire(player);
+
+            if (CurrentAmmo <= 0 || Math.Ceiling(AmmoEntMax * 0.25) > CurrentAmmo)
+            {
+                Delete();
+            }
+        }
+
+        public override void Simulate(Client owner)
+        {
+            if (SinceLastDrop > 0.5f)
+            {
+                LastDropOwner = null;
+            }
+
+            base.Simulate(owner);
         }
     }
 }

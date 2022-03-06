@@ -89,10 +89,13 @@ namespace TTTReborn.Items
 
         public float ChargeAttackEndTime;
 
-        public PickupTrigger PickupTrigger { get; protected set; }
+        public PickupTrigger PickupTrigger { get; set; }
 
         private const int AMMO_DROP_POSITION_OFFSET = 50;
         private const int AMMO_DROP_VELOCITY = 500;
+
+        public Entity LastDropOwner { get; set; }
+        public TimeSince SinceLastDrop { get; set; }
 
         public Weapon() : base()
         {
@@ -191,6 +194,11 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client owner)
         {
+            if (SinceLastDrop > 0.5f)
+            {
+                LastDropOwner = null;
+            }
+
             if (TimeSinceDeployed < DeployTime)
             {
                 return;
@@ -215,17 +223,20 @@ namespace TTTReborn.Items
 
             if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && AmmoClip > 0 && !UnlimitedAmmo)
             {
-                if (IsServer && AmmoType != null)
+                if (AmmoType != null)
                 {
-                    Ammo ammoBox = Utils.GetObjectByType<Ammo>(AmmoType);
+                    if (IsServer)
+                    {
+                        Ammo ammoBox = Utils.GetObjectByType<Ammo>(AmmoType);
+                        ammoBox.LastDropOwner = Owner;
+                        ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
+                        ammoBox.Rotation = Owner.EyeRotation;
+                        ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
+                        ammoBox.SetCurrentAmmo(AmmoClip);
+                    }
 
-                    ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
-                    ammoBox.Rotation = Owner.EyeRotation;
-                    ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
-                    ammoBox.SetCurrentAmmo(AmmoClip);
+                    TakeAmmo(AmmoClip);
                 }
-
-                TakeAmmo(AmmoClip);
             }
 
             if (!IsReloading)
@@ -428,6 +439,22 @@ namespace TTTReborn.Items
             return AvailableAmmo() > 0;
         }
 
+        public virtual void PickupStartTouch(Entity other)
+        {
+            if (other != LastDropOwner && other is TTTPlayer player)
+            {
+                player.Inventory.TryAdd(this);
+            }
+        }
+
+        public virtual void PickupEndTouch(Entity other)
+        {
+            if (other is TTTPlayer)
+            {
+                LastDropOwner = null;
+            }
+        }
+
         public override void OnCarryStart(Entity carrier)
         {
             base.OnCarryStart(carrier);
@@ -440,6 +467,8 @@ namespace TTTReborn.Items
 
         public override void OnCarryDrop(Entity dropper)
         {
+            LastDropOwner = Owner;
+
             base.OnCarryDrop(dropper);
 
             if (PickupTrigger.IsValid())

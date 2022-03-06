@@ -43,7 +43,7 @@ namespace TTTReborn.Map
 
             RandomWeapons.ForEach(x => x.Activate());
             RandomAmmos.ForEach(x => x.Activate());
-            LogicButtons.ForEach(x => x.Cleanup());
+            LogicButtons.ForEach(x => x.Reset());
         }
 
         private void Init(Entity entity)

@@ -11,7 +11,7 @@ namespace TTTReborn.Items
     {
         public const float THROW_FORCE = 500;
         public Entity GrabbedEntity { get; set; }
-        public TTTPlayer _owner;
+        public TTTPlayer Owner;
 
         public bool IsHolding
         {
@@ -20,9 +20,15 @@ namespace TTTReborn.Items
 
         public GrabbableProp(TTTPlayer player, Entity ent)
         {
-            _owner = player;
+            Owner = player;
 
             GrabbedEntity = ent;
+
+            if (GrabbedEntity is IPickupable pickupable)
+            {
+                pickupable.PickupTrigger.EnableTouch = false;
+            }
+
             GrabbedEntity.SetParent(player, Hands.MIDDLE_HANDS_ATTACHMENT, new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
             GrabbedEntity.EnableHideInFirstPerson = false;
         }
@@ -33,6 +39,11 @@ namespace TTTReborn.Items
             {
                 GrabbedEntity.EnableHideInFirstPerson = true;
                 GrabbedEntity.SetParent(null);
+
+                if (GrabbedEntity is IPickupable pickupable)
+                {
+                    pickupable.PickupTrigger.EnableTouch = true;
+                }
             }
 
             GrabbedEntity = null;
@@ -61,11 +72,11 @@ namespace TTTReborn.Items
 
         public void SecondaryAction()
         {
-            _owner.SetAnimParameter("b_attack", true);
+            Owner.SetAnimParameter("b_attack", true);
 
             GrabbedEntity.SetParent(null);
             GrabbedEntity.EnableHideInFirstPerson = true;
-            GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
+            GrabbedEntity.Velocity += Owner.EyeRotation.Forward * THROW_FORCE;
 
             _ = WaitForAnimationFinish();
         }
