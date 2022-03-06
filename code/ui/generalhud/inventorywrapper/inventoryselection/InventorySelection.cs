@@ -60,33 +60,44 @@ namespace TTTReborn.UI
             }
 
             // Due to S&Box RPC ent syncing bugs, we have to run some checks and fixes
-            bool invalidList = false;
+            List<InventorySlot> inventorySlots = new();
 
-            foreach (Entity entity in player.CurrentPlayer.Inventory.List)
+            foreach (Panel panel in Children)
             {
-                if (entity is not ICarriableItem carriableItem)
+                if (panel is InventorySlot inventorySlot)
                 {
-                    continue;
+                    inventorySlots.Add(inventorySlot);
                 }
+            }
 
-                string entName = carriableItem.LibraryName;
-                bool found = false;
+            bool invalidList = player.CurrentPlayer.Inventory.List.Count != inventorySlots.Count;
 
-                foreach (Panel panel in Children)
+            if (!invalidList)
+            {
+                foreach (Entity entity in player.CurrentPlayer.Inventory.List)
                 {
-                    if (panel is InventorySlot inventorySlot && inventorySlot.Carriable.LibraryName.Equals(entName))
+                    if (entity is not ICarriableItem carriableItem)
                     {
-                        found = true;
+                        continue;
+                    }
+
+                    string entName = carriableItem.LibraryName;
+                    int found = 0;
+
+                    foreach (InventorySlot inventorySlot in inventorySlots)
+                    {
+                        if (inventorySlot.Carriable.LibraryName.Equals(entName))
+                        {
+                            found++;
+                        }
+                    }
+
+                    if (found != 1)
+                    {
+                        invalidList = true;
 
                         break;
                     }
-                }
-
-                if (!found)
-                {
-                    invalidList = true;
-
-                    break;
                 }
             }
 
@@ -94,7 +105,7 @@ namespace TTTReborn.UI
             {
                 OnCarriableItemClear();
 
-                foreach (Entity entity in player.Inventory.List)
+                foreach (Entity entity in player.CurrentPlayer.Inventory.List)
                 {
                     if (entity is ICarriableItem carriableItem)
                     {
