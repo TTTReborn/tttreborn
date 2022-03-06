@@ -82,17 +82,19 @@ namespace TTTReborn.UI
                     }
 
                     string entName = carriableItem.LibraryName;
-                    int found = 0;
+                    bool found = false;
 
                     foreach (InventorySlot inventorySlot in inventorySlots)
                     {
                         if (inventorySlot.Carriable.LibraryName.Equals(entName))
                         {
-                            found++;
+                            found = true;
+
+                            break;
                         }
                     }
 
-                    if (found != 1)
+                    if (!found)
                     {
                         invalidList = true;
 

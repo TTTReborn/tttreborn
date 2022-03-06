@@ -194,15 +194,18 @@ namespace TTTReborn.UI
                 return;
             }
 
-            bool invalidList = false;
+            bool invalidList = _entries.Count != Client.All.Count;
 
-            foreach (Client client in Client.All)
+            if (!invalidList)
             {
-                if (!_entries.ContainsKey(client.PlayerId))
+                foreach (Client client in Client.All)
                 {
-                    invalidList = true;
+                    if (!_entries.ContainsKey(client.PlayerId))
+                    {
+                        invalidList = true;
 
-                    break;
+                        break;
+                    }
                 }
             }
 
