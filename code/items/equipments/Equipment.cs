@@ -22,7 +22,7 @@ namespace TTTReborn.Items
         public CarriableCategories Category { get; }
         public PickupTrigger PickupTrigger { get; set; }
         public Entity LastDropOwner { get; set; }
-        public TimeSince SinceLastDrop { get; set; }
+        public TimeSince SinceLastDrop { get; set; } = 0f;
 
         protected Equipment()
         {
@@ -97,6 +97,7 @@ namespace TTTReborn.Items
         public override void OnCarryDrop(Entity dropper)
         {
             LastDropOwner = Owner;
+            SinceLastDrop = 0f;
 
             base.OnCarryDrop(dropper);
 

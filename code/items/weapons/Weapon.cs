@@ -95,7 +95,7 @@ namespace TTTReborn.Items
         private const int AMMO_DROP_VELOCITY = 500;
 
         public Entity LastDropOwner { get; set; }
-        public TimeSince SinceLastDrop { get; set; }
+        public TimeSince SinceLastDrop { get; set; } = 0f;
 
         public Weapon() : base()
         {
@@ -229,6 +229,7 @@ namespace TTTReborn.Items
                     {
                         Ammo ammoBox = Utils.GetObjectByType<Ammo>(AmmoType);
                         ammoBox.LastDropOwner = Owner;
+                        ammoBox.SinceLastDrop = 0f;
                         ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
                         ammoBox.Rotation = Owner.EyeRotation;
                         ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
@@ -468,6 +469,7 @@ namespace TTTReborn.Items
         public override void OnCarryDrop(Entity dropper)
         {
             LastDropOwner = Owner;
+            SinceLastDrop = 0f;
 
             base.OnCarryDrop(dropper);
 

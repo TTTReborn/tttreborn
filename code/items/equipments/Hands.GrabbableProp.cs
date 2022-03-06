@@ -42,6 +42,7 @@ namespace TTTReborn.Items
 
                 if (GrabbedEntity is IPickupable pickupable)
                 {
+                    pickupable.SinceLastDrop = 0f;
                     pickupable.PickupTrigger.EnableTouch = true;
                 }
             }

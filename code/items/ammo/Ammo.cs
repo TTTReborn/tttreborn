@@ -38,7 +38,7 @@ namespace TTTReborn.Items
         public PickupTrigger PickupTrigger { get; set; }
 
         public Entity LastDropOwner { get; set; }
-        public TimeSince SinceLastDrop { get; set; }
+        public TimeSince SinceLastDrop { get; set; } = 0f;
 
         /// <summary>
         /// Fired when a player picks up any amount of ammo from the entity.
