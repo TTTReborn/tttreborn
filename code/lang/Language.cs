@@ -47,7 +47,8 @@ namespace TTTReborn.Globalization
                 };
             }
 
-            try {
+            try
+            {
                 _langDict = TransformDictionary(languageDictionary);
             }
             catch (Exception e)
@@ -64,7 +65,8 @@ namespace TTTReborn.Globalization
 
             foreach (KeyValuePair<string, object> translationEntry in languageDictionary)
             {
-                try {
+                try
+                {
                     dictionary.Add(translationEntry.Key, JsonSerializer.Deserialize<string>((JsonElement) translationEntry.Value));
                 }
                 catch (Exception)

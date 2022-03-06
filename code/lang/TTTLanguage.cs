@@ -84,7 +84,8 @@ namespace TTTReborn.Globalization
 
             ActiveLanguage = GetLanguageByCode(FALLBACK_LANGUAGE);
 
-            FileSystem.Mounted.Watch().OnChangedFile += (fileName) => {
+            FileSystem.Mounted.Watch().OnChangedFile += (fileName) =>
+            {
                 foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
                 {
                     if (fileName.Equals(file))
