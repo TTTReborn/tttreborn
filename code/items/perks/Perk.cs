@@ -17,12 +17,12 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract class TTTPerk : IItem
+    public abstract class Perk : IItem
     {
         public string LibraryName { get; }
         public Entity Owner { get; private set; }
 
-        protected TTTPerk()
+        protected Perk()
         {
             LibraryName = Utils.GetLibraryName(GetType());
         }

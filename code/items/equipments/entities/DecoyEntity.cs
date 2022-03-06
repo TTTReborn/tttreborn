@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("entity_decoy")]
+    [Library("ttt_entity_decoy")]
     [Precached("models/entities/decoy.vmdl")]
     [Hammer.Skip]
     public partial class DecoyEntity : Prop

@@ -4,12 +4,12 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("weapon_newtonlauncher")]
+    [Library("ttt_weapon_newtonlauncher")]
     [Weapon(CarriableCategories.OffensiveEquipment)]
     [Buyable(Price = 100)]
     [Precached("weapons/rust_pistol/v_rust_pistol.vmdl", "weapons/rust_pistol/rust_pistol.vmdl")]
     [Hammer.EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
-    public partial class NewtonLauncher : TTTWeapon
+    public partial class NewtonLauncher : Weapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";

@@ -26,7 +26,7 @@ namespace TTTReborn.UI.VisualProgramming
                     }
                 });
 
-                foreach (Type roleType in Utils.GetTypes<TTTRole>())
+                foreach (Type roleType in Utils.GetTypes<Role>())
                 {
                     Dropdown.Options.Add(new TranslationOption(new TranslationData($"ROLE.{Utils.GetLibraryName(roleType)[5..].ToUpper()}.NAME"), roleType));
                 }

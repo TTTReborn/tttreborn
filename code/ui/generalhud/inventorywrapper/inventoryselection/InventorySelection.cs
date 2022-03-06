@@ -140,7 +140,7 @@ namespace TTTReborn.UI
                     slot.SetClass("active", slot.Carriable.LibraryName == activeItem?.LibraryName);
                     slot.SetClass("opacity-heavy", slot.Carriable.LibraryName == activeItem?.LibraryName);
 
-                    if (slot.Carriable is TTTWeapon weapon && weapon.Category != CarriableCategories.Melee)
+                    if (slot.Carriable is Weapon weapon && weapon.Category != CarriableCategories.Melee)
                     {
                         slot.UpdateAmmo(FormatAmmo(weapon, player.CurrentPlayer.Inventory));
                     }
@@ -309,7 +309,7 @@ namespace TTTReborn.UI
             return -1;
         }
 
-        private static string FormatAmmo(TTTWeapon weapon, Inventory inventory)
+        private static string FormatAmmo(Weapon weapon, Inventory inventory)
         {
             if (weapon.UnlimitedAmmo)
             {
@@ -341,7 +341,7 @@ namespace TTTReborn.UI
 
                 if (Local.Pawn is TTTPlayer player)
                 {
-                    if (carriable is TTTWeapon weapon && carriable.Category != CarriableCategories.Melee)
+                    if (carriable is Weapon weapon && carriable.Category != CarriableCategories.Melee)
                     {
                         _ammoLabel.Text = FormatAmmo(weapon, player.Inventory);
                         _ammoLabel.AddClass("ammo-label");

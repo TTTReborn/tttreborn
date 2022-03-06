@@ -94,9 +94,9 @@ namespace TTTReborn.Player
 
         private static void InitializeShops()
         {
-            foreach (Type roleType in Utils.GetTypes<TTTRole>())
+            foreach (Type roleType in Utils.GetTypes<Role>())
             {
-                Utils.GetObjectByType<TTTRole>(roleType).InitShop();
+                Utils.GetObjectByType<Role>(roleType).InitShop();
             }
         }
     }

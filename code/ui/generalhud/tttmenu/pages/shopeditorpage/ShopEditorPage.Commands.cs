@@ -28,9 +28,9 @@ namespace TTTReborn.UI
                 return;
             }
 
-            foreach (Type roleType in Utils.GetTypes<TTTRole>())
+            foreach (Type roleType in Utils.GetTypes<Role>())
             {
-                TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+                Role role = Utils.GetObjectByType<Role>(roleType);
 
                 ClientUpdateRoleShop(to, role.Name, JsonSerializer.Serialize(role.Shop));
             }
@@ -41,14 +41,14 @@ namespace TTTReborn.UI
         [ClientRpc]
         public static void ClientUpdateRoleShop(string roleName, string shopJson)
         {
-            Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
+            Type roleType = Utils.GetTypeByLibraryName<Role>(roleName);
 
             if (roleType == null)
             {
                 return;
             }
 
-            TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+            Role role = Utils.GetObjectByType<Role>(roleType);
 
             if (role == null)
             {
@@ -74,7 +74,7 @@ namespace TTTReborn.UI
 
             if (ProcessShopToggle(roleName, toggle))
             {
-                Shop.Save(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)));
+                Shop.Save(Utils.GetObjectByType<Role>(Utils.GetTypeByLibraryName<Role>(roleName)));
 
                 ClientToggleShop(roleName, toggle);
             }
@@ -88,14 +88,14 @@ namespace TTTReborn.UI
 
         private static bool ProcessShopToggle(string roleName, bool toggle)
         {
-            Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
+            Type roleType = Utils.GetTypeByLibraryName<Role>(roleName);
 
             if (roleType == null)
             {
                 return false;
             }
 
-            TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+            Role role = Utils.GetObjectByType<Role>(roleType);
 
             if (role == null)
             {

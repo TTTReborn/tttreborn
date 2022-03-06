@@ -18,7 +18,7 @@ namespace TTTReborn.Roles
         }
     }
 
-    public abstract class TTTRole
+    public abstract class Role
     {
         public readonly string Name;
 
@@ -46,7 +46,7 @@ namespace TTTReborn.Roles
             }
         }
 
-        public TTTRole()
+        public Role()
         {
             Name = Utils.GetLibraryName(GetType());
         }

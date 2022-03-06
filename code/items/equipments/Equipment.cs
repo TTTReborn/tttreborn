@@ -16,12 +16,12 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract class TTTEquipment : BaseCarriable, ICarriableItem
+    public abstract class Equipment : BaseCarriable, ICarriableItem
     {
         public string LibraryName { get; }
         public CarriableCategories Category { get; }
 
-        protected TTTEquipment()
+        protected Equipment()
         {
             LibraryName = Utils.GetLibraryName(GetType());
 

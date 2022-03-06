@@ -12,10 +12,10 @@ namespace TTTReborn.UI
     public class LogicButtonPoint : Panel
     {
         // Our data we received initially from the server during creation.
-        public TTTLogicButtonData Data { get; private set; }
+        public LogicButtonData Data { get; private set; }
 
         // Our specific assigned Entity.
-        private readonly TTTLogicButton _entity;
+        private readonly LogicButton _entity;
 
         // Position pulled from Data
         public Vector3 Position { get; private set; }
@@ -27,7 +27,7 @@ namespace TTTReborn.UI
         // Past this distance, the button is unusuable.
         private readonly int _maxViewDistance = 1024;
 
-        public LogicButtonPoint(TTTLogicButtonData data)
+        public LogicButtonPoint(LogicButtonData data)
         {
             Data = data;
             Position = data.Position;
@@ -38,7 +38,7 @@ namespace TTTReborn.UI
 
             Hud.Current.RootPanel.AddChild(this);
 
-            _entity = Entity.FindByIndex(Data.NetworkIdent) as TTTLogicButton;
+            _entity = Entity.FindByIndex(Data.NetworkIdent) as LogicButton;
 
             _ = Add.Label(_entity.Description);
         }

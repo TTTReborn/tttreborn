@@ -78,7 +78,7 @@ namespace TTTReborn.Player
             return add;
         }
 
-        public bool Add(TTTPerk perk)
+        public bool Add(Perk perk)
         {
             return Perks.Give(perk);
         }
@@ -89,7 +89,7 @@ namespace TTTReborn.Player
             {
                 return Add(ent, makeActive);
             }
-            else if (item is TTTPerk perk)
+            else if (item is Perk perk)
             {
                 return Add(perk);
             }
@@ -151,7 +151,7 @@ namespace TTTReborn.Player
 
             foreach (Entity entity in List)
             {
-                if (entity is TTTWeapon wep)
+                if (entity is Weapon wep)
                 {
                     if (!types.Contains(wep.AmmoName))
                     {

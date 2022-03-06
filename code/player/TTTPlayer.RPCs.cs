@@ -28,7 +28,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientAddPerk(string perkName)
         {
-            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByLibraryName<TTTPerk>(perkName));
+            Perk perk = Utils.GetObjectByType<Perk>(Utils.GetTypeByLibraryName<Perk>(perkName));
 
             if (perk == null)
             {
@@ -41,7 +41,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public void ClientRemovePerk(string perkName)
         {
-            TTTPerk perk = Utils.GetObjectByType<TTTPerk>(Utils.GetTypeByLibraryName<TTTPerk>(perkName));
+            Perk perk = Utils.GetObjectByType<Perk>(Utils.GetTypeByLibraryName<Perk>(perkName));
 
             if (perk == null)
             {

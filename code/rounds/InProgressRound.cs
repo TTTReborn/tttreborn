@@ -22,7 +22,7 @@ namespace TTTReborn.Rounds
         [Net]
         public List<TTTPlayer> Spectators { get; set; }
 
-        private List<TTTLogicButton> _logicButtons;
+        private List<LogicButton> _logicButtons;
 
         public override int RoundDuration
         {
@@ -66,7 +66,7 @@ namespace TTTReborn.Rounds
                 }
 
                 // Cache buttons for OnSecond tick.
-                _logicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
+                _logicButtons = Entity.All.Where(x => x.GetType() == typeof(LogicButton)).Select(x => x as LogicButton).ToList();
             }
         }
 

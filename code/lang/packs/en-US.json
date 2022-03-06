@@ -265,6 +265,9 @@
             "SHOTGUN": {
                 "NAME": "Shotgun"
             },
+            "SNIPER": {
+                "NAME": "Sniper"
+            },
             "KNIFE": {
                 "NAME": "Knife"
             },

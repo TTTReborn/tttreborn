@@ -14,7 +14,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTChangeCredits
+// TTTReborn.Map.CreditAdjust
 //
 @PointClass base(BaseProperties_neox_tttreborn) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
 [
@@ -27,7 +27,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTFeedEntry
+// TTTReborn.Map.FeedEntry
 //
 @PointClass base(BaseProperties_neox_tttreborn) = ttt_feed_entry : "Add text entry to the game feed when input fired."
 [
@@ -47,7 +47,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTForceWin
+// TTTReborn.Map.ForceWin
 //
 @PointClass base(BaseProperties_neox_tttreborn) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
 [
@@ -56,11 +56,11 @@
 
 	input InnocentsWin(void) : ""
 	input TraitorsWin(void) : ""
-	input ForceWin(void) : ""
+	input Force(void) : ""
 ]
 
 //
-// TTTReborn.Map.TTTLogicAssigned
+// TTTReborn.Map.LogicAssigned
 //
 @PointClass base(BaseProperties_neox_tttreborn) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
 [
@@ -73,7 +73,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTMapSettings
+// TTTReborn.Map.MapSettings
 //
 @PointClass base(BaseProperties_neox_tttreborn) = ttt_map_settings : ""
 [
@@ -85,7 +85,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTLogicButton
+// TTTReborn.Map.LogicButton
 //
 @PointClass base(BaseProperties_neox_tttreborn) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
 [
@@ -105,9 +105,17 @@
 ]
 
 //
+// TTTReborn.Items.AmmoRandom
+//
+@PointClass base(BaseProperties_neox_tttreborn) = ttt_ammo_random : ""
+[
+	category(choices) { nullable = true } : "Spawn ammo of a specific weapon category" :  : "Spawn weapons of a specific category."
+]
+
+//
 // TTTReborn.Items.PistolAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_pistol : ""
+@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_pistol : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -136,7 +144,7 @@
 //
 // TTTReborn.Items.ShotgunAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ammo_shotgun : ""
+@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ttt_ammo_shotgun : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -165,7 +173,7 @@
 //
 // TTTReborn.Items.SMGAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_smg : ""
+@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ttt_ammo_smg : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -194,7 +202,7 @@
 //
 // TTTReborn.Items.SniperAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_sniper : ""
+@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_sniper : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -221,16 +229,9 @@
 ]
 
 //
-// TTTReborn.Items.TTTAmmoRandom
-//
-@PointClass base(BaseProperties_neox_tttreborn) = entity_ammo_random : ""
-[
-]
-
-//
 // TTTReborn.Items.Knife
 //
-@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_boneknife/rust_boneknife.vmdl" ) = weapon_knife : ""
+@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_boneknife/rust_boneknife.vmdl" ) = ttt_weapon_knife : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -240,7 +241,7 @@
 //
 // TTTReborn.Items.NewtonLauncher
 //
-@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = weapon_newtonlauncher : ""
+@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = ttt_weapon_newtonlauncher : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -250,7 +251,7 @@
 //
 // TTTReborn.Items.Pistol
 //
-@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = weapon_pistol : ""
+@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = ttt_weapon_pistol : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -260,7 +261,7 @@
 //
 // TTTReborn.Items.Shotgun
 //
-@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl" ) = weapon_shotgun : ""
+@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl" ) = ttt_weapon_shotgun : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -270,7 +271,7 @@
 //
 // TTTReborn.Items.SMG
 //
-@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_smg/rust_smg.vmdl" ) = weapon_smg : ""
+@PointClass base(BaseProperties_neox_tttreborn) editormodel( "weapons/rust_smg/rust_smg.vmdl" ) = ttt_weapon_smg : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -278,9 +279,9 @@
 ]
 
 //
-// TTTReborn.Items.TTTWeaponRandom
+// TTTReborn.Items.WeaponRandom
 //
-@PointClass base(BaseProperties_neox_tttreborn) = entity_weapon_random : ""
+@PointClass base(BaseProperties_neox_tttreborn) = ttt_weapon_random : ""
 [
 	ammotospawn(integer) : "Amount of ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
 	category(choices) { nullable = true } : "Spawn weapons of a specific category" :  : "Spawn weapons of a specific category."
@@ -289,7 +290,7 @@
 //
 // TTTReborn.Items.HealthstationEntity
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) model() = entity_healthstation : ""
+@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) model() = ttt_entity_healthstation : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 

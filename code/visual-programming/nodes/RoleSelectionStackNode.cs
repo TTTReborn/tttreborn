@@ -9,7 +9,7 @@ namespace TTTReborn.VisualProgramming
     [StackNode("role_selection")]
     public partial class RoleSelectionStackNode : StackNode
     {
-        public TTTRole SelectedRole { get; set; }
+        public Role SelectedRole { get; set; }
 
         public RoleSelectionStackNode() : base()
         {
@@ -66,11 +66,11 @@ namespace TTTReborn.VisualProgramming
 
             if (selectedRoleName != null)
             {
-                Type roleType = Utils.GetTypeByLibraryName<TTTRole>(selectedRoleName.ToString());
+                Type roleType = Utils.GetTypeByLibraryName<Role>(selectedRoleName.ToString());
 
                 if (roleType != null)
                 {
-                    SelectedRole = Utils.GetObjectByType<TTTRole>(roleType);
+                    SelectedRole = Utils.GetObjectByType<Role>(roleType);
                 }
             }
 

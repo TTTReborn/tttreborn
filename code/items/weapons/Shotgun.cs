@@ -5,13 +5,13 @@ using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
-    [Library("weapon_shotgun")]
+    [Library("ttt_weapon_shotgun")]
     [Weapon(CarriableCategories.Shotgun)]
     [Spawnable]
     [Buyable(Price = 100)]
     [Precached("weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl", "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl", "particles/pistol_muzzleflash.vpcf", "particles/pistol_ejectbrass.vpcf")]
     [Hammer.EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
-    public partial class Shotgun : TTTWeapon
+    public partial class Shotgun : Weapon
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
         public override string ModelPath => "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl";

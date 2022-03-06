@@ -10,7 +10,7 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
-        public TTTRole Role
+        public Role Role
         {
             get
             {
@@ -27,7 +27,7 @@ namespace TTTReborn.Player
             }
         }
 
-        private TTTRole _role;
+        private Role _role;
 
         public TTTTeam Team
         {
@@ -48,7 +48,7 @@ namespace TTTReborn.Player
 
         private TTTTeam _team;
 
-        public void SetRole(TTTRole role, TTTTeam team = null)
+        public void SetRole(Role role, TTTTeam team = null)
         {
             TTTTeam oldTeam = Team;
 

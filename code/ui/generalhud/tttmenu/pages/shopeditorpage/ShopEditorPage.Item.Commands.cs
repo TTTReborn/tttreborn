@@ -14,7 +14,7 @@ namespace TTTReborn.UI
 {
     public partial class ShopEditorPage : Panel
     {
-        private static void ToggleItem(QuickShopItem item, TTTRole role)
+        private static void ToggleItem(QuickShopItem item, Role role)
         {
             bool toggle = !item.HasClass("selected");
 
@@ -31,7 +31,7 @@ namespace TTTReborn.UI
 
             if (ProcessItemUpdate(itemName, toggle, shopItemDataJson, roleName, out _))
             {
-                Shop.Save(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)));
+                Shop.Save(Utils.GetObjectByType<Role>(Utils.GetTypeByLibraryName<Role>(roleName)));
 
                 ClientUpdateItem(itemName, toggle, shopItemDataJson, roleName);
             }
@@ -41,14 +41,14 @@ namespace TTTReborn.UI
         {
             shopItemData = null;
 
-            Type roleType = Utils.GetTypeByLibraryName<TTTRole>(roleName);
+            Type roleType = Utils.GetTypeByLibraryName<Role>(roleName);
 
             if (roleType == null)
             {
                 return false;
             }
 
-            TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+            Role role = Utils.GetObjectByType<Role>(roleType);
 
             if (role == null)
             {
@@ -164,7 +164,7 @@ namespace TTTReborn.UI
             }
         }
 
-        private static void EditItem(QuickShopItem item, TTTRole role)
+        private static void EditItem(QuickShopItem item, Role role)
         {
             Modal itemEditModal = CreateItemEditModal(item, role);
 
@@ -173,7 +173,7 @@ namespace TTTReborn.UI
             itemEditModal.Display();
         }
 
-        private static Modal CreateItemEditModal(QuickShopItem item, TTTRole role)
+        private static Modal CreateItemEditModal(QuickShopItem item, Role role)
         {
             DialogBox dialogBox = new();
             dialogBox.Header.DragHeader.IsLocked = false;
