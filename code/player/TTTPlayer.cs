@@ -228,9 +228,9 @@ namespace TTTReborn.Player
                 return;
             }
 
-            if (other is PickupTrigger && other.Parent is ICarriableItem carriableItem)
+            if (other is PickupTrigger && other.Parent is IPickupable pickupable)
             {
-                carriableItem.PickupEndTouch(this);
+                pickupable.PickupEndTouch(this);
             }
         }
 

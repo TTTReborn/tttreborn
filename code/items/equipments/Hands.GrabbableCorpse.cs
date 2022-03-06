@@ -69,7 +69,7 @@ namespace TTTReborn.Items
             _handPhysicsBody.Rotation = attachment.Rotation;
         }
 
-        public void SecondaryAction()
+        public void PrimaryAction()
         {
             TraceResult tr = Trace.Ray(_owner.EyePosition, _owner.EyePosition + _owner.EyeRotation.Forward * Hands.MAX_INTERACT_DISTANCE)
                 .Ignore(_owner)

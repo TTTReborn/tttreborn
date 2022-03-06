@@ -12,7 +12,7 @@ namespace TTTReborn.Items
         bool IsHolding { get; }
         void Drop();
         void Update(TTTPlayer player);
-        void SecondaryAction();
+        void PrimaryAction();
     }
 
     [Library("ttt_equipment_hands")]
@@ -45,12 +45,7 @@ namespace TTTReborn.Items
         {
             base.Simulate(client);
 
-            if (!IsServer)
-            {
-                return;
-            }
-
-            if (Owner is not TTTPlayer player)
+            if (!IsServer || Owner is not TTTPlayer player)
             {
                 return;
             }
@@ -61,7 +56,7 @@ namespace TTTReborn.Items
                 {
                     if (IsHoldingEntity)
                     {
-                        GrabbedEntity?.SecondaryAction();
+                        GrabbedEntity.PrimaryAction();
                     }
                     else
                     {
@@ -72,16 +67,16 @@ namespace TTTReborn.Items
                 {
                     if (IsHoldingEntity)
                     {
-                        GrabbedEntity?.Drop();
+                        GrabbedEntity.Drop();
                     }
                     else
                     {
                         PushEntity(player);
                     }
                 }
-
-                GrabbedEntity?.Update(player);
             }
+
+            GrabbedEntity?.Update(player);
         }
 
         private void PushEntity(TTTPlayer player)
