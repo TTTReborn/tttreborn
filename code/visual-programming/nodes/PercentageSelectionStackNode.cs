@@ -32,18 +32,53 @@ namespace TTTReborn.VisualProgramming
                 return null;
             }
 
-            int allPlayerAmount = Client.All.Count; // TODO just use available players, not specs
-
             object[] buildArray = new object[percentListCount];
+
+            if (playerList.Count == 0)
+            {
+                return buildArray;
+            }
+
+            int allPlayerAmount = Client.All.Count; // TODO just use available players, not specs
+            int[] playerAmounts = new int[percentListCount];
 
             for (int i = 0; i < percentListCount; i++)
             {
-                int playerAmount = Math.Clamp((int) MathF.Ceiling(allPlayerAmount * (PercentList[i] / 100f)), 0, playerList.Count);
+                if (playerList.Count == 0)
+                {
+                    return buildArray;
+                }
+
+                playerAmounts[i] = Math.Clamp((int) MathF.Ceiling(allPlayerAmount * (PercentList[i] / 100f)), 1, playerList.Count) - 1;
+
+                int rnd = Utils.RNG.Next(playerList.Count);
+
+                List<TTTPlayer> selectedPlayers = new()
+                {
+                    playerList[rnd]
+                };
+
+                playerList.RemoveAt(rnd);
+
+                buildArray[i] = selectedPlayers;
+            }
+
+            for (int i = 0; i < percentListCount; i++)
+            {
+                if (playerList.Count == 0)
+                {
+                    break;
+                }
 
                 List<TTTPlayer> selectedPlayers = new();
 
-                for (int index = 0; index < playerAmount; index++)
+                for (int index = 0; index < playerAmounts[i]; index++)
                 {
+                    if (playerList.Count == 0)
+                    {
+                        break;
+                    }
+
                     int rnd = Utils.RNG.Next(playerList.Count);
 
                     selectedPlayers.Add(playerList[rnd]);
