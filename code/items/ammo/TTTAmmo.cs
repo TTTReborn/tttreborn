@@ -45,7 +45,7 @@ namespace TTTReborn.Items
         public TTTAmmo() : base()
         {
             LibraryName = Utils.GetLibraryName(GetType());
-            WeaponName ??= LibraryName[5..];
+            WeaponName ??= $"weapon_{LibraryName[5..]}";
         }
 
         public override void Spawn()
@@ -85,7 +85,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("USE.PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData("ITEM.WEAPON.AMMO.WEAPON", new TranslationData("ITEM.WEAPON." + IItem.GetTranslationKey(WeaponName, "NAME"))));
+        public TranslationData TextOnTick => new("USE.PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData("ITEM.WEAPON.AMMO.WEAPON", new TranslationData(IItem.GetTranslationKey(WeaponName, "NAME"))));
 
         public bool CanHint(TTTPlayer client)
         {
