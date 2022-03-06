@@ -38,6 +38,10 @@ namespace TTTReborn.Teams
         {
             return Members.Select(x => x.Client);
         }
+
+        public virtual bool CheckWin(TTTPlayer player) => true;
+
+        public virtual bool CheckPreventWin(TTTPlayer player) => false;
     }
 
     public static class TeamFunctions

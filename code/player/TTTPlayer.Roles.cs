@@ -106,5 +106,15 @@ namespace TTTReborn.Player
                 RPCs.ClientAddMissingInAction(To.Single(player), this);
             }
         }
+
+        public bool CheckWin()
+        {
+            return Role.CheckWin(this);
+        }
+
+        public bool CheckPreventWin()
+        {
+            return Role.CheckPreventWin(this);
+        }
     }
 }

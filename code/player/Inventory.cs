@@ -65,12 +65,17 @@ namespace TTTReborn.Player
                 {
                     return false;
                 }
+            }
 
+            bool add = base.Add(entity, makeActive);
+
+            if (add && entity is ICarriableItem carriableItem)
+            {
                 RPCs.ClientOnPlayerCarriableItemPickup(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == player)), entity);
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
-            return base.Add(entity, makeActive);
+            return add;
         }
 
         public bool Add(TTTPerk perk)

@@ -109,7 +109,12 @@ namespace TTTReborn.Rounds
 
             foreach (TTTPlayer player in Players)
             {
-                if (player.Team != null && !aliveTeams.Contains(player.Team))
+                if (player.CheckPreventWin())
+                {
+                    return null;
+                }
+
+                if (player.CheckWin() && !aliveTeams.Contains(player.Team))
                 {
                     aliveTeams.Add(player.Team);
                 }
