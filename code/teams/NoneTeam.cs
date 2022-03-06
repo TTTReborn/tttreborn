@@ -1,3 +1,5 @@
+using TTTReborn.Player;
+
 namespace TTTReborn.Teams
 {
     [Team("nones")]
@@ -9,5 +11,7 @@ namespace TTTReborn.Teams
         {
 
         }
+
+        public override bool CheckWin(TTTPlayer player) => false;
     }
 }
