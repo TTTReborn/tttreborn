@@ -450,7 +450,7 @@ namespace TTTReborn.Items
 
         public virtual void PickupEndTouch(Entity other)
         {
-            if (other is TTTPlayer)
+            if (other is TTTPlayer && LastDropOwner == other)
             {
                 LastDropOwner = null;
             }
