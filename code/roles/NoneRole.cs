@@ -3,11 +3,11 @@ using TTTReborn.Teams;
 namespace TTTReborn.Roles
 {
     [Role("none")]
-    public class NoneRole : TTTRole
+    public class NoneRole : Role
     {
         public override Color Color => Color.Transparent;
 
-        public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
+        public override Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
 
         public override bool IsSelectable => false;
 

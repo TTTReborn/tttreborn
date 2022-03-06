@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -9,101 +8,58 @@ namespace TTTReborn.Map
 {
     public partial class MapHandler
     {
-        public TTTMapSettings MapSettings { get; private set; }
-
-        public List<ModelEntityData> ModelEntityDataList;
-        public int RandomWeaponCount;
+        public MapSettings MapSettings { get; private set; }
+        public List<AmmoRandom> RandomAmmos { get; private set; } = new();
+        public List<WeaponRandom> RandomWeapons { get; private set; } = new();
+        public List<LogicButton> LogicButtons { get; private set; } = new();
 
         public MapHandler()
         {
-            ModelEntityDataList = new();
-            RandomWeaponCount = 0;
-
             foreach (Entity entity in Entity.All)
             {
-                if (entity is TTTMapSettings mapSettings)
+                if (entity is MapSettings mapSettings)
                 {
                     MapSettings = mapSettings;
                     MapSettings.FireSettingsSpawn();
                 }
-                else if (entity is Sandbox.Prop || entity is BaseCarriable)
-                {
-                    ModelEntityDataList.Add(ModelEntityData.Create(entity as ModelEntity));
-                }
-                else if (entity is TTTWeaponRandom)
-                {
-                    RandomWeaponCount++;
-                }
+
+                Init(entity);
             }
         }
 
         public void Reset()
         {
-            List<TTTAmmoRandom> randomAmmo = new();
-            List<TTTWeaponRandom> randomWeapons = new();
+            Sandbox.Internal.GlobalGameNamespace.Map.Reset(Game.DefaultCleanupFilter);
+            Sandbox.Internal.Decals.RemoveFromWorld();
+
+            RandomAmmos.Clear();
+            RandomWeapons.Clear();
+            LogicButtons.Clear();
 
             foreach (Entity entity in Entity.All)
             {
-                if (entity is Sandbox.Prop || entity is BaseCarriable || entity.Tags.Has(IItem.ITEM_TAG))
-                {
-                    entity.Delete();
-                }
-                else if (entity is TTTAmmoRandom ammoRandom)
-                {
-                    randomAmmo.Add(ammoRandom); // Throws `Collection was Modified` if we activate here. Worth looking further into cleanup wise.
-                }
-                else if (entity is TTTWeaponRandom weaponRandom)
-                {
-                    randomWeapons.Add(weaponRandom); // See above comment.
-                }
-                else if (entity is TTTLogicButton button)
-                {
-                    button.Cleanup();
-                }
-                else if (entity is PathPlatformEntity path)
-                {
-                    path.WarpToPoint(0);
-                }
-
-                entity.RemoveAllDecals();
+                Init(entity);
             }
 
-            foreach (ModelEntityData modelEntityData in ModelEntityDataList)
-            {
-                ModelEntity prop = Utils.GetObjectByType<ModelEntity>(modelEntityData.Type);
-                prop.Position = modelEntityData.Position;
-                prop.Rotation = modelEntityData.Rotation;
-                prop.Scale = modelEntityData.Scale;
-                prop.RenderColor = modelEntityData.Color;
-                prop.Model = modelEntityData.Model;
-                prop.Spawn();
-            }
-
-            randomAmmo.ForEach(x => x.Activate());
-            randomWeapons.ForEach(x => x.Activate());
+            RandomWeapons.ForEach(x => x.Activate());
+            RandomAmmos.ForEach(x => x.Activate());
+            LogicButtons.ForEach(x => x.Cleanup());
         }
-    }
 
-    public class ModelEntityData
-    {
-        public Type Type;
-        public Vector3 Position;
-        public Rotation Rotation;
-        public float Scale;
-        public Color Color;
-        public Model Model;
-
-        public static ModelEntityData Create(ModelEntity modelEntity)
+        private void Init(Entity entity)
         {
-            return new()
+            if (entity is WeaponRandom weaponRandom)
             {
-                Type = modelEntity.GetType(),
-                Position = modelEntity.Position,
-                Rotation = modelEntity.Rotation,
-                Scale = modelEntity.Scale,
-                Color = modelEntity.RenderColor,
-                Model = modelEntity.Model,
-            };
+                RandomWeapons.Add(weaponRandom);
+            }
+            else if (entity is AmmoRandom ammoRandom)
+            {
+                RandomAmmos.Add(ammoRandom);
+            }
+            else if (entity is LogicButton button)
+            {
+                LogicButtons.Add(button);
+            }
         }
     }
 }

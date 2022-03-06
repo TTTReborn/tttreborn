@@ -53,7 +53,7 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract partial class TTTWeapon : BaseWeapon, ICarriableItem, IEntityHint
+    public abstract partial class Weapon : BaseWeapon, ICarriableItem, IEntityHint
     {
         public string LibraryName { get; }
         public CarriableCategories Category { get; } = CarriableCategories.Pistol;
@@ -94,7 +94,7 @@ namespace TTTReborn.Items
         private const int AMMO_DROP_POSITION_OFFSET = 50;
         private const int AMMO_DROP_VELOCITY = 500;
 
-        public TTTWeapon() : base()
+        public Weapon() : base()
         {
             LibraryName = Utils.GetLibraryName(GetType());
 
@@ -165,6 +165,7 @@ namespace TTTReborn.Items
             PickupTrigger = new();
             PickupTrigger.Parent = this;
             PickupTrigger.Position = Position;
+            PickupTrigger.Rotation = Rotation;
         }
 
         public override void Reload()
@@ -216,7 +217,7 @@ namespace TTTReborn.Items
             {
                 if (IsServer && AmmoType != null)
                 {
-                    TTTAmmo ammoBox = Utils.GetObjectByType<TTTAmmo>(AmmoType);
+                    Ammo ammoBox = Utils.GetObjectByType<Ammo>(AmmoType);
 
                     ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
                     ammoBox.Rotation = Owner.EyeRotation;
@@ -465,12 +466,7 @@ namespace TTTReborn.Items
 
         public void Tick(TTTPlayer player)
         {
-            if (IsClient)
-            {
-                return;
-            }
-
-            if (player.LifeState != LifeState.Alive)
+            if (IsClient || player.LifeState != LifeState.Alive)
             {
                 return;
             }

@@ -55,7 +55,7 @@ namespace TTTReborn.Globals
         /// Must be called on the server, updates TTTPlayer's `Role`.
         /// </summary>
         /// <param name="player">The player whose `Role` is to be updated</param>
-        /// <param name="roleName">Same as the `TTTReborn.Roles.TTTRole`'s `TTTReborn.Roles.RoleAttribute`'s name</param>
+        /// <param name="roleName">Same as the `TTTReborn.Roles.Role`'s `TTTReborn.Roles.RoleAttribute`'s name</param>
         /// <param name="teamName">The name of the team</param>
         [ClientRpc]
         public static void ClientSetRole(TTTPlayer player, string roleName, string teamName = null)
@@ -65,7 +65,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            player.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+            player.SetRole(Utils.GetObjectByType<Role>(Utils.GetTypeByLibraryName<Role>(roleName)), TeamFunctions.GetTeam(teamName));
 
             Client client = player.Client;
 
@@ -85,7 +85,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            deadPlayer.SetRole(Utils.GetObjectByType<TTTRole>(Utils.GetTypeByLibraryName<TTTRole>(roleName)), TeamFunctions.GetTeam(teamName));
+            deadPlayer.SetRole(Utils.GetObjectByType<Role>(Utils.GetTypeByLibraryName<Role>(roleName)), TeamFunctions.GetTeam(teamName));
 
             deadPlayer.IsConfirmed = true;
             deadPlayer.CorpseConfirmer = confirmPlayer;

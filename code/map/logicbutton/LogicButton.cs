@@ -6,7 +6,7 @@ using TTTReborn.Teams;
 namespace TTTReborn.Map
 {
     [Library("ttt_logic_button", Description = "Used to provide an onscreen button for a team or special role to activate.")]
-    public partial class TTTLogicButton : Entity
+    public partial class LogicButton : Entity
     {
         [Property("Check Value", "Note that teams are often plural. For example, check the `Team` for `team_traitors`, but check the `Role` for `role_traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team.")]
         public string CheckValue
@@ -53,7 +53,7 @@ namespace TTTReborn.Map
 
         protected Output OnPressed { get; set; }
 
-        public TTTLogicButton()
+        public LogicButton()
         {
             Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
 
@@ -138,9 +138,9 @@ namespace TTTReborn.Map
         public bool CanUse() => !IsDisabled;
 
         // Convert starter data to struct to network to clients for UI display.
-        public TTTLogicButtonData PackageData()
+        public LogicButtonData PackageData()
         {
-            return new TTTLogicButtonData()
+            return new LogicButtonData()
             {
                 NetworkIdent = NetworkIdent,
                 Range = Range,
@@ -151,7 +151,7 @@ namespace TTTReborn.Map
     }
 
     // Package up our data nice and neat for transmission to the client.
-    public struct TTTLogicButtonData
+    public struct LogicButtonData
     {
         public int NetworkIdent;
         public int Range;

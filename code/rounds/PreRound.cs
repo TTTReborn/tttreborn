@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Items;
 using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Settings;

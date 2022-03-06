@@ -22,7 +22,7 @@ namespace TTTReborn.Rounds
         [Net]
         public List<TTTPlayer> Spectators { get; set; }
 
-        private List<TTTLogicButton> _logicButtons;
+        private List<LogicButton> _logicButtons;
 
         public override int RoundDuration
         {
@@ -55,9 +55,9 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                // For now, if the RandomWeaponCount of the map is zero, let's just give the players
+                // For now, if the RandomWeapons.Count of the map is zero, let's just give the players
                 // a fixed weapon loadout.
-                if (Gamemode.Game.Instance.MapHandler.RandomWeaponCount == 0)
+                if (Gamemode.Game.Instance.MapHandler.RandomWeapons.Count < Players.Count)
                 {
                     foreach (TTTPlayer player in Players)
                     {
@@ -66,7 +66,7 @@ namespace TTTReborn.Rounds
                 }
 
                 // Cache buttons for OnSecond tick.
-                _logicButtons = Entity.All.Where(x => x.GetType() == typeof(TTTLogicButton)).Select(x => x as TTTLogicButton).ToList();
+                _logicButtons = Entity.All.Where(x => x.GetType() == typeof(LogicButton)).Select(x => x as LogicButton).ToList();
             }
         }
 
@@ -103,9 +103,9 @@ namespace TTTReborn.Rounds
             base.OnTimeUp();
         }
 
-        private TTTTeam IsRoundOver()
+        private Team IsRoundOver()
         {
-            List<TTTTeam> aliveTeams = new();
+            List<Team> aliveTeams = new();
 
             foreach (TTTPlayer player in Players)
             {
@@ -128,7 +128,7 @@ namespace TTTReborn.Rounds
             return aliveTeams.Count == 1 ? aliveTeams[0] : null;
         }
 
-        private static void LoadPostRound(TTTTeam winningTeam)
+        private static void LoadPostRound(Team winningTeam)
         {
             Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed++;
             Gamemode.Game.Instance.ForceRoundChange(new PostRound());
@@ -162,7 +162,7 @@ namespace TTTReborn.Rounds
 
         private bool ChangeRoundIfOver()
         {
-            TTTTeam result = IsRoundOver();
+            Team result = IsRoundOver();
 
             if (result != null && !ServerSettings.Instance.Debug.PreventWin)
             {

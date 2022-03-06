@@ -5,7 +5,7 @@ using TTTReborn.Teams;
 namespace TTTReborn.Map
 {
     [Library("ttt_feed_entry", Description = "Add text entry to the game feed when input fired.")]
-    public partial class TTTFeedEntry : Entity
+    public partial class FeedEntry : Entity
     {
         [Property("Message")]
         public string Message { get; set; } = "";
@@ -45,7 +45,7 @@ namespace TTTReborn.Map
                     break;
 
                 case FeedEntryType.Other:
-                    TTTTeam team = TeamFunctions.TryGetTeam(ReceiverTeamOverride);
+                    Team team = TeamFunctions.TryGetTeam(ReceiverTeamOverride);
 
                     if (team != null)
                     {

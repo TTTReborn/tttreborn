@@ -128,7 +128,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            Type type = Utils.GetTypeByLibraryName<TTTRole>(roleName);
+            Type type = Utils.GetTypeByLibraryName<Role>(roleName);
 
             if (type == null)
             {
@@ -137,7 +137,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            TTTRole role = Utils.GetObjectByType<TTTRole>(type);
+            Role role = Utils.GetObjectByType<Role>(type);
 
             if (role == null)
             {

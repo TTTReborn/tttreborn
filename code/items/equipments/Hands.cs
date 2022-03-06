@@ -15,11 +15,11 @@ namespace TTTReborn.Items
         void SecondaryAction();
     }
 
-    [Library("equipment_hands")]
+    [Library("ttt_equipment_hands")]
     [Equipment(CarriableCategories.UtilityEquipment)]
     [Precached("particles/rope.vpcf")]
     [Hammer.Skip]
-    public partial class Hands : TTTEquipment
+    public partial class Hands : Equipment
     {
         public override string ViewModelPath => "";
         public override bool CanDrop() => false;
@@ -171,7 +171,7 @@ namespace TTTReborn.Items
                 case PlayerCorpse corpse:
                     GrabbedEntity = new GrabbableCorpse(player, corpse, tr.Body, tr.Bone);
                     break;
-                case TTTWeapon: // Ignore any size requirements, any weapon can be picked up.
+                case Weapon: // Ignore any size requirements, any weapon can be picked up.
                     GrabbedEntity = new GrabbableProp(player, tr.Entity);
                     break;
                 case ModelEntity model:

@@ -27,18 +27,18 @@ namespace TTTReborn.UI
             roleDropdown.AddTooltip(new TranslationData("MENU.SHOPEDITOR.SELECTROLE"), "roleselection");
             roleDropdown.AddEventListener("onchange", () =>
             {
-                bool hasRoleSelected = roleDropdown.Selected != null && roleDropdown.Selected.Value is TTTRole role;
+                bool hasRoleSelected = roleDropdown.Selected != null && roleDropdown.Selected.Value is Role role;
                 _translationCheckbox.SetClass("inactive", !hasRoleSelected);
 
                 if (hasRoleSelected)
                 {
-                    CreateRoleShopContent(roleDropdown.Selected.Value as TTTRole);
+                    CreateRoleShopContent(roleDropdown.Selected.Value as Role);
                 }
             });
 
-            foreach (Type roleType in Utils.GetTypes<TTTRole>())
+            foreach (Type roleType in Utils.GetTypes<Role>())
             {
-                TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+                Role role = Utils.GetObjectByType<Role>(roleType);
 
                 if (role == null)
                 {
@@ -56,14 +56,14 @@ namespace TTTReborn.UI
             _translationCheckbox.AddClass("inactive");
             _translationCheckbox.AddEventListener("onchange", () =>
             {
-                if (roleDropdown.Selected.Value is TTTRole role)
+                if (roleDropdown.Selected.Value is Role role)
                 {
                     ServerToggleShop(role.Name, _translationCheckbox.Checked);
                 }
             });
         }
 
-        private void CreateRoleShopContent(TTTRole selectedRole)
+        private void CreateRoleShopContent(Role selectedRole)
         {
             RoleShopContent.DeleteChildren(true);
             ShopItems.Clear();

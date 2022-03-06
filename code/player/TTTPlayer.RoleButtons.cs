@@ -12,7 +12,7 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
-        public static Dictionary<int, TTTLogicButtonData> LogicButtons = new();
+        public static Dictionary<int, LogicButtonData> LogicButtons = new();
         public static Dictionary<int, LogicButtonPoint> LogicButtonPoints = new();
         public static LogicButtonPoint FocusedButton;
         public static bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
@@ -24,11 +24,11 @@ namespace TTTReborn.Player
                 return;
             }
 
-            List<TTTLogicButtonData> logicButtonDataList = new();
+            List<LogicButtonData> logicButtonDataList = new();
 
             foreach (Entity entity in All)
             {
-                if (entity is TTTLogicButton logicButton && (logicButton.CheckValue.Equals(Role.Name) || logicButton.CheckValue.Equals(Team.Name)))
+                if (entity is LogicButton logicButton && (logicButton.CheckValue.Equals(Role.Name) || logicButton.CheckValue.Equals(Team.Name)))
                 {
                     logicButtonDataList.Add(logicButton.PackageData());
                 }
@@ -57,7 +57,7 @@ namespace TTTReborn.Player
         {
             LogicButtonPoints = new();
 
-            foreach (KeyValuePair<int, TTTLogicButtonData> keyValuePair in LogicButtons)
+            foreach (KeyValuePair<int, LogicButtonData> keyValuePair in LogicButtons)
             {
                 LogicButtonPoints.Add(keyValuePair.Key, new LogicButtonPoint(keyValuePair.Value));
             }
@@ -65,7 +65,7 @@ namespace TTTReborn.Player
 
         // Receive data of player's buttons from client.
         [ClientRpc]
-        public void ClientStoreLogicButton(TTTLogicButtonData[] buttons)
+        public void ClientStoreLogicButton(LogicButtonData[] buttons)
         {
             Clear();
 
@@ -106,8 +106,8 @@ namespace TTTReborn.Player
                 return;
             }
 
-            IEnumerable<TTTLogicButton> logicButtons = All.Where(x => x is TTTLogicButton).Select(x => x as TTTLogicButton);
-            IEnumerable<TTTLogicButton> applicableButtons = logicButtons.Where(x => x.CheckValue.Equals(Teams.TeamFunctions.GetTeam(typeof(Teams.TraitorTeam))) || x.CheckValue.Equals(Utils.GetLibraryName(typeof(TraitorRole))));
+            IEnumerable<LogicButton> logicButtons = All.Where(x => x is LogicButton).Select(x => x as LogicButton);
+            IEnumerable<LogicButton> applicableButtons = logicButtons.Where(x => x.CheckValue.Equals(Teams.TeamFunctions.GetTeam(typeof(Teams.TraitorTeam))) || x.CheckValue.Equals(Utils.GetLibraryName(typeof(TraitorRole))));
 
             player.ClientStoreLogicButton(To.Single(player), applicableButtons.Select(x => x.PackageData()).ToArray());
         }
@@ -125,7 +125,7 @@ namespace TTTReborn.Player
 
             Entity entity = FindByIndex(networkIdent);
 
-            if (entity == null || entity is not TTTLogicButton button)
+            if (entity == null || entity is not LogicButton button)
             {
                 Log.Warning($"Server received call for null logic button with network id `{networkIdent}`.");
 

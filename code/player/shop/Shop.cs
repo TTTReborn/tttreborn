@@ -72,7 +72,7 @@ namespace TTTReborn.Player
             return shop;
         }
 
-        public static void Load(TTTRole role)
+        public static void Load(Role role)
         {
             string fileName = GetSettingsFile(role);
 
@@ -98,7 +98,7 @@ namespace TTTReborn.Player
             }
         }
 
-        public static void Save(TTTRole role)
+        public static void Save(Role role)
         {
             FileSystem.Data.WriteAllText(GetSettingsFile(role), JsonSerializer.Serialize(role.Shop, new JsonSerializerOptions
             {
@@ -106,7 +106,7 @@ namespace TTTReborn.Player
             }));
         }
 
-        public static string GetSettingsFile(TTTRole role)
+        public static string GetSettingsFile(Role role)
         {
             return $"settings/{Utils.GetTypeName(typeof(Settings.ServerSettings)).ToLower()}/shop/{role.Name.ToLower()}.json";
         }

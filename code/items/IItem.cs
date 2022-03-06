@@ -46,6 +46,11 @@ namespace TTTReborn.Items
         {
             string[] splits = libraryName.Split('_');
 
+            if (splits[0].ToUpper().Equals("TTT"))
+            {
+                splits = splits[1..];
+            }
+
             return $"ITEM.{splits[0]}.{string.Join('_', splits[1..])}.{key}".ToUpper();
         }
     }

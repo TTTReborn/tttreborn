@@ -7,11 +7,11 @@ namespace TTTReborn.Items
     /// <summary>
     /// C4 equipment definition, for the physical entity, see items/equipments/entities/C4Entity.cs
     /// </summary>
-    [Library("equipment_c4")]
+    [Library("ttt_equipment_c4")]
     [Buyable(Price = 100)]
     [Equipment(CarriableCategories.OffensiveEquipment)]
     [Hammer.Skip]
-    public partial class C4Equipment : TTTEquipment
+    public partial class C4Equipment : Equipment
     {
         [ServerVar("ttt_c4_can_drop", Help = "If enabled, allows players to drop the C4 as a physics item with Attack2.")]
         public static bool TTTC4CanDrop { get; set; } = false;

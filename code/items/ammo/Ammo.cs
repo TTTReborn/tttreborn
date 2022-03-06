@@ -9,7 +9,7 @@ using TTTReborn.UI;
 namespace TTTReborn.Items
 {
     [Hammer.Skip]
-    public abstract partial class TTTAmmo : Prop, IEntityHint
+    public abstract partial class Ammo : Prop, IEntityHint
     {
         /// <summary>
         /// The library name of the ammo.
@@ -42,10 +42,10 @@ namespace TTTReborn.Items
 
         public override string ModelPath => "models/ammo/ammo_buckshot.vmdl";
 
-        public TTTAmmo() : base()
+        public Ammo() : base()
         {
             LibraryName = Utils.GetLibraryName(GetType());
-            WeaponName ??= $"weapon_{LibraryName[5..]}";
+            WeaponName ??= LibraryName.Replace("ttt_ammo_", "ttt_weapon_");
         }
 
         public override void Spawn()

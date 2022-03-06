@@ -9,13 +9,13 @@ using TTTReborn.Teams;
 namespace TTTReborn.Roles
 {
     [Role("traitor")]
-    public class TraitorRole : TTTRole
+    public class TraitorRole : Role
     {
         public override Color Color => Color.FromBytes(223, 41, 53);
 
         public override int DefaultCredits => 100;
 
-        public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(TraitorTeam));
+        public override Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(TraitorTeam));
 
         public TraitorRole() : base()
         {

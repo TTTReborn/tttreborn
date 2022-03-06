@@ -27,7 +27,7 @@ namespace TTTReborn.UI
                     _effectImage.Texture = Texture.Load(FileSystem.Mounted, $"assets/none.png");
                 }
 
-                if (_item is TTTCountdownPerk)
+                if (_item is CountdownPerk)
                 {
                     ActivateCountdown();
                 }
@@ -74,7 +74,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (_countdownLabel != null && Item is TTTCountdownPerk countdownPerk)
+            if (_countdownLabel != null && Item is CountdownPerk countdownPerk)
             {
                 int currentCountdown = (countdownPerk.Countdown - countdownPerk.LastCountdown).CeilToInt();
 

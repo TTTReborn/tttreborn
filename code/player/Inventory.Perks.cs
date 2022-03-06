@@ -8,7 +8,7 @@ namespace TTTReborn.Player
 {
     public partial class PerksInventory
     {
-        private List<TTTPerk> PerkList { get; } = new();
+        private List<Perk> PerkList { get; } = new();
         private readonly TTTPlayer _owner;
 
         public PerksInventory(TTTPlayer owner)
@@ -16,7 +16,7 @@ namespace TTTReborn.Player
             _owner = owner;
         }
 
-        public bool Give(TTTPerk perk)
+        public bool Give(Perk perk)
         {
             if (Has(perk.LibraryName))
             {
@@ -35,7 +35,7 @@ namespace TTTReborn.Player
             return true;
         }
 
-        public bool Take(TTTPerk perk)
+        public bool Take(Perk perk)
         {
             if (!Has(perk.LibraryName))
             {
@@ -55,9 +55,9 @@ namespace TTTReborn.Player
             return true;
         }
 
-        public T Find<T>(string perkName = null) where T : TTTPerk
+        public T Find<T>(string perkName = null) where T : Perk
         {
-            foreach (TTTPerk loopPerk in PerkList)
+            foreach (Perk loopPerk in PerkList)
             {
                 if (loopPerk is not T t || t.Equals(default(T)))
                 {
@@ -78,9 +78,9 @@ namespace TTTReborn.Player
             return default;
         }
 
-        public TTTPerk Find(string perkName)
+        public Perk Find(string perkName)
         {
-            return Find<TTTPerk>(perkName);
+            return Find<Perk>(perkName);
         }
 
         public bool Has(string perkName = null)
@@ -88,14 +88,14 @@ namespace TTTReborn.Player
             return Find(perkName) != null;
         }
 
-        public bool Has<T>(string perkName = null) where T : TTTPerk
+        public bool Has<T>(string perkName = null) where T : Perk
         {
             return Find<T>(perkName) != null;
         }
 
         public void Clear()
         {
-            foreach (TTTPerk perk in PerkList)
+            foreach (Perk perk in PerkList)
             {
                 perk.Remove();
                 perk.Delete();
@@ -114,7 +114,7 @@ namespace TTTReborn.Player
             return PerkList.Count;
         }
 
-        public TTTPerk Get(int index)
+        public Perk Get(int index)
         {
             return PerkList[index];
         }

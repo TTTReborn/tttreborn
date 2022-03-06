@@ -83,7 +83,7 @@ namespace TTTReborn.Items
 
         public bool IsBuyable(TTTPlayer player)
         {
-            if (Type.IsSubclassOf(typeof(TTTPerk)))
+            if (Type.IsSubclassOf(typeof(Perk)))
             {
                 return !player.Inventory.Perks.Has(Name);
             }
@@ -91,11 +91,11 @@ namespace TTTReborn.Items
             {
                 return false;
             }
-            else if (Type.IsSubclassOf(typeof(TTTWeapon)))
+            else if (Type.IsSubclassOf(typeof(Weapon)))
             {
                 return !player.Inventory.IsCarryingType(Type) && player.Inventory.HasEmptySlot(Category.Value);
             }
-            else if (Type.IsSubclassOf(typeof(TTTEquipment)))
+            else if (Type.IsSubclassOf(typeof(Equipment)))
             {
                 return player.Inventory.HasEmptySlot(Category.Value);
             }

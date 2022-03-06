@@ -265,6 +265,9 @@
             "SHOTGUN": {
                 "NAME": "Schrot"
             },
+            "SNIPER": {
+                "NAME": "Scharfschützengewehr"
+            },
             "KNIFE": {
                 "NAME": "Messer"
             },

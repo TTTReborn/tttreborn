@@ -10,7 +10,7 @@ namespace TTTReborn.Player
 {
     public partial class TTTPlayer
     {
-        public TTTRole Role
+        public Role Role
         {
             get
             {
@@ -27,9 +27,9 @@ namespace TTTReborn.Player
             }
         }
 
-        private TTTRole _role;
+        private Role _role;
 
-        public TTTTeam Team
+        public Team Team
         {
             get
             {
@@ -46,11 +46,11 @@ namespace TTTReborn.Player
             }
         }
 
-        private TTTTeam _team;
+        private Team _team;
 
-        public void SetRole(TTTRole role, TTTTeam team = null)
+        public void SetRole(Role role, Team team = null)
         {
-            TTTTeam oldTeam = Team;
+            Team oldTeam = Team;
 
             Role?.OnDeselect(this);
 

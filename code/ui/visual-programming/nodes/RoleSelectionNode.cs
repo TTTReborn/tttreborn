@@ -10,7 +10,7 @@ namespace TTTReborn.UI.VisualProgramming
     [Node("role_selection")]
     public class RoleSelectionNode : Node
     {
-        public TTTRole SelectedRole { get; set; }
+        public Role SelectedRole { get; set; }
 
         public RoleSelectionNode() : base(new RoleSelectionStackNode())
         {
@@ -21,7 +21,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         internal void OnSelectRole(Type roleType)
         {
-            TTTRole role = Utils.GetObjectByType<TTTRole>(roleType);
+            Role role = Utils.GetObjectByType<Role>(roleType);
 
             if (role == null)
             {
@@ -54,7 +54,7 @@ namespace TTTReborn.UI.VisualProgramming
 
             if (selectedRoleName != null)
             {
-                Type roleType = Utils.GetTypeByLibraryName<TTTRole>(selectedRoleName.ToString());
+                Type roleType = Utils.GetTypeByLibraryName<Role>(selectedRoleName.ToString());
 
                 if (roleType != null)
                 {

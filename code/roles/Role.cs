@@ -18,13 +18,13 @@ namespace TTTReborn.Roles
         }
     }
 
-    public abstract class TTTRole
+    public abstract class Role
     {
         public readonly string Name;
 
         public virtual Color Color => Color.Black;
 
-        public virtual TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
+        public virtual Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(NoneTeam));
 
         public virtual int DefaultCredits => 50;
 
@@ -46,7 +46,7 @@ namespace TTTReborn.Roles
             }
         }
 
-        public TTTRole()
+        public Role()
         {
             Name = Utils.GetLibraryName(GetType());
         }

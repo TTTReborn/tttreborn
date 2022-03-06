@@ -9,13 +9,13 @@ using TTTReborn.Teams;
 namespace TTTReborn.Roles
 {
     [Role("detective")]
-    public class DetectiveRole : TTTRole
+    public class DetectiveRole : Role
     {
         public override Color Color => Color.FromBytes(25, 102, 255);
 
         public override int DefaultCredits => 100;
 
-        public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(InnocentTeam));
+        public override Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(InnocentTeam));
 
         public DetectiveRole() : base()
         {

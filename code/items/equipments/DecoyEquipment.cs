@@ -7,11 +7,11 @@ namespace TTTReborn.Items
     /// <summary>
     /// Decoy equipment definition, for the physical entity, see items/equipments/entities/DecoyEntity.cs
     /// </summary>
-    [Library("equipment_decoy")]
+    [Library("ttt_equipment_decoy")]
     [Weapon(CarriableCategories.UtilityEquipment)]
     [Buyable(Price = 100)]
     [Hammer.Skip]
-    public partial class DecoyEquipment : TTTEquipment
+    public partial class DecoyEquipment : Equipment
     {
         public override string ViewModelPath => "";
 

@@ -5,8 +5,8 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("entity_weapon_random")]
-    public class TTTWeaponRandom : Entity
+    [Library("ttt_weapon_random")]
+    public class WeaponRandom : Entity
     {
         private static readonly int AMMO_DISTANCE_UP = 24;
 
@@ -24,7 +24,7 @@ namespace TTTReborn.Items
 
         public virtual void Activate()
         {
-            List<Type> wepTypes = Utils.GetTypesWithAttribute<TTTWeapon, SpawnableAttribute>();
+            List<Type> wepTypes = Utils.GetTypesWithAttribute<Weapon, SpawnableAttribute>();
 
             if (Category != null)
             {
@@ -49,7 +49,15 @@ namespace TTTReborn.Items
             }
 
             Type weaponTypeToSpawn = Utils.RNG.FromList(wepTypes);
-            TTTWeapon weapon = Utils.GetObjectByType<TTTWeapon>(weaponTypeToSpawn);
+            Weapon weapon = Utils.GetObjectByType<Weapon>(weaponTypeToSpawn);
+
+            if (weapon == null || !weapon.IsValid)
+            {
+                Log.Debug($"Failed to initialize random weapon of type '{weaponTypeToSpawn}': {weapon}");
+
+                return;
+            }
+
             weapon.Position = Position;
             weapon.Rotation = Rotation;
             weapon.Spawn();
@@ -59,16 +67,16 @@ namespace TTTReborn.Items
                 return; // If the choosen weapon doesn't use ammo we don't need to spawn any.
             }
 
-            if (!weapon.AmmoType.IsSubclassOf(typeof(TTTAmmo)))
+            if (!weapon.AmmoType.IsSubclassOf(typeof(Ammo)))
             {
-                Log.Error($"The defined ammo type {weapon.AmmoType.Name} for the weapon {weapon.LibraryName} is not a descendant of {typeof(TTTAmmo).Name}.");
+                Log.Error($"The defined ammo type {weapon.AmmoType.Name} for the weapon {weapon.LibraryName} is not a descendant of {typeof(Ammo).Name}.");
 
                 return;
             }
 
             for (int i = 0; i < AmmoToSpawn; i++)
             {
-                TTTAmmo ammo = Utils.GetObjectByType<TTTAmmo>(weapon.AmmoType);
+                Ammo ammo = Utils.GetObjectByType<Ammo>(weapon.AmmoType);
                 ammo.Position = weapon.Position + Vector3.Up * AMMO_DISTANCE_UP;
                 ammo.Spawn();
             }
