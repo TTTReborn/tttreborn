@@ -18,11 +18,11 @@ namespace TTTReborn.UI
         public static ShopItemData _selectedItemData;
 
         private readonly List<QuickShopItem> _items = new();
-        private Panel _backgroundPanel;
-        private Panel _quickshopContainer;
-        private TranslationLabel _creditLabel;
-        private Panel _itemPanel;
-        private TranslationLabel _itemDescriptionLabel;
+        private readonly Panel _backgroundPanel;
+        private readonly Panel _quickshopContainer;
+        private readonly TranslationLabel _creditLabel;
+        private readonly Panel _itemPanel;
+        private readonly TranslationLabel _itemDescriptionLabel;
 
         private int _credits = 0;
 
@@ -200,9 +200,9 @@ namespace TTTReborn.Player
 
     public partial class TTTPlayer
     {
-        public void TickPlayerShop()
+        public static void TickPlayerShop()
         {
-            if (!IsClient || QuickShop.Instance == null)
+            if (QuickShop.Instance == null)
             {
                 return;
             }

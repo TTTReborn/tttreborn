@@ -33,6 +33,6 @@ namespace TTTReborn.Player
         /// <summary>
         /// Occurs on each tick if the hint is active.
         /// </summary>
-        void Tick(TTTPlayer player);
+        void TextTick(TTTPlayer player);
     }
 }

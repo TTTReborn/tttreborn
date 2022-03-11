@@ -191,13 +191,19 @@ namespace TTTReborn.Player
 
             SimulateActiveChild(client, ActiveChild);
 
-            TickC4Simulate();
             TickItemSimulate();
-            TickPlayerUse();
-            TickPlayerDropCarriable();
-            TickPlayerFlashlight();
-            TickPlayerShop();
-            TickLogicButtonActivate();
+
+            if (Host.IsServer)
+            {
+                TickPlayerUse();
+                TickPlayerDropCarriable();
+                TickPlayerFlashlight();
+            }
+            else
+            {
+                TickPlayerShop();
+                TickLogicButtonActivate();
+            }
 
             PawnController controller = GetActiveController();
             controller?.Simulate(client, this, GetActiveAnimator());
@@ -236,15 +242,18 @@ namespace TTTReborn.Player
 
         private void TickPlayerDropCarriable()
         {
-            if (Input.Pressed(InputButton.Drop) && !Input.Down(InputButton.Run) && ActiveChild != null && Inventory != null)
+            using (Prediction.Off())
             {
-                Entity droppedEntity = Inventory.DropActive();
-
-                if (droppedEntity != null)
+                if (Input.Pressed(InputButton.Drop) && !Input.Down(InputButton.Run) && ActiveChild != null && Inventory != null)
                 {
-                    if (droppedEntity.PhysicsGroup != null)
+                    Entity droppedEntity = Inventory.DropActive();
+
+                    if (droppedEntity != null)
                     {
-                        droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * CarriableDropVelocity;
+                        if (droppedEntity.PhysicsGroup != null)
+                        {
+                            droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * CarriableDropVelocity;
+                        }
                     }
                 }
             }
@@ -282,14 +291,6 @@ namespace TTTReborn.Player
             for (int i = 0; i < perks.Count(); i++)
             {
                 perks.Get(i).Simulate(Client);
-            }
-        }
-
-        private void TickC4Simulate()
-        {
-            foreach (C4Entity c4 in All.Where(x => x is C4Entity))
-            {
-                c4.Simulate(Client);
             }
         }
 

@@ -147,7 +147,7 @@ namespace TTTReborn.Player
             return new Hint(TextOnTick);
         }
 
-        public void Tick(TTTPlayer confirmingPlayer)
+        public void TextTick(TTTPlayer confirmingPlayer)
         {
             using (Prediction.Off())
             {

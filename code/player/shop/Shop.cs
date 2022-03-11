@@ -88,7 +88,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            role.Shop = Shop.InitializeFromJSON(FileSystem.Data.ReadAllText(fileName));
+            role.Shop = InitializeFromJSON(FileSystem.Data.ReadAllText(fileName));
 
             if (ShopManager.NewItemsList.Count > 0)
             {

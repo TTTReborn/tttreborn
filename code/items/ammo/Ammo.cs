@@ -109,8 +109,10 @@ namespace TTTReborn.Items
 
         public virtual void PickupStartTouch(Entity other)
         {
-            if (other != LastDropOwner && other is TTTPlayer player)
+            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is TTTPlayer player)
             {
+                LastDropOwner = null;
+
                 Pickup(player);
             }
         }
@@ -123,7 +125,7 @@ namespace TTTReborn.Items
             }
         }
 
-        public void Tick(TTTPlayer player)
+        public void TextTick(TTTPlayer player)
         {
             if (IsClient || player.LifeState != LifeState.Alive)
             {
@@ -168,16 +170,6 @@ namespace TTTReborn.Items
             {
                 Delete();
             }
-        }
-
-        public override void Simulate(Client owner)
-        {
-            if (SinceLastDrop > 0.5f)
-            {
-                LastDropOwner = null;
-            }
-
-            base.Simulate(owner);
         }
     }
 }

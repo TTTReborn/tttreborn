@@ -34,13 +34,6 @@ namespace TTTReborn.Items
         private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
         private bool IsPushingEntity = false;
 
-        public override void Spawn()
-        {
-            base.Spawn();
-
-            RenderColor = Color.Transparent;
-        }
-
         public override void Simulate(Client client)
         {
             base.Simulate(client);
