@@ -59,12 +59,12 @@ namespace TTTReborn.Map
 
             if (IsServer)
             {
-                Cleanup();
+                Reset();
             }
         }
 
         // (Re)initialize our variables to default. Runs at preround as well as during construction
-        public void Cleanup()
+        public void Reset()
         {
             Host.AssertServer();
 

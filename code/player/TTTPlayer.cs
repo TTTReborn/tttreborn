@@ -215,9 +215,22 @@ namespace TTTReborn.Player
                 return;
             }
 
-            if (other is PickupTrigger)
+            if (other is PickupTrigger && other.Parent is IPickupable pickupable)
             {
-                StartTouch(other.Parent);
+                pickupable.PickupStartTouch(this);
+            }
+        }
+
+        public override void EndTouch(Entity other)
+        {
+            if (IsClient)
+            {
+                return;
+            }
+
+            if (other is PickupTrigger && other.Parent is IPickupable pickupable)
+            {
+                pickupable.PickupEndTouch(this);
             }
         }
 

@@ -11,7 +11,7 @@ namespace TTTReborn.Items
     {
         public const float THROW_FORCE = 500;
         public Entity GrabbedEntity { get; set; }
-        public TTTPlayer _owner;
+        public TTTPlayer Owner;
 
         public bool IsHolding
         {
@@ -20,9 +20,16 @@ namespace TTTReborn.Items
 
         public GrabbableProp(TTTPlayer player, Entity ent)
         {
-            _owner = player;
+            Owner = player;
 
             GrabbedEntity = ent;
+
+            if (GrabbedEntity is IPickupable pickupable)
+            {
+                pickupable.PickupTrigger.EnableTouch = false;
+            }
+
+            // TODO You can drop entities with this through walls and the ground
             GrabbedEntity.SetParent(player, Hands.MIDDLE_HANDS_ATTACHMENT, new Transform(Vector3.Zero, Rotation.FromRoll(-90)));
             GrabbedEntity.EnableHideInFirstPerson = false;
         }
@@ -33,6 +40,13 @@ namespace TTTReborn.Items
             {
                 GrabbedEntity.EnableHideInFirstPerson = true;
                 GrabbedEntity.SetParent(null);
+
+                if (GrabbedEntity is IPickupable pickupable)
+                {
+                    pickupable.LastDropOwner = Owner;
+                    pickupable.SinceLastDrop = 0f;
+                    pickupable.PickupTrigger.EnableTouch = true;
+                }
             }
 
             GrabbedEntity = null;
@@ -59,33 +73,17 @@ namespace TTTReborn.Items
             }
         }
 
-        public void SecondaryAction()
+        public void PrimaryAction()
         {
-            _owner.SetAnimParameter("b_attack", true);
-
-            GrabbedEntity.SetParent(null);
-            GrabbedEntity.EnableHideInFirstPerson = true;
-            GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
-
-            _ = WaitForAnimationFinish();
-        }
-
-        private async Task WaitForAnimationFinish()
-        {
-            try
+            if (GrabbedEntity?.IsValid ?? false)
             {
-                await GameTask.DelaySeconds(0.6f);
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Trim() != "A task was canceled.")
-                {
-                    Log.Error($"[TASK] {e.Message}: {e.StackTrace}");
-                }
-            }
-            finally
-            {
-                GrabbedEntity = null;
+                Owner.SetAnimParameter("b_attack", true);
+
+                Entity grabbedEntity = GrabbedEntity;
+
+                Drop();
+
+                grabbedEntity.Velocity += Owner.EyeRotation.Forward * THROW_FORCE;
             }
         }
     }
