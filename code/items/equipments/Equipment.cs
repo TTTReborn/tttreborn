@@ -9,6 +9,8 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class EquipmentAttribute : CarriableAttribute
     {
+        public Type ObjectType { get; set; }
+
         public EquipmentAttribute(CarriableCategories category = CarriableCategories.UtilityEquipment) : base(category)
         {
 
@@ -19,6 +21,7 @@ namespace TTTReborn.Items
     public abstract class Equipment : BaseCarriable, ICarriableItem
     {
         public string LibraryName { get; }
+        public Type ObjectType { get; }
         public CarriableCategories Category { get; }
         public PickupTrigger PickupTrigger { get; set; }
         public Entity LastDropOwner { get; set; }
@@ -26,22 +29,32 @@ namespace TTTReborn.Items
 
         protected Equipment()
         {
-            LibraryName = Utils.GetLibraryName(GetType());
+            Type type = GetType();
+            LibraryName = Utils.GetLibraryName(type);
+            EquipmentAttribute equipmentAttribute = Utils.GetAttribute<EquipmentAttribute>(type);
 
-            foreach (object obj in GetType().GetCustomAttributes(false))
+            if (equipmentAttribute != null)
             {
-                if (obj is EquipmentAttribute equipmentAttribute)
-                {
-                    Category = equipmentAttribute.Category;
-                }
+                Category = equipmentAttribute.Category;
+                ObjectType = equipmentAttribute.ObjectType;
             }
 
             EnableShadowInFirstPerson = false;
+        }
 
-            PickupTrigger = new();
-            PickupTrigger.Parent = this;
-            PickupTrigger.Position = Position;
-            PickupTrigger.Rotation = Rotation;
+        public override void Spawn()
+        {
+            base.Spawn();
+
+            RenderColor = Color.Transparent;
+
+            if (CanDrop())
+            {
+                PickupTrigger = new();
+                PickupTrigger.Parent = this;
+                PickupTrigger.Position = Position;
+                PickupTrigger.Rotation = Rotation;
+            }
         }
 
         public void Equip(TTTPlayer player)
@@ -70,8 +83,10 @@ namespace TTTReborn.Items
 
         public virtual void PickupStartTouch(Entity other)
         {
-            if (other != LastDropOwner && other is TTTPlayer player)
+            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is TTTPlayer player)
             {
+                LastDropOwner = null;
+
                 player.Inventory.TryAdd(this);
             }
         }
@@ -107,14 +122,22 @@ namespace TTTReborn.Items
             }
         }
 
-        public override void Simulate(Client owner)
+        public override void Simulate(Client client)
         {
-            if (SinceLastDrop > 0.5f)
+            base.Simulate(client);
+
+            if (!IsServer || Owner is not TTTPlayer owner || !CanDrop())
             {
-                LastDropOwner = null;
+                return;
             }
 
-            base.Simulate(owner);
+            using (Prediction.Off())
+            {
+                if (Input.Pressed(InputButton.Attack1))
+                {
+                    owner.Inventory.DropEntity(this);
+                }
+            }
         }
     }
 }

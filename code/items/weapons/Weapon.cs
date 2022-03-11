@@ -99,16 +99,15 @@ namespace TTTReborn.Items
 
         public Weapon() : base()
         {
-            LibraryName = Utils.GetLibraryName(GetType());
+            Type type = GetType();
+            LibraryName = Utils.GetLibraryName(type);
+            WeaponAttribute weaponAttribute = Utils.GetAttribute<WeaponAttribute>(type);
 
-            foreach (object obj in GetType().GetCustomAttributes(false))
+            if (weaponAttribute != null)
             {
-                if (obj is WeaponAttribute weaponAttribute)
-                {
-                    Category = weaponAttribute.Category;
-                    AmmoType = weaponAttribute.AmmoType;
-                    AmmoName = weaponAttribute.AmmoName;
-                }
+                Category = weaponAttribute.Category;
+                AmmoType = weaponAttribute.AmmoType;
+                AmmoName = weaponAttribute.AmmoName;
             }
 
             EnableShadowInFirstPerson = false;
@@ -194,11 +193,6 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client owner)
         {
-            if (SinceLastDrop > 0.5f)
-            {
-                LastDropOwner = null;
-            }
-
             if (TimeSinceDeployed < DeployTime)
             {
                 return;
@@ -442,8 +436,10 @@ namespace TTTReborn.Items
 
         public virtual void PickupStartTouch(Entity other)
         {
-            if (other != LastDropOwner && other is TTTPlayer player)
+            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is TTTPlayer player)
             {
+                LastDropOwner = null;
+
                 player.Inventory.TryAdd(this);
             }
         }
@@ -495,7 +491,7 @@ namespace TTTReborn.Items
             return new Hint(TextOnTick);
         }
 
-        public void Tick(TTTPlayer player)
+        public void TextTick(TTTPlayer player)
         {
             if (IsClient || player.LifeState != LifeState.Alive)
             {

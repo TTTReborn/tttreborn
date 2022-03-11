@@ -120,21 +120,18 @@ namespace TTTReborn.Player
 
         private void TickPlayerFlashlight()
         {
-            if (IsServer)
+            using (Prediction.Off())
             {
-                using (Prediction.Off())
+                if (Input.Released(InputButton.Flashlight))
                 {
-                    if (Input.Released(InputButton.Flashlight))
-                    {
-                        ToggleFlashlight();
-                    }
+                    ToggleFlashlight();
                 }
+            }
 
-                if (IsFlashlightOn)
-                {
-                    _worldFlashlight.Rotation = Rotation.Slerp(_worldFlashlight.Rotation, Input.Rotation, SMOOTH_SPEED);
-                    _worldFlashlight.Position = Vector3.Lerp(_worldFlashlight.Position, EyePosition + Input.Rotation.Forward * FLASHLIGHT_DISTANCE, SMOOTH_SPEED);
-                }
+            if (IsFlashlightOn)
+            {
+                _worldFlashlight.Rotation = Rotation.Slerp(_worldFlashlight.Rotation, Input.Rotation, SMOOTH_SPEED);
+                _worldFlashlight.Position = Vector3.Lerp(_worldFlashlight.Position, EyePosition + Input.Rotation.Forward * FLASHLIGHT_DISTANCE, SMOOTH_SPEED);
             }
         }
 

@@ -18,7 +18,7 @@ namespace TTTReborn.Player
             return new Nameplate(this);
         }
 
-        public void Tick(TTTPlayer player)
+        public void TextTick(TTTPlayer player)
         {
 
         }

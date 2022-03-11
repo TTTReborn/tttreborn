@@ -306,7 +306,7 @@ namespace TTTReborn.Items
             return new Hint(TextOnTick);
         }
 
-        public void Tick(TTTPlayer player)
+        public void TextTick(TTTPlayer player)
         {
             if (IsClient)
             {

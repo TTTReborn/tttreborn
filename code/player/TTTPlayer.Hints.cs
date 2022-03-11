@@ -33,7 +33,7 @@ namespace TTTReborn.Player
 
             if (hint == _currentHint)
             {
-                hint.Tick(this);
+                hint.TextTick(this);
 
                 if (IsClient)
                 {

@@ -163,6 +163,19 @@ namespace TTTReborn.Player
             return types;
         }
 
+        public void SelectHands()
+        {
+            foreach (Entity entity in List)
+            {
+                if (entity is Hands)
+                {
+                    Active = entity;
+
+                    break;
+                }
+            }
+        }
+
         public override bool Drop(Entity entity)
         {
             if (!Host.IsServer || !Contains(entity) || entity is ICarriableItem item && !item.CanDrop())
@@ -188,15 +201,48 @@ namespace TTTReborn.Player
             }
         }
 
-        public bool DropEntity(Entity self, Type entity)
+        public override Entity DropActive()
         {
-            Entity droppedEntity = Utils.GetObjectByType<Entity>(entity);
-            droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
-            droppedEntity.Rotation = Owner.EyeRotation;
-            droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
-            droppedEntity.Tags.Add(IItem.ITEM_TAG);
+            Entity entity;
 
-            return Remove(self);
+            if (Active is Equipment equipment && equipment.CanDrop())
+            {
+                entity = DropEntity(equipment);
+            }
+            else
+            {
+                entity = base.DropActive();
+            }
+
+            if (Active == null)
+            {
+                SelectHands();
+            }
+
+            return entity;
+        }
+
+        public Entity DropEntity(Equipment equipment)
+        {
+            Type type = equipment.ObjectType;
+            Vector3 position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
+            Rotation rotation = Owner.EyeRotation;
+            Vector3 velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
+
+            if (Remove(equipment))
+            {
+                Entity droppedEntity = Utils.GetObjectByType<Entity>(type);
+                droppedEntity.Position = position;
+                droppedEntity.Rotation = rotation;
+                droppedEntity.Velocity = velocity;
+                droppedEntity.Tags.Add(IItem.ITEM_TAG);
+
+                SelectHands();
+
+                return droppedEntity;
+            }
+
+            return null;
         }
     }
 }

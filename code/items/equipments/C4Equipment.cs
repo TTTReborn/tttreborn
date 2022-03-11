@@ -9,7 +9,7 @@ namespace TTTReborn.Items
     /// </summary>
     [Library("ttt_equipment_c4")]
     [Buyable(Price = 100)]
-    [Equipment(CarriableCategories.OffensiveEquipment)]
+    [Equipment(CarriableCategories.OffensiveEquipment, ObjectType = typeof(C4Entity))]
     [Hammer.Skip]
     public partial class C4Equipment : Equipment
     {
@@ -19,20 +19,6 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "";
 
         private const int PLACE_DISTANCE = 200;
-
-        public C4Equipment() : base()
-        {
-
-        }
-
-        public override bool CanDrop() => false;
-
-        public override void Spawn()
-        {
-            base.Spawn();
-
-            RenderColor = Color.Transparent;
-        }
 
         public override void Simulate(Client client)
         {
@@ -66,7 +52,7 @@ namespace TTTReborn.Items
                 }
                 else if (Input.Pressed(InputButton.Attack2) && TTTC4CanDrop)
                 {
-                    owner.Inventory.DropEntity(this, typeof(C4Entity));
+                    owner.Inventory.DropEntity(this);
                 }
             }
         }
