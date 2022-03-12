@@ -9,7 +9,7 @@ namespace TTTReborn.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class StackNodeAttribute : LibraryAttribute
     {
-        public StackNodeAttribute(string name) : base("stacknode_" + name)
+        public StackNodeAttribute(string name) : base("ttt_stacknode_" + name)
         {
 
         }

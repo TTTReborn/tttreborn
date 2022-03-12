@@ -12,7 +12,7 @@ namespace TTTReborn.Roles
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class RoleAttribute : LibraryAttribute
     {
-        public RoleAttribute(string name) : base("role_" + name)
+        public RoleAttribute(string name) : base("ttt_role_" + name)
         {
 
         }
@@ -85,9 +85,18 @@ namespace TTTReborn.Roles
 
         }
 
-        public string GetTranslationKey(string key)
+        public string GetTranslationKey(string key) => GetTranslationKey(Name, key);
+
+        public static string GetTranslationKey(string libraryName, string key)
         {
-            return $"ROLE.{Name[5..]}.{key}".ToUpper();
+            string[] splits = libraryName.Split('_');
+
+            if (splits[0].ToUpper().Equals("TTT"))
+            {
+                splits = splits[1..];
+            }
+
+            return $"ROLE.{string.Join('_', splits[1..])}.{key}".ToUpper();
         }
 
         public bool CheckWin(TTTPlayer player)

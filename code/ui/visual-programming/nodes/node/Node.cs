@@ -11,7 +11,7 @@ namespace TTTReborn.UI.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeAttribute : LibraryAttribute
     {
-        public NodeAttribute(string name) : base("node_" + name)
+        public NodeAttribute(string name) : base("ttt_node_" + name)
         {
 
         }

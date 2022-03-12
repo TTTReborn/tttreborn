@@ -8,7 +8,7 @@ namespace TTTReborn.UI.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeSettingAttribute : LibraryAttribute
     {
-        public NodeSettingAttribute(string name) : base("node_setting_" + name)
+        public NodeSettingAttribute(string name) : base("ttt_nodesetting_" + name)
         {
 
         }
