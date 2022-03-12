@@ -8,4 +8,12 @@ KeyBindingsPage .tabcontainer .sheets > Panel {
 
 KeyBindingsPage .tabcontainer .sheets > Panel {
     overflow: scroll;
+
+    .glyph {
+        background-size: 80%;
+        background-repeat: no-repeat;
+        background-position: right top;
+        height: 25px;
+        margin-left: -6px;
+    }
 }

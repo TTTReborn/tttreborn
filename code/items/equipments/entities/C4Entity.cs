@@ -91,9 +91,10 @@ namespace TTTReborn.Items
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         }
 
-        public override void Simulate(Client cl)
+        [Event.Frame]
+        private void UpdateDisplayTransform()
         {
-            if (IsClient && !CreatedDisplay)
+            if (!CreatedDisplay)
             {
                 TimerDisplay = new();
                 CreatedDisplay = true;
@@ -105,17 +106,6 @@ namespace TTTReborn.Items
 
                 TimerDisplayLabel = TimerDisplay.Add.Label();
                 TimerDisplayLabel.Text = EMPTY_TIMER;
-            }
-
-            base.Simulate(cl);
-        }
-
-        [Event.Frame]
-        private void UpdateDisplayTransform()
-        {
-            if (!CreatedDisplay)
-            {
-                return;
             }
 
             TimerDisplay.Transform = GetAttachment("timer") ?? Transform;
@@ -233,7 +223,7 @@ namespace TTTReborn.Items
 
                     float distanceMul = 1.0f - Math.Clamp(dist / BOMB_RADIUS, 0.0f, 1.0f);
                     float damage = BOMB_DAMAGE * distanceMul;
-                    float force = (BOMB_FORCE * distanceMul) * ent.PhysicsBody.Mass;
+                    float force = BOMB_FORCE * distanceMul * ent.PhysicsBody.Mass;
                     Vector3 forceDir = (targetPos - sourcePos).Normal;
 
                     ent.TakeDamage(DamageInfo.Explosion(sourcePos, forceDir * force, damage)
@@ -256,6 +246,11 @@ namespace TTTReborn.Items
         [ClientRpc]
         public void ClientUpdateTimer(string timerString)
         {
+            if (!CreatedDisplay)
+            {
+                return;
+            }
+
             TimerDisplayLabel.Text = timerString;
         }
 
@@ -294,17 +289,11 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new(IsArmed ? "USE.C4.DEFUSE" : "USE.C4.ARM", Input.GetKeyWithBinding("+iv_use").ToUpper());
+        public TranslationData TextOnTick => new(IsArmed ? "ITEM.EQUIPMENT.C4.USE.DEFUSE" : "ITEM.EQUIPMENT.C4.USE.ARM");
 
-        public bool CanHint(TTTPlayer client)
-        {
-            return true;
-        }
+        public bool CanHint(TTTPlayer client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
-        {
-            return new Hint(TextOnTick);
-        }
+        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
 
         public void TextTick(TTTPlayer player)
         {
