@@ -233,3 +233,12 @@ Panel, .panel {
         font-size: 15px;
     }
 }
+
+.glyph {
+    background-image-tint: $info;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: right top;
+    height: 25px;
+    margin-left: -6px;
+}
