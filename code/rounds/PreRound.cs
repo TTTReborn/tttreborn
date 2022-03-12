@@ -28,10 +28,10 @@ namespace TTTReborn.Rounds
 
         protected override void OnStart()
         {
-            Gamemode.Game.Instance.MapHandler.Reset();
-
             if (Host.IsServer)
             {
+                Gamemode.Game.Instance.MapHandler.Reset();
+
                 foreach (Client client in Client.All)
                 {
                     if (client.Pawn is TTTPlayer player)

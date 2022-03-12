@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 using Sandbox.Component;
 
@@ -113,13 +115,23 @@ namespace TTTReborn.Player
                 else if (target != null)
                 {
                     TranslationData translationData = new("ENTITY.USE", Utils.GetLibraryName(target.GetType()));
+                    List<InputButton> inputButtons = new()
+                    {
+                        InputButton.Use
+                    };
 
                     if (target is DoorEntity doorEntity)
                     {
                         translationData = doorEntity.State == DoorEntity.DoorState.Open ? new("DOOR.CLOSE") : new("DOOR.OPEN");
+
+                        if (doorEntity.Locked)
+                        {
+                            translationData = new("DOOR.LOCKED");
+                            inputButtons.Clear();
+                        }
                     }
 
-                    _currentHintPanel = new GlyphHint(translationData, InputButton.Use)
+                    _currentHintPanel = new GlyphHint(translationData, inputButtons.ToArray())
                     {
                         Parent = HintDisplay.Instance
                     };

@@ -324,6 +324,7 @@
     },
     "DOOR": {
         "OPEN": "Drücken, um die Tür zu öffnen",
-        "CLOSE": "Drücken, um die Tür zu schließen"
+        "CLOSE": "Drücken, um die Tür zu schließen",
+        "LOCKED": "Die Tür ist verschlossen"
     }
 }

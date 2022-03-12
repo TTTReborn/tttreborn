@@ -59,11 +59,6 @@ namespace TTTReborn.Map
             }
 
             LogicButtons.ForEach(x => x.Reset());
-
-            foreach (DoorEntity doorEntity in DoorEntities)
-            {
-                // TODO
-            }
         }
 
         private void Init(Entity entity)
