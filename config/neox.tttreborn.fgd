@@ -90,7 +90,7 @@
 @PointClass base(BaseProperties_neox_tttreborn) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
 [
 	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Team` for `ttt_team_traitors`, but check the `Role` for `ttt_role_traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team."
-	description(string) : "Description" :  : "On screen tooltip shown on button"
+	description(string) : "On screen tooltip shown on button" :  : "Leave empty if you want to display a hand pointer instead of a text button"
 	range(integer) : "Range" : 1024 : "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 uniques."
 	delay(integer) : "Delay" : 1 : "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers."
 	remove_on_press(boolean) : "Remove On Press" : 0 : "Only allows button to be pressed once per round."

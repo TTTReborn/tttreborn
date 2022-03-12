@@ -19,7 +19,7 @@ namespace TTTReborn.Map
         }
         private string _checkValue = Utils.GetLibraryName(typeof(TraitorTeam));
 
-        [Property("Description", "On screen tooltip shown on button")]
+        [Property("Description", "On screen tooltip shown on button", "Leave empty if you want to display a hand pointer instead of a text button")]
         [Net]
         public string Description { get; private set; }
 

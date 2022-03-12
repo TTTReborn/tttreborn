@@ -85,5 +85,10 @@ namespace TTTReborn.Teams
 
             return Utils.GetObjectByType<Team>(teamType);
         }
+
+        public static bool IsTeamMember(this TTTPlayer self, TTTPlayer other)
+        {
+            return self.Team == other.Team && self.Team.CheckWin(self);
+        }
     }
 }
