@@ -6,6 +6,7 @@ using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Player.Camera;
 using TTTReborn.Roles;
+using TTTReborn.WorldUI;
 
 namespace TTTReborn.Player
 {
@@ -20,6 +21,8 @@ namespace TTTReborn.Player
         public bool IsForcedSpectator { get; set; } = false;
 
         public bool IsInitialSpawning { get; set; } = false;
+
+        public RoleWorldIcon RoleWorldIcon { get; set; }
 
         public new Inventory Inventory
         {
@@ -131,6 +134,18 @@ namespace TTTReborn.Player
 
                     break;
             }
+        }
+
+        public override void ClientSpawn()
+        {
+            base.ClientSpawn();
+
+            if (IsLocalPawn)
+            {
+                return;
+            }
+
+            RoleWorldIcon = new(this);
         }
 
         public override void OnKilled()

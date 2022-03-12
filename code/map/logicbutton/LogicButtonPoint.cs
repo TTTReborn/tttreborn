@@ -40,7 +40,14 @@ namespace TTTReborn.UI
 
             _entity = Entity.FindByIndex(Data.NetworkIdent) as LogicButton;
 
-            _ = Add.Label(_entity.Description);
+            if (!string.IsNullOrEmpty(_entity.Description))
+            {
+                _ = Add.Label(_entity.Description);
+            }
+            else
+            {
+                _ = Add.Image("ui/icons/ttt_button.png");
+            }
         }
 
         public override void Tick()
