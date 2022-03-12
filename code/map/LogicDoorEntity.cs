@@ -6,8 +6,8 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Map
 {
-    [Library("ttt_logic_assigned", Description = "Used to test the assigned team or role of the activator.")]
-    public partial class LogicAssigned : Entity
+    [Library("ttt_logic_doorentity", Description = "Used to assign team or role to a door.")]
+    public partial class RoleDoorEntity : DoorEntity
     {
         [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `ttt_role_traitor`, but check the `Team` for `ttt_team_traitors`.")]
         public string CheckValue
@@ -19,6 +19,11 @@ namespace TTTReborn.Map
             }
         }
         private string _checkValue = Utils.GetLibraryName(typeof(TraitorTeam));
+
+        public override bool IsUsable(Entity user)
+        {
+            return user is TTTPlayer player && (player.Role.Name.Equals(CheckValue) || player.Team.Name.Equals(CheckValue));
+        }
 
         /// <summary>
         /// Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass().
@@ -33,14 +38,13 @@ namespace TTTReborn.Map
         [Input]
         public void Activate(Entity activator)
         {
-            if (activator is TTTPlayer player && Gamemode.Game.Instance.Round is InProgressRound)
+            if (Gamemode.Game.Instance.Round is InProgressRound && IsUsable(activator))
             {
-                if (player.Role.Name.Equals(CheckValue) || player.Team.Name.Equals(CheckValue))
-                {
-                    _ = OnPass.Fire(this);
+                Toggle(activator);
 
-                    return;
-                }
+                _ = OnPass.Fire(this);
+
+                return;
             }
 
             _ = OnFail.Fire(this);
