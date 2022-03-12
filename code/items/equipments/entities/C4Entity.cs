@@ -91,9 +91,10 @@ namespace TTTReborn.Items
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         }
 
-        public override void Simulate(Client cl)
+        [Event.Frame]
+        private void UpdateDisplayTransform()
         {
-            if (IsClient && !CreatedDisplay)
+            if (!CreatedDisplay)
             {
                 TimerDisplay = new();
                 CreatedDisplay = true;
@@ -105,17 +106,6 @@ namespace TTTReborn.Items
 
                 TimerDisplayLabel = TimerDisplay.Add.Label();
                 TimerDisplayLabel.Text = EMPTY_TIMER;
-            }
-
-            base.Simulate(cl);
-        }
-
-        [Event.Frame]
-        private void UpdateDisplayTransform()
-        {
-            if (!CreatedDisplay)
-            {
-                return;
             }
 
             TimerDisplay.Transform = GetAttachment("timer") ?? Transform;
@@ -233,7 +223,7 @@ namespace TTTReborn.Items
 
                     float distanceMul = 1.0f - Math.Clamp(dist / BOMB_RADIUS, 0.0f, 1.0f);
                     float damage = BOMB_DAMAGE * distanceMul;
-                    float force = (BOMB_FORCE * distanceMul) * ent.PhysicsBody.Mass;
+                    float force = BOMB_FORCE * distanceMul * ent.PhysicsBody.Mass;
                     Vector3 forceDir = (targetPos - sourcePos).Normal;
 
                     ent.TakeDamage(DamageInfo.Explosion(sourcePos, forceDir * force, damage)
@@ -256,6 +246,11 @@ namespace TTTReborn.Items
         [ClientRpc]
         public void ClientUpdateTimer(string timerString)
         {
+            if (!CreatedDisplay)
+            {
+                return;
+            }
+
             TimerDisplayLabel.Text = timerString;
         }
 
