@@ -294,17 +294,11 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new(IsArmed ? "USE.C4.DEFUSE" : "USE.C4.ARM", Input.GetKeyWithBinding("+iv_use").ToUpper());
+        public TranslationData TextOnTick => new(IsArmed ? "ITEM.EQUIPMENT.C4.USE.DEFUSE" : "ITEM.EQUIPMENT.C4.USE.ARM");
 
-        public bool CanHint(TTTPlayer client)
-        {
-            return true;
-        }
+        public bool CanHint(TTTPlayer client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
-        {
-            return new Hint(TextOnTick);
-        }
+        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
 
         public void TextTick(TTTPlayer player)
         {

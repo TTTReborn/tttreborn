@@ -138,14 +138,11 @@ namespace TTTReborn.Player
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new(IsIdentified ? "USE.CORPSE.INSPECT" : "USE.CORPSE.IDENTIFY", Input.GetKeyWithBinding("+iv_use").ToUpper());
+        public TranslationData TextOnTick => new(IsIdentified ? "CORPSE.USE.INSPECT" : "CORPSE.USE.IDENTIFY");
 
         public bool CanHint(TTTPlayer client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
-        {
-            return new Hint(TextOnTick);
-        }
+        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
 
         public void TextTick(TTTPlayer confirmingPlayer)
         {

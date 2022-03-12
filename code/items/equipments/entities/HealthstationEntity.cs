@@ -12,8 +12,10 @@ namespace TTTReborn.Items
     [Precached("models/entities/healthstation.vmdl")]
     public partial class HealthstationEntity : Prop, IEntityHint
     {
+        public const float MAX_HEALTH = 200f;
+
         [Net]
-        public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
+        public float StoredHealth { get; set; } = MAX_HEALTH; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
 
         public override string ModelPath => "models/entities/healthstation.vmdl";
 
@@ -51,17 +53,11 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("USE.HEALTHSTATION", Input.GetKeyWithBinding("+iv_use").ToUpper(), $"{StoredHealth}");
+        public TranslationData TextOnTick => new("ITEM.EQUIPMENT.HEALTHSTATION.USE", $"{StoredHealth} / {MAX_HEALTH}");
 
-        public bool CanHint(TTTPlayer client)
-        {
-            return true;
-        }
+        public bool CanHint(TTTPlayer client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
-        {
-            return new Hint(TextOnTick);
-        }
+        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
 
         public void TextTick(TTTPlayer player)
         {

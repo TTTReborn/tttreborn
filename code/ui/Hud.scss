@@ -236,9 +236,8 @@ Panel, .panel {
 
 .glyph {
     background-image-tint: $info;
-    background-size: 80%;
+
+    background-size: 90% 70%;
     background-repeat: no-repeat;
-    background-position: right top;
-    height: 25px;
-    margin-left: -6px;
+    background-position: right center;
 }

@@ -8,15 +8,9 @@ namespace TTTReborn.Player
 
         public bool ShowGlow => false;
 
-        public bool CanHint(TTTPlayer client)
-        {
-            return true;
-        }
+        public bool CanHint(TTTPlayer client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
-        {
-            return new Nameplate(this);
-        }
+        public EntityHintPanel DisplayHint(TTTPlayer client) => new Nameplate(this);
 
         public void TextTick(TTTPlayer player)
         {

@@ -95,17 +95,11 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("USE.PICKUP", Input.GetKeyWithBinding("+iv_use").ToUpper(), new TranslationData("ITEM.WEAPON.AMMO.WEAPON", new TranslationData(IItem.GetTranslationKey(WeaponName, "NAME"))));
+        public TranslationData TextOnTick => new("ITEM.WEAPON.USE", new TranslationData("ITEM.WEAPON.AMMO.WEAPON", new TranslationData(IItem.GetTranslationKey(WeaponName, "NAME"))));
 
-        public bool CanHint(TTTPlayer client)
-        {
-            return true;
-        }
+        public bool CanHint(TTTPlayer client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
-        {
-            return new Hint(TextOnTick);
-        }
+        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
 
         public virtual void PickupStartTouch(Entity other)
         {

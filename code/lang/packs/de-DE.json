@@ -60,6 +60,10 @@
                 "WEAPON": "Es scheint, als wäre '{0}' genutzt worden, um Ihn/Sie zu töten.",
                 "PERK": "Er/Sie trug '{0}'."
             }
+        },
+        "USE": {
+            "IDENTIFY": "Halten, um die Leiche zu identifizieren",
+            "INSPECT": "Halten, um die Leiche zu inspizieren"
         }
     },
     "SCOREBOARD": {
@@ -277,7 +281,8 @@
             "AMMO": {
                 "NAME": "Munition",
                 "WEAPON": "{0} Munition"
-            }
+            },
+            "USE": "Drücken, um '{0}' aufzuheben"
         },
         "EQUIPMENT": {
             "HANDS": {
@@ -290,13 +295,18 @@
                     "DESTROY": "Zerstören",
                     "ARM": "Schärfen",
                     "DEFUSECHANCE": "{0}% Chance zu entschärfen"
+                },
+                "USE": {
+                    "ARM": "Halten, um das C4 scharf zu machen",
+                    "DEFUSE": "Drücken, um das C4 zu entschärfen"
                 }
             },
             "DECOY": {
                 "NAME": "Köder"
             },
             "HEALTHSTATION": {
-                "NAME": "HealthStation"
+                "NAME": "HealthStation",
+                "USE": "Halten, um HealthStation zu nutzen ({0})"
             },
             "MAGNETOSTICK": {
                 "NAME": "MagnetoStick"
@@ -309,18 +319,6 @@
             "RADAR": {
                 "NAME": "Radar"
             }
-        }
-    },
-    "USE": {
-        "PICKUP": "Drücke [{0}] um '{1}' aufzuheben",
-        "HEALTHSTATION": "Halte [{0}] um die HealthStation zu nutzen ({1} Aufladungen)",
-        "C4": {
-            "ARM": "Halte [{0}], um das C4 scharf zu machen",
-            "DEFUSE": "Drücke [{0}], um das C4 zu entschärfen"
-        },
-        "CORPSE": {
-            "IDENTIFY": "Halte [{0}] um die Leiche zu identifizieren",
-            "INSPECT": "Halte [{0}] um die Leiche zu inspizieren"
         }
     }
 }

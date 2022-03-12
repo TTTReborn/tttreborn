@@ -60,6 +60,10 @@
                 "WEAPON": "It appears a '{0}' was used to kill them.",
                 "PERK": "They were carrying a '{0}'."
             }
+        },
+        "USE": {
+            "IDENTIFY": "Hold to identify the corpse",
+            "INSPECT": "Hold to inspect the corpse"
         }
     },
     "SCOREBOARD": {
@@ -277,7 +281,8 @@
             "AMMO": {
                 "NAME": "Ammo",
                 "WEAPON": "{0} Ammo"
-            }
+            },
+            "USE": "Press to pickup '{0}'"
         },
         "EQUIPMENT": {
             "HANDS": {
@@ -290,13 +295,18 @@
                     "DESTROY": "Destroy",
                     "ARM": "Arm",
                     "DEFUSECHANCE": "{0}% chance to defuse"
+                },
+                "USE": {
+                    "ARM": "Hold to arm the C4",
+                    "DEFUSE": "Press to defuse the C4"
                 }
             },
             "DECOY": {
                 "NAME": "Decoy"
             },
             "HEALTHSTATION": {
-                "NAME": "HealthStation"
+                "NAME": "HealthStation",
+                "USE": "Hold to use the HealthStation ({0})"
             },
             "MAGNETOSTICK": {
                 "NAME": "MagnetoStick"
@@ -309,18 +319,6 @@
             "RADAR": {
                 "NAME": "Radar"
             }
-        }
-    },
-    "USE": {
-        "PICKUP": "Press [{0}] to pickup '{1}'",
-        "HEALTHSTATION": "Hold [{0}] to use the HealthStation ({1} charges)",
-        "C4": {
-            "ARM": "Hold [{0}] to arm the C4",
-            "DEFUSE": "Press [{0}] to defuse the C4"
-        },
-        "CORPSE": {
-            "IDENTIFY": "Hold [{0}] to identify the corpse",
-            "INSPECT": "Hold [{0}] to inspect the corpse"
         }
     }
 }
