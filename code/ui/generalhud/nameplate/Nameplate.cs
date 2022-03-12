@@ -19,6 +19,7 @@ namespace TTTReborn.UI
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
         private readonly TranslationLabel _roleLabel;
+        private Role _role;
 
         private struct HealthGroup
         {
@@ -45,6 +46,7 @@ namespace TTTReborn.UI
         public Nameplate(TTTPlayer player) : base()
         {
             Player = player;
+            _role = player.Role;
 
             StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
 
@@ -56,7 +58,10 @@ namespace TTTReborn.UI
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damage-indicator");
-            _roleLabel = _labelHolder.Add.TranslationLabel(new TranslationData("ROLE.NONE.NAME"), "role");
+
+            _roleLabel = _labelHolder.Add.TranslationLabel(new TranslationData(_role.GetTranslationKey("NAME")), "role");
+            _roleLabel.Style.FontColor = _role is NoneRole ? Color.White : _role.Color;
+            _roleLabel.Style.TextShadow.Clear();
 
             this.Enabled(false);
         }
@@ -108,8 +113,13 @@ namespace TTTReborn.UI
 
             _nameLabel.Text = Player.Client?.Name ?? "";
 
-            _roleLabel.UpdateTranslation(new TranslationData(Player.Role.GetTranslationKey("NAME")));
-            _roleLabel.Style.FontColor = Player.Role is NoneRole ? Color.White : Player.Role.Color;
+            if (_role != Player.Role)
+            {
+                _role = Player.Role;
+
+                _roleLabel.UpdateTranslation(new TranslationData(_role.GetTranslationKey("NAME")));
+                _roleLabel.Style.FontColor = _role is NoneRole ? Color.White : _role.Color;
+            }
         }
     }
 }
