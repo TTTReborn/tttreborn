@@ -6,6 +6,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
@@ -17,6 +18,7 @@ namespace TTTReborn.UI
         private readonly Panel _nameHolder;
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
+        private readonly TranslationLabel _roleLabel;
 
         private struct HealthGroup
         {
@@ -33,7 +35,7 @@ namespace TTTReborn.UI
         }
 
         // Pay attention when adding new values! The highest health-based entry has to be the first item, etc.
-        private HealthGroup[] HealthGroupList = new HealthGroup[]
+        private readonly HealthGroup[] HealthGroupList = new[]
         {
             new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 66),
             new HealthGroup("Injured", Color.FromBytes(233, 135, 44), 33),
@@ -54,6 +56,7 @@ namespace TTTReborn.UI
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damage-indicator");
+            _roleLabel = _labelHolder.Add.TranslationLabel(new TranslationData("ROLE.NONE.NAME"), "role");
 
             this.Enabled(false);
         }
@@ -104,6 +107,9 @@ namespace TTTReborn.UI
             }
 
             _nameLabel.Text = Player.Client?.Name ?? "";
+
+            _roleLabel.UpdateTranslation(new TranslationData(Player.Role.GetTranslationKey("NAME")));
+            _roleLabel.Style.FontColor = Player.Role is NoneRole ? Color.White : Player.Role.Color;
         }
     }
 }

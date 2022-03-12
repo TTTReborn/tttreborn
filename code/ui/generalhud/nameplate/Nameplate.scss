@@ -7,7 +7,6 @@ Nameplate {
     opacity: 0;
 
     &.fade-in {
-        transition: opacity 0.15s ease-out;
         opacity: 1;
     }
 
@@ -16,18 +15,15 @@ Nameplate {
         flex-direction: column;
         text-align: center;
         font-weight: 600;
+        font-size: 12px;
 
         .name-holder {
             justify-content: center;
             width: 100%;
 
             .name {
-                font-size: 14px;
+                font-size: 18px;
             }
-        }
-
-        .damage-indicator {
-            font-size: 12px;
         }
     }
 }
