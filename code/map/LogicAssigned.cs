@@ -9,7 +9,7 @@ namespace TTTReborn.Map
     [Library("ttt_logic_assigned", Description = "Used to test the assigned team or role of the activator.")]
     public partial class LogicAssigned : Entity
     {
-        [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`.")]
+        [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `ttt_role_traitor`, but check the `Team` for `ttt_team_traitors`.")]
         public string CheckValue
         {
             get => _checkValue;
