@@ -73,6 +73,70 @@
 ]
 
 //
+// TTTReborn.Map.RoleDoorEntity
+//
+@PointClass base(BaseProperties_neox_tttreborn) tags( SupportsSolids, Dynamic ) model() doorhelper( "movedir", "movedir_islocal", "movedir_type", "distance" ) 
+metadata
+{
+	model_archetypes = [ "animated_model" ]
+}
+= ttt_logic_doorentity : "Used to assign team or role to a door."
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Role` for `ttt_role_traitor`, but check the `Team` for `ttt_team_traitors`."
+	spawnsettings(flags) : "Spawn Settings" : : "Settings that are only applicable when the entity spawns" =
+	[
+		1 : "Use Opens" : 1
+		2 : "Start Locked" : 0
+	]
+	movedir(angle) : "Move Direction (Pitch Yaw Roll)" : "0 0 0" : "The direction the door will move, when it opens."
+	movedir_islocal(boolean) : "Move Direction is Expressed in Local Space" : 1 : "If checked, the movement direction angle is in local space and should be rotated by the entity's angles after spawning."
+	movedir_type(choices) : "Movement Type" : 0 : "Movement type of the door." =
+	[
+		0 : "Moving"
+		1 : "Rotating"
+		2 : "Animating Only"
+	]
+	distance(float) : "Distance" : 0 : "Moving door: The amount, in inches, of the door to leave sticking out of the wall it recedes into when pressed. Negative values make the door recede even further into the wall. Rotating door: The amount, in degrees, that the door should rotate when it's pressed."
+	initial_position(float) { group = "Spawn Settings" min = 0 max = 100 } : "Initial Position" : 0 : "How far the door should be open on spawn where 0% = closed and 100% = fully open."
+	open_away(boolean) { group = "Spawn Settings" } : "Open Away From Player" : 0 : "If checked, rotating doors will try to open away from the activator"
+	speed(float) : "Speed" : 100 : "The speed at which the door moves."
+	close_delay(float) : "Auto Close Delay (-1 stay)" : 4 : "Amount of time, in seconds, after the door has opened before it closes automatically. If the value is set to -1, the door never closes itself."
+	other_doors_to_open(target_destination) : "Other Doors To Open" : "" : "If set, opening this door will open all doors with given entity name. You can also simply name all doors the same for this to work."
+	breakable(boolean) : "Breakable" : 0 : "If the door model supports break pieces and has prop_data with health, this option can be used to allow the door to break like a normal prop would."
+	open_sound(sound) { group = "Sounds" } : "Start Opening Sound" : "" : "Sound to play when the door starts to open."
+	fully_open_sound(sound) { group = "Sounds" } : "Fully Open Sound" : "" : "Sound to play when the door reaches it's fully open position."
+	close_sound(sound) { group = "Sounds" } : "Start Closing Sound" : "" : "Sound to play when the door starts to close."
+	fully_closed_sound(sound) { group = "Sounds" } : "Fully Closed Sound" : "" : "Sound to play when the door reaches it's fully closed position."
+	locked_sound(sound) { group = "Sounds" } : "Locked Sound" : "" : "Sound to play when the door is attempted to be opened, but is locked."
+	moving_sound(sound) { group = "Sounds" } : "Moving Sound" : "" : "Sound to play while the door is moving. Typically this should be looping or very long."
+	open_ease(curve) : "Ease Function" :  : "Used to override the open/close animation of moving and rotating doors. X axis (input, left to right) is the animation, Y axis (output, bottom to top) is how open the door is at that point in the animation."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Activate(void) : ""
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input Toggle(void) : "Toggle the open state of the door. Obeys locked state."
+	input Open(void) : "Open the door. Obeys locked state."
+	input Close(void) : "Close the door. Obeys locked state."
+	input Lock(void) : "Locks the door so it cannot be opened or closed."
+	input Unlock(void) : "Unlocks the door."
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+	output OnLockedUse(void) : "Fired when a player tries to open/close this door with +use, but it's locked"
+	output OnDamaged(void) : "Fired when the entity gets damaged, even if it is unbreakable."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+	output OnOpen(void) : "Fired when the door starts to open. This can be called multiple times during a single \"door opening\""
+	output OnClose(void) : "Fired when the door starts to close. This can be called multiple times during a single \"door closing\""
+	output OnFullyOpen(void) : "Called when the door fully opens."
+	output OnFullyClosed(void) : "Called when the door fully closes."
+]
+
+//
 // TTTReborn.Map.MapSettings
 //
 @PointClass base(BaseProperties_neox_tttreborn) = ttt_map_settings : ""

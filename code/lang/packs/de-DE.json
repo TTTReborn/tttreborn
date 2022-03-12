@@ -318,5 +318,12 @@
         "RADAR": {
             "NAME": "Radar"
         }
+    },
+    "ENTITY": {
+        "USE": "Drücken, um mit '{0}' zu interagieren"
+    },
+    "DOOR": {
+        "OPEN": "Drücken, um die Tür zu öffnen",
+        "CLOSE": "Drücken, um die Tür zu schließen"
     }
 }

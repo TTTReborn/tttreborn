@@ -12,6 +12,7 @@ namespace TTTReborn.Map
         public List<Entity> Ammos { get; private set; } = new();
         public List<Entity> Weapons { get; private set; } = new();
         public List<LogicButton> LogicButtons { get; private set; } = new();
+        public List<DoorEntity> DoorEntities { get; private set; } = new();
 
         public MapHandler()
         {
@@ -58,6 +59,11 @@ namespace TTTReborn.Map
             }
 
             LogicButtons.ForEach(x => x.Reset());
+
+            foreach (DoorEntity doorEntity in DoorEntities)
+            {
+                // TODO
+            }
         }
 
         private void Init(Entity entity)
@@ -73,6 +79,10 @@ namespace TTTReborn.Map
             else if (entity is LogicButton button)
             {
                 LogicButtons.Add(button);
+            }
+            else if (entity is DoorEntity doorEntity)
+            {
+                DoorEntities.Add(doorEntity);
             }
         }
     }
