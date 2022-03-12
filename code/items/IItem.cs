@@ -31,7 +31,7 @@ namespace TTTReborn.Items
 
         void OnRemove();
 
-        string GetTranslationKey(string key);
+        string GetTranslationKey(string key = null);
 
         void Delete();
 
@@ -40,18 +40,6 @@ namespace TTTReborn.Items
         void OnPurchase(TTTPlayer player)
         {
             player.Inventory.TryAdd(this, deleteIfFails: true, makeActive: false);
-        }
-
-        public static string GetTranslationKey(string libraryName, string key)
-        {
-            string[] splits = libraryName.Split('_');
-
-            if (splits[0].ToUpper().Equals("TTT"))
-            {
-                splits = splits[1..];
-            }
-
-            return $"ITEM.{splits[0]}.{string.Join('_', splits[1..])}.{key}".ToUpper();
         }
     }
 }

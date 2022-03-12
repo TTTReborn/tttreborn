@@ -135,7 +135,7 @@ namespace TTTReborn.Items
 
         }
 
-        public string GetTranslationKey(string key) => IItem.GetTranslationKey(LibraryName, key);
+        public string GetTranslationKey(string key) => Utils.GetTranslationKey(LibraryName, key);
 
         public int AvailableAmmo()
         {
@@ -479,7 +479,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("ITEM.WEAPON.USE", new TranslationData(GetTranslationKey("NAME")));
+        public TranslationData TextOnTick => new("WEAPON.USE", new TranslationData(GetTranslationKey("NAME")));
 
         public bool CanHint(TTTPlayer client) => true;
 

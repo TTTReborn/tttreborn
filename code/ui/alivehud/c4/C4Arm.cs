@@ -60,17 +60,17 @@ namespace TTTReborn.UI
             Panel actionButtons = new(contentPanel);
             actionButtons.AddClass("action-button-panel");
 
-            actionButtons.Add.TranslationButton(new TranslationData("ITEM.EQUIPMENT.C4.UI.PICKUP"), null, "button action-button", () =>
+            actionButtons.Add.TranslationButton(new TranslationData("EQUIPMENT.C4.UI.PICKUP"), null, "button action-button", () =>
             {
                 C4Entity.PickUp(Entity.NetworkIdent, Local.Pawn.NetworkIdent);
             });
 
-            actionButtons.Add.TranslationButton(new TranslationData("ITEM.EQUIPMENT.C4.UI.DESTROY"), null, "button action-button", () =>
+            actionButtons.Add.TranslationButton(new TranslationData("EQUIPMENT.C4.UI.DESTROY"), null, "button action-button", () =>
             {
                 C4Entity.Delete(Entity.NetworkIdent);
             });
 
-            actionButtons.Add.TranslationButton(new TranslationData("ITEM.EQUIPMENT.C4.UI.ARM"), null, "button arm-button", () =>
+            actionButtons.Add.TranslationButton(new TranslationData("EQUIPMENT.C4.UI.ARM"), null, "button arm-button", () =>
             {
                 C4Entity.Arm(Entity.NetworkIdent, _selectedPresetIndex);
             });
@@ -92,7 +92,7 @@ namespace TTTReborn.UI
 
             _timer.Text = Utils.TimerString(preset.Timer);
 
-            _defuseChance.UpdateTranslation(new TranslationData("ITEM.EQUIPMENT.C4.UI.DEFUSECHANCE", (1f / preset.Wires * 1000f).FloorToInt() / 10f));
+            _defuseChance.UpdateTranslation(new TranslationData("EQUIPMENT.C4.UI.DEFUSECHANCE", (1f / preset.Wires * 1000f).FloorToInt() / 10f));
         }
 
         public override void Tick()

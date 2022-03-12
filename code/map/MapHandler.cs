@@ -9,8 +9,8 @@ namespace TTTReborn.Map
     public partial class MapHandler
     {
         public MapSettings MapSettings { get; private set; }
-        public List<AmmoRandom> RandomAmmos { get; private set; } = new();
-        public List<WeaponRandom> RandomWeapons { get; private set; } = new();
+        public List<Entity> Ammos { get; private set; } = new();
+        public List<Entity> Weapons { get; private set; } = new();
         public List<LogicButton> LogicButtons { get; private set; } = new();
 
         public MapHandler()
@@ -32,8 +32,8 @@ namespace TTTReborn.Map
             Sandbox.Internal.GlobalGameNamespace.Map.Reset(Game.DefaultCleanupFilter);
             Sandbox.Internal.Decals.RemoveFromWorld();
 
-            RandomAmmos.Clear();
-            RandomWeapons.Clear();
+            Ammos.Clear();
+            Weapons.Clear();
             LogicButtons.Clear();
 
             foreach (Entity entity in Entity.All)
@@ -41,20 +41,34 @@ namespace TTTReborn.Map
                 Init(entity);
             }
 
-            RandomWeapons.ForEach(x => x.Activate());
-            RandomAmmos.ForEach(x => x.Activate());
+            foreach (Entity weapon in Weapons)
+            {
+                if (weapon is WeaponRandom weaponRandom)
+                {
+                    weaponRandom.Activate();
+                }
+            }
+
+            foreach (Entity ammo in Ammos)
+            {
+                if (ammo is AmmoRandom ammoRandom)
+                {
+                    ammoRandom.Activate();
+                }
+            }
+
             LogicButtons.ForEach(x => x.Reset());
         }
 
         private void Init(Entity entity)
         {
-            if (entity is WeaponRandom weaponRandom)
+            if (entity is WeaponRandom || entity is Weapon)
             {
-                RandomWeapons.Add(weaponRandom);
+                Weapons.Add(entity);
             }
-            else if (entity is AmmoRandom ammoRandom)
+            else if (entity is AmmoRandom || entity is Ammo)
             {
-                RandomAmmos.Add(ammoRandom);
+                Ammos.Add(entity);
             }
             else if (entity is LogicButton button)
             {

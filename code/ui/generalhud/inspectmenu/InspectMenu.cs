@@ -173,7 +173,7 @@ namespace TTTReborn.UI
 
             if (_weaponEntry.IsEnabled())
             {
-                TranslationData translationData = new(IItem.GetTranslationKey(killerWeapon, "NAME"));
+                TranslationData translationData = new(Utils.GetTranslationKey(killerWeapon, "NAME"));
 
                 _weaponEntry.SetData($"assets/icons/{killerWeapon}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.WEAPON", translationData));
                 _weaponEntry.SetQuickInfo(translationData);
@@ -193,7 +193,7 @@ namespace TTTReborn.UI
                 foreach (string perkName in perks)
                 {
                     InspectEntry perkEntry = new(this);
-                    perkEntry.SetData($"assets/icons/{perkName}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.PERK", new TranslationData(IItem.GetTranslationKey(perkName, "NAME"))));
+                    perkEntry.SetData($"assets/icons/{perkName}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.PERK", new TranslationData(Utils.GetTranslationKey(perkName, "NAME"))));
 
                     _perkEntries.Add(perkEntry);
                 }

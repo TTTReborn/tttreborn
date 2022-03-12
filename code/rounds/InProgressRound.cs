@@ -55,9 +55,9 @@ namespace TTTReborn.Rounds
         {
             if (Host.IsServer)
             {
-                // For now, if the RandomWeapons.Count of the map is zero, let's just give the players
+                // For now, if the Weapons.Count of the map is zero, let's just give the players
                 // a fixed weapon loadout.
-                if (Gamemode.Game.Instance.MapHandler.RandomWeapons.Count < Players.Count)
+                if (Gamemode.Game.Instance.MapHandler.Weapons.Count < Players.Count)
                 {
                     foreach (TTTPlayer player in Players)
                     {
@@ -191,7 +191,7 @@ namespace TTTReborn.Rounds
         [Event(TTTEvent.Settings.CHANGE)]
         private static void OnChangeSettings()
         {
-            if (Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)
+            if (Host.IsClient || Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)
             {
                 return;
             }

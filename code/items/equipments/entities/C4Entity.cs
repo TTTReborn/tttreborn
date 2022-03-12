@@ -289,7 +289,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new(IsArmed ? "ITEM.EQUIPMENT.C4.USE.DEFUSE" : "ITEM.EQUIPMENT.C4.USE.ARM");
+        public TranslationData TextOnTick => new(IsArmed ? "EQUIPMENT.C4.USE.DEFUSE" : "EQUIPMENT.C4.USE.ARM");
 
         public bool CanHint(TTTPlayer client) => true;
 

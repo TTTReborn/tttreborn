@@ -103,6 +103,6 @@ namespace TTTReborn.Items
             return false;
         }
 
-        public string GetTranslationKey(string key) => IItem.GetTranslationKey(Name, key);
+        public string GetTranslationKey(string key) => Utils.GetTranslationKey(Name, key);
     }
 }

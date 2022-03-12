@@ -2,17 +2,18 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
+using TTTReborn.Teams;
 
 namespace TTTReborn.UI
 {
     public class PostRoundStats
     {
-        public readonly string WinningRole;
+        public readonly string WinningTeam;
         public Color WinningColor;
 
-        public PostRoundStats(string winningRole, Color winningColor)
+        public PostRoundStats(string winningTeam, Color winningColor)
         {
-            WinningRole = winningRole;
+            WinningTeam = winningTeam;
             WinningColor = winningColor;
         }
     }
@@ -72,7 +73,7 @@ namespace TTTReborn.UI
 
             _contentLabel.UpdateTranslation(new TranslationData("WIN.DESCRIPTION"));
 
-            _headerLabel.UpdateTranslation(new TranslationData($"WIN.{_stats.WinningRole[5..].ToUpper()}"));
+            _headerLabel.UpdateTranslation(new TranslationData($"WIN.{Utils.GetTranslationKey(_stats.WinningTeam)[5..]}"));
             _headerLabel.Style.FontColor = _stats.WinningColor;
         }
     }

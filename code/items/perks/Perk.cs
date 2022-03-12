@@ -52,7 +52,7 @@ namespace TTTReborn.Items
             Owner = null;
         }
 
-        public string GetTranslationKey(string key) => IItem.GetTranslationKey(LibraryName, key);
+        public string GetTranslationKey(string key) => Utils.GetTranslationKey(LibraryName, key);
 
         public void Delete()
         {
