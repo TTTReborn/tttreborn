@@ -144,7 +144,7 @@ namespace TTTReborn.Globals
         public static void ClientOpenAndSetPostRoundMenu(string winningTeam, Color winningColor)
         {
             PostRoundMenu.Instance.OpenAndSetPostRoundMenu(new PostRoundStats(
-                winningRole: winningTeam,
+                winningTeam: winningTeam,
                 winningColor: winningColor
             ));
         }

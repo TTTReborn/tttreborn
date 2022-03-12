@@ -258,67 +258,65 @@
     "MAPSELECTION": {
         "VOTE": "Vote for the next map!"
     },
-    "ITEM": {
-        "WEAPON": {
-            "PISTOL": {
-                "NAME": "Pistol"
-            },
-            "SMG": {
-                "NAME": "SMG"
-            },
-            "SHOTGUN": {
-                "NAME": "Shotgun"
-            },
-            "SNIPER": {
-                "NAME": "Sniper"
-            },
-            "KNIFE": {
-                "NAME": "Knife"
-            },
-            "NEWTONLAUNCHER": {
-                "NAME": "Newtonlauncher"
-            },
-            "AMMO": {
-                "NAME": "Ammo",
-                "WEAPON": "{0} Ammo"
-            },
-            "USE": "Press to pickup '{0}'"
+    "WEAPON": {
+        "PISTOL": {
+            "NAME": "Pistol"
         },
-        "EQUIPMENT": {
-            "HANDS": {
-                "NAME": "Hands"
+        "SMG": {
+            "NAME": "SMG"
+        },
+        "SHOTGUN": {
+            "NAME": "Shotgun"
+        },
+        "SNIPER": {
+            "NAME": "Sniper"
+        },
+        "KNIFE": {
+            "NAME": "Knife"
+        },
+        "NEWTONLAUNCHER": {
+            "NAME": "Newtonlauncher"
+        },
+        "AMMO": {
+            "NAME": "Ammo",
+            "WEAPON": "{0} Ammo"
+        },
+        "USE": "Press to pickup '{0}'"
+    },
+    "EQUIPMENT": {
+        "HANDS": {
+            "NAME": "Hands"
+        },
+        "C4": {
+            "NAME": "C4",
+            "UI": {
+                "PICKUP": "Pick Up",
+                "DESTROY": "Destroy",
+                "ARM": "Arm",
+                "DEFUSECHANCE": "{0}% chance to defuse"
             },
-            "C4": {
-                "NAME": "C4",
-                "UI": {
-                    "PICKUP": "Pick Up",
-                    "DESTROY": "Destroy",
-                    "ARM": "Arm",
-                    "DEFUSECHANCE": "{0}% chance to defuse"
-                },
-                "USE": {
-                    "ARM": "Hold to arm the C4",
-                    "DEFUSE": "Press to defuse the C4"
-                }
-            },
-            "DECOY": {
-                "NAME": "Decoy"
-            },
-            "HEALTHSTATION": {
-                "NAME": "HealthStation",
-                "USE": "Hold to use the HealthStation ({0})"
-            },
-            "MAGNETOSTICK": {
-                "NAME": "MagnetoStick"
+            "USE": {
+                "ARM": "Hold to arm the C4",
+                "DEFUSE": "Press to defuse the C4"
             }
         },
-        "PERK": {
-            "BODYARMOR": {
-                "NAME": "Bodyarmor"
-            },
-            "RADAR": {
-                "NAME": "Radar"
-            }
+        "DECOY": {
+            "NAME": "Decoy"
+        },
+        "HEALTHSTATION": {
+            "NAME": "HealthStation",
+            "USE": "Hold to use the HealthStation ({0})"
+        },
+        "MAGNETOSTICK": {
+            "NAME": "MagnetoStick"
+        }
+    },
+    "PERK": {
+        "BODYARMOR": {
+            "NAME": "Bodyarmor"
+        },
+        "RADAR": {
+            "NAME": "Radar"
         }
     }
 }

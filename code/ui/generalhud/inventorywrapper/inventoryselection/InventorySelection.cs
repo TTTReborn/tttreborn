@@ -335,7 +335,7 @@ namespace TTTReborn.UI
                 SlotLabel = Add.Label(Inventory.GetSlotByCategory(carriable.Category).ToString());
                 SlotLabel.AddClass("slot-label");
 
-                _ = Add.TranslationLabel(new TranslationData(IItem.GetTranslationKey(carriable.LibraryName, "NAME")));
+                _ = Add.TranslationLabel(new TranslationData(Utils.GetTranslationKey(carriable.LibraryName, "NAME")));
 
                 _ammoLabel = Add.Label();
 

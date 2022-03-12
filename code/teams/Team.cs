@@ -42,6 +42,8 @@ namespace TTTReborn.Teams
         public virtual bool CheckWin(TTTPlayer player) => true;
 
         public virtual bool CheckPreventWin(TTTPlayer player) => false;
+
+        public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
     }
 
     public static class TeamFunctions

@@ -282,5 +282,24 @@ namespace TTTReborn.Globals
         }
 
         public static object GetPropertyValue(object obj, string propertyName) => GetPropertyValue<object>(obj, propertyName);
+
+        public static string GetTranslationKey(string libraryName, string key = null)
+        {
+            string[] splits = libraryName.Split('_');
+
+            if (splits[0].ToLower().Equals("ttt"))
+            {
+                splits = splits[1..];
+            }
+
+            string translationKey = $"{splits[0]}.{string.Join('_', splits[1..])}";
+
+            if (key != null)
+            {
+                translationKey += $".{key}";
+            }
+
+            return translationKey.ToUpper();
+        }
     }
 }

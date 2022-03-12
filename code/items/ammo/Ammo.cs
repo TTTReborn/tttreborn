@@ -95,7 +95,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("ITEM.WEAPON.USE", new TranslationData("ITEM.WEAPON.AMMO.WEAPON", new TranslationData(IItem.GetTranslationKey(WeaponName, "NAME"))));
+        public TranslationData TextOnTick => new("WEAPON.USE", new TranslationData("WEAPON.AMMO.WEAPON", new TranslationData(Utils.GetTranslationKey(WeaponName, "NAME"))));
 
         public bool CanHint(TTTPlayer client) => true;
 

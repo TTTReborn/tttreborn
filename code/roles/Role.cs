@@ -85,19 +85,7 @@ namespace TTTReborn.Roles
 
         }
 
-        public string GetTranslationKey(string key) => GetTranslationKey(Name, key);
-
-        public static string GetTranslationKey(string libraryName, string key)
-        {
-            string[] splits = libraryName.Split('_');
-
-            if (splits[0].ToUpper().Equals("TTT"))
-            {
-                splits = splits[1..];
-            }
-
-            return $"ROLE.{string.Join('_', splits[1..])}.{key}".ToUpper();
-        }
+        public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
 
         public bool CheckWin(TTTPlayer player)
         {

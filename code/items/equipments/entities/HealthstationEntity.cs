@@ -53,7 +53,7 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("ITEM.EQUIPMENT.HEALTHSTATION.USE", $"{StoredHealth} / {MAX_HEALTH}");
+        public TranslationData TextOnTick => new("EQUIPMENT.HEALTHSTATION.USE", $"{StoredHealth} / {MAX_HEALTH}");
 
         public bool CanHint(TTTPlayer client) => true;
 

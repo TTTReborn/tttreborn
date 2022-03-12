@@ -258,67 +258,65 @@
     "MAPSELECTION": {
         "VOTE": "Wähle die nächste Map!"
     },
-    "ITEM": {
-        "WEAPON": {
-            "PISTOL": {
-                "NAME": "Pistole"
-            },
-            "SMG": {
-                "NAME": "SMG"
-            },
-            "SHOTGUN": {
-                "NAME": "Schrot"
-            },
-            "SNIPER": {
-                "NAME": "Scharfschützengewehr"
-            },
-            "KNIFE": {
-                "NAME": "Messer"
-            },
-            "NEWTONLAUNCHER": {
-                "NAME": "Newtonlauncher"
-            },
-            "AMMO": {
-                "NAME": "Munition",
-                "WEAPON": "{0} Munition"
-            },
-            "USE": "Drücken, um '{0}' aufzuheben"
+    "WEAPON": {
+        "PISTOL": {
+            "NAME": "Pistole"
         },
-        "EQUIPMENT": {
-            "HANDS": {
-                "NAME": "Hände"
+        "SMG": {
+            "NAME": "SMG"
+        },
+        "SHOTGUN": {
+            "NAME": "Schrot"
+        },
+        "SNIPER": {
+            "NAME": "Scharfschützengewehr"
+        },
+        "KNIFE": {
+            "NAME": "Messer"
+        },
+        "NEWTONLAUNCHER": {
+            "NAME": "Newtonlauncher"
+        },
+        "AMMO": {
+            "NAME": "Munition",
+            "WEAPON": "{0} Munition"
+        },
+        "USE": "Drücken, um '{0}' aufzuheben"
+    },
+    "EQUIPMENT": {
+        "HANDS": {
+            "NAME": "Hände"
+        },
+        "C4": {
+            "NAME": "C4",
+            "UI": {
+                "PICKUP": "Aufheben",
+                "DESTROY": "Zerstören",
+                "ARM": "Schärfen",
+                "DEFUSECHANCE": "{0}% Chance zu entschärfen"
             },
-            "C4": {
-                "NAME": "C4",
-                "UI": {
-                    "PICKUP": "Aufheben",
-                    "DESTROY": "Zerstören",
-                    "ARM": "Schärfen",
-                    "DEFUSECHANCE": "{0}% Chance zu entschärfen"
-                },
-                "USE": {
-                    "ARM": "Halten, um das C4 scharf zu machen",
-                    "DEFUSE": "Drücken, um das C4 zu entschärfen"
-                }
-            },
-            "DECOY": {
-                "NAME": "Köder"
-            },
-            "HEALTHSTATION": {
-                "NAME": "HealthStation",
-                "USE": "Halten, um HealthStation zu nutzen ({0})"
-            },
-            "MAGNETOSTICK": {
-                "NAME": "MagnetoStick"
+            "USE": {
+                "ARM": "Halten, um das C4 scharf zu machen",
+                "DEFUSE": "Drücken, um das C4 zu entschärfen"
             }
         },
-        "PERK": {
-            "BODYARMOR": {
-                "NAME": "Körperschild"
-            },
-            "RADAR": {
-                "NAME": "Radar"
-            }
+        "DECOY": {
+            "NAME": "Köder"
+        },
+        "HEALTHSTATION": {
+            "NAME": "HealthStation",
+            "USE": "Halten, um HealthStation zu nutzen ({0})"
+        },
+        "MAGNETOSTICK": {
+            "NAME": "MagnetoStick"
+        }
+    },
+    "PERK": {
+        "BODYARMOR": {
+            "NAME": "Körperschild"
+        },
+        "RADAR": {
+            "NAME": "Radar"
         }
     }
 }
