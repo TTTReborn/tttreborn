@@ -6,6 +6,7 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 using TTTReborn.Player;
+using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
@@ -17,6 +18,8 @@ namespace TTTReborn.UI
         private readonly Panel _nameHolder;
         private readonly Label _nameLabel;
         private readonly Label _damageIndicatorLabel;
+        private readonly TranslationLabel _roleLabel;
+        private Role _role;
 
         private struct HealthGroup
         {
@@ -33,7 +36,7 @@ namespace TTTReborn.UI
         }
 
         // Pay attention when adding new values! The highest health-based entry has to be the first item, etc.
-        private HealthGroup[] HealthGroupList = new HealthGroup[]
+        private readonly HealthGroup[] HealthGroupList = new[]
         {
             new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 66),
             new HealthGroup("Injured", Color.FromBytes(233, 135, 44), 33),
@@ -43,6 +46,7 @@ namespace TTTReborn.UI
         public Nameplate(TTTPlayer player) : base()
         {
             Player = player;
+            _role = player.Role;
 
             StyleSheet.Load("/ui/generalhud/nameplate/Nameplate.scss");
 
@@ -54,6 +58,10 @@ namespace TTTReborn.UI
             _nameLabel = _nameHolder.Add.Label("", "name");
 
             _damageIndicatorLabel = _labelHolder.Add.Label("", "damage-indicator");
+
+            _roleLabel = _labelHolder.Add.TranslationLabel(new TranslationData(_role.GetTranslationKey("NAME")), "role");
+            _roleLabel.Style.FontColor = _role is NoneRole ? Color.White : _role.Color;
+            _roleLabel.Style.TextShadow.Clear();
 
             this.Enabled(false);
         }
@@ -104,6 +112,14 @@ namespace TTTReborn.UI
             }
 
             _nameLabel.Text = Player.Client?.Name ?? "";
+
+            if (_role != Player.Role)
+            {
+                _role = Player.Role;
+
+                _roleLabel.UpdateTranslation(new TranslationData(_role.GetTranslationKey("NAME")));
+                _roleLabel.Style.FontColor = _role is NoneRole ? Color.White : _role.Color;
+            }
         }
     }
 }
