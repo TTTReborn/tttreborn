@@ -6,7 +6,6 @@ using Sandbox;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
-using TTTReborn.Player;
 using TTTReborn.UI;
 
 namespace TTTReborn.Items
@@ -280,7 +279,7 @@ namespace TTTReborn.Items
         {
             if (FindByIndex(c4EntityIdent) is C4Entity c4Entity && !c4Entity.IsArmed)
             {
-                if (FindByIndex(playerIdent) is TTTPlayer player && player.Inventory.TryAdd(new C4Equipment()))
+                if (FindByIndex(playerIdent) is Player player && player.Inventory.TryAdd(new C4Equipment()))
                 {
                     c4Entity.Delete();
                 }
@@ -291,11 +290,11 @@ namespace TTTReborn.Items
 
         public TranslationData TextOnTick => new(IsArmed ? "EQUIPMENT.C4.USE.DEFUSE" : "EQUIPMENT.C4.USE.ARM");
 
-        public bool CanHint(TTTPlayer client) => true;
+        public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
 
-        public void TextTick(TTTPlayer player)
+        public void TextTick(Player player)
         {
             if (IsClient)
             {

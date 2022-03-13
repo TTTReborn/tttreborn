@@ -137,11 +137,11 @@ namespace TTTReborn.Globalization
     }
 }
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     using Globalization;
 
-    public partial class TTTPlayer
+    public partial class Player
     {
         [ClientCmd("ttt_language")]
         public static void ChangeLanguage(string name = null)

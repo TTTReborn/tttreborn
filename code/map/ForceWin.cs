@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
 
@@ -34,7 +33,7 @@ namespace TTTReborn.Map
         {
             Team winningTeam;
 
-            if (UseActivatorsTeam && activator is TTTPlayer player)
+            if (UseActivatorsTeam && activator is Player player)
             {
                 winningTeam = player.Team;
             }

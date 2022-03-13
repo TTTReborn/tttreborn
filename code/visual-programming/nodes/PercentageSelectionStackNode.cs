@@ -4,8 +4,6 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.VisualProgramming
 {
     [StackNode("percentage_selection")]
@@ -27,7 +25,7 @@ namespace TTTReborn.VisualProgramming
                 throw new NodeStackException("Missing values in PercentageSelectionStackNode.");
             }
 
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            if (input == null || input[0] is not List<Player> playerList)
             {
                 return null;
             }
@@ -83,7 +81,7 @@ namespace TTTReborn.VisualProgramming
                     break;
                 }
 
-                List<TTTPlayer> selectedPlayers = new();
+                List<Player> selectedPlayers = new();
 
                 for (int index = 0; index < playerAmounts[i]; index++)
                 {
@@ -103,7 +101,7 @@ namespace TTTReborn.VisualProgramming
 
             if (playerList.Count > 0)
             {
-                (buildArray[^1] as List<TTTPlayer>).AddRange(playerList);
+                (buildArray[^1] as List<Player>).AddRange(playerList);
             }
 
             return buildArray;

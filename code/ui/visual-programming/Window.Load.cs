@@ -44,7 +44,7 @@ namespace TTTReborn.UI.VisualProgramming
                 return;
             }
 
-            Dictionary<string, object> jsonData = Player.TTTPlayer.LoadVisualProgramming(fileSelection.CurrentFolderPath, fileName + VISUALPROGRAMMING_FILE_EXTENSION, Utils.Realm.Client);
+            Dictionary<string, object> jsonData = Player.LoadVisualProgramming(fileSelection.CurrentFolderPath, fileName + VISUALPROGRAMMING_FILE_EXTENSION, Utils.Realm.Client);
 
             if (jsonData == null)
             {
@@ -82,9 +82,9 @@ namespace TTTReborn.UI.VisualProgramming
     }
 }
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
         internal static Dictionary<string, object> LoadVisualProgramming(string path, string fileName, Utils.Realm realm)
         {

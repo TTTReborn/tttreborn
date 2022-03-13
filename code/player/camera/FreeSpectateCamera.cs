@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Player.Camera
+namespace TTTReborn.Camera
 {
     public partial class FreeSpectateCamera : CameraMode, IObservationCamera
     {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Player;
 using TTTReborn.Teams;
 
 namespace TTTReborn.UI
@@ -63,7 +62,7 @@ namespace TTTReborn.UI
 
         public void OnTab()
         {
-            if (Local.Pawn is not TTTPlayer player || player.LifeState != LifeState.Alive)
+            if (Local.Pawn is not Player player || player.LifeState != LifeState.Alive)
             {
                 return;
             }
@@ -80,7 +79,7 @@ namespace TTTReborn.UI
 
             bool isAlive = Local.Pawn != null && Local.Pawn.LifeState == LifeState.Alive;
 
-            if (isAlive && Local.Pawn is TTTPlayer player && IsTeamChatting)
+            if (isAlive && Local.Pawn is Player player && IsTeamChatting)
             {
                 _inputTeamIndicator.Style.BackgroundColor = player.Team.Color;
                 _inputPanel.Style.BorderColor = player.Team.Color;
@@ -132,7 +131,7 @@ namespace TTTReborn.UI
 
             string msg = _inputField.Text.Trim();
 
-            if (!string.IsNullOrWhiteSpace(msg) && Local.Pawn is TTTPlayer)
+            if (!string.IsNullOrWhiteSpace(msg) && Local.Pawn is Player)
             {
                 if (wasTeamChatting)
                 {
@@ -219,7 +218,7 @@ namespace TTTReborn.UI
 
             Messages.Add(chatEntry);
         }
-        public static bool CanUseTeamChat(TTTPlayer player)
+        public static bool CanUseTeamChat(Player player)
         {
             return player.LifeState == LifeState.Alive && player.Team.GetType() == typeof(TraitorTeam);
         }
@@ -273,7 +272,7 @@ namespace TTTReborn.UI
             Assert.NotNull(ConsoleSystem.Caller);
 
             // TODO: Consider RegEx to remove any messed up user chat messages.
-            if (ConsoleSystem.Caller.Pawn is not TTTPlayer player || !CanUseTeamChat(player) || message.Contains('\n') || message.Contains('\r'))
+            if (ConsoleSystem.Caller.Pawn is not Player player || !CanUseTeamChat(player) || message.Contains('\n') || message.Contains('\r'))
             {
                 return;
             }

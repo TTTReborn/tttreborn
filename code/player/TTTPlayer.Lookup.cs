@@ -1,8 +1,8 @@
 using Sandbox;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    partial class TTTPlayer
+    partial class Player
     {
         private T IsLookingAtType<T>(float distance)
         {

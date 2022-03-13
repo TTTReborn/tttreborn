@@ -288,7 +288,7 @@ namespace TTTReborn.VisualProgramming
 
             string settingsPath = GetSettingsPathByData(Utils.Realm.Server);
 
-            Dictionary<string, object> jsonData = Player.TTTPlayer.LoadVisualProgramming(settingsPath, DefaultSettingsFile, Utils.Realm.Server);
+            Dictionary<string, object> jsonData = Player.LoadVisualProgramming(settingsPath, DefaultSettingsFile, Utils.Realm.Server);
 
             if (jsonData == null)
             {

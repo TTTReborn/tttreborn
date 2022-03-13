@@ -4,9 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using Steamworks;
-
-using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
@@ -15,15 +12,15 @@ namespace TTTReborn.UI
     {
         public Friend Friend;
 
-        readonly Label Name;
-        readonly Image Avatar;
-        readonly Client Client;
+        public readonly Label Name;
+        public readonly Image Avatar;
+        public readonly Client Client;
 
         private float _voiceLevel = 0.5f;
         private float _targetVoiceLevel = 0;
-        private float _voiceTimeout = 0.1f;
+        private const float VOICE_TIMEOUT = 0.1f;
 
-        RealTimeSince timeSincePlayed;
+        private RealTimeSince _timeSincePlayed;
 
         public VoiceChatEntry(Panel parent, Client client) : base(parent)
         {
@@ -46,11 +43,11 @@ namespace TTTReborn.UI
 
         public void Update(float level)
         {
-            timeSincePlayed = 0;
+            _timeSincePlayed = 0;
             Name.Text = Friend.Name;
             _targetVoiceLevel = level;
 
-            if (Client != null && Client.IsValid() && Client.Pawn is TTTPlayer player)
+            if (Client != null && Client.IsValid() && Client.Pawn is Player player)
             {
                 SetClass("background-color-spectator", player.LifeState == LifeState.Dead);
 
@@ -70,7 +67,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            float timeoutInv = 1 - (timeSincePlayed / _voiceTimeout);
+            float timeoutInv = 1 - (_timeSincePlayed / VOICE_TIMEOUT);
             timeoutInv = MathF.Min(timeoutInv * 2.0f, 1.0f);
 
             if (timeoutInv <= 0)

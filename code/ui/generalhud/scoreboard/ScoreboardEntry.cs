@@ -2,7 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
@@ -48,7 +47,7 @@ namespace TTTReborn.UI
 
             SetClass("me", Client == Local.Client);
 
-            if (Client.Pawn is not TTTPlayer player)
+            if (Client.Pawn is not Player player)
             {
                 return;
             }

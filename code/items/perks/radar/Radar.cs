@@ -3,7 +3,6 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Player;
 using TTTReborn.Teams;
 using TTTReborn.UI;
 
@@ -46,14 +45,14 @@ namespace TTTReborn.Items
         {
             if (Host.IsServer)
             {
-                if (Owner is not TTTPlayer owner)
+                if (Owner is not Player owner)
                 {
                     return;
                 }
 
                 List<RadarPointData> pointData = new();
 
-                foreach (TTTPlayer player in Globals.Utils.GetAlivePlayers())
+                foreach (Player player in Globals.Utils.GetAlivePlayers())
                 {
                     if (player.Client.PlayerId == owner.Client.PlayerId)
                     {
@@ -123,7 +122,7 @@ namespace TTTReborn.Items
         }
 
         [ClientRpc]
-        public static void ClientSendRadarPositions(TTTPlayer player, RadarPointData[] points)
+        public static void ClientSendRadarPositions(Player player, RadarPointData[] points)
         {
             if (!player.IsValid() || player != Local.Pawn)
             {

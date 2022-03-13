@@ -6,7 +6,11 @@
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "ResourcePaths": [],
+  "ResourcePaths": [
+    "/weapons/*",
+    "/sounds/*",
+    "/materials/*"
+  ],
   "HasCode": true,
   "CodePath": "code",
   "RootNamespace": "TTTReborn"

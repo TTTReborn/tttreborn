@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Player.Camera;
+using TTTReborn.Camera;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
-        private TTTPlayer _spectatingPlayer;
-        public TTTPlayer CurrentPlayer
+        private Player _spectatingPlayer;
+        public Player CurrentPlayer
         {
             get => _spectatingPlayer ?? this;
             set
@@ -34,9 +34,9 @@ namespace TTTReborn.Player
         private int _targetIdx = 0;
 
         [Event(TTTEvent.Player.DIED)]
-        private static void OnPlayerDied(TTTPlayer deadPlayer)
+        private static void OnPlayerDied(Player deadPlayer)
         {
-            if (!Host.IsClient || Local.Pawn is not TTTPlayer player)
+            if (!Host.IsClient || Local.Pawn is not Player player)
             {
                 return;
             }
@@ -49,11 +49,11 @@ namespace TTTReborn.Player
 
         public void UpdateObservatedPlayer()
         {
-            TTTPlayer oldObservatedPlayer = CurrentPlayer;
+            Player oldObservatedPlayer = CurrentPlayer;
 
             CurrentPlayer = null;
 
-            List<TTTPlayer> players = Utils.GetAlivePlayers();
+            List<Player> players = Utils.GetAlivePlayers();
 
             if (players.Count > 0)
             {

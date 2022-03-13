@@ -1,7 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
@@ -23,7 +22,7 @@ namespace TTTReborn.UI
 
             bool isLeftLocal = leftClient == Local.Client;
 
-            TTTPlayer leftPlayer = leftClient.Pawn as TTTPlayer;
+            Player leftPlayer = leftClient.Pawn as Player;
 
             Label leftLabel = e.AddLabel(isLeftLocal ? "You" : leftClient.Name, "left");
             leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
@@ -50,14 +49,14 @@ namespace TTTReborn.UI
             bool isLeftLocal = leftClient == Local.Client;
             bool isRightLocal = rightClient == Local.Client;
 
-            TTTPlayer leftPlayer = leftClient.Pawn as TTTPlayer;
+            Player leftPlayer = leftClient.Pawn as Player;
 
             Label leftLabel = e.AddLabel(isLeftLocal ? "You" : leftClient.Name, "left");
             leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
 
             e.AddLabel(method, "method");
 
-            TTTPlayer rightPlayer = rightClient.Pawn as TTTPlayer;
+            Player rightPlayer = rightClient.Pawn as Player;
 
             Label rightLabel = e.AddLabel(isRightLocal ? "You" : rightClient.Name, "right");
             rightLabel.Style.FontColor = rightPlayer.Role is NoneRole ? Color.White : rightPlayer.Role.Color;

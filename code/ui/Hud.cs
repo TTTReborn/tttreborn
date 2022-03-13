@@ -4,7 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Events;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -42,7 +41,7 @@ namespace TTTReborn.UI
 
             _ = new Hud();
 
-            if (Local.Client.Pawn is TTTPlayer player)
+            if (Local.Client.Pawn is Player player)
             {
                 Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
             }
@@ -51,7 +50,7 @@ namespace TTTReborn.UI
         }
 
         [Event(TTTEvent.Player.SPAWNED)]
-        private void OnPlayerSpawned(TTTPlayer player)
+        private void OnPlayerSpawned(Player player)
         {
             if (IsServer || player != Local.Client.Pawn)
             {
@@ -62,7 +61,7 @@ namespace TTTReborn.UI
         }
 
         [Event(TTTEvent.Player.DIED)]
-        private void OnPlayerDied(TTTPlayer deadPlayer)
+        private void OnPlayerDied(Player deadPlayer)
         {
             if (deadPlayer != Local.Client.Pawn)
             {
@@ -80,7 +79,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            new Hud().OnPlayerSpawned(client.Pawn as TTTPlayer); // InitialSpawn event is called after Spawned event, so we have to initialize manually
+            new Hud().OnPlayerSpawned(client.Pawn as Player); // InitialSpawn event is called after Spawned event, so we have to initialize manually
         }
 
         public class GeneralHud : Panel

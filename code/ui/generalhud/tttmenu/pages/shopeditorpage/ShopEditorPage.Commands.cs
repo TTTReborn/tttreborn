@@ -4,7 +4,6 @@ using System.Text.Json;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
@@ -108,13 +107,13 @@ namespace TTTReborn.UI
             {
                 foreach (Client client in Client.All)
                 {
-                    if (client.Pawn is TTTPlayer player && player.Role.Equals(roleName))
+                    if (client.Pawn is Player player && player.Role.Equals(roleName))
                     {
                         player.Shop.Enabled = toggle;
                     }
                 }
             }
-            else if (Local.Client?.Pawn is TTTPlayer player && player.Role.Name.Equals(roleName))
+            else if (Local.Client?.Pawn is Player player && player.Role.Name.Equals(roleName))
             {
                 player.Shop.Enabled = toggle;
             }

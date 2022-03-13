@@ -9,9 +9,9 @@ using TTTReborn.Items;
 using TTTReborn.Rounds;
 using TTTReborn.UI;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
         public HashSet<string> BoughtItemsSet = new();
 
@@ -108,7 +108,7 @@ namespace TTTReborn.Player
         {
             if (newRound is PreRound preRound)
             {
-                foreach (TTTPlayer player in Utils.GetPlayers())
+                foreach (Player player in Utils.GetPlayers())
                 {
                     player.BoughtItemsSet.Clear();
                 }
@@ -118,7 +118,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public static void ClientBoughtItem(string itemName)
         {
-            (Local.Pawn as TTTPlayer).BoughtItemsSet.Add(itemName);
+            (Local.Pawn as Player).BoughtItemsSet.Add(itemName);
 
             UpdateQuickShop();
         }
@@ -145,7 +145,7 @@ namespace TTTReborn.Player
         [ClientRpc]
         public static void ClientUpdateShop(string shopJson)
         {
-            (Local.Pawn as TTTPlayer).Shop = Shop.InitializeFromJSON(shopJson);
+            (Local.Pawn as Player).Shop = Shop.InitializeFromJSON(shopJson);
         }
     }
 }

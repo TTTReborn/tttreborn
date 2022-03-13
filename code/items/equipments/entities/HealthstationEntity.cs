@@ -3,7 +3,6 @@ using System;
 using Sandbox;
 
 using TTTReborn.Globalization;
-using TTTReborn.Player;
 using TTTReborn.UI;
 
 namespace TTTReborn.Items
@@ -33,7 +32,7 @@ namespace TTTReborn.Items
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         }
 
-        private bool HealPlayer(TTTPlayer player)
+        private bool HealPlayer(Player player)
         {
             float healthNeeded = player.MaxHealth - player.Health;
 
@@ -55,11 +54,11 @@ namespace TTTReborn.Items
 
         public TranslationData TextOnTick => new("EQUIPMENT.HEALTHSTATION.USE", $"{StoredHealth} / {MAX_HEALTH}");
 
-        public bool CanHint(TTTPlayer client) => true;
+        public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
 
-        public void TextTick(TTTPlayer player)
+        public void TextTick(Player player)
         {
             if (IsClient || player.LifeState != LifeState.Alive)
             {

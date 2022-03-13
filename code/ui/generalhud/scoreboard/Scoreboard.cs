@@ -5,7 +5,6 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Events;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -87,7 +86,7 @@ namespace TTTReborn.UI
         }
 
         [Event(TTTEvent.Player.SPAWNED)]
-        private void OnPlayerSpawned(TTTPlayer player)
+        private void OnPlayerSpawned(Player player)
         {
             UpdateClient(player.Client);
         }
@@ -272,7 +271,7 @@ namespace TTTReborn.UI
             {
                 group = DefaultScoreboardGroup.Spectator.ToString();
             }
-            else if (client.PlayerId != 0 && client.Pawn is TTTPlayer player)
+            else if (client.PlayerId != 0 && client.Pawn is Player player)
             {
                 if (player.IsConfirmed)
                 {

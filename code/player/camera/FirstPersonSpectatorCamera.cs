@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Player.Camera
+namespace TTTReborn.Camera
 {
     public partial class FirstPersonSpectatorCamera : CameraMode, IObservationCamera
     {
@@ -10,7 +10,7 @@ namespace TTTReborn.Player.Camera
         {
             base.Deactivated();
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }
@@ -21,7 +21,7 @@ namespace TTTReborn.Player.Camera
 
         public override void Update()
         {
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }
@@ -40,7 +40,7 @@ namespace TTTReborn.Player.Camera
             }
         }
 
-        public void OnUpdateObservatedPlayer(TTTPlayer oldObservatedPlayer, TTTPlayer newObservatedPlayer)
+        public void OnUpdateObservatedPlayer(Player oldObservatedPlayer, Player newObservatedPlayer)
         {
             if (oldObservatedPlayer != null)
             {

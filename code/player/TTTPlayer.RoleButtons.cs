@@ -8,9 +8,9 @@ using TTTReborn.Map;
 using TTTReborn.Roles;
 using TTTReborn.UI;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
         public static Dictionary<int, LogicButtonData> LogicButtons = new();
         public static Dictionary<int, LogicButtonPoint> LogicButtonPoints = new();
@@ -46,7 +46,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            foreach (TTTPlayer player in Utils.GetPlayers())
+            foreach (Player player in Utils.GetPlayers())
             {
                 player.SendLogicButtonsToClient();
             }
@@ -99,7 +99,7 @@ namespace TTTReborn.Player
         [ServerCmd("ttt_debug_sendrb")]
         public static void ForceRBSend()
         {
-            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+            Player player = ConsoleSystem.Caller.Pawn as Player;
 
             if (!player.IsValid())
             {
@@ -116,7 +116,7 @@ namespace TTTReborn.Player
         [ServerCmd]
         public static void ActivateLogicButton(int networkIdent)
         {
-            if (ConsoleSystem.Caller.Pawn is not TTTPlayer player)
+            if (ConsoleSystem.Caller.Pawn is not Player player)
             {
                 Log.Warning("Server received call from null player to activate logic button.");
 
@@ -141,7 +141,7 @@ namespace TTTReborn.Player
         // Client keybinding for activating button within focus.
         public static void TickLogicButtonActivate()
         {
-            if (Local.Pawn is not TTTPlayer player || FocusedButton == null || !Input.Pressed(InputButton.Use))
+            if (Local.Pawn is not Player player || FocusedButton == null || !Input.Pressed(InputButton.Use))
             {
                 return;
             }

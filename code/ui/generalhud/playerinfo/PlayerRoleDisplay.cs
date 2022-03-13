@@ -3,7 +3,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -24,14 +23,14 @@ namespace TTTReborn.UI
             _roleLabel.AddClass("centered");
             _roleLabel.AddClass("role-label");
 
-            OnRoleUpdate(Local.Pawn as TTTPlayer);
+            OnRoleUpdate(Local.Pawn as Player);
         }
 
         public override void Tick()
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }
@@ -40,9 +39,9 @@ namespace TTTReborn.UI
         }
 
         [Event(Events.TTTEvent.Player.Role.SELECT)]
-        private void OnRoleUpdate(TTTPlayer player)
+        private void OnRoleUpdate(Player player)
         {
-            if (player == null || player != Local.Pawn as TTTPlayer)
+            if (player == null || player != Local.Pawn as Player)
             {
                 return;
             }

@@ -1,7 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Map
 {
     [Library("ttt_credit_adjust", Description = "Changes the amount of credits upon the activator.")]
@@ -13,7 +11,7 @@ namespace TTTReborn.Map
         [Input]
         public void ExchangeCredits(Entity activator)
         {
-            if (activator is TTTPlayer player)
+            if (activator is Player player)
             {
                 if (player.Credits >= Credits)
                 {

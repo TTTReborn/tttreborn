@@ -4,14 +4,14 @@ using Sandbox;
 
 using TTTReborn.Items;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public partial class PerksInventory
     {
         private List<Perk> PerkList { get; } = new();
-        private readonly TTTPlayer _owner;
+        private readonly Player _owner;
 
-        public PerksInventory(TTTPlayer owner)
+        public PerksInventory(Player owner)
         {
             _owner = owner;
         }

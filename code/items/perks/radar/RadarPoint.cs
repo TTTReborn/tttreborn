@@ -3,7 +3,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -42,7 +41,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }

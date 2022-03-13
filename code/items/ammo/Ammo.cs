@@ -3,7 +3,6 @@ using System;
 using Sandbox;
 
 using TTTReborn.Globalization;
-using TTTReborn.Player;
 using TTTReborn.UI;
 
 namespace TTTReborn.Items
@@ -97,13 +96,13 @@ namespace TTTReborn.Items
 
         public TranslationData TextOnTick => new("WEAPON.USE", new TranslationData("WEAPON.AMMO.WEAPON", new TranslationData(Utils.GetTranslationKey(WeaponName, "NAME"))));
 
-        public bool CanHint(TTTPlayer client) => true;
+        public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
 
         public virtual void PickupStartTouch(Entity other)
         {
-            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is TTTPlayer player)
+            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is Player player)
             {
                 LastDropOwner = null;
 
@@ -113,13 +112,13 @@ namespace TTTReborn.Items
 
         public virtual void PickupEndTouch(Entity other)
         {
-            if (other is TTTPlayer && LastDropOwner == other)
+            if (other is Player && LastDropOwner == other)
             {
                 LastDropOwner = null;
             }
         }
 
-        public void TextTick(TTTPlayer player)
+        public void TextTick(Player player)
         {
             if (IsClient || player.LifeState != LifeState.Alive)
             {
@@ -137,7 +136,7 @@ namespace TTTReborn.Items
             }
         }
 
-        public void Pickup(TTTPlayer player)
+        public void Pickup(Player player)
         {
             string ammoType = LibraryName.ToLower();
             Inventory inventory = player.Inventory;

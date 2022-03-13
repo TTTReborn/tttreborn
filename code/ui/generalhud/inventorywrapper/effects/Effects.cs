@@ -4,7 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -16,7 +15,7 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/generalhud/inventorywrapper/effects/Effects.scss");
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }

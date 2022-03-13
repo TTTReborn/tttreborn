@@ -3,7 +3,6 @@ using System;
 using Sandbox;
 
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.Rounds
 {
@@ -40,25 +39,25 @@ namespace TTTReborn.Rounds
             OnFinish();
         }
 
-        public virtual void OnPlayerSpawn(TTTPlayer player)
+        public virtual void OnPlayerSpawn(Player player)
         {
             bool handsAdded = player.Inventory.TryAdd(new Hands(), deleteIfFails: true, makeActive: true);
 
             Log.Debug($"Attempted to add Hands to {player.Client.Name}. Result: '{handsAdded}'");
         }
 
-        public virtual void OnPlayerKilled(TTTPlayer player)
+        public virtual void OnPlayerKilled(Player player)
         {
 
         }
 
-        public virtual void OnPlayerJoin(TTTPlayer player)
+        public virtual void OnPlayerJoin(Player player)
         {
 
         }
 
 
-        public virtual void OnPlayerLeave(TTTPlayer player)
+        public virtual void OnPlayerLeave(Player player)
         {
 
         }

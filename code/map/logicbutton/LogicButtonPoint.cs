@@ -5,7 +5,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Map;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -54,7 +53,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }
@@ -68,9 +67,9 @@ namespace TTTReborn.UI
                 Style.Display = DisplayMode.None;
 
                 // Make sure our client is no longer tracking this element.
-                if (TTTPlayer.FocusedButton == this)
+                if (Player.FocusedButton == this)
                 {
-                    TTTPlayer.FocusedButton = null;
+                    Player.FocusedButton = null;
                 }
 
                 this.Enabled(false);
@@ -86,16 +85,16 @@ namespace TTTReborn.UI
                 Style.Opacity = Math.Clamp(1f - (player.Position.Distance(Position) - _minViewDistance) / (_maxViewDistance - _minViewDistance), 0f, 1f);
 
                 // Update our 'focus' CSS look if our player currently is looking near this point.
-                SetClass("focus", TTTPlayer.FocusedButton == this);
+                SetClass("focus", Player.FocusedButton == this);
 
                 // Check if point is within 10% of the crosshair.
                 if (IsLengthWithinCamerasFocus() && player.Position.Distance(Position) <= _maxViewDistance)
                 {
-                    TTTPlayer.FocusedButton ??= this; // If the current focused button is null, update it to this.
+                    Player.FocusedButton ??= this; // If the current focused button is null, update it to this.
                 }
-                else if (TTTPlayer.FocusedButton == this) // If we are the current focused button, but we are out of focus, set to null
+                else if (Player.FocusedButton == this) // If we are the current focused button, but we are out of focus, set to null
                 {
-                    TTTPlayer.FocusedButton = null;
+                    Player.FocusedButton = null;
                 }
             }
         }
@@ -117,7 +116,7 @@ namespace TTTReborn.UI
 
         // Check to make sure player is within range and our button is not disabled.
         // Called when client calls for button to be activated. A simple double check.
-        public bool IsUsable(TTTPlayer player)
+        public bool IsUsable(Player player)
         {
             return player.Position.Distance(Position) <= Data.Range && !Data.IsDisabled;
         }

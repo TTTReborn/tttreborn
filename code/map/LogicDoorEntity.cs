@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
 
@@ -22,7 +21,7 @@ namespace TTTReborn.Map
 
         public override bool IsUsable(Entity user)
         {
-            return user is TTTPlayer player && (player.Role.Name.Equals(CheckValue) || player.Team.Name.Equals(CheckValue));
+            return user is Player player && (player.Role.Name.Equals(CheckValue) || player.Team.Name.Equals(CheckValue));
         }
 
         /// <summary>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Settings;
 
@@ -17,7 +16,7 @@ namespace TTTReborn.Rounds
             get => ServerSettings.Instance.Round.PreRoundTime;
         }
 
-        public override void OnPlayerKilled(TTTPlayer player)
+        public override void OnPlayerKilled(Player player)
         {
             StartRespawnTimer(player);
 
@@ -34,7 +33,7 @@ namespace TTTReborn.Rounds
 
                 foreach (Client client in Client.All)
                 {
-                    if (client.Pawn is TTTPlayer player)
+                    if (client.Pawn is Player player)
                     {
                         player.RemoveLogicButtons();
                         player.Respawn();
@@ -47,10 +46,10 @@ namespace TTTReborn.Rounds
         {
             base.OnTimeUp();
 
-            List<TTTPlayer> players = new();
-            List<TTTPlayer> spectators = new();
+            List<Player> players = new();
+            List<Player> spectators = new();
 
-            foreach (TTTPlayer player in Utils.GetPlayers())
+            foreach (Player player in Utils.GetPlayers())
             {
                 player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
 
@@ -74,11 +73,11 @@ namespace TTTReborn.Rounds
             });
         }
 
-        private static void AssignRolesAndRespawn(List<TTTPlayer> players)
+        private static void AssignRolesAndRespawn(List<Player> players)
         {
-            VisualProgramming.NodeStack.Instance.Evaluate(new List<TTTPlayer>(players));
+            VisualProgramming.NodeStack.Instance.Evaluate(new List<Player>(players));
 
-            foreach (TTTPlayer player in players)
+            foreach (Player player in players)
             {
                 if (player.Role is NoneRole)
                 {
@@ -101,7 +100,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private static async void StartRespawnTimer(TTTPlayer player)
+        private static async void StartRespawnTimer(Player player)
         {
             try
             {

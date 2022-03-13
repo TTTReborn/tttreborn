@@ -6,9 +6,9 @@ using TTTReborn.Roles;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
         public Role Role
         {
@@ -67,7 +67,7 @@ namespace TTTReborn.Player
         }
 
         /// <summary>
-        /// Sends the role + team and all connected additional data like logic buttons of the current TTTPlayer to the given target or - if no target was provided - the player itself
+        /// Sends the role + team and all connected additional data like logic buttons of the current Player to the given target or - if no target was provided - the player itself
         /// </summary>
         /// <param name="to">optional - The target</param>
         public void SendClientRole(To? to = null)
@@ -80,7 +80,7 @@ namespace TTTReborn.Player
             }
         }
 
-        public void SyncMIA(TTTPlayer player = null)
+        public void SyncMIA(Player player = null)
         {
             if (Gamemode.Game.Instance.Round is not InProgressRound)
             {
@@ -93,7 +93,7 @@ namespace TTTReborn.Player
 
                 foreach (Client client in Client.All)
                 {
-                    if ((client.Pawn as TTTPlayer).Team.GetType() == typeof(TraitorTeam))
+                    if ((client.Pawn as Player).Team.GetType() == typeof(TraitorTeam))
                     {
                         traitors.Add(client);
                     }

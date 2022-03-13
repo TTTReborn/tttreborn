@@ -2,7 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Player;
 using TTTReborn.UI;
 
 namespace TTTReborn.Items
@@ -27,7 +26,7 @@ namespace TTTReborn.Items
             LibraryName = Utils.GetLibraryName(GetType());
         }
 
-        public void Equip(TTTPlayer player)
+        public void Equip(Player player)
         {
             Owner = player;
 

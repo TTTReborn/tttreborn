@@ -6,21 +6,19 @@ using System.Reflection;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Globals
 {
     public static partial class Utils
     {
         public readonly static Random RNG = new();
 
-        public static List<Client> GetClients(Func<TTTPlayer, bool> predicate = null)
+        public static List<Client> GetClients(Func<Player, bool> predicate = null)
         {
             List<Client> clients = new();
 
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke(player)))
+                if (client.Pawn is Player player && (predicate == null || predicate.Invoke(player)))
                 {
                     clients.Add(client);
                 }
@@ -29,13 +27,13 @@ namespace TTTReborn.Globals
             return clients;
         }
 
-        public static List<TTTPlayer> GetPlayers(Func<TTTPlayer, bool> predicate = null)
+        public static List<Player> GetPlayers(Func<Player, bool> predicate = null)
         {
-            List<TTTPlayer> players = new();
+            List<Player> players = new();
 
             foreach (Client client in Client.All)
             {
-                if (client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke(player)))
+                if (client.Pawn is Player player && (predicate == null || predicate.Invoke(player)))
                 {
                     players.Add(player);
                 }
@@ -44,7 +42,7 @@ namespace TTTReborn.Globals
             return players;
         }
 
-        public static List<TTTPlayer> GetAlivePlayers() => GetPlayers((pl) => pl.LifeState == LifeState.Alive);
+        public static List<Player> GetAlivePlayers() => GetPlayers((pl) => pl.LifeState == LifeState.Alive);
 
         public static bool HasMinimumPlayers() => GetPlayers((pl) => !pl.IsForcedSpectator).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
 

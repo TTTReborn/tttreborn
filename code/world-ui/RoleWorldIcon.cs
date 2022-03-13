@@ -2,7 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 
@@ -10,10 +9,10 @@ namespace TTTReborn.WorldUI
 {
     public class RoleWorldIcon : WorldPanel
     {
-        public TTTPlayer Player { get; }
+        public Player Player { get; }
         private Role Role { get; set; }
 
-        public RoleWorldIcon(TTTPlayer player) : base()
+        public RoleWorldIcon(Player player) : base()
         {
             Player = player;
             Role = player.Role;
@@ -32,7 +31,7 @@ namespace TTTReborn.WorldUI
         {
             base.Tick();
 
-            if (!Player.IsValid || Player.LifeState != LifeState.Alive || Local.Pawn is TTTPlayer localPlayer && !Player.IsTeamMember(localPlayer))
+            if (!Player.IsValid || Player.LifeState != LifeState.Alive || Local.Pawn is Player localPlayer && !Player.IsTeamMember(localPlayer))
             {
                 Style.Display = DisplayMode.None;
             }

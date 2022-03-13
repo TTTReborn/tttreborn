@@ -4,8 +4,6 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Teams
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
@@ -23,7 +21,7 @@ namespace TTTReborn.Teams
 
         public abstract Color Color { get; }
 
-        public readonly List<TTTPlayer> Members = new();
+        public readonly List<Player> Members = new();
 
         public static Dictionary<string, Team> Teams = new();
 
@@ -39,9 +37,9 @@ namespace TTTReborn.Teams
             return Members.Select(x => x.Client);
         }
 
-        public virtual bool CheckWin(TTTPlayer player) => true;
+        public virtual bool CheckWin(Player player) => true;
 
-        public virtual bool CheckPreventWin(TTTPlayer player) => false;
+        public virtual bool CheckPreventWin(Player player) => false;
 
         public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
     }
@@ -86,7 +84,7 @@ namespace TTTReborn.Teams
             return Utils.GetObjectByType<Team>(teamType);
         }
 
-        public static bool IsTeamMember(this TTTPlayer self, TTTPlayer other)
+        public static bool IsTeamMember(this Player self, Player other)
         {
             return self.Team == other.Team && self.Team.CheckWin(self);
         }

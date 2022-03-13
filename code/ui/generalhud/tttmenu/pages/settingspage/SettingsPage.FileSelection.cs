@@ -63,7 +63,7 @@ namespace TTTReborn.UI.Menu
 
             if (isServerSettings)
             {
-                Player.TTTPlayer.RequestSaveServerSettingsAs(fileSelection.CurrentFolderPath, fileName);
+                Player.RequestSaveServerSettingsAs(fileSelection.CurrentFolderPath, fileName);
             }
             else
             {
@@ -99,7 +99,7 @@ namespace TTTReborn.UI.Menu
                 // Refresh the page.
                 fileSelection.Close();
                 TTTMenu.Instance.PopPage();
-                Player.TTTPlayer.RequestLoadFrom(fileSelection.CurrentFolderPath, fileName);
+                Player.RequestLoadFrom(fileSelection.CurrentFolderPath, fileName);
             }
             else
             {
@@ -158,12 +158,12 @@ namespace TTTReborn.UI.Menu
     }
 }
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     using TTTReborn.Settings;
     using TTTReborn.UI.Menu;
 
-    public partial class TTTPlayer
+    public partial class Player
     {
         [ServerCmd(Name = "ttt_serversettings_saveas_request")]
         public static void RequestSaveServerSettingsAs(string filePath, string fileName, bool overwrite = false)

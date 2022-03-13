@@ -4,7 +4,6 @@ using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -46,7 +45,7 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            IsDisabled = (Local.Pawn as TTTPlayer).CanBuy(ItemData) != BuyError.None;
+            IsDisabled = (Local.Pawn as Player).CanBuy(ItemData) != BuyError.None;
 
             this.Enabled(!IsDisabled);
         }

@@ -2,7 +2,6 @@ using Sandbox;
 
 using TTTReborn.Events;
 using TTTReborn.Items;
-using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 using TTTReborn.UI;
@@ -12,7 +11,7 @@ namespace TTTReborn.Globals
     public partial class RPCs
     {
         [ClientRpc]
-        public static void ClientOnPlayerDied(TTTPlayer player)
+        public static void ClientOnPlayerDied(Player player)
         {
             if (!player.IsValid())
             {
@@ -35,7 +34,7 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientOnPlayerSpawned(TTTPlayer player)
+        public static void ClientOnPlayerSpawned(Player player)
         {
             if (!player.IsValid())
             {
@@ -52,13 +51,13 @@ namespace TTTReborn.Globals
         }
 
         /// <summary>
-        /// Must be called on the server, updates TTTPlayer's `Role`.
+        /// Must be called on the server, updates Player's `Role`.
         /// </summary>
         /// <param name="player">The player whose `Role` is to be updated</param>
         /// <param name="roleName">Same as the `TTTReborn.Roles.Role`'s `TTTReborn.Roles.RoleAttribute`'s name</param>
         /// <param name="teamName">The name of the team</param>
         [ClientRpc]
-        public static void ClientSetRole(TTTPlayer player, string roleName, string teamName = null)
+        public static void ClientSetRole(Player player, string roleName, string teamName = null)
         {
             if (!player.IsValid())
             {
@@ -78,7 +77,7 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientConfirmPlayer(TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks)
+        public static void ClientConfirmPlayer(Player confirmPlayer, PlayerCorpse playerCorpse, Player deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks)
         {
             if (!deadPlayer.IsValid())
             {
@@ -118,7 +117,7 @@ namespace TTTReborn.Globals
                 $"({deadPlayer.Role.Name})"
             );
 
-            if (confirmPlayer == Local.Pawn as TTTPlayer && deadPlayer.CorpseCredits > 0)
+            if (confirmPlayer == Local.Pawn as Player && deadPlayer.CorpseCredits > 0)
             {
                 InfoFeed.Current?.AddEntry(
                     confirmClient,
@@ -128,7 +127,7 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientAddMissingInAction(TTTPlayer missingInActionPlayer)
+        public static void ClientAddMissingInAction(Player missingInActionPlayer)
         {
             if (!missingInActionPlayer.IsValid())
             {

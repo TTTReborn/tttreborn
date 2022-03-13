@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.VisualProgramming
@@ -23,12 +22,12 @@ namespace TTTReborn.VisualProgramming
                 throw new NodeStackException("No selected role in RoleSelectionNode.");
             }
 
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            if (input == null || input[0] is not List<Player> playerList)
             {
                 return null;
             }
 
-            foreach (TTTPlayer player in playerList)
+            foreach (Player player in playerList)
             {
                 Log.Debug($"Selected '{player.Client.Name}' with role '{SelectedRole.Name}'");
             }
@@ -41,7 +40,7 @@ namespace TTTReborn.VisualProgramming
 
         public override object[] Evaluate(object[] input)
         {
-            foreach (TTTPlayer player in input[0] as List<TTTPlayer>)
+            foreach (Player player in input[0] as List<Player>)
             {
                 player.SetRole(SelectedRole);
             }

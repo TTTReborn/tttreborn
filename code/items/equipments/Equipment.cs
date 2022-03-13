@@ -2,8 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
@@ -57,7 +55,7 @@ namespace TTTReborn.Items
             }
         }
 
-        public void Equip(TTTPlayer player)
+        public void Equip(Player player)
         {
             OnEquip();
         }
@@ -83,7 +81,7 @@ namespace TTTReborn.Items
 
         public virtual void PickupStartTouch(Entity other)
         {
-            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is TTTPlayer player)
+            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is Player player)
             {
                 LastDropOwner = null;
 
@@ -93,7 +91,7 @@ namespace TTTReborn.Items
 
         public virtual void PickupEndTouch(Entity other)
         {
-            if (other is TTTPlayer && LastDropOwner == other)
+            if (other is Player && LastDropOwner == other)
             {
                 LastDropOwner = null;
             }
@@ -126,7 +124,7 @@ namespace TTTReborn.Items
         {
             base.Simulate(client);
 
-            if (!IsServer || Owner is not TTTPlayer owner || !CanDrop())
+            if (!IsServer || Owner is not Player owner || !CanDrop())
             {
                 return;
             }
