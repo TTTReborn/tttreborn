@@ -277,6 +277,30 @@
         "NEWTONLAUNCHER": {
             "NAME": "Newtonlauncher"
         },
+        "OFFENSIVEEQUIPMENT": {
+            "NAME": "Offensive Equipment"
+        },
+        "RPG7": {
+            "NAME": "RPG-7"
+        },
+        "BAYONET": {
+            "NAME": "Bayonet"
+        },
+        "DEAGLE": {
+            "NAME": "Desert Eagle"
+        },
+        "FAL": {
+            "NAME": "FAL"
+        },
+        "L96A1": {
+            "NAME": "L96A1"
+        },
+        "SPAS12": {
+            "NAME": "SPAS12"
+        },
+        "UMP45": {
+            "NAME": "UMP45"
+        },
         "AMMO": {
             "NAME": "Ammo",
             "WEAPON": "{0} Ammo"

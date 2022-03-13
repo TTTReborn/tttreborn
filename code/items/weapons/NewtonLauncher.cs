@@ -31,12 +31,14 @@ namespace TTTReborn.Items
         public override void OnActive()
         {
             base.OnActive();
+
             IsCharging = false;
         }
 
         public override void ActiveEnd(Entity ent, bool dropped)
         {
             base.ActiveEnd(ent, dropped);
+
             IsCharging = false;
         }
 
@@ -90,7 +92,7 @@ namespace TTTReborn.Items
                     tr.Surface.DoBulletImpact(tr);
                     tr.Entity.TakeDamage(damageInfo);
 
-                    Vector3 pushDirection = new Vector3(tr.Direction.x, tr.Direction.y, Math.Min(tr.Direction.z + 0.5F, 0.75F));
+                    Vector3 pushDirection = new(tr.Direction.x, tr.Direction.y, Math.Min(tr.Direction.z + 0.5F, 0.75F));
                     float chargePercentage = Math.Clamp((Time.Now - ChargingStartTime) / NEWTON_CHARGE_TIME, 0, 1);
                     float chargeForce = ((NEWTON_FORCE_MAX - NEWTON_FORCE_MIN) * chargePercentage) + NEWTON_FORCE_MIN;
 
@@ -98,16 +100,6 @@ namespace TTTReborn.Items
                     tr.Entity.ApplyAbsoluteImpulse(pushDirection * chargeForce);
                 }
             }
-        }
-
-        public override void CreateHudElements()
-        {
-            if (Local.Hud == null)
-            {
-                return;
-            }
-
-            // TODO: Create a special HUD element for Newton Launcher
         }
 
         public override void Simulate(Client owner)

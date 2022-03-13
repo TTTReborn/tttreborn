@@ -38,6 +38,10 @@ namespace TTTReborn.Items
                         AmmoType = typeof(SniperAmmo);
 
                         break;
+                    case CarriableCategories.OffensiveEquipment:
+                        AmmoType = typeof(OffensiveEquipmentAmmo);
+
+                        break;
                 }
             }
 
@@ -152,7 +156,6 @@ namespace TTTReborn.Items
             base.ActiveStart(owner);
 
             TimeSinceDeployed = 0;
-
             IsReloading = false;
         }
 
@@ -373,13 +376,13 @@ namespace TTTReborn.Items
                 bool InWater = Sandbox.Internal.GlobalGameNamespace.Map.Physics.IsPointWater(start);
 
                 TraceResult tr = Trace.Ray(start, end)
-                        .UseHitboxes()
-                        .HitLayer(CollisionLayer.Water, !InWater)
-                        .HitLayer(CollisionLayer.Debris)
-                        .Ignore(Owner)
-                        .Ignore(this)
-                        .Size(radius)
-                        .Run();
+                    .UseHitboxes()
+                    .HitLayer(CollisionLayer.Water, !InWater)
+                    .HitLayer(CollisionLayer.Debris)
+                    .Ignore(Owner)
+                    .Ignore(this)
+                    .Size(radius)
+                    .Run();
 
                 yield return tr;
             }
