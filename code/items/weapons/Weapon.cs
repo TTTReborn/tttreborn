@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.ScreenShake;
 
+using TTTReborn.Entities;
 using TTTReborn.Globalization;
 using TTTReborn.UI;
 

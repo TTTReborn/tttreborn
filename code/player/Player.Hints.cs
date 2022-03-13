@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.Component;
 
+using TTTReborn.Entities;
 using TTTReborn.Globalization;
 using TTTReborn.Camera;
 using TTTReborn.UI;

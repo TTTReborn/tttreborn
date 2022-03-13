@@ -11,7 +11,7 @@ namespace TTTReborn
         private List<Perk> PerkList { get; } = new();
         private readonly Player _owner;
 
-        public PerksInventory(Player owner)
+        internal PerksInventory(Player owner)
         {
             _owner = owner;
         }

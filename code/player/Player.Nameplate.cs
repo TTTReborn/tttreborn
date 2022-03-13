@@ -1,5 +1,7 @@
 using TTTReborn.UI;
 
+using TTTReborn.Entities;
+
 namespace TTTReborn
 {
     public partial class Player : IEntityHint

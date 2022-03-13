@@ -2,6 +2,7 @@ using System;
 
 using Sandbox;
 
+using TTTReborn.Entities;
 using TTTReborn.Globalization;
 using TTTReborn.UI;
 

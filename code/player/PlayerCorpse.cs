@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Entities;
 using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.UI;

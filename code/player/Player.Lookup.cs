@@ -1,5 +1,7 @@
 using Sandbox;
 
+using TTTReborn.Entities;
+
 namespace TTTReborn
 {
     partial class Player

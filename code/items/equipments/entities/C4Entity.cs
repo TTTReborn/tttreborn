@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI.Construct;
 
+using TTTReborn.Entities;
 using TTTReborn.Globalization;
 using TTTReborn.UI;
 

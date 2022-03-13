@@ -10,7 +10,7 @@ namespace TTTReborn
         private Dictionary<string, int> AmmoList { get; } = new();
         private readonly Player _owner;
 
-        public AmmoInventory(Player owner)
+        internal AmmoInventory(Player owner)
         {
             _owner = owner;
         }

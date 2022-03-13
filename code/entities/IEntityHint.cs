@@ -1,7 +1,7 @@
 using TTTReborn.Globalization;
 using TTTReborn.UI;
 
-namespace TTTReborn
+namespace TTTReborn.Entities
 {
     public interface IEntityHint
     {
