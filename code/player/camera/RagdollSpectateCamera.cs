@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Player.Camera
+namespace TTTReborn.Camera
 {
     public class RagdollSpectateCamera : CameraMode, IObservationCamera
     {
@@ -25,7 +25,7 @@ namespace TTTReborn.Player.Camera
 
         public virtual Vector3 GetSpectatePoint()
         {
-            if (Local.Pawn is TTTPlayer player && player.Corpse.IsValid())
+            if (Local.Pawn is Player player && player.Corpse.IsValid())
             {
                 return player.Corpse.PhysicsGroup.MassCenter;
             }

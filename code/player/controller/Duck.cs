@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     [Library]
     public partial class Duck : Sandbox.Duck

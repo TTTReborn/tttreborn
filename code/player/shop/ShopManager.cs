@@ -7,7 +7,7 @@ using Sandbox;
 using TTTReborn.Items;
 using TTTReborn.Roles;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public partial class ShopManager
     {

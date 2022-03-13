@@ -8,11 +8,11 @@ using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.Rounds;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
-        private static TTTPlayer GetPlayerById(int id)
+        private static Player GetPlayerById(int id)
         {
             List<Client> playerList = Client.All.ToList();
 
@@ -21,7 +21,7 @@ namespace TTTReborn.Player
                 return null;
             }
 
-            if (playerList[id].Pawn is TTTPlayer player && player.IsValid())
+            if (playerList[id].Pawn is Player player && player.IsValid())
             {
                 return player;
             }
@@ -37,11 +37,11 @@ namespace TTTReborn.Player
                 return;
             }
 
-            TTTPlayer player = null;
+            Player player = null;
 
             if (id == null)
             {
-                player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+                player = ConsoleSystem.Caller.Pawn as Player;
             }
             else
             {
@@ -89,7 +89,7 @@ namespace TTTReborn.Player
                 return;
             }
 
-            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+            Player player = ConsoleSystem.Caller.Pawn as Player;
 
             if (!player.IsValid())
             {
@@ -144,11 +144,11 @@ namespace TTTReborn.Player
                 return;
             }
 
-            TTTPlayer player;
+            Player player;
 
             if (id == null)
             {
-                player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+                player = ConsoleSystem.Caller.Pawn as Player;
             }
             else
             {
@@ -174,7 +174,7 @@ namespace TTTReborn.Player
         [ServerCmd(Name = "ttt_forcespec")]
         public static void ToggleForceSpectator()
         {
-            TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+            Player player = ConsoleSystem.Caller.Pawn as Player;
 
             if (!player.IsValid() || player.IsInitialSpawning)
             {

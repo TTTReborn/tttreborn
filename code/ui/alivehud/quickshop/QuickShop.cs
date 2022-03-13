@@ -7,7 +7,6 @@ using Sandbox.UI.Construct;
 using TTTReborn.Events;
 using TTTReborn.Globalization;
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -74,7 +73,7 @@ namespace TTTReborn.UI
 
             _selectedItemData = null;
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }
@@ -118,9 +117,9 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                if (_selectedItemData?.IsBuyable(Local.Pawn as TTTPlayer) ?? false)
+                if (_selectedItemData?.IsBuyable(Local.Pawn as Player) ?? false)
                 {
-                    TTTPlayer.RequestItem(item.ItemData?.Name);
+                    Player.RequestItem(item.ItemData?.Name);
 
                     // The item was purchased, let's deselect it from the UI.
                     _selectedItemData = null;
@@ -156,7 +155,7 @@ namespace TTTReborn.UI
         }
 
         [Event(TTTEvent.Player.Role.SELECT)]
-        public static void OnRoleChanged(TTTPlayer player)
+        public static void OnRoleChanged(Player player)
         {
             QuickShop quickShop = Instance;
 
@@ -182,7 +181,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            int newCredits = (Local.Pawn as TTTPlayer).Credits;
+            int newCredits = (Local.Pawn as Player).Credits;
 
             if (_credits != newCredits)
             {
@@ -194,11 +193,11 @@ namespace TTTReborn.UI
     }
 }
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     using UI;
 
-    public partial class TTTPlayer
+    public partial class Player
     {
         public static void TickPlayerShop()
         {
@@ -212,7 +211,7 @@ namespace TTTReborn.Player
                 QuickShop.Instance.Enabled = false;
                 QuickShop.Instance.Update();
             }
-            else if (Input.Pressed(InputButton.View) && Local.Pawn is TTTPlayer player)
+            else if (Input.Pressed(InputButton.View) && Local.Pawn is Player player)
             {
                 if (!(player.Shop?.Accessable() ?? false))
                 {

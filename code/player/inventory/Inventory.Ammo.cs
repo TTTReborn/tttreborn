@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public partial class AmmoInventory
     {
         private Dictionary<string, int> AmmoList { get; } = new();
-        private readonly TTTPlayer _owner;
+        private readonly Player _owner;
 
-        public AmmoInventory(TTTPlayer owner)
+        internal AmmoInventory(Player owner)
         {
             _owner = owner;
         }

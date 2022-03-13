@@ -2,8 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Rounds
 {
     public class WaitingRound : BaseRound
@@ -18,7 +16,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        public override void OnPlayerKilled(TTTPlayer player)
+        public override void OnPlayerKilled(Player player)
         {
             StartRespawnTimer(player);
 
@@ -33,7 +31,7 @@ namespace TTTReborn.Rounds
             {
                 foreach (Client client in Client.All)
                 {
-                    if (client.Pawn is TTTPlayer player)
+                    if (client.Pawn is Player player)
                     {
                         player.Respawn();
                     }
@@ -41,7 +39,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private static async void StartRespawnTimer(TTTPlayer player)
+        private static async void StartRespawnTimer(Player player)
         {
             try
             {

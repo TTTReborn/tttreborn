@@ -1,8 +1,6 @@
 using Sandbox;
 using Sandbox.ScreenShake;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Items
 {
     [Library("ttt_weapon_shotgun")]
@@ -77,7 +75,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (Owner is TTTPlayer player)
+            if (Owner is Player player)
             {
                 int ammo = player.Inventory.Ammo.Take(AmmoName, 1);
 

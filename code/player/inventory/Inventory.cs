@@ -6,7 +6,7 @@ using Sandbox;
 
 using TTTReborn.Items;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public partial class Inventory : BaseInventory
     {
@@ -17,7 +17,7 @@ namespace TTTReborn.Player
         private const int DROPPOSITIONOFFSET = 50;
         private const int DROPVELOCITY = 500;
 
-        public Inventory(TTTPlayer player) : base(player)
+        public Inventory(Player player) : base(player)
         {
             Ammo = new(player);
             Perks = new(player);
@@ -47,7 +47,7 @@ namespace TTTReborn.Player
                 }
             }
 
-            RPCs.ClientClearInventory(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as TTTPlayer)));
+            RPCs.ClientClearInventory(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)));
 
             Perks.Clear();
             Ammo.Clear();
@@ -57,7 +57,7 @@ namespace TTTReborn.Player
 
         public override bool Add(Entity entity, bool makeActive = false)
         {
-            TTTPlayer player = Owner as TTTPlayer;
+            Player player = Owner as Player;
 
             if (entity is ICarriableItem carriable)
             {
@@ -185,7 +185,7 @@ namespace TTTReborn.Player
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerCarriableItemDrop(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as TTTPlayer)), entity);
+                RPCs.ClientOnPlayerCarriableItemDrop(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)), entity);
             }
 
             return base.Drop(entity);

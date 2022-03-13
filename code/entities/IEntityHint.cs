@@ -1,7 +1,7 @@
 using TTTReborn.Globalization;
 using TTTReborn.UI;
 
-namespace TTTReborn.Player
+namespace TTTReborn.Entities
 {
     public interface IEntityHint
     {
@@ -23,16 +23,16 @@ namespace TTTReborn.Player
         /// <summary>
         /// Whether or not we can show the UI hint.
         /// </summary>
-        bool CanHint(TTTPlayer client);
+        bool CanHint(Player client);
 
         /// <summary>
         /// The hint we should display.
         /// </summary>
-        EntityHintPanel DisplayHint(TTTPlayer client);
+        EntityHintPanel DisplayHint(Player client);
 
         /// <summary>
         /// Occurs on each tick if the hint is active.
         /// </summary>
-        void TextTick(TTTPlayer player);
+        void TextTick(Player player);
     }
 }

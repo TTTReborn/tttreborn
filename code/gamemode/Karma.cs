@@ -1,7 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Gamemode
 {
     public partial class KarmaSystem : BaseNetworkable
@@ -34,7 +32,7 @@ namespace TTTReborn.Gamemode
         [Net]
         public bool IsTracking { get; set; } = false;
 
-        public void RegisterPlayer(TTTPlayer player)
+        public void RegisterPlayer(Player player)
         {
             // TODO: Once network dictionaries are supported, implement.
             // if (KarmaRecords.ContainsKey(player))
@@ -43,7 +41,7 @@ namespace TTTReborn.Gamemode
             // KarmaRecords[player] = TTTKarmaDefault;
         }
 
-        public void RegisterPlayerDamage(TTTPlayer attacker, TTTPlayer victim, float damage)
+        public void RegisterPlayerDamage(Player attacker, Player victim, float damage)
         {
             if (!IsTracking)
             {
@@ -61,7 +59,7 @@ namespace TTTReborn.Gamemode
             // DamageRecords[(attacker.PlayerId, victim.PlayerId)] = updatedDamage;
         }
 
-        public void UpdatePlayerKarma(TTTPlayer player, int delta)
+        public void UpdatePlayerKarma(Player player, int delta)
         {
             UpdatePlayerIdKarma(player.Client.PlayerId, delta);
         }
@@ -100,7 +98,7 @@ namespace TTTReborn.Gamemode
             // DamageRecords = new();
         }
 
-        public bool IsBanned(TTTPlayer player)
+        public bool IsBanned(Player player)
         {
             // TODO: Once network dictionaries are supported, implement. Return false meanwhile...
             // return (KarmaRecords[player.PlayerId] < TTTKarmaMin && TTTKarmaBan);

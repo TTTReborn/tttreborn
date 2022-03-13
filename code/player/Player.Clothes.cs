@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
         private readonly List<ModelEntity> _clothing = new();
 

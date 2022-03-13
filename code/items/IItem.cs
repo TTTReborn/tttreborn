@@ -2,8 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
@@ -23,7 +21,7 @@ namespace TTTReborn.Items
 
         Entity Owner { get; }
 
-        void Equip(TTTPlayer player);
+        void Equip(Player player);
 
         void OnEquip();
 
@@ -37,7 +35,7 @@ namespace TTTReborn.Items
 
         void Simulate(Client owner);
 
-        void OnPurchase(TTTPlayer player)
+        void OnPurchase(Player player)
         {
             player.Inventory.TryAdd(this, deleteIfFails: true, makeActive: false);
         }

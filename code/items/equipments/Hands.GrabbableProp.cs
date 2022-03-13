@@ -1,9 +1,4 @@
-using System;
-using System.Threading.Tasks;
-
 using Sandbox;
-
-using TTTReborn.Player;
 
 namespace TTTReborn.Items
 {
@@ -11,14 +6,14 @@ namespace TTTReborn.Items
     {
         public const float THROW_FORCE = 500;
         public Entity GrabbedEntity { get; set; }
-        public TTTPlayer Owner;
+        public Player Owner;
 
         public bool IsHolding
         {
             get => GrabbedEntity != null;
         }
 
-        public GrabbableProp(TTTPlayer player, Entity ent)
+        public GrabbableProp(Player player, Entity ent)
         {
             Owner = player;
 
@@ -52,7 +47,7 @@ namespace TTTReborn.Items
             GrabbedEntity = null;
         }
 
-        public void Update(TTTPlayer player)
+        public void Update(Player player)
         {
             // If the entity is destroyed drop it.
             if (!GrabbedEntity?.IsValid ?? true)

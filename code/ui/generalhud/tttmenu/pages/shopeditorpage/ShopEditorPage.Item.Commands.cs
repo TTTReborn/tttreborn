@@ -6,7 +6,6 @@ using Sandbox.UI;
 
 using TTTReborn.Globalization;
 using TTTReborn.Items;
-using TTTReborn.Player;
 using TTTReborn.Roles;
 using TTTReborn.UI.Menu;
 
@@ -87,13 +86,13 @@ namespace TTTReborn.UI
             {
                 foreach (Client client in Client.All)
                 {
-                    if (client.Pawn is TTTPlayer player && player.Role.Equals(roleName))
+                    if (client.Pawn is Player player && player.Role.Equals(roleName))
                     {
                         UpdateShop(player.Shop, toggle, itemName, shopItemData);
                     }
                 }
             }
-            else if (Local.Client?.Pawn is TTTPlayer player && player.Role.Name.Equals(roleName))
+            else if (Local.Client?.Pawn is Player player && player.Role.Name.Equals(roleName))
             {
                 UpdateShop(player.Shop, toggle, itemName, shopItemData);
 

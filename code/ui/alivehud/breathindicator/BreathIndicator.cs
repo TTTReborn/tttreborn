@@ -2,8 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.UI
 {
     public partial class BreathIndicator : Panel
@@ -38,7 +36,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player || player.Controller is not DefaultWalkController playerController)
+            if (Local.Pawn is not Player player || player.Controller is not DefaultWalkController playerController)
             {
                 return;
             }

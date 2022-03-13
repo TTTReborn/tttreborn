@@ -6,7 +6,6 @@ using Sandbox;
 using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Map;
-using TTTReborn.Player;
 using TTTReborn.Settings;
 using TTTReborn.Teams;
 
@@ -17,10 +16,10 @@ namespace TTTReborn.Rounds
         public override string RoundName => "In Progress";
 
         [Net]
-        public List<TTTPlayer> Players { get; set; }
+        public List<Player> Players { get; set; }
 
         [Net]
-        public List<TTTPlayer> Spectators { get; set; }
+        public List<Player> Spectators { get; set; }
 
         private List<LogicButton> _logicButtons;
 
@@ -29,7 +28,7 @@ namespace TTTReborn.Rounds
             get => ServerSettings.Instance.Round.RoundTime;
         }
 
-        public override void OnPlayerKilled(TTTPlayer player)
+        public override void OnPlayerKilled(Player player)
         {
             Players.Remove(player);
             Spectators.AddIfDoesNotContain(player);
@@ -38,12 +37,12 @@ namespace TTTReborn.Rounds
             ChangeRoundIfOver();
         }
 
-        public override void OnPlayerJoin(TTTPlayer player)
+        public override void OnPlayerJoin(Player player)
         {
             Spectators.AddIfDoesNotContain(player);
         }
 
-        public override void OnPlayerLeave(TTTPlayer player)
+        public override void OnPlayerLeave(Player player)
         {
             Players.Remove(player);
             Spectators.Remove(player);
@@ -59,7 +58,7 @@ namespace TTTReborn.Rounds
                 // a fixed weapon loadout.
                 if (Gamemode.Game.Instance.MapHandler.Weapons.Count < Players.Count)
                 {
-                    foreach (TTTPlayer player in Players)
+                    foreach (Player player in Players)
                     {
                         GiveFixedLoadout(player);
                     }
@@ -70,7 +69,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        private static void GiveFixedLoadout(TTTPlayer player)
+        private static void GiveFixedLoadout(Player player)
         {
             Log.Debug($"Added Fixed Loadout to {player.Client.Name}");
 
@@ -107,7 +106,7 @@ namespace TTTReborn.Rounds
         {
             List<Team> aliveTeams = new();
 
-            foreach (TTTPlayer player in Players)
+            foreach (Player player in Players)
             {
                 if (player.CheckPreventWin())
                 {
@@ -175,7 +174,7 @@ namespace TTTReborn.Rounds
         }
 
         [Event(TTTEvent.Player.Role.SELECT)]
-        private static void OnPlayerRoleChange(TTTPlayer player)
+        private static void OnPlayerRoleChange(Player player)
         {
             if (Host.IsClient)
             {

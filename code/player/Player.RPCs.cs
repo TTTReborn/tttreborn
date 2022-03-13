@@ -3,9 +3,9 @@ using Sandbox;
 using TTTReborn.Events;
 using TTTReborn.Items;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
         [ClientRpc]
         private void ClientShowFlashlightLocal(bool shouldShow)

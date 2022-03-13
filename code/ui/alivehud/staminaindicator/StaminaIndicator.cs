@@ -2,16 +2,14 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.UI
 {
     public partial class StaminaIndicator : Panel
     {
         public static StaminaIndicator Instance;
 
-        private Panel _staminaBar;
-        private Label _staminaLabel;
+        private readonly Panel _staminaBar;
+        private readonly Label _staminaLabel;
 
         public StaminaIndicator() : base()
         {
@@ -38,7 +36,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player || player.Controller is not DefaultWalkController playerController)
+            if (Local.Pawn is not Player player || player.Controller is not DefaultWalkController playerController)
             {
                 return;
             }

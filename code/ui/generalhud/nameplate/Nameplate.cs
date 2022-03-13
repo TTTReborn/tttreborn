@@ -5,14 +5,13 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
-using TTTReborn.Player;
 using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
     public class Nameplate : EntityHintPanel
     {
-        public TTTPlayer Player;
+        public Player Player;
 
         private readonly Panel _labelHolder;
         private readonly Panel _nameHolder;
@@ -43,7 +42,7 @@ namespace TTTReborn.UI
             new HealthGroup("Near Death", Color.FromBytes(252, 42, 42), 0)
         };
 
-        public Nameplate(TTTPlayer player) : base()
+        public Nameplate(Player player) : base()
         {
             Player = player;
             _role = player.Role;

@@ -5,7 +5,6 @@ using Sandbox;
 using TTTReborn.Events;
 using TTTReborn.Globalization;
 using TTTReborn.Map;
-using TTTReborn.Player;
 using TTTReborn.Rounds;
 using TTTReborn.Settings;
 using TTTReborn.VisualProgramming;
@@ -95,7 +94,7 @@ namespace TTTReborn.Gamemode
 
         public override void DoPlayerSuicide(Client client)
         {
-            if (client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive)
+            if (client.Pawn is Player player && player.LifeState == LifeState.Alive)
             {
                 base.DoPlayerSuicide(client);
             }
@@ -103,7 +102,7 @@ namespace TTTReborn.Gamemode
 
         public override void OnKilled(Entity entity)
         {
-            if (entity is TTTPlayer player)
+            if (entity is Player player)
             {
                 Round.OnPlayerKilled(player);
             }
@@ -125,13 +124,13 @@ namespace TTTReborn.Gamemode
             }
             */
 
-            Round.OnPlayerJoin(client.Pawn as TTTPlayer);
+            Round.OnPlayerJoin(client.Pawn as Player);
 
             Event.Run(TTTEvent.Player.CONNECTED, client);
 
             RPCs.ClientOnPlayerConnected(client);
 
-            TTTPlayer player = new();
+            Player player = new();
             client.Pawn = player;
             player.InitialSpawn();
 
@@ -142,7 +141,7 @@ namespace TTTReborn.Gamemode
         {
             Log.Info(client.Name + " left, checking minimum player count...");
 
-            Round.OnPlayerLeave(client.Pawn as TTTPlayer);
+            Round.OnPlayerLeave(client.Pawn as Player);
 
             Event.Run(TTTEvent.Player.DISCONNECTED, client.PlayerId, reason);
 
@@ -155,7 +154,7 @@ namespace TTTReborn.Gamemode
         {
             Host.AssertServer();
 
-            if (source.Name.Equals(dest.Name) || source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer)
+            if (source.Name.Equals(dest.Name) || source.Pawn is not Player sourcePlayer || dest.Pawn is not Player destPlayer)
             {
                 return false;
             }
@@ -196,7 +195,7 @@ namespace TTTReborn.Gamemode
                 return;
             }
 
-            if (client.Pawn is TTTPlayer player)
+            if (client.Pawn is Player player)
             {
                 player.IsSpeaking = true;
             }

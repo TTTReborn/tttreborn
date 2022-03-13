@@ -1,7 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Items
 {
     /// <summary>
@@ -22,7 +20,7 @@ namespace TTTReborn.Items
 
         public override void Simulate(Client client)
         {
-            if (!IsServer || Owner is not TTTPlayer owner)
+            if (!IsServer || Owner is not Player owner)
             {
                 return;
             }

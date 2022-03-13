@@ -3,8 +3,6 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.VisualProgramming
 {
     [StackNode("playeramount_selection")]
@@ -26,7 +24,7 @@ namespace TTTReborn.VisualProgramming
                 throw new NodeStackException("Missing values in PlayerAmountSelectionStackNode.");
             }
 
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            if (input == null || input[0] is not List<Player> playerList)
             {
                 return null;
             }

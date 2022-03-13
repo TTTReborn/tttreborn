@@ -3,15 +3,13 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Items
 {
     public interface IGrabbable
     {
         bool IsHolding { get; }
         void Drop();
-        void Update(TTTPlayer player);
+        void Update(Player player);
         void PrimaryAction();
     }
 
@@ -38,7 +36,7 @@ namespace TTTReborn.Items
         {
             base.Simulate(client);
 
-            if (!IsServer || Owner is not TTTPlayer player)
+            if (!IsServer || Owner is not Player player)
             {
                 return;
             }
@@ -72,7 +70,7 @@ namespace TTTReborn.Items
             GrabbedEntity?.Update(player);
         }
 
-        private void PushEntity(TTTPlayer player)
+        private void PushEntity(Player player)
         {
             if (IsPushingEntity)
             {
@@ -119,7 +117,7 @@ namespace TTTReborn.Items
             }
         }
 
-        private void TryGrabEntity(TTTPlayer player)
+        private void TryGrabEntity(Player player)
         {
             if (IsHoldingEntity)
             {

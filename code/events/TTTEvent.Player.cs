@@ -6,7 +6,7 @@ namespace TTTReborn.Events
         {
             /// <summary>
             /// Occurs when a player dies.
-            /// <para>Event is passed the <strong><see cref="TTTReborn.Player.TTTPlayer"/></strong> instance of the player who died.</para>
+            /// <para>Event is passed the <strong><see cref="TTTReborn.Player"/></strong> instance of the player who died.</para>
             /// </summary>
             public const string DIED = "tttreborn.player.died";
 
@@ -18,7 +18,7 @@ namespace TTTReborn.Events
 
             /// <summary>
             /// Occurs when a player spawns.
-            /// <para>Event is passed the <strong><see cref="TTTReborn.Player.TTTPlayer"/></strong> instance of the player spawned.</para>
+            /// <para>Event is passed the <strong><see cref="TTTReborn.Player"/></strong> instance of the player spawned.</para>
             /// </summary>
             public const string SPAWNED = "tttreborn.player.spawned";
 
@@ -37,7 +37,7 @@ namespace TTTReborn.Events
 
             /// <summary>
             /// Occurs when a player takes damage.
-            /// <para>The <strong><see cref="TTTReborn.Player.TTTPlayer"/></strong> instance of the player who took damage.</para>
+            /// <para>The <strong><see cref="TTTReborn.Player"/></strong> instance of the player who took damage.</para>
             /// <para>The <strong><see cref="float"/></strong> of the amount of damage taken.</para>
             /// </summary>
             public const string TAKE_DAMAGE = "tttreborn.player.takedamage";
@@ -67,7 +67,7 @@ namespace TTTReborn.Events
             {
                 /// <summary>
                 /// Occurs when a player selects their role.
-                /// <para>Event is passed the <strong><see cref="TTTReborn.Player.TTTPlayer"/></strong> instance of the player whose role was set.</para>
+                /// <para>Event is passed the <strong><see cref="TTTReborn.Player"/></strong> instance of the player whose role was set.</para>
                 /// </summary>
                 public const string SELECT = "tttreborn.player.role.select";
             }
@@ -76,7 +76,7 @@ namespace TTTReborn.Events
             {
                 /// <summary>
                 /// Occurs when the player is changed to spectate.
-                /// <para>Event is passed the <strong><see cref="TTTReborn.Player.TTTPlayer"/></strong> instance of the player who was changed to spectate.</para>
+                /// <para>Event is passed the <strong><see cref="TTTReborn.Player"/></strong> instance of the player who was changed to spectate.</para>
                 /// </summary>
                 public const string CHANGE = "tttreborn.player.spectating.change";
             }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.Component;
 
+using TTTReborn.Entities;
 using TTTReborn.Globalization;
-using TTTReborn.Player.Camera;
+using TTTReborn.Camera;
 using TTTReborn.UI;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
         private const float MAX_HINT_DISTANCE = 2048f;
 

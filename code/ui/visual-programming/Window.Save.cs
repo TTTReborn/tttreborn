@@ -79,16 +79,16 @@ namespace TTTReborn.UI.VisualProgramming
         {
             Dictionary<string, object> jsonDict = GetStackNodesJsonDictionary();
 
-            Player.TTTPlayer.SaveVisualProgramming(path, fileName, JsonSerializer.Serialize(jsonDict), Utils.Realm.Client);
+            Player.SaveVisualProgramming(path, fileName, JsonSerializer.Serialize(jsonDict), Utils.Realm.Client);
         }
     }
 }
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     using TTTReborn.UI.VisualProgramming;
 
-    public partial class TTTPlayer
+    public partial class Player
     {
         internal static void SaveVisualProgramming(string path, string fileName, string jsonData, Utils.Realm realm)
         {

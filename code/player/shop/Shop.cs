@@ -8,7 +8,7 @@ using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.Rounds;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public enum BuyError
     {

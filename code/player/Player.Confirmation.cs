@@ -2,7 +2,7 @@ using Sandbox;
 
 using TTTReborn.UI;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public struct ConfirmationData
     {
@@ -14,7 +14,7 @@ namespace TTTReborn.Player
         // TODO damage type
     }
 
-    public partial class TTTPlayer
+    public partial class Player
     {
         public PlayerCorpse PlayerCorpse { get; set; }
 
@@ -25,7 +25,7 @@ namespace TTTReborn.Player
 
         public bool IsMissingInAction = false;
 
-        public TTTPlayer CorpseConfirmer = null;
+        public Player CorpseConfirmer = null;
 
         public void RemovePlayerCorpse()
         {

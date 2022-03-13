@@ -2,15 +2,16 @@ using System.Collections.Generic;
 
 using Sandbox;
 
+using TTTReborn.Entities;
 using TTTReborn.Globalization;
 using TTTReborn.Items;
 using TTTReborn.UI;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public partial class PlayerCorpse : ModelEntity, IEntityHint
     {
-        public TTTPlayer DeadPlayer { get; set; }
+        public Player DeadPlayer { get; set; }
         public List<Particles> Ropes = new();
         public List<PhysicsJoint> RopeSprings = new();
         public string KillerWeapon { get; set; }
@@ -33,7 +34,7 @@ namespace TTTReborn.Player
             KilledTime = Time.Now;
         }
 
-        public void CopyFrom(TTTPlayer player)
+        public void CopyFrom(Player player)
         {
             DeadPlayer = player;
 
@@ -140,11 +141,11 @@ namespace TTTReborn.Player
 
         public TranslationData TextOnTick => new(IsIdentified ? "CORPSE.USE.INSPECT" : "CORPSE.USE.IDENTIFY");
 
-        public bool CanHint(TTTPlayer client) => true;
+        public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
 
-        public void TextTick(TTTPlayer confirmingPlayer)
+        public void TextTick(Player confirmingPlayer)
         {
             using (Prediction.Off())
             {
@@ -183,7 +184,7 @@ namespace TTTReborn.Player
 
                 if (Input.Down(InputButton.Use) && IsIdentified)
                 {
-                    TTTPlayer.ClientEnableInspectMenu(this);
+                    Player.ClientEnableInspectMenu(this);
                 }
             }
         }

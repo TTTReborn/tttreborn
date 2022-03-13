@@ -9,7 +9,6 @@ using Sandbox.UI.Construct;
 using TTTReborn.Events;
 using TTTReborn.Globalization;
 using TTTReborn.Items;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -36,7 +35,7 @@ namespace TTTReborn.UI
             AddClass("opacity-heavy");
             AddClass("text-shadow");
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }
@@ -54,7 +53,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 return;
             }
@@ -200,7 +199,7 @@ namespace TTTReborn.UI
         }
 
         [Event(TTTEvent.Player.Spectating.CHANGE)]
-        private void OnSpectatingChange(TTTPlayer player)
+        private void OnSpectatingChange(Player player)
         {
             OnCarriableItemClear();
 
@@ -220,7 +219,7 @@ namespace TTTReborn.UI
         [Event.BuildInput]
         private void ProcessClientInventorySelectionInput(InputBuilder input)
         {
-            if (Local.Pawn is not TTTPlayer player || player.IsSpectatingPlayer)
+            if (Local.Pawn is not Player player || player.IsSpectatingPlayer)
             {
                 return;
             }
@@ -339,7 +338,7 @@ namespace TTTReborn.UI
 
                 _ammoLabel = Add.Label();
 
-                if (Local.Pawn is TTTPlayer player)
+                if (Local.Pawn is Player player)
                 {
                     if (carriable is Weapon weapon && carriable.Category != CarriableCategories.Melee)
                     {
@@ -353,7 +352,7 @@ namespace TTTReborn.UI
             {
                 base.Tick();
 
-                if (Local.Pawn is TTTPlayer player)
+                if (Local.Pawn is Player player)
                 {
                     SlotLabel.Style.BackgroundColor = player.Team.Color;
                 }

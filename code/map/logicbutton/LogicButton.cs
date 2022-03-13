@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Map
@@ -85,7 +84,7 @@ namespace TTTReborn.Map
         }
 
         [Input]
-        public void Press(TTTPlayer activator)
+        public void Press(Player activator)
         {
             Host.AssertServer();
 

@@ -2,8 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
@@ -81,7 +79,7 @@ namespace TTTReborn.Items
             return shopItemData;
         }
 
-        public bool IsBuyable(TTTPlayer player)
+        public bool IsBuyable(Player player)
         {
             if (Type.IsSubclassOf(typeof(Perk)))
             {

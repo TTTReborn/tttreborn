@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TTTReborn.Map;
-using TTTReborn.Player;
 using TTTReborn.Settings;
 
 namespace TTTReborn.Rounds
@@ -42,7 +41,7 @@ namespace TTTReborn.Rounds
             Global.ChangeLevel(mapToVoteCount.OrderByDescending(x => x.Value).First().Key);
         }
 
-        public override void OnPlayerKilled(TTTPlayer player)
+        public override void OnPlayerKilled(Player player)
         {
             player.MakeSpectator();
         }

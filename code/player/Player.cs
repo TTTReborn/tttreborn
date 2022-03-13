@@ -1,16 +1,14 @@
-using System.Linq;
-
 using Sandbox;
 
 using TTTReborn.Events;
 using TTTReborn.Items;
-using TTTReborn.Player.Camera;
+using TTTReborn.Camera;
 using TTTReborn.Roles;
 using TTTReborn.WorldUI;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer : Sandbox.Player
+    public partial class Player : Sandbox.Player
     {
         private static int CarriableDropVelocity { get; set; } = 300;
 
@@ -38,7 +36,7 @@ namespace TTTReborn.Player
 
         private DamageInfo _lastDamageInfo;
 
-        public TTTPlayer()
+        public Player()
         {
             Inventory = new Inventory(this);
         }
@@ -56,7 +54,7 @@ namespace TTTReborn.Player
             // sync roles
             using (Prediction.Off())
             {
-                foreach (TTTPlayer player in Utils.GetPlayers())
+                foreach (Player player in Utils.GetPlayers())
                 {
                     if (isPostRound || player.IsConfirmed)
                     {

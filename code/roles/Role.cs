@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Events;
-using TTTReborn.Player;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
@@ -51,7 +50,7 @@ namespace TTTReborn.Roles
             Name = Utils.GetLibraryName(GetType());
         }
 
-        public virtual void OnSelect(TTTPlayer player)
+        public virtual void OnSelect(Player player)
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
 
@@ -64,7 +63,7 @@ namespace TTTReborn.Roles
             Event.Run(TTTEvent.Player.Role.SELECT, player);
         }
 
-        public virtual void OnDeselect(TTTPlayer player)
+        public virtual void OnDeselect(Player player)
         {
 
         }
@@ -87,12 +86,12 @@ namespace TTTReborn.Roles
 
         public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
 
-        public bool CheckWin(TTTPlayer player)
+        public bool CheckWin(Player player)
         {
             return player.Team != null && player.Team.CheckWin(player);
         }
 
-        public bool CheckPreventWin(TTTPlayer player)
+        public bool CheckPreventWin(Player player)
         {
             return player.Team != null && player.Team.CheckPreventWin(player);
         }

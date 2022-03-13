@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Player;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
@@ -22,11 +21,11 @@ namespace TTTReborn.Roles
 
         }
 
-        public override void OnSelect(TTTPlayer player)
+        public override void OnSelect(Player player)
         {
             if (Host.IsServer && player.Team == DefaultTeam)
             {
-                foreach (TTTPlayer otherPlayer in player.Team.Members)
+                foreach (Player otherPlayer in player.Team.Members)
                 {
                     if (otherPlayer == player)
                     {
@@ -37,7 +36,7 @@ namespace TTTReborn.Roles
                     otherPlayer.SendClientRole(To.Single(player));
                 }
 
-                foreach (TTTPlayer otherPlayer in Utils.GetPlayers())
+                foreach (Player otherPlayer in Utils.GetPlayers())
                 {
                     if (otherPlayer.IsMissingInAction)
                     {

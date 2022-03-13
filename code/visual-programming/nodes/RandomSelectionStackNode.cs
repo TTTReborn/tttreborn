@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
 
-using TTTReborn.Player;
-
 namespace TTTReborn.VisualProgramming
 {
     [StackNode("random_selection")]
@@ -24,7 +22,7 @@ namespace TTTReborn.VisualProgramming
                 throw new NodeStackException("Missing values in RandomSelectionStackNode.");
             }
 
-            if (input == null || input[0] is not List<TTTPlayer> playerList)
+            if (input == null || input[0] is not List<Player> playerList)
             {
                 return null;
             }

@@ -5,7 +5,7 @@ using Sandbox;
 using TTTReborn.Events;
 using TTTReborn.Items;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public enum HitboxIndex
     {
@@ -43,7 +43,7 @@ namespace TTTReborn.Player
         Special = 11,
     }
 
-    public partial class TTTPlayer
+    public partial class Player
     {
         [Net]
         public float MaxHealth { get; set; } = 100f;
@@ -81,7 +81,7 @@ namespace TTTReborn.Player
 
             To client = To.Single(this);
 
-            if (info.Attacker is TTTPlayer attacker && attacker != this)
+            if (info.Attacker is Player attacker && attacker != this)
             {
                 LastDistanceToAttacker = Utils.SourceUnitsToMeters(Position.Distance(attacker.Position));
 
@@ -112,7 +112,7 @@ namespace TTTReborn.Player
             }
 
             // Register player damage with the Karma system
-            Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as TTTPlayer, this, info.Damage);
+            Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as Player, this, info.Damage);
 
             _lastDamageInfo = info;
 

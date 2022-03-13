@@ -23,7 +23,7 @@ namespace TTTReborn.Settings
     }
 }
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
     public partial class DefaultWalkController : WalkController
     {
@@ -59,7 +59,7 @@ namespace TTTReborn.Player
 
         public override void Simulate()
         {
-            if (Pawn is not TTTPlayer player)
+            if (Pawn is not Player player)
             {
                 base.Simulate();
 
@@ -198,11 +198,11 @@ namespace TTTReborn.Player
 
             IsSprintEnabled = enabled;
 
-            TTTPlayer.ClientSendToggleSprint(client == null ? To.Everyone : To.Single(client), enabled);
+            Player.ClientSendToggleSprint(client == null ? To.Everyone : To.Single(client), enabled);
         }
     }
 
-    public partial class TTTPlayer
+    public partial class Player
     {
         [ServerCmd(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
         public static void ToggleSprinting()

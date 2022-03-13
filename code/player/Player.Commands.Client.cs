@@ -3,9 +3,9 @@ using System.Linq;
 
 using Sandbox;
 
-namespace TTTReborn.Player
+namespace TTTReborn
 {
-    public partial class TTTPlayer
+    public partial class Player
     {
         [ClientCmd(Name = "ttt_playerids", Help = "Returns a list of all players (clients) and their associated IDs")]
         public static void PlayerID()

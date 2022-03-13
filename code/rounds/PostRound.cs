@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Player;
 using TTTReborn.Settings;
 
 namespace TTTReborn.Rounds
@@ -24,7 +23,7 @@ namespace TTTReborn.Rounds
             Gamemode.Game.Instance.ChangeRound(shouldChangeMap ? new MapSelectionRound() : new PreRound());
         }
 
-        public override void OnPlayerKilled(TTTPlayer player)
+        public override void OnPlayerKilled(Player player)
         {
             player.MakeSpectator();
         }
@@ -35,7 +34,7 @@ namespace TTTReborn.Rounds
             {
                 using (Prediction.Off())
                 {
-                    foreach (TTTPlayer player in Utils.GetPlayers())
+                    foreach (Player player in Utils.GetPlayers())
                     {
                         if (player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead && !player.PlayerCorpse.IsIdentified)
                         {

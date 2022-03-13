@@ -4,7 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.Events;
-using TTTReborn.Player;
 
 namespace TTTReborn.UI
 {
@@ -29,7 +28,7 @@ namespace TTTReborn.UI
         }
 
         [Event(TTTEvent.Player.TAKE_DAMAGE)]
-        private void OnTakeDamage(TTTPlayer player, float damage)
+        private void OnTakeDamage(Player player, float damage)
         {
             if (Host.IsServer)
             {
@@ -41,7 +40,7 @@ namespace TTTReborn.UI
         }
 
         [Event(TTTEvent.Player.SPAWNED)]
-        private void OnPlayerSpawned(TTTPlayer player)
+        private void OnPlayerSpawned(Player player)
         {
             if (Host.IsServer || player != Local.Client.Pawn)
             {
@@ -56,7 +55,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
+            if (Local.Pawn is not Player player)
             {
                 Style.Opacity = 0;
                 return;

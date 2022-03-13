@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.ScreenShake;
 
+using TTTReborn.Entities;
 using TTTReborn.Globalization;
-using TTTReborn.Player;
 using TTTReborn.UI;
 
 namespace TTTReborn.Items
@@ -119,7 +119,7 @@ namespace TTTReborn.Items
             Tags.Add(IItem.ITEM_TAG);
         }
 
-        public void Equip(TTTPlayer player)
+        public void Equip(Player player)
         {
             OnEquip();
         }
@@ -143,7 +143,7 @@ namespace TTTReborn.Items
 
         public int AvailableAmmo()
         {
-            if (Owner is not TTTPlayer owner || AmmoName == null)
+            if (Owner is not Player owner || AmmoName == null)
             {
                 return 0;
             }
@@ -182,7 +182,7 @@ namespace TTTReborn.Items
 
             TimeSinceReload = 0;
 
-            if (Owner is TTTPlayer player && !UnlimitedAmmo && (AmmoName == null || player.Inventory.Ammo.Count(AmmoName) <= 0))
+            if (Owner is Player player && !UnlimitedAmmo && (AmmoName == null || player.Inventory.Ammo.Count(AmmoName) <= 0))
             {
                 return;
             }
@@ -201,7 +201,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (owner.Pawn is TTTPlayer player)
+            if (owner.Pawn is Player player)
             {
                 if (player.LifeState == LifeState.Alive)
                 {
@@ -281,7 +281,7 @@ namespace TTTReborn.Items
         {
             IsReloading = false;
 
-            if (Owner is not TTTPlayer player || AmmoName == null)
+            if (Owner is not Player player || AmmoName == null)
             {
                 return;
             }
@@ -439,7 +439,7 @@ namespace TTTReborn.Items
 
         public virtual void PickupStartTouch(Entity other)
         {
-            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is TTTPlayer player)
+            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is Player player)
             {
                 LastDropOwner = null;
 
@@ -449,7 +449,7 @@ namespace TTTReborn.Items
 
         public virtual void PickupEndTouch(Entity other)
         {
-            if (other is TTTPlayer && LastDropOwner == other)
+            if (other is Player && LastDropOwner == other)
             {
                 LastDropOwner = null;
             }
@@ -484,11 +484,11 @@ namespace TTTReborn.Items
 
         public TranslationData TextOnTick => new("WEAPON.USE", new TranslationData(GetTranslationKey("NAME")));
 
-        public bool CanHint(TTTPlayer client) => true;
+        public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(TTTPlayer client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
 
-        public void TextTick(TTTPlayer player)
+        public void TextTick(Player player)
         {
             if (IsClient || player.LifeState != LifeState.Alive)
             {
