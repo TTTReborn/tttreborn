@@ -179,7 +179,7 @@ metadata
 //
 // TTTReborn.Items.OffensiveEquipmentAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_offensive : ""
+@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_offensiveequipment : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 

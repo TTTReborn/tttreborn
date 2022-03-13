@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_ammo_offensive")]
+    [Library("ttt_ammo_offensiveequipment")]
     [Spawnable]
     [Hammer.EditorModel("models/ammo/ammo_9mm.vmdl")]
     public partial class OffensiveEquipmentAmmo : Ammo
