@@ -11,3 +11,10 @@ tools_thumbnail_cache.bin
 # vscode
 .vscode
 */.vs/*
+
+# swb related (future add-on support)
+weapons/swb/
+sounds/swb/
+particles/swb/
+materials/swb/
+code/swb/
