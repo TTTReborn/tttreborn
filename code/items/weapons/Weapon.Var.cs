@@ -4,19 +4,16 @@ namespace TTTReborn.Items
 {
     public abstract partial class Weapon
     {
-        [Net]
-        public ItemInfo Info { get; set; } = new WeaponInfo();
+        public ItemInfo Info { get; set; }
 
         public WeaponInfo WeaponInfo
         {
             get => Info as WeaponInfo;
         }
 
-        [Net]
-        public ClipInfo Primary { get; set; } = new();
+        public ClipInfo Primary { get; set; }
 
-        [Net]
-        public ClipInfo Secondary { get; set; } = new();
+        public ClipInfo Secondary { get; set; }
 
         [Net]
         public TimeSince TimeSinceReload { get; set; }
@@ -38,7 +35,7 @@ namespace TTTReborn.Items
         public Entity LastDropOwner { get; set; }
 
         [Net]
-        public TimeSince SinceLastDrop { get; set; } = 0f;
+        public TimeSince SinceLastDrop { get; set; }
 
         public abstract string ModelPath { get; }
     }

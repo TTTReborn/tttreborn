@@ -13,7 +13,7 @@ namespace TTTReborn.Items
         {
             Type type = GetType();
 
-            Info = new WeaponInfo()
+            Info = new WeaponInfo
             {
                 LibraryName = Utils.GetLibraryName(type)
             };
@@ -34,6 +34,8 @@ namespace TTTReborn.Items
                     Secondary.AmmoName = weaponAttribute.SecondaryAmmoName;
                 }
             }
+
+            Primary.ClipAmmo = Primary.ClipSize;
 
             EnableShadowInFirstPerson = false;
 
@@ -67,8 +69,6 @@ namespace TTTReborn.Items
         public override void Spawn()
         {
             base.Spawn();
-
-            Primary.ClipAmmo = Primary.ClipSize;
 
             SetModel(ModelPath);
 

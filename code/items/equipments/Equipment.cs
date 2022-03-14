@@ -18,8 +18,7 @@ namespace TTTReborn.Items
     [Hammer.Skip]
     public abstract partial class Equipment : BaseCarriable, ICarriableItem
     {
-        [Net]
-        public ItemInfo Info { get; set; } = new CarriableInfo();
+        public ItemInfo Info { get; set; }
 
         public CarriableInfo CarriableInfo
         {
