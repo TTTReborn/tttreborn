@@ -20,9 +20,10 @@ namespace TTTReborn.Items
 
             Primary.ClipSize = 8;
             Primary.Damage = 6;
+            Primary.Bullets = 10;
+            Primary.RPM = 60;
             Primary.ShootSound = "rust_pumpshotgun.shoot";
             Primary.DryFireSound = "pistol.dryfire";
-            Primary.Rate = 1f;
             Primary.ShootEffectList = new()
             {
                 new("particles/pistol_muzzleflash.vpcf", "muzzle"),

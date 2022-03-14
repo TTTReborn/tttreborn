@@ -29,7 +29,7 @@ namespace TTTReborn.Items
             Primary.UnlimitedAmmo = true;
             Primary.ClipSize = 1;
             Primary.Damage = 3;
-            Primary.Rate = 1f;
+            Primary.RPM = 60;
             Primary.ShootSound = "rust_pistol.shoot";
             Primary.DryFireSound = "pistol.dryfire";
         }

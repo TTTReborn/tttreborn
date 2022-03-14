@@ -23,6 +23,7 @@ namespace TTTReborn.Items
             Primary.ClipSize = 30;
             Primary.Damage = 8;
             Primary.Spread = 0.1f;
+            Primary.RPM = 600;
             Primary.Force = 1.5f;
             Primary.BulletSize = 3f;
             Primary.ShootEffectList = new()
@@ -31,7 +32,6 @@ namespace TTTReborn.Items
                 new("particles/pistol_ejectbrass.vpcf", "ejection_point")
             };
             Primary.ShakeEffect = new(0.5f, 4.0f, 1.0f, 0.5f);
-            Primary.Rate = 10f;
         }
     }
 }

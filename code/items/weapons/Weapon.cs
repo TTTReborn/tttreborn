@@ -170,8 +170,6 @@ namespace TTTReborn.Items
             {
                 using (LagCompensation())
                 {
-                    Primary.TimeSinceAttack = 0f;
-
                     Attack(Primary);
                 }
             }
@@ -188,12 +186,12 @@ namespace TTTReborn.Items
             {
                 using (LagCompensation())
                 {
-                    Secondary.TimeSinceAttack = 0f;
-
                     Attack(Secondary);
                 }
             }
         }
+
+        public static float GetRealRPM(int rpm) => 60f / rpm;
 
         public override void Simulate(Client owner)
         {
@@ -259,12 +257,12 @@ namespace TTTReborn.Items
                 return false;
             }
 
-            if (clipInfo.Rate <= 0)
+            if (clipInfo.RPM <= 0)
             {
                 return true;
             }
 
-            return clipInfo.TimeSinceAttack > (1 / clipInfo.Rate);
+            return clipInfo.TimeSinceAttack > GetRealRPM(clipInfo.RPM);
 		}
 
         public virtual void OnReloadFinish()

@@ -17,7 +17,7 @@ namespace TTTReborn.Items
             WeaponInfo.DeployTime = 0.2f;
 
             Primary.Damage = 45;
-            Primary.Rate = 1f;
+            Primary.RPM = 60;
         }
     }
 }

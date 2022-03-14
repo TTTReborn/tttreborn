@@ -65,8 +65,9 @@ namespace TTTReborn.Items
         [Net]
         public bool CanDropAmmo { get; set; } = true;
 
+        /// <summary>Rate Per Minute, firing speed (higher is faster)</summary>
         [Net]
-        public float Rate { get; set; } = 0f;
+        public int RPM { get; set; } = 200;
 
         [Net]
         public bool IsReloading { get; set; } = false;
