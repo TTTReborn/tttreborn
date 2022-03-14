@@ -53,7 +53,7 @@ namespace TTTReborn.Items
 
         public bool IsReloading { get; set; } = false;
 
-		public TimeSince TimeSinceAttack { get; set; } = 0f;
+        public TimeSince TimeSinceAttack { get; set; } = 0f;
 
         public string ShootSound { get; set; } = null;
 

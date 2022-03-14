@@ -25,7 +25,7 @@ namespace TTTReborn.Items
             DoClientReload();
         }
 
-		public virtual bool CanReload() => Owner.IsValid() && Input.Down(InputButton.Reload);
+        public virtual bool CanReload() => Owner.IsValid() && Input.Down(InputButton.Reload);
 
         public virtual void OnReloadFinish()
         {

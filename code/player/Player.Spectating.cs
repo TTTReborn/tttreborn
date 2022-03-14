@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Camera;
+using TTTReborn.Events;
 
 namespace TTTReborn
 {

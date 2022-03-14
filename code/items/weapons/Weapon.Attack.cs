@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     public abstract partial class Weapon
     {
         public virtual bool CanAttack(ClipInfo clipInfo, InputButton inputButton)
-		{
+        {
             if (clipInfo == null || !Owner.IsValid() || !Input.Down(inputButton) || TimeSinceDeployed <= WeaponInfo.DeployTime)
             {
                 return false;
@@ -20,7 +20,7 @@ namespace TTTReborn.Items
             }
 
             return clipInfo.TimeSinceAttack > GetRealRPM(clipInfo.RPM);
-		}
+        }
 
         public virtual void Attack(ClipInfo clipInfo)
         {
