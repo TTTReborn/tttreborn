@@ -130,9 +130,29 @@ namespace TTTReborn
             return false;
         }
 
-        public bool HasEmptySlot(CarriableCategories category) => SlotCapacity[GetSlotByCategory(category) - 1] - List.Count(x => (((ICarriableItem) x).Info as CarriableInfo).Category == category) > 0;
+        public bool HasEmptySlot(CarriableCategories category)
+        {
+            int slot = GetSlotByCategory(category);
 
-        public ICarriableItem[] GetSlotCarriable(CarriableCategories category) => List.Where(x => (((ICarriableItem) x).Info as CarriableInfo).Category == category).ToArray() as ICarriableItem[] ?? Array.Empty<ICarriableItem>();
+            return SlotCapacity[GetSlotByCategory(category) - 1] - List.Count(x => GetSlotByCategory((((ICarriableItem) x).Info as CarriableInfo).Category) == slot) > 0;
+        }
+
+        public ICarriableItem[] GetSlotCarriable(CarriableCategories category)
+        {
+            int slot = GetSlotByCategory(category);
+
+            List<ICarriableItem> list = new();
+
+            foreach (Entity entity in List)
+            {
+                if (entity is ICarriableItem carriableItem && GetSlotByCategory((carriableItem.Info as CarriableInfo).Category) == slot)
+                {
+                    list.Add(carriableItem);
+                }
+            }
+
+            return list.ToArray();
+        }
 
         public bool IsCarryingType(Type t) => List.Any(x => x.GetType() == t);
 

@@ -24,14 +24,21 @@ namespace TTTReborn.Items
             Primary.Damage = 8;
             Primary.Spread = 0.1f;
             Primary.RPM = 600;
+            Primary.ShootSound = "rust_pistol.shoot";
             Primary.Force = 1.5f;
             Primary.BulletSize = 3f;
-            Primary.ShootEffectList = new()
+            Primary.ShootEffectList = new Dictionary<string, string>()
             {
-                new("particles/pistol_muzzleflash.vpcf", "muzzle"),
-                new("particles/pistol_ejectbrass.vpcf", "ejection_point")
+                { "particles/pistol_muzzleflash.vpcf", "muzzle" },
+                { "particles/pistol_ejectbrass.vpcf", "ejection_point" }
             };
-            Primary.ShakeEffect = new(0.5f, 4.0f, 1.0f, 0.5f);
+            Primary.ShakeEffect = new()
+            {
+                Length = 0.5f,
+                Speed = 4.0f,
+                Size = 1.0f,
+                Rotation = 0.5f
+            };
         }
     }
 }

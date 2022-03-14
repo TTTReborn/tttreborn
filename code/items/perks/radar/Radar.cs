@@ -10,6 +10,7 @@ namespace TTTReborn.Items
 {
     [Library("ttt_perk_radar")]
     [Buyable(Price = 100)]
+    [Perk]
     [Hammer.Skip]
     public partial class Radar : CountdownPerk
     {

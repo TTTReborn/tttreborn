@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 
 namespace TTTReborn.Items
@@ -24,12 +26,17 @@ namespace TTTReborn.Items
             Primary.RPM = 60;
             Primary.ShootSound = "rust_pumpshotgun.shoot";
             Primary.DryFireSound = "pistol.dryfire";
-            Primary.ShootEffectList = new()
+            Primary.ShootEffectList = new Dictionary<string, string>()
             {
-                new("particles/pistol_muzzleflash.vpcf", "muzzle"),
-                new("particles/pistol_ejectbrass.vpcf", "ejection_point")
+                { "particles/pistol_muzzleflash.vpcf", "muzzle" },
+                { "particles/pistol_ejectbrass.vpcf", "ejection_point" }
             };
-            Primary.ShakeEffect = new(1.0f, 1.5f, 2.0f);
+            Primary.ShakeEffect = new()
+            {
+                Length = 1.0f,
+                Speed = 1.5f,
+                Size = 2.0f
+            };
         }
     }
 }

@@ -16,7 +16,7 @@ namespace TTTReborn.Items
         public ClipInfo Primary { get; set; } = new();
 
         [Net]
-        public ClipInfo Secondary { get; set; } = null;
+        public ClipInfo Secondary { get; set; } = new();
 
         [Net]
         public TimeSince TimeSinceReload { get; set; }

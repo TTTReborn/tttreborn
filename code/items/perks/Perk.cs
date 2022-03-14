@@ -19,9 +19,9 @@ namespace TTTReborn.Items
     public abstract partial class Perk : BaseNetworkable, IItem
     {
         [Net]
-        public ItemInfo Info { get; set; }
+        public ItemInfo Info { get; set; } = new();
 
-        protected Perk()
+        public Perk() : base()
         {
             Info = new()
             {
@@ -54,7 +54,7 @@ namespace TTTReborn.Items
             Info.Owner = null;
         }
 
-        public string GetTranslationKey(string key) => Utils.GetTranslationKey(Info.LibraryName, key);
+        public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Info.LibraryName, key);
 
         public void Delete()
         {

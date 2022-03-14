@@ -27,20 +27,19 @@ namespace TTTReborn.Items
         }
     }
 
-    public struct ShakeEffect
+    public partial class ShakeEffect : BaseNetworkable
     {
-        public readonly float Length;
-        public readonly float Speed;
-        public readonly float Size;
-        public readonly float Rotation;
+        [Net]
+        public float Length { get; set; } = 0f;
 
-        public ShakeEffect(float length = 1f, float speed = 1f, float size = 1f, float rotation = 0.6f)
-        {
-            Length = length;
-            Speed = speed;
-            Size = size;
-            Rotation = rotation;
-        }
+        [Net]
+        public float Speed { get; set; } = 0f;
+
+        [Net]
+        public float Size { get; set; } = 0f;
+
+        [Net]
+        public float Rotation { get; set; } = 0f;
     }
 
     public partial class ClipInfo : BaseNetworkable
@@ -56,8 +55,6 @@ namespace TTTReborn.Items
 
         [Net]
         public float Damage { get; set; } = 5f;
-
-        public Type AmmoType { get; set; }
 
         [Net]
         public bool UnlimitedAmmo { get; set; } = false;
@@ -76,10 +73,10 @@ namespace TTTReborn.Items
 		public TimeSince TimeSinceAttack { get; set; } = 0f;
 
         [Net]
-        public string ShootSound { get; set; }
+        public string ShootSound { get; set; } = null;
 
         [Net]
-        public string DryFireSound { get; set; }
+        public string DryFireSound { get; set; } = null;
 
         [Net]
         public int Bullets { get; set; } = 1;
@@ -93,12 +90,14 @@ namespace TTTReborn.Items
         [Net]
         public float BulletSize { get; set; } = 0.1f;
 
-        public List<ShootEffect> ShootEffectList { get; set; } = new()
+        [Net]
+        public Dictionary<string, string> ShootEffectList { get; set; } = new()
         {
-            new("particles/pistol_muzzleflash.vpcf", "muzzle")
+            { "particles/pistol_muzzleflash.vpcf", "muzzle" }
         };
 
-        public ShakeEffect ShakeEffect { get; set; } = new();
+        [Net]
+        public ShakeEffect ShakeEffect { get; set; } = null;
 
         [Net]
         public FiringType FiringType { get; set; } = FiringType.SEMI;

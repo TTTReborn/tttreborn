@@ -32,11 +32,15 @@ namespace TTTReborn.Items
         public TimeSince SinceLastDrop { get; set; } = 0f;
         public virtual bool CanDrop { get; set; } = true;
 
-        protected Equipment()
+        public Equipment()
         {
             Type type = GetType();
 
-            Info.LibraryName = Utils.GetLibraryName(type);
+            Info = new CarriableInfo
+            {
+                LibraryName = Utils.GetLibraryName(type)
+            };
+
             EquipmentAttribute equipmentAttribute = Utils.GetAttribute<EquipmentAttribute>(type);
 
             if (equipmentAttribute != null)
