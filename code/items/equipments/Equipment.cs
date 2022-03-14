@@ -16,24 +16,32 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract class Equipment : BaseCarriable, ICarriableItem
+    public abstract partial class Equipment : BaseCarriable, ICarriableItem
     {
-        public string LibraryName { get; }
+        [Net]
+        public ItemInfo Info { get; set; } = new CarriableInfo();
+
+        public CarriableInfo CarriableInfo
+        {
+            get => Info as CarriableInfo;
+        }
+
         public Type ObjectType { get; }
-        public CarriableCategories Category { get; }
         public PickupTrigger PickupTrigger { get; set; }
         public Entity LastDropOwner { get; set; }
         public TimeSince SinceLastDrop { get; set; } = 0f;
+        public virtual bool CanDrop { get; set; } = true;
 
         protected Equipment()
         {
             Type type = GetType();
-            LibraryName = Utils.GetLibraryName(type);
+
+            Info.LibraryName = Utils.GetLibraryName(type);
             EquipmentAttribute equipmentAttribute = Utils.GetAttribute<EquipmentAttribute>(type);
 
             if (equipmentAttribute != null)
             {
-                Category = equipmentAttribute.Category;
+                CarriableInfo.Category = equipmentAttribute.Category;
                 ObjectType = equipmentAttribute.ObjectType;
             }
 
@@ -46,7 +54,7 @@ namespace TTTReborn.Items
 
             RenderColor = Color.Transparent;
 
-            if (CanDrop())
+            if (CanDrop)
             {
                 PickupTrigger = new();
                 PickupTrigger.Parent = this;
@@ -75,9 +83,7 @@ namespace TTTReborn.Items
 
         }
 
-        public string GetTranslationKey(string key) => Utils.GetTranslationKey(LibraryName, key);
-
-        public virtual bool CanDrop() => true;
+        public string GetTranslationKey(string key) => Utils.GetTranslationKey(Info.LibraryName, key);
 
         public virtual void PickupStartTouch(Entity other)
         {
@@ -124,7 +130,7 @@ namespace TTTReborn.Items
         {
             base.Simulate(client);
 
-            if (!IsServer || Owner is not Player owner || !CanDrop())
+            if (!IsServer || Owner is not Player owner || !CanDrop)
             {
                 return;
             }

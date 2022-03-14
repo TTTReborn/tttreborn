@@ -17,9 +17,7 @@ namespace TTTReborn.Items
     {
         static string ITEM_TAG => "TTT_ITEM";
 
-        string LibraryName { get; }
-
-        Entity Owner { get; }
+        ItemInfo Info { get; }
 
         void Equip(Player player);
 

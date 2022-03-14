@@ -13,13 +13,6 @@ namespace TTTReborn.Items
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
-        public override bool UnlimitedAmmo => true;
-        public override int ClipSize => 1;
-        public override float PrimaryRate => 1f;
-        public override float SecondaryRate => 1.0f;
-        public override float ReloadTime => 2.3f;
-        public override float DeployTime => 0.4f;
-        public override int BaseDamage => 3;
 
         public const int NEWTON_FORCE_MIN = 300;
         public const int NEWTON_FORCE_MAX = 700;
@@ -27,6 +20,19 @@ namespace TTTReborn.Items
 
         public bool IsCharging { get; set; } = false;
         public float ChargingStartTime;
+
+        public NewtonLauncher() : base()
+        {
+            WeaponInfo.ReloadTime = 2.3f;
+            WeaponInfo.DeployTime = 0.4f;
+
+            Primary.UnlimitedAmmo = true;
+            Primary.ClipSize = 1;
+            Primary.Damage = 3;
+            Primary.Rate = 1f;
+            Primary.ShootSound = "rust_pistol.shoot";
+            Primary.DryFireSound = "pistol.dryfire";
+        }
 
         public override void OnActive()
         {
@@ -42,9 +48,9 @@ namespace TTTReborn.Items
             IsCharging = false;
         }
 
-        public override void AttackPrimary()
+        public override void Attack(ClipInfo clipInfo)
         {
-            if (IsCharging)
+            if (IsCharging || clipInfo != Primary)
             {
                 return;
             }
@@ -59,14 +65,13 @@ namespace TTTReborn.Items
 
             if (IsClient)
             {
-                ShootEffects();
+                ShootEffects(Primary);
             }
 
-            PlaySound("rust_pistol.shoot").SetPosition(Position).SetVolume(0.8f);
-            ShootBullet(0f, 0f, BaseDamage, 0f);
+            PlaySound(Primary.ShootSound).SetPosition(Position).SetVolume(0.8f);
+            ShootBullet(0f, 0f, Primary.Damage, 0f);
 
             IsCharging = false;
-            TimeSincePrimaryAttack = 0;
         }
 
         public override void ShootBullet(float spread, float force, float damage, float bulletSize)

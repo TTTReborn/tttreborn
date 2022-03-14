@@ -1,7 +1,5 @@
 using System;
 
-using Sandbox;
-
 namespace TTTReborn.Items
 {
     public enum CarriableCategories
@@ -29,8 +27,6 @@ namespace TTTReborn.Items
 
     public interface ICarriableItem : IItem, IPickupable
     {
-        CarriableCategories Category { get; }
-
-        bool CanDrop();
+        bool CanDrop { get; set; }
     }
 }

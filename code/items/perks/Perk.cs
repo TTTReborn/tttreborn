@@ -16,19 +16,22 @@ namespace TTTReborn.Items
     }
 
     [Hammer.Skip]
-    public abstract class Perk : IItem
+    public abstract partial class Perk : BaseNetworkable, IItem
     {
-        public string LibraryName { get; }
-        public Entity Owner { get; private set; }
+        [Net]
+        public ItemInfo Info { get; set; }
 
         protected Perk()
         {
-            LibraryName = Utils.GetLibraryName(GetType());
+            Info = new()
+            {
+                LibraryName = Utils.GetLibraryName(GetType())
+            };
         }
 
         public void Equip(Player player)
         {
-            Owner = player;
+            Info.Owner = player;
 
             OnEquip();
         }
@@ -48,10 +51,10 @@ namespace TTTReborn.Items
 
         public virtual void OnRemove()
         {
-            Owner = null;
+            Info.Owner = null;
         }
 
-        public string GetTranslationKey(string key) => Utils.GetTranslationKey(LibraryName, key);
+        public string GetTranslationKey(string key) => Utils.GetTranslationKey(Info.LibraryName, key);
 
         public void Delete()
         {

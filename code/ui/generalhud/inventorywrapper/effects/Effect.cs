@@ -20,7 +20,7 @@ namespace TTTReborn.UI
                 _item = value;
 
                 _nameLabel.UpdateTranslation(new TranslationData(_item != null ? _item.GetTranslationKey("NAME") : ""));
-                _effectImage.Texture = _item != null ? Texture.Load(FileSystem.Mounted, $"assets/icons/{_item.LibraryName}.png", false) : null;
+                _effectImage.Texture = _item != null ? Texture.Load(FileSystem.Mounted, $"assets/icons/{_item.Info.LibraryName}.png", false) : null;
 
                 if (_effectImage.Texture == null)
                 {

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 
 namespace TTTReborn.Items
@@ -12,56 +14,24 @@ namespace TTTReborn.Items
     {
         public override string ViewModelPath => "weapons/rust_smg/v_rust_smg.vmdl";
         public override string ModelPath => "weapons/rust_smg/rust_smg.vmdl";
-        public override float PrimaryRate => 10.0f;
-        public override float SecondaryRate => 1.0f;
-        public override int ClipSize => 30;
-        public override float ReloadTime => 2.8f;
-        public override float DeployTime => 0.6f;
-        public override int BaseDamage => 8;
 
-        public override void AttackPrimary()
+        public SMG() : base()
         {
-            if (!TakeAmmo(1))
+            WeaponInfo.ReloadTime = 2.8f;
+            WeaponInfo.DeployTime = 0.6f;
+
+            Primary.ClipSize = 30;
+            Primary.Damage = 8;
+            Primary.Spread = 0.1f;
+            Primary.Force = 1.5f;
+            Primary.BulletSize = 3f;
+            Primary.ShootEffectList = new()
             {
-                PlaySound("pistol.dryfire").SetPosition(Position).SetVolume(0.2f);
-
-                return;
-            }
-
-            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
-
-            if (IsClient)
-            {
-                ShootEffects();
-            }
-
-            PlaySound("rust_smg.shoot").SetPosition(Position).SetVolume(0.8f);
-            ShootBullet(0.1f, 1.5f, BaseDamage, 3.0f);
-        }
-
-        protected override void ShootEffects()
-        {
-            Host.AssertClient();
-
-            Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
-            Particles.Create("particles/pistol_ejectbrass.vpcf", EffectEntity, "ejection_point");
-
-            if (IsLocalPawn)
-            {
-                using (Prediction.Off())
-                {
-                    _ = new Sandbox.ScreenShake.Perlin(0.5f, 4.0f, 1.0f, 0.5f);
-                }
-            }
-
-            ViewModelEntity?.SetAnimParameter("fire", true);
-            CrosshairPanel?.CreateEvent("fire");
-        }
-
-        public override void SimulateAnimator(PawnAnimator anim)
-        {
-            anim.SetAnimParameter("holdtype", 2);
-            anim.SetAnimParameter("aim_body_weight", 1.0f);
+                new("particles/pistol_muzzleflash.vpcf", "muzzle"),
+                new("particles/pistol_ejectbrass.vpcf", "ejection_point")
+            };
+            Primary.ShakeEffect = new(0.5f, 4.0f, 1.0f, 0.5f);
+            Primary.Rate = 10f;
         }
     }
 }

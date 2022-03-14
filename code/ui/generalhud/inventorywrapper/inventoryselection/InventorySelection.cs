@@ -80,12 +80,12 @@ namespace TTTReborn.UI
                         continue;
                     }
 
-                    string entName = carriableItem.LibraryName;
+                    string entName = carriableItem.Info.LibraryName;
                     bool found = false;
 
                     foreach (InventorySlot inventorySlot in inventorySlots)
                     {
-                        if (inventorySlot.Carriable.LibraryName.Equals(entName))
+                        if (inventorySlot.Carriable.Info.LibraryName.Equals(entName))
                         {
                             found = true;
 
@@ -136,10 +136,10 @@ namespace TTTReborn.UI
                     slot.SlotLabel.SetClass("rounded-top-left", child == Children.First());
                     slot.SlotLabel.SetClass("rounded-bottom-left", child == Children.Last());
 
-                    slot.SetClass("active", slot.Carriable.LibraryName == activeItem?.LibraryName);
-                    slot.SetClass("opacity-heavy", slot.Carriable.LibraryName == activeItem?.LibraryName);
+                    slot.SetClass("active", slot.Carriable.Info.LibraryName == activeItem?.Info.LibraryName);
+                    slot.SetClass("opacity-heavy", slot.Carriable.Info.LibraryName == activeItem?.Info.LibraryName);
 
-                    if (slot.Carriable is Weapon weapon && weapon.Category != CarriableCategories.Melee)
+                    if (slot.Carriable is Weapon weapon && weapon.WeaponInfo.Category != CarriableCategories.Melee)
                     {
                         slot.UpdateAmmo(FormatAmmo(weapon, player.CurrentPlayer.Inventory));
                     }
@@ -172,10 +172,10 @@ namespace TTTReborn.UI
                 InventorySlot s1 = p1 as InventorySlot;
                 InventorySlot s2 = p2 as InventorySlot;
 
-                int result = s1.Carriable.Category.CompareTo(s2.Carriable.Category);
+                int result = (s1.Carriable.Info as CarriableInfo).Category.CompareTo((s2.Carriable.Info as CarriableInfo).Category);
                 return result != 0
                     ? result
-                    : string.Compare(s1.Carriable.LibraryName, s2.Carriable.LibraryName, StringComparison.Ordinal);
+                    : string.Compare(s1.Carriable.Info.LibraryName, s2.Carriable.Info.LibraryName, StringComparison.Ordinal);
             });
 
             this.Enabled(Children.Any());
@@ -188,7 +188,7 @@ namespace TTTReborn.UI
             {
                 if (child is InventorySlot slot)
                 {
-                    if (slot.Carriable.LibraryName == carriable.LibraryName)
+                    if (slot.Carriable.Info.LibraryName == carriable.Info.LibraryName)
                     {
                         child.Delete();
                     }
@@ -242,14 +242,14 @@ namespace TTTReborn.UI
                 {
                     if (childrenList[i] is InventorySlot slot)
                     {
-                        if (Inventory.GetSlotByCategory(slot.Carriable.Category) == keyboardIndexPressed)
+                        if (Inventory.GetSlotByCategory((slot.Carriable.Info as CarriableInfo).Category) == keyboardIndexPressed)
                         {
                             // Using the keyboard index the user pressed, find all carriables that
                             // have the same slot type as the index.
                             // Ex. "3" pressed, find all carriables with slot type "3".
                             weaponsOfSlotTypeSelected.Add(slot.Carriable);
 
-                            if (slot.Carriable.LibraryName == activeCarriable?.LibraryName)
+                            if (slot.Carriable.Info.LibraryName == activeCarriable?.Info.LibraryName)
                             {
                                 // If the current active carriable has the same slot type as
                                 // the keyboard index the user pressed
@@ -277,7 +277,7 @@ namespace TTTReborn.UI
             if (mouseWheelIndex != 0)
             {
                 int activeCarriableIndex = childrenList.FindIndex((p) =>
-                    p is InventorySlot slot && slot.Carriable.LibraryName == activeCarriable?.LibraryName);
+                    p is InventorySlot slot && slot.Carriable.Info.LibraryName == activeCarriable?.Info.LibraryName);
 
                 int newSelectedIndex = NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1);
                 input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
@@ -310,12 +310,12 @@ namespace TTTReborn.UI
 
         private static string FormatAmmo(Weapon weapon, Inventory inventory)
         {
-            if (weapon.UnlimitedAmmo)
+            if (weapon.Primary.UnlimitedAmmo)
             {
-                return $"{weapon.AmmoClip} + ∞";
+                return $"{weapon.Primary.ClipAmmo} + ∞";
             }
 
-            return $"{weapon.AmmoClip} + {inventory.Ammo.Count(weapon.AmmoName)}";
+            return $"{weapon.Primary.ClipAmmo} + {inventory.Ammo.Count(weapon.Primary.AmmoName)}";
         }
 
         private class InventorySlot : Panel
@@ -331,16 +331,16 @@ namespace TTTReborn.UI
 
                 AddClass("background-color-primary");
 
-                SlotLabel = Add.Label(Inventory.GetSlotByCategory(carriable.Category).ToString());
+                SlotLabel = Add.Label(Inventory.GetSlotByCategory((carriable.Info as CarriableInfo).Category).ToString());
                 SlotLabel.AddClass("slot-label");
 
-                _ = Add.TranslationLabel(new TranslationData(Utils.GetTranslationKey(carriable.LibraryName, "NAME")));
+                _ = Add.TranslationLabel(new TranslationData(Utils.GetTranslationKey(carriable.Info.LibraryName, "NAME")));
 
                 _ammoLabel = Add.Label();
 
                 if (Local.Pawn is Player player)
                 {
-                    if (carriable is Weapon weapon && carriable.Category != CarriableCategories.Melee)
+                    if (carriable is Weapon weapon && (carriable.Info as CarriableInfo).Category != CarriableCategories.Melee)
                     {
                         _ammoLabel.Text = FormatAmmo(weapon, player.Inventory);
                         _ammoLabel.AddClass("ammo-label");

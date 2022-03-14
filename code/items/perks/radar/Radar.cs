@@ -45,14 +45,14 @@ namespace TTTReborn.Items
         {
             if (Host.IsServer)
             {
-                if (Owner is not Player owner)
+                if (Info.Owner is not Player owner)
                 {
                     return;
                 }
 
                 List<RadarPointData> pointData = new();
 
-                foreach (Player player in Globals.Utils.GetAlivePlayers())
+                foreach (Player player in Utils.GetAlivePlayers())
                 {
                     if (player.Client.PlayerId == owner.Client.PlayerId)
                     {
@@ -80,7 +80,7 @@ namespace TTTReborn.Items
                     }
                 }
 
-                ClientSendRadarPositions(To.Single(Owner), owner, pointData.ToArray());
+                ClientSendRadarPositions(To.Single(Info.Owner), owner, pointData.ToArray());
             }
             else
             {
