@@ -6,7 +6,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [Hammer.Skip]
-    public abstract class CountdownPerk : Perk
+    public abstract partial class CountdownPerk : Perk
     {
         public abstract float Countdown { get; }
 
@@ -23,7 +23,7 @@ namespace TTTReborn.Items
 
         private async Task StartCountdown()
         {
-            while (Owner != null)
+            while (Info.Owner != null)
             {
                 try
                 {
@@ -31,7 +31,7 @@ namespace TTTReborn.Items
 
                     await GameTask.DelaySeconds(Countdown);
 
-                    if (Owner != null)
+                    if (Info.Owner != null)
                     {
                         OnCountdown();
                     }

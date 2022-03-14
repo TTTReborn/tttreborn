@@ -32,5 +32,4 @@ namespace TTTReborn.Items
             Position += left * MathF.Sin(_walkBob * 0.6f) * speed * -0.5f;
         }
     }
-
 }

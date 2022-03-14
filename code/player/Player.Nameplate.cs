@@ -1,6 +1,5 @@
-using TTTReborn.UI;
-
 using TTTReborn.Entities;
+using TTTReborn.UI;
 
 namespace TTTReborn
 {

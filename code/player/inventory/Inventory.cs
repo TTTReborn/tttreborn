@@ -61,7 +61,7 @@ namespace TTTReborn
 
             if (entity is ICarriableItem carriable)
             {
-                if (IsCarryingType(entity.GetType()) || !HasEmptySlot(carriable.Category))
+                if (IsCarryingType(entity.GetType()) || !HasEmptySlot((carriable.Info as CarriableInfo).Category))
                 {
                     return false;
                 }
@@ -78,10 +78,7 @@ namespace TTTReborn
             return add;
         }
 
-        public bool Add(Perk perk)
-        {
-            return Perks.Give(perk);
-        }
+        public bool Add(Perk perk) => Perks.Give(perk);
 
         public bool Add(IItem item, bool makeActive = false)
         {
@@ -135,15 +132,29 @@ namespace TTTReborn
 
         public bool HasEmptySlot(CarriableCategories category)
         {
-            int itemsInSlot = List.Count(x => ((ICarriableItem) x).Category == category);
+            int slot = GetSlotByCategory(category);
 
-            return SlotCapacity[GetSlotByCategory(category) - 1] - itemsInSlot > 0;
+            return SlotCapacity[GetSlotByCategory(category) - 1] - List.Count(x => GetSlotByCategory((((ICarriableItem) x).Info as CarriableInfo).Category) == slot) > 0;
         }
 
-        public bool IsCarryingType(Type t)
+        public ICarriableItem[] GetSlotCarriable(CarriableCategories category)
         {
-            return List.Any(x => x.GetType() == t);
+            int slot = GetSlotByCategory(category);
+
+            List<ICarriableItem> list = new();
+
+            foreach (Entity entity in List)
+            {
+                if (entity is ICarriableItem carriableItem && GetSlotByCategory((carriableItem.Info as CarriableInfo).Category) == slot)
+                {
+                    list.Add(carriableItem);
+                }
+            }
+
+            return list.ToArray();
         }
+
+        public bool IsCarryingType(Type t) => List.Any(x => x.GetType() == t);
 
         public IList<string> GetAmmoNames()
         {
@@ -153,9 +164,14 @@ namespace TTTReborn
             {
                 if (entity is Weapon wep)
                 {
-                    if (!types.Contains(wep.AmmoName))
+                    if (!types.Contains(wep.Primary.AmmoName))
                     {
-                        types.Add(wep.AmmoName);
+                        types.Add(wep.Primary.AmmoName);
+                    }
+
+                    if (wep.Secondary != null && !types.Contains(wep.Secondary.AmmoName))
+                    {
+                        types.Add(wep.Secondary.AmmoName);
                     }
                 }
             }
@@ -163,22 +179,11 @@ namespace TTTReborn
             return types;
         }
 
-        public void SelectHands()
-        {
-            foreach (Entity entity in List)
-            {
-                if (entity is Hands)
-                {
-                    Active = entity;
-
-                    break;
-                }
-            }
-        }
+        public void SelectHands() => Active = List.Where(x => x is Hands).First();
 
         public override bool Drop(Entity entity)
         {
-            if (!Host.IsServer || !Contains(entity) || entity is ICarriableItem item && !item.CanDrop())
+            if (!Host.IsServer || !Contains(entity) || entity is ICarriableItem item && !item.CanDrop)
             {
                 return false;
             }
@@ -191,21 +196,13 @@ namespace TTTReborn
             return base.Drop(entity);
         }
 
-        public void DropAll()
-        {
-            List<Entity> cache = new(List);
-
-            foreach (Entity entity in cache)
-            {
-                Drop(entity);
-            }
-        }
+        public void DropAll() => new List<Entity>(List).ForEach(x => Drop(x));
 
         public override Entity DropActive()
         {
             Entity entity;
 
-            if (Active is Equipment equipment && equipment.CanDrop())
+            if (Active is Equipment equipment && equipment.CanDrop)
             {
                 entity = DropEntity(equipment);
             }

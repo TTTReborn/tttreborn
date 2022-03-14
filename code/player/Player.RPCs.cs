@@ -58,7 +58,7 @@ namespace TTTReborn
         }
 
         [ClientRpc]
-        public void ClientAnotherPlayerDidDamage(Vector3 position, float inverseHealth)
+        public static void ClientAnotherPlayerDidDamage(Vector3 position, float inverseHealth)
         {
             Sound.FromScreen("dm.ui_attacker")
                 .SetPitch(1 + inverseHealth * 1)

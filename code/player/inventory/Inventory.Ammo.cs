@@ -15,9 +15,14 @@ namespace TTTReborn
             _owner = owner;
         }
 
-        public int Count(string ammoType)
+        public int Count(string ammoName)
         {
-            string ammo = ammoType.ToLower();
+            if (ammoName == null)
+            {
+                return 0;
+            }
+
+            string ammo = ammoName.ToLower();
 
             if (AmmoList == null || !AmmoList.ContainsKey(ammo))
             {

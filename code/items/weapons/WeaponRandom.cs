@@ -62,21 +62,30 @@ namespace TTTReborn.Items
             weapon.Rotation = Rotation;
             weapon.Spawn();
 
-            if (weapon.AmmoType == null)
+            string ammoName = weapon.Primary.AmmoName;
+
+            if (ammoName == null)
             {
-                return; // If the choosen weapon doesn't use ammo we don't need to spawn any.
+                return; // If the choosen weapon doesn't use ammo we don't need to spawn any
             }
 
-            if (!weapon.AmmoType.IsSubclassOf(typeof(Ammo)))
+            Type ammoType = Utils.GetTypeByLibraryName<Ammo>(ammoName);
+
+            if (ammoType == null)
             {
-                Log.Error($"The defined ammo type {weapon.AmmoType.Name} for the weapon {weapon.LibraryName} is not a descendant of {typeof(Ammo).Name}.");
+                return; // If the choosen weapon doesn't use ammo we don't need to spawn any
+            }
+
+            if (!ammoType.IsSubclassOf(typeof(Ammo)))
+            {
+                Log.Error($"The defined ammo type {ammoType.Name} for the weapon {weapon.Info.LibraryName} is not a descendant of {typeof(Ammo).Name}.");
 
                 return;
             }
 
             for (int i = 0; i < AmmoToSpawn; i++)
             {
-                Ammo ammo = Utils.GetObjectByType<Ammo>(weapon.AmmoType);
+                Ammo ammo = Utils.GetObjectByType<Ammo>(ammoType);
                 ammo.Position = weapon.Position + Vector3.Up * AMMO_DISTANCE_UP;
                 ammo.Spawn();
             }

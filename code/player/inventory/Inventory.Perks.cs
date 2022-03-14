@@ -18,7 +18,7 @@ namespace TTTReborn
 
         public bool Give(Perk perk)
         {
-            if (Has(perk.LibraryName))
+            if (Has(perk.Info.LibraryName))
             {
                 return false;
             }
@@ -27,7 +27,7 @@ namespace TTTReborn
 
             if (Host.IsServer)
             {
-                _owner.ClientAddPerk(To.Single(_owner), perk.LibraryName);
+                _owner.ClientAddPerk(To.Single(_owner), perk.Info.LibraryName);
             }
 
             perk.Equip(_owner);
@@ -37,7 +37,7 @@ namespace TTTReborn
 
         public bool Take(Perk perk)
         {
-            if (!Has(perk.LibraryName))
+            if (!Has(perk.Info.LibraryName))
             {
                 return false;
             }
@@ -49,7 +49,7 @@ namespace TTTReborn
 
             if (Host.IsServer)
             {
-                _owner.ClientRemovePerk(To.Single(_owner), perk.LibraryName);
+                _owner.ClientRemovePerk(To.Single(_owner), perk.Info.LibraryName);
             }
 
             return true;
@@ -64,7 +64,7 @@ namespace TTTReborn
                     continue;
                 }
 
-                if (perkName == t.LibraryName)
+                if (perkName == t.Info.LibraryName)
                 {
                     return t;
                 }

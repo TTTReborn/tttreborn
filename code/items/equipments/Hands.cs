@@ -20,7 +20,7 @@ namespace TTTReborn.Items
     public partial class Hands : Equipment
     {
         public override string ViewModelPath => "";
-        public override bool CanDrop() => false;
+        public override bool CanDrop { get; set; } = false;
         public static readonly float MAX_INTERACT_DISTANCE = 75;
         public static readonly string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 

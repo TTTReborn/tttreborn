@@ -31,7 +31,7 @@ namespace TTTReborn.Items
                     {
                         WeaponAttribute weaponAttribute = Utils.GetAttribute<WeaponAttribute>(wepType);
 
-                        if (weaponAttribute != null && weaponAttribute.Category == Category && weaponAttribute.AmmoType == ammoType)
+                        if (weaponAttribute != null && weaponAttribute.Category == Category && weaponAttribute.PrimaryAmmoName == Utils.GetLibraryName(ammoType))
                         {
                             if (!filteredTypes.Contains(ammoType))
                             {

@@ -1,169 +1,74 @@
 using System;
-using System.Collections.Generic;
 
 using Sandbox;
-using Sandbox.ScreenShake;
 
 using TTTReborn.Entities;
-using TTTReborn.Globalization;
-using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class WeaponAttribute : CarriableAttribute
-    {
-        public string AmmoName { get; private set; }
-        public Type AmmoType { get; set; }
-
-        public WeaponAttribute(CarriableCategories category) : base(category)
-        {
-            if (AmmoType == null)
-            {
-                switch (category)
-                {
-                    case CarriableCategories.Pistol:
-                        AmmoType = typeof(PistolAmmo);
-
-                        break;
-                    case CarriableCategories.SMG:
-                        AmmoType = typeof(SMGAmmo);
-
-                        break;
-                    case CarriableCategories.Shotgun:
-                        AmmoType = typeof(ShotgunAmmo);
-
-                        break;
-                    case CarriableCategories.Sniper:
-                        AmmoType = typeof(SniperAmmo);
-
-                        break;
-                    case CarriableCategories.OffensiveEquipment:
-                        AmmoType = typeof(OffensiveEquipmentAmmo);
-
-                        break;
-                }
-            }
-
-            if (AmmoType != null && Library.GetAttribute(AmmoType) != null)
-            {
-                AmmoName = Utils.GetLibraryName(AmmoType);
-            }
-            else
-            {
-                AmmoType = null;
-            }
-        }
-    }
-
     [Hammer.Skip]
-    public abstract partial class Weapon : BaseWeapon, ICarriableItem, IEntityHint
+    public abstract partial class Weapon : BaseCarriable, ICarriableItem, IEntityHint
     {
-        public string LibraryName { get; }
-        public CarriableCategories Category { get; } = CarriableCategories.Pistol;
-        public Type AmmoType { get; }
-        public string AmmoName { get; }
-        public virtual int ClipSize => 16;
-        public virtual float ReloadTime => 3.0f;
-        public virtual float DeployTime => 0.6f;
-        public virtual bool UnlimitedAmmo => false;
-        public virtual float ChargeAttackDuration => 2;
-        public virtual int BaseDamage => 10;
-        public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
-        public virtual string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
-
-        // TODO add player role to weapon to access in UI InventorySelection.cs.
-        // E.G. this weapon is bought in traitor shop: Role => "Traitor";
-        // This weapon is a normal weapon: Role => "None"
-
-        [Net, Predicted]
-        public int AmmoClip { get; set; }
-
-        [Net, Predicted]
-        public TimeSince TimeSinceReload { get; set; }
-
-        [Net, Predicted]
-        public bool IsReloading { get; set; }
-
-        [Net, Predicted]
-        public TimeSince TimeSinceDeployed { get; set; }
-
-        [Net, Predicted]
-        public TimeSince TimeSinceChargeAttack { get; set; }
-
-        public float ChargeAttackEndTime;
-
-        public PickupTrigger PickupTrigger { get; set; }
-
-        private const int AMMO_DROP_POSITION_OFFSET = 50;
-        private const int AMMO_DROP_VELOCITY = 500;
-
-        public Entity LastDropOwner { get; set; }
-        public TimeSince SinceLastDrop { get; set; } = 0f;
-
         public Weapon() : base()
         {
             Type type = GetType();
-            LibraryName = Utils.GetLibraryName(type);
+
+            Info = new WeaponInfo
+            {
+                LibraryName = Utils.GetLibraryName(type)
+            };
+
+            Primary = new();
+            Secondary = null;
+
             WeaponAttribute weaponAttribute = Utils.GetAttribute<WeaponAttribute>(type);
 
             if (weaponAttribute != null)
             {
-                Category = weaponAttribute.Category;
-                AmmoType = weaponAttribute.AmmoType;
-                AmmoName = weaponAttribute.AmmoName;
+                WeaponInfo.Category = weaponAttribute.Category;
+
+                Primary.AmmoName = weaponAttribute.PrimaryAmmoName;
+
+                if (Secondary != null)
+                {
+                    Secondary.AmmoName = weaponAttribute.SecondaryAmmoName;
+                }
             }
+
+            Primary.ClipAmmo = Primary.ClipSize;
 
             EnableShadowInFirstPerson = false;
 
             Tags.Add(IItem.ITEM_TAG);
         }
 
-        public void Equip(Player player)
-        {
-            OnEquip();
-        }
+        public void Equip(Player player) => OnEquip();
 
-        public virtual void OnEquip()
-        {
+        public virtual void OnEquip() { }
 
-        }
+        public void Remove() => OnRemove();
 
-        public void Remove()
-        {
-            OnRemove();
-        }
+        public virtual void OnRemove() { }
 
-        public virtual void OnRemove()
-        {
-
-        }
-
-        public string GetTranslationKey(string key) => Utils.GetTranslationKey(LibraryName, key);
-
-        public int AvailableAmmo()
-        {
-            if (Owner is not Player owner || AmmoName == null)
-            {
-                return 0;
-            }
-
-            return owner.Inventory.Ammo.Count(AmmoName);
-        }
+        public string GetTranslationKey(string key) => Utils.GetTranslationKey(Info.LibraryName, key);
 
         public override void ActiveStart(Entity owner)
         {
             base.ActiveStart(owner);
 
             TimeSinceDeployed = 0;
-            IsReloading = false;
+
+            Primary.IsReloading = false;
+
+            if (Secondary != null)
+            {
+                Secondary.IsReloading = false;
+            }
         }
 
         public override void Spawn()
         {
             base.Spawn();
-
-            AmmoClip = ClipSize;
 
             SetModel(ModelPath);
 
@@ -173,229 +78,128 @@ namespace TTTReborn.Items
             PickupTrigger.Rotation = Rotation;
         }
 
-        public override void Reload()
+        public virtual void BaseSimulate(Client owner)
         {
-            if (Category == CarriableCategories.Melee || IsReloading || AmmoClip >= ClipSize)
+            if (CanReload())
+            {
+                Reload(Primary);
+            }
+
+            //
+            // Reload could have changed our owner
+            //
+            if (!Owner.IsValid())
             {
                 return;
             }
 
-            TimeSinceReload = 0;
+            if (CanAttack(Primary, InputButton.Attack1))
+            {
+                using (LagCompensation())
+                {
+                    Attack(Primary);
+                }
+            }
 
-            if (Owner is Player player && !UnlimitedAmmo && (AmmoName == null || player.Inventory.Ammo.Count(AmmoName) <= 0))
+            //
+            // AttackPrimary could have changed our owner
+            //
+            if (!Owner.IsValid())
             {
                 return;
             }
 
-            IsReloading = true;
-
-            (Owner as AnimEntity).SetAnimParameter("b_reload", true);
-
-            DoClientReload();
+            if (CanAttack(Secondary, InputButton.Attack2))
+            {
+                using (LagCompensation())
+                {
+                    Attack(Secondary);
+                }
+            }
         }
+
+        public static float GetRealRPM(int rpm) => 60f / rpm;
 
         public override void Simulate(Client owner)
         {
-            if (TimeSinceDeployed < DeployTime)
+            if (TimeSinceDeployed < WeaponInfo.DeployTime)
             {
                 return;
             }
 
-            if (owner.Pawn is Player player)
+            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && Primary.ClipAmmo > 0 && !Primary.UnlimitedAmmo)
             {
-                if (player.LifeState == LifeState.Alive)
+                if (Primary.AmmoName != null && Primary.CanDropAmmo)
                 {
-                    if (ChargeAttackEndTime > 0f && Time.Now >= ChargeAttackEndTime)
+                    Type type = Utils.GetTypeByLibraryName<Ammo>(Primary.AmmoName);
+
+                    if (type != null)
                     {
-                        OnChargeAttackFinish();
+                        if (IsServer)
+                        {
+                            Ammo ammoBox = Utils.GetObjectByType<Ammo>(type);
+                            ammoBox.LastDropOwner = Owner;
+                            ammoBox.SinceLastDrop = 0f;
+                            ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
+                            ammoBox.Rotation = Owner.EyeRotation;
+                            ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
+                            ammoBox.SetCurrentAmmo(Primary.ClipAmmo);
+                        }
 
-                        ChargeAttackEndTime = 0f;
+                        TakeAmmo(Primary, Primary.ClipAmmo);
                     }
-                }
-                else
-                {
-                    ChargeAttackEndTime = 0f;
-                }
-            }
-
-            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && AmmoClip > 0 && !UnlimitedAmmo)
-            {
-                if (AmmoType != null)
-                {
-                    if (IsServer)
-                    {
-                        Ammo ammoBox = Utils.GetObjectByType<Ammo>(AmmoType);
-                        ammoBox.LastDropOwner = Owner;
-                        ammoBox.SinceLastDrop = 0f;
-                        ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
-                        ammoBox.Rotation = Owner.EyeRotation;
-                        ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
-                        ammoBox.SetCurrentAmmo(AmmoClip);
-                    }
-
-                    TakeAmmo(AmmoClip);
                 }
             }
 
             if (!IsReloading)
             {
-                base.Simulate(owner);
+                BaseSimulate(owner);
             }
-            else if (TimeSinceReload > ReloadTime)
+            else if (TimeSinceReload > WeaponInfo.ReloadTime)
             {
                 OnReloadFinish();
             }
         }
 
-        public override bool CanPrimaryAttack()
+        public static int GetHoldType(CarriableCategories category)
         {
-            if (ChargeAttackEndTime > 0f && Time.Now < ChargeAttackEndTime || TimeSinceDeployed <= DeployTime)
+            return category switch
+            {
+                CarriableCategories.Melee => 0,
+                CarriableCategories.Pistol => 1,
+                CarriableCategories.SMG or CarriableCategories.Sniper => 2,
+                CarriableCategories.Shotgun => 3,
+                CarriableCategories.OffensiveEquipment => 0,
+                CarriableCategories.UtilityEquipment => 0,
+                CarriableCategories.Grenade => 0,
+                _ => 0,
+            };
+        }
+
+        public override void SimulateAnimator(PawnAnimator anim)
+        {
+            anim.SetAnimParameter("holdtype", GetHoldType(WeaponInfo.Category));
+            anim.SetAnimParameter("aim_body_weight", 1.0f);
+        }
+
+        public int AvailableAmmo(ClipInfo clipInfo)
+        {
+            if (Owner is not Player owner || clipInfo == null || clipInfo.AmmoName == null)
+            {
+                return 0;
+            }
+
+            return owner.Inventory.Ammo.Count(clipInfo.AmmoName);
+        }
+
+        public static bool TakeAmmo(ClipInfo clipInfo, int amount)
+        {
+            if (clipInfo.ClipAmmo < amount)
             {
                 return false;
             }
 
-            return base.CanPrimaryAttack();
-        }
-
-        public override bool CanSecondaryAttack()
-        {
-            if (ChargeAttackEndTime > 0f && Time.Now < ChargeAttackEndTime || TimeSinceDeployed <= DeployTime)
-            {
-                return false;
-            }
-
-            return base.CanSecondaryAttack();
-        }
-
-        public virtual void StartChargeAttack()
-        {
-            ChargeAttackEndTime = Time.Now + ChargeAttackDuration;
-        }
-
-        public virtual void OnChargeAttackFinish()
-        {
-
-        }
-
-        public virtual void OnReloadFinish()
-        {
-            IsReloading = false;
-
-            if (Owner is not Player player || AmmoName == null)
-            {
-                return;
-            }
-
-            if (!UnlimitedAmmo)
-            {
-                int ammo = player.Inventory.Ammo.Take(AmmoName, ClipSize - AmmoClip);
-
-                if (ammo == 0)
-                {
-                    return;
-                }
-
-                AmmoClip += ammo;
-            }
-            else
-            {
-                AmmoClip = ClipSize;
-            }
-        }
-
-        [ClientRpc]
-        public virtual void DoClientReload()
-        {
-            ViewModelEntity?.SetAnimParameter("reload", true);
-        }
-
-        public override void AttackPrimary()
-        {
-            TimeSincePrimaryAttack = 0;
-            TimeSinceSecondaryAttack = 0;
-
-            if (IsClient)
-            {
-                ShootEffects();
-            }
-
-            ShootBullet(0.05f, 1.5f, BaseDamage, 3.0f);
-        }
-
-        protected virtual void ShootEffects()
-        {
-            Host.AssertClient();
-
-            if (Category != CarriableCategories.Melee)
-            {
-                Particles.Create("particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle");
-            }
-
-            if (IsLocalPawn)
-            {
-                using (Prediction.Off())
-                {
-                    _ = new Perlin();
-                }
-            }
-
-            ViewModelEntity?.SetAnimParameter("fire", true);
-        }
-
-        public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
-        {
-            Vector3 forward = Owner.EyeRotation.Forward;
-            forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
-            forward = forward.Normal;
-
-            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
-            {
-                if (!IsServer || !tr.Entity.IsValid())
-                {
-                    continue;
-                }
-
-                using (Prediction.Off())
-                {
-                    tr.Surface.DoBulletImpact(tr);
-
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
-                        .UsingTraceResult(tr)
-                        .WithAttacker(Owner)
-                        .WithWeapon(this);
-
-                    tr.Entity.TakeDamage(damageInfo);
-                }
-            }
-        }
-
-        public override IEnumerable<TraceResult> TraceBullet(Vector3 start, Vector3 end, float radius = 2.0f)
-        {
-            using (LagCompensation())
-            {
-                bool InWater = Sandbox.Internal.GlobalGameNamespace.Map.Physics.IsPointWater(start);
-
-                TraceResult tr = Trace.Ray(start, end)
-                    .UseHitboxes()
-                    .HitLayer(CollisionLayer.Water, !InWater)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(Owner)
-                    .Ignore(this)
-                    .Size(radius)
-                    .Run();
-
-                yield return tr;
-            }
-        }
-
-        public bool TakeAmmo(int amount)
-        {
-            if (AmmoClip < amount)
-            {
-                return false;
-            }
-
-            AmmoClip -= amount;
+            clipInfo.ClipAmmo -= amount;
 
             return true;
         }
@@ -419,94 +223,6 @@ namespace TTTReborn.Items
             ViewModelEntity.SetModel(ViewModelPath);
         }
 
-        public override void CreateHudElements()
-        {
-            if (Local.Hud == null)
-            {
-                return;
-            }
-        }
-
-        public bool IsUsable()
-        {
-            if (Category == CarriableCategories.Melee || ClipSize == 0 || AmmoClip > 0)
-            {
-                return true;
-            }
-
-            return AvailableAmmo() > 0;
-        }
-
-        public virtual void PickupStartTouch(Entity other)
-        {
-            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is Player player)
-            {
-                LastDropOwner = null;
-
-                player.Inventory.TryAdd(this);
-            }
-        }
-
-        public virtual void PickupEndTouch(Entity other)
-        {
-            if (other is Player && LastDropOwner == other)
-            {
-                LastDropOwner = null;
-            }
-        }
-
-        public override void OnCarryStart(Entity carrier)
-        {
-            base.OnCarryStart(carrier);
-
-            if (PickupTrigger.IsValid())
-            {
-                PickupTrigger.EnableTouch = false;
-            }
-        }
-
-        public override void OnCarryDrop(Entity dropper)
-        {
-            LastDropOwner = Owner;
-            SinceLastDrop = 0f;
-
-            base.OnCarryDrop(dropper);
-
-            if (PickupTrigger.IsValid())
-            {
-                PickupTrigger.EnableTouch = true;
-            }
-        }
-
-        public virtual bool CanDrop() => true;
-
-        public float HintDistance => 80f;
-
-        public TranslationData TextOnTick => new("WEAPON.USE", new TranslationData(GetTranslationKey("NAME")));
-
-        public bool CanHint(Player client) => true;
-
-        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
-
-        public void TextTick(Player player)
-        {
-            if (IsClient || player.LifeState != LifeState.Alive)
-            {
-                return;
-            }
-
-            using (Prediction.Off())
-            {
-                if (Input.Pressed(InputButton.Use))
-                {
-                    if (player.Inventory.Active is ICarriableItem carriable && carriable.Category == Category)
-                    {
-                        player.Inventory.DropActive();
-                    }
-
-                    player.Inventory.TryAdd(this, deleteIfFails: false, makeActive: true);
-                }
-            }
-        }
+        public override void CreateHudElements() { }
     }
 }
