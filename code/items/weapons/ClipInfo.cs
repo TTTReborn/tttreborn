@@ -67,6 +67,10 @@ namespace TTTReborn.Items
 
         public float BulletSize { get; set; } = 0.1f;
 
+        public string ImpactEffect { get; set; } = null;
+
+        public DamageFlags DamageType = DamageFlags.Bullet;
+
         public Dictionary<string, string> ShootEffectList { get; set; } = new()
         {
             { "particles/pistol_muzzleflash.vpcf", "muzzle" }

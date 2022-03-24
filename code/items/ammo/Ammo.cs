@@ -38,7 +38,7 @@ namespace TTTReborn.Items
         public PickupTrigger PickupTrigger { get; set; }
 
         public Entity LastDropOwner { get; set; }
-        public TimeSince SinceLastDrop { get; set; } = 0f;
+        public TimeSince TimeSinceLastDrop { get; set; } = 0f;
 
         /// <summary>
         /// Fired when a player picks up any amount of ammo from the entity.
@@ -103,7 +103,7 @@ namespace TTTReborn.Items
 
         public virtual void PickupStartTouch(Entity other)
         {
-            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is Player player)
+            if ((other != LastDropOwner || TimeSinceLastDrop > 0.25f) && other is Player player)
             {
                 LastDropOwner = null;
 

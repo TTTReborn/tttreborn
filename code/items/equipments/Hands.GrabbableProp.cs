@@ -39,7 +39,7 @@ namespace TTTReborn.Items
                 if (GrabbedEntity is IPickupable pickupable)
                 {
                     pickupable.LastDropOwner = Owner;
-                    pickupable.SinceLastDrop = 0f;
+                    pickupable.TimeSinceLastDrop = 0f;
                     pickupable.PickupTrigger.EnableTouch = true;
                 }
             }

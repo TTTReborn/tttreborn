@@ -179,7 +179,7 @@ metadata
 //
 // TTTReborn.Items.OffensiveEquipmentAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_offensiveequipment : ""
+@PointClass base(BaseProperties_neox_tttreborn, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_offensiveequipment : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -208,7 +208,7 @@ metadata
 //
 // TTTReborn.Items.PistolAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_pistol : ""
+@PointClass base(BaseProperties_neox_tttreborn, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_pistol : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -237,7 +237,7 @@ metadata
 //
 // TTTReborn.Items.ShotgunAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ttt_ammo_shotgun : ""
+@PointClass base(BaseProperties_neox_tttreborn, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ttt_ammo_shotgun : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -266,7 +266,7 @@ metadata
 //
 // TTTReborn.Items.SMGAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ttt_ammo_smg : ""
+@PointClass base(BaseProperties_neox_tttreborn, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ttt_ammo_smg : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -295,7 +295,7 @@ metadata
 //
 // TTTReborn.Items.SniperAmmo
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_sniper : ""
+@PointClass base(BaseProperties_neox_tttreborn, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ttt_ammo_sniper : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -383,7 +383,7 @@ metadata
 //
 // TTTReborn.Items.HealthstationEntity
 //
-@PointClass base(BaseProperties_neox_tttreborn) tags( Physics ) model() = ttt_entity_healthstation : ""
+@PointClass base(BaseProperties_neox_tttreborn, BasePhysicsSimulated) tags( Physics ) model() = ttt_entity_healthstation : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 

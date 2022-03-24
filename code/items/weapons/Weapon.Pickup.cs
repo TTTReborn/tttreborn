@@ -9,7 +9,7 @@ namespace TTTReborn.Items
     {
         public virtual void PickupStartTouch(Entity other)
         {
-            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is Player player)
+            if ((other != LastDropOwner || TimeSinceLastDrop > 0.25f) && other is Player player)
             {
                 LastDropOwner = null;
 
@@ -38,7 +38,7 @@ namespace TTTReborn.Items
         public override void OnCarryDrop(Entity dropper)
         {
             LastDropOwner = Owner;
-            SinceLastDrop = 0f;
+            TimeSinceLastDrop = 0f;
 
             base.OnCarryDrop(dropper);
 

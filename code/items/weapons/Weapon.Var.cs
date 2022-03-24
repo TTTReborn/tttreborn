@@ -4,18 +4,17 @@ namespace TTTReborn.Items
 {
     public abstract partial class Weapon
     {
-        public ItemInfo Info { get; set; }
+        public ItemInfo Info { get; set; } = new WeaponInfo();
 
         public WeaponInfo WeaponInfo
         {
             get => Info as WeaponInfo;
         }
 
-        public ClipInfo Primary { get; set; }
+        public virtual ClipInfo Primary { get; set; } = new();
 
-        public ClipInfo Secondary { get; set; }
+        public virtual ClipInfo Secondary { get; set; } = null;
 
-        [Net]
         public TimeSince TimeSinceReload { get; set; }
 
         public bool IsReloading
@@ -23,7 +22,10 @@ namespace TTTReborn.Items
             get => Primary.IsReloading || (Secondary?.IsReloading ?? false);
         }
 
-        [Net]
+        public virtual float BulletRange { get; set; } = 20000f;
+
+        public virtual bool IsPartialReloading { get; set; }
+
         public TimeSince TimeSinceDeployed { get; set; }
 
         public PickupTrigger PickupTrigger { get; set; }
@@ -31,11 +33,9 @@ namespace TTTReborn.Items
         private const int AMMO_DROP_POSITION_OFFSET = 50;
         private const int AMMO_DROP_VELOCITY = 500;
 
-        [Net]
         public Entity LastDropOwner { get; set; }
 
-        [Net]
-        public TimeSince SinceLastDrop { get; set; }
+        public TimeSince TimeSinceLastDrop { get; set; }
 
         public abstract string ModelPath { get; }
     }

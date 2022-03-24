@@ -74,35 +74,38 @@ namespace TTTReborn.Items
             IsCharging = false;
         }
 
-        public override void ShootBullet(float spread, float force, float damage, float bulletSize)
+        public override void ShootBullet(float spread, float force, float damage, float bulletSize, string impactEffect = null, DamageFlags damageType = DamageFlags.Crush)
         {
             Vector3 forward = Owner.EyeRotation.Forward;
             forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
+            foreach (TraceResult trace in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
             {
-                if (!IsServer || !tr.Entity.IsValid() || tr.Entity.IsWorld)
+                if (!IsServer || !trace.Entity.IsValid() || trace.Entity.IsWorld)
                 {
                     continue;
                 }
 
                 using (Prediction.Off())
                 {
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
-                        .UsingTraceResult(tr)
+                    DamageInfo damageInfo = new DamageInfo()
+                        .WithPosition(trace.EndPosition)
+                        .WithFlag(damageType)
+                        .WithForce(forward * 100f * force)
+                        .UsingTraceResult(trace)
                         .WithAttacker(Owner)
                         .WithWeapon(this);
 
-                    tr.Surface.DoBulletImpact(tr);
-                    tr.Entity.TakeDamage(damageInfo);
+                    trace.Surface.DoBulletImpact(trace);
+                    trace.Entity.TakeDamage(damageInfo);
 
-                    Vector3 pushDirection = new(tr.Direction.x, tr.Direction.y, Math.Min(tr.Direction.z + 0.5F, 0.75F));
+                    Vector3 pushDirection = new(trace.Direction.x, trace.Direction.y, Math.Min(trace.Direction.z + 0.5f, 0.75f));
                     float chargePercentage = Math.Clamp((Time.Now - ChargingStartTime) / NEWTON_CHARGE_TIME, 0, 1);
                     float chargeForce = ((NEWTON_FORCE_MAX - NEWTON_FORCE_MIN) * chargePercentage) + NEWTON_FORCE_MIN;
 
-                    tr.Entity.GroundEntity = null;
-                    tr.Entity.ApplyAbsoluteImpulse(pushDirection * chargeForce);
+                    trace.Entity.GroundEntity = null;
+                    trace.Entity.ApplyAbsoluteImpulse(pushDirection * chargeForce);
                 }
             }
         }

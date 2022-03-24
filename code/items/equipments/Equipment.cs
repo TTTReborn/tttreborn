@@ -18,7 +18,7 @@ namespace TTTReborn.Items
     [Hammer.Skip]
     public abstract partial class Equipment : BaseCarriable, ICarriableItem
     {
-        public ItemInfo Info { get; set; }
+        public ItemInfo Info { get; set; } = new CarriableInfo();
 
         public CarriableInfo CarriableInfo
         {
@@ -27,19 +27,17 @@ namespace TTTReborn.Items
 
         public Type ObjectType { get; }
         public PickupTrigger PickupTrigger { get; set; }
+
         public Entity LastDropOwner { get; set; }
-        public TimeSince SinceLastDrop { get; set; } = 0f;
+
+        public TimeSince TimeSinceLastDrop { get; set; } = 0f;
         public virtual bool CanDrop { get; set; } = true;
 
         public Equipment()
         {
             Type type = GetType();
 
-            Info = new CarriableInfo
-            {
-                LibraryName = Utils.GetLibraryName(type)
-            };
-
+            Info.LibraryName = Utils.GetLibraryName(type);
             EquipmentAttribute equipmentAttribute = Utils.GetAttribute<EquipmentAttribute>(type);
 
             if (equipmentAttribute != null)
@@ -90,7 +88,7 @@ namespace TTTReborn.Items
 
         public virtual void PickupStartTouch(Entity other)
         {
-            if ((other != LastDropOwner || SinceLastDrop > 0.25f) && other is Player player)
+            if ((other != LastDropOwner || TimeSinceLastDrop > 0.25f) && other is Player player)
             {
                 LastDropOwner = null;
 
@@ -119,7 +117,7 @@ namespace TTTReborn.Items
         public override void OnCarryDrop(Entity dropper)
         {
             LastDropOwner = Owner;
-            SinceLastDrop = 0f;
+            TimeSinceLastDrop = 0f;
 
             base.OnCarryDrop(dropper);
 

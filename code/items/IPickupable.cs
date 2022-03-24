@@ -6,7 +6,7 @@ namespace TTTReborn.Items
     {
         PickupTrigger PickupTrigger { get; set; }
         Entity LastDropOwner { get; set; }
-        TimeSince SinceLastDrop { get; set; }
+        TimeSince TimeSinceLastDrop { get; set; }
 
         void PickupStartTouch(Entity other);
 

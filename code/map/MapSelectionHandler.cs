@@ -32,27 +32,32 @@ namespace TTTReborn.Map
         {
             Package result = await Package.Fetch(Global.GameIdent, true);
 
-            return result.GameConfiguration.MapList;
+            return result.GetMeta<List<string>>("MapList");
         }
 
         private static async Task<List<string>> GetTTTMapImages(List<string> mapNames)
         {
             List<string> mapPanels = new();
+
             for (int i = 0; i < mapNames.Count; ++i)
             {
                 Package result = await Package.Fetch(mapNames[i], true);
+
                 mapPanels.Add(result.Thumb);
             }
+
             return mapPanels;
         }
 
         public static IDictionary<string, int> GetTotalVotesPerMap(IDictionary<long, string> mapVotes)
         {
             IDictionary<string, int> indexToVoteCount = new Dictionary<string, int>();
+
             foreach (string mapName in mapVotes.Values)
             {
                 indexToVoteCount[mapName] = !indexToVoteCount.ContainsKey(mapName) ? 1 : indexToVoteCount[mapName] + 1;
             }
+
             return indexToVoteCount;
         }
 
