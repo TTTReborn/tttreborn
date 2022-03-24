@@ -15,7 +15,7 @@ namespace TTTReborn.Items
 
         public ClipInfo Secondary { get; set; }
 
-        [Net]
+        [Net, Predicted]
         public TimeSince TimeSinceReload { get; set; }
 
         public bool IsReloading
@@ -23,7 +23,7 @@ namespace TTTReborn.Items
             get => Primary.IsReloading || (Secondary?.IsReloading ?? false);
         }
 
-        [Net]
+        [Net, Predicted]
         public TimeSince TimeSinceDeployed { get; set; }
 
         public PickupTrigger PickupTrigger { get; set; }
@@ -34,8 +34,8 @@ namespace TTTReborn.Items
         [Net]
         public Entity LastDropOwner { get; set; }
 
-        [Net]
-        public TimeSince SinceLastDrop { get; set; }
+        [Net, Predicted]
+        public TimeSince TimeSinceLastDrop { get; set; }
 
         public abstract string ModelPath { get; }
     }

@@ -90,7 +90,7 @@ namespace TTTReborn.Items
 
             foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
             {
-                if (!IsServer || !tr.Entity.IsValid())
+                if (!tr.Entity.IsValid())
                 {
                     continue;
                 }

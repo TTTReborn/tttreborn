@@ -34,7 +34,7 @@ namespace TTTReborn.Items
         public float Rotation { get; set; } = 0f;
     }
 
-    public partial class ClipInfo
+    public partial class ClipInfo : BaseNetworkable
     {
         public int ClipSize { get; set; } = 10;
 
@@ -53,6 +53,7 @@ namespace TTTReborn.Items
 
         public bool IsReloading { get; set; } = false;
 
+        [Net, Predicted]
         public TimeSince TimeSinceAttack { get; set; } = 0f;
 
         public string ShootSound { get; set; } = null;

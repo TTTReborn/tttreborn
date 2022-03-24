@@ -139,7 +139,7 @@ namespace TTTReborn.Items
                         {
                             Ammo ammoBox = Utils.GetObjectByType<Ammo>(type);
                             ammoBox.LastDropOwner = Owner;
-                            ammoBox.SinceLastDrop = 0f;
+                            ammoBox.TimeSinceLastDrop = 0f;
                             ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
                             ammoBox.Rotation = Owner.EyeRotation;
                             ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
