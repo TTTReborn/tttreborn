@@ -2,6 +2,10 @@ namespace TTTReborn.Items
 {
     public abstract partial class ShotgunWeapon : Weapon
     {
+        public override bool IsPartialReloading { get; set; } = true;
+
+        public ShotgunWeapon() : base() { }
+
         public override void OnReloadFinish()
         {
             ClipInfo clipInfo = (Secondary?.IsReloading ?? false) ? Secondary : Primary;

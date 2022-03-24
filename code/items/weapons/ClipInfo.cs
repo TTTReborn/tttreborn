@@ -34,7 +34,7 @@ namespace TTTReborn.Items
         public float Rotation { get; set; } = 0f;
     }
 
-    public partial class ClipInfo : BaseNetworkable
+    public partial class ClipInfo
     {
         public int ClipSize { get; set; } = 10;
 
@@ -53,7 +53,6 @@ namespace TTTReborn.Items
 
         public bool IsReloading { get; set; } = false;
 
-        [Net, Predicted]
         public TimeSince TimeSinceAttack { get; set; } = 0f;
 
         public string ShootSound { get; set; } = null;
@@ -67,6 +66,10 @@ namespace TTTReborn.Items
         public float Force { get; set; } = 1.5f;
 
         public float BulletSize { get; set; } = 0.1f;
+
+        public string ImpactEffect { get; set; } = null;
+
+        public DamageFlags DamageType = DamageFlags.Bullet;
 
         public Dictionary<string, string> ShootEffectList { get; set; } = new()
         {

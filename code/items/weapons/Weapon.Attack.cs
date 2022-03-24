@@ -49,7 +49,7 @@ namespace TTTReborn.Items
 
             for (int i = 0; i < clipInfo.Bullets; i++)
             {
-                ShootBullet(clipInfo.Spread, clipInfo.Force, clipInfo.Damage, clipInfo.BulletSize);
+                ShootBullet(clipInfo);
             }
         }
 
@@ -82,50 +82,64 @@ namespace TTTReborn.Items
             CrosshairPanel?.CreateEvent("fire");
         }
 
-        public virtual void ShootBullet(float spread, float force, float damage, float bulletSize)
+        public void ShootBullet(ClipInfo clipInfo)
+        {
+            ShootBullet(clipInfo.Spread, clipInfo.Force, clipInfo.Damage, clipInfo.BulletSize, clipInfo.ImpactEffect, clipInfo.DamageType);
+        }
+
+        public virtual void ShootBullet(float spread, float force, float damage, float bulletSize, string impactEffect = null, DamageFlags damageType = DamageFlags.Bullet)
         {
             Vector3 forward = Owner.EyeRotation.Forward;
             forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
+            foreach (TraceResult trace in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * BulletRange, bulletSize))
             {
-                if (!tr.Entity.IsValid())
+                if (!IsServer || !trace.Entity.IsValid())
                 {
                     continue;
                 }
 
+                Vector3 endPos = trace.EndPosition + trace.Direction * bulletSize;
+
+                if (string.IsNullOrEmpty(impactEffect))
+                {
+                    trace.Surface.DoBulletImpact(trace);
+                }
+                else
+                {
+                    Particles.Create(impactEffect, endPos)?.SetForward(0, trace.Normal);
+                }
+
                 using (Prediction.Off())
                 {
-                    tr.Surface.DoBulletImpact(tr);
-
-                    DamageInfo damageInfo = DamageInfo.FromBullet(tr.EndPosition, forward * 100 * force, damage)
-                        .UsingTraceResult(tr)
+                    DamageInfo damageInfo = new DamageInfo()
+                        .WithPosition(trace.EndPosition)
+                        .WithFlag(damageType)
+                        .WithForce(forward * 100f * force)
+                        .UsingTraceResult(trace)
                         .WithAttacker(Owner)
                         .WithWeapon(this);
 
-                    tr.Entity.TakeDamage(damageInfo);
+                    damageInfo.Damage = damage;
+
+                    trace.Entity.TakeDamage(damageInfo);
                 }
             }
         }
 
         public virtual IEnumerable<TraceResult> TraceBullet(Vector3 start, Vector3 end, float radius = 2.0f)
         {
-            using (LagCompensation())
-            {
-                bool InWater = Sandbox.Internal.GlobalGameNamespace.Map.Physics.IsPointWater(start);
+            bool InWater = Sandbox.Internal.GlobalGameNamespace.Map.Physics.IsPointWater(start);
 
-                TraceResult tr = Trace.Ray(start, end)
-                    .UseHitboxes()
-                    .HitLayer(CollisionLayer.Water, !InWater)
-                    .HitLayer(CollisionLayer.Debris)
-                    .Ignore(Owner)
-                    .Ignore(this)
-                    .Size(radius)
-                    .Run();
-
-                yield return tr;
-            }
+            yield return Trace.Ray(start, end)
+                .UseHitboxes()
+                .HitLayer(CollisionLayer.Water, !InWater)
+                .HitLayer(CollisionLayer.Debris)
+                .Ignore(Owner)
+                .Ignore(this)
+                .Size(radius)
+                .Run();
         }
     }
 }

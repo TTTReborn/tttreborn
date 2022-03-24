@@ -13,20 +13,13 @@ namespace TTTReborn.Items
         {
             Type type = GetType();
 
-            Info = new WeaponInfo
-            {
-                LibraryName = Utils.GetLibraryName(type)
-            };
-
-            Primary = new();
-            Secondary = null;
+            Info.LibraryName = Utils.GetLibraryName(type);
 
             WeaponAttribute weaponAttribute = Utils.GetAttribute<WeaponAttribute>(type);
 
             if (weaponAttribute != null)
             {
                 WeaponInfo.Category = weaponAttribute.Category;
-
                 Primary.AmmoName = weaponAttribute.PrimaryAmmoName;
 
                 if (Secondary != null)
@@ -36,6 +29,7 @@ namespace TTTReborn.Items
             }
 
             Primary.ClipAmmo = Primary.ClipSize;
+            IsPartialReloading = false;
 
             EnableShadowInFirstPerson = false;
 
@@ -78,46 +72,6 @@ namespace TTTReborn.Items
             PickupTrigger.Rotation = Rotation;
         }
 
-        public virtual void BaseSimulate(Client owner)
-        {
-            if (CanReload())
-            {
-                Reload(Primary);
-            }
-
-            //
-            // Reload could have changed our owner
-            //
-            if (!Owner.IsValid())
-            {
-                return;
-            }
-
-            if (CanAttack(Primary, InputButton.Attack1))
-            {
-                using (LagCompensation())
-                {
-                    Attack(Primary);
-                }
-            }
-
-            //
-            // AttackPrimary could have changed our owner
-            //
-            if (!Owner.IsValid())
-            {
-                return;
-            }
-
-            if (CanAttack(Secondary, InputButton.Attack2))
-            {
-                using (LagCompensation())
-                {
-                    Attack(Secondary);
-                }
-            }
-        }
-
         public static float GetRealRPM(int rpm) => 60f / rpm;
 
         public override void Simulate(Client owner)
@@ -151,9 +105,44 @@ namespace TTTReborn.Items
                 }
             }
 
-            if (!IsReloading)
+            if (!IsReloading || IsPartialReloading)
             {
-                BaseSimulate(owner);
+                if (CanReload())
+                {
+                    Reload(Primary);
+                }
+
+                //
+                // Reload could have changed our owner
+                //
+                if (!Owner.IsValid())
+                {
+                    return;
+                }
+
+                if (CanAttack(Primary, InputButton.Attack1))
+                {
+                    using (LagCompensation())
+                    {
+                        Attack(Primary);
+                    }
+                }
+
+                //
+                // AttackPrimary could have changed our owner
+                //
+                if (!Owner.IsValid())
+                {
+                    return;
+                }
+
+                if (CanAttack(Secondary, InputButton.Attack2))
+                {
+                    using (LagCompensation())
+                    {
+                        Attack(Secondary);
+                    }
+                }
             }
             else if (TimeSinceReload > WeaponInfo.ReloadTime)
             {

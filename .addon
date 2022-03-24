@@ -13,5 +13,13 @@
   ],
   "HasCode": true,
   "CodePath": "code",
-  "RootNamespace": "TTTReborn"
+  "RootNamespace": "TTTReborn",
+  "Metadata": {
+    "MapList": [
+      "tbt.minecraftcity_v4",
+      "dnd.lego",
+      "baks.office"
+    ],
+    "MinPlayers": 1
+  }
 }

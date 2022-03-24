@@ -18,7 +18,7 @@ namespace TTTReborn.Items
     [Hammer.Skip]
     public abstract partial class Equipment : BaseCarriable, ICarriableItem
     {
-        public ItemInfo Info { get; set; }
+        public ItemInfo Info { get; set; } = new CarriableInfo();
 
         public CarriableInfo CarriableInfo
         {
@@ -27,7 +27,9 @@ namespace TTTReborn.Items
 
         public Type ObjectType { get; }
         public PickupTrigger PickupTrigger { get; set; }
+
         public Entity LastDropOwner { get; set; }
+
         public TimeSince TimeSinceLastDrop { get; set; } = 0f;
         public virtual bool CanDrop { get; set; } = true;
 
@@ -35,11 +37,7 @@ namespace TTTReborn.Items
         {
             Type type = GetType();
 
-            Info = new CarriableInfo
-            {
-                LibraryName = Utils.GetLibraryName(type)
-            };
-
+            Info.LibraryName = Utils.GetLibraryName(type);
             EquipmentAttribute equipmentAttribute = Utils.GetAttribute<EquipmentAttribute>(type);
 
             if (equipmentAttribute != null)

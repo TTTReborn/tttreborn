@@ -18,14 +18,11 @@ namespace TTTReborn.Items
     [Hammer.Skip]
     public abstract partial class Perk : BaseNetworkable, IItem
     {
-        public ItemInfo Info { get; set; }
+        public ItemInfo Info { get; set; } = new();
 
         public Perk() : base()
         {
-            Info = new()
-            {
-                LibraryName = Utils.GetLibraryName(GetType())
-            };
+            Info.LibraryName = Utils.GetLibraryName(GetType());
         }
 
         public void Equip(Player player)

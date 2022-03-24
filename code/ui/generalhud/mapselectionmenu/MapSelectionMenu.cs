@@ -48,6 +48,7 @@ namespace TTTReborn.UI
         private void InitMapPanels()
         {
             IDictionary<string, string> mapImages = Gamemode.Game.Instance.MapSelection.MapImages;
+
             foreach (KeyValuePair<string, string> mapImage in mapImages)
             {
                 if (_mapPanels.Exists((mapPanel) => mapPanel.MapName == mapImage.Key))
@@ -112,13 +113,14 @@ namespace TTTReborn.UI
             }
         }
 
-        [ServerCmd(Name = "vote_next_map")]
+        [ServerCmd(Name = "ttt_vote_next_map")]
         public static void VoteNextMap(string name)
         {
             long callerPlayerId = ConsoleSystem.Caller.PlayerId;
             IDictionary<long, string> nextMapVotes = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
 
             nextMapVotes[callerPlayerId] = name;
+
             Log.Debug($"{callerPlayerId} voting for map {name}");
         }
     }
