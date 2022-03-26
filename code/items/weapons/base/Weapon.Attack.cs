@@ -9,14 +9,7 @@ namespace TTTReborn.Items
     {
         public virtual bool CanAttack(ClipInfo clipInfo, InputButton inputButton)
         {
-            if (clipInfo == null)
-            {
-                return false;
-            }
-
-            ClipInfoData clipInfoData = GetClipInfoData(clipInfo);
-
-            if (!Owner.IsValid() || !Input.Down(inputButton) || TimeSinceDeployed <= WeaponInfo.DeployTime || !clipInfo.IsPartialReloading && clipInfoData.IsReloading)
+            if (clipInfo == null || !Owner.IsValid() || !Input.Down(inputButton) || TimeSinceDeployed <= WeaponInfo.DeployTime || !clipInfo.IsPartialReloading && IsReloading)
             {
                 return false;
             }
@@ -26,9 +19,7 @@ namespace TTTReborn.Items
                 return true;
             }
 
-            Log.Debug(clipInfoData.TimeSinceAttack);
-
-            return clipInfoData.TimeSinceAttack > GetRealRPM(clipInfo.RPM);
+            return clipInfo.Data.TimeSinceAttack > GetRealRPM(clipInfo.RPM);
         }
 
         public virtual void Attack(ClipInfo clipInfo)
@@ -38,16 +29,12 @@ namespace TTTReborn.Items
                 return;
             }
 
-            ClipInfoData clipInfoData = GetClipInfoData(clipInfo);
-
-            if (clipInfo.IsPartialReloading && clipInfoData.IsReloading)
+            if (clipInfo.IsPartialReloading && clipInfo.Data.IsReloading)
             {
                 OnReloadFinish(clipInfo);
             }
 
-            clipInfoData.TimeSinceAttack = 0f;
-
-            Log.Debug("Resetting");
+            clipInfo.Data.TimeSinceAttack = 0f;
 
             if (!TakeAmmo(clipInfo, 1))
             {

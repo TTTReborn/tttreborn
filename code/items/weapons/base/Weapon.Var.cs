@@ -12,15 +12,15 @@ namespace TTTReborn.Items
             set => Info = value;
         }
 
-        [Net, Predicted]
-        public ClipInfoData PrimaryData { get; set; } = new();
-
-        [Net, Predicted]
-        public ClipInfoData SecondaryData { get; set; } = new();
-
         public virtual ClipInfo Primary { get; set; } = new();
 
         public virtual ClipInfo Secondary { get; set; } = null;
+
+        [Net, Predicted]
+        public ClipData PrimaryData { get; set; } = new();
+
+        [Net, Predicted]
+        public ClipData SecondaryData { get; set; } = new();
 
         public bool IsReloading
         {
@@ -44,5 +44,8 @@ namespace TTTReborn.Items
         public TimeSince TimeSinceLastDrop { get; set; }
 
         public abstract string ModelPath { get; }
+
+        // Bullshit design, but s&box networking is unreliable and it is currently not possible to set the corresponding vars reliably
+        // Network vars
     }
 }

@@ -34,7 +34,7 @@ namespace TTTReborn.Items
         public float Rotation { get; set; } = 0f;
     }
 
-    public partial class ClipInfoData : BaseNetworkable
+    public partial class ClipData : BaseNetworkable
     {
         [Net, Predicted]
         public int ClipAmmo { get; set; }
@@ -51,12 +51,18 @@ namespace TTTReborn.Items
         public void Reset(ClipInfo clipInfo)
         {
             IsReloading = false;
-            TimeSinceReload = clipInfo.ReloadTime;
+
+            if (clipInfo != null)
+            {
+                TimeSinceReload = clipInfo.ReloadTime;
+            }
         }
     }
 
     public partial class ClipInfo
     {
+        public ClipData Data { get; internal set; }
+
         public virtual int ClipSize { get; set; } = 10;
 
         public virtual int BulletsPerReload {
@@ -110,10 +116,5 @@ namespace TTTReborn.Items
         public virtual ShakeEffect ShakeEffect { get; set; } = null;
 
         public virtual FiringType FiringType { get; set; } = FiringType.SEMI;
-
-        public void Reset(ClipInfoData clipInfoData)
-        {
-            clipInfoData.Reset(this);
-        }
     }
 }

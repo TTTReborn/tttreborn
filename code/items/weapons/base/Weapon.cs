@@ -28,6 +28,13 @@ namespace TTTReborn.Items
                 }
             }
 
+            Primary.Data = PrimaryData;
+
+            if (Secondary != null)
+            {
+                Secondary.Data = SecondaryData;
+            }
+
             Tags.Add(IItem.ITEM_TAG);
         }
 
@@ -47,8 +54,8 @@ namespace TTTReborn.Items
 
             TimeSinceDeployed = 0;
 
-            Primary.Reset(PrimaryData);
-            Secondary?.Reset(SecondaryData);
+            PrimaryData.Reset(Primary);
+            SecondaryData.Reset(Secondary);
         }
 
         public override void Spawn()
@@ -181,14 +188,12 @@ namespace TTTReborn.Items
 
         public bool TakeAmmo(ClipInfo clipInfo, int amount)
         {
-            ClipInfoData clipInfoData = GetClipInfoData(clipInfo);
-
-            if (clipInfoData == null || clipInfoData.ClipAmmo < amount)
+            if (clipInfo == null || clipInfo.Data.ClipAmmo < amount)
             {
                 return false;
             }
 
-            clipInfoData.ClipAmmo -= amount;
+            clipInfo.Data.ClipAmmo -= amount;
 
             return true;
         }
@@ -236,20 +241,6 @@ namespace TTTReborn.Items
                 1 => Secondary,
                 _ => null
             };
-        }
-
-        public ClipInfoData GetClipInfoData(ClipInfo clipInfo)
-        {
-            if (clipInfo == Primary)
-            {
-                return PrimaryData;
-            }
-            else if (clipInfo == Secondary)
-            {
-                return SecondaryData;
-            }
-
-            return null;
         }
     }
 }

@@ -8,14 +8,7 @@ namespace TTTReborn.Items
     {
         public virtual void Reload(ClipInfo clipInfo)
         {
-            if (clipInfo == null)
-            {
-                return;
-            }
-
-            ClipInfoData clipInfoData = GetClipInfoData(clipInfo);
-
-            if (clipInfoData == null || WeaponInfo.Category == CarriableCategories.Melee || IsReloading || clipInfoData.ClipAmmo >= clipInfo.ClipSize || clipInfo.ClipSize <= 0)
+            if (clipInfo == null || WeaponInfo.Category == CarriableCategories.Melee || IsReloading || clipInfo.Data.ClipAmmo >= clipInfo.ClipSize || clipInfo.ClipSize <= 0)
             {
                 return;
             }
@@ -25,8 +18,8 @@ namespace TTTReborn.Items
                 return;
             }
 
-            clipInfoData.TimeSinceReload = 0f;
-            clipInfoData.IsReloading = true;
+            clipInfo.Data.IsReloading = true;
+            clipInfo.Data.TimeSinceReload = 0f;
 
             (Owner as AnimEntity).SetAnimParameter(clipInfo.ReloadAnim, true);
 
@@ -37,15 +30,13 @@ namespace TTTReborn.Items
 
         public virtual void OnReloadFinish(ClipInfo clipInfo)
         {
-            ClipInfoData clipInfoData = GetClipInfoData(clipInfo);
-
-            if (clipInfoData == null)
+            if (clipInfo == null)
             {
                 return;
             }
 
-            clipInfoData.TimeSinceReload = Math.Max(clipInfoData.TimeSinceReload, clipInfo.ReloadTime);
-            clipInfoData.IsReloading = false;
+            clipInfo.Data.IsReloading = false;
+            clipInfo.Data.TimeSinceReload = Math.Max(clipInfo.Data.TimeSinceReload, clipInfo.ReloadTime);
 
             if (Owner is not Player player || clipInfo.AmmoName == null)
             {
@@ -54,21 +45,21 @@ namespace TTTReborn.Items
 
             if (!clipInfo.UnlimitedAmmo)
             {
-                int ammo = player.Inventory.Ammo.Take(clipInfo.AmmoName, Math.Min(clipInfo.ClipSize - clipInfoData.ClipAmmo, clipInfo.BulletsPerReload));
+                int ammo = player.Inventory.Ammo.Take(clipInfo.AmmoName, Math.Min(clipInfo.ClipSize - clipInfo.Data.ClipAmmo, clipInfo.BulletsPerReload));
 
                 if (ammo == 0)
                 {
                     return;
                 }
 
-                clipInfoData.ClipAmmo += ammo;
+                clipInfo.Data.ClipAmmo += ammo;
             }
             else
             {
-                clipInfoData.ClipAmmo = clipInfo.ClipSize;
+                clipInfo.Data.ClipAmmo = clipInfo.ClipSize;
             }
 
-            if (clipInfoData.ClipAmmo < clipInfo.ClipSize)
+            if (clipInfo.Data.ClipAmmo < clipInfo.ClipSize)
             {
                 Reload(clipInfo);
             }
