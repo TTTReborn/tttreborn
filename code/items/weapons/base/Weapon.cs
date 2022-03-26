@@ -28,13 +28,6 @@ namespace TTTReborn.Items
                 }
             }
 
-            Primary.Data = PrimaryData;
-
-            if (Secondary != null)
-            {
-                Secondary.Data = SecondaryData;
-            }
-
             Tags.Add(IItem.ITEM_TAG);
         }
 
@@ -54,19 +47,25 @@ namespace TTTReborn.Items
 
             TimeSinceDeployed = 0;
 
-            PrimaryData.Reset(Primary);
-            SecondaryData.Reset(Secondary);
+            IsPrimaryReloading = false;
+            TimeSincePrimaryReload = Primary.ReloadTime;
+
+            if (Secondary != null)
+            {
+                IsSecondaryReloading = false;
+                TimeSinceSecondaryReload = Secondary.ReloadTime;
+            }
         }
 
         public override void Spawn()
         {
             base.Spawn();
 
-            PrimaryData.ClipAmmo = Primary.StartAmmo == -1 ? Primary.ClipSize : Primary.StartAmmo;
+            PrimaryClipAmmo = Primary.StartAmmo == -1 ? Primary.ClipSize : Primary.StartAmmo;
 
             if (Secondary != null)
             {
-                SecondaryData.ClipAmmo = Secondary.StartAmmo == -1 ? Secondary.ClipSize : Secondary.StartAmmo;
+                SecondaryClipAmmo = Secondary.StartAmmo == -1 ? Secondary.ClipSize : Secondary.StartAmmo;
             }
 
             SetModel(ModelPath);
@@ -88,7 +87,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && PrimaryData.ClipAmmo > 0 && !Primary.UnlimitedAmmo)
+            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && PrimaryClipAmmo > 0 && !Primary.UnlimitedAmmo)
             {
                 if (Primary.AmmoName != null && Primary.CanDropAmmo)
                 {
@@ -104,15 +103,15 @@ namespace TTTReborn.Items
                             ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
                             ammoBox.Rotation = Owner.EyeRotation;
                             ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
-                            ammoBox.SetCurrentAmmo(PrimaryData.ClipAmmo);
+                            ammoBox.SetCurrentAmmo(PrimaryClipAmmo);
                         }
 
-                        TakeAmmo(Primary, PrimaryData.ClipAmmo);
+                        TakeAmmo(Primary, PrimaryClipAmmo);
                     }
                 }
             }
 
-            if (IsReloading && PrimaryData.TimeSinceReload >= Primary.ReloadTime)
+            if (IsReloading && TimeSincePrimaryReload >= Primary.ReloadTime)
             {
                 OnReloadFinish(Primary);
             }
@@ -186,14 +185,23 @@ namespace TTTReborn.Items
             return owner.Inventory.Ammo.Count(clipInfo.AmmoName);
         }
 
-        public static bool TakeAmmo(ClipInfo clipInfo, int amount)
+        public bool TakeAmmo(ClipInfo clipInfo, int amount)
         {
-            if (clipInfo == null || clipInfo.Data.ClipAmmo < amount)
+            bool isPrimary = clipInfo == Primary;
+
+            if (clipInfo == null || (isPrimary ? PrimaryClipAmmo : SecondaryClipAmmo) < amount)
             {
                 return false;
             }
 
-            clipInfo.Data.ClipAmmo -= amount;
+            if (isPrimary)
+            {
+                PrimaryClipAmmo -= amount;
+            }
+            else
+            {
+                SecondaryClipAmmo -= amount;
+            }
 
             return true;
         }

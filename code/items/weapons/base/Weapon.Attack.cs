@@ -19,7 +19,7 @@ namespace TTTReborn.Items
                 return true;
             }
 
-            return clipInfo.Data.TimeSinceAttack > GetRealRPM(clipInfo.RPM);
+            return (clipInfo == Primary ? TimeSincePrimaryAttack : TimeSinceSecondaryAttack) > GetRealRPM(clipInfo.RPM);
         }
 
         public virtual void Attack(ClipInfo clipInfo)
@@ -29,12 +29,21 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (clipInfo.IsPartialReloading && clipInfo.Data.IsReloading)
+            bool isPrimary = clipInfo == Primary;
+
+            if (clipInfo.IsPartialReloading && isPrimary ? IsPrimaryReloading : IsSecondaryReloading)
             {
                 OnReloadFinish(clipInfo);
             }
 
-            clipInfo.Data.TimeSinceAttack = 0f;
+            if (isPrimary)
+            {
+                TimeSincePrimaryAttack = 0f;
+            }
+            else
+            {
+                TimeSinceSecondaryAttack = 0f;
+            }
 
             if (!TakeAmmo(clipInfo, 1))
             {

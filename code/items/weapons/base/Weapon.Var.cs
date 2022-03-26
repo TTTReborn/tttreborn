@@ -16,15 +16,9 @@ namespace TTTReborn.Items
 
         public virtual ClipInfo Secondary { get; set; } = null;
 
-        [Net, Predicted]
-        public ClipData PrimaryData { get; set; } = new();
-
-        [Net, Predicted]
-        public ClipData SecondaryData { get; set; } = new();
-
         public bool IsReloading
         {
-            get => PrimaryData.IsReloading || Secondary != null && SecondaryData.IsReloading;
+            get => IsPrimaryReloading || Secondary != null && IsSecondaryReloading;
         }
 
         public virtual float BulletRange { get; set; } = 20000f;
@@ -44,5 +38,30 @@ namespace TTTReborn.Items
         public TimeSince TimeSinceLastDrop { get; set; }
 
         public abstract string ModelPath { get; }
+
+        // Bullshit design, but s&box class networking is unreliable
+        [Net, Predicted]
+        public int PrimaryClipAmmo { get; set; }
+
+        [Net, Predicted]
+        public int SecondaryClipAmmo { get; set; }
+
+        [Net, Predicted]
+        public TimeSince TimeSincePrimaryAttack { get; set; }
+
+        [Net, Predicted]
+        public TimeSince TimeSinceSecondaryAttack { get; set; }
+
+        [Net, Predicted]
+        public TimeSince TimeSincePrimaryReload { get; set; }
+
+        [Net, Predicted]
+        public TimeSince TimeSinceSecondaryReload { get; set; }
+
+        [Net, Predicted]
+        public bool IsPrimaryReloading { get; set; }
+
+        [Net, Predicted]
+        public bool IsSecondaryReloading { get; set; }
     }
 }
