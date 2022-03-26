@@ -44,8 +44,5 @@ namespace TTTReborn.Items
         public TimeSince TimeSinceLastDrop { get; set; }
 
         public abstract string ModelPath { get; }
-
-        // Bullshit design, but s&box networking is unreliable and it is currently not possible to set the corresponding vars reliably
-        // Network vars
     }
 }

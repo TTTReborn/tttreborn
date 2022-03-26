@@ -186,7 +186,7 @@ namespace TTTReborn.Items
             return owner.Inventory.Ammo.Count(clipInfo.AmmoName);
         }
 
-        public bool TakeAmmo(ClipInfo clipInfo, int amount)
+        public static bool TakeAmmo(ClipInfo clipInfo, int amount)
         {
             if (clipInfo == null || clipInfo.Data.ClipAmmo < amount)
             {
