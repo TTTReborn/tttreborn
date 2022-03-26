@@ -372,15 +372,6 @@ metadata
 ]
 
 //
-// TTTReborn.Items.WeaponRandom
-//
-@PointClass base(BaseProperties_neox_tttreborn) = ttt_weapon_random : ""
-[
-	ammotospawn(integer) : "Amount of ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
-	category(choices) { nullable = true } : "Spawn weapons of a specific category" :  : "Spawn weapons of a specific category."
-]
-
-//
 // TTTReborn.Items.HealthstationEntity
 //
 @PointClass base(BaseProperties_neox_tttreborn, BasePhysicsSimulated) tags( Physics ) model() = ttt_entity_healthstation : ""
@@ -406,5 +397,14 @@ metadata
 
 	output OnDamaged(void) : "Fired when the entity gets damaged."
 	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTTReborn.Items.WeaponRandom
+//
+@PointClass base(BaseProperties_neox_tttreborn) = ttt_weapon_random : ""
+[
+	ammotospawn(integer) : "Amount of ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
+	category(choices) { nullable = true } : "Spawn weapons of a specific category" :  : "Spawn weapons of a specific category."
 ]
 

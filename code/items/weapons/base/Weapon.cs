@@ -20,18 +20,13 @@ namespace TTTReborn.Items
             if (weaponAttribute != null)
             {
                 WeaponInfo.Category = weaponAttribute.Category;
-                Primary.AmmoName = weaponAttribute.PrimaryAmmoName;
+                Primary.AmmoName = weaponAttribute.PrimaryAmmoName ?? Primary.AmmoName;
 
                 if (Secondary != null)
                 {
-                    Secondary.AmmoName = weaponAttribute.SecondaryAmmoName;
+                    Secondary.AmmoName = weaponAttribute.SecondaryAmmoName ?? Secondary.AmmoName;
                 }
             }
-
-            Primary.ClipAmmo = Primary.ClipSize;
-            IsPartialReloading = false;
-
-            EnableShadowInFirstPerson = false;
 
             Tags.Add(IItem.ITEM_TAG);
         }
@@ -52,17 +47,20 @@ namespace TTTReborn.Items
 
             TimeSinceDeployed = 0;
 
-            Primary.IsReloading = false;
-
-            if (Secondary != null)
-            {
-                Secondary.IsReloading = false;
-            }
+            Primary.Reset(PrimaryData);
+            Secondary?.Reset(SecondaryData);
         }
 
         public override void Spawn()
         {
             base.Spawn();
+
+            PrimaryData.ClipAmmo = Primary.StartAmmo == -1 ? Primary.ClipSize : Primary.StartAmmo;
+
+            if (Secondary != null)
+            {
+                SecondaryData.ClipAmmo = Secondary.StartAmmo == -1 ? Secondary.ClipSize : Secondary.StartAmmo;
+            }
 
             SetModel(ModelPath);
 
@@ -70,6 +68,8 @@ namespace TTTReborn.Items
             PickupTrigger.Parent = this;
             PickupTrigger.Position = Position;
             PickupTrigger.Rotation = Rotation;
+
+            EnableShadowInFirstPerson = false;
         }
 
         public static float GetRealRPM(int rpm) => 60f / rpm;
@@ -81,7 +81,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && Primary.ClipAmmo > 0 && !Primary.UnlimitedAmmo)
+            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && PrimaryData.ClipAmmo > 0 && !Primary.UnlimitedAmmo)
             {
                 if (Primary.AmmoName != null && Primary.CanDropAmmo)
                 {
@@ -97,24 +97,26 @@ namespace TTTReborn.Items
                             ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
                             ammoBox.Rotation = Owner.EyeRotation;
                             ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
-                            ammoBox.SetCurrentAmmo(Primary.ClipAmmo);
+                            ammoBox.SetCurrentAmmo(PrimaryData.ClipAmmo);
                         }
 
-                        TakeAmmo(Primary, Primary.ClipAmmo);
+                        TakeAmmo(Primary, PrimaryData.ClipAmmo);
                     }
                 }
             }
 
-            if (!IsReloading || IsPartialReloading)
+            if (IsReloading && PrimaryData.TimeSinceReload >= Primary.ReloadTime)
+            {
+                OnReloadFinish(Primary);
+            }
+
+            if (!IsReloading || Primary.IsPartialReloading)
             {
                 if (CanReload())
                 {
                     Reload(Primary);
                 }
 
-                //
-                // Reload could have changed our owner
-                //
                 if (!Owner.IsValid())
                 {
                     return;
@@ -127,15 +129,15 @@ namespace TTTReborn.Items
                         Attack(Primary);
                     }
                 }
+            }
 
-                //
-                // AttackPrimary could have changed our owner
-                //
-                if (!Owner.IsValid())
-                {
-                    return;
-                }
+            if (!Owner.IsValid())
+            {
+                return;
+            }
 
+            if (!IsReloading || Secondary != null && Secondary.IsPartialReloading)
+            {
                 if (CanAttack(Secondary, InputButton.Attack2))
                 {
                     using (LagCompensation())
@@ -143,10 +145,6 @@ namespace TTTReborn.Items
                         Attack(Secondary);
                     }
                 }
-            }
-            else if (TimeSinceReload > WeaponInfo.ReloadTime)
-            {
-                OnReloadFinish();
             }
         }
 
@@ -181,14 +179,16 @@ namespace TTTReborn.Items
             return owner.Inventory.Ammo.Count(clipInfo.AmmoName);
         }
 
-        public static bool TakeAmmo(ClipInfo clipInfo, int amount)
+        public bool TakeAmmo(ClipInfo clipInfo, int amount)
         {
-            if (clipInfo.ClipAmmo < amount)
+            ClipInfoData clipInfoData = GetClipInfoData(clipInfo);
+
+            if (clipInfoData == null || clipInfoData.ClipAmmo < amount)
             {
                 return false;
             }
 
-            clipInfo.ClipAmmo -= amount;
+            clipInfoData.ClipAmmo -= amount;
 
             return true;
         }
@@ -213,5 +213,43 @@ namespace TTTReborn.Items
         }
 
         public override void CreateHudElements() { }
+
+        public int GetClipInfoIndex(ClipInfo clipInfo)
+        {
+            if (clipInfo == Primary)
+            {
+                return 0;
+            }
+            else if (clipInfo == Secondary)
+            {
+                return 1;
+            }
+
+            return -1;
+        }
+
+        public ClipInfo GetClipInfoByIndex(int index)
+        {
+            return index switch
+            {
+                0 => Primary,
+                1 => Secondary,
+                _ => null
+            };
+        }
+
+        public ClipInfoData GetClipInfoData(ClipInfo clipInfo)
+        {
+            if (clipInfo == Primary)
+            {
+                return PrimaryData;
+            }
+            else if (clipInfo == Secondary)
+            {
+                return SecondaryData;
+            }
+
+            return null;
+        }
     }
 }

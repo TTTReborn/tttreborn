@@ -60,7 +60,7 @@ namespace TTTReborn.Items
 
         public void TextTick(Player player)
         {
-            if (IsClient || player.LifeState != LifeState.Alive)
+            if (!IsServer || player.LifeState != LifeState.Alive)
             {
                 return;
             }

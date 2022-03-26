@@ -10,33 +10,39 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Precached("weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl", "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl", "particles/pistol_muzzleflash.vpcf", "particles/pistol_ejectbrass.vpcf")]
     [Hammer.EditorModel("weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl")]
-    public partial class Shotgun : ShotgunWeapon
+    public partial class Shotgun : Weapon
     {
         public override string ViewModelPath => "weapons/rust_pumpshotgun/v_rust_pumpshotgun.vmdl";
         public override string ModelPath => "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl";
 
-        public Shotgun() : base()
+        public override WeaponInfo WeaponInfo { get; set; } = new()
         {
-            WeaponInfo.ReloadTime = 0.5f;
-            WeaponInfo.DeployTime = 0.6f;
+            DeployTime = 0.6f
+        };
 
-            Primary.ClipSize = 8;
-            Primary.Damage = 6;
-            Primary.Bullets = 10;
-            Primary.RPM = 60;
-            Primary.ShootSound = "rust_pumpshotgun.shoot";
-            Primary.DryFireSound = "pistol.dryfire";
-            Primary.ShootEffectList = new Dictionary<string, string>()
+        public override ClipInfo Primary { get; set; } = new()
+        {
+            ClipSize = 8,
+            StartAmmo = 8,
+            Damage = 6,
+            Bullets = 10,
+            RPM = 60,
+            ShootSound = "rust_pumpshotgun.shoot",
+            DryFireSound = "pistol.dryfire",
+            ShootEffectList = new Dictionary<string, string>()
             {
                 { "particles/pistol_muzzleflash.vpcf", "muzzle" },
                 { "particles/pistol_ejectbrass.vpcf", "ejection_point" }
-            };
-            Primary.ShakeEffect = new()
+            },
+            ShakeEffect = new()
             {
                 Length = 1.0f,
                 Speed = 1.5f,
                 Size = 2.0f
-            };
-        }
+            },
+            BulletsPerReload = 1,
+            ReloadTime = 0.5f,
+            IsPartialReloading = true
+        };
     }
 }

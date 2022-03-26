@@ -312,10 +312,10 @@ namespace TTTReborn.UI
         {
             if (weapon.Primary.UnlimitedAmmo)
             {
-                return $"{weapon.Primary.ClipAmmo} + ∞";
+                return $"{weapon.PrimaryData.ClipAmmo} + ∞";
             }
 
-            return $"{weapon.Primary.ClipAmmo} + {inventory.Ammo.Count(weapon.Primary.AmmoName)}";
+            return $"{weapon.PrimaryData.ClipAmmo} + {inventory.Ammo.Count(weapon.Primary.AmmoName)}";
         }
 
         private class InventorySlot : Panel

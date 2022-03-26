@@ -13,20 +13,24 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
         public override string ModelPath => "weapons/rust_pistol/rust_pistol.vmdl";
 
-        public Pistol() : base()
+        public override WeaponInfo WeaponInfo { get; set; } = new()
         {
-            WeaponInfo.ReloadTime = 2.3f;
-            WeaponInfo.DeployTime = 0.4f;
+            DeployTime = 0.4f
+        };
 
-            Primary.UnlimitedAmmo = true;
-            Primary.ClipSize = 15;
-            Primary.Damage = 8;
-            Primary.RPM = 180;
-            Primary.ShootSound = "rust_pistol.shoot";
-            Primary.DryFireSound = "pistol.dryfire";
-            Primary.Spread = 0.05f;
-            Primary.Force = 1.5f;
-            Primary.BulletSize = 0.1f;
-        }
+        public override ClipInfo Primary { get; set; } = new()
+        {
+            UnlimitedAmmo = true,
+            ClipSize = 15,
+            StartAmmo = 15,
+            Damage = 8,
+            RPM = 180,
+            ShootSound = "rust_pistol.shoot",
+            DryFireSound = "pistol.dryfire",
+            Spread = 0.05f,
+            Force = 1.5f,
+            BulletSize = 0.1f,
+            ReloadTime = 2.3f
+        };
     }
 }
