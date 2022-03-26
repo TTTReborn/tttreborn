@@ -13,9 +13,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            bool isPrimary = clipInfo == Primary;
-
-            if (WeaponInfo.Category == CarriableCategories.Melee || IsReloading || (isPrimary ? PrimaryClipAmmo : SecondaryClipAmmo) >= clipInfo.ClipSize || clipInfo.ClipSize <= 0)
+            if (WeaponInfo.Category == CarriableCategories.Melee || IsReloading || ClipDataList[clipInfo.DataIndex].Ammo >= clipInfo.ClipSize || clipInfo.ClipSize <= 0)
             {
                 return;
             }
@@ -25,16 +23,8 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (isPrimary)
-            {
-                IsPrimaryReloading = true;
-                TimeSincePrimaryReload = 0f;
-            }
-            else
-            {
-                IsSecondaryReloading = true;
-                TimeSinceSecondaryReload = 0f;
-            }
+            ClipDataList[clipInfo.DataIndex].IsReloading = true;
+            ClipDataList[clipInfo.DataIndex].TimeSinceReload = 0f;
 
             (Owner as AnimEntity).SetAnimParameter(clipInfo.ReloadAnim, true);
 
@@ -50,18 +40,8 @@ namespace TTTReborn.Items
                 return;
             }
 
-            bool isPrimary = clipInfo == Primary;
-
-            if (isPrimary)
-            {
-                IsPrimaryReloading = false;
-                TimeSincePrimaryReload = Math.Max(TimeSincePrimaryReload, clipInfo.ReloadTime);
-            }
-            else
-            {
-                IsSecondaryReloading = false;
-                TimeSinceSecondaryReload = Math.Max(TimeSinceSecondaryReload, clipInfo.ReloadTime);
-            }
+            ClipDataList[clipInfo.DataIndex].IsReloading = false;
+            ClipDataList[clipInfo.DataIndex].TimeSinceReload = Math.Max(ClipDataList[clipInfo.DataIndex].TimeSinceReload, clipInfo.ReloadTime);
 
             if (Owner is not Player player || clipInfo.AmmoName == null)
             {
@@ -70,35 +50,21 @@ namespace TTTReborn.Items
 
             if (!clipInfo.UnlimitedAmmo)
             {
-                int ammo = player.Inventory.Ammo.Take(clipInfo.AmmoName, Math.Min(clipInfo.ClipSize - (isPrimary ? PrimaryClipAmmo : SecondaryClipAmmo), clipInfo.BulletsPerReload));
+                int ammo = player.Inventory.Ammo.Take(clipInfo.AmmoName, Math.Min(clipInfo.ClipSize - ClipDataList[clipInfo.DataIndex].Ammo, clipInfo.BulletsPerReload));
 
                 if (ammo == 0)
                 {
                     return;
                 }
 
-                if (isPrimary)
-                {
-                    PrimaryClipAmmo += ammo;
-                }
-                else
-                {
-                    SecondaryClipAmmo += ammo;
-                }
+                ClipDataList[clipInfo.DataIndex].Ammo += ammo;
             }
             else
             {
-                if (isPrimary)
-                {
-                    PrimaryClipAmmo = clipInfo.ClipSize;
-                }
-                else
-                {
-                    SecondaryClipAmmo = clipInfo.ClipSize;
-                }
+                ClipDataList[clipInfo.DataIndex].Ammo = clipInfo.ClipSize;
             }
 
-            if ((isPrimary ? PrimaryClipAmmo : SecondaryClipAmmo) < clipInfo.ClipSize)
+            if (ClipDataList[clipInfo.DataIndex].Ammo < clipInfo.ClipSize)
             {
                 Reload(clipInfo);
             }

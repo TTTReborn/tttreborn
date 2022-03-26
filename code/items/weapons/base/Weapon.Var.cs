@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Sandbox;
 
 namespace TTTReborn.Items
@@ -18,7 +20,7 @@ namespace TTTReborn.Items
 
         public bool IsReloading
         {
-            get => IsPrimaryReloading || Secondary != null && IsSecondaryReloading;
+            get => PrimaryData.IsReloading || Secondary != null && SecondaryData.IsReloading;
         }
 
         public virtual float BulletRange { get; set; } = 20000f;
@@ -39,29 +41,17 @@ namespace TTTReborn.Items
 
         public abstract string ModelPath { get; }
 
-        // Bullshit design, but s&box class networking is unreliable
         [Net, Predicted]
-        public int PrimaryClipAmmo { get; set; }
+        public IList<ClipData> ClipDataList { get; set; }
 
-        [Net, Predicted]
-        public int SecondaryClipAmmo { get; set; }
+        public ClipData PrimaryData
+        {
+            get => ClipDataList.Count > 0 ? ClipDataList[0] : null;
+        }
 
-        [Net, Predicted]
-        public TimeSince TimeSincePrimaryAttack { get; set; }
-
-        [Net, Predicted]
-        public TimeSince TimeSinceSecondaryAttack { get; set; }
-
-        [Net, Predicted]
-        public TimeSince TimeSincePrimaryReload { get; set; }
-
-        [Net, Predicted]
-        public TimeSince TimeSinceSecondaryReload { get; set; }
-
-        [Net, Predicted]
-        public bool IsPrimaryReloading { get; set; }
-
-        [Net, Predicted]
-        public bool IsSecondaryReloading { get; set; }
+        public ClipData SecondaryData
+        {
+            get => ClipDataList.Count > 1 ? ClipDataList[1] : null;
+        }
     }
 }
