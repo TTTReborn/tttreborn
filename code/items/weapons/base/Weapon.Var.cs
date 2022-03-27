@@ -73,5 +73,8 @@ namespace TTTReborn.Items
         public float CurrentReloadTime { get; set; }
 
         public bool CanZoom { get; set; }
+
+        // private var stuff
+        private int _burstCount = 0;
     }
 }

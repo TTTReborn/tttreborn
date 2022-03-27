@@ -8,12 +8,7 @@ namespace TTTReborn.Items
     {
         public virtual void Reload(ClipInfo clipInfo)
         {
-            if (clipInfo == null)
-            {
-                return;
-            }
-
-            if (WeaponInfo.Category == CarriableCategories.Melee || IsReloading || ClipAmmo >= clipInfo.ClipSize || clipInfo.ClipSize <= 0)
+            if (clipInfo == null || WeaponInfo.Category == CarriableCategories.Melee || IsReloading || ClipAmmo >= clipInfo.ClipSize || clipInfo.ClipSize <= 0)
             {
                 return;
             }
@@ -44,35 +39,32 @@ namespace TTTReborn.Items
             IsReloading = false;
             TimeSinceReload = Math.Max(TimeSinceReload, clipInfo.ReloadTime);
 
-            if (Owner is not Player player || clipInfo.AmmoName == null)
+            if (Owner is not Player player || clipInfo.AmmoName == null || ClipAmmo >= clipInfo.ClipSize)
             {
                 return;
             }
 
-            if (!clipInfo.UnlimitedAmmo)
+            int reloadBullets = Math.Min(clipInfo.ClipSize - ClipAmmo, clipInfo.BulletsPerReload);
+            int ammo = clipInfo.UnlimitedAmmo ? reloadBullets : player.Inventory.Ammo.Take(clipInfo.AmmoName, reloadBullets);
+
+            if (ammo > 0)
             {
-                int ammo = player.Inventory.Ammo.Take(clipInfo.AmmoName, Math.Min(clipInfo.ClipSize - ClipAmmo, clipInfo.BulletsPerReload));
-
-                if (ammo == 0)
-                {
-                    return;
-                }
-
                 ClipAmmo += ammo;
             }
-            else
-            {
-                ClipAmmo = clipInfo.ClipSize;
-            }
 
-            if (ClipAmmo < clipInfo.ClipSize)
+            if (ammo > 0 && ClipAmmo < clipInfo.ClipSize)
             {
                 Reload(clipInfo);
             }
             else
             {
-                ClientFinishReload(GetClipInfoIndex(clipInfo));
+                FinishReload(clipInfo);
             }
+        }
+
+        public virtual void FinishReload(ClipInfo clipInfo)
+        {
+            ClientFinishReload(GetClipInfoIndex(clipInfo));
         }
 
         [ClientRpc]

@@ -14,6 +14,23 @@ namespace TTTReborn.Items
                 return false;
             }
 
+            if (clipInfo.FiringType == FiringType.BURST)
+            {
+                if (_burstCount > 2)
+                {
+                    return false;
+                }
+
+                if (TimeSinceAttack > GetRealRPM(clipInfo.RPM))
+                {
+                    _burstCount++;
+
+                    return true;
+                }
+
+                return false;
+            }
+
             if (clipInfo.RPM <= 0)
             {
                 return true;
@@ -45,7 +62,10 @@ namespace TTTReborn.Items
 
             (Owner as AnimEntity).SetAnimParameter("b_attack", true);
 
-            PlaySound(clipInfo.ShootSound).SetPosition(Position).SetVolume(0.8f);
+            if (!string.IsNullOrEmpty(clipInfo.ShootSound))
+            {
+                PlaySound(clipInfo.ShootSound).SetPosition(Position).SetVolume(0.8f);
+            }
 
             Rand.SetSeed(Time.Tick);
 
@@ -54,6 +74,19 @@ namespace TTTReborn.Items
             for (int i = 0; i < clipInfo.Bullets; i++)
             {
                 ShootBullet(clipInfo);
+            }
+        }
+
+        public virtual void ResetBurstFireCount(ClipInfo clipInfo, InputButton inputButton)
+        {
+            if (clipInfo == null || clipInfo.FiringType != FiringType.BURST)
+            {
+                return;
+            }
+
+            if (Input.Released(inputButton))
+            {
+                _burstCount = 0;
             }
         }
 
@@ -91,7 +124,7 @@ namespace TTTReborn.Items
             CrosshairPanel?.CreateEvent("fire");
         }
 
-        public void ShootBullet(ClipInfo clipInfo)
+        public virtual void ShootBullet(ClipInfo clipInfo)
         {
             ShootBullet(clipInfo.Spread, clipInfo.Force, clipInfo.Damage, clipInfo.BulletSize, clipInfo.ImpactEffect, clipInfo.DamageType);
         }

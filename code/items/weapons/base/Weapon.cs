@@ -89,6 +89,8 @@ namespace TTTReborn.Items
                 return;
             }
 
+            ResetBurstFireCount(CurrentClip, InputButton.Attack1);
+
             if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && ClipAmmo > 0 && !CurrentClip.UnlimitedAmmo)
             {
                 if (CurrentClip.AmmoName != null && CurrentClip.CanDropAmmo)
