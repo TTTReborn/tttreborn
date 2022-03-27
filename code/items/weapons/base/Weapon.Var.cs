@@ -4,13 +4,11 @@ namespace TTTReborn.Items
 {
     public abstract partial class Weapon
     {
-        public virtual ItemInfo Info { get; private set; } = new WeaponInfo();
+        public virtual ItemInfo Info { get; private set; } = new();
 
-        public virtual WeaponInfo WeaponInfo
-        {
-            get => Info as WeaponInfo;
-            set => Info = value;
-        }
+        public virtual CarriableInfo CarriableInfo { get; set; } = new();
+
+        public virtual WeaponInfo WeaponInfo { get; set; } = new();
 
         public virtual ClipInfo[] ClipInfos { get; set; } = new ClipInfo[] { new() };
 

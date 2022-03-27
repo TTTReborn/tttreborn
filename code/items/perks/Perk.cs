@@ -18,7 +18,7 @@ namespace TTTReborn.Items
     [Hammer.Skip]
     public abstract partial class Perk : BaseNetworkable, IItem
     {
-        public ItemInfo Info { get; set; } = new();
+        public ItemInfo Info { get; private set; } = new();
 
         public Perk() : base()
         {

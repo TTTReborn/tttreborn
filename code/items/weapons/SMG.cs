@@ -44,7 +44,8 @@ namespace TTTReborn.Items
                     Size = 1.0f,
                     Rotation = 0.5f
                 },
-                ReloadTime = 2.8f
+                ReloadTime = 2.8f,
+                FiringType = FiringType.AUTO
             }
         };
     }

@@ -69,7 +69,7 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.Use))
                 {
-                    ICarriableItem[] carriableItems = player.Inventory.GetSlotCarriable(WeaponInfo.Category);
+                    ICarriableItem[] carriableItems = player.Inventory.GetSlotCarriable(CarriableInfo.Category);
 
                     if (carriableItems.Length > 0)
                     {

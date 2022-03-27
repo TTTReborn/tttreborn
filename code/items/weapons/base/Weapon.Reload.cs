@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     {
         public virtual void Reload(ClipInfo clipInfo)
         {
-            if (clipInfo == null || WeaponInfo.Category == CarriableCategories.Melee || IsReloading || ClipAmmo >= clipInfo.ClipSize || clipInfo.ClipSize <= 0)
+            if (clipInfo == null || CarriableInfo.Category == CarriableCategories.Melee || IsReloading || ClipAmmo >= clipInfo.ClipSize || clipInfo.ClipSize <= 0)
             {
                 return;
             }

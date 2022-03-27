@@ -44,7 +44,8 @@ namespace TTTReborn.Items
                 },
                 BulletsPerReload = 1,
                 ReloadTime = 0.5f,
-                IsPartialReloading = true
+                IsPartialReloading = true,
+                FiringType = FiringType.SEMI
             }
         };
     }

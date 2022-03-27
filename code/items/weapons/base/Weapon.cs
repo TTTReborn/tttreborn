@@ -20,7 +20,7 @@ namespace TTTReborn.Items
 
             if (weaponAttribute != null)
             {
-                WeaponInfo.Category = weaponAttribute.Category;
+                CarriableInfo.Category = weaponAttribute.Category;
                 Primary.AmmoName = weaponAttribute.PrimaryAmmoName ?? Primary.AmmoName;
 
                 if (Secondary != null)
@@ -160,6 +160,8 @@ namespace TTTReborn.Items
 
                 CurrentClip = Primary;
             }
+
+            // TODO Zoom
         }
 
         public static int GetHoldType(CarriableCategories category)
@@ -179,7 +181,7 @@ namespace TTTReborn.Items
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetAnimParameter("holdtype", GetHoldType(WeaponInfo.Category));
+            anim.SetAnimParameter("holdtype", GetHoldType(CarriableInfo.Category));
             anim.SetAnimParameter("aim_body_weight", 1.0f);
         }
 

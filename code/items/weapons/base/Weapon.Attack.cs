@@ -111,7 +111,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (WeaponInfo.Category != CarriableCategories.Melee)
+            if (CarriableInfo.Category != CarriableCategories.Melee)
             {
                 foreach (KeyValuePair<string, string> keyValuePair in clipInfo.ShootEffectList)
                 {

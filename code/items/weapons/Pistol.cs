@@ -32,7 +32,8 @@ namespace TTTReborn.Items
                 Spread = 0.05f,
                 Force = 1.5f,
                 BulletSize = 0.1f,
-                ReloadTime = 2.3f
+                ReloadTime = 2.3f,
+                FiringType = FiringType.SEMI
             }
         };
     }

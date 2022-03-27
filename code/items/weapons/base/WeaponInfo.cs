@@ -1,6 +1,6 @@
 namespace TTTReborn.Items
 {
-    public partial class WeaponInfo : CarriableInfo
+    public partial class WeaponInfo
     {
         /// <summary>Duration of the draw animation</summary>
         public virtual float DeployTime { get; set; } = 0.5f;
