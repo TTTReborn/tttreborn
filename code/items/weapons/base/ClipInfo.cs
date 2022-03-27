@@ -38,7 +38,8 @@ namespace TTTReborn.Items
     {
         public virtual int ClipSize { get; set; } = 10;
 
-        public virtual int BulletsPerReload {
+        public virtual int BulletsPerReload
+        {
             get => _bulletsPerReload ?? ClipSize;
             set => _bulletsPerReload = value;
         }
