@@ -48,6 +48,8 @@ namespace TTTReborn.Items
 
         public int StartAmmo { get; set; } = -1;
 
+        public int Ammo { get; set; } = 0;
+
         public virtual float Damage { get; set; } = 5f;
 
         public virtual bool UnlimitedAmmo { get; set; } = false;

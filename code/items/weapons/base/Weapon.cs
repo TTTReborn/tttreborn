@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 using Sandbox;
 
@@ -29,6 +30,10 @@ namespace TTTReborn.Items
             }
 
             Tags.Add(IItem.ITEM_TAG);
+
+            Init();
+
+            CurrentClip = Primary;
         }
 
         public void Equip(Player player) => OnEquip();
@@ -47,26 +52,23 @@ namespace TTTReborn.Items
 
             TimeSinceDeployed = 0;
 
-            IsPrimaryReloading = false;
-            TimeSincePrimaryReload = Primary.ReloadTime;
+            IsReloading = false;
+            TimeSinceReload = GetClipInfoMax<float>("ReloadTime");
+        }
+
+        public virtual void Init()
+        {
+            Primary.Ammo = Primary.StartAmmo == -1 ? Primary.ClipSize : Primary.StartAmmo;
 
             if (Secondary != null)
             {
-                IsSecondaryReloading = false;
-                TimeSinceSecondaryReload = Secondary.ReloadTime;
+                Secondary.Ammo = Secondary.StartAmmo == -1 ? Secondary.ClipSize : Secondary.StartAmmo;
             }
         }
 
         public override void Spawn()
         {
             base.Spawn();
-
-            PrimaryClipAmmo = Primary.StartAmmo == -1 ? Primary.ClipSize : Primary.StartAmmo;
-
-            if (Secondary != null)
-            {
-                SecondaryClipAmmo = Secondary.StartAmmo == -1 ? Secondary.ClipSize : Secondary.StartAmmo;
-            }
 
             SetModel(ModelPath);
 
@@ -87,11 +89,11 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && PrimaryClipAmmo > 0 && !Primary.UnlimitedAmmo)
+            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && ClipAmmo > 0 && !CurrentClip.UnlimitedAmmo)
             {
-                if (Primary.AmmoName != null && Primary.CanDropAmmo)
+                if (CurrentClip.AmmoName != null && CurrentClip.CanDropAmmo)
                 {
-                    Type type = Utils.GetTypeByLibraryName<Ammo>(Primary.AmmoName);
+                    Type type = Utils.GetTypeByLibraryName<Ammo>(CurrentClip.AmmoName);
 
                     if (type != null)
                     {
@@ -103,24 +105,24 @@ namespace TTTReborn.Items
                             ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
                             ammoBox.Rotation = Owner.EyeRotation;
                             ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
-                            ammoBox.SetCurrentAmmo(PrimaryClipAmmo);
+                            ammoBox.SetCurrentAmmo(ClipAmmo);
                         }
 
-                        TakeAmmo(Primary, PrimaryClipAmmo);
+                        TakeAmmo(CurrentClip, ClipAmmo);
                     }
                 }
             }
 
-            if (IsReloading && TimeSincePrimaryReload >= Primary.ReloadTime)
+            if (IsReloading && TimeSinceReload >= CurrentReloadTime)
             {
-                OnReloadFinish(Primary);
+                OnReloadFinish(CurrentClip);
             }
 
-            if (!IsReloading || Primary.IsPartialReloading)
+            if (!IsReloading || CurrentClip.IsPartialReloading)
             {
                 if (CanReload())
                 {
-                    Reload(Primary);
+                    Reload(CurrentClip);
                 }
 
                 if (!Owner.IsValid())
@@ -128,11 +130,11 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                if (CanAttack(Primary, InputButton.Attack1))
+                if (CanAttack(CurrentClip, InputButton.Attack1))
                 {
                     using (LagCompensation())
                     {
-                        Attack(Primary);
+                        Attack(CurrentClip);
                     }
                 }
             }
@@ -142,15 +144,19 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (!IsReloading || Secondary != null && Secondary.IsPartialReloading)
+            if (Secondary != null && (!IsReloading || CurrentClip.IsPartialReloading) && !CanZoom)
             {
-                if (CanAttack(Secondary, InputButton.Attack2))
+                CurrentClip = Secondary;
+
+                if (CanAttack(CurrentClip, InputButton.Attack2))
                 {
                     using (LagCompensation())
                     {
-                        Attack(Secondary);
+                        Attack(CurrentClip);
                     }
                 }
+
+                CurrentClip = Primary;
             }
         }
 
@@ -187,20 +193,33 @@ namespace TTTReborn.Items
 
         public bool TakeAmmo(ClipInfo clipInfo, int amount)
         {
-            bool isPrimary = clipInfo == Primary;
-
-            if (clipInfo == null || (isPrimary ? PrimaryClipAmmo : SecondaryClipAmmo) < amount)
+            if (clipInfo == null || ClipAmmo < amount)
             {
                 return false;
             }
 
-            if (isPrimary)
+            clipInfo.Ammo -= amount;
+
+            if (clipInfo == CurrentClip)
             {
-                PrimaryClipAmmo -= amount;
+                ClipAmmo -= amount;
             }
-            else
+
+            return true;
+        }
+
+        public bool GiveAmmo(ClipInfo clipInfo, int amount)
+        {
+            if (clipInfo == null)
             {
-                SecondaryClipAmmo -= amount;
+                return false;
+            }
+
+            clipInfo.Ammo += amount;
+
+            if (clipInfo == CurrentClip)
+            {
+                ClipAmmo += amount;
             }
 
             return true;
@@ -227,7 +246,7 @@ namespace TTTReborn.Items
 
         public override void CreateHudElements() { }
 
-        public int GetClipInfoIndex(ClipInfo clipInfo)
+        public virtual int GetClipInfoIndex(ClipInfo clipInfo)
         {
             if (clipInfo == Primary)
             {
@@ -241,7 +260,7 @@ namespace TTTReborn.Items
             return -1;
         }
 
-        public ClipInfo GetClipInfoByIndex(int index)
+        public virtual ClipInfo GetClipInfoByIndex(int index)
         {
             return index switch
             {
@@ -249,6 +268,22 @@ namespace TTTReborn.Items
                 1 => Secondary,
                 _ => null
             };
+        }
+
+        public virtual T GetClipInfoMax<T>(string propertyName) where T : IComparable
+        {
+            PropertyInfo propertyInfo = Primary.GetType().GetProperty(propertyName);
+
+            T primary = (T) propertyInfo.GetValue(Primary, null);
+
+            if (Secondary == null)
+            {
+                return primary;
+            }
+
+            T secondary = (T) propertyInfo.GetValue(Secondary, null);
+
+            return primary.CompareTo(secondary) >= 0 ? primary : secondary;
         }
     }
 }

@@ -310,12 +310,12 @@ namespace TTTReborn.UI
 
         private static string FormatAmmo(Weapon weapon, Inventory inventory)
         {
-            if (weapon.Primary.UnlimitedAmmo)
+            if (weapon.CurrentClip.UnlimitedAmmo)
             {
-                return $"{weapon.PrimaryClipAmmo} + ∞";
+                return $"{weapon.ClipAmmo} + ∞";
             }
 
-            return $"{weapon.PrimaryClipAmmo} + {inventory.Ammo.Count(weapon.Primary.AmmoName)}";
+            return $"{weapon.ClipAmmo} + {inventory.Ammo.Count(weapon.CurrentClip.AmmoName)}";
         }
 
         private class InventorySlot : Panel
