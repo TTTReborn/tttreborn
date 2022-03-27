@@ -30,6 +30,10 @@ namespace TTTReborn.Items
 
                 return false;
             }
+            else if (clipInfo.FiringType == FiringType.SEMI && !Input.Pressed(inputButton))
+            {
+                return false;
+            }
 
             if (clipInfo.RPM <= 0)
             {
