@@ -43,7 +43,7 @@ namespace TTTReborn.Items
 
             if (IsClient)
             {
-                ShootEffects(clipInfo);
+                ShootEffects(GetClipInfoIndex(clipInfo));
             }
 
             PlaySound("rust_boneknife.attack");

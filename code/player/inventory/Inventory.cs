@@ -61,7 +61,7 @@ namespace TTTReborn
 
             if (entity is ICarriableItem carriable)
             {
-                if (IsCarryingType(entity.GetType()) || !HasEmptySlot((carriable.Info as CarriableInfo).Category))
+                if (IsCarryingType(entity.GetType()) || !HasEmptySlot(carriable.CarriableInfo.Category))
                 {
                     return false;
                 }
@@ -134,7 +134,7 @@ namespace TTTReborn
         {
             int slot = GetSlotByCategory(category);
 
-            return SlotCapacity[GetSlotByCategory(category) - 1] - List.Count(x => GetSlotByCategory((((ICarriableItem) x).Info as CarriableInfo).Category) == slot) > 0;
+            return SlotCapacity[GetSlotByCategory(category) - 1] - List.Count(x => GetSlotByCategory(((ICarriableItem) x).CarriableInfo.Category) == slot) > 0;
         }
 
         public ICarriableItem[] GetSlotCarriable(CarriableCategories category)
@@ -145,7 +145,7 @@ namespace TTTReborn
 
             foreach (Entity entity in List)
             {
-                if (entity is ICarriableItem carriableItem && GetSlotByCategory((carriableItem.Info as CarriableInfo).Category) == slot)
+                if (entity is ICarriableItem carriableItem && GetSlotByCategory(carriableItem.CarriableInfo.Category) == slot)
                 {
                     list.Add(carriableItem);
                 }
@@ -187,6 +187,8 @@ namespace TTTReborn
             {
                 return false;
             }
+
+            // TODO drop inventory ammo as well if it's the last weapon of it's type
 
             using (Prediction.Off())
             {

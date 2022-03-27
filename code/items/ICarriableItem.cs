@@ -27,6 +27,8 @@ namespace TTTReborn.Items
 
     public interface ICarriableItem : IItem, IPickupable
     {
+        CarriableInfo CarriableInfo { get; set; }
+
         bool CanDrop { get; set; }
     }
 }

@@ -139,7 +139,7 @@ namespace TTTReborn.UI
                     slot.SetClass("active", slot.Carriable.Info.LibraryName == activeItem?.Info.LibraryName);
                     slot.SetClass("opacity-heavy", slot.Carriable.Info.LibraryName == activeItem?.Info.LibraryName);
 
-                    if (slot.Carriable is Weapon weapon && weapon.WeaponInfo.Category != CarriableCategories.Melee)
+                    if (slot.Carriable is Weapon weapon && weapon.CarriableInfo.Category != CarriableCategories.Melee)
                     {
                         slot.UpdateAmmo(FormatAmmo(weapon, player.CurrentPlayer.Inventory));
                     }
@@ -172,7 +172,7 @@ namespace TTTReborn.UI
                 InventorySlot s1 = p1 as InventorySlot;
                 InventorySlot s2 = p2 as InventorySlot;
 
-                int result = (s1.Carriable.Info as CarriableInfo).Category.CompareTo((s2.Carriable.Info as CarriableInfo).Category);
+                int result = s1.Carriable.CarriableInfo.Category.CompareTo(s2.Carriable.CarriableInfo.Category);
                 return result != 0
                     ? result
                     : string.Compare(s1.Carriable.Info.LibraryName, s2.Carriable.Info.LibraryName, StringComparison.Ordinal);
@@ -231,8 +231,8 @@ namespace TTTReborn.UI
 
             List<Panel> childrenList = Children.ToList();
             ICarriableItem activeCarriable = player.ActiveChild as ICarriableItem;
-
             int keyboardIndexPressed = GetKeyboardNumberPressed(input);
+
             if (keyboardIndexPressed != -1)
             {
                 List<ICarriableItem> weaponsOfSlotTypeSelected = new();
@@ -242,7 +242,7 @@ namespace TTTReborn.UI
                 {
                     if (childrenList[i] is InventorySlot slot)
                     {
-                        if (Inventory.GetSlotByCategory((slot.Carriable.Info as CarriableInfo).Category) == keyboardIndexPressed)
+                        if (Inventory.GetSlotByCategory(slot.Carriable.CarriableInfo.Category) == keyboardIndexPressed)
                         {
                             // Using the keyboard index the user pressed, find all carriables that
                             // have the same slot type as the index.
@@ -310,12 +310,12 @@ namespace TTTReborn.UI
 
         private static string FormatAmmo(Weapon weapon, Inventory inventory)
         {
-            if (weapon.Primary.UnlimitedAmmo)
+            if (weapon.CurrentClip.UnlimitedAmmo)
             {
-                return $"{weapon.Primary.ClipAmmo} + ∞";
+                return $"{weapon.ClipAmmo} + ∞";
             }
 
-            return $"{weapon.Primary.ClipAmmo} + {inventory.Ammo.Count(weapon.Primary.AmmoName)}";
+            return $"{weapon.ClipAmmo} + {inventory.Ammo.Count(weapon.CurrentClip.AmmoName)}";
         }
 
         private class InventorySlot : Panel
@@ -331,7 +331,7 @@ namespace TTTReborn.UI
 
                 AddClass("background-color-primary");
 
-                SlotLabel = Add.Label(Inventory.GetSlotByCategory((carriable.Info as CarriableInfo).Category).ToString());
+                SlotLabel = Add.Label(Inventory.GetSlotByCategory(carriable.CarriableInfo.Category).ToString());
                 SlotLabel.AddClass("slot-label");
 
                 _ = Add.TranslationLabel(new TranslationData(Utils.GetTranslationKey(carriable.Info.LibraryName, "NAME")));
@@ -340,7 +340,7 @@ namespace TTTReborn.UI
 
                 if (Local.Pawn is Player player)
                 {
-                    if (carriable is Weapon weapon && (carriable.Info as CarriableInfo).Category != CarriableCategories.Melee)
+                    if (carriable is Weapon weapon && carriable.CarriableInfo.Category != CarriableCategories.Melee)
                     {
                         _ammoLabel.Text = FormatAmmo(weapon, player.Inventory);
                         _ammoLabel.AddClass("ammo-label");

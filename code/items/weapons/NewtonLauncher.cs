@@ -21,18 +21,25 @@ namespace TTTReborn.Items
         public bool IsCharging { get; set; } = false;
         public float ChargingStartTime;
 
-        public NewtonLauncher() : base()
+        public override WeaponInfo WeaponInfo { get; set; } = new()
         {
-            WeaponInfo.ReloadTime = 2.3f;
-            WeaponInfo.DeployTime = 0.4f;
+            DeployTime = 0.4f
+        };
 
-            Primary.UnlimitedAmmo = true;
-            Primary.ClipSize = 1;
-            Primary.Damage = 3;
-            Primary.RPM = 60;
-            Primary.ShootSound = "rust_pistol.shoot";
-            Primary.DryFireSound = "pistol.dryfire";
-        }
+        public override ClipInfo[] ClipInfos { get; set; } = new ClipInfo[]
+        {
+            new()
+            {
+                UnlimitedAmmo = true,
+                ClipSize = 1,
+                StartAmmo = 1,
+                Damage = 3,
+                RPM = 60,
+                ShootSound = "rust_pistol.shoot",
+                DryFireSound = "pistol.dryfire",
+                ReloadTime = 2.3f
+            }
+        };
 
         public override void OnActive()
         {
@@ -65,7 +72,7 @@ namespace TTTReborn.Items
 
             if (IsClient)
             {
-                ShootEffects(Primary);
+                ShootEffects(GetClipInfoIndex(Primary));
             }
 
             PlaySound(Primary.ShootSound).SetPosition(Position).SetVolume(0.8f);

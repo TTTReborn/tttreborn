@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 using Sandbox;
 
@@ -19,21 +20,20 @@ namespace TTTReborn.Items
 
             if (weaponAttribute != null)
             {
-                WeaponInfo.Category = weaponAttribute.Category;
-                Primary.AmmoName = weaponAttribute.PrimaryAmmoName;
+                CarriableInfo.Category = weaponAttribute.Category;
+                Primary.AmmoName = weaponAttribute.PrimaryAmmoName ?? Primary.AmmoName;
 
                 if (Secondary != null)
                 {
-                    Secondary.AmmoName = weaponAttribute.SecondaryAmmoName;
+                    Secondary.AmmoName = weaponAttribute.SecondaryAmmoName ?? Secondary.AmmoName;
                 }
             }
 
-            Primary.ClipAmmo = Primary.ClipSize;
-            IsPartialReloading = false;
-
-            EnableShadowInFirstPerson = false;
-
             Tags.Add(IItem.ITEM_TAG);
+
+            Init();
+
+            CurrentClip = Primary;
         }
 
         public void Equip(Player player) => OnEquip();
@@ -52,11 +52,17 @@ namespace TTTReborn.Items
 
             TimeSinceDeployed = 0;
 
-            Primary.IsReloading = false;
+            IsReloading = false;
+            TimeSinceReload = GetClipInfoMax<float>("ReloadTime");
+        }
+
+        public virtual void Init()
+        {
+            Primary.Ammo = Primary.StartAmmo == -1 ? Primary.ClipSize : Primary.StartAmmo;
 
             if (Secondary != null)
             {
-                Secondary.IsReloading = false;
+                Secondary.Ammo = Secondary.StartAmmo == -1 ? Secondary.ClipSize : Secondary.StartAmmo;
             }
         }
 
@@ -70,6 +76,8 @@ namespace TTTReborn.Items
             PickupTrigger.Parent = this;
             PickupTrigger.Position = Position;
             PickupTrigger.Rotation = Rotation;
+
+            EnableShadowInFirstPerson = false;
         }
 
         public static float GetRealRPM(int rpm) => 60f / rpm;
@@ -81,11 +89,13 @@ namespace TTTReborn.Items
                 return;
             }
 
-            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && Primary.ClipAmmo > 0 && !Primary.UnlimitedAmmo)
+            ResetBurstFireCount(CurrentClip, InputButton.Attack1);
+
+            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && ClipAmmo > 0 && !CurrentClip.UnlimitedAmmo)
             {
-                if (Primary.AmmoName != null && Primary.CanDropAmmo)
+                if (CurrentClip.AmmoName != null && CurrentClip.CanDropAmmo)
                 {
-                    Type type = Utils.GetTypeByLibraryName<Ammo>(Primary.AmmoName);
+                    Type type = Utils.GetTypeByLibraryName<Ammo>(CurrentClip.AmmoName);
 
                     if (type != null)
                     {
@@ -97,57 +107,61 @@ namespace TTTReborn.Items
                             ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
                             ammoBox.Rotation = Owner.EyeRotation;
                             ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
-                            ammoBox.SetCurrentAmmo(Primary.ClipAmmo);
+                            ammoBox.SetCurrentAmmo(ClipAmmo);
                         }
 
-                        TakeAmmo(Primary, Primary.ClipAmmo);
+                        TakeAmmo(CurrentClip, ClipAmmo);
                     }
                 }
             }
 
-            if (!IsReloading || IsPartialReloading)
+            if (IsReloading && TimeSinceReload >= CurrentReloadTime)
+            {
+                OnReloadFinish(CurrentClip);
+            }
+
+            if (!IsReloading || CurrentClip.IsPartialReloading)
             {
                 if (CanReload())
                 {
-                    Reload(Primary);
+                    Reload(CurrentClip);
                 }
 
-                //
-                // Reload could have changed our owner
-                //
                 if (!Owner.IsValid())
                 {
                     return;
                 }
 
-                if (CanAttack(Primary, InputButton.Attack1))
+                if (CanAttack(CurrentClip, InputButton.Attack1))
                 {
                     using (LagCompensation())
                     {
-                        Attack(Primary);
-                    }
-                }
-
-                //
-                // AttackPrimary could have changed our owner
-                //
-                if (!Owner.IsValid())
-                {
-                    return;
-                }
-
-                if (CanAttack(Secondary, InputButton.Attack2))
-                {
-                    using (LagCompensation())
-                    {
-                        Attack(Secondary);
+                        Attack(CurrentClip);
                     }
                 }
             }
-            else if (TimeSinceReload > WeaponInfo.ReloadTime)
+
+            if (!Owner.IsValid())
             {
-                OnReloadFinish();
+                return;
             }
+
+            if (Secondary != null && (!IsReloading || CurrentClip.IsPartialReloading) && !CanZoom)
+            {
+                CurrentClip = Secondary;
+
+                if (CanAttack(CurrentClip, InputButton.Attack2))
+                {
+                    using (LagCompensation())
+                    {
+                        Attack(CurrentClip);
+                    }
+                }
+
+                CurrentClip = Primary;
+            }
+
+            // TODO Zoom
         }
 
         public static int GetHoldType(CarriableCategories category)
@@ -167,7 +181,7 @@ namespace TTTReborn.Items
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetAnimParameter("holdtype", GetHoldType(WeaponInfo.Category));
+            anim.SetAnimParameter("holdtype", GetHoldType(CarriableInfo.Category));
             anim.SetAnimParameter("aim_body_weight", 1.0f);
         }
 
@@ -181,14 +195,36 @@ namespace TTTReborn.Items
             return owner.Inventory.Ammo.Count(clipInfo.AmmoName);
         }
 
-        public static bool TakeAmmo(ClipInfo clipInfo, int amount)
+        public bool TakeAmmo(ClipInfo clipInfo, int amount)
         {
-            if (clipInfo.ClipAmmo < amount)
+            if (clipInfo == null || ClipAmmo < amount)
             {
                 return false;
             }
 
-            clipInfo.ClipAmmo -= amount;
+            clipInfo.Ammo -= amount;
+
+            if (clipInfo == CurrentClip)
+            {
+                ClipAmmo -= amount;
+            }
+
+            return true;
+        }
+
+        public bool GiveAmmo(ClipInfo clipInfo, int amount)
+        {
+            if (clipInfo == null)
+            {
+                return false;
+            }
+
+            clipInfo.Ammo += amount;
+
+            if (clipInfo == CurrentClip)
+            {
+                ClipAmmo += amount;
+            }
 
             return true;
         }
@@ -213,5 +249,44 @@ namespace TTTReborn.Items
         }
 
         public override void CreateHudElements() { }
+
+        public virtual int GetClipInfoIndex(ClipInfo clipInfo)
+        {
+            for (int i = 0; i < ClipInfos.Length; i++)
+            {
+                if (clipInfo == ClipInfos[i])
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public virtual T GetClipInfoMax<T>(string propertyName) where T : IComparable
+        {
+            if (ClipInfos.Length < 1)
+            {
+                return default;
+            }
+
+            PropertyInfo propertyInfo = ClipInfos[0].GetType().GetProperty(propertyName);
+            T highest = (T) propertyInfo.GetValue(ClipInfos[0], null);
+
+            if (ClipInfos.Length > 1)
+            {
+                for (int i = 1; i < ClipInfos.Length; i++)
+                {
+                    T tmp = (T) propertyInfo.GetValue(ClipInfos[i], null);
+
+                    if (tmp.CompareTo(highest) > 0)
+                    {
+                        highest = tmp;
+                    }
+                }
+            }
+
+            return highest;
+        }
     }
 }

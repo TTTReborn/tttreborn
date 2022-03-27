@@ -12,12 +12,18 @@ namespace TTTReborn.Items
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";
         public override string ModelPath => "weapons/rust_boneknife/rust_boneknife.vmdl";
 
-        public Knife() : base()
+        public override WeaponInfo WeaponInfo { get; set; } = new()
         {
-            WeaponInfo.DeployTime = 0.2f;
+            DeployTime = 0.2f
+        };
 
-            Primary.Damage = 45;
-            Primary.RPM = 60;
-        }
+        public override ClipInfo[] ClipInfos { get; set; } = new ClipInfo[]
+        {
+            new()
+            {
+                Damage = 45,
+                RPM = 60
+            }
+        };
     }
 }
