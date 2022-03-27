@@ -52,11 +52,11 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("WEAPON.USE", new TranslationData(GetTranslationKey("NAME")));
+        public TranslationData[] TextOnTick => new TranslationData[] { new("WEAPON.USE", new TranslationData(GetTranslationKey("NAME"))) };
 
         public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(new GlyphHintData[] { new(TextOnTick[0], InputButton.Use) });
 
         public void TextTick(Player player)
         {

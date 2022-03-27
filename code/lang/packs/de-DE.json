@@ -63,7 +63,8 @@
         },
         "USE": {
             "IDENTIFY": "Halten, um die Leiche zu identifizieren",
-            "INSPECT": "Halten, um die Leiche zu inspizieren"
+            "INSPECT": "Halten, um die Leiche zu inspizieren",
+            "COVERTINSPECT": "Halten, um die Leiche verdeckt zu inspizieren"
         }
     },
     "SCOREBOARD": {

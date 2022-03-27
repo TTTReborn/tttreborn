@@ -289,11 +289,11 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new(IsArmed ? "EQUIPMENT.C4.USE.DEFUSE" : "EQUIPMENT.C4.USE.ARM");
+        public TranslationData[] TextOnTick => new TranslationData[] { new(IsArmed ? "EQUIPMENT.C4.USE.DEFUSE" : "EQUIPMENT.C4.USE.ARM") };
 
         public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(new GlyphHintData[] { new(TextOnTick[0], InputButton.Use) });
 
         public void TextTick(Player player)
         {

@@ -78,7 +78,7 @@ namespace TTTReborn.UI
             return HealthGroupList[^1];
         }
 
-        public override void UpdateHintPanel(TranslationData translationData)
+        public override void UpdateHintPanel(params TranslationData[] translationData)
         {
             SetClass("fade-in", this.IsEnabled());
 

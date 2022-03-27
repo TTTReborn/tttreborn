@@ -79,14 +79,14 @@ namespace TTTReborn
                         {
                             translationData = new("DOOR.LOCKED");
 
-                            if (_currentHintPanel is GlyphHint glyphHint && glyphHint.InputButtons.Contains(InputButton.Use))
+                            if (_currentHintPanel is GlyphHint glyphHint && glyphHint.Data[0].InputButtons.Contains(InputButton.Use))
                             {
-                                glyphHint.InputButtons.Remove(InputButton.Use);
+                                glyphHint.Data[0].InputButtons.Remove(InputButton.Use);
                             }
                         }
-                        else if (_currentHintPanel is GlyphHint glyphHint && !glyphHint.InputButtons.Contains(InputButton.Use))
+                        else if (_currentHintPanel is GlyphHint glyphHint && !glyphHint.Data[0].InputButtons.Contains(InputButton.Use))
                         {
-                            glyphHint.InputButtons.Add(InputButton.Use);
+                            glyphHint.Data[0].InputButtons.Add(InputButton.Use);
                         }
 
                         _currentHintPanel.UpdateHintPanel(translationData);
@@ -132,7 +132,7 @@ namespace TTTReborn
                         }
                     }
 
-                    _currentHintPanel = new GlyphHint(translationData, inputButtons.ToArray())
+                    _currentHintPanel = new GlyphHint(new GlyphHintData[] { new(translationData, inputButtons.ToArray()) })
                     {
                         Parent = HintDisplay.Instance
                     };

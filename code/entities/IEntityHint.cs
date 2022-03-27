@@ -18,7 +18,7 @@ namespace TTTReborn.Entities
         /// <summary>
         /// The text to display on the hint each tick.
         /// </summary>
-        TranslationData TextOnTick => null;
+        TranslationData[] TextOnTick => null;
 
         /// <summary>
         /// Whether or not we can show the UI hint.
