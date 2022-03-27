@@ -115,7 +115,7 @@ namespace TTTReborn
                 }
                 else if (target != null)
                 {
-                    TranslationData translationData = new("ENTITY.USE", Utils.GetLibraryName(target.GetType()));
+                    TranslationData translationData = new("ENTITY.USE", new TranslationData($"ENTITY.{Utils.GetLibraryName(target.GetType()).ToUpper()}"));
                     List<InputButton> inputButtons = new()
                     {
                         InputButton.Use

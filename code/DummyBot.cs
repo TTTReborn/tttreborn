@@ -1,10 +1,10 @@
 namespace Sandbox
 {
-    [Library("bot_dummy")]
+    [Library("ttt_bot_dummy")]
     public class DummyBot : Bot
     {
-        [AdminCmd("bot_add_dummy", Help = "Spawn a dummy bot")]
-        private static void Spawn()
+        [AdminCmd("ttt_bot_add_dummy", Help = "Spawn a dummy bot")]
+        public static void Spawn()
         {
             _ = new DummyBot();
         }

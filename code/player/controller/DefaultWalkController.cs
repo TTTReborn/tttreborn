@@ -105,7 +105,7 @@ namespace TTTReborn
             {
                 using (Prediction.Off())
                 {
-                    DamageInfo damageInfo = new DamageInfo
+                    DamageInfo damageInfo = new()
                     {
                         Attacker = Pawn,
                         Flags = DamageFlags.Drown,

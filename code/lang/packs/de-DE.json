@@ -345,7 +345,8 @@
         }
     },
     "ENTITY": {
-        "USE": "Drücken, um mit '{0}' zu interagieren"
+        "USE": "Drücken, um mit '{0}' zu interagieren",
+        "ENT_BUTTON": "Knopf"
     },
     "DOOR": {
         "OPEN": "Drücken, um die Tür zu öffnen",

@@ -86,12 +86,12 @@ namespace TTTReborn.Roles
 
         public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
 
-        public bool CheckWin(Player player)
+        public virtual bool CheckWin(Player player)
         {
             return player.Team != null && player.Team.CheckWin(player);
         }
 
-        public bool CheckPreventWin(Player player)
+        public virtual bool CheckPreventWin(Player player)
         {
             return player.Team != null && player.Team.CheckPreventWin(player);
         }

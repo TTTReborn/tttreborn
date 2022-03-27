@@ -37,7 +37,7 @@ namespace TTTReborn
                 return;
             }
 
-            Player player = null;
+            Player player;
 
             if (id == null)
             {
