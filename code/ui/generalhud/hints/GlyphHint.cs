@@ -8,23 +8,32 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
+    public struct GlyphHintData
+    {
+        public TranslationData TranslationData { get; set; }
+
+        public List<InputButton> InputButtons { get; set; }
+
+        public GlyphHintData(TranslationData translationData, params InputButton[] inputButtons)
+        {
+            TranslationData = translationData;
+            InputButtons = new(inputButtons);
+        }
+    }
+
     public class GlyphHint : EntityHintPanel
     {
-        public readonly List<InputButton> InputButtons;
+        public GlyphHintData[] Data;
 
-        private TranslationData _translationData;
-        private TranslationLabel _label;
-
-        public GlyphHint(TranslationData translationData, params InputButton[] inputButtons) : base()
+        public GlyphHint(params GlyphHintData[] data) : base()
         {
-            _translationData = translationData;
-            InputButtons = new(inputButtons);
-
             AddClass("centered-vertical-75");
             AddClass("background-color-primary");
             AddClass("rounded");
-            AddClass("text-color-info");
-            AddClass("text-shadow");
+            AddClass("column");
+            AddClass("padding");
+
+            Data = data;
 
             CreateContent();
 
@@ -33,68 +42,52 @@ namespace TTTReborn.UI
 
         private void CreateContent()
         {
-            for (int i = 0; i < InputButtons.Count; ++i)
+            DeleteChildren(true);
+
+            for (int glyphCount = 0; glyphCount < Data.Length; glyphCount++)
             {
-                AddChild(new BindingKeyImage(InputButtons[i]));
+                GlyphHintData glyphHintData = Data[glyphCount];
 
-                // Don't show a + if it's the last binding in the list.
-                if (i != InputButtons.Count - 1)
+                if (glyphHintData.TranslationData == null)
                 {
-                    Add.Label(" + ", "text-color-info");
+                    continue;
                 }
-            }
 
-            _label = Add.TranslationLabel(_translationData);
-            _label.Style.Padding = 10;
+                AddGlyphEntry(glyphHintData);
+            }
         }
 
-        public override void UpdateHintPanel(TranslationData translationData)
+        private void AddGlyphEntry(GlyphHintData glyphHintData)
         {
-            _translationData = translationData;
-            bool invalid = false;
+            Panel panel = Add.Panel();
+            panel.AddClass("text-color-info");
+            panel.AddClass("text-shadow");
 
-            foreach (Panel panel in Children)
+            for (int i = 0; i < glyphHintData.InputButtons.Count; i++)
             {
-                if (panel is BindingKeyImage bindingKeyImage)
-                {
-                    if (!InputButtons.Contains(bindingKeyImage.InputButton))
-                    {
-                        invalid = true;
+                panel.AddChild(new BindingKeyImage(glyphHintData.InputButtons[i]));
 
-                        break;
-                    }
+                if (i != glyphHintData.InputButtons.Count - 1)
+                {
+                    Label label = panel.Add.Label(" + ", "text-color-info");
+                    label.Style.PaddingTop = 10;
+                    label.Style.PaddingLeft = 5;
                 }
             }
 
-            if (!invalid)
+            TranslationLabel translationLabel = panel.Add.TranslationLabel(glyphHintData.TranslationData);
+            translationLabel.Style.Padding = 10;
+            translationLabel.Style.PaddingLeft = 15;
+        }
+
+        public override void UpdateHintPanel(params TranslationData[] translationData)
+        {
+            for (int i = 0; i < translationData.Length; i++)
             {
-                int count = 0;
-
-                foreach (InputButton inputButton in InputButtons)
-                {
-                    foreach (Panel panel in Children)
-                    {
-                        if (panel is BindingKeyImage bindingKeyImage && inputButton == bindingKeyImage.InputButton)
-                        {
-                            count++;
-
-                            break;
-                        }
-                    }
-                }
-
-                invalid = count != InputButtons.Count;
+                Data[i].TranslationData = translationData[i];
             }
 
-            if (invalid)
-            {
-                DeleteChildren(true);
-                CreateContent();
-            }
-            else
-            {
-                _label.UpdateTranslation(translationData);
-            }
+            CreateContent();
         }
     }
 }

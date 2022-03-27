@@ -63,7 +63,8 @@
         },
         "USE": {
             "IDENTIFY": "Hold to identify the corpse",
-            "INSPECT": "Hold to inspect the corpse"
+            "INSPECT": "Hold to inspect the corpse",
+            "COVERTINSPECT": "Hold to inspect the corpse covert"
         }
     },
     "SCOREBOARD": {

@@ -21,6 +21,7 @@ namespace TTTReborn
         public float Distance { get; set; } = 0f;
         public float KilledTime { get; private set; }
         public string[] Perks { get; set; }
+        public List<Player> CovertConfirmers { get; set; } = new();
 
         public PlayerCorpse()
         {
@@ -139,11 +140,11 @@ namespace TTTReborn
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new(IsIdentified ? "CORPSE.USE.INSPECT" : "CORPSE.USE.IDENTIFY");
+        public TranslationData[] TextOnTick => new TranslationData[] { new(IsIdentified ? "CORPSE.USE.INSPECT" : "CORPSE.USE.IDENTIFY"), IsIdentified ? null : new("CORPSE.USE.COVERTINSPECT") };
 
         public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(new GlyphHintData[] { new(TextOnTick[0], InputButton.Use), new(TextOnTick[1], InputButton.Duck, InputButton.Use) });
 
         public void TextTick(Player confirmingPlayer)
         {
@@ -159,30 +160,53 @@ namespace TTTReborn
                     return;
                 }
 
-                if (IsServer && !IsIdentified && confirmingPlayer.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
+                if (!IsIdentified && confirmingPlayer.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
                 {
-                    IsIdentified = true;
+                    bool covert = Input.Down(InputButton.Duck);
 
-                    // TODO: Handle player disconnects.
-                    if (DeadPlayer != null && DeadPlayer.IsValid())
+                    if (IsServer)
                     {
-                        DeadPlayer.IsConfirmed = true;
-                        DeadPlayer.CorpseConfirmer = confirmingPlayer;
-
-                        int credits = DeadPlayer.Credits;
-
-                        if (credits > 0)
+                        if (!covert)
                         {
-                            confirmingPlayer.Credits += credits;
-                            DeadPlayer.Credits = 0;
-                            DeadPlayer.CorpseCredits = credits;
+                            IsIdentified = true;
                         }
 
-                        RPCs.ClientConfirmPlayer(confirmingPlayer, this, DeadPlayer, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks);
+                        if (!covert || !CovertConfirmers.Contains(confirmingPlayer))
+                        {
+                            // TODO: Handle player disconnects.
+                            if (DeadPlayer != null && DeadPlayer.IsValid())
+                            {
+                                int credits = DeadPlayer.Credits;
+
+                                if (credits > 0)
+                                {
+                                    confirmingPlayer.Credits += credits;
+                                    DeadPlayer.Credits = 0;
+                                    DeadPlayer.CorpseCredits = credits;
+                                }
+
+                                if (covert)
+                                {
+                                    RPCs.ClientConfirmPlayer(To.Single(confirmingPlayer), confirmingPlayer, this, DeadPlayer, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks, true);
+                                }
+                                else
+                                {
+                                    DeadPlayer.IsConfirmed = true;
+                                    DeadPlayer.CorpseConfirmer = confirmingPlayer;
+
+                                    RPCs.ClientConfirmPlayer(confirmingPlayer, this, DeadPlayer, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks);
+                                }
+                            }
+                        }
+                    }
+
+                    if (covert)
+                    {
+                        CovertConfirmers.Add(confirmingPlayer);
                     }
                 }
 
-                if (Input.Down(InputButton.Use) && IsIdentified)
+                if (Input.Down(InputButton.Use) && (IsIdentified || CovertConfirmers.Contains(confirmingPlayer)))
                 {
                     Player.ClientEnableInspectMenu(this);
                 }

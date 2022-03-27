@@ -164,6 +164,14 @@ Panel, .panel {
     height: 100%;
 }
 
+.column {
+    flex-direction: column;
+}
+
+.padding {
+    padding: 10px;
+}
+
 .text-color-alive {
     color: $alive;
 }

@@ -22,9 +22,9 @@ namespace TTTReborn.UI
             this.Enabled(false);
         }
 
-        public override void UpdateHintPanel(TranslationData translationData)
+        public override void UpdateHintPanel(params TranslationData[] translationData)
         {
-            _label.UpdateTranslation(translationData);
+            _label.UpdateTranslation(translationData[0]);
         }
     }
 }

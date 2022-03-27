@@ -53,11 +53,11 @@ namespace TTTReborn.Items
 
         public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => new("EQUIPMENT.HEALTHSTATION.USE", $"{StoredHealth} / {MAX_HEALTH}");
+        public TranslationData[] TextOnTick => new TranslationData[] { new("EQUIPMENT.HEALTHSTATION.USE", $"{StoredHealth} / {MAX_HEALTH}") };
 
         public bool CanHint(Player client) => true;
 
-        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(TextOnTick, InputButton.Use);
+        public EntityHintPanel DisplayHint(Player client) => new GlyphHint(new GlyphHintData[] { new(TextOnTick[0], InputButton.Use) });
 
         public void TextTick(Player player)
         {

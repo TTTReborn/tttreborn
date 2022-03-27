@@ -77,7 +77,7 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientConfirmPlayer(Player confirmPlayer, PlayerCorpse playerCorpse, Player deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks)
+        public static void ClientConfirmPlayer(Player confirmPlayer, PlayerCorpse playerCorpse, Player deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks, bool covert = false)
         {
             if (!deadPlayer.IsValid())
             {
@@ -86,8 +86,11 @@ namespace TTTReborn.Globals
 
             deadPlayer.SetRole(Utils.GetObjectByType<Role>(Utils.GetTypeByLibraryName<Role>(roleName)), TeamFunctions.GetTeam(teamName));
 
-            deadPlayer.IsConfirmed = true;
-            deadPlayer.CorpseConfirmer = confirmPlayer;
+            if (!covert)
+            {
+                deadPlayer.IsConfirmed = true;
+                deadPlayer.CorpseConfirmer = confirmPlayer;
+            }
 
             if (playerCorpse.IsValid())
             {
