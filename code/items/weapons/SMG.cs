@@ -20,29 +20,32 @@ namespace TTTReborn.Items
             DeployTime = 0.6f
         };
 
-        public override ClipInfo Primary { get; set; } = new()
+        public override ClipInfo[] ClipInfos { get; set; } = new ClipInfo[]
         {
-            ClipSize = 30,
-            StartAmmo = 30,
-            Damage = 8,
-            Spread = 0.1f,
-            RPM = 600,
-            ShootSound = "rust_pistol.shoot",
-            Force = 1.5f,
-            BulletSize = 3f,
-            ShootEffectList = new Dictionary<string, string>()
+            new()
             {
-                { "particles/pistol_muzzleflash.vpcf", "muzzle" },
-                { "particles/pistol_ejectbrass.vpcf", "ejection_point" }
-            },
-            ShakeEffect = new()
-            {
-                Length = 0.5f,
-                Speed = 4.0f,
-                Size = 1.0f,
-                Rotation = 0.5f
-            },
-            ReloadTime = 2.8f
+                ClipSize = 30,
+                StartAmmo = 30,
+                Damage = 8,
+                Spread = 0.1f,
+                RPM = 600,
+                ShootSound = "rust_pistol.shoot",
+                Force = 1.5f,
+                BulletSize = 3f,
+                ShootEffectList = new Dictionary<string, string>()
+                {
+                    { "particles/pistol_muzzleflash.vpcf", "muzzle" },
+                    { "particles/pistol_ejectbrass.vpcf", "ejection_point" }
+                },
+                ShakeEffect = new()
+                {
+                    Length = 0.5f,
+                    Speed = 4.0f,
+                    Size = 1.0f,
+                    Rotation = 0.5f
+                },
+                ReloadTime = 2.8f
+            }
         };
     }
 }

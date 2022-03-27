@@ -12,9 +12,17 @@ namespace TTTReborn.Items
             set => Info = value;
         }
 
-        public virtual ClipInfo Primary { get; set; } = new();
+        public virtual ClipInfo[] ClipInfos { get; set; } = new ClipInfo[] { new() };
 
-        public virtual ClipInfo Secondary { get; set; } = null;
+        public virtual ClipInfo Primary
+        {
+            get => ClipInfos.Length > 0 ? ClipInfos[0] : null;
+        }
+
+        public virtual ClipInfo Secondary
+        {
+            get => ClipInfos.Length > 1 ? ClipInfos[1] : null;
+        }
 
         public ClipInfo CurrentClip
         {

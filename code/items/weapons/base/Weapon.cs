@@ -248,42 +248,41 @@ namespace TTTReborn.Items
 
         public virtual int GetClipInfoIndex(ClipInfo clipInfo)
         {
-            if (clipInfo == Primary)
+            for (int i = 0; i < ClipInfos.Length; i++)
             {
-                return 0;
-            }
-            else if (clipInfo == Secondary)
-            {
-                return 1;
+                if (clipInfo == ClipInfos[i])
+                {
+                    return i;
+                }
             }
 
             return -1;
         }
 
-        public virtual ClipInfo GetClipInfoByIndex(int index)
-        {
-            return index switch
-            {
-                0 => Primary,
-                1 => Secondary,
-                _ => null
-            };
-        }
-
         public virtual T GetClipInfoMax<T>(string propertyName) where T : IComparable
         {
-            PropertyInfo propertyInfo = Primary.GetType().GetProperty(propertyName);
-
-            T primary = (T) propertyInfo.GetValue(Primary, null);
-
-            if (Secondary == null)
+            if (ClipInfos.Length < 1)
             {
-                return primary;
+                return default;
             }
 
-            T secondary = (T) propertyInfo.GetValue(Secondary, null);
+            PropertyInfo propertyInfo = ClipInfos[0].GetType().GetProperty(propertyName);
+            T highest = (T) propertyInfo.GetValue(ClipInfos[0], null);
 
-            return primary.CompareTo(secondary) >= 0 ? primary : secondary;
+            if (ClipInfos.Length > 1)
+            {
+                for (int i = 1; i < ClipInfos.Length; i++)
+                {
+                    T tmp = (T) propertyInfo.GetValue(ClipInfos[i], null);
+
+                    if (tmp.CompareTo(highest) > 0)
+                    {
+                        highest = tmp;
+                    }
+                }
+            }
+
+            return highest;
         }
     }
 }

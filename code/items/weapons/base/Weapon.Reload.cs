@@ -78,7 +78,12 @@ namespace TTTReborn.Items
         [ClientRpc]
         public virtual void ClientReload(int clipInfoIndex)
         {
-            ClipInfo clipInfo = GetClipInfoByIndex(clipInfoIndex);
+            if (clipInfoIndex < 0 || clipInfoIndex >= ClipInfos.Length)
+            {
+                return;
+            }
+
+            ClipInfo clipInfo = ClipInfos[clipInfoIndex];
 
             if (!string.IsNullOrEmpty(clipInfo.ViewModelReloadAnim))
             {
@@ -89,7 +94,12 @@ namespace TTTReborn.Items
         [ClientRpc]
         public virtual void ClientFinishReload(int clipInfoIndex)
         {
-            ClipInfo clipInfo = GetClipInfoByIndex(clipInfoIndex);
+            if (clipInfoIndex < 0 || clipInfoIndex >= ClipInfos.Length)
+            {
+                return;
+            }
+
+            ClipInfo clipInfo = ClipInfos[clipInfoIndex];
 
             if (!string.IsNullOrEmpty(clipInfo.ViewModelReloadFinishAnim))
             {

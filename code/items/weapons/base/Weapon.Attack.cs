@@ -62,7 +62,12 @@ namespace TTTReborn.Items
         {
             Host.AssertClient();
 
-            ClipInfo clipInfo = GetClipInfoByIndex(clipInfoIndex);
+            if (clipInfoIndex < 0 || clipInfoIndex >= ClipInfos.Length)
+            {
+                return;
+            }
+
+            ClipInfo clipInfo = ClipInfos[clipInfoIndex];
 
             if (clipInfo == null)
             {

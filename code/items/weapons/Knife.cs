@@ -17,10 +17,13 @@ namespace TTTReborn.Items
             DeployTime = 0.2f
         };
 
-        public override ClipInfo Primary { get; set; } = new()
+        public override ClipInfo[] ClipInfos { get; set; } = new ClipInfo[]
         {
-            Damage = 45,
-            RPM = 60
+            new()
+            {
+                Damage = 45,
+                RPM = 60
+            }
         };
     }
 }
