@@ -188,6 +188,8 @@ namespace TTTReborn
                 return false;
             }
 
+            // TODO drop inventory ammo as well if it's the last weapon of it's type
+
             using (Prediction.Off())
             {
                 RPCs.ClientOnPlayerCarriableItemDrop(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)), entity);
