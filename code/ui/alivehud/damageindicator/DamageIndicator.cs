@@ -3,8 +3,6 @@ using System;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
-
 namespace TTTReborn.UI
 {
     public partial class DamageIndicator : Panel
@@ -27,10 +25,10 @@ namespace TTTReborn.UI
             Style.ZIndex = -1;
         }
 
-        [Event(TTTEvent.Player.TAKE_DAMAGE)]
-        private void OnTakeDamage(Player player, float damage)
+        [Event(typeof(Events.Player.TakeDamageEvent))]
+        protected void OnTakeDamage(Player player, float damage)
         {
-            if (Host.IsServer)
+            if (Host.IsServer || player.Client != Local.Client)
             {
                 return;
             }
@@ -39,8 +37,8 @@ namespace TTTReborn.UI
             _timeSinceLastDamage = 0f;
         }
 
-        [Event(TTTEvent.Player.SPAWNED)]
-        private void OnPlayerSpawned(Player player)
+        [Event(typeof(Events.Player.SpawnEvent))]
+        protected void OnPlayerSpawned(Player player)
         {
             if (Host.IsServer || player != Local.Client.Pawn)
             {

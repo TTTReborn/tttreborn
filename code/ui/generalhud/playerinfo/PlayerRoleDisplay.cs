@@ -38,8 +38,8 @@ namespace TTTReborn.UI
             this.Enabled(!player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound);
         }
 
-        [Event(Events.TTTEvent.Player.Role.SELECT)]
-        private void OnRoleUpdate(Player player)
+        [Event(typeof(Events.Player.Role.SelectEvent))]
+        protected void OnRoleUpdate(Player player)
         {
             if (player == null || player != Local.Pawn as Player)
             {

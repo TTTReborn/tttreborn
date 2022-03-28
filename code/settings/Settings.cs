@@ -3,7 +3,6 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.UI.Menu;
 
 namespace TTTReborn.Settings
@@ -70,7 +69,7 @@ namespace TTTReborn.Settings
 
                 _instance = value;
 
-                new Events.Settings.ChangeEvent().Run();
+                GameEvent.Register(new Events.Settings.ChangeEvent());
             }
         }
         private static Settings _instance;

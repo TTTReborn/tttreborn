@@ -1,7 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 using TTTReborn.UI;
@@ -18,19 +16,19 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Event.Run(TTTEvent.Player.DIED, player);
+            GameEvent.Register(new Events.Player.DiedEvent(player));
         }
 
         [ClientRpc]
         public static void ClientOnPlayerConnected(Client client)
         {
-            Event.Run(TTTEvent.Player.CONNECTED, client);
+            GameEvent.Register(new Events.Player.ConnectedEvent(client));
         }
 
         [ClientRpc]
         public static void ClientOnPlayerDisconnect(long playerId, NetworkDisconnectionReason reason)
         {
-            Event.Run(TTTEvent.Player.DISCONNECTED, playerId, reason);
+            GameEvent.Register(new Events.Player.DisconnectedEvent(playerId, reason));
         }
 
         [ClientRpc]
@@ -47,7 +45,7 @@ namespace TTTReborn.Globals
 
             player.SetRole(new NoneRole());
 
-            Event.Run(TTTEvent.Player.SPAWNED, player);
+            GameEvent.Register(new Events.Player.SpawnEvent(player));
         }
 
         /// <summary>
@@ -166,19 +164,21 @@ namespace TTTReborn.Globals
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
         {
-            Event.Run(TTTEvent.Player.Inventory.PICK_UP, carriable as ICarriableItem);
+            GameEvent.Register(new Events.Player.Inventory.PickupEvent(carriable));
         }
 
         [ClientRpc]
         public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
         {
-            Event.Run(TTTEvent.Player.Inventory.DROP, carriable as ICarriableItem);
+            GameEvent.Register(new Events.Player.Inventory.DropEvent(carriable));
+
+            // TODO remove ClientRPCs with events.RunNetworked
         }
 
         [ClientRpc]
         public static void ClientClearInventory()
         {
-            Event.Run(TTTEvent.Player.Inventory.CLEAR);
+            GameEvent.Register(new Events.Player.Inventory.ClearEvent());
         }
 
         [ClientRpc]

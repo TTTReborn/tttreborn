@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
@@ -60,7 +59,7 @@ namespace TTTReborn.Roles
                 player.ServerUpdateShop();
             }
 
-            Event.Run(TTTEvent.Player.Role.SELECT, player);
+            GameEvent.Register(new Events.Player.Role.SelectEvent(player));
         }
 
         public virtual void OnDeselect(Player player)

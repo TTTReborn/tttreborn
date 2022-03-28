@@ -2,7 +2,7 @@ using System;
 
 using Sandbox;
 
-namespace TTTReborn.Events
+namespace TTTReborn
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class GameEventAttribute : LibraryAttribute
@@ -22,17 +22,6 @@ namespace TTTReborn.Events
 
         [Net]
         public float CreatedAt { get; }
-
-        [Net]
-        public int Score { get; set; }
-
-        [Net]
-        public int OwnerIdent { get; set; }
-
-        public Player Owner
-        {
-            get => Utils.GetPlayerByIdent(OwnerIdent);
-        }
 
         public GameEvent() : base()
         {
@@ -69,9 +58,25 @@ namespace TTTReborn.Events
         // Due to sbox [Net] assignment and aquisition issues, this is not possible currently.
         // So instead of doing it with a single function, we have to implement networking per GameEvent
         // [ClientRpc]
-        // protected static void ClientRun(GameEvent gameEvent)
+        // public static void ClientRun(GameEvent gameEvent)
         // {
         //     gameEvent.Run();
         // }
+
+        protected virtual void OnRegister() { }
+
+        public static void Register<T>(T gameEvent, bool isNetworked = false) where T : GameEvent
+        {
+            gameEvent.OnRegister();
+
+            if (isNetworked)
+            {
+                gameEvent.RunNetworked();
+            }
+            else
+            {
+                gameEvent.Run();
+            }
+        }
     }
 }

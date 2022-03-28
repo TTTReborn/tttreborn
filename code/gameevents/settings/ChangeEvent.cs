@@ -1,15 +1,11 @@
-namespace TTTReborn.Events
+namespace TTTReborn.Events.Settings
 {
-    public static partial class Settings
+    [GameEvent("settings_change")]
+    public partial class ChangeEvent : ParameterlessGameEvent
     {
-        [GameEvent("settings_change")]
-        public partial class ChangeEvent : ParameterlessGameEvent
-        {
-            /// <summary>
-            /// Occurs when server or client settings are changed.
-            /// <para>No data is passed to this event.</para>
-            /// </summary>
-            public ChangeEvent() : base() { }
-        }
+        /// <summary>
+        /// Occurs when server or client settings are changed.
+        /// </summary>
+        public ChangeEvent() : base() { }
     }
 }

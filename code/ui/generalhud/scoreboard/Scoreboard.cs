@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
-
 namespace TTTReborn.UI
 {
     public partial class Scoreboard : Panel
@@ -85,22 +83,22 @@ namespace TTTReborn.UI
             UpdateScoreboardGroups();
         }
 
-        [Event(TTTEvent.Player.SPAWNED)]
-        private void OnPlayerSpawned(Player player)
+        [Event(typeof(Events.Player.SpawnEvent))]
+        protected void OnPlayerSpawned(Player player)
         {
             UpdateClient(player.Client);
         }
 
         // unreliable currently due to S&Box issues
-        // [Event(TTTEvent.Player.CONNECTED)]
+        // [Event(typeof(Events.Player.ConnectedEvent))]
         // public void OnPlayerConnected(Client client)
         // {
         //     AddClient(client);
         //     UpdateScoreboardGroups();
         // }
 
-        // [Event(TTTEvent.Player.DISCONNECTED)]
-        // private void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
+        // [Event(typeof(Events.Player.DisconnectedEvent))]
+        // protected void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
         // {
         //     RemoveClient(playerId);
         //     UpdateScoreboardGroups();

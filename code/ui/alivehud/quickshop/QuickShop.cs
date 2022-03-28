@@ -4,7 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Events;
 using TTTReborn.Globalization;
 using TTTReborn.Items;
 
@@ -148,13 +147,13 @@ namespace TTTReborn.UI
             }
         }
 
-        [Events.Event(typeof(Events.Shop.ChangeEvent))]
+        [Event(typeof(Events.Shop.ChangeEvent))]
         public static void OnShopChanged()
         {
             Instance?.Reload();
         }
 
-        [Event(TTTEvent.Player.Role.SELECT)]
+        [Event(typeof(Events.Player.Role.SelectEvent))]
         public static void OnRoleChanged(Player player)
         {
             QuickShop quickShop = Instance;

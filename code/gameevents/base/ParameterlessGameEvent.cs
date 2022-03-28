@@ -9,7 +9,7 @@ namespace TTTReborn.Events
         protected override void ServerCallNetworked(To to) => ClientRun(to, this);
 
         [ClientRpc]
-        protected static void ClientRun(GameEvent gameEvent)
+        public static void ClientRun(GameEvent gameEvent)
         {
             gameEvent.Run();
         }

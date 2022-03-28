@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.UI;
 
 namespace TTTReborn.Settings
@@ -129,7 +128,7 @@ namespace TTTReborn.Globalization
             Translatables.ForEach((translatable) => translatable.UpdateLanguage(ActiveLanguage));
         }
 
-        [Events.Event(typeof(Events.Settings.ChangeEvent))]
+        [Event(typeof(Events.Settings.ChangeEvent))]
         public static void OnChangeLanguageSettings()
         {
             UpdateLanguage(GetLanguageByCode(Settings.SettingsManager.Instance.General.Language));
@@ -166,7 +165,7 @@ namespace TTTReborn
 
             Settings.SettingsManager.Instance.General.Language = language.Data.Code;
 
-            new Events.Settings.ChangeEvent().Run();
+            GameEvent.Register(new Events.Settings.ChangeEvent());
         }
     }
 }

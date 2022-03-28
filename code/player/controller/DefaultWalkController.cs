@@ -2,7 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Settings;
 
 namespace TTTReborn.Settings
@@ -165,8 +164,8 @@ namespace TTTReborn
             }
         }
 
-        [Event(TTTEvent.Player.INITIAL_SPAWN)]
-        private static void OnInitialSpawn(Client client)
+        [Event(typeof(Events.Player.InitialSpawnEvent))]
+        protected static void OnInitialSpawn(Client client)
         {
             if (Host.IsClient)
             {
@@ -176,7 +175,7 @@ namespace TTTReborn
             Update(client);
         }
 
-        [Events.Event(typeof(Events.Settings.ChangeEvent))]
+        [Event(typeof(Events.Settings.ChangeEvent))]
         public static void OnSettingsChange()
         {
             if (Host.IsClient)

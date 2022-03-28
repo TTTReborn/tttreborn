@@ -1,7 +1,6 @@
 using Sandbox;
 
 using TTTReborn.Camera;
-using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.WorldUI;
@@ -64,7 +63,7 @@ namespace TTTReborn
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
 
-                Event.Run(TTTEvent.Player.INITIAL_SPAWN, Client);
+                GameEvent.Register(new Events.Player.InitialSpawnEvent(Client));
 
                 ClientInitialSpawn();
             }
@@ -94,7 +93,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                Event.Run(TTTEvent.Player.SPAWNED, this);
+                GameEvent.Register(new Events.Player.SpawnEvent(this));
 
                 RPCs.ClientOnPlayerSpawned(this);
                 SendClientRole();

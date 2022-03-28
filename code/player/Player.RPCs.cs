@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Items;
 
 namespace TTTReborn
@@ -68,14 +67,14 @@ namespace TTTReborn
         [ClientRpc]
         public void ClientTookDamage(Vector3 position, float damage)
         {
-            Event.Run(TTTEvent.Player.TAKE_DAMAGE, this, damage);
+            GameEvent.Register(new Events.Player.TakeDamageEvent(this, damage));
         }
 
 
         [ClientRpc]
         public void ClientInitialSpawn()
         {
-            Event.Run(TTTEvent.Player.INITIAL_SPAWN, Client);
+            GameEvent.Register(new Events.Player.InitialSpawnEvent(Client));
         }
     }
 }

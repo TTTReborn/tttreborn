@@ -2,43 +2,37 @@ using Sandbox;
 
 using TTTReborn.Rounds;
 
-namespace TTTReborn.Events
+namespace TTTReborn.Events.Game
 {
-    public static partial class Game
+    [GameEvent("game_roundchange")]
+    public partial class RoundChangeEvent : GameEvent
     {
-        [GameEvent("game_roundchange")]
-        public partial class RoundChangeEvent : GameEvent
+        public BaseRound OldRound { get; set; }
+
+        public BaseRound NewRound { get; set; }
+
+        /// <summary>
+        /// Called everytime the round changes.
+        /// <para>Event is passed the <strong><see cref="BaseRound"/></strong> instance of the old round.</para>
+        /// <para>Event is passed the <strong><see cref="BaseRound"/></strong> instance of the new round.</para>
+        /// </summary>
+        public RoundChangeEvent(BaseRound oldRound, BaseRound newRound) : base()
         {
-            public BaseRound OldRound { get; set; }
+            OldRound = oldRound;
+            NewRound = newRound;
+        }
 
-            public BaseRound NewRound { get; set; }
+        public override void Run() => Event.Run(Name, OldRound, NewRound);
 
-            /// <summary>
-            /// Called everytime the round changes.
-            /// <para>Event is passed the <strong><see cref="BaseRound"/></strong> instance of the old round.</para>
-            /// <para>Event is passed the <strong><see cref="BaseRound"/></strong> instance of the new round.</para>
-            /// </summary>
-            public RoundChangeEvent(BaseRound oldRound, BaseRound newRound) : base()
-            {
-                OldRound = oldRound;
-                NewRound = newRound;
-            }
+        protected override void ServerCallNetworked(To to) => ClientRun(to, this, OldRound, NewRound);
 
-            public override void Run() => Event.Run(Name, OldRound, NewRound);
+        [ClientRpc]
+        public static void ClientRun(RoundChangeEvent gameEvent, BaseRound oldRound, BaseRound newRound)
+        {
+            gameEvent.OldRound = oldRound;
+            gameEvent.NewRound = newRound;
 
-            protected override void ServerCallNetworked(To to)
-            {
-                ClientRun(to, this, OldRound, NewRound);
-            }
-
-            [ClientRpc]
-            protected static void ClientRun(RoundChangeEvent gameEvent, BaseRound oldRound, BaseRound newRound)
-            {
-                gameEvent.OldRound = oldRound;
-                gameEvent.NewRound = newRound;
-
-                gameEvent.Run();
-            }
+            gameEvent.Run();
         }
     }
 }
