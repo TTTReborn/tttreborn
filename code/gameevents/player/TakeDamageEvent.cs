@@ -5,7 +5,6 @@ namespace TTTReborn.Events.Player
     [GameEvent("player_takedamage")]
     public partial class TakeDamageEvent : PlayerGameEvent
     {
-        [Net]
         public float Damage { get; set; }
 
         /// <summary>
@@ -17,5 +16,7 @@ namespace TTTReborn.Events.Player
         {
             Damage = damage;
         }
+
+        public override void Run() => Event.Run(Name, Player, Damage);
     }
 }

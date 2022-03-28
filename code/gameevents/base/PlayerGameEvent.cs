@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Events
 {
-    public partial class PlayerGameEvent : ParameterlessGameEvent
+    public partial class PlayerGameEvent : GameEvent
     {
         public int Ident { get; set; }
 

@@ -125,9 +125,7 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerJoin(client.Pawn as Player);
 
-            GameEvent.Register(new Events.Player.ConnectedEvent(client));
-
-            RPCs.ClientOnPlayerConnected(client);
+            GameEvent.Register(new Events.Player.ConnectedEvent(client), true);
 
             Player player = new();
             client.Pawn = player;

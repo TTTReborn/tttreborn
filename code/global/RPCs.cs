@@ -20,12 +20,6 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientOnPlayerConnected(Client client)
-        {
-            GameEvent.Register(new Events.Player.ConnectedEvent(client));
-        }
-
-        [ClientRpc]
         public static void ClientOnPlayerDisconnect(long playerId, NetworkDisconnectionReason reason)
         {
             GameEvent.Register(new Events.Player.DisconnectedEvent(playerId, reason));
