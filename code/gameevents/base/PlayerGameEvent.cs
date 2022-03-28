@@ -4,7 +4,6 @@ namespace TTTReborn.Events
 {
     public partial class PlayerGameEvent : ParameterlessGameEvent
     {
-        [Net]
         public int Ident { get; set; }
 
         public TTTReborn.Player Player

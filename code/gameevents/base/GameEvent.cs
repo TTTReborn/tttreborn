@@ -17,10 +17,8 @@ namespace TTTReborn
 
     public abstract partial class GameEvent : BaseNetworkable
     {
-        [Net]
         public string Name { get; }
 
-        [Net]
         public float CreatedAt { get; }
 
         public GameEvent() : base()
