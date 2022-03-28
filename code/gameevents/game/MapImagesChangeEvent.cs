@@ -1,7 +1,7 @@
 namespace TTTReborn.Events.Game
 {
     [GameEvent("game_mapimagechange")]
-    public partial class MapImagesChangeEvent : ParameterlessGameEvent
+    public partial class MapImagesChangeEvent : GameEvent
     {
         /// <summary>
         /// Updates when the map images are networked.

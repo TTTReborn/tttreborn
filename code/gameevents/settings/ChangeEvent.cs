@@ -1,7 +1,7 @@
 namespace TTTReborn.Events.Settings
 {
     [GameEvent("settings_change")]
-    public partial class ChangeEvent : ParameterlessGameEvent
+    public partial class ChangeEvent : GameEvent
     {
         /// <summary>
         /// Occurs when server or client settings are changed.

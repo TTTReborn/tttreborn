@@ -34,7 +34,7 @@ namespace TTTReborn
             CreatedAt = Time.Now;
         }
 
-        public abstract void Run();
+        public virtual void Run() => Event.Run(Name);
 
         public void RunNetworked() => RunNetworked(To.Everyone);
 
@@ -48,14 +48,24 @@ namespace TTTReborn
             }
         }
 
-        protected abstract void ServerCallNetworked(To to);
-
-        protected static T Dezerialize<T>(string json) where T : GameEvent
+        protected virtual void ServerCallNetworked(To to) => ClientRun(to, Name, JsonSerializer.Serialize(this, GetType(), new JsonSerializerOptions()
         {
-            return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions()
+            WriteIndented = false
+        }));
+
+        [ClientRpc]
+        public static void ClientRun(string libraryName, string json)
+        {
+            Log.Debug(json);
+
+            Type type = Utils.GetTypeByLibraryName<GameEvent>(libraryName);
+
+            if (type == null)
             {
-                WriteIndented = false
-            });
+                return;
+            }
+
+            (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
         }
 
         protected virtual void OnRegister() { }

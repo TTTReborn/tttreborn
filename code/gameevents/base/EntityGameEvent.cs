@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Sandbox;
@@ -25,13 +24,5 @@ namespace TTTReborn.Events
         }
 
         public override void Run() => Event.Run(Name, Entity);
-
-        protected override void ServerCallNetworked(To to) => ClientRun(to, JsonSerializer.Serialize(this));
-
-        [ClientRpc]
-        public static void ClientRun(string json)
-        {
-            Dezerialize<EntityGameEvent>(json)?.Run();
-        }
     }
 }
