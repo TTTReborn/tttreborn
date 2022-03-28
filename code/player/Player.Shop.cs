@@ -103,7 +103,7 @@ namespace TTTReborn
             ClientBoughtItem(To.Single(this), itemData.Name);
         }
 
-        [Event(TTTEvent.Game.ROUND_CHANGE)]
+        [Events.TTTEvent(typeof(Events.Game.RoundChangeEvent))]
         private static void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
         {
             if (newRound is PreRound preRound)

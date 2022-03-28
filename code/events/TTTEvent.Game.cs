@@ -5,14 +5,9 @@ namespace TTTReborn.Events
         public static class Game
         {
             /// <summary>
-            /// Should be used to precache models and stuff.
-            /// </summary>
-            public const string PRECACHE = "tttreborn.game.precache";
-
-            /// <summary>
             /// Called everytime the round changes.
-            /// <para>Event is passed the <strong><see cref="TTTReborn.Rounds.BaseRound"/></strong> instance of the old round.</para>
-            /// <para>Event is passed the <strong><see cref="TTTReborn.Rounds.BaseRound"/></strong> instance of the new round.</para>
+            /// <para>Event is passed the <strong><see cref="Rounds.BaseRound"/></strong> instance of the old round.</para>
+            /// <para>Event is passed the <strong><see cref="Rounds.BaseRound"/></strong> instance of the new round.</para>
             /// </summary>
             public const string ROUND_CHANGE = "tttreborn.game.roundchange";
 
