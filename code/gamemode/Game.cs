@@ -82,7 +82,7 @@ namespace TTTReborn.Gamemode
             BaseRound oldRound = Round;
             Round = round;
 
-            GameEvent.Run(new Events.Game.RoundChangeEvent(oldRound, round));
+            new Events.Game.RoundChangeEvent(oldRound, round).Run();
 
             Round.Start();
         }
@@ -243,7 +243,7 @@ namespace TTTReborn.Gamemode
 
         public static void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
         {
-            GameEvent.Run(new Events.Game.RoundChangeEvent(oldRound, newRound));
+            new Events.Game.RoundChangeEvent(oldRound, newRound).Run();
         }
     }
 }

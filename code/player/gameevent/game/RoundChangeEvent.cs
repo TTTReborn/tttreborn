@@ -26,11 +26,7 @@ namespace TTTReborn.Events
                 NewRound = newRound;
             }
 
-            public override object[] GetParameters() => new object[]
-            {
-                OldRound,
-                NewRound
-            };
+            public override void Run() => Event.Run(Name, OldRound, NewRound);
         }
     }
 }

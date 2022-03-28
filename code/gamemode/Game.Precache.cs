@@ -26,7 +26,7 @@ namespace TTTReborn.Gamemode
                 }
             }
 
-            Events.GameEvent.Run(new Events.Game.PrecacheEvent());
+            new Events.Game.PrecacheEvent().Run();
         }
     }
 }

@@ -45,29 +45,24 @@ namespace TTTReborn.Events
             CreatedAt = Time.Now;
         }
 
-        public virtual object[] GetParameters()
-        {
-            return Array.Empty<object>();
-        }
+        public virtual void Run() => Event.Run(Name);
 
-        public static void Run(GameEvent gameEvent) => Event.Run(gameEvent.Name, gameEvent.GetParameters());
-
-        public static void RunNetworked(To to, GameEvent gameEvent)
+        public virtual void RunNetworked(To to)
         {
-            Run(gameEvent);
+            Run();
 
             if (Host.IsServer)
             {
-                ClientRun(to, gameEvent);
+                ClientRun(to, this);
             }
         }
 
-        public static void RunNetworked(GameEvent gameEvent) => RunNetworked(To.Everyone, gameEvent);
+        public void RunNetworked() => RunNetworked(To.Everyone);
 
         [ClientRpc]
         public static void ClientRun(GameEvent gameEvent)
         {
-            Run(gameEvent);
+            gameEvent.Run();
         }
     }
 }
