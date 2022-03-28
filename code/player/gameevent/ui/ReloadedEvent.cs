@@ -1,14 +1,15 @@
 namespace TTTReborn.Events
 {
-    public static partial class TTTEvent
+    public static partial class UI
     {
-        public static class UI
+        [GameEvent("ui_reloaded")]
+        public partial class ReloadedEvent : ParameterlessGameEvent
         {
             /// <summary>
             /// Occurs when the UI was reloaded.
             /// <para>No data is passed to this event.</para>
             /// </summary>
-            public const string RELOADED = "tttreborn.ui.reloaded";
+            public ReloadedEvent() : base() { }
         }
     }
 }

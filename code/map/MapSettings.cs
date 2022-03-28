@@ -30,7 +30,7 @@ namespace TTTReborn.Map
         /// </summary>
         public void FireSettingsSpawn() => SettingsSpawned.Fire(this);
 
-        [Events.TTTEvent(typeof(Events.Game.RoundChangeEvent))]
+        [Events.Event(typeof(Events.Game.RoundChangeEvent))]
         private void FireRoundChange(BaseRound _, BaseRound newRound)
         {
             switch (newRound)

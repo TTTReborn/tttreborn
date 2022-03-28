@@ -148,7 +148,7 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event(TTTEvent.Shop.CHANGE)]
+        [Events.Event(typeof(Events.Shop.ChangeEvent))]
         public static void OnShopChanged()
         {
             Instance?.Reload();

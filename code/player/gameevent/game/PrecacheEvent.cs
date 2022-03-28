@@ -1,15 +1,14 @@
 namespace TTTReborn.Events
 {
-    public partial class Game
+    public static partial class Game
     {
-
-        /// <summary>
-        /// Should be used to precache models and stuff.
-        /// </summary>
         [GameEvent("game_precache")]
-        public partial class PrecacheEvent : GameEvent
+        public partial class PrecacheEvent : ParameterlessGameEvent
         {
-
+            /// <summary>
+            /// Should be used to precache models and stuff.
+            /// </summary>
+            public PrecacheEvent() : base() { }
         }
     }
 }

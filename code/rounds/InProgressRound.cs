@@ -187,7 +187,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        [Event(TTTEvent.Settings.CHANGE)]
+        [Events.Event(typeof(Events.Settings.ChangeEvent))]
         private static void OnChangeSettings()
         {
             if (Host.IsClient || Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)

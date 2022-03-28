@@ -176,7 +176,7 @@ namespace TTTReborn
             Update(client);
         }
 
-        [Event(TTTEvent.Settings.CHANGE)]
+        [Events.Event(typeof(Events.Settings.ChangeEvent))]
         public static void OnSettingsChange()
         {
             if (Host.IsClient)

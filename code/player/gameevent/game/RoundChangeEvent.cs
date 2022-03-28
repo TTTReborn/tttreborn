@@ -4,7 +4,7 @@ using TTTReborn.Rounds;
 
 namespace TTTReborn.Events
 {
-    public partial class Game
+    public static partial class Game
     {
         [GameEvent("game_roundchange")]
         public partial class RoundChangeEvent : GameEvent
@@ -25,6 +25,20 @@ namespace TTTReborn.Events
             }
 
             public override void Run() => Event.Run(Name, OldRound, NewRound);
+
+            protected override void ServerCallNetworked(To to)
+            {
+                ClientRun(to, this, OldRound, NewRound);
+            }
+
+            [ClientRpc]
+            protected static void ClientRun(RoundChangeEvent gameEvent, BaseRound oldRound, BaseRound newRound)
+            {
+                gameEvent.OldRound = oldRound;
+                gameEvent.NewRound = newRound;
+
+                gameEvent.Run();
+            }
         }
     }
 }

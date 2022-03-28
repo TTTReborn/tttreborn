@@ -180,7 +180,7 @@ namespace TTTReborn.UI.Menu
             }
             else
             {
-                Event.Run(Events.TTTEvent.Settings.CHANGE);
+                new Events.Settings.ChangeEvent().Run();
             }
         }
 

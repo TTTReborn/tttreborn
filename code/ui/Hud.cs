@@ -46,7 +46,7 @@ namespace TTTReborn.UI
                 Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
             }
 
-            Event.Run(TTTEvent.UI.RELOADED);
+            new Events.UI.ReloadedEvent().Run();
         }
 
         [Event(TTTEvent.Player.SPAWNED)]

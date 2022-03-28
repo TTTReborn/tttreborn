@@ -27,7 +27,7 @@ namespace TTTReborn
 
                 _shop = value;
 
-                Event.Run(TTTEvent.Shop.CHANGE);
+                new Events.Shop.ChangeEvent().Run();
             }
         }
         private Shop _shop;
@@ -103,7 +103,7 @@ namespace TTTReborn
             ClientBoughtItem(To.Single(this), itemData.Name);
         }
 
-        [Events.TTTEvent(typeof(Events.Game.RoundChangeEvent))]
+        [Events.Event(typeof(Events.Game.RoundChangeEvent))]
         private static void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
         {
             if (newRound is PreRound preRound)
