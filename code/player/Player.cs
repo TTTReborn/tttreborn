@@ -91,7 +91,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                GameEvent.Register(new Events.Player.SpawnEvent(this), To.Single(this));
+                GameEvent.Register(new Events.Player.SpawnEvent(this), true);
                 SendClientRole();
             }
 

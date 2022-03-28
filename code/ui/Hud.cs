@@ -61,7 +61,7 @@ namespace TTTReborn.UI
         [Event(typeof(Events.Player.DiedEvent))]
         protected void OnPlayerDied(Player deadPlayer)
         {
-            if (deadPlayer != Local.Client.Pawn)
+            if (IsServer || deadPlayer != Local.Client.Pawn)
             {
                 return;
             }
