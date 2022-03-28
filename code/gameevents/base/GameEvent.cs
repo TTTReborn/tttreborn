@@ -56,8 +56,6 @@ namespace TTTReborn
         [ClientRpc]
         public static void ClientRun(string libraryName, string json)
         {
-            Log.Debug(json);
-
             Type type = Utils.GetTypeByLibraryName<GameEvent>(libraryName);
 
             if (type == null)
