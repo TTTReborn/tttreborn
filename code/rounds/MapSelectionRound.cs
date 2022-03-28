@@ -8,7 +8,7 @@ namespace TTTReborn.Rounds
 {
     public class MapSelectionRound : BaseRound
     {
-        public override string RoundName => "Map Selection";
+        public override string RoundName { get; set; } = "Map Selection";
         public override int RoundDuration
         {
             get => ServerSettings.Instance.Round.MapSelectionRoundTime;

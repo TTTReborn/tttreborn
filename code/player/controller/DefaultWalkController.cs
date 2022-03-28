@@ -2,7 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Settings;
 
 namespace TTTReborn.Settings
@@ -105,7 +104,7 @@ namespace TTTReborn
             {
                 using (Prediction.Off())
                 {
-                    DamageInfo damageInfo = new DamageInfo
+                    DamageInfo damageInfo = new()
                     {
                         Attacker = Pawn,
                         Flags = DamageFlags.Drown,
@@ -165,8 +164,8 @@ namespace TTTReborn
             }
         }
 
-        [Event(TTTEvent.Player.INITIAL_SPAWN)]
-        private static void OnInitialSpawn(Client client)
+        [Event(typeof(Events.Player.InitialSpawnEvent))]
+        protected static void OnInitialSpawn(Client client)
         {
             if (Host.IsClient)
             {
@@ -176,7 +175,7 @@ namespace TTTReborn
             Update(client);
         }
 
-        [Event(TTTEvent.Settings.CHANGE)]
+        [Event(typeof(Events.Settings.ChangeEvent))]
         public static void OnSettingsChange()
         {
             if (Host.IsClient)

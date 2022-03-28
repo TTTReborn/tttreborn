@@ -4,9 +4,21 @@ using TTTReborn.Entities;
 
 namespace TTTReborn
 {
-    partial class Player
+    public partial class Player
     {
-        private T IsLookingAtType<T>(float distance)
+        public T IsLookingAtType<T>(float distance)
+        {
+            TraceResult tr = GetLookingTrace(distance).UseHitboxes().Run();
+
+            if (tr.Hit && tr.Entity is T type)
+            {
+                return type;
+            }
+
+            return default;
+        }
+
+        public Trace GetLookingTrace(float distance)
         {
             Trace trace;
 
@@ -17,36 +29,6 @@ namespace TTTReborn
             else
             {
                 trace = Trace.Ray(EyePosition, EyePosition + EyeRotation.Forward * distance);
-            }
-
-            trace = trace.HitLayer(CollisionLayer.Debris).Ignore(this);
-
-            if (IsSpectatingPlayer)
-            {
-                trace = trace.Ignore(CurrentPlayer);
-            }
-
-            TraceResult tr = trace.UseHitboxes().Run();
-
-            if (tr.Hit && tr.Entity is T type)
-            {
-                return type;
-            }
-
-            return default;
-        }
-
-        public Trace GetLookingTrace(float maxHintDistance)
-        {
-            Trace trace;
-
-            if (IsClient)
-            {
-                trace = Trace.Ray(CameraMode.Position, CameraMode.Position + CameraMode.Rotation.Forward * maxHintDistance);
-            }
-            else
-            {
-                trace = Trace.Ray(EyePosition, EyePosition + EyeRotation.Forward * maxHintDistance);
             }
 
             trace = trace.HitLayer(CollisionLayer.Debris).Ignore(this);
@@ -96,9 +78,7 @@ namespace TTTReborn
 
             if (tr.Hit)
             {
-                IUse use = GetUsableParent(tr.Entity);
-
-                return use;
+                return GetUsableParent(tr.Entity);
             }
 
             return null;

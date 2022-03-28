@@ -47,7 +47,7 @@ namespace TTTReborn
                 }
             }
 
-            RPCs.ClientClearInventory(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)));
+            GameEvent.Register(new Events.Player.Inventory.ClearEvent(), To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)));
 
             Perks.Clear();
             Ammo.Clear();
@@ -71,7 +71,7 @@ namespace TTTReborn
 
             if (add && entity is ICarriableItem carriableItem)
             {
-                RPCs.ClientOnPlayerCarriableItemPickup(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == player)), entity);
+                GameEvent.Register(new Events.Player.Inventory.PickupEvent(entity), To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == player)));
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
@@ -120,7 +120,7 @@ namespace TTTReborn
         {
             if (Contains(item))
             {
-                RPCs.ClientOnPlayerCarriableItemDrop(To.Single(Owner), item);
+                GameEvent.Register(new Events.Player.Inventory.DropEvent(item), To.Single(Owner));
                 item.Delete();
                 List.Remove(item);
 
@@ -192,7 +192,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerCarriableItemDrop(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)), entity);
+                GameEvent.Register(new Events.Player.Inventory.DropEvent(entity), To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)));
             }
 
             return base.Drop(entity);

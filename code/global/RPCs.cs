@@ -1,7 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Items;
 using TTTReborn.Roles;
 using TTTReborn.Teams;
 using TTTReborn.UI;
@@ -10,46 +8,6 @@ namespace TTTReborn.Globals
 {
     public partial class RPCs
     {
-        [ClientRpc]
-        public static void ClientOnPlayerDied(Player player)
-        {
-            if (!player.IsValid())
-            {
-                return;
-            }
-
-            Event.Run(TTTEvent.Player.DIED, player);
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerConnected(Client client)
-        {
-            Event.Run(TTTEvent.Player.CONNECTED, client);
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerDisconnect(long playerId, NetworkDisconnectionReason reason)
-        {
-            Event.Run(TTTEvent.Player.DISCONNECTED, playerId, reason);
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerSpawned(Player player)
-        {
-            if (!player.IsValid())
-            {
-                return;
-            }
-
-            player.IsMissingInAction = false;
-            player.IsConfirmed = false;
-            player.CorpseConfirmer = null;
-
-            player.SetRole(new NoneRole());
-
-            Event.Run(TTTEvent.Player.SPAWNED, player);
-        }
-
         /// <summary>
         /// Must be called on the server, updates Player's `Role`.
         /// </summary>
@@ -161,24 +119,6 @@ namespace TTTReborn.Globals
         public static void ClientOpenMapSelectionMenu()
         {
             MapSelectionMenu.Instance.Enabled(true);
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
-        {
-            Event.Run(TTTEvent.Player.Inventory.PICK_UP, carriable as ICarriableItem);
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
-        {
-            Event.Run(TTTEvent.Player.Inventory.DROP, carriable as ICarriableItem);
-        }
-
-        [ClientRpc]
-        public static void ClientClearInventory()
-        {
-            Event.Run(TTTEvent.Player.Inventory.CLEAR);
         }
 
         [ClientRpc]

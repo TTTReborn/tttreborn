@@ -6,7 +6,7 @@ namespace TTTReborn.Rounds
 {
     public class PostRound : BaseRound
     {
-        public override string RoundName => "Post";
+        public override string RoundName { get; set; } = "Post";
         public override int RoundDuration
         {
             get => ServerSettings.Instance.Round.PostRoundTime;

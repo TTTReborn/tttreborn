@@ -8,8 +8,8 @@ namespace TTTReborn.UI
     {
         public static BreathIndicator Instance;
 
-        private Panel _breathBar;
-        private Label _breathLabel;
+        private readonly Panel _breathBar;
+        private readonly Label _breathLabel;
 
         public BreathIndicator() : base()
         {

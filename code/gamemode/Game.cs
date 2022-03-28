@@ -2,7 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Globalization;
 using TTTReborn.Map;
 using TTTReborn.Rounds;
@@ -82,7 +81,7 @@ namespace TTTReborn.Gamemode
             BaseRound oldRound = Round;
             Round = round;
 
-            Event.Run(TTTEvent.Game.ROUND_CHANGE, oldRound, round);
+            GameEvent.Register(new Events.Game.RoundChangeEvent(oldRound, round));
 
             Round.Start();
         }
@@ -126,9 +125,7 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerJoin(client.Pawn as Player);
 
-            Event.Run(TTTEvent.Player.CONNECTED, client);
-
-            RPCs.ClientOnPlayerConnected(client);
+            GameEvent.Register(new Events.Player.ConnectedEvent(client), true);
 
             Player player = new();
             client.Pawn = player;
@@ -143,9 +140,7 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerLeave(client.Pawn as Player);
 
-            Event.Run(TTTEvent.Player.DISCONNECTED, client.PlayerId, reason);
-
-            RPCs.ClientOnPlayerDisconnect(client.PlayerId, reason);
+            GameEvent.Register(new Events.Player.DisconnectedEvent(client.PlayerId, reason), true);
 
             base.ClientDisconnect(client, reason);
         }
@@ -243,7 +238,7 @@ namespace TTTReborn.Gamemode
 
         public static void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
         {
-            Event.Run(TTTEvent.Game.ROUND_CHANGE, oldRound, newRound);
+            GameEvent.Register(new Events.Game.RoundChangeEvent(oldRound, newRound));
         }
     }
 }

@@ -39,7 +39,7 @@ namespace TTTReborn.UI
             _timer = timerPanel.Add.Label("00:00", "timer-label");
             _defuseChance = contentPanel.Add.TranslationLabel(new TranslationData(), "defuse-label");
 
-            Panel timerButtons = new Panel(contentPanel);
+            Panel timerButtons = new(contentPanel);
             timerButtons.AddClass("timer-button-panel");
 
             for (int i = 0; i < C4Entity.TimerPresets.Length; i++)

@@ -345,7 +345,8 @@
         }
     },
     "ENTITY": {
-        "USE": "Press to interact with '{0}'"
+        "USE": "Press to interact with '{0}'",
+        "ENT_BUTTON": "Button"
     },
     "DOOR": {
         "OPEN": "Press to open the door",

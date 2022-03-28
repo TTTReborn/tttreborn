@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
+
 namespace TTTReborn.Map
 {
     public partial class MapSelectionHandler : BaseNetworkable
@@ -63,7 +64,7 @@ namespace TTTReborn.Map
 
         public static void OnMapImagesChanged()
         {
-            Event.Run(Events.TTTEvent.Game.MAP_IMAGES_CHANGE);
+            GameEvent.Register(new Events.Game.MapImagesChangeEvent());
         }
     }
 }

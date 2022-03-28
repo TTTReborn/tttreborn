@@ -3,7 +3,6 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Map;
 using TTTReborn.Roles;
 using TTTReborn.UI;
@@ -52,7 +51,7 @@ namespace TTTReborn
             }
         }
 
-        [Event(TTTEvent.UI.RELOADED)]
+        [Event(typeof(Events.UI.ReloadedEvent))]
         public static void OnUIReloaded()
         {
             LogicButtonPoints = new();

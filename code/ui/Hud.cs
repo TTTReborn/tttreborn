@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
-
 namespace TTTReborn.UI
 {
     public partial class Hud : HudEntity<RootPanel>
@@ -46,11 +44,11 @@ namespace TTTReborn.UI
                 Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
             }
 
-            Event.Run(TTTEvent.UI.RELOADED);
+            GameEvent.Register(new Events.UI.ReloadedEvent());
         }
 
-        [Event(TTTEvent.Player.SPAWNED)]
-        private void OnPlayerSpawned(Player player)
+        [Event(typeof(Events.Player.SpawnEvent))]
+        protected void OnPlayerSpawned(Player player)
         {
             if (IsServer || player != Local.Client.Pawn)
             {
@@ -60,10 +58,10 @@ namespace TTTReborn.UI
             AliveHudInstance.Enabled = !player.IsSpectator && !player.IsForcedSpectator;
         }
 
-        [Event(TTTEvent.Player.DIED)]
-        private void OnPlayerDied(Player deadPlayer)
+        [Event(typeof(Events.Player.DiedEvent))]
+        protected void OnPlayerDied(Player deadPlayer)
         {
-            if (deadPlayer != Local.Client.Pawn)
+            if (IsServer || deadPlayer != Local.Client.Pawn)
             {
                 return;
             }
@@ -71,7 +69,7 @@ namespace TTTReborn.UI
             AliveHudInstance.Enabled = false;
         }
 
-        [Event(TTTEvent.Player.INITIAL_SPAWN)]
+        [Event(typeof(Events.Player.InitialSpawnEvent))]
         public static void Initialize(Client client)
         {
             if (Host.IsServer || client != Local.Client)

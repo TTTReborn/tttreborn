@@ -3,7 +3,6 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Items;
 using TTTReborn.Map;
 using TTTReborn.Settings;
@@ -13,7 +12,7 @@ namespace TTTReborn.Rounds
 {
     public partial class InProgressRound : BaseRound
     {
-        public override string RoundName => "In Progress";
+        public override string RoundName { get; set; } = "In Progress";
 
         [Net]
         public List<Player> Players { get; set; }
@@ -173,8 +172,8 @@ namespace TTTReborn.Rounds
             return false;
         }
 
-        [Event(TTTEvent.Player.Role.SELECT)]
-        private static void OnPlayerRoleChange(Player player)
+        [Event(typeof(Events.Player.Role.SelectEvent))]
+        protected static void OnPlayerRoleChange(Player player)
         {
             if (Host.IsClient)
             {
@@ -187,8 +186,8 @@ namespace TTTReborn.Rounds
             }
         }
 
-        [Event(TTTEvent.Settings.CHANGE)]
-        private static void OnChangeSettings()
+        [Event(typeof(Events.Settings.ChangeEvent))]
+        protected static void OnChangeSettings()
         {
             if (Host.IsClient || Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)
             {

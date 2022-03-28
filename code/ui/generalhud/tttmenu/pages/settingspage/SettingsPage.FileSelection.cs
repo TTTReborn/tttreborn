@@ -204,7 +204,7 @@ namespace TTTReborn
 
             if (SettingsManager.Instance.LoadingError != SettingsLoadingError.None)
             {
-                Log.Error($"Settings file '{filePath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{SettingsManager.Instance.LoadingError.ToString()}'");
+                Log.Error($"Settings file '{filePath}{fileName}{SettingFunctions.SETTINGS_FILE_EXTENSION}' can't be loaded. Reason: '{SettingsManager.Instance.LoadingError}'");
 
                 return;
             }

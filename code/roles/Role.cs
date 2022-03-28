@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
@@ -60,7 +59,7 @@ namespace TTTReborn.Roles
                 player.ServerUpdateShop();
             }
 
-            Event.Run(TTTEvent.Player.Role.SELECT, player);
+            GameEvent.Register(new Events.Player.Role.SelectEvent(player));
         }
 
         public virtual void OnDeselect(Player player)
@@ -86,12 +85,12 @@ namespace TTTReborn.Roles
 
         public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
 
-        public bool CheckWin(Player player)
+        public virtual bool CheckWin(Player player)
         {
             return player.Team != null && player.Team.CheckWin(player);
         }
 
-        public bool CheckPreventWin(Player player)
+        public virtual bool CheckPreventWin(Player player)
         {
             return player.Team != null && player.Team.CheckPreventWin(player);
         }

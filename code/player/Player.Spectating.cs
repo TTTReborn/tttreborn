@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTTReborn.Camera;
-using TTTReborn.Events;
 
 namespace TTTReborn
 {
@@ -17,7 +16,7 @@ namespace TTTReborn
             {
                 _spectatingPlayer = value == this ? null : value;
 
-                Event.Run(TTTEvent.Player.Spectating.CHANGE, this);
+                GameEvent.Register(new Events.Player.Spectating.ChangeEvent(this));
             }
         }
 
@@ -33,8 +32,8 @@ namespace TTTReborn
 
         private int _targetIdx = 0;
 
-        [Event(TTTEvent.Player.DIED)]
-        private static void OnPlayerDied(Player deadPlayer)
+        [Event(typeof(Events.Player.DiedEvent))]
+        protected static void OnPlayerDied(Player deadPlayer)
         {
             if (!Host.IsClient || Local.Pawn is not Player player)
             {

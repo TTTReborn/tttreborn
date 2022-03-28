@@ -6,7 +6,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Events;
 using TTTReborn.Globalization;
 using TTTReborn.Items;
 
@@ -152,14 +151,14 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event(TTTEvent.Player.Inventory.CLEAR)]
-        private void OnCarriableItemClear()
+        [Event(typeof(Events.Player.Inventory.ClearEvent))]
+        protected void OnCarriableItemClear()
         {
             DeleteChildren(true);
         }
 
-        [Event(TTTEvent.Player.Inventory.PICK_UP)]
-        private void OnCarriableItemPickup(ICarriableItem carriable)
+        [Event(typeof(Events.Player.Inventory.PickupEvent))]
+        protected void OnCarriableItemPickup(ICarriableItem carriable)
         {
             if (carriable == null)
             {
@@ -181,8 +180,8 @@ namespace TTTReborn.UI
             this.Enabled(Children.Any());
         }
 
-        [Event(TTTEvent.Player.Inventory.DROP)]
-        private void OnCarriableItemDrop(ICarriableItem carriable)
+        [Event(typeof(Events.Player.Inventory.DropEvent))]
+        protected void OnCarriableItemDrop(ICarriableItem carriable)
         {
             foreach (Panel child in Children)
             {
@@ -198,8 +197,8 @@ namespace TTTReborn.UI
             this.Enabled(Children.Any());
         }
 
-        [Event(TTTEvent.Player.Spectating.CHANGE)]
-        private void OnSpectatingChange(Player player)
+        [Event(typeof(Events.Player.Spectating.ChangeEvent))]
+        protected void OnSpectatingChange(Player player)
         {
             OnCarriableItemClear();
 
@@ -217,7 +216,7 @@ namespace TTTReborn.UI
         /// You can both read and write to input, to affect what happens down the line.
         /// </summary>
         [Event.BuildInput]
-        private void ProcessClientInventorySelectionInput(InputBuilder input)
+        protected void ProcessClientInventorySelectionInput(InputBuilder input)
         {
             if (Local.Pawn is not Player player || player.IsSpectatingPlayer)
             {

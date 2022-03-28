@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTTReborn.Events;
 using TTTReborn.Items;
 
 namespace TTTReborn
@@ -63,19 +62,6 @@ namespace TTTReborn
             Sound.FromScreen("dm.ui_attacker")
                 .SetPitch(1 + inverseHealth * 1)
                 .SetPosition(position);
-        }
-
-        [ClientRpc]
-        public void ClientTookDamage(Vector3 position, float damage)
-        {
-            Event.Run(TTTEvent.Player.TAKE_DAMAGE, this, damage);
-        }
-
-
-        [ClientRpc]
-        public void ClientInitialSpawn()
-        {
-            Event.Run(TTTEvent.Player.INITIAL_SPAWN, Client);
         }
     }
 }
