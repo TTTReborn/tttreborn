@@ -9,10 +9,8 @@ namespace TTTReborn.Events
         [GameEvent("game_roundchange")]
         public partial class RoundChangeEvent : GameEvent
         {
-            [Net]
             public BaseRound OldRound { get; set; }
 
-            [Net]
             public BaseRound NewRound { get; set; }
 
             /// <summary>
