@@ -8,40 +8,6 @@ namespace TTTReborn.Globals
 {
     public partial class RPCs
     {
-        [ClientRpc]
-        public static void ClientOnPlayerDied(Player player)
-        {
-            if (!player.IsValid())
-            {
-                return;
-            }
-
-            GameEvent.Register(new Events.Player.DiedEvent(player));
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerDisconnect(long playerId, NetworkDisconnectionReason reason)
-        {
-            GameEvent.Register(new Events.Player.DisconnectedEvent(playerId, reason));
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerSpawned(Player player)
-        {
-            if (!player.IsValid())
-            {
-                return;
-            }
-
-            player.IsMissingInAction = false;
-            player.IsConfirmed = false;
-            player.CorpseConfirmer = null;
-
-            player.SetRole(new NoneRole());
-
-            GameEvent.Register(new Events.Player.SpawnEvent(player));
-        }
-
         /// <summary>
         /// Must be called on the server, updates Player's `Role`.
         /// </summary>
@@ -153,26 +119,6 @@ namespace TTTReborn.Globals
         public static void ClientOpenMapSelectionMenu()
         {
             MapSelectionMenu.Instance.Enabled(true);
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerCarriableItemPickup(Entity carriable)
-        {
-            GameEvent.Register(new Events.Player.Inventory.PickupEvent(carriable));
-        }
-
-        [ClientRpc]
-        public static void ClientOnPlayerCarriableItemDrop(Entity carriable)
-        {
-            GameEvent.Register(new Events.Player.Inventory.DropEvent(carriable));
-
-            // TODO remove ClientRPCs with events.RunNetworked
-        }
-
-        [ClientRpc]
-        public static void ClientClearInventory()
-        {
-            GameEvent.Register(new Events.Player.Inventory.ClearEvent());
         }
 
         [ClientRpc]

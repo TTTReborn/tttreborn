@@ -63,18 +63,5 @@ namespace TTTReborn
                 .SetPitch(1 + inverseHealth * 1)
                 .SetPosition(position);
         }
-
-        [ClientRpc]
-        public void ClientTookDamage(Vector3 position, float damage)
-        {
-            GameEvent.Register(new Events.Player.TakeDamageEvent(this, damage));
-        }
-
-
-        [ClientRpc]
-        public void ClientInitialSpawn()
-        {
-            GameEvent.Register(new Events.Player.InitialSpawnEvent(Client));
-        }
     }
 }

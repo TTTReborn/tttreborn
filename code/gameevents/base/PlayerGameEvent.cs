@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 using Sandbox;
 
 namespace TTTReborn.Events
@@ -6,6 +9,7 @@ namespace TTTReborn.Events
     {
         public int Ident { get; set; }
 
+        [JsonIgnore]
         public TTTReborn.Player Player
         {
             get => Utils.GetPlayerByIdent(Ident);
@@ -13,9 +17,20 @@ namespace TTTReborn.Events
 
         public PlayerGameEvent(TTTReborn.Player player) : base()
         {
-            Ident = player.NetworkIdent;
+            if (player != null)
+            {
+                Ident = player.NetworkIdent;
+            }
         }
 
         public override void Run() => Event.Run(Name, Player);
+
+        protected override void ServerCallNetworked(To to) => ClientRun(to, JsonSerializer.Serialize(this));
+
+        [ClientRpc]
+        public static void ClientRun(string json)
+        {
+            Dezerialize<PlayerGameEvent>(json)?.Run();
+        }
     }
 }

@@ -6,32 +6,32 @@ using Sandbox;
 
 namespace TTTReborn.Events
 {
-    public partial class ClientGameEvent : GameEvent
+    public partial class EntityGameEvent : GameEvent
     {
         public int Ident { get; set; }
 
         [JsonIgnore]
-        public Client Client
+        public Entity Entity
         {
-            get => Client.All.First((cl) => cl.NetworkIdent == Ident);
+            get => Entity.All.First((ent) => ent.NetworkIdent == Ident);
         }
 
-        public ClientGameEvent(Client client) : base()
+        public EntityGameEvent(Entity entity) : base()
         {
-            if (client != null)
+            if (entity != null)
             {
-                Ident = client.NetworkIdent;
+                Ident = entity.NetworkIdent;
             }
         }
 
-        public override void Run() => Event.Run(Name, Client);
+        public override void Run() => Event.Run(Name, Entity);
 
         protected override void ServerCallNetworked(To to) => ClientRun(to, JsonSerializer.Serialize(this));
 
         [ClientRpc]
         public static void ClientRun(string json)
         {
-            Dezerialize<ClientGameEvent>(json)?.Run();
+            Dezerialize<EntityGameEvent>(json)?.Run();
         }
     }
 }

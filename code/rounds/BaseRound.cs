@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 using Sandbox;
 
@@ -8,14 +9,14 @@ namespace TTTReborn.Rounds
 {
     public abstract partial class BaseRound : BaseNetworkable
     {
-        public virtual int RoundDuration => 0;
-        public virtual string RoundName => "";
+        public virtual int RoundDuration { get; set; } = 0;
+        public virtual string RoundName { get; set; } = "";
 
         public float RoundEndTime { get; set; }
 
         public float TimeLeft => RoundEndTime - Time.Now;
 
-        [Net]
+        [Net, JsonIgnore]
         public string TimeLeftFormatted { get; set; }
 
         public void Start()

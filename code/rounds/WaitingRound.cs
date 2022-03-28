@@ -6,7 +6,7 @@ namespace TTTReborn.Rounds
 {
     public class WaitingRound : BaseRound
     {
-        public override string RoundName => "Waiting";
+        public override string RoundName { get; set; } = "Waiting";
 
         public override void OnSecond()
         {

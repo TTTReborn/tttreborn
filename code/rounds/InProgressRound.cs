@@ -12,7 +12,7 @@ namespace TTTReborn.Rounds
 {
     public partial class InProgressRound : BaseRound
     {
-        public override string RoundName => "In Progress";
+        public override string RoundName { get; set; } = "In Progress";
 
         [Net]
         public List<Player> Players { get; set; }

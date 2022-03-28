@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using Sandbox;
 
 using TTTReborn.Rounds;
@@ -24,15 +26,12 @@ namespace TTTReborn.Events.Game
 
         public override void Run() => Event.Run(Name, OldRound, NewRound);
 
-        protected override void ServerCallNetworked(To to) => ClientRun(to, this, OldRound, NewRound);
+        protected override void ServerCallNetworked(To to) => ClientRun(to, JsonSerializer.Serialize(this));
 
         [ClientRpc]
-        public static void ClientRun(RoundChangeEvent gameEvent, BaseRound oldRound, BaseRound newRound)
+        public static void ClientRun(string json)
         {
-            gameEvent.OldRound = oldRound;
-            gameEvent.NewRound = newRound;
-
-            gameEvent.Run();
+            Dezerialize<RoundChangeEvent>(json)?.Run();
         }
     }
 }

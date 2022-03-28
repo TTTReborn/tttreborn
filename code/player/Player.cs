@@ -63,9 +63,7 @@ namespace TTTReborn
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
 
-                GameEvent.Register(new Events.Player.InitialSpawnEvent(Client));
-
-                ClientInitialSpawn();
+                GameEvent.Register(new Events.Player.InitialSpawnEvent(Client), true);
             }
 
             IsInitialSpawning = false;
@@ -93,9 +91,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                GameEvent.Register(new Events.Player.SpawnEvent(this));
-
-                RPCs.ClientOnPlayerSpawned(this);
+                GameEvent.Register(new Events.Player.SpawnEvent(this), To.Single(this));
                 SendClientRole();
             }
 
@@ -160,7 +156,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                RPCs.ClientOnPlayerDied(this);
+                GameEvent.Register(new Events.Player.DiedEvent(this), true);
 
                 if (Gamemode.Game.Instance.Round is Rounds.InProgressRound)
                 {
@@ -311,6 +307,21 @@ namespace TTTReborn
             RemovePlayerCorpse();
 
             base.OnDestroy();
+        }
+
+        [Event(typeof(Events.Player.SpawnEvent))]
+        protected static void OnPlayerSpawn(Player player)
+        {
+            if (!player.IsValid())
+            {
+                return;
+            }
+
+            player.IsMissingInAction = false;
+            player.IsConfirmed = false;
+            player.CorpseConfirmer = null;
+
+            player.SetRole(new NoneRole());
         }
     }
 }

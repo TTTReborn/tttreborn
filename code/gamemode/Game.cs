@@ -140,9 +140,7 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerLeave(client.Pawn as Player);
 
-            GameEvent.Register(new Events.Player.DisconnectedEvent(client.PlayerId, reason));
-
-            RPCs.ClientOnPlayerDisconnect(client.PlayerId, reason);
+            GameEvent.Register(new Events.Player.DisconnectedEvent(client.PlayerId, reason), true);
 
             base.ClientDisconnect(client, reason);
         }

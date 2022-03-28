@@ -16,7 +16,7 @@ namespace TTTReborn
         public EventAttribute(Type type) : base(Utils.GetAttribute<GameEventAttribute>(type).Name) { }
     }
 
-    public partial class GameEvent
+    public abstract partial class GameEvent
     {
         public string Name { get; set; }
 
@@ -30,15 +30,11 @@ namespace TTTReborn
             {
                 Name = attribute.Name;
             }
-            else
-            {
-                Log.Warning($"'{GetType()}' is missing GameEventAttribute");
-            }
 
             CreatedAt = Time.Now;
         }
 
-        public virtual void Run() => Event.Run(Name);
+        public abstract void Run();
 
         public void RunNetworked() => RunNetworked(To.Everyone);
 
@@ -52,20 +48,14 @@ namespace TTTReborn
             }
         }
 
+        protected abstract void ServerCallNetworked(To to);
+
         protected static T Dezerialize<T>(string json) where T : GameEvent
         {
             return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions()
             {
                 WriteIndented = false
             });
-        }
-
-        protected virtual void ServerCallNetworked(To to) => ClientRun(to, JsonSerializer.Serialize(this));
-
-        [ClientRpc]
-        public static void ClientRun(string json)
-        {
-            Dezerialize<GameEvent>(json)?.Run();
         }
 
         protected virtual void OnRegister() { }
@@ -82,6 +72,12 @@ namespace TTTReborn
             {
                 gameEvent.Run();
             }
+        }
+
+        public static void Register<T>(T gameEvent, To to) where T : GameEvent
+        {
+            gameEvent.OnRegister();
+            gameEvent.RunNetworked(to);
         }
     }
 }

@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using Sandbox;
 
 namespace TTTReborn.Events.Player
@@ -18,5 +20,13 @@ namespace TTTReborn.Events.Player
         }
 
         public override void Run() => Event.Run(Name, Player, Damage);
+
+        protected override void ServerCallNetworked(To to) => ClientRun(to, JsonSerializer.Serialize(this));
+
+        [ClientRpc]
+        public new static void ClientRun(string json)
+        {
+            Dezerialize<TakeDamageEvent>(json)?.Run();
+        }
     }
 }
