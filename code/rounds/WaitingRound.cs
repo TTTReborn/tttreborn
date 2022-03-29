@@ -14,6 +14,8 @@ namespace TTTReborn.Rounds
             {
                 Gamemode.Game.Instance.ForceRoundChange(new PreRound());
             }
+
+            base.OnSecond();
         }
 
         public override void OnPlayerKilled(Player player)
@@ -37,6 +39,8 @@ namespace TTTReborn.Rounds
                     }
                 }
             }
+
+            base.OnStart();
         }
 
         private static async void StartRespawnTimer(Player player)

@@ -26,6 +26,8 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(Player player)
         {
             player.MakeSpectator();
+
+            base.OnPlayerKilled(player);
         }
 
         protected override void OnStart()
@@ -49,6 +51,8 @@ namespace TTTReborn.Rounds
                     }
                 }
             }
+
+            base.OnStart();
         }
     }
 }

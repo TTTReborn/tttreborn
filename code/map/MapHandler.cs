@@ -22,6 +22,8 @@ namespace TTTReborn.Map
                 {
                     MapSettings = mapSettings;
                     MapSettings.FireSettingsSpawn();
+
+                    continue;
                 }
 
                 Init(entity);

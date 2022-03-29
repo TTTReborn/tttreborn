@@ -1,7 +1,10 @@
 using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Sandbox;
+
+using TTTReborn.Events;
 
 namespace TTTReborn
 {
@@ -21,6 +24,9 @@ namespace TTTReborn
         public string Name { get; set; }
 
         public float CreatedAt { get; set; }
+
+        [JsonIgnore]
+        public GameEventScoring Scoring { get; set; } = null;
 
         public GameEvent()
         {
@@ -66,11 +72,25 @@ namespace TTTReborn
             (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
         }
 
-        protected virtual void OnRegister() { }
+        protected virtual void OnRegister() => Scoring?.Init(this);
 
-        public static void Register<T>(T gameEvent, bool isNetworked = false) where T : GameEvent
+        private void ProcessRegister()
         {
-            gameEvent.OnRegister();
+            if (Host.IsServer)
+            {
+                Gamemode.Game.Instance.Round?.GameEvents.Add(this);
+
+                OnRegister();
+            }
+        }
+
+        public static void Register<T>(T gameEvent, bool isNetworked = false) where T : GameEvent => Register(gameEvent, gameEvent.Scoring, isNetworked);
+
+        public static void Register<T>(T gameEvent, GameEventScoring gameEventScoring, bool isNetworked = false) where T : GameEvent
+        {
+            gameEvent.Scoring = gameEventScoring;
+
+            gameEvent.ProcessRegister();
 
             if (isNetworked)
             {
@@ -84,8 +104,36 @@ namespace TTTReborn
 
         public static void Register<T>(T gameEvent, To to) where T : GameEvent
         {
-            gameEvent.OnRegister();
+            gameEvent.ProcessRegister();
             gameEvent.RunNetworked(to);
+        }
+    }
+
+    public partial class GameEventScoring
+    {
+        public int Score { get; set; } = 0;
+        public int Karma { get; set; } = 0;
+        public Player Player { get; set; }
+
+        public bool IsInitialized { get; set; } = false;
+
+        public virtual void Init<T>(T gameEvent) where T : GameEvent
+        {
+            IsInitialized = true;
+        }
+
+        public virtual void Evaluate()
+        {
+            if (Player != null && Player.IsValid)
+            {
+                // TODO add score
+                // TODO add karma
+            }
+        }
+
+        public GameEventScoring(Player player)
+        {
+            Player = player;
         }
     }
 }

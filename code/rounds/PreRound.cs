@@ -40,6 +40,8 @@ namespace TTTReborn.Rounds
                     }
                 }
             }
+
+            base.OnStart();
         }
 
         protected override void OnTimeUp()

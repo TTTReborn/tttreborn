@@ -34,11 +34,15 @@ namespace TTTReborn.Rounds
 
             player.MakeSpectator();
             ChangeRoundIfOver();
+
+            base.OnPlayerKilled(player);
         }
 
         public override void OnPlayerJoin(Player player)
         {
             Spectators.AddIfDoesNotContain(player);
+
+            base.OnPlayerJoin(player);
         }
 
         public override void OnPlayerLeave(Player player)
@@ -47,6 +51,8 @@ namespace TTTReborn.Rounds
             Spectators.Remove(player);
 
             ChangeRoundIfOver();
+
+            base.OnPlayerLeave(player);
         }
 
         protected override void OnStart()
@@ -66,6 +72,8 @@ namespace TTTReborn.Rounds
                 // Cache buttons for OnSecond tick.
                 _logicButtons = Entity.All.Where(x => x.GetType() == typeof(LogicButton)).Select(x => x as LogicButton).ToList();
             }
+
+            base.OnStart();
         }
 
         private static void GiveFixedLoadout(Player player)

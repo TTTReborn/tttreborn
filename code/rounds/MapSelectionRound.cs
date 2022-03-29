@@ -47,11 +47,15 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(Player player)
         {
             player.MakeSpectator();
+
+            base.OnPlayerKilled(player);
         }
 
         protected override void OnStart()
         {
             RPCs.ClientOpenMapSelectionMenu();
+
+            base.OnStart();
         }
     }
 }
