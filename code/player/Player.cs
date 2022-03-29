@@ -63,7 +63,7 @@ namespace TTTReborn
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
 
-                GameEvent.Register(new Events.Player.InitialSpawnEvent(Client), true);
+                GameEvent.RegisterNetworked(new Events.Player.InitialSpawnEvent(Client));
             }
 
             IsInitialSpawning = false;
@@ -91,7 +91,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                GameEvent.Register(new Events.Player.SpawnEvent(this), true);
+                GameEvent.RegisterNetworked(new Events.Player.SpawnEvent(this));
                 SendClientRole();
             }
 
@@ -145,7 +145,7 @@ namespace TTTReborn
         {
             using (Prediction.Off())
             {
-                GameEvent.Register(new Events.Player.DiedEvent(this), true);
+                GameEvent.RegisterNetworked(new Events.Player.DiedEvent(this));
             }
 
             BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));

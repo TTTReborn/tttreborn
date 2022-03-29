@@ -96,7 +96,7 @@ namespace TTTReborn
                 LastDistanceToAttacker = 0f;
             }
 
-            GameEvent.Register(new Events.Player.TakeDamageEvent(this, info.Damage), client);
+            GameEvent.RegisterNetworked(client, new Events.Player.TakeDamageEvent(this, info.Damage));
 
             // Play pain sounds
             if ((info.Flags & DamageFlags.Fall) == DamageFlags.Fall)

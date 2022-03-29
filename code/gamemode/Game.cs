@@ -120,7 +120,7 @@ namespace TTTReborn.Gamemode
                 return;
             }
 
-            GameEvent.Register(new Events.Player.ConnectedEvent(client), true);
+            GameEvent.RegisterNetworked(new Events.Player.ConnectedEvent(client));
 
             Player player = new();
             client.Pawn = player;
@@ -137,7 +137,7 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerLeave(client.Pawn as Player);
 
-            GameEvent.Register(new Events.Player.DisconnectedEvent(client.PlayerId, reason), true);
+            GameEvent.RegisterNetworked(new Events.Player.DisconnectedEvent(client.PlayerId, reason));
 
             base.ClientDisconnect(client, reason);
         }
