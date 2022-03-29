@@ -48,6 +48,11 @@ namespace TTTReborn
             IsInitialSpawning = true;
             IsForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
 
+            // TODO Waiting for https://github.com/Facepunch/sbox-issues/issues/1715
+            // GameEvent.RegisterNetworked(new Events.Player.InitialSpawnEvent(Client));
+            // to avoid this error, just syncing to local player for now
+            GameEvent.RegisterNetworked(To.Single(this), new Events.Player.InitialSpawnEvent(Client));
+
             Respawn();
 
             // sync roles
@@ -62,21 +67,20 @@ namespace TTTReborn
                 }
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
-                Client.SetInt("karma", 1000);
-
-                GameEvent.Register(new Events.Player.InitialSpawnEvent(Client), true);
             }
 
             IsInitialSpawning = false;
             IsForcedSpectator = false;
         }
 
+        public static readonly Model WorldModel = Model.Load("models/citizen/citizen.vmdl");
+
         // Important: Server-side only
         // TODO: Convert to a player.RPC, event based system found inside of...
         // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
         {
-            SetModel("models/citizen/citizen.vmdl");
+            Model = WorldModel;
 
             Animator = new StandardPlayerAnimator();
 
@@ -92,7 +96,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                GameEvent.Register(new Events.Player.SpawnEvent(this), true);
+                GameEvent.RegisterNetworked(new Events.Player.SpawnEvent(this));
                 SendClientRole();
             }
 
@@ -146,7 +150,7 @@ namespace TTTReborn
         {
             using (Prediction.Off())
             {
-                GameEvent.Register(new Events.Player.DiedEvent(this), true);
+                GameEvent.RegisterNetworked(new Events.Player.DiedEvent(this));
             }
 
             BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));

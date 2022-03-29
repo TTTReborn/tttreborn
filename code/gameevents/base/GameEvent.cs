@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -25,7 +24,7 @@ namespace TTTReborn
         public float CreatedAt { get; set; }
 
         [JsonIgnore]
-        public List<GameEventScoring> Scoring { get; set; } = new();
+        public GameEventScoring[] Scoring { get; set; } = Array.Empty<GameEventScoring>();
 
         public GameEvent()
         {
@@ -68,10 +67,18 @@ namespace TTTReborn
                 return;
             }
 
+            Log.Debug($"Calling '{type}'");
+
             (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
         }
 
-        protected virtual void OnRegister() => Scoring.ForEach((s) => s.Init(this));
+        protected virtual void OnRegister()
+        {
+            foreach (GameEventScoring gameEventScoring in Scoring)
+            {
+                gameEventScoring.Init(this);
+            }
+        }
 
         private void ProcessRegister()
         {
@@ -83,28 +90,20 @@ namespace TTTReborn
             }
         }
 
-        public static void Register<T>(T gameEvent, bool isNetworked = false) where T : GameEvent => Register(gameEvent, gameEvent.Scoring, isNetworked);
-
-        public static void Register<T>(T gameEvent, GameEventScoring gameEventScoring, bool isNetworked = false) where T : GameEvent => Register(gameEvent, new List<GameEventScoring>() { gameEventScoring }, isNetworked);
-
-        public static void Register<T>(T gameEvent, List<GameEventScoring> gameEventScoring, bool isNetworked = false) where T : GameEvent
+        public static void Register<T>(T gameEvent, params GameEventScoring[] gameEventScorings) where T : GameEvent
         {
-            gameEvent.Scoring = gameEventScoring;
+            gameEvent.Scoring = gameEventScorings ?? gameEvent.Scoring;
 
             gameEvent.ProcessRegister();
-
-            if (isNetworked)
-            {
-                gameEvent.RunNetworked();
-            }
-            else
-            {
-                gameEvent.Run();
-            }
+            gameEvent.Run();
         }
 
-        public static void Register<T>(T gameEvent, To to) where T : GameEvent
+        public static void RegisterNetworked<T>(T gameEvent, params GameEventScoring[] gameEventScorings) where T : GameEvent => RegisterNetworked(To.Everyone, gameEvent, gameEventScorings);
+
+        public static void RegisterNetworked<T>(To to, T gameEvent, params GameEventScoring[] gameEventScorings) where T : GameEvent
         {
+            gameEvent.Scoring = gameEventScorings ?? gameEvent.Scoring;
+
             gameEvent.ProcessRegister();
             gameEvent.RunNetworked(to);
         }

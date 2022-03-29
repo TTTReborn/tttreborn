@@ -77,7 +77,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            new Hud().OnPlayerSpawned(client.Pawn as Player); // InitialSpawn event is called after Spawned event, so we have to initialize manually
+            _ = new Hud();
         }
 
         public class GeneralHud : Panel

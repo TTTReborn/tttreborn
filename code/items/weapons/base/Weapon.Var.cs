@@ -74,5 +74,7 @@ namespace TTTReborn.Items
 
         // private var stuff
         private int _burstCount = 0;
+
+        public bool IsAutoReload { get; set; } = true;
     }
 }

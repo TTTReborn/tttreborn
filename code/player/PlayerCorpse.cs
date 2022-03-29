@@ -78,7 +78,8 @@ namespace TTTReborn
                 Data.Perks[i] = perksInventory.Get(i).Info.LibraryName;
             }
 
-            SetModel(player.GetModelName());
+            Model = player.Model;
+
             TakeDecalsFrom(player);
 
             this.CopyBonesFrom(player);
@@ -191,12 +192,6 @@ namespace TTTReborn
 
                         if (!covert || !CovertConfirmers.Contains(confirmingPlayer))
                         {
-                            if (Data.Credits > 0)
-                            {
-                                confirmingPlayer.Credits += Data.Credits;
-                                Data.Credits = 0;
-                            }
-
                             if (covert)
                             {
                                 RPCs.ClientConfirmPlayer(To.Single(confirmingPlayer), confirmingPlayer, this, GetSerializedData(), true);
@@ -210,6 +205,14 @@ namespace TTTReborn
                                 }
 
                                 RPCs.ClientConfirmPlayer(confirmingPlayer, this, GetSerializedData());
+                            }
+
+                            // TODO move this out of the Data.IsIdentified check, e.g. if the PlayerCorpse is getting confirmed otherwise, the credits would be lost
+                            // TODO add custom networking as a credits found event
+                            if (Data.Credits > 0)
+                            {
+                                confirmingPlayer.Credits += Data.Credits;
+                                Data.Credits = 0;
                             }
                         }
                     }

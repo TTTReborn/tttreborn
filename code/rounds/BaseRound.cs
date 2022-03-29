@@ -79,9 +79,13 @@ namespace TTTReborn.Rounds
 
         protected virtual void OnFinish()
         {
-            Log.Debug($"Event amount: {GameEvents.Count}");
-
-            GameEvents.ForEach((e) => e.Scoring.ForEach((s) => s.Evaluate()));
+            foreach (GameEvent gameEvent in GameEvents)
+            {
+                foreach (GameEventScoring scoring in gameEvent.Scoring)
+                {
+                    scoring.Evaluate();
+                }
+            }
         }
 
         protected virtual void OnTimeUp() { }

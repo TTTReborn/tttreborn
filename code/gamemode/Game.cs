@@ -10,8 +10,6 @@ using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.Gamemode
 {
-    [Hammer.Skip]
-    [Library("tttreborn", Title = "Trouble in Terry's Town")]
     public partial class Game : Sandbox.Game
     {
         public static Game Instance { get; private set; }
@@ -111,25 +109,23 @@ namespace TTTReborn.Gamemode
 
         public override void ClientJoined(Client client)
         {
-            /*
-            // TODO: KarmaSystem is waiting on network dictionaries.
             Karma.RegisterPlayer(client);
 
-            if (Karma.IsBanned(player))
+            if (Karma.IsBanned(client))
             {
-                KickPlayer(player);
+                client.Kick();
 
                 return;
             }
-            */
 
-            Round.OnPlayerJoin(client.Pawn as Player);
-
-            GameEvent.Register(new Events.Player.ConnectedEvent(client), true);
+            // TODO Waiting for https://github.com/Facepunch/sbox-issues/issues/1715
+            // GameEvent.RegisterNetworked(new Events.Player.ConnectedEvent(client));
 
             Player player = new();
             client.Pawn = player;
             player.InitialSpawn();
+
+            Round.OnPlayerJoin(player);
 
             base.ClientJoined(client);
         }
@@ -140,7 +136,7 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerLeave(client.Pawn as Player);
 
-            GameEvent.Register(new Events.Player.DisconnectedEvent(client.PlayerId, reason), true);
+            GameEvent.RegisterNetworked(new Events.Player.DisconnectedEvent(client.PlayerId, reason));
 
             base.ClientDisconnect(client, reason);
         }

@@ -16,15 +16,6 @@ namespace TTTReborn.Events.Player
                 return;
             }
 
-            Scoring.Clear();
-
-            GameEventScoring victimScoring = new(Player)
-            {
-                Score = -1
-            };
-
-            Scoring.Add(victimScoring);
-
             GameEventScoring attackerScoring = new(attacker);
 
             if (attacker.Role.Name.Equals(Player.Role.Name))
@@ -42,7 +33,14 @@ namespace TTTReborn.Events.Player
                 attackerScoring.Karma = 50;
             }
 
-            Scoring.Add(attackerScoring);
+            Scoring = new GameEventScoring[]
+            {
+                new(Player)
+                {
+                    Score = -1
+                },
+                attackerScoring
+            };
         }
     }
 }
