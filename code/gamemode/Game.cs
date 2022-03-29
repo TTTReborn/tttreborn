@@ -101,12 +101,12 @@ namespace TTTReborn.Gamemode
 
         public override void OnKilled(Entity entity)
         {
+            base.OnKilled(entity);
+
             if (entity is Player player)
             {
                 Round.OnPlayerKilled(player);
             }
-
-            base.OnKilled(entity);
         }
 
         public override void ClientJoined(Client client)

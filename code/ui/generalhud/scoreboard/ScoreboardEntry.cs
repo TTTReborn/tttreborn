@@ -14,6 +14,7 @@ namespace TTTReborn.UI
         private readonly Image _playerAvatar;
         private readonly Label _playerName;
 
+        private readonly Label _score;
         private readonly Label _karma;
         private readonly Label _ping;
 
@@ -31,6 +32,7 @@ namespace TTTReborn.UI
             _playerName = Add.Label();
             _playerName.AddClass("name-label");
 
+            _score = Add.Label("", "score");
             _karma = Add.Label("", "karma");
             _ping = Add.Label("", "ping");
         }
@@ -43,6 +45,7 @@ namespace TTTReborn.UI
             }
 
             _playerName.Text = Client.Name;
+            _score.Text = Client.GetInt("score").ToString();
             _karma.Text = Client.GetInt("karma").ToString();
 
             SetClass("me", Client == Local.Client);

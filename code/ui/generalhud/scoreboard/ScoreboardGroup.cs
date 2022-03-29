@@ -13,6 +13,7 @@ namespace TTTReborn.UI
 
         private readonly Panel _groupTitlePanel;
         private readonly TranslationLabel _groupTitleLabel;
+        private readonly TranslationLabel _groupScoreLabel;
         private readonly TranslationLabel _groupKarmaLabel;
         private readonly TranslationLabel _groupPingLabel;
         private readonly Panel _groupContent;
@@ -31,6 +32,9 @@ namespace TTTReborn.UI
 
             _groupTitleLabel = _groupTitlePanel.Add.TranslationLabel(new TranslationData());
             _groupTitleLabel.AddClass("group-title-label");
+
+            _groupScoreLabel = _groupTitlePanel.Add.TranslationLabel(new TranslationData("SCOREBOARD.COLUMNS.SCORE"));
+            _groupScoreLabel.AddClass("group-score-label");
 
             _groupKarmaLabel = _groupTitlePanel.Add.TranslationLabel(new TranslationData("SCOREBOARD.COLUMNS.KARMA"));
             _groupKarmaLabel.AddClass("group-karma-label");

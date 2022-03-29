@@ -119,6 +119,7 @@ ScoreboardGroup {
     }
 
     .group-karma-label,
+    .group-score-label,
     .group-ping-label {
         text-align: center;
         width: 125px;
@@ -126,6 +127,7 @@ ScoreboardGroup {
 
     &:not(:first-child) {
         .group-karma-label,
+        .group-score-label,
         .group-ping-label {
             display: none;
         }
