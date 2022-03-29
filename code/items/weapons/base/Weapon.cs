@@ -207,6 +207,11 @@ namespace TTTReborn.Items
             if (clipInfo == CurrentClip)
             {
                 ClipAmmo -= amount;
+
+                if (IsAutoReload && ClipAmmo == 0 && AvailableAmmo(clipInfo) > 0)
+                {
+                    Reload(clipInfo);
+                }
             }
 
             return true;

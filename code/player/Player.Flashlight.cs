@@ -137,6 +137,8 @@ namespace TTTReborn
 
         public override void PostCameraSetup(ref CameraSetup camSetup)
         {
+            camSetup.ZNear = 0.1f;
+
             base.PostCameraSetup(ref camSetup);
 
             if (IsFlashlightOn)

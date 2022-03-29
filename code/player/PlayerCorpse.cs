@@ -78,7 +78,8 @@ namespace TTTReborn
                 Data.Perks[i] = perksInventory.Get(i).Info.LibraryName;
             }
 
-            SetModel(player.GetModelName());
+            Model = player.Model;
+
             TakeDecalsFrom(player);
 
             this.CopyBonesFrom(player);

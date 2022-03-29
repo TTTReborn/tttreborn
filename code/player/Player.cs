@@ -70,12 +70,14 @@ namespace TTTReborn
             IsForcedSpectator = false;
         }
 
+        public static readonly Model WorldModel = Model.Load("models/citizen/citizen.vmdl");
+
         // Important: Server-side only
         // TODO: Convert to a player.RPC, event based system found inside of...
         // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
         {
-            SetModel("models/citizen/citizen.vmdl");
+            Model = WorldModel;
 
             Animator = new StandardPlayerAnimator();
 

@@ -10,8 +10,6 @@ using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.Gamemode
 {
-    [Hammer.Skip]
-    [Library("tttreborn", Title = "Trouble in Terry's Town")]
     public partial class Game : Sandbox.Game
     {
         public static Game Instance { get; private set; }
