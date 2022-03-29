@@ -32,6 +32,11 @@ namespace TTTReborn.Map
 
         public void Reset()
         {
+            foreach (Player player in Utils.GetPlayers())
+            {
+                player.Inventory.DropAll();
+            }
+
             Sandbox.Internal.GlobalGameNamespace.Map.Reset(Game.DefaultCleanupFilter);
             Sandbox.Internal.Decals.RemoveFromWorld();
 
