@@ -1,7 +1,7 @@
 namespace TTTReborn.Events.Shop
 {
     [GameEvent("shop_change")]
-    public partial class ChangeEvent : ParameterlessGameEvent
+    public partial class ChangeEvent : GameEvent
     {
         /// <summary>
         /// Occurs when the shop is changed.

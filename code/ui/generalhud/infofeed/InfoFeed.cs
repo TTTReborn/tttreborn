@@ -3,6 +3,8 @@ using Sandbox.UI;
 
 using TTTReborn.Roles;
 
+// TODO Rework
+
 namespace TTTReborn.UI
 {
     public partial class InfoFeed : Panel

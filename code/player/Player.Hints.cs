@@ -53,7 +53,7 @@ namespace TTTReborn
             {
                 if (hint != null)
                 {
-                    hint.TextTick(this);
+                    hint.HintTick(this);
 
                     if (IsClient)
                     {

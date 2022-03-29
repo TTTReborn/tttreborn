@@ -33,6 +33,6 @@ namespace TTTReborn.Entities
         /// <summary>
         /// Occurs on each tick if the hint is active.
         /// </summary>
-        void TextTick(Player player);
+        void HintTick(Player player);
     }
 }

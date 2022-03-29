@@ -9,6 +9,7 @@ namespace TTTReborn.Rounds
     public class MapSelectionRound : BaseRound
     {
         public override string RoundName { get; set; } = "Map Selection";
+
         public override int RoundDuration
         {
             get => ServerSettings.Instance.Round.MapSelectionRoundTime;
@@ -24,6 +25,7 @@ namespace TTTReborn.Rounds
             if (maps.Count == 0)
             {
                 Global.ChangeLevel(ServerSettings.Instance.Map.DefaultMap);
+
                 return;
             }
 
@@ -34,6 +36,7 @@ namespace TTTReborn.Rounds
             if (mapToVoteCount.Count == 0)
             {
                 Global.ChangeLevel(maps.ElementAt(Utils.RNG.Next(maps.Count)).Key);
+
                 return;
             }
 
@@ -44,11 +47,15 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(Player player)
         {
             player.MakeSpectator();
+
+            base.OnPlayerKilled(player);
         }
 
         protected override void OnStart()
         {
             RPCs.ClientOpenMapSelectionMenu();
+
+            base.OnStart();
         }
     }
 }

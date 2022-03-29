@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Sandbox;
 
@@ -22,6 +24,9 @@ namespace TTTReborn
 
         public float CreatedAt { get; set; }
 
+        [JsonIgnore]
+        public List<GameEventScoring> Scoring { get; set; } = new();
+
         public GameEvent()
         {
             GameEventAttribute attribute = Utils.GetAttribute<GameEventAttribute>(GetType());
@@ -34,7 +39,7 @@ namespace TTTReborn
             CreatedAt = Time.Now;
         }
 
-        public abstract void Run();
+        public virtual void Run() => Event.Run(Name);
 
         public void RunNetworked() => RunNetworked(To.Everyone);
 
@@ -48,21 +53,45 @@ namespace TTTReborn
             }
         }
 
-        protected abstract void ServerCallNetworked(To to);
-
-        protected static T Dezerialize<T>(string json) where T : GameEvent
+        protected virtual void ServerCallNetworked(To to) => ClientRun(to, Name, JsonSerializer.Serialize(this, GetType(), new JsonSerializerOptions()
         {
-            return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions()
+            WriteIndented = false
+        }));
+
+        [ClientRpc]
+        public static void ClientRun(string libraryName, string json)
+        {
+            Type type = Utils.GetTypeByLibraryName<GameEvent>(libraryName);
+
+            if (type == null)
             {
-                WriteIndented = false
-            });
+                return;
+            }
+
+            (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
         }
 
-        protected virtual void OnRegister() { }
+        protected virtual void OnRegister() => Scoring.ForEach((s) => s.Init(this));
 
-        public static void Register<T>(T gameEvent, bool isNetworked = false) where T : GameEvent
+        private void ProcessRegister()
         {
-            gameEvent.OnRegister();
+            if (Host.IsServer)
+            {
+                Gamemode.Game.Instance.Round?.GameEvents.Add(this);
+
+                OnRegister();
+            }
+        }
+
+        public static void Register<T>(T gameEvent, bool isNetworked = false) where T : GameEvent => Register(gameEvent, gameEvent.Scoring, isNetworked);
+
+        public static void Register<T>(T gameEvent, GameEventScoring gameEventScoring, bool isNetworked = false) where T : GameEvent => Register(gameEvent, new List<GameEventScoring>() { gameEventScoring }, isNetworked);
+
+        public static void Register<T>(T gameEvent, List<GameEventScoring> gameEventScoring, bool isNetworked = false) where T : GameEvent
+        {
+            gameEvent.Scoring = gameEventScoring;
+
+            gameEvent.ProcessRegister();
 
             if (isNetworked)
             {
@@ -76,8 +105,36 @@ namespace TTTReborn
 
         public static void Register<T>(T gameEvent, To to) where T : GameEvent
         {
-            gameEvent.OnRegister();
+            gameEvent.ProcessRegister();
             gameEvent.RunNetworked(to);
+        }
+    }
+
+    public partial class GameEventScoring
+    {
+        public int Score { get; set; } = 0;
+        public int Karma { get; set; } = 0;
+        public Player Player { get; set; }
+
+        public bool IsInitialized { get; set; } = false;
+
+        public virtual void Init<T>(T gameEvent) where T : GameEvent
+        {
+            IsInitialized = true;
+        }
+
+        public virtual void Evaluate()
+        {
+            if (Player != null && Player.IsValid)
+            {
+                Player.Client.SetInt("score", Player.Client.GetInt("score") + Score);
+                Player.Client.SetInt("karma", Player.Client.GetInt("karma") + Karma);
+            }
+        }
+
+        public GameEventScoring(Player player)
+        {
+            Player = player;
         }
     }
 }

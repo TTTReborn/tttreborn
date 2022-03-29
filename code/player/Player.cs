@@ -62,6 +62,7 @@ namespace TTTReborn
                 }
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
+                Client.SetInt("karma", 1000);
 
                 GameEvent.Register(new Events.Player.InitialSpawnEvent(Client), true);
             }
@@ -143,12 +144,12 @@ namespace TTTReborn
 
         public override void OnKilled()
         {
-            base.OnKilled();
+            using (Prediction.Off())
+            {
+                GameEvent.Register(new Events.Player.DiedEvent(this), true);
+            }
 
             BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
-
-            Inventory.DropAll();
-            Inventory.DeleteContents();
 
             ShowFlashlight(false, false);
 
@@ -156,19 +157,22 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                GameEvent.Register(new Events.Player.DiedEvent(this), true);
-
                 if (Gamemode.Game.Instance.Round is Rounds.InProgressRound)
                 {
                     SyncMIA();
                 }
-                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified)
+                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.Data.IsIdentified)
                 {
-                    PlayerCorpse.IsIdentified = true;
+                    PlayerCorpse.Data.IsIdentified = true;
 
-                    RPCs.ClientConfirmPlayer(null, PlayerCorpse, this, Role.Name, Team.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon, PlayerCorpse.Perks);
+                    RPCs.ClientConfirmPlayer(null, PlayerCorpse, PlayerCorpse.GetSerializedData());
                 }
             }
+
+            base.OnKilled();
+
+            Inventory.DropAll();
+            Inventory.DeleteContents();
         }
 
         public override void Simulate(Client client)

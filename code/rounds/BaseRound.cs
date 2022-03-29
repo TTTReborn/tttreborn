@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 using Sandbox;
@@ -9,6 +10,8 @@ namespace TTTReborn.Rounds
 {
     public abstract partial class BaseRound : BaseNetworkable
     {
+        public List<GameEvent> GameEvents { get; set; } = new();
+
         public virtual int RoundDuration { get; set; } = 0;
         public virtual string RoundName { get; set; } = "";
 
@@ -47,26 +50,13 @@ namespace TTTReborn.Rounds
             Log.Debug($"Attempted to add Hands to {player.Client.Name}. Result: '{handsAdded}'");
         }
 
-        public virtual void OnPlayerKilled(Player player)
-        {
+        public virtual void OnPlayerKilled(Player player) { }
 
-        }
+        public virtual void OnPlayerJoin(Player player) { }
 
-        public virtual void OnPlayerJoin(Player player)
-        {
+        public virtual void OnPlayerLeave(Player player) { }
 
-        }
-
-
-        public virtual void OnPlayerLeave(Player player)
-        {
-
-        }
-
-        public virtual void OnTick()
-        {
-
-        }
+        public virtual void OnTick() { }
 
         public virtual void OnSecond()
         {
@@ -85,19 +75,15 @@ namespace TTTReborn.Rounds
             }
         }
 
-        protected virtual void OnStart()
-        {
-
-        }
+        protected virtual void OnStart() { }
 
         protected virtual void OnFinish()
         {
+            Log.Debug($"Event amount: {GameEvents.Count}");
 
+            GameEvents.ForEach((e) => e.Scoring.ForEach((s) => s.Evaluate()));
         }
 
-        protected virtual void OnTimeUp()
-        {
-
-        }
+        protected virtual void OnTimeUp() { }
     }
 }

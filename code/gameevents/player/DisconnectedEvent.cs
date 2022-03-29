@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 using Sandbox;
 
 namespace TTTReborn.Events.Player
@@ -23,13 +21,5 @@ namespace TTTReborn.Events.Player
         }
 
         public override void Run() => Event.Run(Name, PlayerId, Reason);
-
-        protected override void ServerCallNetworked(To to) => ClientRun(to, JsonSerializer.Serialize(this));
-
-        [ClientRpc]
-        public static void ClientRun(string json)
-        {
-            Dezerialize<DisconnectedEvent>(json)?.Run();
-        }
     }
 }

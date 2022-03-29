@@ -26,6 +26,8 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(Player player)
         {
             player.MakeSpectator();
+
+            base.OnPlayerKilled(player);
         }
 
         protected override void OnStart()
@@ -36,11 +38,11 @@ namespace TTTReborn.Rounds
                 {
                     foreach (Player player in Utils.GetPlayers())
                     {
-                        if (player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead && !player.PlayerCorpse.IsIdentified)
+                        if (player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead && !player.PlayerCorpse.Data.IsIdentified)
                         {
-                            player.PlayerCorpse.IsIdentified = true;
+                            player.PlayerCorpse.Data.IsIdentified = true;
 
-                            RPCs.ClientConfirmPlayer(null, player.PlayerCorpse, player, player.Role.Name, player.Team.Name, player.PlayerCorpse.GetConfirmationData(), player.PlayerCorpse.KillerWeapon, player.PlayerCorpse.Perks);
+                            RPCs.ClientConfirmPlayer(null, player.PlayerCorpse, player.PlayerCorpse.GetSerializedData());
                         }
                         else
                         {
@@ -49,6 +51,8 @@ namespace TTTReborn.Rounds
                     }
                 }
             }
+
+            base.OnStart();
         }
     }
 }
