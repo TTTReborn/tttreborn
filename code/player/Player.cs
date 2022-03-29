@@ -93,6 +93,8 @@ namespace TTTReborn
             {
                 GameEvent.Register(new Events.Player.SpawnEvent(this), true);
                 SendClientRole();
+
+                Client.SetInt("karma", 1000);
             }
 
             base.Respawn();

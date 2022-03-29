@@ -1,10 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Sandbox;
-
-using TTTReborn.Events;
 
 namespace TTTReborn
 {
@@ -26,7 +25,7 @@ namespace TTTReborn
         public float CreatedAt { get; set; }
 
         [JsonIgnore]
-        public GameEventScoring Scoring { get; set; } = null;
+        public List<GameEventScoring> Scoring { get; set; } = new();
 
         public GameEvent()
         {
@@ -72,7 +71,7 @@ namespace TTTReborn
             (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
         }
 
-        protected virtual void OnRegister() => Scoring?.Init(this);
+        protected virtual void OnRegister() => Scoring.ForEach((s) => s.Init(this));
 
         private void ProcessRegister()
         {
@@ -86,7 +85,9 @@ namespace TTTReborn
 
         public static void Register<T>(T gameEvent, bool isNetworked = false) where T : GameEvent => Register(gameEvent, gameEvent.Scoring, isNetworked);
 
-        public static void Register<T>(T gameEvent, GameEventScoring gameEventScoring, bool isNetworked = false) where T : GameEvent
+        public static void Register<T>(T gameEvent, GameEventScoring gameEventScoring, bool isNetworked = false) where T : GameEvent => Register(gameEvent, new List<GameEventScoring>() { gameEventScoring }, isNetworked);
+
+        public static void Register<T>(T gameEvent, List<GameEventScoring> gameEventScoring, bool isNetworked = false) where T : GameEvent
         {
             gameEvent.Scoring = gameEventScoring;
 
@@ -126,8 +127,8 @@ namespace TTTReborn
         {
             if (Player != null && Player.IsValid)
             {
-                // TODO add score
-                // TODO add karma
+                Player.Client.SetInt("score", Player.Client.GetInt("score") + Score);
+                Player.Client.SetInt("karma", Player.Client.GetInt("karma") + Karma);
             }
         }
 
