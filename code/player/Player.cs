@@ -48,6 +48,11 @@ namespace TTTReborn
             IsInitialSpawning = true;
             IsForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
 
+            // TODO Waiting for https://github.com/Facepunch/sbox-issues/issues/1715
+            // GameEvent.RegisterNetworked(new Events.Player.InitialSpawnEvent(Client));
+            // to avoid this error, just syncing to local player for now
+            GameEvent.RegisterNetworked(To.Single(this), new Events.Player.InitialSpawnEvent(Client));
+
             Respawn();
 
             // sync roles
@@ -62,8 +67,6 @@ namespace TTTReborn
                 }
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
-
-                GameEvent.RegisterNetworked(new Events.Player.InitialSpawnEvent(Client));
             }
 
             IsInitialSpawning = false;

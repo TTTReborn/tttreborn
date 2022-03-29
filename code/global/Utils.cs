@@ -44,7 +44,7 @@ namespace TTTReborn.Globals
 
         public static List<Player> GetAlivePlayers() => GetPlayers((pl) => pl.LifeState == LifeState.Alive);
 
-        public static Player GetPlayerByIdent(int networkIdent) => GetPlayers((pl) => pl.NetworkIdent == networkIdent)[0];
+        public static Player GetPlayerByIdent(int networkIdent) => GetPlayers().FirstOrDefault((pl) => pl.NetworkIdent == networkIdent, null);
 
         public static bool HasMinimumPlayers() => GetPlayers((pl) => !pl.IsForcedSpectator).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
 

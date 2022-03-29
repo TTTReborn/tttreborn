@@ -86,6 +86,11 @@ namespace TTTReborn.UI
         [Event(typeof(Events.Player.SpawnEvent))]
         protected void OnPlayerSpawned(Player player)
         {
+            if (player == null || !player.IsValid)
+            {
+                return;
+            }
+
             UpdateClient(player.Client);
         }
 

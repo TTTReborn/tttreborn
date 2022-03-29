@@ -67,6 +67,8 @@ namespace TTTReborn
                 return;
             }
 
+            Log.Debug($"Calling '{type}'");
+
             (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
         }
 
