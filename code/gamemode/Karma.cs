@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Gamemode
 {
-    public partial class KarmaSystem : BaseNetworkable
+    public partial class KarmaSystem
     {
         [ServerVar("ttt_karma_default", Help = "The default amount of karma given to a player.")]
         public static int TTTKarmaDefault { get; set; } = 1000;
@@ -25,20 +25,12 @@ namespace TTTReborn.Gamemode
         [ServerVar("ttt_karma_penalty_max", Help = "The maximum amount of karma loss per player.")]
         public static int TTTKarmaPenaltyMax { get; set; } = 100;
 
-        // TODO: Network dictionaries are not supported yet.
-        // [Net] public Dictionary<string, int> KarmaRecords => new();
-        // [Net] public Dictionary<(string, string), int> DamageRecords => new();
-
         [Net]
         public bool IsTracking { get; set; } = false;
 
-        public void RegisterPlayer(Player player)
+        public void RegisterPlayer(Client client)
         {
-            // TODO: Once network dictionaries are supported, implement.
-            // if (KarmaRecords.ContainsKey(player))
-            //  return;
-            //
-            // KarmaRecords[player] = TTTKarmaDefault;
+            client.SetInt("karma", 1000);
         }
 
         public void RegisterPlayerDamage(Player attacker, Player victim, float damage)
@@ -98,7 +90,7 @@ namespace TTTReborn.Gamemode
             // DamageRecords = new();
         }
 
-        public bool IsBanned(Player player)
+        public bool IsBanned(Client client)
         {
             // TODO: Once network dictionaries are supported, implement. Return false meanwhile...
             // return (KarmaRecords[player.PlayerId] < TTTKarmaMin && TTTKarmaBan);

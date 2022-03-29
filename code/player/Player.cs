@@ -62,7 +62,6 @@ namespace TTTReborn
                 }
 
                 Client.SetValue("forcedspectator", IsForcedSpectator);
-                Client.SetInt("karma", 1000);
 
                 GameEvent.Register(new Events.Player.InitialSpawnEvent(Client), true);
             }
