@@ -119,7 +119,7 @@ namespace TTTReborn.Items
             }
         }
 
-        public void TextTick(Player player)
+        public void HintTick(Player player)
         {
             if (IsClient || player.LifeState != LifeState.Alive)
             {

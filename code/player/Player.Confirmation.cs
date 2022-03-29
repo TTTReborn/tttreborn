@@ -4,22 +4,9 @@ using TTTReborn.UI;
 
 namespace TTTReborn
 {
-    public struct ConfirmationData
-    {
-        public bool Identified;
-        public bool Headshot;
-        public bool Suicide;
-        public float Time;
-        public float Distance;
-        // TODO damage type
-    }
-
     public partial class Player
     {
         public PlayerCorpse PlayerCorpse { get; set; }
-
-        [Net]
-        public int CorpseCredits { get; set; } = 0;
 
         public bool IsConfirmed = false;
 
@@ -48,30 +35,16 @@ namespace TTTReborn
 
         private void BecomePlayerCorpseOnServer(Vector3 force, int forceBone)
         {
-            PlayerCorpse corpse = new()
+            PlayerCorpse = new()
             {
                 Position = Position,
                 Rotation = Rotation
             };
 
-            corpse.KillerWeapon = LastDamageWeapon?.Info.LibraryName;
-            corpse.WasHeadshot = LastDamageWasHeadshot;
-            corpse.Distance = LastDistanceToAttacker;
-            corpse.Suicide = LastAttacker == this;
+            PlayerCorpse.CopyFrom(this);
+            PlayerCorpse.ApplyForceToBone(force, forceBone);
 
-            PerksInventory perksInventory = Inventory.Perks;
-
-            corpse.Perks = new string[perksInventory.Count()];
-
-            for (int i = 0; i < corpse.Perks.Length; i++)
-            {
-                corpse.Perks[i] = perksInventory.Get(i).Info.LibraryName;
-            }
-
-            corpse.CopyFrom(this);
-            corpse.ApplyForceToBone(force, forceBone);
-
-            PlayerCorpse = corpse;
+            Credits = 0;
         }
     }
 }

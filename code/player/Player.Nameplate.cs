@@ -13,9 +13,6 @@ namespace TTTReborn
 
         public EntityHintPanel DisplayHint(Player client) => new Nameplate(this);
 
-        public void TextTick(Player player)
-        {
-
-        }
+        public void HintTick(Player player) { }
     }
 }

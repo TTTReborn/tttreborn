@@ -139,7 +139,7 @@ namespace TTTReborn.UI
             _roleLabel.UpdateTranslation(new TranslationData(_playerCorpse.DeadPlayer?.Role.GetTranslationKey("NAME")));
             _roleLabel.Style.FontColor = _playerCorpse.DeadPlayer?.Role.Color;
 
-            SetConfirmationData(_playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
+            SetConfirmationData(_playerCorpse.Data);
 
             Enabled = true;
         }
@@ -148,32 +148,32 @@ namespace TTTReborn.UI
         {
             _playerCorpse = playerCorpse;
 
-            SetConfirmationData(playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks);
+            SetConfirmationData(playerCorpse.Data);
         }
 
-        public void SetConfirmationData(ConfirmationData confirmationData, string killerWeapon, string[] perks)
+        public void SetConfirmationData(ConfirmationData data)
         {
-            _confirmationData = confirmationData;
+            _confirmationData = data;
 
-            _headshotEntry.Enabled(confirmationData.Headshot);
+            _headshotEntry.Enabled(data.IsHeadshot);
             _headshotEntry.SetData("assets/inspectmenu/headshot.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.HEADSHOT"));
             _headshotEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.HEADSHOT"));
 
-            _suicideEntry.Enabled(confirmationData.Suicide);
+            _suicideEntry.Enabled(data.IsSuicide);
             _suicideEntry.SetData(string.Empty, new TranslationData("CORPSE.INSPECT.IDENTIFIER.SUICIDE"));
             _suicideEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.SUICIDE"));
 
-            _distanceEntry.Enabled(!confirmationData.Suicide);
-            _distanceEntry.SetData("assets/inspectmenu/distance.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.KILLED", $"{confirmationData.Distance:n0}"));
-            _distanceEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.DISTANCE", $"{confirmationData.Distance:n0}"));
+            _distanceEntry.Enabled(!data.IsSuicide);
+            _distanceEntry.SetData("assets/inspectmenu/distance.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.KILLED", $"{data.Distance:n0}"));
+            _distanceEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.DISTANCE", $"{data.Distance:n0}"));
 
-            _weaponEntry.Enabled(!string.IsNullOrEmpty(killerWeapon));
+            _weaponEntry.Enabled(!string.IsNullOrEmpty(data.KillerWeapon));
 
             if (_weaponEntry.IsEnabled())
             {
-                TranslationData translationData = new(Utils.GetTranslationKey(killerWeapon, "NAME"));
+                TranslationData translationData = new(Utils.GetTranslationKey(data.KillerWeapon, "NAME"));
 
-                _weaponEntry.SetData($"assets/icons/{killerWeapon}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.WEAPON", translationData));
+                _weaponEntry.SetData($"assets/icons/{data.KillerWeapon}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.WEAPON", translationData));
                 _weaponEntry.SetQuickInfo(translationData);
             }
 
@@ -186,9 +186,9 @@ namespace TTTReborn.UI
             _perkEntries.Clear();
 
             // Populate perk entries
-            if (perks != null)
+            if (data.Perks != null)
             {
-                foreach (string perkName in perks)
+                foreach (string perkName in data.Perks)
                 {
                     InspectEntry perkEntry = new(this);
                     perkEntry.SetData($"assets/icons/{perkName}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.PERK", new TranslationData(Utils.GetTranslationKey(perkName, "NAME"))));

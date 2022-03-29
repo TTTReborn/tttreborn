@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Sandbox;
 
@@ -9,19 +11,37 @@ using TTTReborn.UI;
 
 namespace TTTReborn
 {
+    public class ConfirmationData
+    {
+        public int Ident { get; set; }
+        public string Name { get; set; }
+        public bool IsIdentified { get; set; } = false;
+        public bool IsHeadshot { get; set; } = false;
+        public bool IsSuicide { get; set; } = false;
+        public float Time { get; set; } = 0f;
+        public float Distance { get; set; } = 0f;
+        public int Credits { get; set; } = 0;
+        public string[] Perks { get; set; }
+        public float KilledTime { get; set; }
+        public string KillerWeapon { get; set; }
+        public string RoleName { get; set; }
+        public string TeamName { get; set; }
+        // TODO damage type
+
+        [JsonIgnore]
+        public Player Player
+        {
+            get => Utils.GetPlayerByIdent(Ident);
+        }
+    }
+
     public partial class PlayerCorpse : ModelEntity, IEntityHint
     {
         public Player DeadPlayer { get; set; }
         public List<Particles> Ropes = new();
         public List<PhysicsJoint> RopeSprings = new();
-        public string KillerWeapon { get; set; }
-        public bool IsIdentified { get; set; } = false;
-        public bool WasHeadshot { get; set; } = false;
-        public bool Suicide { get; set; } = false;
-        public float Distance { get; set; } = 0f;
-        public float KilledTime { get; private set; }
-        public string[] Perks { get; set; }
         public List<Player> CovertConfirmers { get; set; } = new();
+        public ConfirmationData Data { get; set; } = new();
 
         public PlayerCorpse()
         {
@@ -32,12 +52,31 @@ namespace TTTReborn
             SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
             SetInteractsExclude(CollisionLayer.Player);
 
-            KilledTime = Time.Now;
+            Data.KilledTime = Time.Now;
         }
 
         public void CopyFrom(Player player)
         {
             DeadPlayer = player;
+
+            Data.Ident = player.NetworkIdent;
+            Data.Name = player.Client.Name;
+            Data.RoleName = player.Role.Name;
+            Data.TeamName = player.Team.Name;
+            Data.KillerWeapon = player.LastDamageWeapon?.Info.LibraryName;
+            Data.IsHeadshot = player.LastDamageWasHeadshot;
+            Data.Distance = player.LastDistanceToAttacker;
+            Data.IsSuicide = player.LastAttacker == this;
+            Data.Credits = player.Credits;
+
+            PerksInventory perksInventory = player.Inventory.Perks;
+
+            Data.Perks = new string[perksInventory.Count()];
+
+            for (int i = 0; i < Data.Perks.Length; i++)
+            {
+                Data.Perks[i] = perksInventory.Get(i).Info.LibraryName;
+            }
 
             SetModel(player.GetModelName());
             TakeDecalsFrom(player);
@@ -117,36 +156,15 @@ namespace TTTReborn
             ClearAttachments();
         }
 
-        public void CopyConfirmationData(ConfirmationData confirmationData)
-        {
-            IsIdentified = confirmationData.Identified;
-            WasHeadshot = confirmationData.Headshot;
-            KilledTime = confirmationData.Time;
-            Distance = confirmationData.Distance;
-            Suicide = confirmationData.Suicide;
-        }
-
-        public ConfirmationData GetConfirmationData()
-        {
-            return new ConfirmationData
-            {
-                Identified = IsIdentified,
-                Headshot = WasHeadshot,
-                Time = KilledTime,
-                Distance = Distance,
-                Suicide = Suicide
-            };
-        }
-
         public float HintDistance => 80f;
 
-        public TranslationData[] TextOnTick => new TranslationData[] { new(IsIdentified ? "CORPSE.USE.INSPECT" : "CORPSE.USE.IDENTIFY"), IsIdentified ? null : new("CORPSE.USE.COVERTINSPECT") };
+        public TranslationData[] TextOnTick => new TranslationData[] { new(Data.IsIdentified ? "CORPSE.USE.INSPECT" : "CORPSE.USE.IDENTIFY"), Data.IsIdentified ? null : new("CORPSE.USE.COVERTINSPECT") };
 
         public bool CanHint(Player client) => true;
 
         public EntityHintPanel DisplayHint(Player client) => new GlyphHint(new GlyphHintData[] { new(TextOnTick[0], InputButton.Use), new(TextOnTick[1], InputButton.Duck, InputButton.Use) });
 
-        public void TextTick(Player confirmingPlayer)
+        public void HintTick(Player confirmingPlayer)
         {
             using (Prediction.Off())
             {
@@ -160,7 +178,7 @@ namespace TTTReborn
                     return;
                 }
 
-                if (!IsIdentified && confirmingPlayer.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
+                if (!Data.IsIdentified && confirmingPlayer.LifeState == LifeState.Alive && Input.Down(InputButton.Use))
                 {
                     bool covert = Input.Down(InputButton.Duck);
 
@@ -168,34 +186,30 @@ namespace TTTReborn
                     {
                         if (!covert)
                         {
-                            IsIdentified = true;
+                            Data.IsIdentified = true;
                         }
 
                         if (!covert || !CovertConfirmers.Contains(confirmingPlayer))
                         {
-                            // TODO: Handle player disconnects.
-                            if (DeadPlayer != null && DeadPlayer.IsValid())
+                            if (Data.Credits > 0)
                             {
-                                int credits = DeadPlayer.Credits;
+                                confirmingPlayer.Credits += Data.Credits;
+                                Data.Credits = 0;
+                            }
 
-                                if (credits > 0)
-                                {
-                                    confirmingPlayer.Credits += credits;
-                                    DeadPlayer.Credits = 0;
-                                    DeadPlayer.CorpseCredits = credits;
-                                }
-
-                                if (covert)
-                                {
-                                    RPCs.ClientConfirmPlayer(To.Single(confirmingPlayer), confirmingPlayer, this, DeadPlayer, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks, true);
-                                }
-                                else
+                            if (covert)
+                            {
+                                RPCs.ClientConfirmPlayer(To.Single(confirmingPlayer), confirmingPlayer, this, GetSerializedData(), true);
+                            }
+                            else
+                            {
+                                if (DeadPlayer != null && DeadPlayer.IsValid())
                                 {
                                     DeadPlayer.IsConfirmed = true;
                                     DeadPlayer.CorpseConfirmer = confirmingPlayer;
-
-                                    RPCs.ClientConfirmPlayer(confirmingPlayer, this, DeadPlayer, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks);
                                 }
+
+                                RPCs.ClientConfirmPlayer(confirmingPlayer, this, GetSerializedData());
                             }
                         }
                     }
@@ -206,11 +220,18 @@ namespace TTTReborn
                     }
                 }
 
-                if (Input.Down(InputButton.Use) && (IsIdentified || CovertConfirmers.Contains(confirmingPlayer)))
+                if (Input.Down(InputButton.Use) && (Data.IsIdentified || CovertConfirmers.Contains(confirmingPlayer)))
                 {
                     Player.ClientEnableInspectMenu(this);
                 }
             }
         }
+
+        public string GetSerializedData() => JsonSerializer.Serialize(Data, new JsonSerializerOptions()
+        {
+            WriteIndented = false
+        });
+
+        public static ConfirmationData GetDezerializedData(string json) => JsonSerializer.Deserialize<ConfirmationData>(json);
     }
 }

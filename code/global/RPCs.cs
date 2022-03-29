@@ -35,34 +35,40 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientConfirmPlayer(Player confirmPlayer, PlayerCorpse playerCorpse, Player deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks, bool covert = false)
+        public static void ClientConfirmPlayer(Player confirmPlayer, PlayerCorpse playerCorpse, string jsonData, bool covert = false)
         {
-            if (!deadPlayer.IsValid())
+            ConfirmationData data = PlayerCorpse.GetDezerializedData(jsonData);
+
+            if (data == null)
             {
                 return;
             }
 
-            deadPlayer.SetRole(Utils.GetObjectByType<Role>(Utils.GetTypeByLibraryName<Role>(roleName)), TeamFunctions.GetTeam(teamName));
+            Player deadPlayer = data.Player;
 
-            if (!covert)
+            if (deadPlayer.IsValid())
             {
-                deadPlayer.IsConfirmed = true;
-                deadPlayer.CorpseConfirmer = confirmPlayer;
+                deadPlayer.SetRole(Utils.GetObjectByType<Role>(Utils.GetTypeByLibraryName<Role>(data.RoleName)), TeamFunctions.GetTeam(data.TeamName));
+
+                if (!covert)
+                {
+                    deadPlayer.IsConfirmed = true;
+                    deadPlayer.CorpseConfirmer = confirmPlayer;
+                }
             }
 
             if (playerCorpse.IsValid())
             {
                 playerCorpse.DeadPlayer = deadPlayer;
-                playerCorpse.KillerWeapon = killerWeapon;
-                playerCorpse.Perks = perks;
+                playerCorpse.Data = data;
 
-                playerCorpse.CopyConfirmationData(confirmationData);
                 InspectMenu.Instance.SetPlayerData(playerCorpse);
             }
 
-            Client deadClient = deadPlayer.Client;
-
-            Scoreboard.Instance.UpdateClient(deadClient);
+            if (deadPlayer.IsValid())
+            {
+                Scoreboard.Instance.UpdateClient(deadPlayer.Client);
+            }
 
             if (!confirmPlayer.IsValid())
             {
@@ -71,18 +77,29 @@ namespace TTTReborn.Globals
 
             Client confirmClient = confirmPlayer.Client;
 
-            InfoFeed.Current?.AddEntry(
-                confirmClient,
-                deadClient,
-                "found the body of",
-                $"({deadPlayer.Role.Name})"
-            );
-
-            if (confirmPlayer == Local.Pawn as Player && deadPlayer.CorpseCredits > 0)
+            // TODO improve
+            if (deadPlayer.IsValid())
             {
                 InfoFeed.Current?.AddEntry(
                     confirmClient,
-                    $"found $ {deadPlayer.CorpseCredits} credits!"
+                    deadPlayer.Client,
+                    "found the body of",
+                    $"({deadPlayer.Role.Name})"
+                );
+            }
+            else
+            {
+                InfoFeed.Current?.AddEntry(
+                    confirmClient,
+                    $"found the body of {data.Name}!"
+                );
+            }
+
+            if (confirmPlayer == Local.Pawn as Player && data.Credits > 0)
+            {
+                InfoFeed.Current?.AddEntry(
+                    confirmClient,
+                    $"found $ {data.Credits} credits!"
                 );
             }
         }

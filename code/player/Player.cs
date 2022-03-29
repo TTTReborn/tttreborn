@@ -162,11 +162,11 @@ namespace TTTReborn
                 {
                     SyncMIA();
                 }
-                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified)
+                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.Data.IsIdentified)
                 {
-                    PlayerCorpse.IsIdentified = true;
+                    PlayerCorpse.Data.IsIdentified = true;
 
-                    RPCs.ClientConfirmPlayer(null, PlayerCorpse, this, Role.Name, Team.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon, PlayerCorpse.Perks);
+                    RPCs.ClientConfirmPlayer(null, PlayerCorpse, PlayerCorpse.GetSerializedData());
                 }
             }
         }

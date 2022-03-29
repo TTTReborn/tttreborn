@@ -58,7 +58,7 @@ namespace TTTReborn.Items
 
         public EntityHintPanel DisplayHint(Player client) => new GlyphHint(new GlyphHintData[] { new(TextOnTick[0], InputButton.Use) });
 
-        public void TextTick(Player player)
+        public void HintTick(Player player)
         {
             if (!IsServer || player.LifeState != LifeState.Alive)
             {
