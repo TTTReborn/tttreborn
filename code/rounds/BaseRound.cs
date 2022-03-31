@@ -79,13 +79,13 @@ namespace TTTReborn.Rounds
 
         protected virtual void OnFinish()
         {
+            if (!Host.IsServer)
+            {
+                return;
+            }
+
             foreach (GameEvent gameEvent in GameEvents)
             {
-                if (gameEvent.IsLogged)
-                {
-                    Log.Info(gameEvent);
-                }
-
                 foreach (GameEventScoring scoring in gameEvent.Scoring)
                 {
                     scoring.Evaluate();

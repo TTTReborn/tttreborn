@@ -1,0 +1,15 @@
+GameResultsMenu {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s ease-in-out;
+    justify-content: center;
+    text-align: center;
+    // pointer-events: all;
+    opacity: 0;
+    flex-direction: column;
+
+    &.shown {
+        opacity: 1;
+    }
+}

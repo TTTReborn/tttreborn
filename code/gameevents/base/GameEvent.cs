@@ -23,6 +23,7 @@ namespace TTTReborn
 
         public float CreatedAt { get; set; }
 
+        [JsonIgnore]
         public virtual bool IsLogged { get; set; } = false;
 
         [JsonIgnore]
@@ -54,13 +55,22 @@ namespace TTTReborn
             }
         }
 
-        protected virtual void ServerCallNetworked(To to) => ClientRun(to, Name, JsonSerializer.Serialize(this, GetType(), new JsonSerializerOptions()
+        protected virtual string[] GetJsonData() => Array.Empty<string>();
+
+        protected virtual void Init(string[] jsonData) { }
+
+        protected virtual void ServerCallNetworked(To to)
         {
-            WriteIndented = false
-        }));
+            JsonSerializerOptions options = new()
+            {
+                WriteIndented = false
+            };
+
+            ClientRun(to, Name, JsonSerializer.Serialize(this, GetType(), options), GetJsonData() ?? Array.Empty<string>());
+        }
 
         [ClientRpc]
-        public static void ClientRun(string libraryName, string json)
+        public static void ClientRun(string libraryName, string jsonEventData, string[] jsonData)
         {
             Type type = Utils.GetTypeByLibraryName<GameEvent>(libraryName);
 
@@ -69,7 +79,9 @@ namespace TTTReborn
                 return;
             }
 
-            (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
+            GameEvent gameEvent = JsonSerializer.Deserialize(jsonEventData, type) as GameEvent;
+            gameEvent?.Init(jsonData);
+            gameEvent?.Run();
         }
 
         protected virtual void OnRegister()
