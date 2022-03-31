@@ -24,9 +24,6 @@ namespace TTTReborn
         public float CreatedAt { get; set; }
 
         [JsonIgnore]
-        public virtual bool IsLogged { get; set; } = false;
-
-        [JsonIgnore]
         public GameEventScoring[] Scoring { get; set; } = Array.Empty<GameEventScoring>();
 
         public GameEvent()

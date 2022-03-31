@@ -1,10 +1,8 @@
 namespace TTTReborn.Events.Player
 {
     [GameEvent("player_died")]
-    public partial class DiedEvent : PlayerGameEvent
+    public partial class DiedEvent : PlayerGameEvent, ILoggedGameEvent
     {
-        public override bool IsLogged { get; set; } = true;
-
         /// <summary>
         /// Occurs when a player dies.
         /// <para>Event is passed the <strong><see cref="TTTReborn.Player"/></strong> instance of the player who died.</para>

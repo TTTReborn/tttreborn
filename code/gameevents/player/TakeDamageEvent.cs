@@ -3,10 +3,8 @@ using Sandbox;
 namespace TTTReborn.Events.Player
 {
     [GameEvent("player_takedamage")]
-    public partial class TakeDamageEvent : PlayerGameEvent
+    public partial class TakeDamageEvent : PlayerGameEvent, ILoggedGameEvent
     {
-        public override bool IsLogged { get; set; } = true;
-
         public float Damage { get; set; }
 
         /// <summary>

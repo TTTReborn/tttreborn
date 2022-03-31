@@ -193,7 +193,7 @@ namespace TTTReborn.Rounds
 
             foreach (GameEvent gameEvent in GameEvents)
             {
-                if (gameEvent.IsLogged)
+                if (gameEvent is ILoggedGameEvent)
                 {
                     // TODO merge TakeDamage on one victim
 
