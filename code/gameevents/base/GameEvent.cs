@@ -23,6 +23,8 @@ namespace TTTReborn
 
         public float CreatedAt { get; set; }
 
+        public virtual bool IsLogged { get; set; } = false;
+
         [JsonIgnore]
         public GameEventScoring[] Scoring { get; set; } = Array.Empty<GameEventScoring>();
 
@@ -66,8 +68,6 @@ namespace TTTReborn
             {
                 return;
             }
-
-            Log.Debug($"Calling '{type}'");
 
             (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
         }
