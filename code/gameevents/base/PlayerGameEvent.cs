@@ -21,7 +21,11 @@ namespace TTTReborn.Events
             if (player != null)
             {
                 Ident = player.NetworkIdent;
-                PlayerId = player.Client.PlayerId;
+
+                if (player.Client != null)
+                {
+                    PlayerId = player.Client.PlayerId;
+                }
             }
         }
 

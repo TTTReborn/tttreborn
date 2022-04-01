@@ -352,5 +352,15 @@
         "OPEN": "Press to open the door",
         "CLOSE": "Press to close the door",
         "LOCKED": "Door is locked"
+    },
+    "GAMEEVENT": {
+        "PLAYER": {
+            "TAKEDAMAGE": {
+                "NAME": "{0} took {1} damage"
+            },
+            "DIED": {
+                "NAME": "{0} died"
+            }
+        }
     }
 }

@@ -7,25 +7,29 @@ using TTTReborn.Rounds;
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class GameResultsMenu : Panel
     {
         public static GameResultsMenu Instance;
+
+        private Panel EventWrapper { get; set; }
 
         public GameResultsMenu()
         {
             Instance = this;
 
-            StyleSheet.Load("/ui/generalhud/gameresultsmenu/GameResultsMenu.scss");
-
             AddClass("text-shadow");
+            AddClass("gameresultsmenu");
         }
 
         [Event(typeof(Events.Game.GameResultsEvent))]
         protected void OnGameResultsEvent(List<GameEvent> gameEvents)
         {
+            EventWrapper.DeleteChildren(true);
+
             foreach (GameEvent gameEvent in gameEvents)
             {
-                Add.Label(gameEvent.Name);
+                EventWrapper.AddChild(gameEvent.GetEventPanel());
             }
 
             SetClass("shown", true);
@@ -37,7 +41,6 @@ namespace TTTReborn.UI
             if (oldRound is PostRound)
             {
                 SetClass("shown", false);
-                DeleteChildren(true);
             }
         }
     }

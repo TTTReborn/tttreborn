@@ -1,5 +1,4 @@
 using System;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Sandbox;
@@ -17,6 +16,8 @@ namespace TTTReborn
         public EventAttribute(Type type) : base(Utils.GetAttribute<GameEventAttribute>(type).Name) { }
     }
 
+    // currently (issues with [Net] reassignments and tons of transmitted objects) it's not valuable to make it BaseNetworkable, Transmit always and get rid of NetworkableGameEvent
+    // that's why we are using our own networking stuff here on demand
     public abstract partial class GameEvent
     {
         public string Name { get; set; }
@@ -65,6 +66,8 @@ namespace TTTReborn
             gameEvent.ProcessRegister();
             gameEvent.Run();
         }
+
+        public virtual Sandbox.UI.Panel GetEventPanel() => new UI.EventPanel(this);
     }
 
     public partial class GameEventScoring

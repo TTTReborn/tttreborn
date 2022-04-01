@@ -7,6 +7,7 @@ PostRoundMenu {
     text-align: center;
     pointer-events:none;
     opacity: 0;
+    z-index: 1;
 
     .background-banner-panel {
         position: absolute;

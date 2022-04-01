@@ -352,5 +352,15 @@
         "OPEN": "Drücken, um die Tür zu öffnen",
         "CLOSE": "Drücken, um die Tür zu schließen",
         "LOCKED": "Die Tür ist verschlossen"
+    },
+    "GAMEEVENT": {
+        "PLAYER": {
+            "TAKEDAMAGE": {
+                "NAME": "{0} hat {1} Schaden genommen"
+            },
+            "DIED": {
+                "NAME": "{0} starb"
+            }
+        }
     }
 }
