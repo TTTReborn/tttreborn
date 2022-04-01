@@ -189,15 +189,15 @@ namespace TTTReborn.Rounds
                 return;
             }
 
-            List<GameEvent> eventList = new();
+            List<ILoggedGameEvent> eventList = new();
 
             foreach (GameEvent gameEvent in GameEvents)
             {
-                if (gameEvent is ILoggedGameEvent)
+                if (gameEvent is ILoggedGameEvent loggedGameEvent)
                 {
                     // TODO merge TakeDamage on one victim
 
-                    eventList.Add(gameEvent);
+                    eventList.Add(loggedGameEvent);
                 }
             }
 

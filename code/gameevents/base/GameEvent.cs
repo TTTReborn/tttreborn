@@ -67,7 +67,7 @@ namespace TTTReborn
             gameEvent.Run();
         }
 
-        public virtual Sandbox.UI.Panel GetEventPanel() => new UI.EventPanel(this);
+        public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
     }
 
     public partial class GameEventScoring

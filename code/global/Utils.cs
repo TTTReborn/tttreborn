@@ -292,7 +292,7 @@ namespace TTTReborn.Globals
                 splits = splits[1..];
             }
 
-            string translationKey = $"{splits[0]}.{string.Join('_', splits[1..])}";
+            string translationKey = string.Join('.', splits);
 
             if (key != null)
             {

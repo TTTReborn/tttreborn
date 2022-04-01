@@ -356,10 +356,25 @@
     "GAMEEVENT": {
         "PLAYER": {
             "TAKEDAMAGE": {
-                "NAME": "{0} took {1} damage"
+                "TITLE": "A player received damage",
+                "DESCRIPTION": "'{0}' took {1} damage"
             },
             "DIED": {
-                "NAME": "{0} died"
+                "TITLE": "A player died",
+                "NOREASON": "'{0}' died",
+                "BYSUICIDE": "'{0}' has committed suicide",
+                "BYPLAYER": "'{0}' was killed by player '{1}'",
+                "BYOBJECT": "'{0}' was killed by object '{1}'"
+            },
+            "SPAWN": {
+                "TITLE": "A player respawned",
+                "DESCRIPTION": "'{0}' respawned"
+            }
+        },
+        "ROLE": {
+            "SELECT": {
+                "TITLE": "A player received a new role",
+                "DESCRIPTION": "'{0}' received the role '{1}'"
             }
         }
     }

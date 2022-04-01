@@ -1,10 +1,14 @@
 using Sandbox;
 
+using TTTReborn.Globalization;
+
 namespace TTTReborn.Events.Player
 {
     [GameEvent("player_takedamage")]
     public partial class TakeDamageEvent : PlayerGameEvent, ILoggedGameEvent
     {
+        public TranslationData DescriptionTranslationData => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", Damage);
+
         public float Damage { get; set; }
 
         /// <summary>

@@ -11,6 +11,8 @@ namespace TTTReborn.Events
 
         public long PlayerId { get; set; }
 
+        public string PlayerName { get; set; }
+
         [JsonIgnore]
         public Client Client
         {
@@ -23,6 +25,7 @@ namespace TTTReborn.Events
             {
                 Ident = client.NetworkIdent;
                 PlayerId = client.PlayerId;
+                PlayerName = client.Name;
             }
         }
 

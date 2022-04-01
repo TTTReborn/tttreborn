@@ -23,11 +23,11 @@ namespace TTTReborn.UI
         }
 
         [Event(typeof(Events.Game.GameResultsEvent))]
-        protected void OnGameResultsEvent(List<GameEvent> gameEvents)
+        protected void OnGameResultsEvent(List<ILoggedGameEvent> gameEvents)
         {
             EventWrapper.DeleteChildren(true);
 
-            foreach (GameEvent gameEvent in gameEvents)
+            foreach (ILoggedGameEvent gameEvent in gameEvents)
             {
                 EventWrapper.AddChild(gameEvent.GetEventPanel());
             }

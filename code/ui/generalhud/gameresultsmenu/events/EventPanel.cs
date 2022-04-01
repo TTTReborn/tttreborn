@@ -1,28 +1,36 @@
+using System;
+
 using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
+    #pragma warning disable IDE0052
+
     [UseTemplate]
     public class EventPanel : Panel
     {
-        private TranslationLabel NameLabel { get; set; }
+        private TranslationLabel TitleLabel { get; set; }
+        private TranslationLabel DescriptionLabel { get; set; }
 
-        private string Name { get; set; }
+        private float CreatedAt { get; set; }
 
-        protected string CreatedAt { get; set; }
+        public string FormattedCreatedAt
+        {
+            get => $"[{TimeSpan.FromSeconds(CreatedAt):mm\\:ss}]";
+        }
 
         private Panel EventIcon { get; set; }
 
-        public EventPanel(GameEvent gameEvent)
+        public EventPanel(ILoggedGameEvent gameEvent)
         {
             AddClass("text-shadow");
             AddClass("eventpanel");
 
-            Name = gameEvent.Name;
-            CreatedAt = gameEvent.CreatedAt.ToString();
+            CreatedAt = gameEvent.CreatedAt;
 
-            EventIcon.Style.SetBackgroundImage(Sandbox.Texture.Load(Sandbox.FileSystem.Mounted, $"assets/events/{Name}.png", false));
-            NameLabel?.UpdateTranslation(new(Utils.GetTranslationKey(Name, "NAME").Replace('_', '.')));
+            EventIcon.Style.SetBackgroundImage(Sandbox.Texture.Load(Sandbox.FileSystem.Mounted, $"assets/events/{gameEvent.Name}.png", false));
+            TitleLabel?.UpdateTranslation(gameEvent.TitleTranslationData);
+            DescriptionLabel?.UpdateTranslation(gameEvent.DescriptionTranslationData);
         }
     }
 }

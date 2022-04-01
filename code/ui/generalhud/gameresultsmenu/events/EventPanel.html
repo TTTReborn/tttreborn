@@ -1,11 +1,15 @@
 <link rel="stylesheet" href="EventPanel.scss">
 
-<div class="rounded box-shadow">
-    <div style="margin-bottom: 30px;">
-        <text @text="CreatedAt" class="time"></text>
+<div class="container">
+    <div class="line"></div>
+    <div class="wrapper">
         <div class="icon-holder">
             <div @ref="EventIcon" class="icon"></div>
         </div>
-        <translationlabel @ref="NameLabel" class="name"></translationlabel>
+        <div class="header">
+            <translationlabel @ref="TitleLabel" class="title"></translationlabel>
+            <text @text="FormattedCreatedAt" class="time"></text>
+        </div>
+        <translationlabel @ref="DescriptionLabel" class="description"></translationlabel>
     </div>
 </div>

@@ -23,12 +23,12 @@ namespace TTTReborn.Events.Game
     public partial class GameResultsEvent : NetworkableGameEvent
     {
         [JsonIgnore]
-        public List<GameEvent> GameEvents { get; set; } = new();
+        public List<ILoggedGameEvent> GameEvents { get; set; } = new();
 
         /// <summary>
         /// Called when events and score was processed by the server.
         /// </summary>
-        public GameResultsEvent(List<GameEvent> gameEvents) : base()
+        public GameResultsEvent(List<ILoggedGameEvent> gameEvents) : base()
         {
             GameEvents = gameEvents ?? new();
         }
@@ -66,14 +66,14 @@ namespace TTTReborn.Events.Game
 
             foreach (GameResultData gameResultData in JsonSerializer.Deserialize<List<GameResultData>>(jsonData[0]))
             {
-                Type gameEventType = Utils.GetTypeByLibraryName<GameEvent>(gameResultData.Name);
+                Type gameEventType = Utils.GetTypeByLibraryName<ILoggedGameEvent>(gameResultData.Name);
 
                 if (gameEventType == null || !gameEventType.IsSubclassOf(typeof(NetworkableGameEvent)))
                 {
                     continue;
                 }
 
-                GameEvents.Add(JsonSerializer.Deserialize(gameResultData.Data, gameEventType) as GameEvent);
+                GameEvents.Add(JsonSerializer.Deserialize(gameResultData.Data, gameEventType) as ILoggedGameEvent);
             }
         }
     }
