@@ -201,7 +201,7 @@ namespace TTTReborn.Rounds
                 }
             }
 
-            GameEvent.RegisterNetworked(new Events.Game.GameResultsEvent(eventList));
+            NetworkableGameEvent.RegisterNetworked(new Events.Game.GameResultsEvent(eventList));
         }
 
         [Event(typeof(Events.Player.Role.SelectEvent))]

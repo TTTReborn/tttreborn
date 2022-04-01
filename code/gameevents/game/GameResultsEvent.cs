@@ -20,7 +20,7 @@ namespace TTTReborn.Events.Game
     }
 
     [GameEvent("game_gameresult")]
-    public partial class GameResultsEvent : GameEvent
+    public partial class GameResultsEvent : NetworkableGameEvent
     {
         [JsonIgnore]
         public List<GameEvent> GameEvents { get; set; } = new();
@@ -46,7 +46,7 @@ namespace TTTReborn.Events.Game
 
             foreach (GameEvent gameEvent in GameEvents)
             {
-                if (gameEvent is RoundChangeEvent) // TODO replace with check for NetworkableGameEvent
+                if (gameEvent is not NetworkableGameEvent)
                 {
                     continue;
                 }
@@ -68,7 +68,7 @@ namespace TTTReborn.Events.Game
             {
                 Type gameEventType = Utils.GetTypeByLibraryName<GameEvent>(gameResultData.Name);
 
-                if (gameEventType == null || gameEventType == typeof(RoundChangeEvent)) // TODO replace with check for NetworkableGameEvent
+                if (gameEventType == null || !gameEventType.IsSubclassOf(typeof(NetworkableGameEvent)))
                 {
                     continue;
                 }

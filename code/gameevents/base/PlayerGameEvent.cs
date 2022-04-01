@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTTReborn.Events
 {
-    public partial class PlayerGameEvent : GameEvent
+    public partial class PlayerGameEvent : NetworkableGameEvent
     {
         public int Ident { get; set; }
 

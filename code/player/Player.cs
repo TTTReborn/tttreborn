@@ -49,9 +49,9 @@ namespace TTTReborn
             IsForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
 
             // TODO Waiting for https://github.com/Facepunch/sbox-issues/issues/1715
-            // GameEvent.RegisterNetworked(new Events.Player.InitialSpawnEvent(Client));
+            // NetworkableGameEvent.RegisterNetworked(new Events.Player.InitialSpawnEvent(Client));
             // to avoid this error, just syncing to local player for now
-            GameEvent.RegisterNetworked(To.Single(this), new Events.Player.InitialSpawnEvent(Client));
+            NetworkableGameEvent.RegisterNetworked(To.Single(this), new Events.Player.InitialSpawnEvent(Client));
 
             Respawn();
 
@@ -96,7 +96,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                GameEvent.RegisterNetworked(new Events.Player.SpawnEvent(this));
+                NetworkableGameEvent.RegisterNetworked(new Events.Player.SpawnEvent(this));
                 SendClientRole();
             }
 
@@ -150,7 +150,7 @@ namespace TTTReborn
         {
             using (Prediction.Off())
             {
-                GameEvent.RegisterNetworked(new Events.Player.DiedEvent(this));
+                NetworkableGameEvent.RegisterNetworked(new Events.Player.DiedEvent(this));
             }
 
             BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));

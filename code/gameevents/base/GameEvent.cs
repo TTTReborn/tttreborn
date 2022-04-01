@@ -40,47 +40,6 @@ namespace TTTReborn
 
         public virtual void Run() => Event.Run(Name);
 
-        public void RunNetworked() => RunNetworked(To.Everyone);
-
-        public virtual void RunNetworked(To to)
-        {
-            Run();
-
-            if (Host.IsServer)
-            {
-                ServerCallNetworked(to);
-            }
-        }
-
-        protected virtual string[] GetJsonData() => Array.Empty<string>();
-
-        protected virtual void Init(string[] jsonData) { }
-
-        protected virtual void ServerCallNetworked(To to)
-        {
-            JsonSerializerOptions options = new()
-            {
-                WriteIndented = false
-            };
-
-            ClientRun(to, Name, JsonSerializer.Serialize(this, GetType(), options), GetJsonData() ?? Array.Empty<string>());
-        }
-
-        [ClientRpc]
-        public static void ClientRun(string libraryName, string jsonEventData, string[] jsonData)
-        {
-            Type type = Utils.GetTypeByLibraryName<GameEvent>(libraryName);
-
-            if (type == null)
-            {
-                return;
-            }
-
-            GameEvent gameEvent = JsonSerializer.Deserialize(jsonEventData, type) as GameEvent;
-            gameEvent?.Init(jsonData);
-            gameEvent?.Run();
-        }
-
         protected virtual void OnRegister()
         {
             foreach (GameEventScoring gameEventScoring in Scoring)
@@ -89,7 +48,7 @@ namespace TTTReborn
             }
         }
 
-        private void ProcessRegister()
+        internal void ProcessRegister()
         {
             if (Host.IsServer)
             {
@@ -105,16 +64,6 @@ namespace TTTReborn
 
             gameEvent.ProcessRegister();
             gameEvent.Run();
-        }
-
-        public static void RegisterNetworked<T>(T gameEvent, params GameEventScoring[] gameEventScorings) where T : GameEvent => RegisterNetworked(To.Everyone, gameEvent, gameEventScorings);
-
-        public static void RegisterNetworked<T>(To to, T gameEvent, params GameEventScoring[] gameEventScorings) where T : GameEvent
-        {
-            gameEvent.Scoring = gameEventScorings ?? gameEvent.Scoring;
-
-            gameEvent.ProcessRegister();
-            gameEvent.RunNetworked(to);
         }
     }
 
