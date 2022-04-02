@@ -15,6 +15,8 @@ namespace TTTReborn.UI
         {
             StyleSheet.Load("/ui/generalhud/inventorywrapper/effects/Effects.scss");
 
+            AddClass("effects");
+
             if (Local.Pawn is not Player player)
             {
                 return;
@@ -30,7 +32,10 @@ namespace TTTReborn.UI
 
         public void AddEffect(Perk perk)
         {
-            _effectList.Add(new Effect(this, perk));
+            Effect effect = new(perk);
+
+            _effectList.Add(effect);
+            AddChild(effect);
         }
 
         public void RemoveEffect(Perk perk)
