@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="EventPanel.scss">
+
+<div class="container">
+    <div class="line"></div>
+    <div class="wrapper">
+        <div class="icon-holder">
+            <div @ref="EventIcon" class="icon"></div>
+        </div>
+        <div class="header">
+            <translationlabel @ref="TitleLabel" class="title"></translationlabel>
+            <text @text="FormattedCreatedAt" class="time"></text>
+        </div>
+        <translationlabel @ref="DescriptionLabel" class="description"></translationlabel>
+    </div>
+</div>

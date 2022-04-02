@@ -47,7 +47,7 @@ namespace TTTReborn
                 }
             }
 
-            GameEvent.RegisterNetworked(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)), new Events.Player.Inventory.ClearEvent());
+            NetworkableGameEvent.RegisterNetworked(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)), new Events.Player.Inventory.ClearEvent());
 
             Perks.Clear();
             Ammo.Clear();
@@ -71,7 +71,7 @@ namespace TTTReborn
 
             if (add && entity is ICarriableItem carriableItem)
             {
-                GameEvent.RegisterNetworked(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == player)), new Events.Player.Inventory.PickupEvent(entity));
+                NetworkableGameEvent.RegisterNetworked(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == player)), new Events.Player.Inventory.PickupEvent(entity));
                 Sound.FromWorld("dm.pickup_weapon", entity.Position);
             }
 
@@ -120,7 +120,7 @@ namespace TTTReborn
         {
             if (Contains(item))
             {
-                GameEvent.RegisterNetworked(To.Single(Owner), new Events.Player.Inventory.DropEvent(item));
+                NetworkableGameEvent.RegisterNetworked(To.Single(Owner), new Events.Player.Inventory.DropEvent(item));
                 item.Delete();
                 List.Remove(item);
 
@@ -192,7 +192,7 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                GameEvent.RegisterNetworked(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)), new Events.Player.Inventory.DropEvent(entity));
+                NetworkableGameEvent.RegisterNetworked(To.Multiple(Utils.GetClients((pl) => pl.CurrentPlayer == Owner as Player)), new Events.Player.Inventory.DropEvent(entity));
             }
 
             return base.Drop(entity);

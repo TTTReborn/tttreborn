@@ -119,7 +119,7 @@ namespace TTTReborn.Gamemode
             }
 
             // TODO Waiting for https://github.com/Facepunch/sbox-issues/issues/1715
-            // GameEvent.RegisterNetworked(new Events.Player.ConnectedEvent(client));
+            // NetworkableGameEvent.RegisterNetworked(new Events.Player.ConnectedEvent(client));
 
             Player player = new();
             client.Pawn = player;
@@ -136,7 +136,7 @@ namespace TTTReborn.Gamemode
 
             Round.OnPlayerLeave(client.Pawn as Player);
 
-            GameEvent.RegisterNetworked(new Events.Player.DisconnectedEvent(client.PlayerId, reason));
+            NetworkableGameEvent.RegisterNetworked(new Events.Player.DisconnectedEvent(client.PlayerId, reason));
 
             base.ClientDisconnect(client, reason);
         }

@@ -180,6 +180,30 @@ namespace TTTReborn.Rounds
             return false;
         }
 
+        protected override void OnFinish()
+        {
+            base.OnFinish();
+
+            if (!Host.IsServer)
+            {
+                return;
+            }
+
+            List<ILoggedGameEvent> eventList = new();
+
+            foreach (GameEvent gameEvent in GameEvents)
+            {
+                if (gameEvent is ILoggedGameEvent loggedGameEvent)
+                {
+                    eventList.Add(loggedGameEvent);
+                }
+            }
+
+            GameEvent.Register(new Events.Game.LoggedGameEventsEvaluateEvent(eventList));
+
+            NetworkableGameEvent.RegisterNetworked(new Events.Game.GameResultsEvent(eventList));
+        }
+
         [Event(typeof(Events.Player.Role.SelectEvent))]
         protected static void OnPlayerRoleChange(Player player)
         {

@@ -352,5 +352,30 @@
         "OPEN": "Drücken, um die Tür zu öffnen",
         "CLOSE": "Drücken, um die Tür zu schließen",
         "LOCKED": "Die Tür ist verschlossen"
+    },
+    "GAMEEVENT": {
+        "PLAYER": {
+            "TAKEDAMAGE": {
+                "TITLE": "Ein Spieler hat Schaden erlitten",
+                "DESCRIPTION": "'{0}' hat {1} Schaden von '{2}' erhalten"
+            },
+            "DIED": {
+                "TITLE": "Ein Spieler ist gestorben",
+                "NOREASON": "'{0}' starb",
+                "BYSUICIDE": "'{0}' hat sich selbst umgebracht",
+                "BYPLAYER": "'{0}' wurde vom Spieler '{1}' getötet",
+                "BYOBJECT": "'{0}' wurde vom Objekt '{1}' getötet"
+            },
+            "SPAWN": {
+                "TITLE": "Ein Spieler ist respawnt",
+                "DESCRIPTION": "'{0}' ist respawnt"
+            },
+            "ROLE": {
+                "SELECT": {
+                    "TITLE": "Einem Spieler wurde eine neue Rolle zugewiesen",
+                    "DESCRIPTION": "'{0}' wurde die Rolle '{1}' zugewiesen"
+                }
+            }
+        }
     }
 }

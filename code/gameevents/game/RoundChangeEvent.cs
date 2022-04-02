@@ -4,7 +4,7 @@ using TTTReborn.Rounds;
 
 namespace TTTReborn.Events.Game
 {
-    [GameEvent("game_roundchange")]
+    [GameEvent("game_roundchange"), Hammer.Skip]
     public partial class RoundChangeEvent : GameEvent
     {
         public BaseRound OldRound { get; set; }

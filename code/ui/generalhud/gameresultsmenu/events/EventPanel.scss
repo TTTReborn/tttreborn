@@ -1,0 +1,70 @@
+@import "../../../Hud.scss";
+
+.eventpanel {
+    margin: 0px 10px;
+    width: 100%;
+    flex-direction: row;
+    flex-shrink: 0;
+
+    // Not working due to an S&Box bug
+    // &:hover .wrapper {
+    //     background-color: rgba(255, 255, 255, 0.025);
+    // }
+
+    .line {
+        width: 4px;
+        height: 100%;
+        background-color: $button-secondary;
+        margin: 0px 5px;
+    }
+
+    .wrapper {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 20px;
+        flex-direction: column;
+
+        .icon-holder {
+            background-color: $secondary;
+            border-radius: 16px;
+            // border: 4px white solid;
+            width: 50px;
+            height: 50px;
+
+            position: absolute;
+            left: -34px;
+            // top: -2px; // S&Box issue in flickering panels
+            opacity: 1;
+
+            padding: 2px;
+
+            .icon {
+                width: 100%;
+                aspect-ratio: 1;
+                background-size: cover;
+            }
+        }
+
+        .header,
+        .description {
+            margin-left: 20px;
+            font-size: 16px;
+        }
+
+        .header {
+            margin-bottom: 2px;
+            margin-top: 8px;
+
+            .title {
+                flex-grow: 1;
+                font-size: 20px;
+            }
+
+            .time {
+                flex-shrink: 1;
+                margin-right: 5px;
+                margin-top: 5px;
+            }
+        }
+    }
+}

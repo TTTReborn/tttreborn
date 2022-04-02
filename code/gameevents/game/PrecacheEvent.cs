@@ -1,6 +1,6 @@
 namespace TTTReborn.Events.Game
 {
-    [GameEvent("game_precache")]
+    [GameEvent("game_precache"), Hammer.Skip]
     public partial class PrecacheEvent : GameEvent
     {
         /// <summary>

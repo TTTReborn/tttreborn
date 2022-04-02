@@ -5,9 +5,13 @@ using Sandbox;
 
 namespace TTTReborn.Events
 {
-    public partial class ClientGameEvent : GameEvent
+    public partial class ClientGameEvent : NetworkableGameEvent
     {
         public int Ident { get; set; }
+
+        public long PlayerId { get; set; }
+
+        public string PlayerName { get; set; }
 
         [JsonIgnore]
         public Client Client
@@ -20,6 +24,8 @@ namespace TTTReborn.Events
             if (client != null)
             {
                 Ident = client.NetworkIdent;
+                PlayerId = client.PlayerId;
+                PlayerName = client.Name;
             }
         }
 

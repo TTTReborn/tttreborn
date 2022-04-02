@@ -1,6 +1,6 @@
 namespace TTTReborn.Events.Game
 {
-    [GameEvent("game_mapimagechange")]
+    [GameEvent("game_mapimagechange"), Hammer.Skip]
     public partial class MapImagesChangeEvent : GameEvent
     {
         /// <summary>

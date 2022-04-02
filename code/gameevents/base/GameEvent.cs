@@ -1,8 +1,9 @@
 using System;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Sandbox;
+
+using TTTReborn.Rounds;
 
 namespace TTTReborn
 {
@@ -17,6 +18,8 @@ namespace TTTReborn
         public EventAttribute(Type type) : base(Utils.GetAttribute<GameEventAttribute>(type).Name) { }
     }
 
+    // currently (issues with [Net] reassignments and tons of transmitted objects) it's not valuable to make it BaseNetworkable, Transmit always and get rid of NetworkableGameEvent
+    // that's why we are using our own networking stuff here on demand
     public abstract partial class GameEvent
     {
         public string Name { get; set; }
@@ -35,42 +38,12 @@ namespace TTTReborn
                 Name = attribute.Name;
             }
 
-            CreatedAt = Time.Now;
+            BaseRound baseRound = Gamemode.Game.Instance.Round;
+
+            CreatedAt = baseRound.RoundEndTime - baseRound.StartedAt - baseRound.TimeLeft;
         }
 
         public virtual void Run() => Event.Run(Name);
-
-        public void RunNetworked() => RunNetworked(To.Everyone);
-
-        public virtual void RunNetworked(To to)
-        {
-            Run();
-
-            if (Host.IsServer)
-            {
-                ServerCallNetworked(to);
-            }
-        }
-
-        protected virtual void ServerCallNetworked(To to) => ClientRun(to, Name, JsonSerializer.Serialize(this, GetType(), new JsonSerializerOptions()
-        {
-            WriteIndented = false
-        }));
-
-        [ClientRpc]
-        public static void ClientRun(string libraryName, string json)
-        {
-            Type type = Utils.GetTypeByLibraryName<GameEvent>(libraryName);
-
-            if (type == null)
-            {
-                return;
-            }
-
-            Log.Debug($"Calling '{type}'");
-
-            (JsonSerializer.Deserialize(json, type) as GameEvent)?.Run();
-        }
 
         protected virtual void OnRegister()
         {
@@ -80,7 +53,7 @@ namespace TTTReborn
             }
         }
 
-        private void ProcessRegister()
+        internal void ProcessRegister()
         {
             if (Host.IsServer)
             {
@@ -98,15 +71,7 @@ namespace TTTReborn
             gameEvent.Run();
         }
 
-        public static void RegisterNetworked<T>(T gameEvent, params GameEventScoring[] gameEventScorings) where T : GameEvent => RegisterNetworked(To.Everyone, gameEvent, gameEventScorings);
-
-        public static void RegisterNetworked<T>(To to, T gameEvent, params GameEventScoring[] gameEventScorings) where T : GameEvent
-        {
-            gameEvent.Scoring = gameEventScorings ?? gameEvent.Scoring;
-
-            gameEvent.ProcessRegister();
-            gameEvent.RunNetworked(to);
-        }
+        public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
     }
 
     public partial class GameEventScoring

@@ -41,9 +41,9 @@ namespace TTTReborn.UI
 
             foreach (Entity entity in player.CurrentPlayer.Inventory.List)
             {
-                if (entity is ICarriableItem carriableItem)
+                if (entity is ICarriableItem)
                 {
-                    OnCarriableItemPickup(carriableItem);
+                    OnCarriableItemPickup(entity);
                 }
             }
         }
@@ -107,9 +107,9 @@ namespace TTTReborn.UI
 
                 foreach (Entity entity in player.CurrentPlayer.Inventory.List)
                 {
-                    if (entity is ICarriableItem carriableItem)
+                    if (entity is ICarriableItem)
                     {
-                        OnCarriableItemPickup(carriableItem);
+                        OnCarriableItemPickup(entity);
                     }
                 }
             }
@@ -158,9 +158,9 @@ namespace TTTReborn.UI
         }
 
         [Event(typeof(Events.Player.Inventory.PickupEvent))]
-        protected void OnCarriableItemPickup(ICarriableItem carriable)
+        protected void OnCarriableItemPickup(Entity entity)
         {
-            if (carriable == null)
+            if (entity == null || entity is not ICarriableItem carriable)
             {
                 return;
             }
@@ -181,15 +181,18 @@ namespace TTTReborn.UI
         }
 
         [Event(typeof(Events.Player.Inventory.DropEvent))]
-        protected void OnCarriableItemDrop(ICarriableItem carriable)
+        protected void OnCarriableItemDrop(Entity entity)
         {
-            foreach (Panel child in Children)
+            if (entity is ICarriableItem carriable)
             {
-                if (child is InventorySlot slot)
+                foreach (Panel child in Children)
                 {
-                    if (slot.Carriable.Info.LibraryName == carriable.Info.LibraryName)
+                    if (child is InventorySlot slot)
                     {
-                        child.Delete();
+                        if (slot.Carriable.Info.LibraryName == carriable.Info.LibraryName)
+                        {
+                            child.Delete();
+                        }
                     }
                 }
             }
@@ -204,9 +207,9 @@ namespace TTTReborn.UI
 
             foreach (Entity entity in player.Inventory.List)
             {
-                if (entity is ICarriableItem carriableItem)
+                if (entity is ICarriableItem)
                 {
-                    OnCarriableItemPickup(carriableItem);
+                    OnCarriableItemPickup(entity);
                 }
             }
         }
