@@ -2,12 +2,14 @@ using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 
+#pragma warning disable IDE0051
+
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class InspectMenu : Panel
     {
         public static InspectMenu Instance;
@@ -16,20 +18,20 @@ namespace TTTReborn.UI
         private ConfirmationData _confirmationData;
         private InspectEntry _selectedInspectEntry;
 
-        private readonly InspectEntry _timeSinceDeathEntry;
-        private readonly InspectEntry _suicideEntry;
-        private readonly InspectEntry _weaponEntry;
-        private readonly InspectEntry _headshotEntry;
-        private readonly InspectEntry _distanceEntry;
+        private InspectEntry TimeSinceDeathEntry { get; set; }
+        private InspectEntry SuicideEntry { get; set; }
+        private InspectEntry WeaponEntry { get; set; }
+        private InspectEntry HeadshotEntry { get; set; }
+        private InspectEntry DistanceEntry { get; set; }
         private readonly List<InspectEntry> _perkEntries;
 
-        private readonly Panel _backgroundPanel;
-        private readonly Panel _inspectContainer;
-        private readonly Image _avatarImage;
-        private readonly Label _playerLabel;
-        private readonly TranslationLabel _roleLabel;
-        private readonly Panel _inspectIconsPanel;
-        private readonly TranslationLabel _inspectDetailsLabel;
+        private Panel BackgroundPanel { get; set; }
+        private Panel InspectContainer { get; set; }
+        private Image AvatarImage { get; set; }
+        private Label PlayerLabel { get; set; }
+        private TranslationLabel RoleLabel { get; set; }
+        private Panel InspectIconsPanel { get; set; }
+        private TranslationLabel InspectDetailsLabel { get; set; }
 
         public bool Enabled
         {
@@ -39,7 +41,7 @@ namespace TTTReborn.UI
                 this.Enabled(value);
 
                 SetClass("fade-in", this.IsEnabled());
-                _inspectContainer.SetClass("pop-in", this.IsEnabled());
+                InspectContainer.SetClass("pop-in", this.IsEnabled());
             }
         }
 
@@ -47,80 +49,43 @@ namespace TTTReborn.UI
         {
             Instance = this;
 
-            StyleSheet.Load("/ui/generalhud/inspectmenu/InspectMenu.scss");
-
-            AddClass("text-shadow");
-
-            _backgroundPanel = new Panel(this);
-            _backgroundPanel.AddClass("background-color-secondary");
-            _backgroundPanel.AddClass("opacity-medium");
-            _backgroundPanel.AddClass("fullscreen");
-
-            _inspectContainer = new Panel(this);
-            _inspectContainer.AddClass("inspect-container");
-
-            _avatarImage = _inspectContainer.Add.Image();
-            _avatarImage.AddClass("avatar-image");
-            _avatarImage.AddClass("box-shadow");
-            _avatarImage.AddClass("circular");
-
-            _playerLabel = _inspectContainer.Add.Label(string.Empty);
-            _playerLabel.AddClass("player-label");
-
-            _roleLabel = _inspectContainer.Add.TranslationLabel(new TranslationData());
-            _roleLabel.AddClass("role-label");
-
-            _inspectIconsPanel = new Panel(_inspectContainer);
-            _inspectIconsPanel.AddClass("info-panel");
-
             #region Inspection Icons
-            List<InspectEntry> inspectionEntries = new();
+            TimeSinceDeathEntry.SetData("assets/inspectmenu/time.png", new TranslationData());
+            AddListeners(TimeSinceDeathEntry);
 
-            _timeSinceDeathEntry = new InspectEntry(_inspectIconsPanel);
-            _timeSinceDeathEntry.Enabled(true); // Time since death is ALWAYS visible
-            _timeSinceDeathEntry.SetData("assets/inspectmenu/time.png", new TranslationData());
-            inspectionEntries.Add(_timeSinceDeathEntry);
+            SuicideEntry.Enabled(false);
+            AddListeners(SuicideEntry);
 
-            _suicideEntry = new InspectEntry(_inspectIconsPanel);
-            _suicideEntry.Enabled(false);
-            inspectionEntries.Add(_suicideEntry);
+            WeaponEntry.Enabled(false);
+            AddListeners(WeaponEntry);
 
-            _weaponEntry = new InspectEntry(_inspectIconsPanel);
-            _weaponEntry.Enabled(false);
-            inspectionEntries.Add(_weaponEntry);
+            HeadshotEntry.Enabled(false);
+            AddListeners(HeadshotEntry);
 
-            _headshotEntry = new InspectEntry(_inspectIconsPanel);
-            _headshotEntry.Enabled(false);
-            inspectionEntries.Add(_headshotEntry);
-
-            _distanceEntry = new InspectEntry(_inspectIconsPanel);
-            _distanceEntry.Enabled(false);
-            inspectionEntries.Add(_distanceEntry);
+            DistanceEntry.Enabled(false);
+            AddListeners(DistanceEntry);
+            #endregion
 
             _perkEntries = new List<InspectEntry>();
 
-            foreach (InspectEntry entry in inspectionEntries)
-            {
-                entry.AddEventListener("onmouseover", () =>
-                {
-                    _selectedInspectEntry = entry;
-
-                    UpdateCurrentInspectDescription();
-                });
-
-                entry.AddEventListener("onmouseout", () =>
-                {
-                    _selectedInspectEntry = null;
-
-                    UpdateCurrentInspectDescription();
-                });
-            }
-            #endregion
-
-            _inspectDetailsLabel = _inspectContainer.Add.TranslationLabel(new TranslationData());
-            _inspectDetailsLabel.AddClass("inspect-details-label");
-
             Enabled = false;
+        }
+
+        private void AddListeners(InspectEntry entry)
+        {
+            entry.AddEventListener("onmouseover", () =>
+            {
+                _selectedInspectEntry = entry;
+
+                UpdateCurrentInspectDescription();
+            });
+
+            entry.AddEventListener("onmouseout", () =>
+            {
+                _selectedInspectEntry = null;
+
+                UpdateCurrentInspectDescription();
+            });
         }
 
         public void InspectCorpse(PlayerCorpse playerCorpse)
@@ -132,12 +97,12 @@ namespace TTTReborn.UI
 
             _playerCorpse = playerCorpse;
 
-            _avatarImage.SetTexture($"avatar:{_playerCorpse.DeadPlayer?.Client.PlayerId}");
+            AvatarImage.SetTexture($"avatar:{_playerCorpse.DeadPlayer?.Client.PlayerId}");
 
-            _playerLabel.Text = _playerCorpse.DeadPlayer?.Client.Name;
+            PlayerLabel.Text = _playerCorpse.DeadPlayer?.Client.Name;
 
-            _roleLabel.UpdateTranslation(new TranslationData(_playerCorpse.DeadPlayer?.Role.GetTranslationKey("NAME")));
-            _roleLabel.Style.FontColor = _playerCorpse.DeadPlayer?.Role.Color;
+            RoleLabel.UpdateTranslation(new TranslationData(_playerCorpse.DeadPlayer?.Role.GetTranslationKey("NAME")));
+            RoleLabel.Style.FontColor = _playerCorpse.DeadPlayer?.Role.Color;
 
             SetConfirmationData(_playerCorpse.Data);
 
@@ -155,26 +120,26 @@ namespace TTTReborn.UI
         {
             _confirmationData = data;
 
-            _headshotEntry.Enabled(data.IsHeadshot);
-            _headshotEntry.SetData("assets/inspectmenu/headshot.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.HEADSHOT"));
-            _headshotEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.HEADSHOT"));
+            HeadshotEntry.Enabled(data.IsHeadshot);
+            HeadshotEntry.SetData("assets/inspectmenu/headshot.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.HEADSHOT"));
+            HeadshotEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.HEADSHOT"));
 
-            _suicideEntry.Enabled(data.IsSuicide);
-            _suicideEntry.SetData(string.Empty, new TranslationData("CORPSE.INSPECT.IDENTIFIER.SUICIDE"));
-            _suicideEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.SUICIDE"));
+            SuicideEntry.Enabled(data.IsSuicide);
+            SuicideEntry.SetData(string.Empty, new TranslationData("CORPSE.INSPECT.IDENTIFIER.SUICIDE"));
+            SuicideEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.SUICIDE"));
 
-            _distanceEntry.Enabled(!data.IsSuicide);
-            _distanceEntry.SetData("assets/inspectmenu/distance.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.KILLED", $"{data.Distance:n0}"));
-            _distanceEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.DISTANCE", $"{data.Distance:n0}"));
+            DistanceEntry.Enabled(!data.IsSuicide);
+            DistanceEntry.SetData("assets/inspectmenu/distance.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.KILLED", $"{data.Distance:n0}"));
+            DistanceEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.DISTANCE", $"{data.Distance:n0}"));
 
-            _weaponEntry.Enabled(!string.IsNullOrEmpty(data.KillerWeapon));
+            WeaponEntry.Enabled(!string.IsNullOrEmpty(data.KillerWeapon));
 
-            if (_weaponEntry.IsEnabled())
+            if (WeaponEntry.IsEnabled())
             {
                 TranslationData translationData = new(Utils.GetTranslationKey(data.KillerWeapon, "NAME"));
 
-                _weaponEntry.SetData($"assets/icons/{data.KillerWeapon}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.WEAPON", translationData));
-                _weaponEntry.SetQuickInfo(translationData);
+                WeaponEntry.SetData($"assets/icons/{data.KillerWeapon}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.WEAPON", translationData));
+                WeaponEntry.SetQuickInfo(translationData);
             }
 
             // Clear and delete all perks
@@ -190,24 +155,26 @@ namespace TTTReborn.UI
             {
                 foreach (string perkName in data.Perks)
                 {
-                    InspectEntry perkEntry = new(this);
+                    InspectEntry perkEntry = new();
                     perkEntry.SetData($"assets/icons/{perkName}.png", new TranslationData("CORPSE.INSPECT.IDENTIFIER.PERK", new TranslationData(Utils.GetTranslationKey(perkName, "NAME"))));
 
                     _perkEntries.Add(perkEntry);
+                    InspectIconsPanel.AddChild(perkEntry);
+                    AddListeners(perkEntry);
                 }
             }
         }
 
         private void UpdateCurrentInspectDescription()
         {
-            _inspectDetailsLabel.SetClass("fade-in", _selectedInspectEntry != null);
+            InspectDetailsLabel.SetClass("fade-in", _selectedInspectEntry != null);
 
             if (_selectedInspectEntry == null)
             {
                 return;
             }
 
-            _inspectDetailsLabel.UpdateTranslation(_selectedInspectEntry.TranslationData);
+            InspectDetailsLabel.UpdateTranslation(_selectedInspectEntry.TranslationData);
         }
 
         public override void Tick()
@@ -220,10 +187,10 @@ namespace TTTReborn.UI
             }
 
             string timeSinceDeath = Utils.TimerString(Time.Now - _confirmationData.Time);
-            _timeSinceDeathEntry.SetTranslationData(new TranslationData("CORPSE.INSPECT.IDENTIFIER.TIMESINCEDEATH", timeSinceDeath));
-            _timeSinceDeathEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.TIME", timeSinceDeath));
+            TimeSinceDeathEntry.SetTranslationData(new TranslationData("CORPSE.INSPECT.IDENTIFIER.TIMESINCEDEATH", timeSinceDeath));
+            TimeSinceDeathEntry.SetQuickInfo(new TranslationData("CORPSE.INSPECT.QUICKINFO.TIME", timeSinceDeath));
 
-            if (_selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry)
+            if (_selectedInspectEntry != null && _selectedInspectEntry == TimeSinceDeathEntry)
             {
                 UpdateCurrentInspectDescription();
             }

@@ -1,37 +1,22 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class InspectEntry : Panel
     {
         public TranslationData TranslationData;
-        private readonly Image _inspectIcon;
-        private readonly TranslationLabel _inspectQuickLabel;
-
-        public InspectEntry(Panel parent) : base(parent)
-        {
-            Parent = parent;
-
-            AddClass("rounded");
-            AddClass("text-shadow");
-            AddClass("background-color-secondary");
-
-            _inspectIcon = Add.Image();
-            _inspectIcon.AddClass("inspect-icon");
-
-            _inspectQuickLabel = Add.TranslationLabel(new TranslationData());
-            _inspectQuickLabel.AddClass("quick-label");
-        }
+        private Image InspectIcon { get; set; }
+        private TranslationLabel InspectQuickLabel { get; set; }
 
         public void SetData(string imagePath, TranslationData translationData)
         {
             SetTranslationData(translationData);
 
-            _inspectIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, imagePath, false) ?? Texture.Load(FileSystem.Mounted, $"assets/none.png");
+            InspectIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, imagePath, false) ?? Texture.Load(FileSystem.Mounted, $"assets/none.png");
         }
 
         public void SetTranslationData(TranslationData translationData)
@@ -41,7 +26,7 @@ namespace TTTReborn.UI
 
         public void SetQuickInfo(TranslationData translationData)
         {
-            _inspectQuickLabel.UpdateTranslation(translationData);
+            InspectQuickLabel.UpdateTranslation(translationData);
         }
     }
 }
