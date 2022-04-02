@@ -195,13 +195,11 @@ namespace TTTReborn.Rounds
             {
                 if (gameEvent is ILoggedGameEvent loggedGameEvent)
                 {
-                    // TODO merge TakeDamage on one victim
-
                     eventList.Add(loggedGameEvent);
                 }
             }
 
-            GameEvent.Register(new Events.Game.LoggedGameEventEvaluateEvent(eventList));
+            GameEvent.Register(new Events.Game.LoggedGameEventsEvaluateEvent(eventList));
 
             NetworkableGameEvent.RegisterNetworked(new Events.Game.GameResultsEvent(eventList));
         }

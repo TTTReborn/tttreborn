@@ -3,14 +3,14 @@ using System.Collections.Generic;
 namespace TTTReborn.Events.Game
 {
     [GameEvent("game_loggedgameeventevaluate"), Hammer.Skip]
-    public partial class LoggedGameEventEvaluateEvent : GameEvent
+    public partial class LoggedGameEventsEvaluateEvent : GameEvent
     {
         public List<ILoggedGameEvent> GameEvents { get; set; }
 
         /// <summary>
         /// Used to hook into the event.
         /// </summary>
-        public LoggedGameEventEvaluateEvent(List<ILoggedGameEvent> gameEvents) : base()
+        public LoggedGameEventsEvaluateEvent(List<ILoggedGameEvent> gameEvents) : base()
         {
             GameEvents = gameEvents ?? new();
         }
