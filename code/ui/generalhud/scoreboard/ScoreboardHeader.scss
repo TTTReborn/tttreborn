@@ -1,0 +1,48 @@
+.scoreboard-header {
+    flex-direction: row;
+    max-height: 100px;
+    justify-content: space-between;
+    padding: 16px;
+
+    .game-logo {
+        background-image: url("assets/logos/ttt_reborn_logo.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 75px;
+        height: 75px;
+    }
+
+    .server-information {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+
+    .server-name {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .server-description {
+        font-weight: 400;
+    }
+
+    .server-data {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: right;
+    }
+
+    .server-map {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .server-players {
+        font-weight: 500;
+    }
+}

@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="ScoreboardHeader.scss">
+
+<div class="scoreboard-header text-shadow">
+    <div class="game-logo"></div>
+    <div class="server-information">
+        <translationlabel @ref="ServerNameLabel" class="server-name"></translationlabel>
+        <translationlabel @ref="ServerDescriptionLabel" class="server-description"></translationlabel>
+    </div>
+    <div class="server-data">
+        <text @text="ServerMapName" class="server-map"></text>
+        <translationlabel @ref="ServerPlayersLabel" class="server-players"></translationlabel>
+    </div>
+</div>

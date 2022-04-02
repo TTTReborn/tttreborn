@@ -1,0 +1,10 @@
+<link rel="stylesheet" href="Scoreboard.scss">
+
+<div class="scoreboard">
+    <div class="background-color-secondary opacity-medium fullscreen"></div>
+    <div @ref="ScoreboardContainer" class="rounded scoreboard-container">
+        <scoreboardheader @ref="ScoreboardHeader" class="background-color-secondary opacity-heavy rounded-top"></scoreboardheader>
+        <div @ref="ScoreboardContent" class="background-color-primary scoreboard-content opacity-heavy"></div>
+        <div @ref="ScoreboardFooter" class="background-color-secondary scoreboard-footer rounded-bottom opacity-heavy"></div>
+    </div>
+</div>

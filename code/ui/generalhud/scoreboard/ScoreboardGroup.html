@@ -1,0 +1,11 @@
+<link rel="stylesheet" href="ScoreboardGroup.scss">
+
+<div class="scoreboard-group text-shadow">
+    <div class="group-holder opacity-medium rounded-top">
+        <translationlabel @ref="GroupTitleLabel" class="group-title"></translationlabel>
+        <translationlabel @ref="GroupScoreLabel" class="group-score"></translationlabel>
+        <translationlabel @ref="GroupKarmaLabel" class="group-karma"></translationlabel>
+        <translationlabel @ref="GroupPingLabel" class="group-ping"></translationlabel>
+    </div>
+    <div @ref="GroupContent" class="group-content"></div>
+</div>

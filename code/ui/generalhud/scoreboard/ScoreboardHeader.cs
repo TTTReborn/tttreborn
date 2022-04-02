@@ -1,57 +1,32 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 
+#pragma warning disable IDE0052
+
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class ScoreboardHeader : Panel
     {
-        private readonly Panel _gameLogoPanel;
-        private readonly Panel _serverInfoPanel;
-        private readonly TranslationLabel _serverNameLabel;
-        private readonly TranslationLabel _serverDescriptionLabel;
-        private readonly Panel _serverDataPanel;
-        private readonly Label _serverMapLabel;
-        private readonly TranslationLabel _serverPlayersLabel;
+        private string ServerMapName { get; set; }
+        private TranslationLabel ServerNameLabel { get; set; }
+        private TranslationLabel ServerDescriptionLabel { get; set; }
+        private TranslationLabel ServerPlayersLabel { get; set; }
 
-        public ScoreboardHeader(Panel parent) : base(parent)
+        public ScoreboardHeader()
         {
-            AddClass("text-shadow");
-
-            _gameLogoPanel = new(this);
-            _gameLogoPanel.AddClass("game-logo");
-
-            _serverInfoPanel = new(this);
-            _serverInfoPanel.AddClass("server-information-panel");
-
-            _serverNameLabel = _serverInfoPanel.Add.TranslationLabel(new TranslationData());
-            _serverNameLabel.AddClass("server-name-label");
-            _serverNameLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.GAMEMODE", "Trouble in Terry's Town"));
-
-            _serverDescriptionLabel = _serverInfoPanel.Add.TranslationLabel(new TranslationData());
-            _serverDescriptionLabel.AddClass("server-description-label");
-            _serverDescriptionLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.CREATEDBY", "Neoxult"));
-
-            _serverDataPanel = new(this);
-            _serverDataPanel.AddClass("server-data-panel");
-
-            _serverMapLabel = _serverDataPanel.Add.Label();
-            _serverMapLabel.AddClass("server-map-label");
-
-            _serverPlayersLabel = _serverDataPanel.Add.TranslationLabel(new TranslationData());
-            _serverPlayersLabel.AddClass("server-players-label");
+            ServerNameLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.GAMEMODE", "Trouble in Terry's Town"));
+            ServerDescriptionLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.CREATEDBY", "Neoxult"));
 
             UpdateServerInfo();
         }
 
         public void UpdateServerInfo()
         {
-            int maxPlayers = ConsoleSystem.GetValue("maxplayers").ToInt(0);
-
-            _serverMapLabel.Text = Global.MapName;
-            _serverPlayersLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.PLAYERAMOUNT", Client.All.Count, maxPlayers));
+            ServerMapName = Global.MapName;
+            ServerPlayersLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.PLAYERAMOUNT", Client.All.Count, ConsoleSystem.GetValue("maxplayers").ToInt(0)));
         }
     }
 }
