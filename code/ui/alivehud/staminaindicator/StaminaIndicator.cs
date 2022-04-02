@@ -1,6 +1,8 @@
 using Sandbox;
 using Sandbox.UI;
 
+#pragma warning disable IDE0052
+
 namespace TTTReborn.UI
 {
     [UseTemplate]

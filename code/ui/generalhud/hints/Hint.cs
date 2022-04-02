@@ -19,6 +19,8 @@ namespace TTTReborn.UI
             _label = Add.TranslationLabel(translationData);
             _label.Style.Padding = 10;
 
+            Style.ZIndex = 1;
+
             this.Enabled(false);
         }
 
