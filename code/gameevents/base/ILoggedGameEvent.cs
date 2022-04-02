@@ -6,8 +6,8 @@ namespace TTTReborn
     {
         public string Name { get; set; }
 
-        public virtual TranslationData TitleTranslationData => new(Utils.GetTranslationKey(Name, "TITLE"));
-        public TranslationData DescriptionTranslationData { get; }
+        public virtual TranslationData GetTitleTranslationData() => new(Utils.GetTranslationKey(Name, "TITLE"));
+        public virtual TranslationData GetDescriptionTranslationData() => null;
 
         public float CreatedAt { get; set; }
 

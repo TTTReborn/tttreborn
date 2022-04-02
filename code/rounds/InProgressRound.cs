@@ -201,6 +201,8 @@ namespace TTTReborn.Rounds
                 }
             }
 
+            GameEvent.Register(new Events.Game.LoggedGameEventEvaluateEvent(eventList));
+
             NetworkableGameEvent.RegisterNetworked(new Events.Game.GameResultsEvent(eventList));
         }
 

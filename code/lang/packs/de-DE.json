@@ -357,7 +357,7 @@
         "PLAYER": {
             "TAKEDAMAGE": {
                 "TITLE": "Ein Spieler hat Schaden erlitten",
-                "DESCRIPTION": "'{0}' hat {1} Schaden genommen"
+                "DESCRIPTION": "'{0}' hat {1} Schaden von '{2}' erhalten"
             },
             "DIED": {
                 "TITLE": "Ein Spieler ist gestorben",

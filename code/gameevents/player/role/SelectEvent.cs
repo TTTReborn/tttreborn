@@ -2,12 +2,12 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player.Role
 {
-    [GameEvent("player_role_select")]
+    [GameEvent("player_role_select"), Hammer.Skip]
     public partial class SelectEvent : PlayerGameEvent, ILoggedGameEvent
     {
         public string RoleName { get; set; }
 
-        public TranslationData DescriptionTranslationData => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", RoleName ?? "???");
+        public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", RoleName ?? "???");
 
         /// <summary>
         /// Occurs when a player selects their role.

@@ -2,10 +2,10 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_spawn")]
+    [GameEvent("player_spawn"), Hammer.Skip]
     public partial class SpawnEvent : PlayerGameEvent, ILoggedGameEvent
     {
-        public TranslationData DescriptionTranslationData => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???");
+        public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???");
 
         /// <summary>
         /// Occurs when a player spawns.

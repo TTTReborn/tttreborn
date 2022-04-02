@@ -1,6 +1,6 @@
 namespace TTTReborn.Events.Player.Spectating
 {
-    [GameEvent("player_spectating_change")]
+    [GameEvent("player_spectating_change"), Hammer.Skip]
     public partial class ChangeEvent : PlayerGameEvent
     {
         /// <summary>

@@ -2,31 +2,28 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_died")]
+    [GameEvent("player_died"), Hammer.Skip]
     public partial class DiedEvent : PlayerGameEvent, ILoggedGameEvent
     {
         public string LastAttackerName { get; set; }
 
         public bool IsAttackerPlayer { get; set; }
 
-        public TranslationData DescriptionTranslationData
+        public TranslationData GetDescriptionTranslationData()
         {
-            get
+            if (Player != null && LastAttackerName != null)
             {
-                if (Player != null && LastAttackerName != null)
+                if (LastAttackerName != PlayerName)
                 {
-                    if (LastAttackerName != PlayerName)
-                    {
-                        return new(GetTranslationKey(IsAttackerPlayer ? "BYPLAYER" : "BYOBJECT"), PlayerName ?? "???", LastAttackerName ?? "???");
-                    }
-                    else
-                    {
-                        return new(GetTranslationKey("BYSUICIDE"), PlayerName ?? "???");
-                    }
+                    return new(GetTranslationKey(IsAttackerPlayer ? "BYPLAYER" : "BYOBJECT"), PlayerName ?? "???", LastAttackerName ?? "???");
                 }
-
-                return new(GetTranslationKey("NOREASON"), PlayerName ?? "???");
+                else
+                {
+                    return new(GetTranslationKey("BYSUICIDE"), PlayerName ?? "???");
+                }
             }
+
+            return new(GetTranslationKey("NOREASON"), PlayerName ?? "???");
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 namespace TTTReborn.Events.Settings
 {
-    [GameEvent("settings_change")]
+    [GameEvent("settings_change"), Hammer.Skip]
     public partial class ChangeEvent : GameEvent
     {
         /// <summary>

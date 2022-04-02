@@ -3,6 +3,8 @@ using System.Text.Json.Serialization;
 
 using Sandbox;
 
+using TTTReborn.Rounds;
+
 namespace TTTReborn
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
@@ -36,7 +38,9 @@ namespace TTTReborn
                 Name = attribute.Name;
             }
 
-            CreatedAt = Time.Now;
+            BaseRound baseRound = Gamemode.Game.Instance.Round;
+
+            CreatedAt = baseRound.RoundDuration - baseRound.TimeLeft;
         }
 
         public virtual void Run() => Event.Run(Name);

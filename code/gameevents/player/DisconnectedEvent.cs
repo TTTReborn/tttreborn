@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_disconnected")]
+    [GameEvent("player_disconnected"), Hammer.Skip]
     public partial class DisconnectedEvent : NetworkableGameEvent
     {
         public long PlayerId { get; set; }
