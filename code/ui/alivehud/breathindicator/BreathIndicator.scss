@@ -1,4 +1,4 @@
-BreathIndicator {
+.breathindicator {
     position: absolute;
     width: 200px;
     height: 25px;
@@ -17,13 +17,14 @@ BreathIndicator {
         width: 200px;
         height: 100%;
         background-color: dodgerblue;
-    }
 
-    .breath-label {
-        position: absolute;
-        align-self: center;
         text-align: center;
-        font-size: 16px;
-        font-weight: bold;
+        justify-content: center;
+
+        .breath {
+            position: absolute;
+            font-size: 16px;
+            font-weight: bold;
+        }
     }
 }

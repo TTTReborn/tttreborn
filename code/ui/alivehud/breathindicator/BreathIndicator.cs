@@ -1,35 +1,21 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
+
+#pragma warning disable IDE0052
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public partial class BreathIndicator : Panel
     {
         public static BreathIndicator Instance;
 
-        private readonly Panel _breathBar;
-        private readonly Label _breathLabel;
+        private Panel BreathBar { get; set; }
+        private string Breath { get; set; }
 
         public BreathIndicator() : base()
         {
             Instance = this;
-
-            StyleSheet.Load("/ui/alivehud/breathindicator/BreathIndicator.scss");
-
-            AddClass("text-shadow");
-
-            _breathBar = new(this);
-            _breathBar.AddClass("breath-bar");
-            _breathBar.AddClass("center-horizontal");
-            _breathBar.AddClass("rounded");
-
-            _breathLabel = Add.Label();
-            _breathLabel.AddClass("breath-label");
-
-            this.Enabled(true);
-
-            Style.ZIndex = -1;
         }
 
         public override void Tick()
@@ -43,10 +29,10 @@ namespace TTTReborn.UI
 
             if (playerController.Breath < DefaultWalkController.MAX_BREATH)
             {
-                _breathBar.Style.Width = Length.Percent(playerController.Breath);
+                BreathBar.Style.Width = Length.Percent(playerController.Breath);
             }
 
-            _breathLabel.Text = playerController.Breath.ToString("F0");
+            Breath = playerController.Breath.ToString("F0");
 
             SetClass("fade-in", playerController.Breath < DefaultWalkController.MAX_BREATH);
         }
