@@ -5,10 +5,15 @@
     justify-content: center;
     align-items: center;
     pointer-events: all;
+    z-index: 99;
 
     &.fade-in {
         transition: all 0.05s linear;
         opacity: 1;
+    }
+
+    .disabled {
+        opacity: 0;
     }
 
     .tabmenu-container {

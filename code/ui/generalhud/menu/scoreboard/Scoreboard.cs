@@ -25,7 +25,6 @@ namespace TTTReborn.UI
         private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
         private readonly Dictionary<long, bool> _forcedSpecList = new();
 
-        private Panel ScoreboardContainer { get; set; }
         private ScoreboardHeader ScoreboardHeader { get; set; }
         private Panel ScoreboardContent { get; set; }
         private Panel ScoreboardFooter { get; set; }

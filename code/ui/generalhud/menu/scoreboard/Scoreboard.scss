@@ -1,27 +1,23 @@
 .scoreboard {
-    transition: all 0.15s ease-out;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: transform 0.25s ease-out;
 
-    .scoreboard-container {
-        width: 100%;
+    .column-label-panel {
+        flex-direction: row;
+        justify-content: flex-end;
+        padding: 4px;
+    }
+
+    .scoreboard-content {
         flex-direction: column;
-        justify-content: flex-start;
-        transition: transform 0.25s ease-out;
+        padding: 8px;
+        max-height: 66%;
+        overflow: scroll;
+    }
 
-        .column-label-panel {
-            flex-direction: row;
-            justify-content: flex-end;
-            padding: 4px;
-        }
-
-        .scoreboard-content {
-            flex-direction: column;
-            padding: 8px;
-            max-height: 66%;
-            overflow: scroll;
-        }
-
-        .scoreboard-footer {
-            height: 25px;
-        }
+    .scoreboard-footer {
+        height: 25px;
     }
 }

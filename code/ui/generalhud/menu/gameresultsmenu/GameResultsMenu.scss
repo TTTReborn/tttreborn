@@ -1,13 +1,7 @@
 .gameresultsmenu {
-    transition: all 0.5s ease-in-out;
-
-    > div {
-        margin: 5% 10%;
-
-        .eventwrapper {
-            flex-direction: column;
-            padding: 40px;
-            overflow: scroll;
-        }
+    .eventwrapper {
+        flex-direction: column;
+        padding: 40px;
+        overflow: scroll;
     }
 }

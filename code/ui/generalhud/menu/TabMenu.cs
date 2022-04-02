@@ -21,7 +21,7 @@ namespace TTTReborn.UI
         private readonly string _defaultPage = "scoreboard";
         private readonly string _defaultIcon = "score";
 
-        private Dictionary<string, Type> Panels { get; set; } = new();
+        private Dictionary<string, Panel> Panels { get; set; } = new();
 
         public TabMenu()
         {
@@ -32,22 +32,25 @@ namespace TTTReborn.UI
 
         public void Init()
         {
-            DefaultButton = AddMenu(_defaultPage, typeof(Scoreboard), _defaultIcon);
+            DefaultButton = AddMenu(_defaultPage, new Scoreboard(), _defaultIcon);
 
-            AddMenu("results", typeof(GameResultsMenu), "bar_chart");
-            AddMenu("menu", typeof(TTTMenu), "settings");
+            AddMenu("results", new GameResultsMenu(), "bar_chart");
+            AddMenu("menu", new TTTMenu(), "settings");
 
             SelectMenu(_defaultPage);
         }
 
-        public Button AddMenu(string name, Type type, string icon)
+        public Button AddMenu<T>(string name, T panel, string icon) where T : Panel
         {
-            if (Panels.ContainsKey(name) || type == null)
+            if (Panels.ContainsKey(name) || panel == null)
             {
                 return null;
             }
 
-            Panels.Add(name, type);
+            Panels.Add(name, panel);
+            ContentPanel.AddChild(panel);
+
+            panel.Enabled(false);
 
             Button button = SidebarPanel.Add.ButtonWithIcon(null, icon, "icon", () =>
             {
@@ -64,23 +67,19 @@ namespace TTTReborn.UI
                 return;
             }
 
-            ContentPanel.DeleteChildren(true);
+            foreach (Panel pnl in ContentPanel.Children)
+            {
+                pnl.Enabled(false);
+            }
 
             SelectedMenu = name;
 
-            if (!Panels.TryGetValue(name, out Type type) || type == null)
+            if (!Panels.TryGetValue(name, out Panel panel) || panel == null)
             {
                 return;
             }
 
-            Panel panel = Utils.GetObjectByType<Panel>(type);
-
-            if (panel == null)
-            {
-                return;
-            }
-
-            ContentPanel.AddChild(panel);
+            panel.Enabled(true);
         }
 
         public override void Tick()
