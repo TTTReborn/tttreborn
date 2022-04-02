@@ -1,11 +1,7 @@
-using System;
-
 using Sandbox.UI;
 
 namespace TTTReborn.UI
 {
-    #pragma warning disable IDE0052
-
     [UseTemplate]
     public class EventPanel : Panel
     {
