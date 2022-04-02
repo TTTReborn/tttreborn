@@ -24,7 +24,7 @@ namespace TTTReborn.UI
 
             CreatedAt = gameEvent.CreatedAt;
 
-            EventIcon.Style.SetBackgroundImage(Sandbox.Texture.Load(Sandbox.FileSystem.Mounted, $"assets/events/{gameEvent.Name}.png", false));
+            EventIcon.Style.SetBackgroundImage(Sandbox.Texture.Load(Sandbox.FileSystem.Mounted, $"assets/events/{gameEvent.Name}.png", false) ?? Sandbox.Texture.Load(Sandbox.FileSystem.Mounted, $"assets/events/ttt_gameevent_base.png", false));
             TitleLabel?.UpdateTranslation(gameEvent.GetTitleTranslationData());
             DescriptionLabel?.UpdateTranslation(gameEvent.GetDescriptionTranslationData());
         }

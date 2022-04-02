@@ -26,20 +26,23 @@
 
         .icon-holder {
             background-color: $secondary;
-            border-radius: 16px;
+            // border-radius: 16px;
             // border: 4px white solid;
-            width: 50px;
-            height: 50px;
+            width: 72px;
+            height: 72px;
 
             position: absolute;
-            left: -34px;
+            left: -49px;
             // top: -2px; // S&Box issue in flickering panels
             opacity: 1;
 
             padding: 2px;
 
+            justify-content: center;
+            align-items: center;
+
             .icon {
-                width: 100%;
+                width: 48px;
                 aspect-ratio: 1;
                 background-size: cover;
             }
