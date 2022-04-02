@@ -14,11 +14,20 @@ namespace TTTReborn.UI
             Instance = this;
 
             StyleSheet.Load("/ui/generalhud/voicechat/VoiceChatDisplay.scss");
+
+            AddClass("voicechat-display");
         }
 
         public void OnVoicePlayed(Client client, float level)
         {
-            VoiceChatEntry entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault(x => x.Friend.Id == client.PlayerId) ?? new VoiceChatEntry(this, client);
+            VoiceChatEntry entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault(x => x.Friend.Id == client.PlayerId);
+
+            if (entry == null)
+            {
+                entry = new(client);
+
+                AddChild(entry);
+            }
 
             entry.Update(level);
         }
