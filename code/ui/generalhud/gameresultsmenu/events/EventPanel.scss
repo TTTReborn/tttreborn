@@ -26,14 +26,13 @@
 
         .icon-holder {
             background-color: $secondary;
-            // border-radius: 16px;
-            // border: 4px white solid;
+            border-radius: 100%;
+            border: 4px $button-secondary solid;
             width: 72px;
             height: 72px;
 
             position: absolute;
-            left: -49px;
-            // top: -2px; // S&Box issue in flickering panels
+            left: -46px;
             opacity: 1;
 
             padding: 2px;
@@ -42,7 +41,7 @@
             align-items: center;
 
             .icon {
-                width: 48px;
+                width: 40px;
                 aspect-ratio: 1;
                 background-size: cover;
             }
@@ -50,13 +49,12 @@
 
         .header,
         .description {
-            margin-left: 20px;
+            margin-left: 40px;
             font-size: 16px;
         }
 
         .header {
             margin-bottom: 2px;
-            margin-top: 8px;
 
             .title {
                 flex-grow: 1;
