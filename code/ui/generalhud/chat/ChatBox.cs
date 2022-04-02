@@ -7,6 +7,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public partial class ChatBox : Panel
     {
         public enum Channel { Info, Player, Spectator, Team };
@@ -22,40 +23,23 @@ namespace TTTReborn.UI
 
         private TimeSince _lastChatFocus = 0f;
 
-        private readonly Panel _canvas;
-        private readonly Panel _inputPanel;
-        private readonly Panel _inputTeamIndicator;
-        private readonly ChatBoxTextEntry _inputField;
+        private Panel Canvas { get; set; }
+        private Panel InputPanel { get; set; }
+        private Panel InputTeamIndicator { get; set; }
+        private ChatBoxTextEntry InputField { get; set; }
 
         public ChatBox() : base()
         {
             Instance = this;
 
-            StyleSheet.Load("/ui/generalhud/chat/ChatBox.scss");
+            Canvas.PreferScrollToBottom = true;
 
-            _canvas = new Panel(this);
-            _canvas.AddClass("chat-canvas");
-            _canvas.AddClass("rounded");
-            _canvas.PreferScrollToBottom = true;
-
-            _inputPanel = new Panel(this);
-            _inputPanel.AddClass("input-panel");
-            _inputPanel.AddClass("background-color-primary");
-            _inputPanel.AddClass("opacity-0");
-            _inputPanel.AddClass("rounded");
-
-            _inputTeamIndicator = new Panel(_inputPanel);
-            _inputTeamIndicator.AddClass("input-team-indicator");
-            _inputTeamIndicator.AddClass("circular");
-
-            _inputField = new(_inputPanel);
-            _inputField.CaretColor = Color.White;
-            _inputField.AcceptsFocus = true;
-            _inputField.AllowEmojiReplace = true;
-            _inputField.Text = "";
-            _inputField.AddClass("input-field");
-            _inputField.AddEventListener("onsubmit", Submit);
-            _inputField.AddEventListener("onblur", Close);
+            InputField.CaretColor = Color.White;
+            InputField.AcceptsFocus = true;
+            InputField.AllowEmojiReplace = true;
+            InputField.Text = "";
+            InputField.AddEventListener("onsubmit", Submit);
+            InputField.AddEventListener("onblur", Close);
 
             Sandbox.Hooks.Chat.OnOpenChat += Open;
         }
@@ -81,36 +65,36 @@ namespace TTTReborn.UI
 
             if (isAlive && Local.Pawn is Player player && IsTeamChatting)
             {
-                _inputTeamIndicator.Style.BackgroundColor = player.Team.Color;
-                _inputPanel.Style.BorderColor = player.Team.Color;
+                InputTeamIndicator.Style.BackgroundColor = player.Team.Color;
+                InputPanel.Style.BorderColor = player.Team.Color;
             }
             else
             {
-                _inputTeamIndicator.Style.BackgroundColor = null;
-                _inputPanel.Style.BorderColor = null;
+                InputTeamIndicator.Style.BackgroundColor = null;
+                InputPanel.Style.BorderColor = null;
             }
 
-            _inputTeamIndicator.SetClass("background-color-alive", isAlive);
-            _inputTeamIndicator.SetClass("background-color-spectator", !isAlive);
-            _inputPanel.SetClass("border-color-alive", isAlive);
-            _inputPanel.SetClass("border-color-spectator", !isAlive);
+            InputTeamIndicator.SetClass("background-color-alive", isAlive);
+            InputTeamIndicator.SetClass("background-color-spectator", !isAlive);
+            InputPanel.SetClass("border-color-alive", isAlive);
+            InputPanel.SetClass("border-color-spectator", !isAlive);
 
             if (IsOpened)
             {
                 _lastChatFocus = 0f;
             }
 
-            _canvas.SetClass("fadeOut", _lastChatFocus > MAX_DISPLAY_TIME);
+            Canvas.SetClass("fadeout", _lastChatFocus > MAX_DISPLAY_TIME);
         }
 
         private void Open()
         {
             IsOpened = true;
 
-            _inputPanel.SetClass("opacity-medium", true);
-            _inputPanel.SetClass("open", true);
+            InputPanel.SetClass("opacity-medium", true);
+            InputPanel.SetClass("open", true);
 
-            _inputField.Focus();
+            InputField.Focus();
         }
 
         private void Close()
@@ -118,18 +102,18 @@ namespace TTTReborn.UI
             IsTeamChatting = false;
             IsOpened = false;
 
-            _inputPanel.SetClass("opacity-medium", false);
-            _inputPanel.SetClass("open", false);
+            InputPanel.SetClass("opacity-medium", false);
+            InputPanel.SetClass("open", false);
 
-            _inputField.Text = "";
-            _inputField.Blur();
+            InputField.Text = "";
+            InputField.Blur();
         }
 
         private void Submit()
         {
             bool wasTeamChatting = IsTeamChatting;
 
-            string msg = _inputField.Text.Trim();
+            string msg = InputField.Text.Trim();
 
             if (!string.IsNullOrWhiteSpace(msg) && Local.Pawn is Player)
             {
@@ -168,7 +152,7 @@ namespace TTTReborn.UI
             }
             #endregion
 
-            ChatEntry chatEntry = _canvas.AddChild<ChatEntry>();
+            ChatEntry chatEntry = Canvas.AddChild<ChatEntry>();
 
             chatEntry.Header.Text = header;
             chatEntry.Content.Text = content;

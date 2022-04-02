@@ -1,0 +1,37 @@
+.effect {
+    flex-direction: column;
+    width: 72px;
+    height: 72px;
+    margin-top: 15px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    .name-label {
+        font-size: 10px;
+    }
+
+    .effect-icon-panel {
+        width: 60px;
+        height: 60px;
+    }
+
+    .effect-image {
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 100%;
+        width: 100%;
+
+        &.cooldown {
+            opacity: 0.25;
+        }
+    }
+
+    .countdown {
+        position: absolute;
+        font-size: 24px;
+        font-weight: bold;
+    }
+}

@@ -1,0 +1,25 @@
+.inventory-slot {
+    height: 34px;
+    font-size: 20px;
+    transition: height 0.15s linear;
+    opacity: 0.5;
+    align-items: center;
+
+    .slot-label {
+        height: 100%;
+        text-align: center;
+        margin-right: 10px;
+        width: 34px;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    .ammo-label {
+        position: absolute;
+        right: 8px;
+    }
+
+    &.active {
+        opacity: 1;
+    }
+}

@@ -1,4 +1,4 @@
-StaminaIndicator {
+.staminaindicator {
     position: absolute;
     width: 200px;
     height: 25px;
@@ -17,13 +17,14 @@ StaminaIndicator {
         width: 200px;
         height: 100%;
         background-color: cadetblue;
-    }
 
-    .stamina-label {
-        position: absolute;
-        align-self: center;
         text-align: center;
-        font-size: 16px;
-        font-weight: bold;
+        justify-content: center;
+
+        .stamina {
+            position: absolute;
+            font-size: 16px;
+            font-weight: bold;
+        }
     }
 }

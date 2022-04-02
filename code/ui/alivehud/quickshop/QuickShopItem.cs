@@ -5,42 +5,28 @@ using Sandbox.UI.Construct;
 using TTTReborn.Globalization;
 using TTTReborn.Items;
 
+#pragma warning disable IDE0052
+
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public partial class QuickShopItem : Panel
     {
         public ShopItemData ItemData;
         public bool IsDisabled = false;
 
-        private readonly Panel _itemIcon;
-        private readonly TranslationLabel _itemNameLabel;
-        private readonly Label _itemPriceLabel;
-
-        public QuickShopItem(Panel parent) : base(parent)
-        {
-            AddClass("rounded");
-            AddClass("text-shadow");
-            AddClass("background-color-primary");
-
-            _itemPriceLabel = Add.Label();
-            _itemPriceLabel.AddClass("item-price-label");
-            _itemPriceLabel.AddClass("text-color-info");
-
-            _itemIcon = new Panel(this);
-            _itemIcon.AddClass("item-icon");
-
-            _itemNameLabel = Add.TranslationLabel(new TranslationData());
-            _itemNameLabel.AddClass("item-name-label");
-        }
+        private Panel ItemIcon { get; set; }
+        private TranslationLabel ItemNameLabel { get; set; }
+        private string Price { get; set; }
 
         public void SetItem(ShopItemData shopItemData)
         {
             ItemData = shopItemData;
 
-            _itemNameLabel.UpdateTranslation(new TranslationData(shopItemData.GetTranslationKey("NAME")));
-            _itemPriceLabel.Text = $"${shopItemData.Price}";
+            ItemNameLabel.UpdateTranslation(new TranslationData(shopItemData.GetTranslationKey("NAME")));
+            Price = $"${shopItemData.Price}";
 
-            _itemIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, $"assets/icons/{shopItemData.Name}.png") ?? Texture.Load(FileSystem.Mounted, $"assets/none.png");
+            ItemIcon.Style.BackgroundImage = Texture.Load(FileSystem.Mounted, $"assets/icons/{shopItemData.Name}.png") ?? Texture.Load(FileSystem.Mounted, $"assets/none.png");
         }
 
         public void Update()

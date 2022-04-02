@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
+#pragma warning disable IDE0051
+
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public partial class Scoreboard : Panel
     {
         public enum DefaultScoreboardGroup
@@ -22,47 +25,18 @@ namespace TTTReborn.UI
         private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
         private readonly Dictionary<long, bool> _forcedSpecList = new();
 
-        private readonly Panel _backgroundPanel;
-        private readonly Panel _scoreboardContainer;
-        private readonly ScoreboardHeader _scoreboardHeader;
-        private readonly Panel _scoreboardContent;
-        private readonly Panel _scoreboardFooter;
+        private Panel ScoreboardContainer { get; set; }
+        private ScoreboardHeader ScoreboardHeader { get; set; }
+        private Panel ScoreboardContent { get; set; }
+        private Panel ScoreboardFooter { get; set; }
 
-        public Scoreboard() : base()
+        public Scoreboard()
         {
             Instance = this;
-
-            StyleSheet.Load("/ui/generalhud/scoreboard/Scoreboard.scss");
-
-            _backgroundPanel = new(this);
-            _backgroundPanel.AddClass("background-color-secondary");
-            _backgroundPanel.AddClass("opacity-medium");
-            _backgroundPanel.AddClass("fullscreen");
-
-            _scoreboardContainer = new(this);
-            _scoreboardContainer.AddClass("rounded");
-            _scoreboardContainer.AddClass("scoreboard-container");
-
-            _scoreboardHeader = new(_scoreboardContainer);
-            _scoreboardHeader.AddClass("background-color-secondary");
-            _scoreboardHeader.AddClass("opacity-heavy");
-            _scoreboardHeader.AddClass("rounded-top");
-
-            _scoreboardContent = new(_scoreboardContainer);
-            _scoreboardContent.AddClass("background-color-primary");
-            _scoreboardContent.AddClass("scoreboard-content");
-            _scoreboardContent.AddClass("opacity-heavy");
-
-            _scoreboardFooter = new(_scoreboardContainer);
-            _scoreboardFooter.AddClass("background-color-secondary");
-            _scoreboardFooter.AddClass("scoreboard-footer");
-            _scoreboardFooter.AddClass("rounded-bottom");
-            _scoreboardFooter.AddClass("opacity-heavy");
 
             Initialize();
         }
 
-        [Event.Hotload]
         private void Initialize()
         {
             if (Host.IsServer)
@@ -131,7 +105,7 @@ namespace TTTReborn.UI
             _entries.Add(client.PlayerId, scoreboardEntry);
 
             scoreboardGroup.UpdateLabel();
-            _scoreboardHeader.UpdateServerInfo();
+            ScoreboardHeader.UpdateServerInfo();
         }
 
         public void UpdateClient(Client client)
@@ -248,7 +222,7 @@ namespace TTTReborn.UI
             }
 
             SetClass("fade-in", true);
-            _scoreboardContainer.SetClass("pop-in", true);
+            ScoreboardContainer.SetClass("pop-in", true);
         }
 
         private ScoreboardGroup AddScoreboardGroup(string groupName)
@@ -258,7 +232,7 @@ namespace TTTReborn.UI
                 return _scoreboardGroups[groupName];
             }
 
-            ScoreboardGroup scoreboardGroup = new(_scoreboardContent, groupName);
+            ScoreboardGroup scoreboardGroup = new(ScoreboardContent, groupName);
             scoreboardGroup.UpdateLabel();
 
             _scoreboardGroups.Add(groupName, scoreboardGroup);

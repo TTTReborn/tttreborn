@@ -1,0 +1,71 @@
+@import "../../Hud.scss";
+
+.scoreboard-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    flex-shrink: 0;
+    flex-grow: 0;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    > div.group-holder {
+        height: 25px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
+        align-items: center;
+        padding: 8px;
+    }
+
+    .group-title {
+        font-size: 14px;
+        flex-grow: 1;
+    }
+
+    .group-karma,
+    .group-score,
+    .group-ping {
+        text-align: center;
+        width: 125px;
+    }
+
+    &:not(:first-child) {
+        .group-karma,
+        .group-score,
+        .group-ping {
+            display: none;
+        }
+    }
+
+    .group-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &.alive {
+        > div.group-holder {
+            background-color: $alive;
+        }
+    }
+
+    &.dead {
+        > div.group-holder {
+            background-color: $dead;
+        }
+    }
+
+    &.missing {
+        > div.group-holder {
+            background-color: $missing;
+        }
+    }
+
+    &.spectator {
+        > div.group-holder {
+            background-color: $spectator;
+        }
+    }
+}

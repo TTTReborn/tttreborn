@@ -4,9 +4,7 @@ using System.Linq;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
 using TTTReborn.Items;
 
 namespace TTTReborn.UI
@@ -33,6 +31,7 @@ namespace TTTReborn.UI
 
             AddClass("opacity-heavy");
             AddClass("text-shadow");
+            AddClass("inventory-selection");
 
             if (Local.Pawn is not Player player)
             {
@@ -165,7 +164,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            AddChild(new InventorySlot(this, carriable));
+            AddChild(new InventorySlot(carriable));
             SortChildren((p1, p2) =>
             {
                 InventorySlot s1 = p1 as InventorySlot;
@@ -310,7 +309,7 @@ namespace TTTReborn.UI
             return -1;
         }
 
-        private static string FormatAmmo(Weapon weapon, Inventory inventory)
+        public static string FormatAmmo(Weapon weapon, Inventory inventory)
         {
             if (weapon.CurrentClip.UnlimitedAmmo)
             {
@@ -318,52 +317,6 @@ namespace TTTReborn.UI
             }
 
             return $"{weapon.ClipAmmo} + {inventory.Ammo.Count(weapon.CurrentClip.AmmoName)}";
-        }
-
-        private class InventorySlot : Panel
-        {
-            public ICarriableItem Carriable { get; init; }
-            public Label SlotLabel;
-            private readonly Label _ammoLabel;
-
-            public InventorySlot(Panel parent, ICarriableItem carriable) : base(parent)
-            {
-                Parent = parent;
-                Carriable = carriable;
-
-                AddClass("background-color-primary");
-
-                SlotLabel = Add.Label(Inventory.GetSlotByCategory(carriable.CarriableInfo.Category).ToString());
-                SlotLabel.AddClass("slot-label");
-
-                _ = Add.TranslationLabel(new TranslationData(Utils.GetTranslationKey(carriable.Info.LibraryName, "NAME")));
-
-                _ammoLabel = Add.Label();
-
-                if (Local.Pawn is Player player)
-                {
-                    if (carriable is Weapon weapon && carriable.CarriableInfo.Category != CarriableCategories.Melee)
-                    {
-                        _ammoLabel.Text = FormatAmmo(weapon, player.Inventory);
-                        _ammoLabel.AddClass("ammo-label");
-                    }
-                }
-            }
-
-            public override void Tick()
-            {
-                base.Tick();
-
-                if (Local.Pawn is Player player)
-                {
-                    SlotLabel.Style.BackgroundColor = player.Team.Color;
-                }
-            }
-
-            public void UpdateAmmo(string ammoText)
-            {
-                _ammoLabel.Text = ammoText;
-            }
         }
     }
 }

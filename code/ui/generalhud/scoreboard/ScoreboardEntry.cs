@@ -1,41 +1,26 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Roles;
 
+#pragma warning disable IDE0052
+
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class ScoreboardEntry : Panel
     {
         public string ScoreboardGroupName;
         public Client Client;
 
-        private readonly Image _playerAvatar;
-        private readonly Label _playerName;
+        private Image PlayerAvatar { get; set; }
+        private string PlayerName { get; set; }
 
-        private readonly Label _score;
-        private readonly Label _karma;
-        private readonly Label _ping;
+        private string Score { get; set; }
+        private string Karma { get; set; }
+        private string Ping { get; set; }
 
         private float _nextUpdate = 0f;
-
-        public ScoreboardEntry()
-        {
-            AddClass("text-shadow");
-            AddClass("entry");
-
-            _playerAvatar = Add.Image();
-            _playerAvatar.AddClass("circular");
-            _playerAvatar.AddClass("avatar");
-
-            _playerName = Add.Label();
-            _playerName.AddClass("name-label");
-
-            _score = Add.Label("", "score");
-            _karma = Add.Label("", "karma");
-            _ping = Add.Label("", "ping");
-        }
 
         public virtual void Update()
         {
@@ -44,9 +29,9 @@ namespace TTTReborn.UI
                 return;
             }
 
-            _playerName.Text = Client.Name;
-            _score.Text = Client.GetInt("score").ToString();
-            _karma.Text = Client.GetInt("karma").ToString();
+            PlayerName = Client.Name;
+            Score = Client.GetInt("score").ToString();
+            Karma = Client.GetInt("karma").ToString();
 
             SetClass("me", Client == Local.Client);
 
@@ -64,7 +49,7 @@ namespace TTTReborn.UI
                 Style.BackgroundColor = null;
             }
 
-            _playerAvatar.SetTexture($"avatar:{Client.PlayerId}");
+            PlayerAvatar.SetTexture($"avatar:{Client.PlayerId}");
         }
 
         public override void Tick()
@@ -75,7 +60,7 @@ namespace TTTReborn.UI
             {
                 _nextUpdate = Time.Now + 1f;
 
-                _ping.Text = Client.Ping.ToString();
+                Ping = Client.Ping.ToString();
             }
         }
     }

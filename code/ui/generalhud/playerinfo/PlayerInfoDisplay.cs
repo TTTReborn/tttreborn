@@ -1,34 +1,15 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
+
+#pragma warning disable IDE0052
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class PlayerInfoDisplay : Panel
     {
-        private readonly Panel _healthPanel;
-        private readonly Label _healthLabel;
-        private readonly Panel _creditPanel;
-        private readonly Label _creditLabel;
-
-        public PlayerInfoDisplay() : base()
-        {
-            StyleSheet.Load("/ui/generalhud/playerinfo/PlayerInfoDisplay.scss");
-
-            AddClass("background-color-primary");
-            AddClass("rounded");
-            AddClass("opacity-heavy");
-            AddClass("text-shadow");
-
-            _healthPanel = new Panel(this);
-            _creditPanel = new Panel(this);
-
-            _healthLabel = _healthPanel.Add.Label();
-            _healthLabel.AddClass("info");
-
-            _creditLabel = _creditPanel.Add.Label();
-            _creditLabel.AddClass("info");
-        }
+        private string Health { get; set; }
+        private string Credits { get; set; }
 
         public override void Tick()
         {
@@ -39,12 +20,10 @@ namespace TTTReborn.UI
                 return;
             }
 
-            this.Enabled(Local.Pawn is Player || (player.IsSpectator && player.IsSpectatingPlayer));
+            this.Enabled(player.CurrentPlayer.LifeState == LifeState.Alive);
 
-            _healthLabel.SetClass("hidden", player.CurrentPlayer.LifeState == LifeState.Alive);
-            _healthLabel.Text = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";
-
-            _creditLabel.Text = $"$ {player.CurrentPlayer.Credits}";
+            Health = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";
+            Credits = $"$ {player.CurrentPlayer.Credits}";
         }
     }
 }

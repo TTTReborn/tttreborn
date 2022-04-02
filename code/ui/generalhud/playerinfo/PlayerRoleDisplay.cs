@@ -1,30 +1,15 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class PlayerRoleDisplay : Panel
     {
-        private readonly TranslationLabel _roleLabel;
-
-        public PlayerRoleDisplay() : base()
-        {
-            StyleSheet.Load("/ui/generalhud/playerinfo/PlayerRoleDisplay.scss");
-
-            AddClass("rounded");
-            AddClass("centered-horizontal");
-            AddClass("opacity-heavy");
-            AddClass("text-shadow");
-
-            _roleLabel = Add.TranslationLabel(new TranslationData());
-            _roleLabel.AddClass("centered");
-            _roleLabel.AddClass("role-label");
-
-            OnRoleUpdate(Local.Pawn as Player);
-        }
+        private TranslationLabel RoleLabel { get; set; }
+        private Roles.Role _role;
 
         public override void Tick()
         {
@@ -36,19 +21,18 @@ namespace TTTReborn.UI
             }
 
             this.Enabled(!player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound);
-        }
 
-        [Event(typeof(Events.Player.Role.SelectEvent))]
-        protected void OnRoleUpdate(Player player)
-        {
-            if (player == null || player != Local.Pawn as Player)
+            if (this.IsEnabled())
             {
-                return;
+                if (player.Role.Name != _role?.Name)
+                {
+                    _role = player.Role;
+
+                    Style.BackgroundColor = _role.Color;
+
+                    RoleLabel.UpdateTranslation(new TranslationData(_role.GetTranslationKey("NAME")));
+                }
             }
-
-            Style.BackgroundColor = player.Role.Color;
-
-            _roleLabel.UpdateTranslation(new TranslationData(player.Role.GetTranslationKey("NAME")));
         }
     }
 }

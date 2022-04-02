@@ -8,13 +8,14 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class VoiceChatEntry : Panel
     {
-        public Friend Friend;
+        public Friend Friend { get; set; }
 
-        public readonly Label Name;
-        public readonly Image Avatar;
-        public readonly Client Client;
+        public string Name { get; set; }
+        public Image Avatar { get; set; }
+        public Client Client { get; }
 
         private float _voiceLevel = 0.5f;
         private float _targetVoiceLevel = 0;
@@ -22,29 +23,19 @@ namespace TTTReborn.UI
 
         private RealTimeSince _timeSincePlayed;
 
-        public VoiceChatEntry(Panel parent, Client client) : base(parent)
+        public VoiceChatEntry(Client client)
         {
-            Parent = parent;
-
             Client = client;
             Friend = new(client.PlayerId);
+            Name = Friend.Name;
 
-            Avatar = Add.Image("", "avatar");
             Avatar.SetTexture($"avatar:{client.PlayerId}");
-            Avatar.AddClass("circular");
-
-            Name = Add.Label(Friend.Name, "name");
-
-            AddClass("background-color-primary");
-            AddClass("rounded");
-            AddClass("opacity-heavy");
-            AddClass("text-shadow");
         }
 
         public void Update(float level)
         {
             _timeSincePlayed = 0;
-            Name.Text = Friend.Name;
+            Name = Friend.Name;
             _targetVoiceLevel = level;
 
             if (Client != null && Client.IsValid() && Client.Pawn is Player player)

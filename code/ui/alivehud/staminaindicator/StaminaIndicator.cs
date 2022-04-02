@@ -1,35 +1,21 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
+
+#pragma warning disable IDE0052
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public partial class StaminaIndicator : Panel
     {
         public static StaminaIndicator Instance;
 
-        private readonly Panel _staminaBar;
-        private readonly Label _staminaLabel;
+        private Panel StaminaBar { get; set; }
+        private string Stamina { get; set; }
 
         public StaminaIndicator() : base()
         {
             Instance = this;
-
-            StyleSheet.Load("/ui/alivehud/staminaindicator/StaminaIndicator.scss");
-
-            AddClass("text-shadow");
-
-            _staminaBar = new(this);
-            _staminaBar.AddClass("stamina-bar");
-            _staminaBar.AddClass("center-horizontal");
-            _staminaBar.AddClass("rounded");
-
-            _staminaLabel = Add.Label();
-            _staminaLabel.AddClass("stamina-label");
-
-            this.Enabled(true);
-
-            Style.ZIndex = -1;
         }
 
         public override void Tick()
@@ -43,10 +29,10 @@ namespace TTTReborn.UI
 
             if (playerController.Stamina < DefaultWalkController.MAX_STAMINA)
             {
-                _staminaBar.Style.Width = Length.Percent(playerController.Stamina);
+                StaminaBar.Style.Width = Length.Percent(playerController.Stamina);
             }
 
-            _staminaLabel.Text = playerController.Stamina.ToString("F0");
+            Stamina = playerController.Stamina.ToString("F0");
 
             SetClass("fade-in", playerController.Stamina < DefaultWalkController.MAX_STAMINA);
         }

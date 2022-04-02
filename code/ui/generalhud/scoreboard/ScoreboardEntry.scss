@@ -1,0 +1,49 @@
+.scoreboard-entry {
+    width: 100%;
+    height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    padding: 8px;
+
+    .avatar {
+        height: 25px;
+        width: 25px;
+    }
+
+    .name {
+        margin-left: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        flex-grow: 1;
+    }
+
+    .karma,
+    .score,
+    .ping {
+        width: 125px;
+        text-align: center;
+        font-weight: 700;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    &:nth-child( odd ) {
+        background-color: #0a0a0a66;
+    }
+
+    &:nth-child( even ) {
+        background-color: #4b4b4b15;
+    }
+
+    &.me:nth-child(1) {
+        background-color: #f2b42d1a;
+    }
+
+    &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+}

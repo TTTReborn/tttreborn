@@ -2,25 +2,24 @@ using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
 using TTTReborn.Items;
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public partial class QuickShop : Panel
     {
-        public static QuickShop Instance;
+        public static QuickShop Instance { get; internal set; }
 
-        public static ShopItemData _selectedItemData;
+        public static ShopItemData SelectedItemData { get; set; }
 
         private readonly List<QuickShopItem> _items = new();
-        private readonly Panel _backgroundPanel;
-        private readonly Panel _quickshopContainer;
-        private readonly TranslationLabel _creditLabel;
-        private readonly Panel _itemPanel;
-        private readonly TranslationLabel _itemDescriptionLabel;
+        private Panel QuickshopContainer { get; set; }
+        private TranslationLabel CreditsLabel { get; set; }
+        private Panel ItemPanel { get; set; }
+        private TranslationLabel ItemDescriptionLabel { get; set; }
 
         private int _credits = 0;
 
@@ -32,34 +31,13 @@ namespace TTTReborn.UI
                 this.Enabled(value);
 
                 SetClass("fade-in", this.IsEnabled());
-                _quickshopContainer.SetClass("pop-in", this.IsEnabled());
+                QuickshopContainer.SetClass("pop-in", this.IsEnabled());
             }
         }
 
-        public QuickShop() : base()
+        public QuickShop()
         {
             Instance = this;
-
-            StyleSheet.Load("/ui/alivehud/quickshop/QuickShop.scss");
-
-            AddClass("text-shadow");
-
-            _backgroundPanel = new Panel(this);
-            _backgroundPanel.AddClass("background-color-secondary");
-            _backgroundPanel.AddClass("opacity-medium");
-            _backgroundPanel.AddClass("fullscreen");
-
-            _quickshopContainer = new Panel(this);
-            _quickshopContainer.AddClass("quickshop-container");
-
-            _creditLabel = _quickshopContainer.Add.TranslationLabel(new TranslationData());
-            _creditLabel.AddClass("credit-label");
-
-            _itemPanel = new Panel(_quickshopContainer);
-            _itemPanel.AddClass("item-panel");
-
-            _itemDescriptionLabel = _quickshopContainer.Add.TranslationLabel(new TranslationData());
-            _itemDescriptionLabel.AddClass("item-description-label");
 
             Reload();
 
@@ -68,9 +46,9 @@ namespace TTTReborn.UI
 
         public void Reload()
         {
-            _itemPanel?.DeleteChildren(true);
+            ItemPanel?.DeleteChildren(true);
 
-            _selectedItemData = null;
+            SelectedItemData = null;
 
             if (Local.Pawn is not Player player)
             {
@@ -92,19 +70,19 @@ namespace TTTReborn.UI
 
         private void AddItem(ShopItemData itemData)
         {
-            QuickShopItem item = new(_itemPanel);
+            QuickShopItem item = new();
             item.SetItem(itemData);
 
             item.AddEventListener("onmouseover", () =>
             {
-                _selectedItemData = itemData;
+                SelectedItemData = itemData;
 
                 Update();
             });
 
             item.AddEventListener("onmouseout", () =>
             {
-                _selectedItemData = null;
+                SelectedItemData = null;
 
                 Update();
             });
@@ -116,34 +94,35 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                if (_selectedItemData?.IsBuyable(Local.Pawn as Player) ?? false)
+                if (SelectedItemData?.IsBuyable(Local.Pawn as Player) ?? false)
                 {
                     Player.RequestItem(item.ItemData?.Name);
 
                     // The item was purchased, let's deselect it from the UI.
-                    _selectedItemData = null;
+                    SelectedItemData = null;
                 }
 
                 Update();
             });
 
             _items.Add(item);
+            ItemPanel.AddChild(item);
         }
 
         public void Update()
         {
-            _creditLabel.UpdateTranslation(new TranslationData("QUICKSHOP.CREDITS.DESCRIPTION", _credits));
+            CreditsLabel.UpdateTranslation(new TranslationData("QUICKSHOP.CREDITS.DESCRIPTION", _credits));
 
             foreach (QuickShopItem item in _items)
             {
                 item.Update();
             }
 
-            _itemDescriptionLabel.SetClass("fade-in", _selectedItemData != null);
+            ItemDescriptionLabel.SetClass("fade-in", SelectedItemData != null);
 
-            if (_selectedItemData != null)
+            if (SelectedItemData != null)
             {
-                _itemDescriptionLabel.UpdateTranslation(new TranslationData("QUICKSHOP.ITEM.DESCRIPTION", new TranslationData(_selectedItemData?.GetTranslationKey("NAME"))));
+                ItemDescriptionLabel.UpdateTranslation(new TranslationData("QUICKSHOP.ITEM.DESCRIPTION", new TranslationData(SelectedItemData.GetTranslationKey("NAME"))));
             }
         }
 

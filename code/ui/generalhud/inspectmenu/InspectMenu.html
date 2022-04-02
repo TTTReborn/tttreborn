@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="InspectMenu.scss">
+
+<div class="text-shadow inspectmenu">
+    <div @ref="BackgroundPanel" class="background-color-secondary opacity-medium fullscreen"></div>
+    <div @ref="InspectContainer" class="inspect-container">
+        <img @ref="AvatarImage" class="avatar-image box-shadow circular" />
+        <text @ref="PlayerLabel" class="player-label"></text>
+        <translationlabel @ref="RoleLabel" class="role-label"></translationlabel>
+        <div @ref="InspectIconsPanel" class="info-panel">
+            <inspectentry @ref="TimeSinceDeathEntry"></inspectentry>
+            <inspectentry @ref="SuicideEntry"></inspectentry>
+            <inspectentry @ref="WeaponEntry"></inspectentry>
+            <inspectentry @ref="HeadshotEntry"></inspectentry>
+            <inspectentry @ref="DistanceEntry"></inspectentry>
+        </div>
+        <translationlabel @ref="InspectDetailsLabel" class="inspect-details-label"></translationlabel>
+    </div>
+</div>

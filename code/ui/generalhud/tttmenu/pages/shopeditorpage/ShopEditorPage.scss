@@ -12,10 +12,10 @@
 .row {
     width: 33%;
     padding: 10px;
+    height: 100px;
 }
 
-QuickShopItem {
-    opacity: 1;
+.quickshopitem {
     height: 55px;
     align-items: center;
     justify-content: center;
@@ -24,6 +24,8 @@ QuickShopItem {
     white-space: nowrap;
     flex-shrink: 0;
     flex-grow: 1;
+    margin: 10px;
+    margin-left: 20px;
 
     &:hover {
         transform: scale(1.01);
@@ -39,22 +41,24 @@ QuickShopItem {
         background-repeat: no-repeat;
         background-size: contain;
         width: 40px;
-        height: 100%;
+        aspect-ratio: 1;
         left: 20px;
     }
 
-    .item-name-label {
+    .item-name {
         position: absolute;
         text-align: center;
         font-weight: 600;
         font-size: 14px;
+        top: 15px;
     }
 
-    .item-price-label {
+    .item-price {
         position: absolute;
         font-weight: bold;
         font-size: 20px;
         right: 20px;
+        top: 12px;
     }
 
     &.selected {

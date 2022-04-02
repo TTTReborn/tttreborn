@@ -7,6 +7,7 @@ using TTTReborn.Items;
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public class Effect : Panel
     {
         public IItem Item
@@ -19,12 +20,12 @@ namespace TTTReborn.UI
             {
                 _item = value;
 
-                _nameLabel.UpdateTranslation(new TranslationData(_item != null ? _item.GetTranslationKey("NAME") : ""));
-                _effectImage.Texture = _item != null ? Texture.Load(FileSystem.Mounted, $"assets/icons/{_item.Info.LibraryName}.png", false) : null;
+                NameLabel.UpdateTranslation(new TranslationData(_item != null ? _item.GetTranslationKey("NAME") : ""));
+                EffectImage.Texture = _item != null ? Texture.Load(FileSystem.Mounted, $"assets/icons/{_item.Info.LibraryName}.png", false) : null;
 
-                if (_effectImage.Texture == null)
+                if (EffectImage.Texture == null)
                 {
-                    _effectImage.Texture = Texture.Load(FileSystem.Mounted, $"assets/none.png");
+                    EffectImage.Texture = Texture.Load(FileSystem.Mounted, $"assets/none.png");
                 }
 
                 if (_item is CountdownPerk)
@@ -39,32 +40,19 @@ namespace TTTReborn.UI
         }
 
         private IItem _item;
-        private readonly TranslationLabel _nameLabel;
-        private readonly Panel _effectIconPanel;
-        private readonly Image _effectImage;
+        private TranslationLabel NameLabel { get; set; }
+        private Panel EffectIconPanel { get; set; }
+        private Image EffectImage { get; set; }
         private Label _countdownLabel;
 
-        public Effect(Panel parent, IItem effect) : base(parent)
+        public Effect(IItem effect)
         {
-            Parent = parent;
-
-            AddClass("text-shadow");
-
-            _effectIconPanel = new Panel(this);
-            _effectIconPanel.AddClass("effect-icon-panel");
-
-            _effectImage = _effectIconPanel.Add.Image();
-            _effectImage.AddClass("effect-image");
-
-            _nameLabel = Add.TranslationLabel(new TranslationData());
-            _nameLabel.AddClass("name-label");
-
             Item = effect;
         }
 
         private void ActivateCountdown()
         {
-            _countdownLabel = _effectIconPanel.Add.Label();
+            _countdownLabel = EffectIconPanel.Add.Label();
             _countdownLabel.AddClass("countdown");
             _countdownLabel.AddClass("centered");
             _countdownLabel.AddClass("text-shadow");
@@ -80,12 +68,12 @@ namespace TTTReborn.UI
 
                 if (currentCountdown == countdownPerk.Countdown.CeilToInt() || currentCountdown == 0)
                 {
-                    _effectImage.SetClass("cooldown", false);
+                    EffectImage.SetClass("cooldown", false);
                     _countdownLabel.Text = "";
                 }
                 else
                 {
-                    _effectImage.SetClass("cooldown", true);
+                    EffectImage.SetClass("cooldown", true);
                     _countdownLabel.Text = $"{currentCountdown:n0}";
                 }
             }
