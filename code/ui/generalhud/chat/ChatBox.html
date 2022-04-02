@@ -1,0 +1,9 @@
+<link rel="stylesheet" href="ChatBox.scss">
+
+<div class="wrapper">
+    <div @ref="Canvas" class="chat-canvas rounded"></div>
+    <div @ref="InputPanel" class="input-panel background-color-primary opacity-0 rounded">
+        <div @ref="InputTeamIndicator" class="input-team-indicator circular"></div>
+        <ChatBoxTextEntry @ref="InputField" class="input-field"></ChatBoxTextEntry>
+    </div>
+</div>

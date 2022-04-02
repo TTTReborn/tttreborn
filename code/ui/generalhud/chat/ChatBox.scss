@@ -34,7 +34,7 @@ ChatBox {
         max-height: 400px;
         overflow: scroll;
 
-        &.fadeOut {
+        &.fadeout {
             transition: opacity 2s ease-out;
             opacity: 0;
         }

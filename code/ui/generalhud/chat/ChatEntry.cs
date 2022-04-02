@@ -1,31 +1,14 @@
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
+    [UseTemplate]
     public partial class ChatEntry : Panel
     {
-        public readonly Panel Message;
-        public readonly Image Avatar;
-        public readonly Label Header;
-        public readonly Label Content;
-        public ChatBox.Channel Channel;
-
-        public ChatEntry() : base()
-        {
-            Avatar = Add.Image();
-            Avatar.AddClass("avatar");
-            Avatar.AddClass("circular");
-
-            Message = Add.Panel("message");
-
-            Header = Message.Add.Label();
-            Header.AddClass("header");
-            Header.AddClass("text-shadow");
-
-            Content = Message.Add.Label();
-            Content.AddClass("content");
-            Content.AddClass("text-shadow");
-        }
+        public Image Avatar { get; set; }
+        public Panel Message { get; set; }
+        public Label Header { get; set; }
+        public Label Content { get; set; }
+        public ChatBox.Channel Channel { get; set; }
     }
 }

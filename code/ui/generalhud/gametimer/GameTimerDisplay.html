@@ -1,0 +1,10 @@
+<link rel="stylesheet" href="GameTimerDisplay.scss">
+
+<div class="wrapper background-color-primary centered-horizontal opacity-heavy rounded text-shadow">
+    <div @ref="TimerPanel" class="timer-panel">
+        <text @ref="TimerLabel" class="timer-label"></text>
+    </div>
+    <div @ref="RoundPanel" class="round-panel">
+        <translationlabel @ref="RoundLabel" class="round-label text-color-info"></translationlabel>
+    </div>
+</div>
