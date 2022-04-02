@@ -1,0 +1,55 @@
+@import "../../Hud.scss";
+
+.tabmenu {
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+
+    &.fade-in {
+        transition: all 0.05s linear;
+        opacity: 1;
+    }
+
+    .tabmenu-container {
+        width: 75%;
+        height: 80%;
+        transform: scale(0.9);
+
+        .sidebar {
+            flex-shrink: 1;
+
+            background-color: $primary;
+            min-width: 58px;
+
+            flex-direction: column;
+
+            justify-content: flex-start;
+            align-items: center;
+
+            border-radius: 10px 0px 0px 10px;
+
+            > button {
+                width: 48px;
+                aspect-ratio: 1;
+                background-color: $button-primary;
+                margin-top: 5px;
+
+                text-align: center;
+
+                &.close {
+                    background-color: $dead;
+                }
+            }
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+    }
+
+    &.pop-in .tabmenu-container {
+        transform: scale(1);
+    }
+}

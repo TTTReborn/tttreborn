@@ -60,7 +60,10 @@ namespace TTTReborn.UI.VisualProgramming
 
             Content.SetPanelContent((panelContent) =>
             {
-                Workspace = new(panelContent);
+                Workspace = new()
+                {
+                    Parent = panelContent
+                };
                 Sidebar = new(panelContent);
 
                 LoadNodesFromStackJson(jsonData);

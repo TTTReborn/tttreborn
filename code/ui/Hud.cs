@@ -102,10 +102,8 @@ namespace TTTReborn.UI
                 AddChild<InfoFeed>();
                 AddChild<InspectMenu>();
                 AddChild<PostRoundMenu>();
-                AddChild<Scoreboard>();
-                AddChild<GameResultsMenu>();
                 AddChild<MapSelectionMenu>();
-                AddChild<TTTMenu>();
+                AddChild<TabMenu>();
             }
 
             // Use "GeneralHud" as the Panel that displays any s&box popups.

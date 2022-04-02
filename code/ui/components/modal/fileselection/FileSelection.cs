@@ -58,7 +58,10 @@ namespace TTTReborn.UI
 
             OnDecline = () => Close();
 
-            EntryPanelContent = new(Content);
+            EntryPanelContent = new()
+            {
+                Parent = EntryPanelContent
+            };
             EntryPanelContent.AddClass("selection");
 
             FileNameEntry = Content.Add.TranslationTextEntry();

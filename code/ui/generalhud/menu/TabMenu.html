@@ -1,0 +1,9 @@
+<link rel="stylesheet" href="TabMenu.scss">
+
+<div class="tabmenu fullscreen">
+    <div class="background-color-secondary opacity-medium fullscreen"></div>
+    <div @ref="MenuContainer" class="rounded tabmenu-container background-color-secondary box-shadow">
+        <div @ref="SidebarPanel" class="sidebar"></div>
+        <panelcontent @ref="ContentPanel" class="content"></panelcontent>
+    </div>
+</div>

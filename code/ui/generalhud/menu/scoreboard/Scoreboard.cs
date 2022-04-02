@@ -163,13 +163,6 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (!Input.Down(InputButton.Score))
-            {
-                SetClass("fade-in", false);
-
-                return;
-            }
-
             bool invalidList = _entries.Count != Client.All.Count;
 
             if (!invalidList)
@@ -220,9 +213,6 @@ namespace TTTReborn.UI
 
                 UpdateScoreboardGroups();
             }
-
-            SetClass("fade-in", true);
-            ScoreboardContainer.SetClass("pop-in", true);
         }
 
         private ScoreboardGroup AddScoreboardGroup(string groupName)

@@ -22,7 +22,10 @@ namespace TTTReborn.UI
             Header.AddClass("rounded-top");
             Header.AddClass("background-color-primary");
 
-            Content = new(this);
+            Content = new()
+            {
+                Parent = Content
+            };
             Content.AddClass("content");
             Content.AddClass("background-color-primary");
 

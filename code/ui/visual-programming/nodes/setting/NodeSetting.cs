@@ -46,13 +46,20 @@ namespace TTTReborn.UI.VisualProgramming
         {
             LibraryName = Utils.GetLibraryName(GetType());
 
-            Input = new(this);
-            Input.Node = Node;
+            Input = new(this)
+            {
+                Node = Node
+            };
 
-            Content = new(this);
+            Content = new()
+            {
+                Parent = this
+            };
 
-            Output = new(this);
-            Output.Node = Node;
+            Output = new(this)
+            {
+                Node = Node
+            };
 
             AddClass("nodesetting");
         }

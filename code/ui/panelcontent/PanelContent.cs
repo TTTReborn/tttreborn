@@ -49,11 +49,6 @@ namespace TTTReborn.UI
 
         private int _historyIndex = 0;
 
-        public PanelContent(Panel parent = null) : base(parent)
-        {
-
-        }
-
         public void Reset()
         {
             _contentHistory.Clear();
