@@ -7,6 +7,18 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
+    public struct TabMenuData
+    {
+        public Panel Panel { get; set; }
+        public Action<Panel> OnLeave { get; set; }
+
+        public TabMenuData(Panel panel, Action<Panel> onLeave)
+        {
+            Panel = panel;
+            OnLeave = onLeave;
+        }
+    }
+
     [UseTemplate]
     public partial class TabMenu : Panel
     {
@@ -21,7 +33,7 @@ namespace TTTReborn.UI
         private readonly string _defaultPage = "scoreboard";
         private readonly string _defaultIcon = "score";
 
-        private Dictionary<string, Panel> Panels { get; set; } = new();
+        private Dictionary<string, TabMenuData> TabMenuData { get; set; } = new();
 
         public TabMenu()
         {
@@ -35,19 +47,25 @@ namespace TTTReborn.UI
             DefaultButton = AddMenu(_defaultPage, new Scoreboard(), _defaultIcon);
 
             AddMenu("results", new GameResultsMenu(), "bar_chart");
-            AddMenu("menu", new TTTMenu(), "settings");
+
+            TTTMenu tttmenu = new();
+
+            AddMenu("menu", tttmenu, "settings", (pnl) =>
+            {
+                (pnl as TTTMenu).PopToHomePage();
+            });
 
             SelectMenu(_defaultPage);
         }
 
-        public Button AddMenu<T>(string name, T panel, string icon) where T : Panel
+        public Button AddMenu<T>(string name, T panel, string icon, Action<Panel> onLeave = null) where T : Panel
         {
-            if (Panels.ContainsKey(name) || panel == null)
+            if (TabMenuData.ContainsKey(name) || panel == null)
             {
                 return null;
             }
 
-            Panels.Add(name, panel);
+            TabMenuData.Add(name, new(panel, onLeave));
             ContentPanel.AddChild(panel);
 
             panel.Enabled(false);
@@ -67,19 +85,23 @@ namespace TTTReborn.UI
                 return;
             }
 
-            foreach (Panel pnl in ContentPanel.Children)
+            foreach (TabMenuData data in TabMenuData.Values)
             {
-                pnl.Enabled(false);
+                if (data.Panel != null && data.Panel.IsEnabled())
+                {
+                    data.OnLeave?.Invoke(data.Panel);
+                    data.Panel.Enabled(false);
+                }
             }
 
             SelectedMenu = name;
 
-            if (!Panels.TryGetValue(name, out Panel panel) || panel == null)
+            if (!TabMenuData.TryGetValue(name, out TabMenuData tabMenuData) || tabMenuData.Panel == null)
             {
                 return;
             }
 
-            panel.Enabled(true);
+            tabMenuData.Panel.Enabled(true);
         }
 
         public override void Tick()
