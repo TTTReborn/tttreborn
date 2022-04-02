@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 using Sandbox;
 
@@ -15,19 +14,29 @@ namespace TTTReborn.Rounds
         public virtual int RoundDuration { get; set; } = 0;
         public virtual string RoundName { get; set; } = "";
 
+        [Net]
         public float RoundEndTime { get; set; }
 
+        [Net]
         public float TimeLeft => RoundEndTime - Time.Now;
 
-        [Net, JsonIgnore]
+        [Net]
+        public float StartedAt { get; set; }
+
+        [Net]
         public string TimeLeftFormatted { get; set; }
 
         public void Start()
         {
-            if (Host.IsServer && RoundDuration > 0)
+            if (Host.IsServer)
             {
-                RoundEndTime = Time.Now + RoundDuration;
-                TimeLeftFormatted = Utils.TimerString(TimeLeft);
+                StartedAt = Time.Now;
+
+                if (RoundDuration > 0)
+                {
+                    RoundEndTime = Time.Now + RoundDuration;
+                    TimeLeftFormatted = Utils.TimerString(TimeLeft);
+                }
             }
 
             OnStart();
@@ -70,7 +79,7 @@ namespace TTTReborn.Rounds
                 }
                 else
                 {
-                    TimeLeftFormatted = TimeSpan.FromSeconds(TimeLeft).ToString(@"mm\:ss");
+                    TimeLeftFormatted = Utils.TimerString(TimeLeft);
                 }
             }
         }

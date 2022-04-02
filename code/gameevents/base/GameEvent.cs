@@ -40,7 +40,7 @@ namespace TTTReborn
 
             BaseRound baseRound = Gamemode.Game.Instance.Round;
 
-            CreatedAt = baseRound.RoundDuration - baseRound.TimeLeft;
+            CreatedAt = baseRound.RoundEndTime - baseRound.StartedAt - baseRound.TimeLeft;
         }
 
         public virtual void Run() => Event.Run(Name);

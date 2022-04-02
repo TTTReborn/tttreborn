@@ -16,7 +16,7 @@ namespace TTTReborn.UI
 
         public string FormattedCreatedAt
         {
-            get => $"[{TimeSpan.FromSeconds(CreatedAt):mm\\:ss}]";
+            get => $"[{Utils.TimerString(CreatedAt)}]";
         }
 
         private Panel EventIcon { get; set; }
