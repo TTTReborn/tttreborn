@@ -82,7 +82,7 @@ namespace TTTReborn.UI
                 Panel wrapper = new(RoleShopContent);
                 wrapper.AddClass("row");
 
-                QuickShopItem item = new(wrapper);
+                QuickShopItem item = new();
                 item.SetItem(shopItemData);
                 item.AddEventListener("onclick", () =>
                 {
@@ -110,6 +110,7 @@ namespace TTTReborn.UI
                 wrapper.Add.LineBreak();
 
                 ShopItems.Add(item);
+                wrapper.AddChild(item);
             }
         }
     }
