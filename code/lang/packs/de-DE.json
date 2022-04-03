@@ -224,8 +224,7 @@
             },
             "MENUS": {
                 "TITLE": "Menüs",
-                "SCOREBOARD": "Scoreboard",
-                "MENU": "Menü",
+                "MENU": "Scoreboard, Menü, Logs etc.",
                 "QUICKSHOP": "QuickShop"
             }
         },
