@@ -270,7 +270,14 @@
         "EMPTY": "Events werden erst zum Rundenende erstellt.",
         "TITLE": "Events der letzten Runde:",
         "ALLFILTER": "Global",
-        "PLAYERFILTER": "Du"
+        "PLAYERFILTER": "Du",
+        "EVENTS": {
+            "SCORING": {
+                "PLAYERNAME": "Spielername",
+                "SCORE": "Punkte",
+                "KARMA": "Karma"
+            }
+        }
     },
     "MAPSELECTION": {
         "VOTE": "Wähle die nächste Map!"

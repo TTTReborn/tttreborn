@@ -270,7 +270,14 @@
         "EMPTY": "Events are just created at the end of a round.",
         "TITLE": "Events of the last round:",
         "ALLFILTER": "Global",
-        "PLAYERFILTER": "You"
+        "PLAYERFILTER": "You",
+        "EVENTS": {
+            "SCORING": {
+                "PLAYERNAME": "Playername",
+                "SCORE": "Score",
+                "KARMA": "Karma"
+            }
+        }
     },
     "MAPSELECTION": {
         "VOTE": "Vote for the next map!"

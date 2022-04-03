@@ -301,5 +301,15 @@ namespace TTTReborn.Globals
 
             return translationKey.ToUpper();
         }
+
+        public static string GetFormattedNumber(int number)
+        {
+            if (number > 0)
+            {
+                return $"+{number}";
+            }
+
+            return number.ToString();
+        }
     }
 }

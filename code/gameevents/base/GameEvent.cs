@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 using Sandbox;
@@ -26,7 +27,6 @@ namespace TTTReborn
 
         public float CreatedAt { get; set; }
 
-        [JsonIgnore]
         public GameEventScoring[] Scoring { get; set; } = Array.Empty<GameEventScoring>();
 
         public GameEvent()
@@ -78,7 +78,23 @@ namespace TTTReborn
     {
         public int Score { get; set; } = 0;
         public int Karma { get; set; } = 0;
-        public Player Player { get; set; }
+        public long PlayerId { get; set; }
+
+        [JsonIgnore]
+        public Player Player
+        {
+            get
+            {
+                Client client = Client.All.First((cl) => cl.PlayerId == PlayerId);
+
+                if (client != null && client.Pawn is Player player)
+                {
+                    return player;
+                }
+
+                return null;
+            }
+        }
 
         public bool IsInitialized { get; set; } = false;
 
@@ -98,7 +114,10 @@ namespace TTTReborn
 
         public GameEventScoring(Player player)
         {
-            Player = player;
+            if (player != null && player.Client != null)
+            {
+                PlayerId = player.Client.PlayerId;
+            }
         }
     }
 }
