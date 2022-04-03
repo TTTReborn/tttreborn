@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Text.Json.Serialization;
 
 using Sandbox;
@@ -83,17 +82,7 @@ namespace TTTReborn
         [JsonIgnore]
         public Player Player
         {
-            get
-            {
-                Client client = Client.All.First((cl) => cl.PlayerId == PlayerId);
-
-                if (client != null && client.Pawn is Player player)
-                {
-                    return player;
-                }
-
-                return null;
-            }
+            get => Utils.GetPlayerById(PlayerId);
         }
 
         public bool IsInitialized { get; set; } = false;

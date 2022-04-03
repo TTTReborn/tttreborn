@@ -7,8 +7,6 @@ namespace TTTReborn.Events
 {
     public partial class ClientGameEvent : NetworkableGameEvent
     {
-        public int Ident { get; set; }
-
         public long PlayerId { get; set; }
 
         public string PlayerName { get; set; }
@@ -16,14 +14,13 @@ namespace TTTReborn.Events
         [JsonIgnore]
         public Client Client
         {
-            get => Client.All.First((cl) => cl.NetworkIdent == Ident);
+            get => Client.All.First((cl) => cl.PlayerId == PlayerId);
         }
 
         public ClientGameEvent(Client client) : base()
         {
             if (client != null)
             {
-                Ident = client.NetworkIdent;
                 PlayerId = client.PlayerId;
                 PlayerName = client.Name;
             }

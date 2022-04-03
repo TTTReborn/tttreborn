@@ -20,12 +20,20 @@ namespace TTTReborn.Events.Player
         [JsonIgnore]
         public Entity Attacker
         {
-            get => Entity.All.First((ent) => ent.NetworkIdent == AttackerIdent);
+            get
+            {
+                if (AttackerPlayerId != null)
+                {
+                    return Utils.GetPlayerById((long) AttackerPlayerId);
+                }
+
+                return Entity.All.First((ent) => ent.NetworkIdent == AttackerIdent);
+            }
         }
 
         public string AttackerName { get; set; }
 
-        public bool IsAttackerPlayer { get; set; }
+        public long? AttackerPlayerId { get; set; }
 
         /// <summary>
         /// Occurs when a player takes damage.
@@ -39,12 +47,12 @@ namespace TTTReborn.Events.Player
 
             if (player != null && attacker != null)
             {
-                IsAttackerPlayer = attacker is TTTReborn.Player;
                 AttackerIdent = attacker.NetworkIdent;
 
-                if (IsAttackerPlayer)
+                if (attacker is TTTReborn.Player)
                 {
                     AttackerName = attacker.Client.Name;
+                    AttackerPlayerId = player.Client.PlayerId;
                 }
                 else
                 {
@@ -73,7 +81,7 @@ namespace TTTReborn.Events.Player
                     {
                         current = takeDamageEvent;
                     }
-                    else if (current.Ident == takeDamageEvent.Ident && current.AttackerIdent == takeDamageEvent.AttackerIdent)
+                    else if (current.PlayerId == takeDamageEvent.PlayerId && current.AttackerPlayerId == takeDamageEvent.AttackerPlayerId)
                     {
                         current.Damage += takeDamageEvent.Damage;
                     }
