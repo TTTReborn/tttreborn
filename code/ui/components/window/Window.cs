@@ -10,7 +10,7 @@ namespace TTTReborn.UI
         public PanelContent Content;
         public Panel Footer;
 
-        public Window(Panel parent = null) : base(parent)
+        public Window() : base()
         {
             AddClass("panel");
             AddClass("window");
@@ -24,7 +24,7 @@ namespace TTTReborn.UI
 
             Content = new()
             {
-                Parent = Content
+                Parent = this
             };
             Content.AddClass("content");
             Content.AddClass("background-color-primary");

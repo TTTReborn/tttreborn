@@ -4,16 +4,11 @@ using System.Text.Json;
 
 using Sandbox.UI;
 
-/*
-  TODO
- - fix matrix issues
-*/
-
 namespace TTTReborn.UI.VisualProgramming
 {
     public partial class Window : UI.Window
     {
-        public static Window Instance;
+        public static Window Instance { get; set; }
 
         public MainNode MainNode;
         public List<Node> Nodes;
@@ -23,7 +18,7 @@ namespace TTTReborn.UI.VisualProgramming
 
         public Button BuildButton;
 
-        private Window(Panel parent, string jsonData) : base(parent)
+        private Window(string jsonData) : base()
         {
             Instance = this;
             Nodes = new();
@@ -101,7 +96,10 @@ namespace TTTReborn.UI.VisualProgramming
                 Instance.Delete(true);
             }
 
-            return new Window(parent, jsonData);
+            return new Window(jsonData)
+            {
+                Parent = parent
+            };
         }
 
         public T AddNode<T>() where T : Node, new()

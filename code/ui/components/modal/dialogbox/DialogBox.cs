@@ -12,7 +12,7 @@ namespace TTTReborn.UI
         public Action OnAgree { get; set; }
         public Action OnDecline { get; set; }
 
-        public DialogBox(Panel parent = null) : base(parent)
+        public DialogBox() : base()
         {
             StyleSheet.Load("/ui/components/modal/dialogbox/DialogBox.scss");
 
