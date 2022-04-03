@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 using Sandbox;
@@ -32,6 +33,49 @@ namespace TTTReborn.Events.Game
         public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), Team != null ? new TranslationData(Team.GetTranslationKey("NAME")) : "???");
 
         public override void Run() => Event.Run(Name, Team);
+
+        protected override void OnRegister()
+        {
+            List<TTTReborn.Player> list = new();
+            int aliveWinners = 0;
+
+            foreach (TTTReborn.Player player in Utils.GetPlayers())
+            {
+                if (player.Role is not Roles.NoneRole)
+                {
+                    list.Add(player);
+
+                    if (player.LifeState == LifeState.Alive && player.Team?.Name == TeamName)
+                    {
+                        aliveWinners++;
+                    }
+                }
+            }
+
+            Scoring = new GameEventScoring[list.Count];
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                TTTReborn.Player player = list[i];
+
+                if (player.Team?.Name == TeamName)
+                {
+                    Scoring[i] = new(player)
+                    {
+                        Karma = 10 * aliveWinners,
+                        Score = 1 * aliveWinners
+                    };
+                }
+                else
+                {
+                    Scoring[i] = new(player)
+                    {
+                        Karma = 0,
+                        Score = -1
+                    };
+                }
+            }
+        }
 
         public bool Contains(Client client) => true;
     }

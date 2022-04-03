@@ -58,7 +58,7 @@ namespace TTTReborn.Events.Player
 
             GameEventScoring attackerScoring = new(attacker);
 
-            if (attacker.Role.Name.Equals(Player.Role.Name))
+            if (attacker.Team?.Name == Player.Team?.Name)
             {
                 attackerScoring.Score = -2;
                 attackerScoring.Karma = -100;
