@@ -57,6 +57,7 @@ namespace TTTReborn.Events.Player
                 else
                 {
                     AttackerName = attacker.Name;
+                    AttackerPlayerId = null;
                 }
             }
         }

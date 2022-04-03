@@ -380,7 +380,7 @@
         "PLAYER": {
             "TAKEDAMAGE": {
                 "TITLE": "A player received damage",
-                "DESCRIPTION": "'{0}' took {1} from '{2}' damage"
+                "DESCRIPTION": "'{0}' took {1} damage from '{2}'"
             },
             "DIED": {
                 "TITLE": "A player died",
