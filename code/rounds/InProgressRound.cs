@@ -136,12 +136,10 @@ namespace TTTReborn.Rounds
 
         private static void LoadPostRound(Team winningTeam)
         {
+            NetworkableGameEvent.RegisterNetworked(new Events.Game.FinishEvent(winningTeam));
+
             Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed++;
             Gamemode.Game.Instance.ForceRoundChange(new PostRound());
-            RPCs.ClientOpenAndSetPostRoundMenu(
-                winningTeam.Name,
-                winningTeam.Color
-            );
         }
 
         public override void OnSecond()

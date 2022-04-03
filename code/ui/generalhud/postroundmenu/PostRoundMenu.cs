@@ -1,6 +1,7 @@
 using Sandbox.UI;
 
 using TTTReborn.Globalization;
+using TTTReborn.Teams;
 
 namespace TTTReborn.UI
 {
@@ -19,7 +20,7 @@ namespace TTTReborn.UI
     [UseTemplate]
     public class PostRoundMenu : Panel
     {
-        public static PostRoundMenu Instance;
+        public static PostRoundMenu Instance { get; set; }
 
         private PostRoundStats _stats;
 
@@ -53,8 +54,17 @@ namespace TTTReborn.UI
 
             ContentLabel.UpdateTranslation(new TranslationData("WIN.DESCRIPTION"));
 
-            HeaderLabel.UpdateTranslation(new TranslationData($"WIN.{Utils.GetTranslationKey(_stats.WinningTeam)[5..]}"));
+            HeaderLabel.UpdateTranslation(new TranslationData(Utils.GetTranslationKey(_stats.WinningTeam, "WIN")));
             HeaderLabel.Style.FontColor = _stats.WinningColor;
+        }
+
+        [Event(typeof(Events.Game.FinishEvent))]
+        public static void OnFinishRound(Team team)
+        {
+            Instance.OpenAndSetPostRoundMenu(new PostRoundStats(
+                winningTeam: team.Name,
+                winningColor: team.Color
+            ));
         }
     }
 }

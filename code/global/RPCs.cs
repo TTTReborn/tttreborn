@@ -118,15 +118,6 @@ namespace TTTReborn.Globals
         }
 
         [ClientRpc]
-        public static void ClientOpenAndSetPostRoundMenu(string winningTeam, Color winningColor)
-        {
-            PostRoundMenu.Instance.OpenAndSetPostRoundMenu(new PostRoundStats(
-                winningTeam: winningTeam,
-                winningColor: winningColor
-            ));
-        }
-
-        [ClientRpc]
         public static void ClientClosePostRoundMenu()
         {
             PostRoundMenu.Instance.ClosePostRoundMenu();

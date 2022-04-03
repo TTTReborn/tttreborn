@@ -17,6 +17,23 @@
             "NAME": "Detektiv"
         }
     },
+    "TEAM": {
+        "INNOCENTS": {
+            "NAME": "Unschuldige",
+            "WIN": "DIE UNSCHULDIGEN GEWINNEN!"
+        },
+        "TRAITORS": {
+            "NAME": "Verräter",
+            "WIN": "DIE VERRÄTER GEWINNEN!"
+        },
+        "NONES": {
+            "NAME": "Niemand",
+            "WIN": "UNENTSCHIEDEN!"
+        }
+    },
+    "WIN": {
+        "DESCRIPTION": "Danke, dass Du TTT Reborn spielst, weitere Updates und Statistiken werden folgen!"
+    },
     "ROUND": {
         "STATE": {
             "WAITING": "Warten",
@@ -25,12 +42,6 @@
             "POST": "Runde vorbei",
             "MAP_SELECTION": "Wähle eine Map"
         }
-    },
-    "WIN": {
-        "INNOCENTS": "DIE UNSCHULDIGEN GEWINNEN!",
-        "TRAITORS": "DIE VERRÄTER GEWINNEN!",
-        "NONES": "UNENTSCHIEDEN!",
-        "DESCRIPTION": "Danke, dass Du TTT Reborn spielst, weitere Updates und Statistiken werden folgen!"
     },
     "PLAYER": {
         "STATUS": {
@@ -380,6 +391,12 @@
                     "TITLE": "Einem Spieler wurde eine neue Rolle zugewiesen",
                     "DESCRIPTION": "'{0}' wurde die Rolle '{1}' zugewiesen"
                 }
+            }
+        },
+        "GAME": {
+            "FINISH": {
+                "TITLE": "Rundenende",
+                "DESCRIPTION": "'{0}' hat gewonnen"
             }
         }
     }

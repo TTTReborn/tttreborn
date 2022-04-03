@@ -17,6 +17,23 @@
             "NAME": "Detective"
         }
     },
+    "TEAM": {
+        "INNOCENTS": {
+            "NAME": "Innocents",
+            "WIN": "THE INNOCENT WIN!"
+        },
+        "TRAITORS": {
+            "NAME": "Traitors",
+            "WIN": "THE TRAITORS WIN!"
+        },
+        "NONES": {
+            "NAME": "None",
+            "WIN": "IT'S A TIE!"
+        }
+    },
+    "WIN": {
+        "DESCRIPTION": "Thanks for playing TTT Reborn, more updates and stats to come!"
+    },
     "ROUND": {
         "STATE": {
             "WAITING": "Waiting",
@@ -25,12 +42,6 @@
             "POST": "Round over",
             "MAP_SELECTION": "Selecting next map"
         }
-    },
-    "WIN": {
-        "INNOCENTS": "THE INNOCENT WIN!",
-        "TRAITORS": "THE TRAITORS WIN!",
-        "NONES": "IT'S A TIE!",
-        "DESCRIPTION": "Thanks for playing TTT Reborn, more updates and stats to come!"
     },
     "PLAYER": {
         "STATUS": {
@@ -374,12 +385,18 @@
             "SPAWN": {
                 "TITLE": "A player respawned",
                 "DESCRIPTION": "'{0}' respawned"
+            },
+            "ROLE": {
+                "SELECT": {
+                    "TITLE": "A player received a new role",
+                    "DESCRIPTION": "'{0}' received the role '{1}'"
+                }
             }
         },
-        "ROLE": {
-            "SELECT": {
-                "TITLE": "A player received a new role",
-                "DESCRIPTION": "'{0}' received the role '{1}'"
+        "GAME": {
+            "FINISH": {
+                "TITLE": "End of round",
+                "DESCRIPTION": "'{0}' have won"
             }
         }
     }

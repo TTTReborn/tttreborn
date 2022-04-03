@@ -57,11 +57,8 @@ namespace TTTReborn.Map
             if (Gamemode.Game.Instance.Round is InProgressRound)
             {
                 //Logic taken from InProgressRound.LoadPostRound. Should reference the function instead?
+                NetworkableGameEvent.RegisterNetworked(new Events.Game.FinishEvent(team));
                 Gamemode.Game.Instance.ForceRoundChange(new PostRound());
-                RPCs.ClientOpenAndSetPostRoundMenu(
-                    team.Name,
-                    team.Color
-                );
             }
         }
     }
