@@ -1,3 +1,5 @@
+using Sandbox;
+
 using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player
@@ -80,5 +82,7 @@ namespace TTTReborn.Events.Player
                 attackerScoring
             };
         }
+
+        public bool Contains(Client client) => Name == client.Name || LastAttackerName == client.Name;
     }
 }

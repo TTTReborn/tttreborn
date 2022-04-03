@@ -1,5 +1,12 @@
 <link rel="stylesheet" href="GameResultsMenu.scss">
 
 <div class="gameresultsmenu text-shadow">
+    <div @ref="HeaderPanel" class="header">
+        <translationlabel @ref="TitleLabel" class="title"></translationlabel>
+        <div class="buttons">
+            <translationbutton @ref="PlayerButton" class="player"></translationbutton>
+            <translationbutton @ref="AllButton" class="all"></translationbutton>
+        </div>
+    </div>
     <div @ref="EventWrapper" class="eventwrapper empty"></div>
 </div>

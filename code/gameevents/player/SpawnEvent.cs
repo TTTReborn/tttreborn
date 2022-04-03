@@ -1,3 +1,5 @@
+using Sandbox;
+
 using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player
@@ -12,5 +14,7 @@ namespace TTTReborn.Events.Player
         /// <para>Event is passed the <strong><see cref="TTTReborn.Player"/></strong> instance of the player spawned.</para>
         /// </summary>
         public SpawnEvent(TTTReborn.Player player) : base(player) { }
+
+        public bool Contains(Client client) => Name == client.Name;
     }
 }

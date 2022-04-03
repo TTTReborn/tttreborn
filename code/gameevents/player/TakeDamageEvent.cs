@@ -97,5 +97,7 @@ namespace TTTReborn.Events.Player
                 }
             }
         }
+
+        public bool Contains(Client client) => Name == client.Name || AttackerName == client.Name;
     }
 }

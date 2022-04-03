@@ -256,7 +256,10 @@
         }
     },
     "GAMERESULTSMENU": {
-        "EMPTY": "Events werden erst zum Rundenende erstellt."
+        "EMPTY": "Events werden erst zum Rundenende erstellt.",
+        "TITLE": "Events der letzten Runde:",
+        "ALLFILTER": "Global",
+        "PLAYERFILTER": "Du"
     },
     "MAPSELECTION": {
         "VOTE": "Wähle die nächste Map!"

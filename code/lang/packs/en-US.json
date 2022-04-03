@@ -256,7 +256,10 @@
         }
     },
     "GAMERESULTSMENU": {
-        "EMPTY": "Events are just created at the end of a round."
+        "EMPTY": "Events are just created at the end of a round.",
+        "TITLE": "Events of the last round:",
+        "ALLFILTER": "Global",
+        "PLAYERFILTER": "You"
     },
     "MAPSELECTION": {
         "VOTE": "Vote for the next map!"
