@@ -255,6 +255,9 @@
             }
         }
     },
+    "GAMERESULTSMENU": {
+        "EMPTY": "Events werden erst zum Rundenende erstellt."
+    },
     "MAPSELECTION": {
         "VOTE": "Wähle die nächste Map!"
     },

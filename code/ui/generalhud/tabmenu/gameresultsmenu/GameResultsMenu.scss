@@ -1,7 +1,16 @@
 .gameresultsmenu {
+    width: 100%;
+
     .eventwrapper {
+        width: 100%;
         flex-direction: column;
         padding: 40px;
         overflow: scroll;
+
+        &.empty {
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
     }
 }

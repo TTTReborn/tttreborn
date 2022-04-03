@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 
 using Sandbox.UI;
-
-using TTTReborn.Rounds;
+using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI
 {
@@ -17,14 +16,14 @@ namespace TTTReborn.UI
         {
             Instance = this;
 
-            AddClass("text-shadow");
-            AddClass("gameresultsmenu");
+            EventWrapper.Add.TranslationLabel(new("GAMERESULTSMENU.EMPTY"));
         }
 
         [Event(typeof(Events.Game.GameResultsEvent))]
         protected void OnGameResultsEvent(List<ILoggedGameEvent> gameEvents)
         {
             EventWrapper.DeleteChildren(true);
+            EventWrapper.SetClass("empty", gameEvents.Count == 0);
 
             foreach (ILoggedGameEvent gameEvent in gameEvents)
             {

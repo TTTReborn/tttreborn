@@ -255,6 +255,9 @@
             }
         }
     },
+    "GAMERESULTSMENU": {
+        "EMPTY": "Events are just created at the end of a round."
+    },
     "MAPSELECTION": {
         "VOTE": "Vote for the next map!"
     },
