@@ -51,8 +51,7 @@ namespace TTTReborn.UI.Menu
             translationTabContainer.AddTab(communicationsPanel, new TranslationData("MENU.KEYBINDINGS.COMMUNICATION.TITLE"));
 
             Panel menusPanel = new();
-            menusPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.MENUS.SCOREBOARD", InputButton.Score));
-            menusPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.MENUS.MENU", InputButton.Menu));
+            menusPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.MENUS.MENU", InputButton.Score));
             menusPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.MENUS.QUICKSHOP", InputButton.View));
 
             translationTabContainer.AddTab(menusPanel, new TranslationData("MENU.KEYBINDINGS.MENUS.TITLE"));

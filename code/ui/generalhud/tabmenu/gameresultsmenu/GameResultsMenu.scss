@@ -1,0 +1,40 @@
+@import "../../../Hud.scss";
+
+.gameresultsmenu {
+    width: 100%;
+    flex-direction: column;
+
+    > .header {
+        justify-content: center;
+        align-items: center;
+
+        margin: 20px 0px;
+
+        .buttons {
+            margin-left: 10px;
+            padding: 5px;
+            border-radius: 10px;
+
+            background-color: $primary;
+
+            .all {
+                margin-left: 5px;
+            }
+
+            .selected {
+                background-color: $button-secondary;
+            }
+        }
+    }
+
+    .eventwrapper {
+        width: 100%;
+        flex-direction: column;
+        padding: 40px;
+        overflow: scroll;
+
+        &.empty {
+            align-items: center;
+        }
+    }
+}

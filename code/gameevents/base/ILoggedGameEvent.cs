@@ -1,3 +1,5 @@
+using Sandbox;
+
 using TTTReborn.Globalization;
 
 namespace TTTReborn
@@ -11,6 +13,8 @@ namespace TTTReborn
 
         public float CreatedAt { get; set; }
 
-        public virtual Sandbox.UI.Panel GetEventPanel() => new UI.EventPanel(this);
+        public virtual Sandbox.UI.Panel GetEventPanel(Client client = null) => new UI.EventPanel(this);
+
+        public virtual bool Contains(Client client) => false;
     }
 }
