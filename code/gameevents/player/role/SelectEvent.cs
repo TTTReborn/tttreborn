@@ -7,7 +7,7 @@ namespace TTTReborn.Events.Player.Role
     {
         public string RoleName { get; set; }
 
-        public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", RoleName ?? "???");
+        public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", RoleName != null ? new TranslationData(Utils.GetTranslationKey(RoleName, "NAME")) : "???");
 
         /// <summary>
         /// Occurs when a player selects their role.

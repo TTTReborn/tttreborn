@@ -86,7 +86,7 @@ namespace TTTReborn.Teams
 
         public static bool IsTeamMember(this Player self, Player other)
         {
-            return self.Team?.Name == other.Team?.Name && self.Team.CheckWin(self);
+            return self.Team == other.Team && self.Team.CheckWin(self);
         }
     }
 }

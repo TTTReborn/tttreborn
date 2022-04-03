@@ -63,7 +63,7 @@ namespace TTTReborn.Items
                     pointData.Add(new RadarPointData
                     {
                         Position = player.Position + _radarPointOffset,
-                        Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
+                        Color = player.Team == owner.Team ? owner.Team.Color : _defaultRadarColor
                     });
                 }
 
