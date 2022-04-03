@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="TTTMenu.scss">
+
+<div class="tttmenu">
+    <div class="header">
+        <button icon="arrow_back" onclick="PopPage()" @ref="BackButton"></button>
+        <div style="padding: 5px" />
+
+        <button icon="home" onclick="PopToHomePage()" @ref="HomeButton"></button>
+    </div>
+
+    <div @ref="Pages" class="pages"></div>
+</div>

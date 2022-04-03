@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 
 using TTTReborn.UI.Menu;
@@ -8,7 +7,7 @@ namespace TTTReborn.UI
     [UseTemplate]
     public class TTTMenu : Panel
     {
-        public static TTTMenu Instance;
+        public static TTTMenu Instance { get; set; }
 
         public Panel ActivePage { get; private set; }
 
@@ -17,8 +16,6 @@ namespace TTTReborn.UI
         /// is the page that is currently showing.
         /// </summary>
         private Panel Pages { get; set; }
-
-        private Panel BackgroundPanel { get; set; }
 
         private bool HasPreviousPages { get => Pages.ChildrenCount > 1; }
 
@@ -30,8 +27,6 @@ namespace TTTReborn.UI
             Instance = this;
 
             AddPage(new HomePage());
-
-            BackgroundPanel.AddClass("disabled");
         }
 
         /// <summary>
@@ -79,22 +74,6 @@ namespace TTTReborn.UI
         {
             Pages.DeleteChildren(true);
             AddPage(new HomePage());
-        }
-
-        [Event.BuildInput]
-        private void MenuInput(InputBuilder input)
-        {
-            if (input.Pressed(InputButton.Menu))
-            {
-                bool enabled = !BackgroundPanel.HasClass("disabled");
-
-                if (enabled)
-                {
-                    PopToHomePage();
-                }
-
-                BackgroundPanel.SetClass("disabled", enabled);
-            }
         }
     }
 }

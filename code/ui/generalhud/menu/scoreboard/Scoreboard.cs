@@ -25,7 +25,6 @@ namespace TTTReborn.UI
         private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
         private readonly Dictionary<long, bool> _forcedSpecList = new();
 
-        private Panel ScoreboardContainer { get; set; }
         private ScoreboardHeader ScoreboardHeader { get; set; }
         private Panel ScoreboardContent { get; set; }
         private Panel ScoreboardFooter { get; set; }
@@ -163,13 +162,6 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (!Input.Down(InputButton.Score))
-            {
-                SetClass("fade-in", false);
-
-                return;
-            }
-
             bool invalidList = _entries.Count != Client.All.Count;
 
             if (!invalidList)
@@ -220,9 +212,6 @@ namespace TTTReborn.UI
 
                 UpdateScoreboardGroups();
             }
-
-            SetClass("fade-in", true);
-            ScoreboardContainer.SetClass("pop-in", true);
         }
 
         private ScoreboardGroup AddScoreboardGroup(string groupName)

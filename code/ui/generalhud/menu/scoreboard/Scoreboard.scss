@@ -1,0 +1,23 @@
+.scoreboard {
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: transform 0.25s ease-out;
+
+    .column-label-panel {
+        flex-direction: row;
+        justify-content: flex-end;
+        padding: 4px;
+    }
+
+    .scoreboard-content {
+        flex-direction: column;
+        padding: 8px;
+        max-height: 66%;
+        overflow: scroll;
+    }
+
+    .scoreboard-footer {
+        height: 25px;
+    }
+}

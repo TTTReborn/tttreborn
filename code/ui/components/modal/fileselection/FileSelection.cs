@@ -47,7 +47,7 @@ namespace TTTReborn.UI
         public PanelContent EntryPanelContent;
         public TextEntry FileNameEntry;
 
-        public FileSelection(Panel parent = null) : base(parent)
+        public FileSelection() : base()
         {
             Header.DragHeader.IsLocked = false;
             Header.DragHeader.IsFreeDraggable = true;
@@ -58,7 +58,10 @@ namespace TTTReborn.UI
 
             OnDecline = () => Close();
 
-            EntryPanelContent = new(Content);
+            EntryPanelContent = new()
+            {
+                Parent = EntryPanelContent
+            };
             EntryPanelContent.AddClass("selection");
 
             FileNameEntry = Content.Add.TranslationTextEntry();
@@ -204,13 +207,11 @@ namespace Sandbox.UI.Construct
 
     public static class FileSelectionConstructor
     {
-        public static FileSelection FileSelection(this PanelCreator self, string path = null, string fileType = null)
+        public static FileSelection FileSelection(this PanelCreator self, string path = null, string fileType = null) => new()
         {
-            FileSelection fileSelectionEntry = new(self.panel);
-            fileSelectionEntry.DefaultSelectionPath = path;
-            fileSelectionEntry.DefaultSelectionFileType = fileType;
-
-            return fileSelectionEntry;
-        }
+            Parent = self.panel,
+            DefaultSelectionPath = path,
+            DefaultSelectionFileType = fileType
+        };
     }
 }

@@ -4,7 +4,7 @@ namespace TTTReborn.UI
 {
     public partial class RichPanel : Panel
     {
-        public RichPanel(Panel parent = null) : base(parent)
+        public RichPanel()
         {
             StyleSheet.Load("/ui/richpanel/RichPanel.scss");
         }
