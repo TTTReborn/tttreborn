@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Globalization;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Events.Player
 {
@@ -58,7 +59,7 @@ namespace TTTReborn.Events.Player
 
             GameEventScoring attackerScoring = new(attacker);
 
-            if (attacker.Team?.Name == Player.Team?.Name)
+            if (attacker.IsTeamMember(Player))
             {
                 attackerScoring.Score = -2;
                 attackerScoring.Karma = -100;

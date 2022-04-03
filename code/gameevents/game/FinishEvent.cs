@@ -58,22 +58,22 @@ namespace TTTReborn.Events.Game
             {
                 TTTReborn.Player player = list[i];
 
-                if (player.Team?.Name == TeamName)
+                if (player.Team != null && player.Team.Name == TeamName && Team.CheckWin(player))
                 {
                     Scoring[i] = new(player)
                     {
                         Karma = 10 * aliveWinners,
                         Score = 1 * aliveWinners
                     };
+
+                    continue;
                 }
-                else
+
+                Scoring[i] = new(player)
                 {
-                    Scoring[i] = new(player)
-                    {
-                        Karma = 0,
-                        Score = -1
-                    };
-                }
+                    Karma = 0,
+                    Score = Team is NoneTeam ? 0 : -1
+                };
             }
         }
 
