@@ -16,7 +16,7 @@ namespace TTTReborn.Events.Game
         [JsonIgnore]
         public Team Team
         {
-            get => Utils.GetObjectByType<Team>(Utils.GetTypeByLibraryName<Team>(TeamName));
+            get => TeamFunctions.GetTeam(TeamName);
         }
 
         /// <summary>
