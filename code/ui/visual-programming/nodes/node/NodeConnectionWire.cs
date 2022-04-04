@@ -72,7 +72,7 @@ namespace TTTReborn.UI.VisualProgramming
             base.Delete(immediate);
         }
 
-        public static NodeConnectionWire Create() => new NodeConnectionWire(Window.Instance.Content);
+        public static NodeConnectionWire Create() => new(Window.Instance.Content);
 
         public void UpdateMousePosition(Vector2 vector2)
         {

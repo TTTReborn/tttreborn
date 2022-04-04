@@ -39,10 +39,12 @@ namespace TTTReborn.Items
                         return;
                     }
 
-                    C4Entity bomb = new();
-                    bomb.PhysicsEnabled = false;
-                    bomb.Position = placementTrace.EndPosition;
-                    bomb.Rotation = Rotation.From(placementTrace.Normal.EulerAngles);
+                    C4Entity bomb = new()
+                    {
+                        PhysicsEnabled = false,
+                        Position = placementTrace.EndPosition,
+                        Rotation = Rotation.From(placementTrace.Normal.EulerAngles)
+                    };
                     bomb.Rotation = bomb.Rotation.RotateAroundAxis(Vector3.Right, -90);
                     bomb.Rotation = bomb.Rotation.RotateAroundAxis(Vector3.Up, 90);
 

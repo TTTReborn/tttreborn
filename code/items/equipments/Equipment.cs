@@ -51,10 +51,12 @@ namespace TTTReborn.Items
 
             if (CanDrop)
             {
-                PickupTrigger = new();
-                PickupTrigger.Parent = this;
-                PickupTrigger.Position = Position;
-                PickupTrigger.Rotation = Rotation;
+                PickupTrigger = new()
+                {
+                    Parent = this,
+                    Position = Position,
+                    Rotation = Rotation
+                };
             }
         }
 

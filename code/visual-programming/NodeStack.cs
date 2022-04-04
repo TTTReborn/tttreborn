@@ -343,8 +343,10 @@ namespace TTTReborn.VisualProgramming
 
             if (jsonData == null)
             {
-                Dictionary<string, object> jsonDict = new();
-                jsonDict.Add("Nodes", GetJsonData());
+                Dictionary<string, object> jsonDict = new()
+                {
+                    { "Nodes", GetJsonData() }
+                };
 
                 jsonData = JsonSerializer.Serialize(jsonDict);
             }

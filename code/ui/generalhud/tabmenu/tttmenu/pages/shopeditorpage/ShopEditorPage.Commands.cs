@@ -58,7 +58,7 @@ namespace TTTReborn.UI
         }
 
         [ClientRpc]
-        public static void ClientReceiveShopEditorAccess(bool access)
+        public static void ClientReceiveShopEditorAccess(bool _)
         {
             TTTMenu.Instance.AddPage(new ShopEditorPage());
         }

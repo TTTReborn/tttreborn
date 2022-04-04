@@ -2,6 +2,8 @@ using Sandbox;
 
 using TTTReborn.Rounds;
 
+#pragma warning disable IDE0051
+
 namespace TTTReborn.Map
 {
     [Library("ttt_map_settings")]

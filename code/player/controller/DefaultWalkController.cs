@@ -26,7 +26,7 @@ namespace TTTReborn
 {
     public partial class DefaultWalkController : WalkController
     {
-        public static bool IsSprintEnabled = false;
+        public static bool IsSprintEnabled { get; set; } = false;
 
         public const float MAX_STAMINA = 100f;
         public const float MAX_SPRINT_SPEED = 400f;

@@ -73,7 +73,7 @@ namespace TTTReborn.VisualProgramming
 
         public abstract object[] Evaluate(object[] input);
 
-        public virtual Dictionary<string, object> GetJsonData() => new Dictionary<string, object>()
+        public virtual Dictionary<string, object> GetJsonData() => new()
         {
             ["Id"] = Id,
             ["LibraryName"] = LibraryName,

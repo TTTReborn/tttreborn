@@ -72,10 +72,12 @@ namespace TTTReborn.Items
 
             SetModel(ModelPath);
 
-            PickupTrigger = new();
-            PickupTrigger.Parent = this;
-            PickupTrigger.Position = Position;
-            PickupTrigger.Rotation = Rotation;
+            PickupTrigger = new()
+            {
+                Parent = this,
+                Position = Position,
+                Rotation = Rotation
+            };
 
             EnableShadowInFirstPerson = false;
         }

@@ -83,8 +83,10 @@ namespace TTTReborn.UI.VisualProgramming
 
         public T AddSetting<T>() where T : NodeSetting, new()
         {
-            T nodeSetting = new();
-            nodeSetting.Node = this;
+            T nodeSetting = new()
+            {
+                Node = this
+            };
 
             Content.AddChild(nodeSetting);
             NodeSettings.Add(nodeSetting);
