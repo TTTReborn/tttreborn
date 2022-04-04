@@ -9,6 +9,11 @@
         align-items: center;
 
         margin: 20px 0px;
+        flex-shrink: 1;
+
+        .title {
+            flex-shrink: 1;
+        }
 
         .buttons {
             margin-left: 10px;
@@ -16,6 +21,8 @@
             border-radius: 10px;
 
             background-color: $primary;
+
+            flex-shrink: 1;
 
             .all {
                 margin-left: 5px;
