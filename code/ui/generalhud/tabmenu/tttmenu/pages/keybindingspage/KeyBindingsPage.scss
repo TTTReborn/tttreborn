@@ -1,12 +1,12 @@
-KeyBindingsPage,
-KeyBindingsPage .tabcontainer .sheets > Panel {
+keybindingspage,
+keybindingspage .tabcontainer .sheets > Panel {
     flex-direction: column;
     justify-content: flex-start;
     width: 100%;
     color: white;
 }
 
-KeyBindingsPage .tabcontainer .sheets > Panel {
+keybindingspage .tabcontainer .sheets > Panel {
     overflow: scroll;
 
     .glyph {

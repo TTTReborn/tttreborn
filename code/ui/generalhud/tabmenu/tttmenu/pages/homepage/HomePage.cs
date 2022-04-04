@@ -23,7 +23,6 @@ namespace TTTReborn.UI.Menu
             TTTMenu.Instance.AddPage(new KeyBindingsPage());
         }
 
-
         public void GoToShopEditor()
         {
             // Call to server which sends down server data and then adds the ShopEditorPage.

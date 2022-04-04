@@ -10,7 +10,7 @@ namespace TTTReborn.UI.Menu
     {
         public KeyBindingsPage()
         {
-            StyleSheet.Load("/ui/generalhud/menu/tttmenu/pages/KeyBindingsPage/KeyBindingsPage.scss");
+            StyleSheet.Load("/ui/generalhud/tabmenu/tttmenu/pages/KeyBindingsPage/KeyBindingsPage.scss");
 
             Add.TranslationLabel(new TranslationData("MENU.KEYBINDINGS.RESTRICTION"));
             Add.Label("");
