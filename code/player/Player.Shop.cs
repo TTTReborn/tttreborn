@@ -8,6 +8,8 @@ using TTTReborn.Items;
 using TTTReborn.Rounds;
 using TTTReborn.UI;
 
+#pragma warning disable IDE0051
+
 namespace TTTReborn
 {
     public partial class Player
@@ -103,7 +105,7 @@ namespace TTTReborn
         }
 
         [Event(typeof(Events.Game.RoundChangeEvent))]
-        private static void OnRoundChanged(BaseRound oldRound, BaseRound newRound)
+        private static void OnRoundChanged(BaseRound _, BaseRound newRound)
         {
             if (newRound is PreRound preRound)
             {

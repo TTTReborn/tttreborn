@@ -44,7 +44,17 @@ namespace TTTReborn.Globals
 
         public static List<Player> GetAlivePlayers() => GetPlayers((pl) => pl.LifeState == LifeState.Alive);
 
-        public static Player GetPlayerByIdent(int networkIdent) => GetPlayers().FirstOrDefault((pl) => pl.NetworkIdent == networkIdent, null);
+        public static Player GetPlayerById(long playerId)
+        {
+            Client client = Client.All.First((cl) => cl.PlayerId == playerId);
+
+            if (client != null && client.Pawn is Player player)
+            {
+                return player;
+            }
+
+            return null;
+        }
 
         public static bool HasMinimumPlayers() => GetPlayers((pl) => !pl.IsForcedSpectator).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
 
@@ -300,6 +310,16 @@ namespace TTTReborn.Globals
             }
 
             return translationKey.ToUpper();
+        }
+
+        public static string GetFormattedNumber(int number)
+        {
+            if (number > 0)
+            {
+                return $"+{number}";
+            }
+
+            return number.ToString();
         }
     }
 }

@@ -78,20 +78,11 @@ namespace TTTReborn
             return default;
         }
 
-        public Perk Find(string perkName)
-        {
-            return Find<Perk>(perkName);
-        }
+        public Perk Find(string perkName) => Find<Perk>(perkName);
 
-        public bool Has(string perkName = null)
-        {
-            return Find(perkName) != null;
-        }
+        public bool Has(string perkName = null) => Find(perkName) != null;
 
-        public bool Has<T>(string perkName = null) where T : Perk
-        {
-            return Find<T>(perkName) != null;
-        }
+        public bool Has<T>(string perkName = null) where T : Perk => Find<T>(perkName) != null;
 
         public void Clear()
         {
@@ -109,14 +100,8 @@ namespace TTTReborn
             }
         }
 
-        public int Count()
-        {
-            return PerkList.Count;
-        }
+        public int Count() => PerkList.Count;
 
-        public Perk Get(int index)
-        {
-            return PerkList[index];
-        }
+        public Perk Get(int index) => PerkList[index];
     }
 }

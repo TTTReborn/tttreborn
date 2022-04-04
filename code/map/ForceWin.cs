@@ -3,6 +3,8 @@ using Sandbox;
 using TTTReborn.Rounds;
 using TTTReborn.Teams;
 
+#pragma warning disable CA1822
+
 namespace TTTReborn.Map
 {
     [Library("ttt_force_win", Description = "Forces round to end and win be awarded to team depending on input.")]

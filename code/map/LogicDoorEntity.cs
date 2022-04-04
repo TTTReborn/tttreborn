@@ -19,10 +19,7 @@ namespace TTTReborn.Map
         }
         private string _checkValue = Utils.GetLibraryName(typeof(TraitorTeam));
 
-        public override bool IsUsable(Entity user)
-        {
-            return user is Player player && (player.Role.Name.Equals(CheckValue) || player.Team.Name.Equals(CheckValue));
-        }
+        public override bool IsUsable(Entity user) => user is Player player && (player.Role.Name.Equals(CheckValue) || player.Team.Name.Equals(CheckValue));
 
         /// <summary>
         /// Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass().

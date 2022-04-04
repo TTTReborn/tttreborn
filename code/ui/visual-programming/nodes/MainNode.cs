@@ -2,7 +2,7 @@ using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    [Node("main")]
+    [Node("main"), Hammer.Skip]
     public class MainNode : Node
     {
         public MainNode() : base(new AllPlayersStackNode())
@@ -12,9 +12,6 @@ namespace TTTReborn.UI.VisualProgramming
             AddSetting<NodeAllPlayersSetting>().ToggleInput(false);
         }
 
-        protected override void OnRightClick(Sandbox.UI.MousePanelEvent e)
-        {
-
-        }
+        protected override void OnRightClick(Sandbox.UI.MousePanelEvent e) { }
     }
 }

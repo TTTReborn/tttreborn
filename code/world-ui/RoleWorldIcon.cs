@@ -33,11 +33,11 @@ namespace TTTReborn.WorldUI
 
             if (!Player.IsValid || Player.LifeState != LifeState.Alive || Local.Pawn is Player localPlayer && !Player.IsTeamMember(localPlayer))
             {
-                Style.Display = DisplayMode.None;
+                this.Enabled(false);
             }
             else
             {
-                Style.Display = DisplayMode.Flex;
+                this.Enabled(true);
 
                 Transform = GetTransform();
 

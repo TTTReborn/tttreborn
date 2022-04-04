@@ -9,10 +9,7 @@ namespace TTTReborn.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class StackNodeAttribute : LibraryAttribute
     {
-        public StackNodeAttribute(string name) : base("ttt_stacknode_" + name)
-        {
-
-        }
+        public StackNodeAttribute(string name) : base("ttt_stacknode_" + name) { }
     }
 
     public abstract class StackNode
@@ -76,18 +73,15 @@ namespace TTTReborn.VisualProgramming
 
         public abstract object[] Evaluate(object[] input);
 
-        public virtual Dictionary<string, object> GetJsonData()
+        public virtual Dictionary<string, object> GetJsonData() => new()
         {
-            return new Dictionary<string, object>()
-            {
-                ["Id"] = Id,
-                ["LibraryName"] = LibraryName,
-                ["NodeReference"] = NodeReference,
-                ["ConnectionInputIds"] = ConnectionInputIds,
-                ["ConnectionOutputIds"] = ConnectionOutputIds,
-                ["Pos"] = _pos,
-            };
-        }
+            ["Id"] = Id,
+            ["LibraryName"] = LibraryName,
+            ["NodeReference"] = NodeReference,
+            ["ConnectionInputIds"] = ConnectionInputIds,
+            ["ConnectionOutputIds"] = ConnectionOutputIds,
+            ["Pos"] = _pos,
+        };
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {

@@ -12,10 +12,7 @@ namespace TTTReborn.UI
     {
         public IItem Item
         {
-            get
-            {
-                return _item;
-            }
+            get => _item;
             private set
             {
                 _item = value;

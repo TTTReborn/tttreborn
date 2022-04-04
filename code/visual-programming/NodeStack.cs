@@ -10,7 +10,7 @@ namespace TTTReborn.VisualProgramming
     {
         public const string VISUALPROGRAMMING_FILE_EXTENSION = ".vp.json";
 
-        public static NodeStack Instance;
+        public static NodeStack Instance { get; set; }
 
         private List<StackNode> StackNodeList { get; set; } = new();
 
@@ -343,8 +343,10 @@ namespace TTTReborn.VisualProgramming
 
             if (jsonData == null)
             {
-                Dictionary<string, object> jsonDict = new();
-                jsonDict.Add("Nodes", GetJsonData());
+                Dictionary<string, object> jsonDict = new()
+                {
+                    { "Nodes", GetJsonData() }
+                };
 
                 jsonData = JsonSerializer.Serialize(jsonDict);
             }

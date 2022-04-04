@@ -67,10 +67,12 @@ namespace TTTReborn.Items
 
             Tags.Add(IItem.ITEM_TAG);
 
-            PickupTrigger = new();
-            PickupTrigger.Parent = this;
-            PickupTrigger.Position = Position;
-            PickupTrigger.Rotation = Rotation;
+            PickupTrigger = new()
+            {
+                Parent = this,
+                Position = Position,
+                Rotation = Rotation
+            };
         }
 
         public void SetCurrentAmmo(int ammo)

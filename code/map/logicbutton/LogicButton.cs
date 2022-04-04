@@ -137,16 +137,13 @@ namespace TTTReborn.Map
         public bool CanUse() => !IsDisabled;
 
         // Convert starter data to struct to network to clients for UI display.
-        public LogicButtonData PackageData()
+        public LogicButtonData PackageData() => new()
         {
-            return new LogicButtonData()
-            {
-                NetworkIdent = NetworkIdent,
-                Range = Range,
-                Position = Position,
-                IsDisabled = IsDisabled,
-            };
-        }
+            NetworkIdent = NetworkIdent,
+            Range = Range,
+            Position = Position,
+            IsDisabled = IsDisabled,
+        };
     }
 
     // Package up our data nice and neat for transmission to the client.

@@ -23,8 +23,10 @@ namespace TTTReborn.Items
             _corpsePhysicsBody = physicsBodyCorpse;
             _corpseBone = corpseBone;
 
-            _handPhysicsBody = new(Sandbox.Internal.GlobalGameNamespace.Map.Physics);
-            _handPhysicsBody.BodyType = PhysicsBodyType.Keyframed;
+            _handPhysicsBody = new(Sandbox.Internal.GlobalGameNamespace.Map.Physics)
+            {
+                BodyType = PhysicsBodyType.Keyframed
+            };
 
             Transform attachment = player.GetAttachment(Hands.MIDDLE_HANDS_ATTACHMENT)!.Value;
             _handPhysicsBody.Position = attachment.Position;

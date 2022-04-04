@@ -11,20 +11,24 @@
     //     background-color: rgba(255, 255, 255, 0.025);
     // }
 
-    .line {
+    > .line {
         width: 4px;
         height: 100%;
         background-color: $button-secondary;
         margin: 0px 5px;
     }
 
-    .wrapper {
+    &:last-child .line {
+        background-color: $secondary;
+    }
+
+    > .wrapper {
         width: 100%;
         padding: 5px;
         margin-bottom: 20px;
         flex-direction: column;
 
-        .icon-holder {
+        > .icon-holder {
             background-color: $secondary;
             border-radius: 100%;
             border: 4px $button-secondary solid;
@@ -40,31 +44,76 @@
             justify-content: center;
             align-items: center;
 
-            .icon {
+            > .icon {
                 width: 40px;
                 aspect-ratio: 1;
                 background-size: cover;
             }
         }
 
-        .header,
-        .description {
+        > .header,
+        > .content {
             margin-left: 40px;
             font-size: 16px;
         }
 
-        .header {
+        > .header {
             margin-bottom: 2px;
 
-            .title {
+            > .title {
                 flex-grow: 1;
                 font-size: 20px;
             }
 
-            .time {
+            > .time {
                 flex-shrink: 1;
                 margin-right: 5px;
                 margin-top: 5px;
+            }
+        }
+
+        > .content {
+            flex-direction: column;
+
+            > .description {
+                flex-shrink: 1;
+            }
+
+            > .score {
+                margin: 10px;
+                border: 10px $primary solid;
+                background-color: $primary;
+
+                flex-direction: column;
+                flex-shrink: 0;
+                flex-grow: 1;
+                margin-right: 50px;
+                margin-top: 20px;
+
+                > .entry {
+                    padding: 10px;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+
+                    > label,
+                    > translationlabel {
+                        width: 33%;
+                    }
+
+                    &.header {
+                        background-color: $button-primary;
+                    }
+
+                    &:nth-child(2)
+                    {
+                        background-color: $secondary;
+                    }
+
+                    &:hover:not(.header) {
+                        background-color: rgba(255, 255, 255, 0.05);
+                    }
+                }
             }
         }
     }

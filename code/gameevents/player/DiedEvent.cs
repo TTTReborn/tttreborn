@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTTReborn.Globalization;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Events.Player
 {
@@ -58,7 +59,7 @@ namespace TTTReborn.Events.Player
 
             GameEventScoring attackerScoring = new(attacker);
 
-            if (attacker.Role.Name.Equals(Player.Role.Name))
+            if (attacker.IsTeamMember(Player))
             {
                 attackerScoring.Score = -2;
                 attackerScoring.Karma = -100;
@@ -83,6 +84,6 @@ namespace TTTReborn.Events.Player
             };
         }
 
-        public bool Contains(Client client) => Name == client.Name || LastAttackerName == client.Name;
+        public bool Contains(Client client) => PlayerName == client.Name || LastAttackerName == client.Name;
     }
 }

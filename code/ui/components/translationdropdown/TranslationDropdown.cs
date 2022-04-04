@@ -68,9 +68,10 @@ namespace TTTReborn.UI
 
                 if (child.Name.Equals("translationoption", StringComparison.OrdinalIgnoreCase))
                 {
-                    TranslationOption o = new(new TranslationData(child.GetAttribute("key")), child.GetAttribute("value"));
-
-                    o.Icon = child.GetAttribute("icon", null);
+                    TranslationOption o = new(new TranslationData(child.GetAttribute("key")), child.GetAttribute("value"))
+                    {
+                        Icon = child.GetAttribute("icon", null)
+                    };
 
                     Options.Add(o);
                 }

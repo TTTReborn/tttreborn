@@ -34,14 +34,8 @@ namespace TTTReborn.UI
             OnDecline?.Invoke();
         }
 
-        public Label AddText(string text)
-        {
-            return Content.Add.Label(text, "text");
-        }
+        public Label AddText(string text) => Content.Add.Label(text, "text");
 
-        public Label AddTranslation(TranslationData translationData)
-        {
-            return Content.Add.TranslationLabel(translationData, "text");
-        }
+        public Label AddTranslation(TranslationData translationData) => Content.Add.TranslationLabel(translationData, "text");
     }
 }

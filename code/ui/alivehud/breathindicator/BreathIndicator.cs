@@ -8,12 +8,12 @@ namespace TTTReborn.UI
     [UseTemplate]
     public partial class BreathIndicator : Panel
     {
-        public static BreathIndicator Instance;
+        public static BreathIndicator Instance { get; set; }
 
         private Panel BreathBar { get; set; }
         private string Breath { get; set; }
 
-        public BreathIndicator() : base()
+        public BreathIndicator()
         {
             Instance = this;
         }

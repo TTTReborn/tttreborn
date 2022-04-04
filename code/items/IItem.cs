@@ -5,13 +5,7 @@ using Sandbox;
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class ItemAttribute : Attribute
-    {
-        public ItemAttribute() : base()
-        {
-
-        }
-    }
+    public class ItemAttribute : Attribute { }
 
     public interface IItem
     {

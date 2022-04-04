@@ -25,15 +25,7 @@ namespace TTTReborn
         public List<ShopItemData> Items { set; get; } = new();
         public bool Enabled { get; set; } = true;
 
-        public Shop()
-        {
-
-        }
-
-        public bool Accessable()
-        {
-            return Items.Count > 0 && Enabled && Gamemode.Game.Instance.Round is InProgressRound;
-        }
+        public bool Accessable() => Items.Count > 0 && Enabled && Gamemode.Game.Instance.Round is InProgressRound;
 
         public static Shop InitializeFromJSON(string json)
         {
@@ -106,10 +98,7 @@ namespace TTTReborn
             }));
         }
 
-        public static string GetSettingsFile(Role role)
-        {
-            return $"settings/{Utils.GetTypeName(typeof(Settings.ServerSettings)).ToLower()}/shop/{role.Name.ToLower()}.json";
-        }
+        public static string GetSettingsFile(Role role) => $"settings/{Utils.GetTypeName(typeof(Settings.ServerSettings)).ToLower()}/shop/{role.Name.ToLower()}.json";
 
         internal void AddAllItems()
         {

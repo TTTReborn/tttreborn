@@ -26,7 +26,6 @@ namespace TTTReborn
 
         public float CreatedAt { get; set; }
 
-        [JsonIgnore]
         public GameEventScoring[] Scoring { get; set; } = Array.Empty<GameEventScoring>();
 
         public GameEvent()
@@ -78,7 +77,13 @@ namespace TTTReborn
     {
         public int Score { get; set; } = 0;
         public int Karma { get; set; } = 0;
-        public Player Player { get; set; }
+        public long PlayerId { get; set; }
+
+        [JsonIgnore]
+        public Player Player
+        {
+            get => Utils.GetPlayerById(PlayerId);
+        }
 
         public bool IsInitialized { get; set; } = false;
 
@@ -98,7 +103,10 @@ namespace TTTReborn
 
         public GameEventScoring(Player player)
         {
-            Player = player;
+            if (player != null && player.Client != null)
+            {
+                PlayerId = player.Client.PlayerId;
+            }
         }
     }
 }

@@ -8,11 +8,6 @@ namespace TTTReborn.VisualProgramming
     {
         public List<float> PercentList { get; set; } = new();
 
-        public RandomSelectionStackNode() : base()
-        {
-
-        }
-
         public override object[] Test(object[] input)
         {
             int percentListCount = PercentList.Count;

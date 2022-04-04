@@ -9,7 +9,7 @@ namespace TTTReborn.UI
 {
     public partial class InfoFeed : Panel
     {
-        public static InfoFeed Current;
+        public static InfoFeed Current { get; set; }
 
         public InfoFeed() : base()
         {

@@ -76,18 +76,22 @@ namespace TTTReborn
                 {
                     if (IsServer)
                     {
-                        _worldFlashlight = new();
-                        _worldFlashlight.EnableHideInFirstPerson = true;
-                        _worldFlashlight.Rotation = EyeRotation;
-                        _worldFlashlight.Position = EyePosition + EyeRotation.Forward * FLASHLIGHT_DISTANCE;
+                        _worldFlashlight = new()
+                        {
+                            EnableHideInFirstPerson = true,
+                            Rotation = EyeRotation,
+                            Position = EyePosition + EyeRotation.Forward * FLASHLIGHT_DISTANCE
+                        };
                         _worldFlashlight.SetParent(this);
                     }
                     else
                     {
-                        _viewFlashlight = new();
-                        _viewFlashlight.EnableViewmodelRendering = false;
-                        _viewFlashlight.Position = EyePosition + EyeRotation.Forward * FLASHLIGHT_DISTANCE;
-                        _viewFlashlight.Rotation = EyeRotation;
+                        _viewFlashlight = new()
+                        {
+                            EnableViewmodelRendering = false,
+                            Position = EyePosition + EyeRotation.Forward * FLASHLIGHT_DISTANCE,
+                            Rotation = EyeRotation
+                        };
                         _viewFlashlight.SetParent(this);
                     }
                 }

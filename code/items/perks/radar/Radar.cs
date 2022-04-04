@@ -27,11 +27,6 @@ namespace TTTReborn.Items
         private readonly Color _defaultRadarColor = Color.FromBytes(124, 252, 0);
         private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
-        public Radar() : base()
-        {
-
-        }
-
         public override void OnRemove()
         {
             if (Host.IsClient)
@@ -63,7 +58,7 @@ namespace TTTReborn.Items
                     pointData.Add(new RadarPointData
                     {
                         Position = player.Position + _radarPointOffset,
-                        Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
+                        Color = player.Team == owner.Team ? owner.Team.Color : _defaultRadarColor
                     });
                 }
 

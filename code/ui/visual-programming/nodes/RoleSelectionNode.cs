@@ -7,7 +7,7 @@ using TTTReborn.VisualProgramming;
 namespace TTTReborn.UI.VisualProgramming
 {
     [Spawnable]
-    [Node("role_selection")]
+    [Node("role_selection"), Hammer.Skip]
     public class RoleSelectionNode : Node
     {
         public Role SelectedRole { get; set; }

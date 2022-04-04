@@ -10,11 +10,6 @@ namespace TTTReborn.VisualProgramming
     {
         public Role SelectedRole { get; set; }
 
-        public RoleSelectionStackNode() : base()
-        {
-
-        }
-
         public override object[] Test(object[] input)
         {
             if (SelectedRole == null)

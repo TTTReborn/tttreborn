@@ -13,7 +13,7 @@ namespace TTTReborn
 {
     public class ConfirmationData
     {
-        public int Ident { get; set; }
+        public long PlayerId { get; set; }
         public string Name { get; set; }
         public bool IsIdentified { get; set; } = false;
         public bool IsHeadshot { get; set; } = false;
@@ -31,7 +31,7 @@ namespace TTTReborn
         [JsonIgnore]
         public Player Player
         {
-            get => Utils.GetPlayerByIdent(Ident);
+            get => Utils.GetPlayerById(PlayerId);
         }
     }
 
@@ -59,7 +59,7 @@ namespace TTTReborn
         {
             DeadPlayer = player;
 
-            Data.Ident = player.NetworkIdent;
+            Data.PlayerId = player.Client.PlayerId;
             Data.Name = player.Client.Name;
             Data.RoleName = player.Role.Name;
             Data.TeamName = player.Team.Name;

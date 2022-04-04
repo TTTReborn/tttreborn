@@ -72,10 +72,12 @@ namespace TTTReborn.Items
 
             SetModel(ModelPath);
 
-            PickupTrigger = new();
-            PickupTrigger.Parent = this;
-            PickupTrigger.Position = Position;
-            PickupTrigger.Rotation = Rotation;
+            PickupTrigger = new()
+            {
+                Parent = this,
+                Position = Position,
+                Rotation = Rotation
+            };
 
             EnableShadowInFirstPerson = false;
         }
@@ -164,20 +166,17 @@ namespace TTTReborn.Items
             // TODO Zoom
         }
 
-        public static int GetHoldType(CarriableCategories category)
+        public static int GetHoldType(CarriableCategories category) => category switch
         {
-            return category switch
-            {
-                CarriableCategories.Melee => 0,
-                CarriableCategories.Pistol => 1,
-                CarriableCategories.SMG or CarriableCategories.Sniper => 2,
-                CarriableCategories.Shotgun => 3,
-                CarriableCategories.OffensiveEquipment => 0,
-                CarriableCategories.UtilityEquipment => 0,
-                CarriableCategories.Grenade => 0,
-                _ => 0,
-            };
-        }
+            CarriableCategories.Melee => 0,
+            CarriableCategories.Pistol => 1,
+            CarriableCategories.SMG or CarriableCategories.Sniper => 2,
+            CarriableCategories.Shotgun => 3,
+            CarriableCategories.OffensiveEquipment => 0,
+            CarriableCategories.UtilityEquipment => 0,
+            CarriableCategories.Grenade => 0,
+            _ => 0,
+        };
 
         public override void SimulateAnimator(PawnAnimator anim)
         {

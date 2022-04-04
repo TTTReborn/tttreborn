@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -5,6 +6,7 @@ using System.Text.Json.Serialization;
 using Sandbox;
 
 using TTTReborn.Globalization;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Events.Player
 {
@@ -20,12 +22,20 @@ namespace TTTReborn.Events.Player
         [JsonIgnore]
         public Entity Attacker
         {
-            get => Entity.All.First((ent) => ent.NetworkIdent == AttackerIdent);
+            get
+            {
+                if (AttackerPlayerId != null)
+                {
+                    return Utils.GetPlayerById((long) AttackerPlayerId);
+                }
+
+                return Entity.All.First((ent) => ent.NetworkIdent == AttackerIdent);
+            }
         }
 
         public string AttackerName { get; set; }
 
-        public bool IsAttackerPlayer { get; set; }
+        public long? AttackerPlayerId { get; set; }
 
         /// <summary>
         /// Occurs when a player takes damage.
@@ -37,18 +47,19 @@ namespace TTTReborn.Events.Player
         {
             Damage = damage;
 
-            if (player != null && attacker != null)
+            if (attacker != null)
             {
-                IsAttackerPlayer = attacker is TTTReborn.Player;
                 AttackerIdent = attacker.NetworkIdent;
 
-                if (IsAttackerPlayer)
+                if (attacker is TTTReborn.Player)
                 {
                     AttackerName = attacker.Client.Name;
+                    AttackerPlayerId = attacker.Client.PlayerId;
                 }
                 else
                 {
                     AttackerName = attacker.Name;
+                    AttackerPlayerId = null;
                 }
             }
         }
@@ -73,9 +84,21 @@ namespace TTTReborn.Events.Player
                     {
                         current = takeDamageEvent;
                     }
-                    else if (current.Ident == takeDamageEvent.Ident && current.AttackerIdent == takeDamageEvent.AttackerIdent)
+                    else if (current.PlayerId == takeDamageEvent.PlayerId && current.AttackerPlayerId == takeDamageEvent.AttackerPlayerId)
                     {
                         current.Damage += takeDamageEvent.Damage;
+
+                        foreach (GameEventScoring scoring in takeDamageEvent.Scoring)
+                        {
+                            foreach (GameEventScoring currentScoring in current.Scoring)
+                            {
+                                if (scoring.PlayerId == currentScoring.PlayerId)
+                                {
+                                    currentScoring.Score += scoring.Score;
+                                    currentScoring.Karma += scoring.Karma;
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -98,6 +121,25 @@ namespace TTTReborn.Events.Player
             }
         }
 
-        public bool Contains(Client client) => Name == client.Name || AttackerName == client.Name;
+        public bool Contains(Client client) => PlayerName == client.Name || AttackerName == client.Name;
+
+        protected override void OnRegister()
+        {
+            if (Player == null || !Player.IsValid || Attacker is not TTTReborn.Player attacker || !Attacker.IsValid)
+            {
+                return;
+            }
+
+            if (attacker.IsTeamMember(Player))
+            {
+                Scoring = new GameEventScoring[]
+                {
+                    new(attacker)
+                    {
+                        Karma = Gamemode.Game.Instance.Karma.CalculatePenalty(Math.Min(Damage, Player.Health))
+                    }
+                };
+            }
+        }
     }
 }

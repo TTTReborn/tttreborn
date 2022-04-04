@@ -6,7 +6,7 @@ using TTTReborn.VisualProgramming;
 namespace TTTReborn.UI.VisualProgramming
 {
     [Spawnable]
-    [Node("percentage_selection")]
+    [Node("percentage_selection"), Hammer.Skip]
     public class PercentageSelectionNode : Node
     {
         public List<float> PercentList { get; set; } = new();

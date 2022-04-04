@@ -7,13 +7,15 @@ using TTTReborn.Map;
 using TTTReborn.Roles;
 using TTTReborn.UI;
 
+#pragma warning disable CA1822
+
 namespace TTTReborn
 {
     public partial class Player
     {
-        public static Dictionary<int, LogicButtonData> LogicButtons = new();
-        public static Dictionary<int, LogicButtonPoint> LogicButtonPoints = new();
-        public static LogicButtonPoint FocusedButton;
+        public static Dictionary<int, LogicButtonData> LogicButtons { get; set; } = new();
+        public static Dictionary<int, LogicButtonPoint> LogicButtonPoints { get; set; } = new();
+        public static LogicButtonPoint FocusedButton { get; set; }
         public static bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
 
         public void SendLogicButtonsToClient()

@@ -9,10 +9,7 @@ namespace TTTReborn.Items
     {
         public Type ObjectType { get; set; }
 
-        public EquipmentAttribute(CarriableCategories category = CarriableCategories.UtilityEquipment) : base(category)
-        {
-
-        }
+        public EquipmentAttribute(CarriableCategories category = CarriableCategories.UtilityEquipment) : base(category) { }
     }
 
     [Hammer.Skip]
@@ -54,10 +51,12 @@ namespace TTTReborn.Items
 
             if (CanDrop)
             {
-                PickupTrigger = new();
-                PickupTrigger.Parent = this;
-                PickupTrigger.Position = Position;
-                PickupTrigger.Rotation = Rotation;
+                PickupTrigger = new()
+                {
+                    Parent = this,
+                    Position = Position,
+                    Rotation = Rotation
+                };
             }
         }
 
@@ -66,20 +65,14 @@ namespace TTTReborn.Items
             OnEquip();
         }
 
-        public virtual void OnEquip()
-        {
-
-        }
+        public virtual void OnEquip() { }
 
         public void Remove()
         {
             OnRemove();
         }
 
-        public virtual void OnRemove()
-        {
-
-        }
+        public virtual void OnRemove() { }
 
         public string GetTranslationKey(string key) => Utils.GetTranslationKey(Info.LibraryName, key);
 

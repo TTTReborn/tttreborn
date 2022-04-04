@@ -9,6 +9,8 @@ using TTTReborn.Entities;
 using TTTReborn.Globalization;
 using TTTReborn.UI;
 
+#pragma warning disable CA1822, IDE0051
+
 namespace TTTReborn.Items
 {
     [Library("ttt_entity_c4")]

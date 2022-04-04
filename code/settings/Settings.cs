@@ -12,11 +12,6 @@ namespace TTTReborn.Settings
         public SettingsLoadingError LoadingError = SettingsLoadingError.None;
 
         public string JsonType { get; set; } = "Settings";
-
-        public Settings()
-        {
-
-        }
     }
 
     public partial class ServerSettings : Settings
@@ -25,11 +20,6 @@ namespace TTTReborn.Settings
         {
             get => SettingsManager.Instance as ServerSettings;
         }
-
-        public ServerSettings() : base()
-        {
-
-        }
     }
 
     public partial class ClientSettings : Settings
@@ -37,11 +27,6 @@ namespace TTTReborn.Settings
         public static ClientSettings Instance
         {
             get => SettingsManager.Instance as ClientSettings;
-        }
-
-        public ClientSettings() : base()
-        {
-
         }
     }
 

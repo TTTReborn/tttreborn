@@ -10,7 +10,7 @@ namespace TTTReborn.UI
     [UseTemplate]
     public class MapSelectionMenu : Panel
     {
-        public static MapSelectionMenu Instance;
+        public static MapSelectionMenu Instance { get; set; }
 
         private TranslationLabel TitleLabel { get; set; }
         private Panel MapWrapper { get; set; }

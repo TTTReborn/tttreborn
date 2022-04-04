@@ -1,17 +1,17 @@
 <!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc29:version{3cec427c-1b0e-4d48-a90a-0436f33a6041} -->
 {
-	rootNode = 
+	rootNode =
 	{
 		_class = "RootNode"
-		children = 
+		children =
 		[
 			{
 				_class = "MaterialGroupList"
-				children = 
+				children =
 				[
 					{
 						_class = "DefaultMaterialGroup"
-						remaps = 
+						remaps =
 						[
 							{
 								from = "hs-badge.vmat"
@@ -33,34 +33,34 @@
 			},
 			{
 				_class = "PhysicsShapeList"
-				children = 
+				children =
 				[
 					{
 						_class = "PhysicsShapeBox"
 						parent_bone = ""
 						surface_prop = "metal.sheet"
 						collision_prop = "default"
-						origin = [ -0.010063, -0.111635, 0.318671 ]
+						origin = [ -0.0050315, -0.0558175, 0.1593355 ]
 						angles = [ 0.0, 0.0, 0.0 ]
-						dimensions = [ 43.521664, 20.441433, 23.286524 ]
+						dimensions = [ 21.760832, 10.2207165, 11.643262 ]
 					},
 				]
 			},
 			{
 				_class = "RenderMeshList"
-				children = 
+				children =
 				[
 					{
 						_class = "RenderMeshFile"
 						filename = "models/entities/healthstation.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
+						import_scale = 0.5
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
 						align_origin_z_type = "None"
 						parent_bone = ""
-						import_filter = 
+						import_filter =
 						{
 							exclude_by_default = false
 							exception_list = [  ]
@@ -70,12 +70,12 @@
 			},
 			{
 				_class = "GameDataList"
-				children = 
+				children =
 				[
 					{
 						_class = "GenericGameData"
 						game_class = "prop_data"
-						game_keys = 
+						game_keys =
 						{
 							base = ""
 							allowstatic = false

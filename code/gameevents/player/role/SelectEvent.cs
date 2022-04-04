@@ -1,3 +1,5 @@
+using Sandbox;
+
 using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player.Role
@@ -7,7 +9,7 @@ namespace TTTReborn.Events.Player.Role
     {
         public string RoleName { get; set; }
 
-        public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", RoleName ?? "???");
+        public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", RoleName != null ? new TranslationData(Utils.GetTranslationKey(RoleName, "NAME")) : "???");
 
         /// <summary>
         /// Occurs when a player selects their role.
@@ -20,5 +22,7 @@ namespace TTTReborn.Events.Player.Role
                 RoleName = player.Role.Name;
             }
         }
+
+        public bool Contains(Client client) => PlayerName == client.Name;
     }
 }

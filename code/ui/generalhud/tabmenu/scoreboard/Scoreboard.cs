@@ -19,7 +19,7 @@ namespace TTTReborn.UI
             Spectator
         }
 
-        public static Scoreboard Instance;
+        public static Scoreboard Instance { get; set; }
 
         private readonly Dictionary<long, ScoreboardEntry> _entries = new();
         private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();

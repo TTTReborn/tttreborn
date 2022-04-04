@@ -8,7 +8,7 @@ namespace TTTReborn.UI
     [UseTemplate]
     public partial class StaminaIndicator : Panel
     {
-        public static StaminaIndicator Instance;
+        public static StaminaIndicator Instance { get; set; }
 
         private Panel StaminaBar { get; set; }
         private string Stamina { get; set; }

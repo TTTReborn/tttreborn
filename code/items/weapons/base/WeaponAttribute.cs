@@ -31,17 +31,14 @@ namespace TTTReborn.Items
             }
         }
 
-        public static Type GetAmmoType(CarriableCategories category)
+        public static Type GetAmmoType(CarriableCategories category) => category switch
         {
-            return category switch
-            {
-                CarriableCategories.Pistol => typeof(PistolAmmo),
-                CarriableCategories.SMG => typeof(SMGAmmo),
-                CarriableCategories.Shotgun => typeof(ShotgunAmmo),
-                CarriableCategories.Sniper => typeof(SniperAmmo),
-                CarriableCategories.OffensiveEquipment => typeof(OffensiveEquipmentAmmo),
-                _ => null
-            };
-        }
+            CarriableCategories.Pistol => typeof(PistolAmmo),
+            CarriableCategories.SMG => typeof(SMGAmmo),
+            CarriableCategories.Shotgun => typeof(ShotgunAmmo),
+            CarriableCategories.Sniper => typeof(SniperAmmo),
+            CarriableCategories.OffensiveEquipment => typeof(OffensiveEquipmentAmmo),
+            _ => null
+        };
     }
 }

@@ -8,10 +8,7 @@ namespace TTTReborn.UI.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeSettingAttribute : LibraryAttribute
     {
-        public NodeSettingAttribute(string name) : base("ttt_nodesetting_" + name)
-        {
-
-        }
+        public NodeSettingAttribute(string name) : base("ttt_nodesetting_" + name) { }
     }
 
     public abstract class NodeSetting : Panel
@@ -64,15 +61,9 @@ namespace TTTReborn.UI.VisualProgramming
             AddClass("nodesetting");
         }
 
-        public static NodeSettingAttribute GetAttribute<T>() where T : NodeSetting
-        {
-            return Library.GetAttribute(typeof(T)) as NodeSettingAttribute;
-        }
+        public static NodeSettingAttribute GetAttribute<T>() where T : NodeSetting => Library.GetAttribute(typeof(T)) as NodeSettingAttribute;
 
-        public NodeSettingAttribute GetAttribute()
-        {
-            return Library.GetAttribute(GetType()) as NodeSettingAttribute;
-        }
+        public NodeSettingAttribute GetAttribute() => Library.GetAttribute(GetType()) as NodeSettingAttribute;
 
         public void ToggleInput(bool toggle)
         {

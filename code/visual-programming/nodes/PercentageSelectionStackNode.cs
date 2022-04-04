@@ -11,11 +11,6 @@ namespace TTTReborn.VisualProgramming
     {
         public List<float> PercentList { get; set; } = new();
 
-        public PercentageSelectionStackNode() : base()
-        {
-
-        }
-
         public override object[] Test(object[] input)
         {
             int percentListCount = PercentList.Count;

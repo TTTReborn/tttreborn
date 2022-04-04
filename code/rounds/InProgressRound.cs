@@ -203,7 +203,7 @@ namespace TTTReborn.Rounds
         }
 
         [Event(typeof(Events.Player.Role.SelectEvent))]
-        protected static void OnPlayerRoleChange(Player player)
+        protected static void OnPlayerRoleChange(Player _)
         {
             if (Host.IsClient)
             {

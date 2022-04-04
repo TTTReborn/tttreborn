@@ -3,6 +3,8 @@ using Sandbox.UI;
 
 using TTTReborn.VisualProgramming;
 
+#pragma warning disable CA1822
+
 namespace TTTReborn.UI.Menu
 {
     [UseTemplate]
@@ -20,7 +22,6 @@ namespace TTTReborn.UI.Menu
         {
             TTTMenu.Instance.AddPage(new KeyBindingsPage());
         }
-
 
         public void GoToShopEditor()
         {

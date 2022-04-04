@@ -6,7 +6,7 @@ using TTTReborn.VisualProgramming;
 namespace TTTReborn.UI.VisualProgramming
 {
     [Spawnable]
-    [Node("playeramount_selection")]
+    [Node("playeramount_selection"), Hammer.Skip]
     public class PlayerAmountSelectionNode : Node
     {
         public List<int> PlayerAmountList { get; set; } = new();
