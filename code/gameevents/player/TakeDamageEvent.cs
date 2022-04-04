@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -5,6 +6,7 @@ using System.Text.Json.Serialization;
 using Sandbox;
 
 using TTTReborn.Globalization;
+using TTTReborn.Teams;
 
 namespace TTTReborn.Events.Player
 {
@@ -45,14 +47,14 @@ namespace TTTReborn.Events.Player
         {
             Damage = damage;
 
-            if (player != null && attacker != null)
+            if (attacker != null)
             {
                 AttackerIdent = attacker.NetworkIdent;
 
                 if (attacker is TTTReborn.Player)
                 {
                     AttackerName = attacker.Client.Name;
-                    AttackerPlayerId = player.Client.PlayerId;
+                    AttackerPlayerId = attacker.Client.PlayerId;
                 }
                 else
                 {
@@ -85,6 +87,18 @@ namespace TTTReborn.Events.Player
                     else if (current.PlayerId == takeDamageEvent.PlayerId && current.AttackerPlayerId == takeDamageEvent.AttackerPlayerId)
                     {
                         current.Damage += takeDamageEvent.Damage;
+
+                        foreach (GameEventScoring scoring in takeDamageEvent.Scoring)
+                        {
+                            foreach (GameEventScoring currentScoring in current.Scoring)
+                            {
+                                if (scoring.PlayerId == currentScoring.PlayerId)
+                                {
+                                    currentScoring.Score += scoring.Score;
+                                    currentScoring.Karma += scoring.Karma;
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -108,5 +122,24 @@ namespace TTTReborn.Events.Player
         }
 
         public bool Contains(Client client) => PlayerName == client.Name || AttackerName == client.Name;
+
+        protected override void OnRegister()
+        {
+            if (Player == null || !Player.IsValid || Attacker is not TTTReborn.Player attacker || !Attacker.IsValid)
+            {
+                return;
+            }
+
+            if (attacker.IsTeamMember(Player))
+            {
+                Scoring = new GameEventScoring[]
+                {
+                    new(attacker)
+                    {
+                        Karma = Gamemode.Game.Instance.Karma.CalculatePenalty(Math.Min(Damage, Player.Health))
+                    }
+                };
+            }
+        }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 using Sandbox;
 
 namespace TTTReborn.Gamemode
@@ -88,5 +90,7 @@ namespace TTTReborn.Gamemode
             // return (KarmaRecords[player.PlayerId] < TTTKarmaMin && TTTKarmaBan);
             return false;
         }
+
+        public int CalculatePenalty(float damage) => (int) -Math.Ceiling(damage / 2f);
     }
 }
