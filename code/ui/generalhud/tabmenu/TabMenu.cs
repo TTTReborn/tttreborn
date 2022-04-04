@@ -10,11 +10,13 @@ namespace TTTReborn.UI
     public struct TabMenuData
     {
         public Panel Panel { get; set; }
+        public Button Button { get; set; }
         public Action<Panel> OnLeave { get; set; }
 
-        public TabMenuData(Panel panel, Action<Panel> onLeave)
+        public TabMenuData(Panel panel, Button button, Action<Panel> onLeave)
         {
             Panel = panel;
+            Button = button;
             OnLeave = onLeave;
         }
     }
@@ -65,7 +67,6 @@ namespace TTTReborn.UI
                 return null;
             }
 
-            TabMenuData.Add(name, new(panel, onLeave));
             ContentPanel.AddChild(panel);
 
             panel.Enabled(false);
@@ -74,6 +75,8 @@ namespace TTTReborn.UI
             {
                 SelectMenu(name);
             });
+
+            TabMenuData.Add(name, new(panel, button, onLeave));
 
             return button;
         }
@@ -92,6 +95,8 @@ namespace TTTReborn.UI
                     data.OnLeave?.Invoke(data.Panel);
                     data.Panel.Enabled(false);
                 }
+
+                data.Button.SetClass("selected", false);
             }
 
             SelectedMenu = name;
@@ -102,6 +107,7 @@ namespace TTTReborn.UI
             }
 
             tabMenuData.Panel.Enabled(true);
+            tabMenuData.Button.SetClass("selected", true);
         }
 
         public override void Tick()
