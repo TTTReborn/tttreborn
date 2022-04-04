@@ -33,6 +33,10 @@ namespace TTTReborn.Teams
             {
                 Teams[Name] = this;
             }
+            else
+            {
+                Log.Warning($"You've created an instance of the Team '{Name}' that already exists. This will cause issues using the new instance. Instead, use `TeamFunctions.GetTeam()`.");
+            }
         }
 
         public IEnumerable<Client> GetClients()
