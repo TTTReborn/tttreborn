@@ -1,3 +1,5 @@
+using Sandbox;
+
 using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player.Role
@@ -20,5 +22,7 @@ namespace TTTReborn.Events.Player.Role
                 RoleName = player.Role.Name;
             }
         }
+
+        public bool Contains(Client client) => PlayerName == client.Name;
     }
 }
