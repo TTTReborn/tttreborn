@@ -44,9 +44,6 @@ namespace TTTReborn.UI
             _title.UpdateTranslation(translationdata);
         }
 
-        public virtual void OnCreateHeader()
-        {
-
-        }
+        public virtual void OnCreateHeader() { }
     }
 }

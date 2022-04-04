@@ -11,11 +11,6 @@ namespace TTTReborn.Roles
 
         public override bool IsSelectable => false;
 
-        public NoneRole() : base()
-        {
-
-        }
-
         // serverside function
         public override void CreateDefaultShop()
         {

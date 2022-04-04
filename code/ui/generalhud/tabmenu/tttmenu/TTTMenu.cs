@@ -17,7 +17,10 @@ namespace TTTReborn.UI
         /// </summary>
         private Panel Pages { get; set; }
 
-        private bool HasPreviousPages { get => Pages.ChildrenCount > 1; }
+        private bool HasPreviousPages
+        {
+            get => Pages.ChildrenCount > 1;
+        }
 
         private Button BackButton { get; set; }
         private Button HomeButton { get; set; }

@@ -9,6 +9,8 @@ using Sandbox.UI.Construct;
 using TTTReborn.Globalization;
 using TTTReborn.Settings;
 
+#pragma warning disable CA1822
+
 namespace TTTReborn.UI.Menu
 {
     [UseTemplate]

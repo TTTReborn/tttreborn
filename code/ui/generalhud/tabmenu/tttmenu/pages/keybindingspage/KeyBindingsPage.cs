@@ -3,7 +3,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTTReborn.Globalization;
-using TTTReborn.UI;
 
 namespace TTTReborn.UI.Menu
 {

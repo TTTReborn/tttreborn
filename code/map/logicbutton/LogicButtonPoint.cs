@@ -116,9 +116,6 @@ namespace TTTReborn.UI
 
         // Check to make sure player is within range and our button is not disabled.
         // Called when client calls for button to be activated. A simple double check.
-        public bool IsUsable(Player player)
-        {
-            return player.Position.Distance(Position) <= Data.Range && !Data.IsDisabled;
-        }
+        public bool IsUsable(Player player) => player.Position.Distance(Position) <= Data.Range && !Data.IsDisabled;
     }
 }

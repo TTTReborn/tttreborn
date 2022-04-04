@@ -9,10 +9,7 @@ namespace TTTReborn.Teams
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class TeamAttribute : LibraryAttribute
     {
-        public TeamAttribute(string name) : base("ttt_team_" + name)
-        {
-
-        }
+        public TeamAttribute(string name) : base("ttt_team_" + name) { }
     }
 
     public abstract class Team
@@ -39,10 +36,7 @@ namespace TTTReborn.Teams
             }
         }
 
-        public IEnumerable<Client> GetClients()
-        {
-            return Members.Select(x => x.Client);
-        }
+        public IEnumerable<Client> GetClients() => Members.Select(x => x.Client);
 
         public virtual bool CheckWin(Player player) => true;
 
@@ -94,9 +88,6 @@ namespace TTTReborn.Teams
 
         public static Team GetTeam(Type teamType) => GetTeam(Utils.GetLibraryName(teamType));
 
-        public static bool IsTeamMember(this Player self, Player other)
-        {
-            return self.Team == other.Team && self.Team.CheckWin(self);
-        }
+        public static bool IsTeamMember(this Player self, Player other) => self.Team == other.Team && self.Team.CheckWin(self);
     }
 }

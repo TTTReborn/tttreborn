@@ -144,17 +144,7 @@ namespace TTTReborn.UI.Menu
             dialogBox.Display();
         }
 
-        private static string GetSettingsPathByData(bool isServerSettings)
-        {
-            if (isServerSettings)
-            {
-                return $"/settings/{Utils.GetTypeName(typeof(ServerSettings)).ToLower()}/";
-            }
-            else
-            {
-                return $"/settings/{Utils.GetTypeName(typeof(ClientSettings)).ToLower()}/";
-            }
-        }
+        private static string GetSettingsPathByData(bool isServerSettings) => $"/settings/{Utils.GetTypeName(isServerSettings ? typeof(ServerSettings) : typeof(ClientSettings)).ToLower()}/";
     }
 }
 

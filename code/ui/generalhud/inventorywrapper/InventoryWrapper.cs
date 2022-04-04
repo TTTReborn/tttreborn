@@ -4,7 +4,7 @@ namespace TTTReborn.UI
 {
     public class InventoryWrapper : Panel
     {
-        public static InventoryWrapper Instance;
+        public static InventoryWrapper Instance { get; set; }
 
         public Effects Effects;
         public InventorySelection InventorySelection;

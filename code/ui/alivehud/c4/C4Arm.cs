@@ -12,7 +12,7 @@ namespace TTTReborn.UI
     [UseTemplate]
     public class C4Arm : Panel
     {
-        public static C4Arm Instance;
+        public static C4Arm Instance { get; set; }
         public C4Entity Entity { get; set; }
 
         private int _selectedPresetIndex;
@@ -21,7 +21,7 @@ namespace TTTReborn.UI
         private Panel TimerButtonPanel { get; set; }
         private Panel ActionButtonPanel { get; set; }
 
-        public C4Arm() : base()
+        public C4Arm()
         {
             Instance = this;
             TimerText = "00:00";

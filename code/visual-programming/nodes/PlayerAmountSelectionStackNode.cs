@@ -10,11 +10,6 @@ namespace TTTReborn.VisualProgramming
     {
         public List<int> PlayerAmountList { get; set; } = new();
 
-        public PlayerAmountSelectionStackNode() : base()
-        {
-
-        }
-
         public override object[] Test(object[] input)
         {
             int playerAmountListCount = PlayerAmountList.Count;

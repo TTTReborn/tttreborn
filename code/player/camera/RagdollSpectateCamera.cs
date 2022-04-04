@@ -33,9 +33,6 @@ namespace TTTReborn.Camera
             return Local.Pawn.Position;
         }
 
-        public virtual Vector3 GetViewOffset()
-        {
-            return Input.Rotation.Forward * -130 + Vector3.Up * 20;
-        }
+        public virtual Vector3 GetViewOffset() => Input.Rotation.Forward * -130 + Vector3.Up * 20;
     }
 }

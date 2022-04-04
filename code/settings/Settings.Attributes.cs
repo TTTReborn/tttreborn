@@ -16,28 +16,19 @@ namespace TTTReborn.Settings
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class InputSettingAttribute : SettingAttribute
     {
-        public InputSettingAttribute(bool avoidTranslation = false) : base(avoidTranslation)
-        {
-
-        }
+        public InputSettingAttribute(bool avoidTranslation = false) : base(avoidTranslation) { }
     }
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class SwitchSettingAttribute : SettingAttribute
     {
-        public SwitchSettingAttribute(bool avoidTranslation = false) : base(avoidTranslation)
-        {
-
-        }
+        public SwitchSettingAttribute(bool avoidTranslation = false) : base(avoidTranslation) { }
     }
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class DropdownSettingAttribute : SettingAttribute
     {
-        public DropdownSettingAttribute(bool avoidTranslation = false) : base(avoidTranslation)
-        {
-
-        }
+        public DropdownSettingAttribute(bool avoidTranslation = false) : base(avoidTranslation) { }
     }
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]

@@ -2,11 +2,6 @@ namespace TTTReborn.UI.VisualProgramming
 {
     public class NodeConnectionEndPoint : NodeConnectionPoint
     {
-        public NodeConnectionEndPoint() : base()
-        {
-
-        }
-
         protected override void OnMouseOver(Sandbox.UI.MousePanelEvent e)
         {
             NodeConnectionWire currentConnectionWire = Window.Instance.ActiveNodeConnectionWire;

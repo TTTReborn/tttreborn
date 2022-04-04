@@ -9,11 +9,6 @@ namespace TTTReborn.Roles
 
         public override Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(InnocentTeam));
 
-        public InnocentRole() : base()
-        {
-
-        }
-
         // serverside function
         public override void CreateDefaultShop()
         {

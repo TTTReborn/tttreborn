@@ -206,10 +206,7 @@ namespace TTTReborn.UI
             DragBasePanel.Style.Top = Length.Pixels(top / scale);
         }
 
-        public virtual void OnDragPanelFinished()
-        {
-
-        }
+        public virtual void OnDragPanelFinished() { }
 
         public virtual void OnDragPanelSuccess(Drop targetDrop, int? index = null)
         {

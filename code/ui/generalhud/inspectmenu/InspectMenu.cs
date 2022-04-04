@@ -12,7 +12,7 @@ namespace TTTReborn.UI
     [UseTemplate]
     public class InspectMenu : Panel
     {
-        public static InspectMenu Instance;
+        public static InspectMenu Instance { get; set; }
 
         private PlayerCorpse _playerCorpse;
         private ConfirmationData _confirmationData;

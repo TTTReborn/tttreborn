@@ -3,6 +3,8 @@ using Sandbox.UI;
 
 using TTTReborn.VisualProgramming;
 
+#pragma warning disable CA1822
+
 namespace TTTReborn.UI.Menu
 {
     [UseTemplate]

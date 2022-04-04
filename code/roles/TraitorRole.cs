@@ -16,11 +16,6 @@ namespace TTTReborn.Roles
 
         public override Team DefaultTeam { get; } = TeamFunctions.GetTeam(typeof(TraitorTeam));
 
-        public TraitorRole() : base()
-        {
-
-        }
-
         public override void OnSelect(Player player)
         {
             if (Host.IsServer && player.Team == DefaultTeam)

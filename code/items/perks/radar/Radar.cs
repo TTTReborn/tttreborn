@@ -27,11 +27,6 @@ namespace TTTReborn.Items
         private readonly Color _defaultRadarColor = Color.FromBytes(124, 252, 0);
         private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
-        public Radar() : base()
-        {
-
-        }
-
         public override void OnRemove()
         {
             if (Host.IsClient)

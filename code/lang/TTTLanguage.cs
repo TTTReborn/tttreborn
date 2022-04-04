@@ -6,6 +6,8 @@ using Sandbox;
 
 using TTTReborn.UI;
 
+#pragma warning disable CA1822
+
 namespace TTTReborn.Settings
 {
     public partial class Settings

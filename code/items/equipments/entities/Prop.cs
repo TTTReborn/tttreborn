@@ -15,11 +15,6 @@ namespace TTTReborn.Items
     {
         public abstract string ModelPath { get; }
 
-        public Prop() : base()
-        {
-
-        }
-
         public override void Spawn()
         {
             Tags.Add(IItem.ITEM_TAG);

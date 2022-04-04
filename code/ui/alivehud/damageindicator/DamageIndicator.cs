@@ -7,7 +7,7 @@ namespace TTTReborn.UI
 {
     public partial class DamageIndicator : Panel
     {
-        public static DamageIndicator Instance;
+        public static DamageIndicator Instance { get; set; }
 
         private const float MAX_DAMAGE_INDICATOR_DURATION = 5f;
         private float _currentRemainingDamageIndicatorDuration = 0f;
@@ -56,6 +56,7 @@ namespace TTTReborn.UI
             if (Local.Pawn is not Player player)
             {
                 Style.Opacity = 0;
+
                 return;
             }
 

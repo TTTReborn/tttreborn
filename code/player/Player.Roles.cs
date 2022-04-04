@@ -107,14 +107,8 @@ namespace TTTReborn
             }
         }
 
-        public bool CheckWin()
-        {
-            return Role.CheckWin(this);
-        }
+        public bool CheckWin() => Role.CheckWin(this);
 
-        public bool CheckPreventWin()
-        {
-            return Role.CheckPreventWin(this);
-        }
+        public bool CheckPreventWin() => Role.CheckPreventWin(this);
     }
 }

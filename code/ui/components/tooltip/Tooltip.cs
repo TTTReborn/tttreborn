@@ -7,7 +7,7 @@ namespace TTTReborn.UI
 {
     public partial class Tooltip : TranslationLabel
     {
-        public static Tooltip Instance;
+        public static Tooltip Instance { get; set; }
 
         public float RequiredHoveringTime { get; set; } = 0.5f;
 

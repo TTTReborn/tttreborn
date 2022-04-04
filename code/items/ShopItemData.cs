@@ -8,11 +8,6 @@ namespace TTTReborn.Items
     public class BuyableAttribute : Attribute
     {
         public int Price = 100;
-
-        public BuyableAttribute() : base()
-        {
-
-        }
     }
 
     public class ShopItemData

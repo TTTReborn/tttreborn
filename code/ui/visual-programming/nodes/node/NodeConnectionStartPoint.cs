@@ -6,11 +6,6 @@ namespace TTTReborn.UI.VisualProgramming
     {
         public bool IsDragging { get; internal set; } = false;
 
-        public NodeConnectionStartPoint() : base()
-        {
-
-        }
-
         protected override void OnMouseDown(Sandbox.UI.MousePanelEvent e)
         {
             if (ConnectionWire != null)

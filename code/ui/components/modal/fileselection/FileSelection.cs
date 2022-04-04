@@ -189,15 +189,12 @@ namespace TTTReborn.UI
             OnConfirm(SelectedEntry);
         }
 
-        public static string GetIconByFileType(string fileType)
+        public static string GetIconByFileType(string fileType) => fileType switch
         {
-            return fileType switch
-            {
-                "txt" => "text_snippet",
-                "json" => "settings_applications",
-                _ => "description",
-            };
-        }
+            "txt" => "text_snippet",
+            "json" => "settings_applications",
+            _ => "description",
+        };
     }
 }
 

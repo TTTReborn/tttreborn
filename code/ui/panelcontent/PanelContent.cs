@@ -27,18 +27,12 @@ namespace TTTReborn.UI
 
         public bool CanPrevious
         {
-            get
-            {
-                return _historyIndex > 0;
-            }
+            get => _historyIndex > 0;
         }
 
         public bool CanNext
         {
-            get
-            {
-                return _historyIndex < (_contentHistory.Count - 1);
-            }
+            get => _historyIndex < (_contentHistory.Count - 1);
         }
 
         public Action<PanelContentData> OnPanelContentUpdated { get; set; }

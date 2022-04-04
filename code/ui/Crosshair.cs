@@ -4,7 +4,7 @@ namespace TTTReborn.UI
 {
     public class Crosshair : Panel
     {
-        public static Crosshair Current;
+        public static Crosshair Current { get; set; }
 
         public bool ShowDot
         {
@@ -88,12 +88,14 @@ namespace TTTReborn.UI
 
         public void UpdateCrosshair()
         {
-            Shadow shadow = new();
-            shadow.OffsetX = 0;
-            shadow.OffsetY = 0;
-            shadow.Blur = OutlineBlur;
-            shadow.Spread = OutlineThickness;
-            shadow.Color = Color.Black;
+            Shadow shadow = new()
+            {
+                OffsetX = 0,
+                OffsetY = 0,
+                Blur = OutlineBlur,
+                Spread = OutlineThickness,
+                Color = Color.Black
+            };
 
             #region Update Crosshair Dot
             _crosshairDot.Enabled(ShowDot);
@@ -125,16 +127,20 @@ namespace TTTReborn.UI
                 {
                     case 0: // Left
                         _crosshairLines[i].Style.MarginLeft = -(Size / 2 + Gap);
+
                         break;
                     case 1: // Bottom
-                        _crosshairLines[i].Style.MarginTop = (Size / 2 + Gap);
+                        _crosshairLines[i].Style.MarginTop = Size / 2 + Gap;
+
                         break;
                     case 2: // Right
-                        _crosshairLines[i].Style.MarginLeft = (Size / 2 + Gap);
+                        _crosshairLines[i].Style.MarginLeft = Size / 2 + Gap;
+
                         break;
                     case 3: // Top
                         _crosshairLines[i].Enabled(ShowTop);
                         _crosshairLines[i].Style.MarginTop = -(Size / 2 + Gap);
+
                         break;
                 }
 

@@ -171,6 +171,7 @@ namespace TTTReborn.UI
                 InventorySlot s2 = p2 as InventorySlot;
 
                 int result = s1.Carriable.CarriableInfo.Category.CompareTo(s2.Carriable.CarriableInfo.Category);
+
                 return result != 0
                     ? result
                     : string.Compare(s1.Carriable.Info.LibraryName, s2.Carriable.Info.LibraryName, StringComparison.Ordinal);
@@ -275,26 +276,20 @@ namespace TTTReborn.UI
             }
 
             int mouseWheelIndex = input.MouseWheel;
+
             if (mouseWheelIndex != 0)
             {
-                int activeCarriableIndex = childrenList.FindIndex((p) =>
-                    p is InventorySlot slot && slot.Carriable.Info.LibraryName == activeCarriable?.Info.LibraryName);
-
+                int activeCarriableIndex = childrenList.FindIndex((p) => p is InventorySlot slot && slot.Carriable.Info.LibraryName == activeCarriable?.Info.LibraryName);
                 int newSelectedIndex = NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1);
+
                 input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
             }
         }
 
         // Keyboard selection can only increment the index by 1.
-        private static int GetNextWeaponIndex(int index, int count)
-        {
-            return NormalizeSlotIndex(index + 1, count - 1);
-        }
+        private static int GetNextWeaponIndex(int index, int count) => NormalizeSlotIndex(index + 1, count - 1);
 
-        private static int NormalizeSlotIndex(int index, int maxIndex)
-        {
-            return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
-        }
+        private static int NormalizeSlotIndex(int index, int maxIndex) => index > maxIndex ? 0 : index < 0 ? maxIndex : index;
 
         private int GetKeyboardNumberPressed(InputBuilder input)
         {

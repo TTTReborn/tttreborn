@@ -23,19 +23,16 @@ namespace TTTReborn
             Perks = new(player);
         }
 
-        public static int GetSlotByCategory(CarriableCategories category)
+        public static int GetSlotByCategory(CarriableCategories category) => category switch
         {
-            return category switch
-            {
-                CarriableCategories.Melee => 1,
-                CarriableCategories.Pistol => 2,
-                CarriableCategories.SMG or CarriableCategories.Shotgun or CarriableCategories.Sniper => 3,
-                CarriableCategories.OffensiveEquipment => 4,
-                CarriableCategories.UtilityEquipment => 5,
-                CarriableCategories.Grenade => 6,
-                _ => 7,
-            };
-        }
+            CarriableCategories.Melee => 1,
+            CarriableCategories.Pistol => 2,
+            CarriableCategories.SMG or CarriableCategories.Shotgun or CarriableCategories.Sniper => 3,
+            CarriableCategories.OffensiveEquipment => 4,
+            CarriableCategories.UtilityEquipment => 5,
+            CarriableCategories.Grenade => 6,
+            _ => 7,
+        };
 
         public override void DeleteContents()
         {

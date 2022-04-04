@@ -11,10 +11,7 @@ namespace TTTReborn.UI.VisualProgramming
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeAttribute : LibraryAttribute
     {
-        public NodeAttribute(string name) : base("ttt_node_" + name)
-        {
-
-        }
+        public NodeAttribute(string name) : base("ttt_node_" + name) { }
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
@@ -500,17 +497,14 @@ namespace TTTReborn.UI.VisualProgramming
             }
         }
 
-        public virtual Dictionary<string, object> GetJsonData()
+        public virtual Dictionary<string, object> GetJsonData() => new()
         {
-            return new Dictionary<string, object>()
-            {
-                ["Id"] = Id,
-                ["LibraryName"] = LibraryName,
-                ["ConnectionInputIds"] = ConnectionInputIds,
-                ["ConnectionOutputIds"] = ConnectionOutputIds,
-                ["Pos"] = new Vector2(Box.Rect.left, Box.Rect.top),
-            };
-        }
+            ["Id"] = Id,
+            ["LibraryName"] = LibraryName,
+            ["ConnectionInputIds"] = ConnectionInputIds,
+            ["ConnectionOutputIds"] = ConnectionOutputIds,
+            ["Pos"] = new Vector2(Box.Rect.left, Box.Rect.top),
+        };
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)
         {

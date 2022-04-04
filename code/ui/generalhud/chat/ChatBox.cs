@@ -202,10 +202,7 @@ namespace TTTReborn.UI
 
             Messages.Add(chatEntry);
         }
-        public static bool CanUseTeamChat(Player player)
-        {
-            return player.LifeState == LifeState.Alive && player.Team.GetType() == typeof(TraitorTeam);
-        }
+        public static bool CanUseTeamChat(Player player) => player.LifeState == LifeState.Alive && player.Team.GetType() == typeof(TraitorTeam);
 
         [ClientCmd("chat_add", CanBeCalledFromServer = true)]
         public static void AddChatEntry(string name, string message, Channel channel, string avatar = null, string team = null)
