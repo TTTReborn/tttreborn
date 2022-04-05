@@ -45,6 +45,14 @@
                 &.close {
                     background-color: $dead;
                 }
+
+                &.selected {
+                    background-color: $button-secondary;
+                }
+
+                &.force-spectator:hover {
+                    background-color: $button-secondary;
+                }
             }
         }
 

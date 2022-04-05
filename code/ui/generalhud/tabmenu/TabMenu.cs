@@ -10,11 +10,13 @@ namespace TTTReborn.UI
     public struct TabMenuData
     {
         public Panel Panel { get; set; }
+        public Button Button { get; set; }
         public Action<Panel> OnLeave { get; set; }
 
-        public TabMenuData(Panel panel, Action<Panel> onLeave)
+        public TabMenuData(Panel panel, Button button, Action<Panel> onLeave)
         {
             Panel = panel;
+            Button = button;
             OnLeave = onLeave;
         }
     }
@@ -29,6 +31,7 @@ namespace TTTReborn.UI
         public Panel ContentPanel { get; set; }
         public string SelectedMenu { get; set; }
         public Button DefaultButton { get; set; }
+        public Button ForceSpectatorButton { get; set; }
 
         private readonly string _defaultPage = "scoreboard";
         private readonly string _defaultIcon = "score";
@@ -56,6 +59,29 @@ namespace TTTReborn.UI
             });
 
             SelectMenu(_defaultPage);
+
+            // ForceSpectator button
+            ForceSpectatorButton = SidebarPanel.Add.ButtonWithIcon(null, GetForcedSpectatorIcon(), "force-spectator", () =>
+            {
+                if (Local.Pawn is Player player)
+                {
+                    bool isForcedSpectator = player.IsForcedSpectator;
+
+                    ConsoleSystem.Run("ttt_forcespec");
+
+                    ForceSpectatorButton.Icon = isForcedSpectator ? "visibility" : "visibility_off";
+                }
+            });
+        }
+
+        private static string GetForcedSpectatorIcon()
+        {
+            if (Local.Pawn is Player player && player.IsForcedSpectator)
+            {
+                return "visibility_off";
+            }
+
+            return "visibility";
         }
 
         public Button AddMenu<T>(string name, T panel, string icon, Action<Panel> onLeave = null) where T : Panel
@@ -65,7 +91,6 @@ namespace TTTReborn.UI
                 return null;
             }
 
-            TabMenuData.Add(name, new(panel, onLeave));
             ContentPanel.AddChild(panel);
 
             panel.Enabled(false);
@@ -74,6 +99,8 @@ namespace TTTReborn.UI
             {
                 SelectMenu(name);
             });
+
+            TabMenuData.Add(name, new(panel, button, onLeave));
 
             return button;
         }
@@ -92,6 +119,8 @@ namespace TTTReborn.UI
                     data.OnLeave?.Invoke(data.Panel);
                     data.Panel.Enabled(false);
                 }
+
+                data.Button.SetClass("selected", false);
             }
 
             SelectedMenu = name;
@@ -102,6 +131,7 @@ namespace TTTReborn.UI
             }
 
             tabMenuData.Panel.Enabled(true);
+            tabMenuData.Button.SetClass("selected", true);
         }
 
         public override void Tick()

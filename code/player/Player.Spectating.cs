@@ -95,6 +95,10 @@ namespace TTTReborn
                     Client.SetValue("forcedspectator", true);
                 }
             }
+            else if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound && Gamemode.Game.Instance.Round is not Rounds.PostRound)
+            {
+                Respawn();
+            }
         }
     }
 }
