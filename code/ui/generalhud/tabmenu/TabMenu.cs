@@ -31,6 +31,7 @@ namespace TTTReborn.UI
         public Panel ContentPanel { get; set; }
         public string SelectedMenu { get; set; }
         public Button DefaultButton { get; set; }
+        public Button ForceSpectatorButton { get; set; }
 
         private readonly string _defaultPage = "scoreboard";
         private readonly string _defaultIcon = "score";
@@ -58,6 +59,29 @@ namespace TTTReborn.UI
             });
 
             SelectMenu(_defaultPage);
+
+            // ForceSpectator button
+            ForceSpectatorButton = SidebarPanel.Add.ButtonWithIcon(null, GetForcedSpectatorIcon(), "force-spectator", () =>
+            {
+                if (Local.Pawn is Player player)
+                {
+                    bool isForcedSpectator = player.IsForcedSpectator;
+
+                    ConsoleSystem.Run("ttt_forcespec");
+
+                    ForceSpectatorButton.Icon = isForcedSpectator ? "visibility" : "visibility_off";
+                }
+            });
+        }
+
+        private static string GetForcedSpectatorIcon()
+        {
+            if (Local.Pawn is Player player && player.IsForcedSpectator)
+            {
+                return "visibility_off";
+            }
+
+            return "visibility";
         }
 
         public Button AddMenu<T>(string name, T panel, string icon, Action<Panel> onLeave = null) where T : Panel

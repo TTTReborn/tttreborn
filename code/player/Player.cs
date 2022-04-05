@@ -121,14 +121,12 @@ namespace TTTReborn
 
             switch (Gamemode.Game.Instance.Round)
             {
-                // hacky
-                // TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
-                // TODO spawn player as spectator instantly
                 case Rounds.PreRound:
+                case Rounds.WaitingRound:
                     IsConfirmed = false;
                     CorpseConfirmer = null;
 
-                    Client.SetValue("forcedspectator", false);
+                    Client.SetValue("forcedspectator", IsForcedSpectator);
 
                     break;
             }
