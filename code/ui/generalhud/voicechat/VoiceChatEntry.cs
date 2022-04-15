@@ -13,7 +13,10 @@ namespace TTTReborn.UI
     {
         public Friend Friend { get; set; }
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get => Friend.Name;
+        }
         public Image Avatar { get; set; }
         public Client Client { get; }
 
@@ -27,7 +30,6 @@ namespace TTTReborn.UI
         {
             Client = client;
             Friend = new(client.PlayerId);
-            Name = Friend.Name;
 
             Avatar.SetTexture($"avatar:{client.PlayerId}");
         }
@@ -35,7 +37,6 @@ namespace TTTReborn.UI
         public void Update(float level)
         {
             _timeSincePlayed = 0;
-            Name = Friend.Name;
             _targetVoiceLevel = level;
 
             if (Client != null && Client.IsValid() && Client.Pawn is Player player)

@@ -67,20 +67,19 @@ namespace TTTReborn.UI
             UpdateClient(player.Client);
         }
 
-        // unreliable currently due to S&Box issues
-        // [Event(typeof(Events.Player.ConnectedEvent))]
-        // public void OnPlayerConnected(Client client)
-        // {
-        //     AddClient(client);
-        //     UpdateScoreboardGroups();
-        // }
+        [Event(typeof(Events.Player.ConnectedEvent))]
+        public void OnPlayerConnected(Client client)
+        {
+            AddClient(client);
+            UpdateScoreboardGroups();
+        }
 
-        // [Event(typeof(Events.Player.DisconnectedEvent))]
-        // protected void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
-        // {
-        //     RemoveClient(playerId);
-        //     UpdateScoreboardGroups();
-        // }
+        [Event(typeof(Events.Player.DisconnectedEvent))]
+        protected void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
+        {
+            RemoveClient(playerId);
+            UpdateScoreboardGroups();
+        }
 
         public void AddClient(Client client)
         {

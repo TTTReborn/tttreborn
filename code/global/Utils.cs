@@ -46,7 +46,7 @@ namespace TTTReborn.Globals
 
         public static Player GetPlayerById(long playerId)
         {
-            Client client = Client.All.First((cl) => cl.PlayerId == playerId);
+            Client client = Client.All.FirstOrDefault((cl) => cl.PlayerId == playerId, null);
 
             if (client != null && client.Pawn is Player player)
             {
