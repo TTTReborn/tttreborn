@@ -35,12 +35,9 @@ namespace TTTReborn.UI
 
             SetClass("me", Client == Local.Client);
 
-            if (Client.Pawn is not Player player)
-            {
-                return;
-            }
+            PlayerAvatar.SetTexture($"avatar:{Client.PlayerId}");
 
-            if (player.Role is not NoneRole && player.Role is not InnocentRole)
+            if (Client.Pawn is Player player && player.Role is not NoneRole && player.Role is not InnocentRole)
             {
                 Style.BackgroundColor = player.Role.Color.WithAlpha(0.15f);
             }
@@ -48,8 +45,6 @@ namespace TTTReborn.UI
             {
                 Style.BackgroundColor = null;
             }
-
-            PlayerAvatar.SetTexture($"avatar:{Client.PlayerId}");
         }
 
         public override void Tick()

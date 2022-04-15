@@ -118,8 +118,7 @@ namespace TTTReborn.Gamemode
                 return;
             }
 
-            // TODO Waiting for https://github.com/Facepunch/sbox-issues/issues/1715
-            // NetworkableGameEvent.RegisterNetworked(new Events.Player.ConnectedEvent(client));
+            NetworkableGameEvent.RegisterNetworked(new Events.Player.ConnectedEvent(client));
 
             Player player = new();
             client.Pawn = player;

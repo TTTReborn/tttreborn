@@ -126,8 +126,6 @@ namespace TTTReborn.UI
                     Say(msg);
                 }
             }
-
-            Close();
         }
 
         public void AddEntry(string header, string content, Channel channel, string avatar = null, string teamName = null)
