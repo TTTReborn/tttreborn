@@ -12,7 +12,6 @@ namespace TTTReborn.Items
         public EquipmentAttribute(CarriableCategories category = CarriableCategories.UtilityEquipment) : base(category) { }
     }
 
-    [Hammer.Skip]
     public abstract partial class Equipment : BaseCarriable, ICarriableItem
     {
         public ItemInfo Info { get; private set; } = new();

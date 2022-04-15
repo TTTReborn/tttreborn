@@ -6,7 +6,7 @@ using TTTReborn.Teams;
 namespace TTTReborn.Map
 {
     [Library("ttt_logic_doorentity", Description = "Used to assign team or role to a door.")]
-    public partial class RoleDoorEntity : DoorEntity
+    public partial class LogicDoorEntity : DoorEntity
     {
         [Property("Check Value", "Note that teams are often plural. For example, check the `Role` for `ttt_role_traitor`, but check the `Team` for `ttt_team_traitors`.")]
         public string CheckValue

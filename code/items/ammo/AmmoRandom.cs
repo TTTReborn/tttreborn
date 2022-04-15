@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 using Sandbox;
 
 namespace TTTReborn.Items
 {
-    [Library("ttt_ammo_random")]
+    [Library("ttt_ammo_random", Description = "Used to spawn random ammo or ammo of a specific weapon category.")]
+    [Display(Name = "Random Ammo", GroupName = "Ammunition")]
     public class AmmoRandom : Entity
     {
         /// <summary>

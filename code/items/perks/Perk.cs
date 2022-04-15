@@ -9,7 +9,6 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class PerkAttribute : ItemAttribute { }
 
-    [Hammer.Skip]
     public abstract partial class Perk : BaseNetworkable, IItem
     {
         public ItemInfo Info { get; private set; } = new();

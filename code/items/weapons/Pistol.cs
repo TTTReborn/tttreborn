@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 using Sandbox;
 
 namespace TTTReborn.Items
@@ -8,6 +10,7 @@ namespace TTTReborn.Items
     [Buyable(Price = 100)]
     [Precached("weapons/rust_pistol/v_rust_pistol.vmdl", "weapons/rust_pistol/rust_pistol.vmdl")]
     [Hammer.EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
+    [Display(Name = "Pistol", GroupName = "Weapons")]
     public partial class Pistol : Weapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
