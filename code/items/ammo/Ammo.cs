@@ -8,7 +8,6 @@ using TTTReborn.UI;
 
 namespace TTTReborn.Items
 {
-    [Hammer.Skip]
     public abstract partial class Ammo : Prop, IEntityHint, IPickupable
     {
         /// <summary>

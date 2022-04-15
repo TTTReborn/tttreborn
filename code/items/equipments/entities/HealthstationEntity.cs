@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 using Sandbox;
 
@@ -10,6 +11,7 @@ namespace TTTReborn.Items
 {
     [Library("ttt_entity_healthstation")]
     [Precached("models/entities/healthstation.vmdl")]
+    [Display(Name = "Healthstation", GroupName = "Equipments")]
     public partial class HealthstationEntity : Prop, IEntityHint
     {
         public const float MAX_HEALTH = 200f;

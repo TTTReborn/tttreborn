@@ -7,7 +7,6 @@ using TTTReborn.Entities;
 
 namespace TTTReborn.Items
 {
-    [Hammer.Skip]
     public abstract partial class Weapon : BaseCarriable, ICarriableItem, IEntityHint
     {
         public Weapon() : base()
