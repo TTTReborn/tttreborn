@@ -1,3 +1,5 @@
+using System.IO;
+
 using Sandbox;
 
 using TTTReborn.Globalization;
@@ -17,12 +19,28 @@ namespace TTTReborn.Events.Player.Role
         /// </summary>
         public SelectEvent(TTTReborn.Player player) : base(player)
         {
-            if (player != null)
-            {
-                RoleName = player.Role.Name;
-            }
+            RoleName = player.Role.Name;
         }
 
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public SelectEvent() : base() { }
+
         public bool Contains(Client client) => PlayerName == client.Name;
+
+        public override void WriteData(BinaryWriter binaryWriter)
+        {
+            base.WriteData(binaryWriter);
+
+            binaryWriter.Write(RoleName);
+        }
+
+        public override void ReadData(BinaryReader binaryReader)
+        {
+            base.ReadData(binaryReader);
+
+            RoleName = binaryReader.ReadString();
+        }
     }
 }

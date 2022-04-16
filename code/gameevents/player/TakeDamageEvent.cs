@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -19,7 +20,10 @@ namespace TTTReborn.Events.Player
 
         public int AttackerIdent { get; set; }
 
-        [JsonIgnore]
+        public string AttackerName { get; set; }
+
+        public long? AttackerPlayerId { get; set; }
+
         public Entity Attacker
         {
             get
@@ -32,10 +36,6 @@ namespace TTTReborn.Events.Player
                 return Entity.All.First((ent) => ent.NetworkIdent == AttackerIdent);
             }
         }
-
-        public string AttackerName { get; set; }
-
-        public long? AttackerPlayerId { get; set; }
 
         /// <summary>
         /// Occurs when a player takes damage.
@@ -63,6 +63,11 @@ namespace TTTReborn.Events.Player
                 }
             }
         }
+
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public TakeDamageEvent() : base() { }
 
         public override void Run() => Event.Run(Name, Player, Damage);
 
@@ -139,6 +144,31 @@ namespace TTTReborn.Events.Player
                         Karma = Gamemode.Game.Instance.Karma.CalculatePenalty(Math.Min(Damage, Player.Health))
                     }
                 };
+            }
+        }
+
+        public override void WriteData(BinaryWriter binaryWriter)
+        {
+            base.WriteData(binaryWriter);
+
+            binaryWriter.Write(Damage);
+            binaryWriter.Write(AttackerIdent);
+            binaryWriter.Write(AttackerName);
+            binaryWriter.Write(AttackerPlayerId ?? -1);
+        }
+
+        public override void ReadData(BinaryReader binaryReader)
+        {
+            base.ReadData(binaryReader);
+
+            Damage = binaryReader.ReadSingle();
+            AttackerIdent = binaryReader.ReadInt32();
+            AttackerName = binaryReader.ReadString();
+            AttackerPlayerId = binaryReader.ReadInt64();
+
+            if (AttackerPlayerId == -1)
+            {
+                AttackerPlayerId = null;
             }
         }
     }

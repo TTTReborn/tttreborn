@@ -4,7 +4,7 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn
 {
-    public interface ILoggedGameEvent
+    public interface ILoggedGameEvent : INetworkable
     {
         public string Name { get; set; }
 

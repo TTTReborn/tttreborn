@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text.Json.Serialization;
 
 using Sandbox;
@@ -73,13 +74,12 @@ namespace TTTReborn
         public string GetTranslationKey(string key = null) => Utils.GetTranslationKey(Name, key);
     }
 
-    public partial class GameEventScoring
+    public partial class GameEventScoring : INetworkable
     {
         public int Score { get; set; } = 0;
         public int Karma { get; set; } = 0;
         public long PlayerId { get; set; }
 
-        [JsonIgnore]
         public Player Player
         {
             get => Utils.GetPlayerById(PlayerId);
@@ -99,6 +99,22 @@ namespace TTTReborn
                 Player.Client.SetInt("score", Player.Client.GetInt("score") + Score);
                 Player.Client.SetInt("karma", Player.Client.GetInt("karma") + Karma);
             }
+        }
+
+        public void WriteData(BinaryWriter binaryWriter)
+        {
+            binaryWriter.Write(Score);
+            binaryWriter.Write(Karma);
+            binaryWriter.Write(PlayerId);
+            binaryWriter.Write(IsInitialized);
+        }
+
+        public void ReadData(BinaryReader binaryReader)
+        {
+            Score = binaryReader.ReadInt32();
+            Karma = binaryReader.ReadInt32();
+            PlayerId = binaryReader.ReadInt64();
+            IsInitialized = binaryReader.ReadBoolean();
         }
 
         public GameEventScoring(Player player)

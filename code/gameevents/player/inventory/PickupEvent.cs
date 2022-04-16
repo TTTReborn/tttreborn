@@ -10,5 +10,10 @@ namespace TTTReborn.Events.Player.Inventory
         /// <para>Event is passed the <strong><see cref="Entity"/></strong> instance of the item picked up.</para>
         /// </summary>
         public PickupEvent(Entity entity) : base(entity) { }
+
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public PickupEvent() : base() { }
     }
 }

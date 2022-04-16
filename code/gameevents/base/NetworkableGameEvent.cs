@@ -1,46 +1,28 @@
 using System;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.IO;
 
 using Sandbox;
 
 namespace TTTReborn
 {
-    public abstract partial class NetworkableGameEvent : GameEvent
+    public abstract partial class NetworkableGameEvent : GameEvent, INetworkable
     {
-        [JsonIgnore]
         public To? Receiver { get; set; } = null;
 
         public void RunNetworked() => RunNetworked(Receiver ?? To.Everyone);
 
         public virtual void RunNetworked(To to)
         {
+            Assert.True(Host.IsServer);
+
             Receiver = to;
 
             base.Run();
-
-            if (Host.IsServer)
-            {
-                ServerCallNetworked(to);
-            }
-        }
-
-        protected virtual string[] GetJsonData() => Array.Empty<string>();
-
-        protected virtual void Init(string[] jsonData) { }
-
-        protected virtual void ServerCallNetworked(To to)
-        {
-            JsonSerializerOptions options = new()
-            {
-                WriteIndented = false
-            };
-
-            ClientRun(to, Name, JsonSerializer.Serialize(this, GetType(), options), GetJsonData() ?? Array.Empty<string>());
+            ClientRun(to, Name, (this as INetworkable).Write());
         }
 
         [ClientRpc]
-        public static void ClientRun(string libraryName, string jsonEventData, string[] jsonData)
+        public static void ClientRun(string libraryName, byte[] bytes)
         {
             Type type = Utils.GetTypeByLibraryName<GameEvent>(libraryName);
 
@@ -49,9 +31,9 @@ namespace TTTReborn
                 return;
             }
 
-            NetworkableGameEvent gameEvent = JsonSerializer.Deserialize(jsonEventData, type) as NetworkableGameEvent;
-            gameEvent?.Init(jsonData);
-            gameEvent?.Run();
+            NetworkableGameEvent gameEvent = Utils.GetObjectByType<NetworkableGameEvent>(type);
+            (gameEvent as INetworkable).Read(bytes);
+            gameEvent.Run();
         }
 
         public static void RegisterNetworked<T>(T gameEvent, params GameEventScoring[] gameEventScorings) where T : NetworkableGameEvent => RegisterNetworked(To.Everyone, gameEvent, gameEventScorings);
@@ -62,6 +44,38 @@ namespace TTTReborn
 
             gameEvent.ProcessRegister();
             gameEvent.RunNetworked(to);
+        }
+
+        public virtual void WriteData(BinaryWriter binaryWriter)
+        {
+            binaryWriter.Write(Name);
+            binaryWriter.Write(CreatedAt);
+
+            // scoring
+            int count = Scoring.Length;
+
+            binaryWriter.Write(count);
+
+            for (int i = 0; i < count; i++)
+            {
+                Scoring[i].WriteData(binaryWriter);
+            }
+        }
+
+        public virtual void ReadData(BinaryReader binaryReader)
+        {
+            Name = binaryReader.ReadString();
+            CreatedAt = binaryReader.ReadSingle();
+
+            // scoring
+            int count = binaryReader.ReadInt32();
+            Scoring = new GameEventScoring[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                Scoring[i] = new GameEventScoring(null);
+                Scoring[i].ReadData(binaryReader);
+            }
         }
     }
 }

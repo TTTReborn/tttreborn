@@ -22,6 +22,11 @@ namespace TTTReborn.Events.Game
             NewRound = newRound;
         }
 
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public RoundChangeEvent() : base() { }
+
         public override void Run() => Event.Run(Name, OldRound, NewRound);
     }
 }

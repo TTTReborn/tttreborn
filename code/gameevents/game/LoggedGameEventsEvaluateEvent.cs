@@ -15,6 +15,11 @@ namespace TTTReborn.Events.Game
             GameEvents = gameEvents ?? new();
         }
 
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public LoggedGameEventsEvaluateEvent() : base() { }
+
         public override void Run() => Sandbox.Event.Run(Name, GameEvents);
     }
 }

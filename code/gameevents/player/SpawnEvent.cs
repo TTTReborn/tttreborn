@@ -15,6 +15,11 @@ namespace TTTReborn.Events.Player
         /// </summary>
         public SpawnEvent(TTTReborn.Player player) : base(player) { }
 
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public SpawnEvent() : base() { }
+
         public bool Contains(Client client) => PlayerName == client.Name;
     }
 }

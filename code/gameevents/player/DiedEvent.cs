@@ -1,3 +1,5 @@
+using System.IO;
+
 using Sandbox;
 
 using TTTReborn.Globalization;
@@ -50,6 +52,11 @@ namespace TTTReborn.Events.Player
             }
         }
 
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public DiedEvent() : base() { }
+
         protected override void OnRegister()
         {
             if (Player == null || !Player.IsValid || Player.LastAttacker is not TTTReborn.Player attacker)
@@ -85,5 +92,21 @@ namespace TTTReborn.Events.Player
         }
 
         public bool Contains(Client client) => PlayerName == client.Name || LastAttackerName == client.Name;
+
+        public override void WriteData(BinaryWriter binaryWriter)
+        {
+            base.WriteData(binaryWriter);
+
+            binaryWriter.Write(LastAttackerName);
+            binaryWriter.Write(IsAttackerPlayer);
+        }
+
+        public override void ReadData(BinaryReader binaryReader)
+        {
+            base.ReadData(binaryReader);
+
+            LastAttackerName = binaryReader.ReadString();
+            IsAttackerPlayer = binaryReader.ReadBoolean();
+        }
     }
 }

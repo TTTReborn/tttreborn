@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using System.IO;
 
 using Sandbox;
 
@@ -13,7 +13,6 @@ namespace TTTReborn.Events.Game
     {
         public string TeamName { get; set; }
 
-        [JsonIgnore]
         public Team Team
         {
             get => TeamFunctions.GetTeam(TeamName);
@@ -24,11 +23,13 @@ namespace TTTReborn.Events.Game
         /// </summary>
         public FinishEvent(Team team) : base()
         {
-            if (team != null)
-            {
-                TeamName = team.Name;
-            }
+            TeamName = team.Name;
         }
+
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public FinishEvent() : base() { }
 
         public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), Team != null ? new TranslationData(Team.GetTranslationKey("NAME")) : "???");
 
@@ -78,5 +79,19 @@ namespace TTTReborn.Events.Game
         }
 
         public bool Contains(Client client) => true;
+
+        public override void WriteData(BinaryWriter binaryWriter)
+        {
+            base.WriteData(binaryWriter);
+
+            binaryWriter.Write(TeamName);
+        }
+
+        public override void ReadData(BinaryReader binaryReader)
+        {
+            base.ReadData(binaryReader);
+
+            TeamName = binaryReader.ReadString();
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -104,11 +105,39 @@ namespace TTTReborn.Globals
         }
 
         /// <summary>
-        /// Returns an instance of the given type by the given type `Type`.
+        /// Returns an instance of the given type.
         /// </summary>
         /// <param name="type">A derived `Type` of the given type</param>
         /// <returns>Instance of the given type object</returns>
         public static T GetObjectByType<T>(Type type) => Library.Create<T>(type);
+
+        /// <summary>
+        /// Returns an instance of the given type.
+        /// </summary>
+        /// <param name="type">A derived `Type` of the given type</param>
+        /// <param name="bytes">MemoryBuffer data used to read from to initialize the object with data</param>
+        /// <returns>Instance of the given type object</returns>
+        public static T GetNetworkableObjectByType<T>(Type type, byte[] bytes) where T : INetworkable
+        {
+            T obj = GetObjectByType<T>(type);
+            obj.Read(bytes);
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Returns an instance of the given type.
+        /// </summary>
+        /// <param name="type">A derived `Type` of the given type</param>
+        /// <param name="binaryReader">MemoryBuffer data used to read from to initialize the object with data</param>
+        /// <returns>Instance of the given type object</returns>
+        public static T GetNetworkableObjectByType<T>(Type type, BinaryReader binaryReader) where T : INetworkable
+        {
+            T obj = GetObjectByType<T>(type);
+            obj.ReadData(binaryReader);
+
+            return obj;
+        }
 
         /// <summary>
         /// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `Type`.

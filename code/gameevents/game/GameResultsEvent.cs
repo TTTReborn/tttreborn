@@ -1,28 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.IO;
 
 using Sandbox;
 
 namespace TTTReborn.Events.Game
 {
-    public struct GameResultData
-    {
-        public string Name { get; set; }
-        public string Data { get; set; }
-
-        public GameResultData(string name, string data)
-        {
-            Name = name;
-            Data = data;
-        }
-    }
-
     [GameEvent("game_gameresult"), Hammer.Skip]
     public partial class GameResultsEvent : NetworkableGameEvent
     {
-        [JsonIgnore]
         public List<ILoggedGameEvent> GameEvents { get; set; } = new();
 
         /// <summary>
@@ -33,47 +19,49 @@ namespace TTTReborn.Events.Game
             GameEvents = gameEvents ?? new();
         }
 
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public GameResultsEvent() : base() { }
+
         public override void Run() => Event.Run(Name, GameEvents);
 
-        protected override string[] GetJsonData()
+        public override void WriteData(BinaryWriter binaryWriter)
         {
-            List<GameResultData> gameEventsDict = new();
+            base.WriteData(binaryWriter);
 
-            JsonSerializerOptions options = new()
-            {
-                WriteIndented = false
-            };
+            binaryWriter.Write(GameEvents.Count);
 
             foreach (GameEvent gameEvent in GameEvents)
             {
-                if (gameEvent is not NetworkableGameEvent)
+                if (gameEvent is not NetworkableGameEvent networkableGameEvent)
                 {
                     continue;
                 }
 
-                gameEventsDict.Add(new(gameEvent.Name, JsonSerializer.Serialize(gameEvent, gameEvent.GetType(), options)));
+                binaryWriter.Write(gameEvent.Name);
+                networkableGameEvent.WriteData(binaryWriter);
             }
-
-            return new string[]
-            {
-                JsonSerializer.Serialize(gameEventsDict, options)
-            };
         }
 
-        protected override void Init(string[] jsonData)
+        public override void ReadData(BinaryReader binaryReader)
         {
-            base.Init(jsonData);
+            base.ReadData(binaryReader);
 
-            foreach (GameResultData gameResultData in JsonSerializer.Deserialize<List<GameResultData>>(jsonData[0]))
+            GameEvents.Clear();
+
+            int count = binaryReader.ReadInt32();
+
+            for (int i = 0; i < count; i++)
             {
-                Type gameEventType = Utils.GetTypeByLibraryName<ILoggedGameEvent>(gameResultData.Name);
+                Type type = Utils.GetTypeByLibraryName<ILoggedGameEvent>(binaryReader.ReadString());
 
-                if (gameEventType == null || !gameEventType.IsSubclassOf(typeof(NetworkableGameEvent)))
+                if (type == null || !type.IsSubclassOf(typeof(NetworkableGameEvent)))
                 {
                     continue;
                 }
 
-                GameEvents.Add(JsonSerializer.Deserialize(gameResultData.Data, gameEventType) as ILoggedGameEvent);
+                GameEvents.Add(Utils.GetNetworkableObjectByType<ILoggedGameEvent>(type, binaryReader));
             }
         }
     }

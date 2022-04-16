@@ -1,3 +1,5 @@
+using System.IO;
+
 using Sandbox;
 
 namespace TTTReborn.Events.Player
@@ -20,6 +22,27 @@ namespace TTTReborn.Events.Player
             Reason = reason;
         }
 
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public DisconnectedEvent() : base() { }
+
         public override void Run() => Event.Run(Name, PlayerId, Reason);
+
+        public override void WriteData(BinaryWriter binaryWriter)
+        {
+            base.WriteData(binaryWriter);
+
+            binaryWriter.Write(PlayerId);
+            binaryWriter.Write((int) Reason);
+        }
+
+        public override void ReadData(BinaryReader binaryReader)
+        {
+            base.ReadData(binaryReader);
+
+            PlayerId = binaryReader.ReadInt64();
+            Reason = (NetworkDisconnectionReason) binaryReader.ReadInt32();
+        }
     }
 }

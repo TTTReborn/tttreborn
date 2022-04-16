@@ -10,5 +10,10 @@ namespace TTTReborn.Events.Player.Inventory
         /// <para>Event is passed the <strong><see cref="Entity"/></strong> instance of the item dropped.</para>
         /// </summary>
         public DropEvent(Entity entity) : base(entity) { }
+
+        /// <summary>
+        /// WARNING! Do not use this constructor on your own! Used internally and is publicly visible due to sbox's `Library` library
+        /// </summary>
+        public DropEvent() : base() { }
     }
 }
