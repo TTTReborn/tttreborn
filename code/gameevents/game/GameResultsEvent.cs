@@ -56,12 +56,19 @@ namespace TTTReborn.Events.Game
             {
                 Type type = Utils.GetTypeByLibraryName<ILoggedGameEvent>(binaryReader.ReadString());
 
-                if (type == null || !type.IsSubclassOf(typeof(NetworkableGameEvent)))
+                if (type == null)
                 {
                     continue;
                 }
 
-                GameEvents.Add(Utils.GetNetworkableObjectByType<ILoggedGameEvent>(type, binaryReader));
+                ILoggedGameEvent loggedGameEvent = Utils.GetNetworkableObjectByType<ILoggedGameEvent>(type, binaryReader);
+
+                if (!type.IsSubclassOf(typeof(NetworkableGameEvent)))
+                {
+                    continue;
+                }
+
+                GameEvents.Add(loggedGameEvent);
             }
         }
     }
