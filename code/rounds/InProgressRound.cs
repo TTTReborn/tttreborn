@@ -30,7 +30,7 @@ namespace TTTReborn.Rounds
         public override void OnPlayerKilled(Player player)
         {
             Players.Remove(player);
-            Spectators.AddIfDoesNotContain(player);
+            Spectators.AddUnique(player);
 
             player.MakeSpectator();
             ChangeRoundIfOver();
@@ -40,7 +40,7 @@ namespace TTTReborn.Rounds
 
         public override void OnPlayerJoin(Player player)
         {
-            Spectators.AddIfDoesNotContain(player);
+            Spectators.AddUnique(player);
 
             base.OnPlayerJoin(player);
         }

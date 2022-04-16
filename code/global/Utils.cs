@@ -257,7 +257,7 @@ namespace TTTReborn.Globals
                 FileSystem.Data.CreateDirectory("settings");
             }
 
-            string settingsName = Utils.GetTypeName(realm == Realm.Client ? typeof(Settings.ClientSettings) : typeof(Settings.ServerSettings));
+            string settingsName = GetTypeName(realm == Realm.Client ? typeof(Settings.ClientSettings) : typeof(Settings.ServerSettings));
 
             path ??= $"/settings/{settingsName.ToLower()}/{pathAddition}";
 
@@ -277,7 +277,7 @@ namespace TTTReborn.Globals
         /// <summary>
         /// Adds the item to the IList if that IList does not already contain the item
         /// </summary>
-        public static void AddIfDoesNotContain<T>(this IList<T> list, T item)
+        public static void AddUnique<T>(this IList<T> list, T item)
         {
             if (!list.Contains(item))
             {
