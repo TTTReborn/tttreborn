@@ -14,7 +14,7 @@ namespace TTTReborn.VisualProgramming
         private static int _packetCount;
         private static string[] _packetData;
 
-        [ServerCmd]
+        [ConCmd.Server]
         public static void ServerRequestStack()
         {
             if (ConsoleSystem.Caller == null)
@@ -69,7 +69,7 @@ namespace TTTReborn.VisualProgramming
             }
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         private static void ServerUploadPartialStack(int packetHash, int packetNum, int maxPackets, string partialStack)
         {
             if (!ConsoleSystem.Caller?.HasPermission("visualprogramming") ?? true)
@@ -174,7 +174,7 @@ namespace TTTReborn.VisualProgramming
             }
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         public static void ServerResetStack()
         {
             if (!ConsoleSystem.Caller?.HasPermission("visualprogramming") ?? true)

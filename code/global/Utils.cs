@@ -71,7 +71,7 @@ namespace TTTReborn.Globals
         /// <returns>List of all available and matching types of the given type</returns>
         public static List<Type> GetTypes<T>(Func<Type, bool> predicate)
         {
-            IEnumerable<Type> types = Library.GetAll<T>().Where(t => !t.IsAbstract && !t.ContainsGenericParameters);
+            IEnumerable<Type> types = TypeLibrary.GetTypes<T>().Where(t => !t.IsAbstract && !t.ContainsGenericParameters);
 
             if (predicate != null)
             {
@@ -108,14 +108,14 @@ namespace TTTReborn.Globals
         /// </summary>
         /// <param name="type">A derived `Type` of the given type</param>
         /// <returns>Instance of the given type object</returns>
-        public static T GetObjectByType<T>(Type type) => Library.Create<T>(type);
+        public static T GetObjectByType<T>(Type type) => TypeLibrary.Create<T>(type);
 
         /// <summary>
         /// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `Type`.
         /// </summary>
         /// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
         /// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-        public static string GetLibraryName(Type type) => Library.GetAttribute(type).Name.ToLower();
+        public static string GetLibraryName(Type type) => TypeLibrary.GetDescription(type).Name.ToLower();
 
         public static T GetAttribute<T>(Type type) where T : Attribute
         {

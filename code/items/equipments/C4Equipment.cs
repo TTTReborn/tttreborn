@@ -8,10 +8,10 @@ namespace TTTReborn.Items
     [Library("ttt_equipment_c4")]
     [Buyable(Price = 100)]
     [Equipment(CarriableCategories.OffensiveEquipment, ObjectType = typeof(C4Entity))]
-    [Hammer.Skip]
+    [HideInEditor]
     public partial class C4Equipment : Equipment
     {
-        [ServerVar("ttt_c4_can_drop", Help = "If enabled, allows players to drop the C4 as a physics item with Attack2.")]
+        [ConVar.Server("ttt_c4_can_drop", Help = "If enabled, allows players to drop the C4 as a physics item with Attack2.")]
         public static bool TTTC4CanDrop { get; set; } = false;
 
         public override string ViewModelPath => "";
@@ -27,7 +27,7 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                if (Input.Pressed(InputButton.Attack1))
+                if (Input.Pressed(InputButton.PrimaryAttack))
                 {
                     TraceResult placementTrace = Trace.Ray(Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * PLACE_DISTANCE)
                        .Ignore(owner)
@@ -50,7 +50,7 @@ namespace TTTReborn.Items
 
                     owner.Inventory.Remove(this);
                 }
-                else if (Input.Pressed(InputButton.Attack2) && TTTC4CanDrop)
+                else if (Input.Pressed(InputButton.SecondaryAttack) && TTTC4CanDrop)
                 {
                     owner.Inventory.DropEntity(this);
                 }

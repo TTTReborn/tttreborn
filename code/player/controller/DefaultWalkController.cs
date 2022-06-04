@@ -203,7 +203,7 @@ namespace TTTReborn
 
     public partial class Player
     {
-        [ServerCmd(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
+        [ConCmd.Server(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
         public static void ToggleSprinting()
         {
             if (!ConsoleSystem.Caller.HasPermission("ttt_toggle_sprint"))

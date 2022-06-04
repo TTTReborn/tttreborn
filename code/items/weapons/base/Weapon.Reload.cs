@@ -22,7 +22,7 @@ namespace TTTReborn.Items
             TimeSinceReload = 0f;
             CurrentReloadTime = clipInfo.ReloadTime;
 
-            (Owner as AnimEntity).SetAnimParameter(clipInfo.ReloadAnim, true);
+            (Owner as AnimatedEntity).SetAnimParameter(clipInfo.ReloadAnim, true);
 
             ClientReload(GetClipInfoIndex(clipInfo));
         }

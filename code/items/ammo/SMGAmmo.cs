@@ -6,8 +6,9 @@ namespace TTTReborn.Items
 {
     [Library("ttt_ammo_smg")]
     [Spawnable]
-    [Hammer.EditorModel("models/ammo/ammo_smg.vmdl")]
+    [EditorModel("models/ammo/ammo_smg.vmdl")]
     [Display(Name = "SMG Ammo", GroupName = "Ammunition")]
+    [Title("SMG Ammo")]
     public partial class SMGAmmo : Ammo
     {
         public override int Amount => 30;

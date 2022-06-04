@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
 using Sandbox;
-using Sandbox.ScreenShake;
 
 namespace TTTReborn.Items
 {
@@ -64,7 +63,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
+            (Owner as AnimatedEntity).SetAnimParameter("b_attack", true);
 
             if (!string.IsNullOrEmpty(clipInfo.ShootSound))
             {
@@ -121,11 +120,14 @@ namespace TTTReborn.Items
 
             if (IsLocalPawn && clipInfo.ShakeEffect != null)
             {
-                _ = new Perlin(clipInfo.ShakeEffect.Length, clipInfo.ShakeEffect.Speed, clipInfo.ShakeEffect.Size, clipInfo.ShakeEffect.Rotation);
+                // TODO
+                // _ = new Perlin(clipInfo.ShakeEffect.Length, clipInfo.ShakeEffect.Speed, clipInfo.ShakeEffect.Size, clipInfo.ShakeEffect.Rotation);
             }
 
             ViewModelEntity?.SetAnimParameter("fire", true);
-            CrosshairPanel?.CreateEvent("fire");
+
+            // TODO
+            // CrosshairPanel?.CreateEvent("fire");
         }
 
         public virtual void ShootBullet(ClipInfo clipInfo)

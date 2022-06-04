@@ -5,7 +5,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_died"), Hammer.Skip]
+    [GameEvent("player_died"), HideInEditor]
     public partial class DiedEvent : PlayerGameEvent, ILoggedGameEvent
     {
         public string LastAttackerName { get; set; }

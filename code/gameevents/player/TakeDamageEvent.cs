@@ -10,7 +10,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_takedamage"), Hammer.Skip]
+    [GameEvent("player_takedamage"), HideInEditor]
     public partial class TakeDamageEvent : PlayerGameEvent, ILoggedGameEvent
     {
         public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", Damage, AttackerName ?? "???");

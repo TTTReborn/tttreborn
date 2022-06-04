@@ -43,10 +43,10 @@ namespace TTTReborn.Items
 
         public static ShopItemData CreateItemData(Type type)
         {
-            LibraryAttribute attribute = Library.GetAttribute(type);
+            TypeDescription typeDescription = TypeLibrary.GetDescription(type);
             bool buyable = false;
 
-            ShopItemData shopItemData = new(attribute.Name)
+            ShopItemData shopItemData = new(typeDescription.Name)
             {
                 Type = type
             };

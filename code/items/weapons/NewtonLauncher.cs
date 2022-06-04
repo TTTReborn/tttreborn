@@ -9,8 +9,9 @@ namespace TTTReborn.Items
     [Weapon(CarriableCategories.OffensiveEquipment)]
     [Buyable(Price = 100)]
     [Precached("weapons/rust_pistol/v_rust_pistol.vmdl", "weapons/rust_pistol/rust_pistol.vmdl")]
-    [Hammer.EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
+    [EditorModel("weapons/rust_pistol/rust_pistol.vmdl")]
     [Display(Name = "NewtonLauncher", GroupName = "Weapons")]
+    [Title("NewtonLauncher")]
     public partial class NewtonLauncher : Weapon
     {
         public override string ViewModelPath => "weapons/rust_pistol/v_rust_pistol.vmdl";
@@ -70,7 +71,7 @@ namespace TTTReborn.Items
 
         public void ReleaseCharge()
         {
-            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
+            (Owner as AnimatedEntity).SetAnimParameter("b_attack", true);
 
             if (IsClient)
             {
@@ -125,7 +126,7 @@ namespace TTTReborn.Items
 
             if (IsCharging)
             {
-                if (!Input.Down(InputButton.Attack1))
+                if (!Input.Down(InputButton.PrimaryAttack))
                 {
                     ReleaseCharge();
                 }

@@ -61,10 +61,6 @@ namespace TTTReborn.UI.VisualProgramming
             AddClass("nodesetting");
         }
 
-        public static NodeSettingAttribute GetAttribute<T>() where T : NodeSetting => Library.GetAttribute(typeof(T)) as NodeSettingAttribute;
-
-        public NodeSettingAttribute GetAttribute() => Library.GetAttribute(GetType()) as NodeSettingAttribute;
-
         public void ToggleInput(bool toggle)
         {
             Input.Enabled = toggle;

@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     [Library("ttt_equipment_healthstation")]
     [Equipment(CarriableCategories.UtilityEquipment, ObjectType = typeof(HealthstationEntity))]
     [Buyable(Price = 100)]
-    [Hammer.Skip]
+    [HideInEditor]
     public partial class HealthStation : Equipment
     {
         public override string ViewModelPath => "";

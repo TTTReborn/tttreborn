@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TTTReborn.Events.Game
 {
-    [GameEvent("game_loggedgameeventevaluate"), Hammer.Skip]
+    [GameEvent("game_loggedgameeventevaluate"), HideInEditor]
     public partial class LoggedGameEventsEvaluateEvent : GameEvent
     {
         public List<ILoggedGameEvent> GameEvents { get; set; }

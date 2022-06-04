@@ -39,7 +39,7 @@ namespace TTTReborn.Items
 
         public override void Attack(ClipInfo clipInfo)
         {
-            (Owner as AnimEntity).SetAnimParameter("b_attack", true);
+            (Owner as AnimatedEntity).SetAnimParameter("b_attack", true);
 
             if (IsClient)
             {

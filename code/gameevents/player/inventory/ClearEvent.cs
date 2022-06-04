@@ -1,6 +1,6 @@
 namespace TTTReborn.Events.Player.Inventory
 {
-    [GameEvent("player_inventory_clear"), Hammer.Skip]
+    [GameEvent("player_inventory_clear"), HideInEditor]
     public partial class ClearEvent : NetworkableGameEvent
     {
         /// <summary>

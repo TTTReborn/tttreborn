@@ -2,7 +2,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [Role("innocent"), Hammer.Skip]
+    [Role("innocent"), HideInEditor]
     public class InnocentRole : Role
     {
         public override Color Color => Color.FromBytes(27, 197, 78);

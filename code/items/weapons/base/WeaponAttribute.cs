@@ -1,7 +1,5 @@
 using System;
 
-using Sandbox;
-
 namespace TTTReborn.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
@@ -20,12 +18,12 @@ namespace TTTReborn.Items
                 PrimaryAmmoType = GetAmmoType(Category);
             }
 
-            if (PrimaryAmmoType != null && Library.GetAttribute(PrimaryAmmoType) != null)
+            if (PrimaryAmmoType != null && TypeLibrary.GetDescription(PrimaryAmmoType) != null)
             {
                 PrimaryAmmoName = Utils.GetLibraryName(PrimaryAmmoType);
             }
 
-            if (SecondaryAmmoType != null && Library.GetAttribute(SecondaryAmmoType) != null)
+            if (SecondaryAmmoType != null && TypeLibrary.GetDescription(SecondaryAmmoType) != null)
             {
                 SecondaryAmmoName = Utils.GetLibraryName(SecondaryAmmoType);
             }

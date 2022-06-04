@@ -1,6 +1,6 @@
 namespace TTTReborn.Events.Shop
 {
-    [GameEvent("shop_change"), Hammer.Skip]
+    [GameEvent("shop_change"), HideInEditor]
     public partial class ChangeEvent : GameEvent
     {
         /// <summary>

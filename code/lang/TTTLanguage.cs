@@ -144,7 +144,7 @@ namespace TTTReborn
 
     public partial class Player
     {
-        [ClientCmd("ttt_language")]
+        [ConCmd.Client("ttt_language")]
         public static void ChangeLanguage(string name = null)
         {
             if (name == null)

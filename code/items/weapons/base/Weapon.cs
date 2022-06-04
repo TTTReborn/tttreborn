@@ -90,7 +90,7 @@ namespace TTTReborn.Items
                 return;
             }
 
-            ResetBurstFireCount(CurrentClip, InputButton.Attack1);
+            ResetBurstFireCount(CurrentClip, InputButton.PrimaryAttack);
 
             if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && ClipAmmo > 0 && !CurrentClip.UnlimitedAmmo)
             {
@@ -133,7 +133,7 @@ namespace TTTReborn.Items
                     return;
                 }
 
-                if (CanAttack(CurrentClip, InputButton.Attack1))
+                if (CanAttack(CurrentClip, InputButton.PrimaryAttack))
                 {
                     using (LagCompensation())
                     {
@@ -151,7 +151,7 @@ namespace TTTReborn.Items
             {
                 CurrentClip = Secondary;
 
-                if (CanAttack(CurrentClip, InputButton.Attack2))
+                if (CanAttack(CurrentClip, InputButton.SecondaryAttack))
                 {
                     using (LagCompensation())
                     {

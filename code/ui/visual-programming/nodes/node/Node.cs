@@ -77,10 +77,6 @@ namespace TTTReborn.UI.VisualProgramming
             return null;
         }
 
-        public static NodeAttribute GetAttribute<T>() where T : Node => Library.GetAttribute(typeof(T)) as NodeAttribute;
-
-        public NodeAttribute GetAttribute() => Library.GetAttribute(GetType()) as NodeAttribute;
-
         public T AddSetting<T>() where T : NodeSetting, new()
         {
             T nodeSetting = new()

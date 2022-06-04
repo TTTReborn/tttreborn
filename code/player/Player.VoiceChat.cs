@@ -42,7 +42,7 @@ namespace TTTReborn
             }
         }
 
-        [ServerCmd(Name = "ttt_requestteamchat")]
+        [ConCmd.Server(Name = "ttt_requestteamchat")]
         public static void RequestTeamChat(bool toggle)
         {
             Player player = ConsoleSystem.Caller.Pawn as Player;

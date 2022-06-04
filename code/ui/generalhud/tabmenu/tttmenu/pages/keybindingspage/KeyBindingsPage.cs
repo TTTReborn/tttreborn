@@ -29,7 +29,7 @@ namespace TTTReborn.UI.Menu
             translationTabContainer.AddTab(movementPanel, new TranslationData("MENU.KEYBINDINGS.MOVEMENT.TITLE"));
 
             Panel weaponsPanel = new();
-            weaponsPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.WEAPONS.FIRE", InputButton.Attack1));
+            weaponsPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.WEAPONS.FIRE", InputButton.PrimaryAttack));
             weaponsPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.WEAPONS.RELOAD", InputButton.Reload));
             weaponsPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.WEAPONS.DROP_WEAPON", InputButton.Drop));
             weaponsPanel.AddChild(new BindingPanel("MENU.KEYBINDINGS.WEAPONS.DROP_AMMO", InputButton.Run, InputButton.Drop));

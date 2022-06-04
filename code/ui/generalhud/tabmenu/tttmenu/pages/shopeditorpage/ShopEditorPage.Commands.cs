@@ -10,7 +10,7 @@ namespace TTTReborn.UI
 {
     public partial class ShopEditorPage : Panel
     {
-        [ServerCmd]
+        [ConCmd.Server]
         public static void ServerRequestShopEditorAccess()
         {
             if (ConsoleSystem.Caller == null)
@@ -63,7 +63,7 @@ namespace TTTReborn.UI
             TTTMenu.Instance.AddPage(new ShopEditorPage());
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         public static void ServerToggleShop(string roleName, bool toggle)
         {
             if (!(ConsoleSystem.Caller?.HasPermission("shopeditor") ?? false))

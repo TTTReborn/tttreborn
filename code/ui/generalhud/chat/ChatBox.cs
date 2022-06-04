@@ -202,7 +202,7 @@ namespace TTTReborn.UI
         }
         public static bool CanUseTeamChat(Player player) => player.LifeState == LifeState.Alive && player.Team.GetType() == typeof(TraitorTeam);
 
-        [ClientCmd("chat_add", CanBeCalledFromServer = true)]
+        [ConCmd.Client("chat_add", CanBeCalledFromServer = true)]
         public static void AddChatEntry(string name, string message, Channel channel, string avatar = null, string team = null)
         {
             Instance?.AddEntry(name, message, channel, avatar, team);
@@ -214,13 +214,13 @@ namespace TTTReborn.UI
             }
         }
 
-        [ClientCmd("chat_addinfo", CanBeCalledFromServer = true)]
+        [ConCmd.Client("chat_addinfo", CanBeCalledFromServer = true)]
         public static void AddInformation(string message, string avatar = null)
         {
             Instance?.AddEntry(null, message, Channel.Info, avatar);
         }
 
-        [ServerCmd("say")]
+        [ConCmd.Server("say")]
         public static void Say(string message)
         {
             Assert.NotNull(ConsoleSystem.Caller);
@@ -245,7 +245,7 @@ namespace TTTReborn.UI
             }
         }
 
-        [ServerCmd("sayteam")]
+        [ConCmd.Server("sayteam")]
         public static void SayTeam(string message)
         {
             Assert.NotNull(ConsoleSystem.Caller);

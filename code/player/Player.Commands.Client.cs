@@ -7,7 +7,7 @@ namespace TTTReborn
 {
     public partial class Player
     {
-        [ClientCmd(Name = "ttt_playerids", Help = "Returns a list of all players (clients) and their associated IDs")]
+        [ConCmd.Client(Name = "ttt_playerids", Help = "Returns a list of all players (clients) and their associated IDs")]
         public static void PlayerID()
         {
             List<Client> playerList = Client.All.ToList();

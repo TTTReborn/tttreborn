@@ -7,7 +7,7 @@ using TTTReborn.Roles;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    [NodeSetting("role_selection"), Hammer.Skip]
+    [NodeSetting("role_selection"), HideInEditor]
     public class NodeRoleSelectionSetting : NodeSetting
     {
         public TranslationDropdown Dropdown;
