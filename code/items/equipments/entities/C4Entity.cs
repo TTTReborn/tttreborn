@@ -15,7 +15,7 @@ namespace TTTReborn.Items
 {
     [Library("ttt_entity_c4")]
     [Precached("models/entities/c4.vmdl", "particles/explosion_fireball.vpcf")]
-    [Hammer.Skip]
+    [HideInEditor]
     public partial class C4Entity : Prop, IEntityHint
     {
         public struct C4Preset
@@ -256,7 +256,7 @@ namespace TTTReborn.Items
             TimerDisplayLabel.Text = timerString;
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         public static void Arm(int c4EntityIdent, int presetIndex)
         {
             if (FindByIndex(c4EntityIdent) is not C4Entity { IsArmed: false } c4Entity || c4Entity.Transform.Position.Distance(ConsoleSystem.Caller.Pawn.Position) > 100f)
@@ -268,7 +268,7 @@ namespace TTTReborn.Items
             c4Entity.StartTimer();
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         public static void Delete(int c4EntityIdent)
         {
             if (FindByIndex(c4EntityIdent) is C4Entity c4Entity && !c4Entity.IsArmed)
@@ -277,7 +277,7 @@ namespace TTTReborn.Items
             }
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         public static void PickUp(int c4EntityIdent, int playerIdent)
         {
             if (FindByIndex(c4EntityIdent) is C4Entity c4Entity && !c4Entity.IsArmed)

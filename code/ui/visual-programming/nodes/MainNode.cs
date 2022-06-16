@@ -2,7 +2,7 @@ using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    [Node("main"), Hammer.Skip]
+    [Node("main"), HideInEditor]
     public class MainNode : Node
     {
         public MainNode() : base(new AllPlayersStackNode())

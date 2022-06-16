@@ -10,7 +10,7 @@ namespace TTTReborn.Items
 	/// used as a prop_physics. Upon level load it will display a warning in the console and remove itself. Use a prop_dynamic instead.
 	/// </summary>
 	[Library("ttt_prop_physics")]
-    [Hammer.Skip]
+    [HideInEditor]
     public abstract partial class Prop : Sandbox.Prop
     {
         public abstract string ModelPath { get; }

@@ -153,7 +153,7 @@ namespace TTTReborn
         }
     }
 
-    [Hammer.Skip]
+    [HideInEditor]
     [Library("ttt_flashlight")]
     public partial class Flashlight : SpotLightEntity
     {
@@ -170,7 +170,7 @@ namespace TTTReborn
             Color = Color.White;
             InnerConeAngle = 10f;
             OuterConeAngle = 30f;
-            FogStength = 1f;
+            FogStrength = 1f;
         }
     }
 }

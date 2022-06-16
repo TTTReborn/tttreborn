@@ -1,6 +1,6 @@
 namespace TTTReborn.Events.Game
 {
-    [GameEvent("game_precache"), Hammer.Skip]
+    [GameEvent("game_precache"), HideInEditor]
     public partial class PrecacheEvent : GameEvent
     {
         /// <summary>

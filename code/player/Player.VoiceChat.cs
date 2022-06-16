@@ -42,7 +42,7 @@ namespace TTTReborn
             }
         }
 
-        [ServerCmd(Name = "ttt_requestteamchat")]
+        [ConCmd.Server(Name = "ttt_requestteamchat")]
         public static void RequestTeamChat(bool toggle)
         {
             Player player = ConsoleSystem.Caller.Pawn as Player;
@@ -120,7 +120,7 @@ namespace TTTReborn
             ConsoleSystem.Run((toggle ? "+" : "-") + "iv_voice");
         }
 
-        [Event(typeof(Events.Player.Role.SelectEvent))]
+        [Event("player_role_select")]
         protected static void OnSelectRole(Player player)
         {
             if (!Host.IsServer)

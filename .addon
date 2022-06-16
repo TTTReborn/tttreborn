@@ -1,5 +1,5 @@
 {
-  "Title": "tttreborn",
+  "Title": "Trouble in Terry\u0027s Town",
   "Type": "game",
   "Org": "neox",
   "Ident": "tttreborn",
@@ -20,6 +20,12 @@
       "dnd.lego",
       "baks.office"
     ],
-    "MinPlayers": 1
+    "MinPlayers": 1,
+    "PerMapRanking": false,
+    "LeaderboardType": 0,
+    "RankType": 0,
+    "MapSelect": 0,
+    "GameNetworkType": 0,
+    "MaxPlayers": 16
   }
 }

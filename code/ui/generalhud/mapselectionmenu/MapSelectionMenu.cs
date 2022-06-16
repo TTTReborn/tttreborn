@@ -26,7 +26,7 @@ namespace TTTReborn.UI
             this.Enabled(false);
         }
 
-        [Event(typeof(Events.Game.MapImagesChangeEvent))]
+        [Event("game_mapimagechange")]
         protected void OnMapImagesChange()
         {
             InitMapPanels();
@@ -89,7 +89,7 @@ namespace TTTReborn.UI
             });
         }
 
-        [ServerCmd(Name = "ttt_vote_next_map")]
+        [ConCmd.Server(Name = "ttt_vote_next_map")]
         public static void VoteNextMap(string name)
         {
             long callerPlayerId = ConsoleSystem.Caller.PlayerId;
@@ -100,7 +100,7 @@ namespace TTTReborn.UI
             Log.Debug($"{callerPlayerId} voting for map {name}");
         }
 
-        [AdminCmd(Name = "ttt_test_vote")]
+        [ConCmd.Admin(Name = "ttt_test_vote")]
         public static void TestVote()
         {
             RPCs.ClientOpenMapSelectionMenu();

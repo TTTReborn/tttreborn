@@ -10,7 +10,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_takedamage"), Hammer.Skip]
+    [GameEvent("player_takedamage"), HideInEditor]
     public partial class TakeDamageEvent : PlayerGameEvent, ILoggedGameEvent
     {
         public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???", Damage, AttackerName ?? "???");
@@ -66,7 +66,7 @@ namespace TTTReborn.Events.Player
 
         public override void Run() => Event.Run(Name, Player, Damage);
 
-        [Event(typeof(Game.LoggedGameEventsEvaluateEvent))]
+        [Event("game_loggedgameeventevaluate")]
         public static void OnLoggedGameEventEvaluate(List<ILoggedGameEvent> gameEvents)
         {
             // merge same events with same attacker together

@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Events.Player.Inventory
 {
-    [GameEvent("player_inventory_drop"), Hammer.Skip]
+    [GameEvent("player_inventory_drop"), HideInEditor]
     public partial class DropEvent : EntityGameEvent
     {
         /// <summary>

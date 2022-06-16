@@ -20,7 +20,7 @@ namespace TTTReborn.UI
             ServerUpdateItem(item.ItemData.Name, toggle, toggle ? JsonSerializer.Serialize(item.ItemData) : "", role.Name);
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         public static void ServerUpdateItem(string itemName, bool toggle, string shopItemDataJson, string roleName)
         {
             if (!(ConsoleSystem.Caller?.HasPermission("shopeditor") ?? false))

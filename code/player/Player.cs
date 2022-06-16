@@ -312,7 +312,7 @@ namespace TTTReborn
             base.OnDestroy();
         }
 
-        [Event(typeof(Events.Player.SpawnEvent))]
+        [Event("player_spawn")]
         protected static void OnPlayerSpawn(Player player)
         {
             if (!player.IsValid())

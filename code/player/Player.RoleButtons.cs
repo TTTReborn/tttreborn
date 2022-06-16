@@ -53,7 +53,7 @@ namespace TTTReborn
             }
         }
 
-        [Event(typeof(Events.UI.ReloadedEvent))]
+        [Event("ui_reloaded")]
         public static void OnUIReloaded()
         {
             LogicButtonPoints = new();
@@ -97,7 +97,7 @@ namespace TTTReborn
         }
 
         // Debug method
-        [ServerCmd("ttt_debug_sendrb")]
+        [ConCmd.Server("ttt_debug_sendrb")]
         public static void ForceRBSend()
         {
             Player player = ConsoleSystem.Caller.Pawn as Player;
@@ -114,7 +114,7 @@ namespace TTTReborn
         }
 
         // Handle client telling server to activate a specific button
-        [ServerCmd]
+        [ConCmd.Server]
         public static void ActivateLogicButton(int networkIdent)
         {
             if (ConsoleSystem.Caller.Pawn is not Player player)

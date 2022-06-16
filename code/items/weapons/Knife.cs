@@ -8,8 +8,9 @@ namespace TTTReborn.Items
     [Weapon(CarriableCategories.Melee)]
     [Buyable(Price = 100)]
     [Precached("weapons/rust_boneknife/v_rust_boneknife.vmdl", "weapons/rust_boneknife/rust_boneknife.vmdl")]
-    [Hammer.EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
+    [EditorModel("weapons/rust_boneknife/rust_boneknife.vmdl")]
     [Display(Name = "Knife", GroupName = "Weapons")]
+    [Title("Knife")]
     public partial class Knife : MeleeWeapon
     {
         public override string ViewModelPath => "weapons/rust_boneknife/v_rust_boneknife.vmdl";

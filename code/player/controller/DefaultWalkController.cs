@@ -164,7 +164,7 @@ namespace TTTReborn
             }
         }
 
-        [Event(typeof(Events.Player.InitialSpawnEvent))]
+        [Event("player_initialspawn")]
         protected static void OnInitialSpawn(Client client)
         {
             if (Host.IsClient)
@@ -175,7 +175,7 @@ namespace TTTReborn
             Update(client);
         }
 
-        [Event(typeof(Events.Settings.ChangeEvent))]
+        [Event("settings_change")]
         public static void OnSettingsChange()
         {
             if (Host.IsClient)
@@ -203,7 +203,7 @@ namespace TTTReborn
 
     public partial class Player
     {
-        [ServerCmd(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
+        [ConCmd.Server(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
         public static void ToggleSprinting()
         {
             if (!ConsoleSystem.Caller.HasPermission("ttt_toggle_sprint"))

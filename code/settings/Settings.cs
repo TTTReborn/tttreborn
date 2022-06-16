@@ -212,7 +212,7 @@ namespace TTTReborn.Settings
             }
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         private static void ServerSendPartialSettings(int packetHash, int packetNum, int maxPackets, string partialSettings)
         {
             if (!ConsoleSystem.Caller?.HasPermission("serversettings") ?? true)
@@ -258,7 +258,7 @@ namespace TTTReborn.Settings
             }
         }
 
-        [ServerCmd]
+        [ConCmd.Server]
         public static void RequestServerSettings()
         {
             if (!ConsoleSystem.Caller.HasPermission("serversettings"))

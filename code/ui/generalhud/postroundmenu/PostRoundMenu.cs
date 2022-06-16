@@ -58,7 +58,7 @@ namespace TTTReborn.UI
             HeaderLabel.Style.FontColor = _stats.WinningColor;
         }
 
-        [Event(typeof(Events.Game.FinishEvent))]
+        [Event("game_finish")]
         public static void OnFinishRound(Team team)
         {
             Instance.OpenAndSetPostRoundMenu(new PostRoundStats(

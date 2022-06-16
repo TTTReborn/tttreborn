@@ -2,7 +2,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [Role("none"), Hammer.Skip]
+    [Role("none"), HideInEditor]
     public class NoneRole : Role
     {
         public override Color Color => Color.Transparent;

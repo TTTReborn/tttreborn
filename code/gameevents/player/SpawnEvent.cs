@@ -4,7 +4,7 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_spawn"), Hammer.Skip]
+    [GameEvent("player_spawn"), HideInEditor]
     public partial class SpawnEvent : PlayerGameEvent, ILoggedGameEvent
     {
         public TranslationData GetDescriptionTranslationData() => new(GetTranslationKey("DESCRIPTION"), PlayerName ?? "???");

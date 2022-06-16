@@ -202,7 +202,7 @@ namespace TTTReborn.Rounds
             NetworkableGameEvent.RegisterNetworked(new Events.Game.GameResultsEvent(eventList));
         }
 
-        [Event(typeof(Events.Player.Role.SelectEvent))]
+        [Event("player_role_select")]
         protected static void OnPlayerRoleChange(Player _)
         {
             if (Host.IsClient)
@@ -216,7 +216,7 @@ namespace TTTReborn.Rounds
             }
         }
 
-        [Event(typeof(Events.Settings.ChangeEvent))]
+        [Event("settings_change")]
         protected static void OnChangeSettings()
         {
             if (Host.IsClient || Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)

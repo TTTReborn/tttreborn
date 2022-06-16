@@ -16,7 +16,7 @@ namespace TTTReborn.Items
     [Library("ttt_equipment_hands")]
     [Equipment(CarriableCategories.UtilityEquipment)]
     [Precached("particles/rope.vpcf")]
-    [Hammer.Skip]
+    [HideInEditor]
     public partial class Hands : Equipment
     {
         public override string ViewModelPath => "";
@@ -43,7 +43,7 @@ namespace TTTReborn.Items
 
             using (Prediction.Off())
             {
-                if (Input.Pressed(InputButton.Attack1))
+                if (Input.Pressed(InputButton.PrimaryAttack))
                 {
                     if (IsHoldingEntity)
                     {
@@ -54,7 +54,7 @@ namespace TTTReborn.Items
                         TryGrabEntity(player);
                     }
                 }
-                else if (Input.Pressed(InputButton.Attack2))
+                else if (Input.Pressed(InputButton.SecondaryAttack))
                 {
                     if (IsHoldingEntity)
                     {

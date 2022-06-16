@@ -27,7 +27,7 @@ namespace TTTReborn.Camera
                 return;
             }
 
-            if (!player.IsSpectatingPlayer || Input.Pressed(InputButton.Attack1))
+            if (!player.IsSpectatingPlayer || Input.Pressed(InputButton.PrimaryAttack))
             {
                 player.UpdateObservatedPlayer();
             }

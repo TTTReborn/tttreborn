@@ -8,7 +8,7 @@ namespace TTTReborn.Items
     [Library("ttt_equipment_decoy")]
     [Equipment(CarriableCategories.UtilityEquipment, ObjectType = typeof(DecoyEntity))]
     [Buyable(Price = 100)]
-    [Hammer.Skip]
+    [HideInEditor]
     public partial class DecoyEquipment : Equipment
     {
         public override string ViewModelPath => "";

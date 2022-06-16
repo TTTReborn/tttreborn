@@ -155,7 +155,7 @@ namespace TTTReborn
 
     public partial class Player
     {
-        [ServerCmd(Name = "ttt_serversettings_saveas_request")]
+        [ConCmd.Server(Name = "ttt_serversettings_saveas_request")]
         public static void RequestSaveServerSettingsAs(string filePath, string fileName, bool overwrite = false)
         {
             if (!ConsoleSystem.Caller.HasPermission("serversettings"))
@@ -182,7 +182,7 @@ namespace TTTReborn
             });
         }
 
-        [ServerCmd(Name = "ttt_serversettings_loadfrom_request")]
+        [ConCmd.Server(Name = "ttt_serversettings_loadfrom_request")]
         public static void RequestLoadFrom(string filePath, string fileName)
         {
             if (!ConsoleSystem.Caller.HasPermission("serversettings"))

@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_initialspawn"), Hammer.Skip]
+    [GameEvent("player_initialspawn"), HideInEditor]
     public partial class InitialSpawnEvent : ClientGameEvent
     {
         /// <summary>

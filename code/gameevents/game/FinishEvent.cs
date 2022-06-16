@@ -8,7 +8,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Events.Game
 {
-    [GameEvent("game_finish"), Hammer.Skip]
+    [GameEvent("game_finish"), HideInEditor]
     public partial class FinishEvent : NetworkableGameEvent, ILoggedGameEvent
     {
         public string TeamName { get; set; }

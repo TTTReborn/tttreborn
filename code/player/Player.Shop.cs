@@ -104,7 +104,7 @@ namespace TTTReborn
             ClientBoughtItem(To.Single(this), itemData.Name);
         }
 
-        [Event(typeof(Events.Game.RoundChangeEvent))]
+        [Event("game_roundchange")]
         private static void OnRoundChanged(BaseRound _, BaseRound newRound)
         {
             if (newRound is PreRound preRound)

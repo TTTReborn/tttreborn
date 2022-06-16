@@ -29,7 +29,7 @@ namespace TTTReborn
             return null;
         }
 
-        [ServerCmd(Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id")]
+        [ConCmd.Server(Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id")]
         public static void RespawnPlayer(string id = null)
         {
             if (!ConsoleSystem.Caller.HasPermission("respawn"))
@@ -81,7 +81,7 @@ namespace TTTReborn
             }
         }
 
-        [ServerCmd(Name = "ttt_requestitem")]
+        [ConCmd.Server(Name = "ttt_requestitem")]
         public static void RequestItem(string itemName)
         {
             if (itemName == null)
@@ -106,7 +106,7 @@ namespace TTTReborn
             player.RequestPurchase(itemType);
         }
 
-        [ServerCmd(Name = "ttt_setrole")]
+        [ConCmd.Server(Name = "ttt_setrole")]
         public static void SetRole(string roleName, string id = null)
         {
             if (!ConsoleSystem.Caller.HasPermission("role"))
@@ -171,7 +171,7 @@ namespace TTTReborn
             player.SendClientRole();
         }
 
-        [ServerCmd(Name = "ttt_forcespec")]
+        [ConCmd.Server(Name = "ttt_forcespec")]
         public static void ToggleForceSpectator()
         {
             Player player = ConsoleSystem.Caller.Pawn as Player;
@@ -184,7 +184,7 @@ namespace TTTReborn
             player.ToggleForcedSpectator();
         }
 
-        [ServerCmd(Name = "ttt_force_restart")]
+        [ConCmd.Server(Name = "ttt_force_restart")]
         public static void ForceRestart()
         {
             if (!ConsoleSystem.Caller.HasPermission("restart"))

@@ -4,7 +4,7 @@ using Sandbox.UI.Construct;
 
 namespace TTTReborn.UI.VisualProgramming
 {
-    [NodeSetting("percent"), Hammer.Skip]
+    [NodeSetting("percent"), HideInEditor]
     public class NodePercentSetting : NodeSetting
     {
         public Sandbox.UI.TextEntry PercentEntry;

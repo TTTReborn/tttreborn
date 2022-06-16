@@ -19,7 +19,7 @@ namespace TTTReborn.Events.Game
         }
     }
 
-    [GameEvent("game_gameresult"), Hammer.Skip]
+    [GameEvent("game_gameresult"), HideInEditor]
     public partial class GameResultsEvent : NetworkableGameEvent
     {
         [JsonIgnore]

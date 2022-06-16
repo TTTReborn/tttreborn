@@ -7,7 +7,7 @@ using TTTReborn.Teams;
 
 namespace TTTReborn.Roles
 {
-    [Role("traitor"), Hammer.Skip]
+    [Role("traitor"), HideInEditor]
     public class TraitorRole : Role
     {
         public override Color Color => Color.FromBytes(223, 41, 53);

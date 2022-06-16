@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTTReborn.Events.Player
 {
-    [GameEvent("player_connected"), Hammer.Skip]
+    [GameEvent("player_connected"), HideInEditor]
     public partial class ConnectedEvent : ClientGameEvent
     {
         /// <summary>

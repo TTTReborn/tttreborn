@@ -4,7 +4,7 @@ using TTTReborn.Globalization;
 
 namespace TTTReborn.Events.Player.Role
 {
-    [GameEvent("player_role_select"), Hammer.Skip]
+    [GameEvent("player_role_select"), HideInEditor]
     public partial class SelectEvent : PlayerGameEvent, ILoggedGameEvent
     {
         public string RoleName { get; set; }

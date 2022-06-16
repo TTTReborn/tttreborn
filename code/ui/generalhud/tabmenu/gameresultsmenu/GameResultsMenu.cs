@@ -77,7 +77,7 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event(typeof(Events.Game.GameResultsEvent))]
+        [Event("game_gameresult")]
         protected void OnGameResultsEvent(List<ILoggedGameEvent> gameEvents)
         {
             LoggedGameEvents = gameEvents;
