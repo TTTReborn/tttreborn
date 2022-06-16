@@ -66,7 +66,7 @@ namespace TTTReborn.Events.Player
 
         public override void Run() => Event.Run(Name, Player, Damage);
 
-        [Event(typeof(Game.LoggedGameEventsEvaluateEvent))]
+        [Event("game_loggedgameeventevaluate")]
         public static void OnLoggedGameEventEvaluate(List<ILoggedGameEvent> gameEvents)
         {
             // merge same events with same attacker together

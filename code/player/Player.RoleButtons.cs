@@ -53,7 +53,7 @@ namespace TTTReborn
             }
         }
 
-        [Event(typeof(Events.UI.ReloadedEvent))]
+        [Event("ui_reloaded")]
         public static void OnUIReloaded()
         {
             LogicButtonPoints = new();

@@ -130,7 +130,7 @@ namespace TTTReborn.Globalization
             Translatables.ForEach((translatable) => translatable.UpdateLanguage(ActiveLanguage));
         }
 
-        [Event(typeof(Events.Settings.ChangeEvent))]
+        [Event("settings_change")]
         public static void OnChangeLanguageSettings()
         {
             UpdateLanguage(GetLanguageByCode(Settings.SettingsManager.Instance.General.Language));

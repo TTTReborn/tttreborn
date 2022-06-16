@@ -150,13 +150,13 @@ namespace TTTReborn.UI
             }
         }
 
-        [Event(typeof(Events.Player.Inventory.ClearEvent))]
+        [Event("player_inventory_clear")]
         protected void OnCarriableItemClear()
         {
             DeleteChildren(true);
         }
 
-        [Event(typeof(Events.Player.Inventory.PickupEvent))]
+        [Event("player_inventory_pickup")]
         protected void OnCarriableItemPickup(Entity entity)
         {
             if (entity == null || entity is not ICarriableItem carriable)
@@ -180,7 +180,7 @@ namespace TTTReborn.UI
             this.Enabled(Children.Any());
         }
 
-        [Event(typeof(Events.Player.Inventory.DropEvent))]
+        [Event("player_inventory_drop")]
         protected void OnCarriableItemDrop(Entity entity)
         {
             if (entity is ICarriableItem carriable)
@@ -200,7 +200,7 @@ namespace TTTReborn.UI
             this.Enabled(Children.Any());
         }
 
-        [Event(typeof(Events.Player.Spectating.ChangeEvent))]
+        [Event("player_spectating_change")]
         protected void OnSpectatingChange(Player player)
         {
             OnCarriableItemClear();

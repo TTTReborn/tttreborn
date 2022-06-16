@@ -56,7 +56,7 @@ namespace TTTReborn.UI
             UpdateScoreboardGroups();
         }
 
-        [Event(typeof(Events.Player.SpawnEvent))]
+        [Event("player_spawn")]
         protected void OnPlayerSpawned(Player player)
         {
             if (player == null || !player.IsValid)
@@ -67,14 +67,14 @@ namespace TTTReborn.UI
             UpdateClient(player.Client);
         }
 
-        [Event(typeof(Events.Player.ConnectedEvent))]
+        [Event("player_connected")]
         public void OnPlayerConnected(Client client)
         {
             AddClient(client);
             UpdateScoreboardGroups();
         }
 
-        [Event(typeof(Events.Player.DisconnectedEvent))]
+        [Event("player_disconnected")]
         protected void OnPlayerDisconnected(long playerId, NetworkDisconnectionReason reason)
         {
             RemoveClient(playerId);
