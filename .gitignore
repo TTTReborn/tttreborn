@@ -18,3 +18,5 @@ sounds/swb/
 particles/swb/
 materials/swb/
 code/swb/
+
+*.vtex_c

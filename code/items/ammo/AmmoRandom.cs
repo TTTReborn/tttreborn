@@ -33,11 +33,14 @@ namespace TTTReborn.Items
                     {
                         WeaponAttribute weaponAttribute = Utils.GetAttribute<WeaponAttribute>(wepType);
 
-                        if (weaponAttribute != null && weaponAttribute.Category == Category && weaponAttribute.PrimaryAmmoName == Utils.GetLibraryName(ammoType))
+                        if (weaponAttribute != null && weaponAttribute.Category == Category)
                         {
-                            if (!filteredTypes.Contains(ammoType))
+                            if (weaponAttribute.PrimaryAmmoType != null && TypeLibrary.GetDescription(weaponAttribute.PrimaryAmmoType) != null && (weaponAttribute.PrimaryAmmoType != null ? Utils.GetLibraryName(weaponAttribute.PrimaryAmmoType) : null) == Utils.GetLibraryName(ammoType))
                             {
-                                filteredTypes.Add(ammoType);
+                                if (!filteredTypes.Contains(ammoType))
+                                {
+                                    filteredTypes.Add(ammoType);
+                                }
                             }
                         }
                     }

@@ -46,7 +46,7 @@ namespace TTTReborn.Items
             TypeDescription typeDescription = TypeLibrary.GetDescription(type);
             bool buyable = false;
 
-            ShopItemData shopItemData = new(typeDescription.Name)
+            ShopItemData shopItemData = new(typeDescription.ClassName)
             {
                 Type = type
             };

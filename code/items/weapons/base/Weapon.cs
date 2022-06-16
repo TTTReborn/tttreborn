@@ -20,11 +20,11 @@ namespace TTTReborn.Items
             if (weaponAttribute != null)
             {
                 CarriableInfo.Category = weaponAttribute.Category;
-                Primary.AmmoName = weaponAttribute.PrimaryAmmoName ?? Primary.AmmoName;
+                Primary.AmmoName = (weaponAttribute.PrimaryAmmoType != null ? Utils.GetLibraryName(weaponAttribute.PrimaryAmmoType) : null) ?? Primary.AmmoName;
 
                 if (Secondary != null)
                 {
-                    Secondary.AmmoName = weaponAttribute.SecondaryAmmoName ?? Secondary.AmmoName;
+                    Secondary.AmmoName = (weaponAttribute.PrimaryAmmoType != null ? Utils.GetLibraryName(weaponAttribute.SecondaryAmmoType) : null) ?? Secondary.AmmoName;
                 }
             }
 

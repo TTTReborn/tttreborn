@@ -13,9 +13,20 @@ namespace TTTReborn
         public GameEventAttribute(string name) : base($"ttt_gameevent_{name}".ToLower()) { }
     }
 
-    public class EventAttribute : Sandbox.EventAttribute
+    public class EventAttribute : Sandbox.EventAttribute, ITypeAttribute
     {
-        public EventAttribute(Type type) : base(Utils.GetAttribute<GameEventAttribute>(type).Name) { }
+        public Type GameEventType { get; private set; }
+        public Type TargetType { get; set; }
+
+        public EventAttribute(Type gameEventType) : base(null)
+        {
+            GameEventType = gameEventType;
+        }
+
+        public void TypeRegister()
+        {
+            EventName = Utils.GetAttribute<GameEventAttribute>(GameEventType).Name;
+        }
     }
 
     // currently (issues with [Net] reassignments and tons of transmitted objects) it's not valuable to make it BaseNetworkable, Transmit always and get rid of NetworkableGameEvent

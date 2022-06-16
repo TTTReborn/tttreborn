@@ -115,20 +115,9 @@ namespace TTTReborn.Globals
         /// </summary>
         /// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
         /// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-        public static string GetLibraryName(Type type) => TypeLibrary.GetDescription(type).Name.ToLower();
+        public static string GetLibraryName(Type type) => TypeLibrary.GetDescription(type).ClassName.ToLower();
 
-        public static T GetAttribute<T>(Type type) where T : Attribute
-        {
-            foreach (object obj in type.GetCustomAttributes(false))
-            {
-                if (obj is T t)
-                {
-                    return t;
-                }
-            }
-
-            return default;
-        }
+        public static T GetAttribute<T>(Type type) where T : Attribute => TypeLibrary.GetAttribute<T>(type);
 
         public static bool HasAttribute<T>(Type type, bool inherit = false) where T : Attribute => type.IsDefined(typeof(T), inherit);
 
@@ -190,10 +179,7 @@ namespace TTTReborn.Globals
             panel.SetClass("disabled", !enabled);
         }
 
-        public static bool IsEnabled(this Panel panel)
-        {
-            return !panel.HasClass("disabled");
-        }
+        public static bool IsEnabled(this Panel panel) => !panel.HasClass("disabled");
 
         public static string GetTypeName(Type type) => type.FullName.Replace(type.Namespace, "").TrimStart('.');
 
@@ -240,10 +226,7 @@ namespace TTTReborn.Globals
             return path;
         }
 
-        public static bool HasGreatorOrEqualAxis(this Vector3 local, Vector3 other)
-        {
-            return local.x >= other.x || local.y >= other.y || local.z >= other.z;
-        }
+        public static bool HasGreatorOrEqualAxis(this Vector3 local, Vector3 other) => local.x >= other.x || local.y >= other.y || local.z >= other.z;
 
         /// <summary>
         /// Adds the item to the IList if that IList does not already contain the item
@@ -312,14 +295,6 @@ namespace TTTReborn.Globals
             return translationKey.ToUpper();
         }
 
-        public static string GetFormattedNumber(int number)
-        {
-            if (number > 0)
-            {
-                return $"+{number}";
-            }
-
-            return number.ToString();
-        }
+        public static string GetFormattedNumber(int number) => number > 0 ? $"+{number}" : number.ToString();
     }
 }

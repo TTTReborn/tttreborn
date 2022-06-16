@@ -5,9 +5,6 @@ namespace TTTReborn.Items
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class WeaponAttribute : CarriableAttribute
     {
-        public string PrimaryAmmoName { get; private set; }
-        public string SecondaryAmmoName { get; private set; }
-
         public Type PrimaryAmmoType { get; set; }
         public Type SecondaryAmmoType { get; set; }
 
@@ -16,16 +13,6 @@ namespace TTTReborn.Items
             if (defaultAmmoType)
             {
                 PrimaryAmmoType = GetAmmoType(Category);
-            }
-
-            if (PrimaryAmmoType != null && TypeLibrary.GetDescription(PrimaryAmmoType) != null)
-            {
-                PrimaryAmmoName = Utils.GetLibraryName(PrimaryAmmoType);
-            }
-
-            if (SecondaryAmmoType != null && TypeLibrary.GetDescription(SecondaryAmmoType) != null)
-            {
-                SecondaryAmmoName = Utils.GetLibraryName(SecondaryAmmoType);
             }
         }
 
