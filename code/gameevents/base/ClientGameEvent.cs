@@ -12,16 +12,16 @@ namespace TTTReborn.Events
         public string PlayerName { get; set; }
 
         [JsonIgnore]
-        public Client Client
+        public IClient Client
         {
-            get => Client.All.First((cl) => cl.PlayerId == PlayerId);
+            get => Sandbox.Game.Clients.First((cl) => cl.SteamId == PlayerId);
         }
 
-        public ClientGameEvent(Client client) : base()
+        public ClientGameEvent(IClient client) : base()
         {
             if (client != null)
             {
-                PlayerId = client.PlayerId;
+                PlayerId = client.SteamId;
                 PlayerName = client.Name;
             }
         }

@@ -89,7 +89,7 @@ namespace TTTReborn
             #endregion
 
             #region Drowning
-            IsUnderwater = Pawn.WaterLevel == 1f;
+            IsUnderwater = Pawn.GetWaterLevel() == 1f;
 
             if (IsUnderwater)
             {
@@ -100,15 +100,14 @@ namespace TTTReborn
                 Breath = MathF.Min(Breath + BREATH_GAIN_PER_SECOND * Time.Delta, MAX_BREATH);
             }
 
-            if (Host.IsServer && Breath == 0f)
+            if (Game.IsServer && Breath == 0f)
             {
                 using (Prediction.Off())
                 {
                     DamageInfo damageInfo = new()
                     {
                         Attacker = Pawn,
-                        Flags = DamageFlags.Drown,
-                        HitboxIndex = (int) HitboxIndex.Head,
+                        Tags = new System.Collections.Generic.HashSet<string> { "drown" },
                         Position = Position,
                         Damage = MathF.Max(DROWN_DAMAGE_PER_SECOND * Time.Delta, 0f)
                     };
@@ -146,15 +145,15 @@ namespace TTTReborn
 
         public virtual void OnPostCategorizePosition(bool stayOnGround, TraceResult trace)
         {
-            if (Host.IsServer && trace.Hit && _fallVelocity < -FALL_DAMAGE_VELOCITY)
+            if (Game.IsServer && trace.Hit && _fallVelocity < -FALL_DAMAGE_VELOCITY)
             {
                 using (Prediction.Off())
                 {
                     DamageInfo damageInfo = new()
                     {
                         Attacker = Pawn,
-                        Flags = DamageFlags.Fall,
-                        HitboxIndex = (int) HitboxIndex.LeftFoot,
+                        Tags = new System.Collections.Generic.HashSet<string> {"fall"},
+                        //HitboxIndex = (int) HitboxIndex.LeftFoot,
                         Position = Position,
                         Damage = (MathF.Abs(_fallVelocity) - FALL_DAMAGE_VELOCITY) * FALL_DAMAGE_SCALE
                     };
@@ -165,9 +164,9 @@ namespace TTTReborn
         }
 
         [Event("player_initialspawn")]
-        protected static void OnInitialSpawn(Client client)
+        protected static void OnInitialSpawn(IClient client)
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
@@ -178,7 +177,7 @@ namespace TTTReborn
         [Event("settings_change")]
         public static void OnSettingsChange()
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
@@ -186,9 +185,9 @@ namespace TTTReborn
             Update();
         }
 
-        public static void Update(Client client = null)
+        public static void Update(IClient client = null)
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
@@ -206,10 +205,10 @@ namespace TTTReborn
         [ConCmd.Server(Name = "ttt_toggle_sprint", Help = "Toggles sprinting")]
         public static void ToggleSprinting()
         {
-            if (!ConsoleSystem.Caller.HasPermission("ttt_toggle_sprint"))
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller.HasPermission("ttt_toggle_sprint"))
+            //{
+            //    return;
+            //}
 
             DefaultWalkController.IsSprintEnabled = !DefaultWalkController.IsSprintEnabled;
 

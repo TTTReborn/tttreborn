@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Physics;
 
 namespace TTTReborn.Items
 {
@@ -23,7 +24,7 @@ namespace TTTReborn.Items
             _corpsePhysicsBody = physicsBodyCorpse;
             _corpseBone = corpseBone;
 
-            _handPhysicsBody = new(Sandbox.Internal.GlobalGameNamespace.Map.Physics)
+            _handPhysicsBody = new(Game.PhysicsWorld)
             {
                 BodyType = PhysicsBodyType.Keyframed
             };

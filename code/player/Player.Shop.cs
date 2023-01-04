@@ -119,7 +119,7 @@ namespace TTTReborn
         [ClientRpc]
         public static void ClientBoughtItem(string itemName)
         {
-            (Local.Pawn as Player).BoughtItemsSet.Add(itemName);
+            (Game.LocalPawn as Player).BoughtItemsSet.Add(itemName);
 
             UpdateQuickShop();
         }
@@ -146,7 +146,7 @@ namespace TTTReborn
         [ClientRpc]
         public static void ClientUpdateShop(string shopJson)
         {
-            (Local.Pawn as Player).Shop = Shop.InitializeFromJSON(shopJson);
+            (Game.LocalPawn as Player).Shop = Shop.InitializeFromJSON(shopJson);
         }
     }
 }

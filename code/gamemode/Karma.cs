@@ -27,7 +27,7 @@ namespace TTTReborn.Gamemode
         // [ServerVar("ttt_karma_penalty_max", Help = "The maximum amount of karma loss per player.")]
         // public static int TTTKarmaPenaltyMax { get; set; } = 100;
 
-        public void RegisterPlayer(Client client)
+        public void RegisterPlayer(IClient client)
         {
             client.SetInt("karma", 1000);
         }
@@ -47,7 +47,7 @@ namespace TTTReborn.Gamemode
 
         public void UpdatePlayerKarma(Player player, int delta)
         {
-            UpdatePlayerIdKarma(player.Client.PlayerId, delta);
+            UpdatePlayerIdKarma(player.Client.SteamId, delta);
         }
 
         public void UpdatePlayerIdKarma(long playerId, int delta)
@@ -84,7 +84,7 @@ namespace TTTReborn.Gamemode
             // DamageRecords = new();
         }
 
-        public bool IsBanned(Client client)
+        public bool IsBanned(IClient client)
         {
             // TODO: Once network dictionaries are supported, implement. Return false meanwhile...
             // return (KarmaRecords[player.PlayerId] < TTTKarmaMin && TTTKarmaBan);

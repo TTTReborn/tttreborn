@@ -19,7 +19,7 @@ namespace TTTReborn
 
             base.Run();
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 ServerCallNetworked(to);
             }

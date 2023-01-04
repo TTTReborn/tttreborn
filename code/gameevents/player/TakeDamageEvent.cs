@@ -54,7 +54,7 @@ namespace TTTReborn.Events.Player
                 if (attacker is TTTReborn.Player)
                 {
                     AttackerName = attacker.Client.Name;
-                    AttackerPlayerId = attacker.Client.PlayerId;
+                    AttackerPlayerId = attacker.Client.SteamId;
                 }
                 else
                 {
@@ -121,7 +121,7 @@ namespace TTTReborn.Events.Player
             }
         }
 
-        public bool Contains(Client client) => PlayerName == client.Name || AttackerName == client.Name;
+        public bool Contains(IClient client) => PlayerName == client.Name || AttackerName == client.Name;
 
         protected override void OnRegister()
         {
@@ -136,7 +136,7 @@ namespace TTTReborn.Events.Player
                 {
                     new(attacker)
                     {
-                        Karma = Gamemode.Game.Instance.Karma.CalculatePenalty(Math.Min(Damage, Player.Health))
+                        Karma = Gamemode.TTTGame.Instance.Karma.CalculatePenalty(Math.Min(Damage, Player.Health))
                     }
                 };
             }

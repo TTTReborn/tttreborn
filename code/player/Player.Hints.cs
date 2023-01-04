@@ -19,12 +19,12 @@ namespace TTTReborn
 
         private void TickEntityHints()
         {
-            if (CameraMode is ThirdPersonSpectateCamera)
-            {
-                DeleteHint();
+            //if (CameraMode is ThirdPersonSpectateCamera)
+            //{
+            //    DeleteHint();
 
-                return;
-            }
+            //    return;
+            //}
 
             IEntityHint hint = IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
             Entity target = hint as Entity;
@@ -55,14 +55,14 @@ namespace TTTReborn
                 {
                     hint.HintTick(this);
 
-                    if (IsClient)
+                    if (Game.IsClient)
                     {
                         _currentHintPanel.UpdateHintPanel(hint.TextOnTick);
                     }
                 }
                 else if (target is DoorEntity doorEntity)
                 {
-                    if (IsClient)
+                    if (Game.IsClient)
                     {
                         TranslationData translationData;
 
@@ -98,13 +98,13 @@ namespace TTTReborn
 
             DeleteHint();
 
-            if (IsClient)
+            if (Game.IsClient)
             {
                 if ((hint == null || hint.ShowGlow) && target is ModelEntity model && model.IsValid())
                 {
                     Glow glow = model.Components.GetOrCreate<Glow>();
                     glow.Color = Color.White; // TODO: Let's let people change this in their settings.
-                    glow.Active = true;
+                    glow.Enabled = true;
                 }
 
                 if (hint != null)
@@ -145,7 +145,7 @@ namespace TTTReborn
 
         private void DeleteHint()
         {
-            if (IsClient)
+            if (Game.IsClient)
             {
                 if (_currentTarget != null && _currentTarget is ModelEntity model && model.IsValid())
                 {
@@ -153,7 +153,7 @@ namespace TTTReborn
 
                     if (glow != null)
                     {
-                        glow.Active = false;
+                        glow.Enabled = false;
                     }
                 }
 

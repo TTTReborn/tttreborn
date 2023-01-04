@@ -58,8 +58,7 @@ namespace TTTReborn.Items
 
             SetModel(ModelPath);
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
-            CollisionGroup = CollisionGroup.Weapon;
-            SetInteractsAs(CollisionLayer.Debris);
+            Tags.Add("debris");
 
             AmmoEntMax = Amount;
             CurrentAmmo = Amount;
@@ -88,7 +87,7 @@ namespace TTTReborn.Items
                 body = PhysicsBody;
             }
 
-            if (body.IsValid() && !info.Flags.HasFlag(DamageFlags.PhysicsImpact))
+            if (body.IsValid() && !info.HasTag("physicsimpact"))
             {
                 body.ApplyImpulseAt(info.Position, info.Force * 100);
             }
@@ -122,7 +121,7 @@ namespace TTTReborn.Items
 
         public void HintTick(Player player)
         {
-            if (IsClient || player.LifeState != LifeState.Alive)
+            if (Game.IsClient || player.LifeState != LifeState.Alive)
             {
                 return;
             }

@@ -18,7 +18,7 @@ namespace TTTReborn.UI
             get => Friend.Name;
         }
         public Image Avatar { get; set; }
-        public Client Client { get; }
+        public IClient Client { get; }
 
         private float _voiceLevel = 0.5f;
         private float _targetVoiceLevel = 0;
@@ -26,12 +26,12 @@ namespace TTTReborn.UI
 
         private RealTimeSince _timeSincePlayed;
 
-        public VoiceChatEntry(Client client)
+        public VoiceChatEntry(IClient client)
         {
             Client = client;
-            Friend = new(client.PlayerId);
+            Friend = new(client.SteamId);
 
-            Avatar.SetTexture($"avatar:{client.PlayerId}");
+            Avatar.SetTexture($"avatar:{client.SteamId}");
         }
 
         public void Update(float level)

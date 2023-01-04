@@ -20,12 +20,12 @@ namespace TTTReborn.UI
 
             To to = To.Single(ConsoleSystem.Caller);
 
-            if (!ConsoleSystem.Caller.HasPermission("shopeditor"))
-            {
-                ClientReceiveShopEditorAccess(to, false);
+            //if (!ConsoleSystem.Caller.HasPermission("shopeditor"))
+            //{
+            //    ClientReceiveShopEditorAccess(to, false);
 
-                return;
-            }
+            //    return;
+            //}
 
             foreach (Type roleType in Utils.GetTypes<Role>())
             {
@@ -66,10 +66,10 @@ namespace TTTReborn.UI
         [ConCmd.Server]
         public static void ServerToggleShop(string roleName, bool toggle)
         {
-            if (!(ConsoleSystem.Caller?.HasPermission("shopeditor") ?? false))
-            {
-                return;
-            }
+            //if (!(ConsoleSystem.Caller?.HasPermission("shopeditor") ?? false))
+            //{
+            //    return;
+            //}
 
             if (ProcessShopToggle(roleName, toggle))
             {
@@ -103,9 +103,9 @@ namespace TTTReborn.UI
 
             role.Shop.Enabled = toggle;
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
                     if (client.Pawn is Player player && player.Role.Equals(roleName))
                     {
@@ -113,7 +113,7 @@ namespace TTTReborn.UI
                     }
                 }
             }
-            else if (Local.Client?.Pawn is Player player && player.Role.Name.Equals(roleName))
+            else if (Game.LocalClient?.Pawn is Player player && player.Role.Name.Equals(roleName))
             {
                 player.Shop.Enabled = toggle;
             }

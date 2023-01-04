@@ -77,6 +77,6 @@ namespace TTTReborn.Events.Game
             }
         }
 
-        public bool Contains(Client client) => true;
+        public bool Contains(IClient client) => true;
     }
 }

@@ -82,7 +82,7 @@ namespace TTTReborn.Items
 
         public virtual string ImpactEffect { get; set; } = null;
 
-        public virtual DamageFlags DamageType { get; set; } = DamageFlags.Bullet;
+        //public virtual DamageFlags DamageType { get; set; } = DamageFlags.Bullet;
 
         public virtual Dictionary<string, string> ShootEffectList { get; set; } = new()
         {
@@ -92,5 +92,6 @@ namespace TTTReborn.Items
         public virtual ShakeEffect ShakeEffect { get; set; } = null;
 
         public virtual FiringType FiringType { get; set; } = FiringType.SEMI;
+        public string[] DamageType { get; internal set; }
     }
 }

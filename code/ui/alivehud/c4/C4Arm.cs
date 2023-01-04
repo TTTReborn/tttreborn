@@ -43,7 +43,7 @@ namespace TTTReborn.UI
 
             ActionButtonPanel.Add.TranslationButton(new TranslationData("EQUIPMENT.C4.UI.PICKUP"), null, "button action-button", () =>
             {
-                C4Entity.PickUp(Entity.NetworkIdent, Local.Pawn.NetworkIdent);
+                C4Entity.PickUp(Entity.NetworkIdent, Game.LocalPawn.NetworkIdent);
             });
 
             ActionButtonPanel.Add.TranslationButton(new TranslationData("EQUIPMENT.C4.UI.DESTROY"), null, "button action-button", () =>
@@ -77,7 +77,7 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            if (this.IsEnabled() && Entity?.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
+            if (this.IsEnabled() && Entity?.Transform.Position.Distance(Game.LocalPawn.Owner.Position) > 100f)
             {
                 this.Enabled(false);
             }

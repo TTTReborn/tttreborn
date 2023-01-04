@@ -23,10 +23,10 @@ namespace TTTReborn.UI
         [ConCmd.Server]
         public static void ServerUpdateItem(string itemName, bool toggle, string shopItemDataJson, string roleName)
         {
-            if (!(ConsoleSystem.Caller?.HasPermission("shopeditor") ?? false))
-            {
-                return;
-            }
+            //if (!(ConsoleSystem.Caller?.HasPermission("shopeditor") ?? false))
+            //{
+            //    return;
+            //}
 
             if (ProcessItemUpdate(itemName, toggle, shopItemDataJson, roleName, out _))
             {
@@ -82,9 +82,9 @@ namespace TTTReborn.UI
 
             UpdateShop(role.Shop, toggle, itemName, shopItemData);
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
                     if (client.Pawn is Player player && player.Role.Equals(roleName))
                     {
@@ -92,7 +92,7 @@ namespace TTTReborn.UI
                     }
                 }
             }
-            else if (Local.Client?.Pawn is Player player && player.Role.Name.Equals(roleName))
+            else if (Game.LocalClient?.Pawn is Player player && player.Role.Name.Equals(roleName))
             {
                 UpdateShop(player.Shop, toggle, itemName, shopItemData);
 

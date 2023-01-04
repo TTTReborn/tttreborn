@@ -49,7 +49,7 @@ namespace TTTReborn
             AmmoList[ammo] = amount;
 
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 _owner.ClientSetAmmo(To.Single(_owner), ammo, amount);
             }
@@ -90,7 +90,7 @@ namespace TTTReborn
         {
             AmmoList.Clear();
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 _owner.ClientClearAmmo(To.Single(_owner));
             }

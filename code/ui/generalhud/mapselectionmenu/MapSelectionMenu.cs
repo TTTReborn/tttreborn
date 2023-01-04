@@ -49,7 +49,7 @@ namespace TTTReborn.UI
 
         private void InitMapPanels()
         {
-            IDictionary<string, string> mapImages = Gamemode.Game.Instance.MapSelection.MapImages;
+            IDictionary<string, string> mapImages = Gamemode.TTTGame.Instance.MapSelection.MapImages;
 
             List<MapPanel> mapPanels = GetMapPanels();
 
@@ -76,24 +76,24 @@ namespace TTTReborn.UI
                 return;
             }
 
-            IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
+            IDictionary<long, string> playerIdMapVote = Gamemode.TTTGame.Instance.MapSelection.PlayerIdMapVote;
             IDictionary<string, int> mapToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap(playerIdMapVote);
 
-            bool hasLocalClientVoted = playerIdMapVote.ContainsKey(Local.Client.PlayerId);
+            bool hasLocalClientVoted = playerIdMapVote.ContainsKey(Game.LocalClient.SteamId);
 
             GetMapPanels().ForEach((mapPanel) =>
             {
                 mapPanel.TotalVotes.Text = mapToVoteCount.ContainsKey(mapPanel.MapName) ? $"{mapToVoteCount[mapPanel.MapName]}" : string.Empty;
 
-                mapPanel.SetClass("voted", hasLocalClientVoted && playerIdMapVote[Local.Client.PlayerId] == mapPanel.MapName);
+                mapPanel.SetClass("voted", hasLocalClientVoted && playerIdMapVote[Game.LocalClient.SteamId] == mapPanel.MapName);
             });
         }
 
         [ConCmd.Server(Name = "ttt_vote_next_map")]
         public static void VoteNextMap(string name)
         {
-            long callerPlayerId = ConsoleSystem.Caller.PlayerId;
-            IDictionary<long, string> nextMapVotes = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
+            long callerPlayerId = ConsoleSystem.Caller.SteamId;
+            IDictionary<long, string> nextMapVotes = Gamemode.TTTGame.Instance.MapSelection.PlayerIdMapVote;
 
             nextMapVotes[callerPlayerId] = name;
 

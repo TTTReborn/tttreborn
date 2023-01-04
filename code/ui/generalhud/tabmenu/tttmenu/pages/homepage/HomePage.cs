@@ -31,15 +31,15 @@ namespace TTTReborn.UI.Menu
 
         public HomePage()
         {
-            if (Local.Client.HasPermission("visualprogramming"))
-            {
-                RoleSelectionEditorButton.RemoveClass("inactive");
-            }
+            //if (Game.LocalClient.HasPermission("visualprogramming"))
+            //{
+            //    RoleSelectionEditorButton.RemoveClass("inactive");
+            //}
 
-            if (Local.Client.HasPermission("shopeditor"))
-            {
-                ShopEditorButton.RemoveClass("inactive");
-            }
+            //if (Game.LocalClient.HasPermission("shopeditor"))
+            //{
+            //    ShopEditorButton.RemoveClass("inactive");
+            //}
         }
 
         public void GoToComponentTesting()

@@ -1,6 +1,7 @@
 using System;
 
 using Sandbox;
+using Sandbox.Diagnostics;
 
 using TTTReborn.Globalization;
 using TTTReborn.Map;
@@ -10,9 +11,9 @@ using TTTReborn.VisualProgramming;
 
 namespace TTTReborn.Gamemode
 {
-    public partial class Game : Sandbox.Game
+    public partial class TTTGame : Sandbox.GameManager
     {
-        public static Game Instance { get; private set; }
+        public static TTTGame Instance { get; private set; }
 
         [Net, Change]
         public BaseRound Round { get; private set; } = new Rounds.WaitingRound();
@@ -24,14 +25,14 @@ namespace TTTReborn.Gamemode
 
         public MapHandler MapHandler { get; private set; }
 
-        // [ConVar.Replicated("ttt_debug")]
+        [ConVar.Replicated("ttt_debug")]
         public bool Debug { get; set; } = true;
 
-        public Game()
+        public TTTGame()
         {
             Instance = this;
 
-            if (IsServer)
+            if (Game.IsServer)
             {
                 PrecacheFiles();
             }
@@ -40,7 +41,7 @@ namespace TTTReborn.Gamemode
             SettingsManager.Load();
             _ = MapSelection.Load();
 
-            if (IsServer)
+            if (Game.IsServer)
             {
                 ShopManager.Load();
             }
@@ -72,7 +73,7 @@ namespace TTTReborn.Gamemode
         /// <param name="round"> The round to change to.</param>
         public void ForceRoundChange(BaseRound round)
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             Round.Finish();
 
@@ -84,18 +85,18 @@ namespace TTTReborn.Gamemode
             Round.Start();
         }
 
-        public override void DoPlayerNoclip(Client client)
-        {
-            // Do nothing. The player can't noclip in this mode.
-        }
+        //public override void DoPlayerNoclip(IClient client)
+        //{
+        //    // Do nothing. The player can't noclip in this mode.
+        //}
 
-        public override void DoPlayerSuicide(Client client)
-        {
-            if (client.Pawn is Player player && player.LifeState == LifeState.Alive)
-            {
-                base.DoPlayerSuicide(client);
-            }
-        }
+        //public override void DoPlayerSuicide(IClient client)
+        //{
+        //    if (client.Pawn is Player player && player.LifeState == LifeState.Alive)
+        //    {
+        //        base.DoPlayerSuicide(client);
+        //    }
+        //}
 
         public override void OnKilled(Entity entity)
         {
@@ -107,7 +108,7 @@ namespace TTTReborn.Gamemode
             }
         }
 
-        public override void ClientJoined(Client client)
+        public override void ClientJoined(IClient client)
         {
             Karma.RegisterPlayer(client);
 
@@ -129,20 +130,20 @@ namespace TTTReborn.Gamemode
             base.ClientJoined(client);
         }
 
-        public override void ClientDisconnect(Client client, NetworkDisconnectionReason reason)
+        public override void ClientDisconnect(IClient client, NetworkDisconnectionReason reason)
         {
             Log.Info(client.Name + " left, checking minimum player count...");
 
             Round.OnPlayerLeave(client.Pawn as Player);
 
-            NetworkableGameEvent.RegisterNetworked(new Events.Player.DisconnectedEvent(client.PlayerId, reason));
+            NetworkableGameEvent.RegisterNetworked(new Events.Player.DisconnectedEvent(client.SteamId, reason));
 
             base.ClientDisconnect(client, reason);
         }
 
-        public override bool CanHearPlayerVoice(Client source, Client dest)
+        public override bool CanHearPlayerVoice(IClient source,IClient dest)
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             if (source.Name.Equals(dest.Name) || source.Pawn is not Player sourcePlayer || dest.Pawn is not Player destPlayer)
             {
@@ -166,32 +167,32 @@ namespace TTTReborn.Gamemode
         /// Someone is speaking via voice chat. This might be someone in your game,
         /// or in your party, or in your lobby.
         /// </summary>
-        public override void OnVoicePlayed(long playerId, float level)
-        {
-            Client client = null;
+        //public override void OnVoicePlayed(long playerId, float level)
+        //{
+        //    Client client = null;
 
-            foreach (Client loopClient in Client.All)
-            {
-                if (loopClient.PlayerId == playerId)
-                {
-                    client = loopClient;
+        //    foreach (Client loopClient in Game.Clients)
+        //    {
+        //        if (loopClient.PlayerId == playerId)
+        //        {
+        //            client = loopClient;
 
-                    break;
-                }
-            }
+        //            break;
+        //        }
+        //    }
 
-            if (client == null || !client.IsValid())
-            {
-                return;
-            }
+        //    if (client == null || !client.IsValid())
+        //    {
+        //        return;
+        //    }
 
-            if (client.Pawn is Player player)
-            {
-                player.IsSpeaking = true;
-            }
+        //    if (client.Pawn is Player player)
+        //    {
+        //        player.IsSpeaking = true;
+        //    }
 
-            UI.VoiceChatDisplay.Instance?.OnVoicePlayed(client, level);
-        }
+        //    UI.VoiceChatDisplay.Instance?.OnVoicePlayed(client, level);
+        //}
 
         public override void PostLevelLoaded()
         {

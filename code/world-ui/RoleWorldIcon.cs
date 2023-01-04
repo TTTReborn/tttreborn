@@ -31,7 +31,7 @@ namespace TTTReborn.WorldUI
         {
             base.Tick();
 
-            if (!Player.IsValid || Player.LifeState != LifeState.Alive || Local.Pawn is Player localPlayer && !Player.IsTeamMember(localPlayer))
+            if (!Player.IsValid || Player.LifeState != LifeState.Alive || Game.LocalPawn is Player localPlayer && !Player.IsTeamMember(localPlayer))
             {
                 this.Enabled(false);
             }
@@ -55,9 +55,9 @@ namespace TTTReborn.WorldUI
 
         private Transform GetTransform()
         {
-            Transform transform = Player.GetBoneTransform(Player.GetHitboxBone((int) HitboxIndex.Head)).WithScale(0.125f);
+            Transform transform = Player.GetBoneTransform((int) HitboxIndex.Head).WithScale(0.125f);
             transform.Position += Vector3.Up * 22.5f;
-            transform.Rotation = Rotation.LookAt(-CurrentView.Rotation.Forward);
+            transform.Rotation = Sandbox.Camera.Rotation;
 
             return transform;
         }

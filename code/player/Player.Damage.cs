@@ -62,7 +62,7 @@ namespace TTTReborn
 
         public override void TakeDamage(DamageInfo info)
         {
-            LastDamageWasHeadshot = GetHitboxGroup(info.HitboxIndex) == (int) HitboxGroup.Head;
+            LastDamageWasHeadshot = info.BoneIndex == (int) HitboxGroup.Head;
 
             if (LastDamageWasHeadshot)
             {
@@ -71,7 +71,7 @@ namespace TTTReborn
 
             // TODO this should be handled by hooks and in the item itself
             // If player has bodyarmor, was not shot in the head, and was shot by a bullet, reduce damage by 30%.
-            if (Inventory.Perks.Has(Utils.GetLibraryName(typeof(BodyArmor))) && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
+            if (Inventory.Perks.Has(Utils.GetLibraryName(typeof(BodyArmor))) && !LastDamageWasHeadshot && info.HasTag("bullet"))
             {
                 info.Damage *= ArmorReductionPercentage;
             }
@@ -84,7 +84,7 @@ namespace TTTReborn
             {
                 LastDistanceToAttacker = Utils.SourceUnitsToMeters(Position.Distance(attacker.Position));
 
-                if (Gamemode.Game.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
+                if (Gamemode.TTTGame.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
                 {
                     return;
                 }
@@ -99,17 +99,17 @@ namespace TTTReborn
             NetworkableGameEvent.RegisterNetworked(client, new Events.Player.TakeDamageEvent(this, info.Damage, info.Attacker));
 
             // Play pain sounds
-            if ((info.Flags & DamageFlags.Fall) == DamageFlags.Fall)
+            if (info.HasTag("fall"))
             {
                 PlaySound("fall").SetVolume(0.5f).SetPosition(info.Position);
             }
-            else if ((info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet)
+            else if (info.HasTag("bullet"))
             {
-                PlaySound("grunt" + Rand.Int(1, 4)).SetVolume(0.4f).SetPosition(info.Position);
+                PlaySound("grunt" + Game.Random.Int(1, 4)).SetVolume(0.4f).SetPosition(info.Position);
             }
 
             // Register player damage with the Karma system
-            Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as Player, this, info.Damage);
+            Gamemode.TTTGame.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as Player, this, info.Damage);
 
             _lastDamageInfo = info;
 

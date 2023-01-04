@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using Sandbox;
+using Sandbox.Diagnostics;
 using Sandbox.UI;
 
 using TTTReborn.Teams;
@@ -41,12 +42,12 @@ namespace TTTReborn.UI
             InputField.AddEventListener("onsubmit", Submit);
             InputField.AddEventListener("onblur", Close);
 
-            Sandbox.Hooks.Chat.OnOpenChat += Open;
+            //Game.Hooks.Chat.OnOpenChat += Open;
         }
 
         public void OnTab()
         {
-            if (Local.Pawn is not Player player || player.LifeState != LifeState.Alive)
+            if (Game.LocalPawn is not Player player || player.LifeState != LifeState.Alive)
             {
                 return;
             }
@@ -61,9 +62,9 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            bool isAlive = Local.Pawn != null && Local.Pawn.LifeState == LifeState.Alive;
+            bool isAlive = Game.LocalPawn != null && Game.LocalPawn.LifeState == LifeState.Alive;
 
-            if (isAlive && Local.Pawn is Player player && IsTeamChatting)
+            if (isAlive && Game.LocalPawn is Player player && IsTeamChatting)
             {
                 InputTeamIndicator.Style.BackgroundColor = player.Team.Color;
                 InputPanel.Style.BorderColor = player.Team.Color;
@@ -115,7 +116,7 @@ namespace TTTReborn.UI
 
             string msg = InputField.Text.Trim();
 
-            if (!string.IsNullOrWhiteSpace(msg) && Local.Pawn is Player)
+            if (!string.IsNullOrWhiteSpace(msg) && Game.LocalPawn is Player)
             {
                 if (wasTeamChatting)
                 {
@@ -208,7 +209,7 @@ namespace TTTReborn.UI
             Instance?.AddEntry(name, message, channel, avatar, team);
 
             // Only log clientside if we're not the listen server host
-            if (!Global.IsListenServer)
+            if (!Game.IsListenServer)
             {
                 Log.Info($"{name}: {message}");
             }
@@ -233,15 +234,15 @@ namespace TTTReborn.UI
 
             Log.Info($"{ConsoleSystem.Caller}: {message}");
 
-            LifeState lifeState = ConsoleSystem.Caller.Pawn.LifeState;
+            LifeState lifeState = (ConsoleSystem.Caller.Pawn as Player).LifeState;
 
-            if (Gamemode.Game.Instance?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead)
+            if (Gamemode.TTTGame.Instance?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead)
             {
-                AddChatEntry(To.Multiple(Utils.GetClients((pl) => pl.LifeState == LifeState.Dead)), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.PlayerId}");
+                AddChatEntry(To.Multiple(Utils.GetClients((pl) => pl.LifeState == LifeState.Dead)), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.SteamId}");
             }
             else
             {
-                AddChatEntry(To.Everyone, ConsoleSystem.Caller.Name, message, Channel.Player, $"avatar:{ConsoleSystem.Caller.PlayerId}");
+                AddChatEntry(To.Everyone, ConsoleSystem.Caller.Name, message, Channel.Player, $"avatar:{ConsoleSystem.Caller.SteamId}");
             }
         }
 
@@ -258,11 +259,11 @@ namespace TTTReborn.UI
 
             Log.Info($"{ConsoleSystem.Caller}: {message}");
 
-            List<Client> clients = new();
+            List<IClient> clients = new();
 
             player.Team.Members.ForEach(member => clients.Add(member.Client));
 
-            AddChatEntry(To.Multiple(clients), ConsoleSystem.Caller.Name, message, Channel.Team, $"avatar:{ConsoleSystem.Caller.PlayerId}", player.Team.Name);
+            AddChatEntry(To.Multiple(clients), ConsoleSystem.Caller.Name, message, Channel.Team, $"avatar:{ConsoleSystem.Caller.SteamId}", player.Team.Name);
         }
     }
 }

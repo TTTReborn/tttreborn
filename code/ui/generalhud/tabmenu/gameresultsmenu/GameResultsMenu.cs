@@ -69,9 +69,9 @@ namespace TTTReborn.UI
             {
                 foreach (ILoggedGameEvent gameEvent in LoggedGameEvents)
                 {
-                    if (gameEvent.Contains(Sandbox.Local.Client))
+                    if (gameEvent.Contains(Sandbox.Game.LocalClient))
                     {
-                        EventWrapper.AddChild(gameEvent.GetEventPanel(Sandbox.Local.Client));
+                        EventWrapper.AddChild(gameEvent.GetEventPanel(Sandbox.Game.LocalClient));
                     }
                 }
             }

@@ -25,8 +25,8 @@ namespace TTTReborn.UI
 
         public void UpdateServerInfo()
         {
-            ServerMapName = Global.MapName;
-            ServerPlayersLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.PLAYERAMOUNT", Client.All.Count, ConsoleSystem.GetValue("maxplayers").ToInt(0)));
+            ServerMapName = Game.Server.MapIdent ;
+            ServerPlayersLabel.UpdateTranslation(new TranslationData("SCOREBOARD.HEADER.PLAYERAMOUNT", Game.Clients.Count, ConsoleSystem.GetValue("maxplayers").ToInt(0)));
         }
     }
 }

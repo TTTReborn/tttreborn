@@ -38,7 +38,7 @@ namespace TTTReborn.UI
 
         private void Initialize()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 return;
             }
@@ -48,7 +48,7 @@ namespace TTTReborn.UI
                 AddScoreboardGroup(defaultScoreboardGroup.ToString());
             }
 
-            foreach (Client client in Client.All)
+            foreach (IClient client in Game.Clients)
             {
                 AddClient(client);
             }
@@ -68,7 +68,7 @@ namespace TTTReborn.UI
         }
 
         [Event("player_connected")]
-        public void OnPlayerConnected(Client client)
+        public void OnPlayerConnected(IClient client)
         {
             AddClient(client);
             UpdateScoreboardGroups();
@@ -81,7 +81,7 @@ namespace TTTReborn.UI
             UpdateScoreboardGroups();
         }
 
-        public void AddClient(Client client)
+        public void AddClient(IClient client)
         {
             if (client == null)
             {
@@ -90,7 +90,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            if (_entries.TryGetValue(client.PlayerId, out ScoreboardEntry _))
+            if (_entries.TryGetValue(client.SteamId, out ScoreboardEntry _))
             {
                 return;
             }
@@ -100,15 +100,15 @@ namespace TTTReborn.UI
 
             scoreboardGroup.GroupMembers++;
 
-            _entries.Add(client.PlayerId, scoreboardEntry);
+            _entries.Add(client.SteamId, scoreboardEntry);
 
             scoreboardGroup.UpdateLabel();
             ScoreboardHeader.UpdateServerInfo();
         }
 
-        public void UpdateClient(Client client)
+        public void UpdateClient(IClient client)
         {
-            if (!_entries.TryGetValue(client.PlayerId, out ScoreboardEntry panel))
+            if (!_entries.TryGetValue(client.SteamId, out ScoreboardEntry panel))
             {
                 return;
             }
@@ -118,7 +118,7 @@ namespace TTTReborn.UI
             if (scoreboardGroup.GroupTitle != panel.ScoreboardGroupName)
             {
                 // instead of remove and add, move the panel into the right parent
-                RemoveClient(client.PlayerId);
+                RemoveClient(client.SteamId);
                 AddClient(client);
             }
             else
@@ -131,7 +131,7 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            foreach (Client client in Client.All)
+            foreach (IClient client in Game.Clients)
             {
                 UpdateClient(client);
             }
@@ -161,13 +161,13 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            bool invalidList = _entries.Count != Client.All.Count;
+            bool invalidList = _entries.Count != Game.Clients.Count;
 
             if (!invalidList)
             {
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
-                    if (!_entries.ContainsKey(client.PlayerId))
+                    if (!_entries.ContainsKey(client.SteamId))
                     {
                         invalidList = true;
 
@@ -179,17 +179,17 @@ namespace TTTReborn.UI
             if (!invalidList)
             {
                 // Due to not having a `client.GetValue` change callback, we have to handle it differently
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
                     bool newIsForcedSpectator = client.GetValue<bool>("forcedspectator");
 
-                    if (!_forcedSpecList.TryGetValue(client.PlayerId, out bool isForcedSpectator))
+                    if (!_forcedSpecList.TryGetValue(client.SteamId, out bool isForcedSpectator))
                     {
-                        _forcedSpecList.Add(client.PlayerId, newIsForcedSpectator);
+                        _forcedSpecList.Add(client.SteamId, newIsForcedSpectator);
                     }
                     else if (isForcedSpectator != newIsForcedSpectator)
                     {
-                        _forcedSpecList[client.PlayerId] = newIsForcedSpectator;
+                        _forcedSpecList[client.SteamId] = newIsForcedSpectator;
 
                         UpdateClient(client);
                     }
@@ -204,7 +204,7 @@ namespace TTTReborn.UI
 
                 _entries.Clear();
 
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
                     AddClient(client);
                 }
@@ -228,7 +228,7 @@ namespace TTTReborn.UI
             return scoreboardGroup;
         }
 
-        private ScoreboardGroup GetScoreboardGroup(Client client)
+        private ScoreboardGroup GetScoreboardGroup(IClient client)
         {
             string group = DefaultScoreboardGroup.Alive.ToString();
 
@@ -236,7 +236,7 @@ namespace TTTReborn.UI
             {
                 group = DefaultScoreboardGroup.Spectator.ToString();
             }
-            else if (client.PlayerId != 0 && client.Pawn is Player player)
+            else if (client.SteamId != 0 && client.Pawn is Player player)
             {
                 if (player.IsConfirmed)
                 {

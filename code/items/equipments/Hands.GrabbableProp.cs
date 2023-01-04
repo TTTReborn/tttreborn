@@ -78,7 +78,7 @@ namespace TTTReborn.Items
 
                 Drop();
 
-                grabbedEntity.Velocity += Owner.EyeRotation.Forward * THROW_FORCE;
+                grabbedEntity.Velocity += Owner.AimRay.Forward * THROW_FORCE;
             }
         }
     }

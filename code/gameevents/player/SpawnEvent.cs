@@ -15,6 +15,6 @@ namespace TTTReborn.Events.Player
         /// </summary>
         public SpawnEvent(TTTReborn.Player player) : base(player) { }
 
-        public bool Contains(Client client) => PlayerName == client.Name;
+        public bool Contains(IClient client) => PlayerName == client.Name;
     }
 }

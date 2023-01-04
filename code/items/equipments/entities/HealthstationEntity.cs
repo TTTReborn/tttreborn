@@ -63,7 +63,7 @@ namespace TTTReborn.Items
 
         public void HintTick(Player player)
         {
-            if (IsClient || player.LifeState != LifeState.Alive)
+            if (Game.IsClient || player.LifeState != LifeState.Alive)
             {
                 return;
             }

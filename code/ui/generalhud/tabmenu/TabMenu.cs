@@ -63,7 +63,7 @@ namespace TTTReborn.UI
             // ForceSpectator button
             ForceSpectatorButton = SidebarPanel.Add.ButtonWithIcon(null, GetForcedSpectatorIcon(), "force-spectator", () =>
             {
-                if (Local.Pawn is Player player)
+                if (Game.LocalPawn is Player player)
                 {
                     bool isForcedSpectator = player.IsForcedSpectator;
 
@@ -76,7 +76,7 @@ namespace TTTReborn.UI
 
         private static string GetForcedSpectatorIcon()
         {
-            if (Local.Pawn is Player player && player.IsForcedSpectator)
+            if (Game.LocalPawn is Player player && player.IsForcedSpectator)
             {
                 return "visibility_off";
             }

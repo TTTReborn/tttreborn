@@ -116,11 +116,11 @@ namespace TTTReborn.Items
             }
         }
 
-        public override void Simulate(Client client)
+        public override void Simulate(IClient client)
         {
             base.Simulate(client);
 
-            if (!IsServer || Owner is not Player owner || !CanDrop)
+            if (!Game.IsServer || Owner is not Player owner || !CanDrop)
             {
                 return;
             }

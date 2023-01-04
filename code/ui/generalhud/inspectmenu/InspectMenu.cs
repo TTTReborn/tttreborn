@@ -97,7 +97,7 @@ namespace TTTReborn.UI
 
             _playerCorpse = playerCorpse;
 
-            AvatarImage.SetTexture($"avatar:{_playerCorpse.DeadPlayer?.Client.PlayerId}");
+            AvatarImage.SetTexture($"avatar:{_playerCorpse.DeadPlayer?.Client.SteamId}");
 
             PlayerLabel.Text = _playerCorpse.DeadPlayer?.Client.Name;
 
@@ -179,7 +179,7 @@ namespace TTTReborn.UI
 
         public override void Tick()
         {
-            if (!Enabled || !_playerCorpse.IsValid() || _playerCorpse.Transform.Position.Distance(Local.Pawn.Owner.Position) > 100f)
+            if (!Enabled || !_playerCorpse.IsValid() || _playerCorpse.Transform.Position.Distance(Game.LocalPawn.Owner.Position) > 100f)
             {
                 Enabled = false;
 

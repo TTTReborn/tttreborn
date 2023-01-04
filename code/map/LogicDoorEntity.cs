@@ -34,7 +34,7 @@ namespace TTTReborn.Map
         [Input]
         public void Activate(Entity activator)
         {
-            if (Gamemode.Game.Instance.Round is InProgressRound && IsUsable(activator))
+            if (Gamemode.TTTGame.Instance.Round is InProgressRound && IsUsable(activator))
             {
                 Toggle(activator);
 

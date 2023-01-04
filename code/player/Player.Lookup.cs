@@ -22,16 +22,16 @@ namespace TTTReborn
         {
             Trace trace;
 
-            if (IsClient)
+            if (Game.IsClient)
             {
-                trace = Trace.Ray(CameraMode.Position, CameraMode.Position + CameraMode.Rotation.Forward * distance);
+                trace = Trace.Ray(Client.AimRay.Position, Client.AimRay.Position + Client.AimRay.Forward * distance);
             }
             else
             {
                 trace = Trace.Ray(EyePosition, EyePosition + EyeRotation.Forward * distance);
             }
 
-            trace = trace.HitLayer(CollisionLayer.Debris).Ignore(this);
+            trace = trace.WithAnyTags("world", "debries", "solid", "player").Ignore(this);
 
             if (IsSpectatingPlayer)
             {

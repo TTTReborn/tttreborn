@@ -36,7 +36,7 @@ namespace TTTReborn.Teams
             }
         }
 
-        public IEnumerable<Client> GetClients() => Members.Select(x => x.Client);
+        public IEnumerable<IClient> GetClients() => Members.Select(x => x.Client);
 
         public virtual bool CheckWin(Player player) => true;
 

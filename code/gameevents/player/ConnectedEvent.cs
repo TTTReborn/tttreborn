@@ -9,6 +9,6 @@ namespace TTTReborn.Events.Player
         /// Occurs when a player connects.
         /// <para>The <strong><see cref="Client"/></strong> instance of the player who connected.</para>
         /// </summary>
-        public ConnectedEvent(Client client) : base(client) { }
+        public ConnectedEvent(IClient client) : base(client) { }
     }
 }

@@ -10,7 +10,7 @@ namespace TTTReborn
         [ConCmd.Client(Name = "ttt_playerids", Help = "Returns a list of all players (clients) and their associated IDs")]
         public static void PlayerID()
         {
-            List<Client> playerList = Client.All.ToList();
+            List<IClient> playerList = Game.Clients.ToList();
 
             for (int i = 0; i < playerList.Count; i++)
             {

@@ -24,7 +24,7 @@ namespace TTTReborn.Globals
 
             player.SetRole(Utils.GetObjectByType<Role>(Utils.GetTypeByLibraryName<Role>(roleName)), TeamFunctions.GetTeam(teamName));
 
-            Client client = player.Client;
+            IClient client = player.Client;
 
             if (client == null || !client.IsValid())
             {
@@ -75,7 +75,7 @@ namespace TTTReborn.Globals
                 return;
             }
 
-            Client confirmClient = confirmPlayer.Client;
+            IClient confirmClient = confirmPlayer.Client;
 
             // TODO improve
             if (deadPlayer.IsValid())
@@ -95,7 +95,7 @@ namespace TTTReborn.Globals
                 );
             }
 
-            if (confirmPlayer == Local.Pawn as Player && data.Credits > 0)
+            if (confirmPlayer == Game.LocalPawn as Player && data.Credits > 0)
             {
                 InfoFeed.Current?.AddEntry(
                     confirmClient,

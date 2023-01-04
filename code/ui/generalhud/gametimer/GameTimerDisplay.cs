@@ -19,15 +19,15 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Game.Instance.Round == null)
+            if (TTTGame.Instance.Round == null)
             {
                 return;
             }
 
-            RoundLabel.UpdateTranslation(new TranslationData($"ROUND.STATE.{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}"));
+            RoundLabel.UpdateTranslation(new TranslationData($"ROUND.STATE.{TTTGame.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}"));
 
-            TimerPanel.SetClass("disabled", Game.Instance.Round is Rounds.WaitingRound);
-            TimerLabel.Text = Game.Instance.Round.TimeLeftFormatted;
+            TimerPanel.SetClass("disabled", TTTGame.Instance.Round is Rounds.WaitingRound);
+            TimerLabel.Text = TTTGame.Instance.Round.TimeLeftFormatted;
         }
     }
 }
