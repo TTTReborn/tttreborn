@@ -28,7 +28,7 @@ namespace TTTReborn.UI
             GroupPingLabel.UpdateTranslation(new TranslationData("SCOREBOARD.COLUMNS.PING"));
         }
 
-        public ScoreboardEntry AddEntry(Client client)
+        public ScoreboardEntry AddEntry(IClient client)
         {
             ScoreboardEntry scoreboardEntry = GroupContent.AddChild<ScoreboardEntry>();
             scoreboardEntry.ScoreboardGroupName = GroupTitle;

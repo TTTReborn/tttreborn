@@ -83,7 +83,7 @@ namespace TTTReborn.Items
 
         public static float GetRealRPM(int rpm) => 60f / rpm;
 
-        public override void Simulate(Client owner)
+        public override void Simulate(IClient owner)
         {
             if (TimeSinceDeployed < WeaponInfo.DeployTime)
             {
@@ -100,14 +100,14 @@ namespace TTTReborn.Items
 
                     if (type != null)
                     {
-                        if (IsServer)
+                        if (Game.IsServer)
                         {
                             Ammo ammoBox = Utils.GetObjectByType<Ammo>(type);
                             ammoBox.LastDropOwner = Owner;
                             ammoBox.TimeSinceLastDrop = 0f;
-                            ammoBox.Position = Owner.EyePosition + Owner.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
-                            ammoBox.Rotation = Owner.EyeRotation;
-                            ammoBox.Velocity = Owner.EyeRotation.Forward * AMMO_DROP_VELOCITY;
+                            ammoBox.Position = Owner.AimRay.Position + Owner.AimRay.Forward * AMMO_DROP_POSITION_OFFSET;
+                            ammoBox.Rotation = Owner.Rotation;
+                            ammoBox.Velocity = Owner.AimRay.Forward * AMMO_DROP_VELOCITY;
                             ammoBox.SetCurrentAmmo(ClipAmmo);
                         }
 
@@ -165,22 +165,22 @@ namespace TTTReborn.Items
             // TODO Zoom
         }
 
-        public static int GetHoldType(CarriableCategories category) => category switch
+        public static CitizenAnimationHelper.HoldTypes GetHoldType(CarriableCategories category) => category switch
         {
-            CarriableCategories.Melee => 0,
-            CarriableCategories.Pistol => 1,
-            CarriableCategories.SMG or CarriableCategories.Sniper => 2,
-            CarriableCategories.Shotgun => 3,
-            CarriableCategories.OffensiveEquipment => 0,
-            CarriableCategories.UtilityEquipment => 0,
-            CarriableCategories.Grenade => 0,
+            CarriableCategories.Melee => CitizenAnimationHelper.HoldTypes.None,
+            CarriableCategories.Pistol => CitizenAnimationHelper.HoldTypes.Pistol,
+            CarriableCategories.SMG or CarriableCategories.Sniper => CitizenAnimationHelper.HoldTypes.Rifle,
+            CarriableCategories.Shotgun => CitizenAnimationHelper.HoldTypes.Shotgun,
+            CarriableCategories.OffensiveEquipment => CitizenAnimationHelper.HoldTypes.None,
+            CarriableCategories.UtilityEquipment => CitizenAnimationHelper.HoldTypes.None,
+            CarriableCategories.Grenade => CitizenAnimationHelper.HoldTypes.None,
             _ => 0,
         };
 
-        public override void SimulateAnimator(PawnAnimator anim)
+        public override void SimulateAnimator(CitizenAnimationHelper anim)
         {
-            anim.SetAnimParameter("holdtype", GetHoldType(CarriableInfo.Category));
-            anim.SetAnimParameter("aim_body_weight", 1.0f);
+            anim.HoldType = GetHoldType(CarriableInfo.Category);
+            anim.AimBodyWeight = 1.0f;
         }
 
         public int AvailableAmmo(ClipInfo clipInfo)
@@ -234,7 +234,7 @@ namespace TTTReborn.Items
 
         public override void CreateViewModel()
         {
-            Host.AssertClient();
+            Game.AssertClient();
 
             if (string.IsNullOrEmpty(ViewModelPath))
             {
@@ -268,28 +268,28 @@ namespace TTTReborn.Items
 
         public virtual T GetClipInfoMax<T>(string propertyName) where T : IComparable
         {
-            if (ClipInfos.Length < 1)
-            {
+            //if (ClipInfos.Length < 1)
+            //{
                 return default;
-            }
+            //}
 
-            PropertyInfo propertyInfo = ClipInfos[0].GetType().GetProperty(propertyName);
-            T highest = (T) propertyInfo.GetValue(ClipInfos[0], null);
+            //PropertyInfo propertyInfo = ClipInfos[0].GetType().GetProperty(propertyName);
+            //T highest = (T) propertyInfo.GetValue(ClipInfos[0], null);
 
-            if (ClipInfos.Length > 1)
-            {
-                for (int i = 1; i < ClipInfos.Length; i++)
-                {
-                    T tmp = (T) propertyInfo.GetValue(ClipInfos[i], null);
+            //if (ClipInfos.Length > 1)
+            //{
+            //    for (int i = 1; i < ClipInfos.Length; i++)
+            //    {
+            //        T tmp = (T) propertyInfo.GetValue(ClipInfos[i], null);
 
-                    if (tmp.CompareTo(highest) > 0)
-                    {
-                        highest = tmp;
-                    }
-                }
-            }
+            //        if (tmp.CompareTo(highest) > 0)
+            //        {
+            //            highest = tmp;
+            //        }
+            //    }
+            //}
 
-            return highest;
+            //return highest;
         }
     }
 }

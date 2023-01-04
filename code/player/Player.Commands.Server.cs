@@ -14,7 +14,7 @@ namespace TTTReborn
     {
         private static Player GetPlayerById(int id)
         {
-            List<Client> playerList = Client.All.ToList();
+            List<IClient> playerList = Game.Clients.ToList();
 
             if (playerList.Count <= id)
             {
@@ -32,10 +32,10 @@ namespace TTTReborn
         [ConCmd.Server(Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id")]
         public static void RespawnPlayer(string id = null)
         {
-            if (!ConsoleSystem.Caller.HasPermission("respawn"))
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller.HasPermission("respawn"))
+            //{
+            //    return;
+            //}
 
             Player player;
 
@@ -109,12 +109,12 @@ namespace TTTReborn
         [ConCmd.Server(Name = "ttt_setrole")]
         public static void SetRole(string roleName, string id = null)
         {
-            if (!ConsoleSystem.Caller.HasPermission("role"))
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller.HasPermission("role"))
+            //{
+            //    return;
+            //}
 
-            if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound)
+            if (Gamemode.TTTGame.Instance.Round is not Rounds.InProgressRound)
             {
                 if (id == null)
                 {
@@ -187,12 +187,12 @@ namespace TTTReborn
         [ConCmd.Server(Name = "ttt_force_restart")]
         public static void ForceRestart()
         {
-            if (!ConsoleSystem.Caller.HasPermission("restart"))
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller.HasPermission("restart"))
+            //{
+            //    return;
+            //}
 
-            Gamemode.Game.Instance.ChangeRound(new PreRound());
+            Gamemode.TTTGame.Instance.ChangeRound(new PreRound());
 
             Log.Info($"{ConsoleSystem.Caller.Name} forced a restart.");
         }

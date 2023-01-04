@@ -18,9 +18,9 @@ namespace TTTReborn.Items
 
         private const int PLACE_DISTANCE = 200;
 
-        public override void Simulate(Client client)
+        public override void Simulate(IClient client)
         {
-            if (!IsServer || Owner is not Player owner)
+            if (!Game.IsServer || Owner is not Player owner)
             {
                 return;
             }
@@ -29,7 +29,7 @@ namespace TTTReborn.Items
             {
                 if (Input.Pressed(InputButton.PrimaryAttack))
                 {
-                    TraceResult placementTrace = Trace.Ray(Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * PLACE_DISTANCE)
+                    TraceResult placementTrace = Trace.Ray(Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * PLACE_DISTANCE)
                        .Ignore(owner)
                        .UseHitboxes()
                        .Run();

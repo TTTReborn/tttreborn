@@ -25,7 +25,7 @@ namespace TTTReborn
         public List<ShopItemData> Items { set; get; } = new();
         public bool Enabled { get; set; } = true;
 
-        public bool Accessable() => Items.Count > 0 && Enabled && Gamemode.Game.Instance.Round is InProgressRound;
+        public bool Accessable() => Items.Count > 0 && Enabled && Gamemode.TTTGame.Instance.Round is InProgressRound;
 
         public static Shop InitializeFromJSON(string json)
         {

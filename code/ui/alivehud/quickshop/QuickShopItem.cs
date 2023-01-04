@@ -30,7 +30,7 @@ namespace TTTReborn.UI
 
         public void Update()
         {
-            IsDisabled = (Local.Pawn as Player).CanBuy(ItemData) != BuyError.None;
+            IsDisabled = (Game.LocalPawn as Player).CanBuy(ItemData) != BuyError.None;
 
             this.Enabled(!IsDisabled);
         }

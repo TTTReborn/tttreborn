@@ -138,8 +138,8 @@ namespace TTTReborn.UI
             float screenWidth = Screen.Width;
             float screenHeight = Screen.Height;
 
-            float parentWidth = DragBasePanel.Box.Rect.width;
-            float parentHeight = DragBasePanel.Box.Rect.height;
+            float parentWidth = DragBasePanel.Box.Rect.Width;
+            float parentHeight = DragBasePanel.Box.Rect.Height;
 
             float left = position.x;
             float top = position.y;

@@ -37,7 +37,7 @@ namespace TTTReborn
                 Name = attribute.Name;
             }
 
-            BaseRound baseRound = Gamemode.Game.Instance.Round;
+            BaseRound baseRound = Gamemode.TTTGame.Instance.Round;
 
             CreatedAt = baseRound.RoundEndTime - baseRound.StartedAt - baseRound.TimeLeft;
         }
@@ -54,9 +54,9 @@ namespace TTTReborn
 
         internal void ProcessRegister()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
-                Gamemode.Game.Instance.Round?.GameEvents.Add(this);
+                Gamemode.TTTGame.Instance.Round?.GameEvents.Add(this);
 
                 OnRegister();
             }
@@ -105,7 +105,7 @@ namespace TTTReborn
         {
             if (player != null && player.Client != null)
             {
-                PlayerId = player.Client.PlayerId;
+                PlayerId = player.Client.SteamId;
             }
         }
     }

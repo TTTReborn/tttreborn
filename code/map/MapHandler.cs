@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -37,8 +38,8 @@ namespace TTTReborn.Map
                 player.Inventory.DropAll();
             }
 
-            Sandbox.Internal.GlobalGameNamespace.Map.Reset(Game.DefaultCleanupFilter);
-            Sandbox.Internal.Decals.RemoveFromWorld();
+            Game.ResetMap(Array.Empty<Entity>()); ;//Gamemode.TTTGame.DefaultCleanupFilter);
+            // Sandbox.Internal.Decals.RemoveFromWorld();
 
             Ammos.Clear();
             Weapons.Clear();

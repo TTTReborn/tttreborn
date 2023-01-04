@@ -27,7 +27,7 @@ namespace TTTReborn.Items
 
         public virtual void OnEquip()
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 InventoryWrapper.Instance.Effects.AddEffect(this);
             }
@@ -47,12 +47,12 @@ namespace TTTReborn.Items
 
         public void Delete()
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 InventoryWrapper.Instance.Effects.RemoveEffect(this);
             }
         }
 
-        public virtual void Simulate(Client owner) { }
+        public virtual void Simulate(IClient owner) { }
     }
 }

@@ -19,8 +19,8 @@ namespace TTTReborn.Rounds
             // TODO: Allow users to close the menu themselves using mouse cursor.
             RPCs.ClientClosePostRoundMenu();
 
-            bool shouldChangeMap = Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed >= ServerSettings.Instance.Round.TotalRounds;
-            Gamemode.Game.Instance.ChangeRound(shouldChangeMap ? new MapSelectionRound() : new PreRound());
+            bool shouldChangeMap = Gamemode.TTTGame.Instance.MapSelection.TotalRoundsPlayed >= ServerSettings.Instance.Round.TotalRounds;
+            Gamemode.TTTGame.Instance.ChangeRound(shouldChangeMap ? new MapSelectionRound() : new PreRound());
         }
 
         public override void OnPlayerKilled(Player player)
@@ -32,7 +32,7 @@ namespace TTTReborn.Rounds
 
         protected override void OnStart()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 using (Prediction.Off())
                 {

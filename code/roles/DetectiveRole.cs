@@ -18,7 +18,7 @@ namespace TTTReborn.Roles
 
         public override void OnSelect(Player player)
         {
-            if (Host.IsServer && player.Team == DefaultTeam)
+            if (Game.IsServer && player.Team == DefaultTeam)
             {
                 foreach (Player otherPlayer in Utils.GetPlayers((pl) => pl != player))
                 {

@@ -17,7 +17,17 @@ namespace TTTReborn.Rounds
         public float RoundEndTime { get; set; }
 
         [Net]
-        public float TimeLeft => RoundEndTime - Time.Now;
+        public float TimeLeft { get; set; }
+        //{
+        //    get
+        //    {
+        //        return RoundEndTime - Time.Now;
+        //    }
+        //    set
+        //    {
+        //        //nop;
+        //    }
+        //}
 
         [Net]
         public float StartedAt { get; set; }
@@ -27,7 +37,7 @@ namespace TTTReborn.Rounds
 
         public void Start()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 StartedAt = Time.Now;
 
@@ -43,7 +53,7 @@ namespace TTTReborn.Rounds
 
         public void Finish()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 RoundEndTime = 0f;
             }
@@ -68,7 +78,7 @@ namespace TTTReborn.Rounds
 
         public virtual void OnSecond()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 if (RoundEndTime > 0 && Time.Now >= RoundEndTime)
                 {
@@ -87,7 +97,7 @@ namespace TTTReborn.Rounds
 
         protected virtual void OnFinish()
         {
-            if (!Host.IsServer)
+            if (!Game.IsServer)
             {
                 return;
             }

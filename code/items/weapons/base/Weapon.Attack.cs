@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 using Sandbox;
 
@@ -70,7 +71,7 @@ namespace TTTReborn.Items
                 PlaySound(clipInfo.ShootSound).SetPosition(Position).SetVolume(0.8f);
             }
 
-            Rand.SetSeed(Time.Tick);
+            Game.SetRandomSeed(Time.Tick);  // ??
 
             ShootEffects(GetClipInfoIndex(clipInfo));
 
@@ -96,7 +97,7 @@ namespace TTTReborn.Items
         [ClientRpc]
         public virtual void ShootEffects(int clipInfoIndex)
         {
-            Host.AssertClient();
+            Game.AssertClient();
 
             if (clipInfoIndex < 0 || clipInfoIndex >= ClipInfos.Length)
             {
@@ -135,13 +136,13 @@ namespace TTTReborn.Items
             ShootBullet(clipInfo.Spread, clipInfo.Force, clipInfo.Damage, clipInfo.BulletSize, clipInfo.ImpactEffect, clipInfo.DamageType);
         }
 
-        public virtual void ShootBullet(float spread, float force, float damage, float bulletSize, string impactEffect = null, DamageFlags damageType = DamageFlags.Bullet)
+        public virtual void ShootBullet(float spread, float force, float damage, float bulletSize, string impactEffect = null, params string[] damageType)
         {
-            Vector3 forward = Owner.EyeRotation.Forward;
+            Vector3 forward = Owner.AimRay.Forward;
             forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
             forward = forward.Normal;
 
-            foreach (TraceResult trace in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * BulletRange, bulletSize))
+            foreach (TraceResult trace in TraceBullet(Owner.AimRay.Position, Owner.AimRay.Position + forward * BulletRange, bulletSize))
             {
                 Vector3 endPos = trace.EndPosition + trace.Direction * bulletSize;
 
@@ -154,7 +155,7 @@ namespace TTTReborn.Items
                     Particles.Create(impactEffect, endPos)?.SetForward(0, trace.Normal);
                 }
 
-                if (!IsServer || !trace.Entity.IsValid())
+                if (!Game.IsServer || !trace.Entity.IsValid())
                 {
                     continue;
                 }
@@ -168,23 +169,22 @@ namespace TTTReborn.Items
 
         public virtual IEnumerable<TraceResult> TraceBullet(Vector3 start, Vector3 end, float radius = 2.0f)
         {
-            bool InWater = Sandbox.Internal.GlobalGameNamespace.Map.Physics.IsPointWater(start);
+            bool InWater = FindInSphere(start, 0.1f).Any(e => e is Water); //Game.PhysicsWorld //.Physics.IsPointWater(start);
 
             yield return Trace.Ray(start, end)
                 .UseHitboxes()
-                .HitLayer(CollisionLayer.Water, !InWater)
-                .HitLayer(CollisionLayer.Debris)
+                .WorldAndEntities()
                 .Ignore(Owner)
                 .Ignore(this)
                 .Size(radius)
                 .Run();
         }
 
-        public virtual void DealDamage(Entity target, Vector3 position, Vector3 force, float damage, DamageFlags damageType, TraceResult? traceResult = null)
+        public virtual void DealDamage(Entity target, Vector3 position, Vector3 force, float damage, string[] damageTags, TraceResult? traceResult = null)
         {
             DamageInfo damageInfo = new DamageInfo()
                 .WithPosition(position)
-                .WithFlag(damageType)
+                .WithTags(damageTags)
                 .WithForce(force)
                 .WithAttacker(Owner)
                 .WithWeapon(this);

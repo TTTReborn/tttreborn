@@ -20,7 +20,7 @@ namespace TTTReborn
 
         public void SendLogicButtonsToClient()
         {
-            if (IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
@@ -42,7 +42,7 @@ namespace TTTReborn
         [Event.Hotload]
         public static void OnHotload()
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
@@ -142,7 +142,7 @@ namespace TTTReborn
         // Client keybinding for activating button within focus.
         public static void TickLogicButtonActivate()
         {
-            if (Local.Pawn is not Player player || FocusedButton == null || !Input.Pressed(InputButton.Use))
+            if (Game.LocalPawn is not Player player || FocusedButton == null || !Input.Pressed(InputButton.Use))
             {
                 return;
             }

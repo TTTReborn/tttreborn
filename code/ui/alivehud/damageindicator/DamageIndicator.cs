@@ -28,7 +28,7 @@ namespace TTTReborn.UI
         [Event("player_takedamage")]
         protected void OnTakeDamage(Player player, float damage)
         {
-            if (Host.IsServer || player.Client != Local.Client)
+            if (Game.IsServer || player.Client != Game.LocalClient)
             {
                 return;
             }
@@ -40,7 +40,7 @@ namespace TTTReborn.UI
         [Event("player_spawn")]
         protected void OnPlayerSpawned(Player player)
         {
-            if (Host.IsServer || player != Local.Client.Pawn)
+            if (Game.IsServer || player != Game.LocalClient.Pawn)
             {
                 return;
             }
@@ -53,7 +53,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 Style.Opacity = 0;
 

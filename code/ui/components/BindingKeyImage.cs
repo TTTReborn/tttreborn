@@ -29,7 +29,7 @@ namespace TTTReborn.UI
 
                 if (Parent is BindingPanel bindingPanel)
                 {
-                    bindingPanel.FinalLayout();
+                    bindingPanel.FinalLayout(0);
                 }
             }
         }

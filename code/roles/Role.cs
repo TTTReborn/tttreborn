@@ -50,7 +50,7 @@ namespace TTTReborn.Roles
         {
             player.Credits = Math.Max(DefaultCredits, player.Credits);
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 player.Shop = Shop;
                 player.ServerUpdateShop();

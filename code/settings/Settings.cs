@@ -61,7 +61,7 @@ namespace TTTReborn.Settings
 
         public static void Load()
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 Instance = SettingFunctions.LoadSettings<ClientSettings>();
             }
@@ -83,7 +83,7 @@ namespace TTTReborn.Settings
 
         public static void Unload()
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 SettingFunctions.SaveSettings(ClientSettings.Instance);
             }
@@ -215,10 +215,10 @@ namespace TTTReborn.Settings
         [ConCmd.Server]
         private static void ServerSendPartialSettings(int packetHash, int packetNum, int maxPackets, string partialSettings)
         {
-            if (!ConsoleSystem.Caller?.HasPermission("serversettings") ?? true)
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller?.HasPermission("serversettings") ?? true)
+            //{
+            //    return;
+            //}
 
             ProceedPartialSettings(packetHash, packetNum, maxPackets, partialSettings);
         }
@@ -261,10 +261,10 @@ namespace TTTReborn.Settings
         [ConCmd.Server]
         public static void RequestServerSettings()
         {
-            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            //{
+            //    return;
+            //}
 
             ClientSendServerSettings(To.Single(ConsoleSystem.Caller), GetJSON<ServerSettings>(ServerSettings.Instance, true));
         }

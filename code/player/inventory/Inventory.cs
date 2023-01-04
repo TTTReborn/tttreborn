@@ -180,7 +180,7 @@ namespace TTTReborn
 
         public override bool Drop(Entity entity)
         {
-            if (!Host.IsServer || !Contains(entity) || entity is ICarriableItem item && !item.CanDrop)
+            if (!Game.IsServer || !Contains(entity) || entity is ICarriableItem item && !item.CanDrop)
             {
                 return false;
             }
@@ -221,9 +221,9 @@ namespace TTTReborn
         public Entity DropEntity(Equipment equipment)
         {
             Type type = equipment.ObjectType;
-            Vector3 position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
-            Rotation rotation = Owner.EyeRotation;
-            Vector3 velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
+            Vector3 position = Owner.AimRay.Position + Owner.AimRay.Forward * DROPPOSITIONOFFSET;
+            Rotation rotation = Owner.Rotation;
+            Vector3 velocity = Owner.AimRay.Forward * DROPVELOCITY;
 
             if (Remove(equipment))
             {

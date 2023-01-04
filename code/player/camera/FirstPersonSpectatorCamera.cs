@@ -10,7 +10,7 @@ namespace TTTReborn.Camera
         {
             base.Deactivated();
 
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 return;
             }
@@ -21,7 +21,7 @@ namespace TTTReborn.Camera
 
         public override void Update()
         {
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 return;
             }

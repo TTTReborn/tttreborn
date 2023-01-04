@@ -27,7 +27,9 @@ namespace TTTReborn
 
         public bool IsSpectator
         {
-            get => CameraMode is IObservationCamera;
+#pragma warning disable CS0184 // 'Der angegebene Ausdruck für den 'is'-Ausdruck darf niemals der angegebene Typ sein
+            get => Sandbox.Camera.Current is IObservationCamera;
+#pragma warning restore CS0184 // 'Der angegebene Ausdruck für den 'is'-Ausdruck darf niemals der angegebene Typ sein
         }
 
         private int _targetIdx = 0;
@@ -35,7 +37,7 @@ namespace TTTReborn
         [Event("player_died")]
         protected static void OnPlayerDied(Player deadPlayer)
         {
-            if (!Host.IsClient || Local.Pawn is not Player player)
+            if (!Game.IsClient || Game.LocalPawn is not Player player)
             {
                 return;
             }
@@ -64,10 +66,10 @@ namespace TTTReborn
                 CurrentPlayer = players[_targetIdx];
             }
 
-            if (CameraMode is IObservationCamera camera)
-            {
-                camera.OnUpdateObservatedPlayer(oldObservatedPlayer, CurrentPlayer);
-            }
+            //if (Sandbox.Camera.Current is IObservationCamera camera)
+            //{
+            //    camera.OnUpdateObservatedPlayer(oldObservatedPlayer, CurrentPlayer);
+            //}
         }
 
         public void MakeSpectator(bool useRagdollCamera = true)
@@ -75,7 +77,7 @@ namespace TTTReborn
             EnableAllCollisions = false;
             EnableDrawing = false;
             Controller = null;
-            CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+            // CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
             LifeState = LifeState.Dead;
             Health = 0f;
             ShowFlashlight(false, false);
@@ -95,7 +97,7 @@ namespace TTTReborn
                     Client.SetValue("forcedspectator", true);
                 }
             }
-            else if (Gamemode.Game.Instance.Round is not Rounds.InProgressRound && Gamemode.Game.Instance.Round is not Rounds.PostRound)
+            else if (Gamemode.TTTGame.Instance.Round is not Rounds.InProgressRound && Gamemode.TTTGame.Instance.Round is not Rounds.PostRound)
             {
                 Respawn();
             }

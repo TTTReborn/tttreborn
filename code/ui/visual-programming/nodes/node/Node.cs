@@ -279,7 +279,7 @@ namespace TTTReborn.UI.VisualProgramming
 
                 InputData = new object[inputConnectionCount];
 
-                StackNode.SetPos(Box.Rect.left, Box.Rect.top);
+                StackNode.SetPos(Box.Rect.Left, Box.Rect.Top);
             }
         }
 
@@ -501,7 +501,7 @@ namespace TTTReborn.UI.VisualProgramming
             ["LibraryName"] = LibraryName,
             ["ConnectionInputIds"] = ConnectionInputIds,
             ["ConnectionOutputIds"] = ConnectionOutputIds,
-            ["Pos"] = new Vector2(Box.Rect.left, Box.Rect.top),
+            ["Pos"] = new Vector2(Box.Rect.Left, Box.Rect.Top),
         };
 
         public virtual void LoadFromJsonData(Dictionary<string, object> jsonData)

@@ -73,7 +73,7 @@ namespace TTTReborn.Items
         {
             (Owner as AnimatedEntity).SetAnimParameter("b_attack", true);
 
-            if (IsClient)
+            if (Game.IsClient)
             {
                 ShootEffects(GetClipInfoIndex(Primary));
             }
@@ -84,15 +84,15 @@ namespace TTTReborn.Items
             IsCharging = false;
         }
 
-        public override void ShootBullet(float spread, float force, float damage, float bulletSize, string impactEffect = null, DamageFlags damageType = DamageFlags.Crush)
+        public override void ShootBullet(float spread, float force, float damage, float bulletSize, string impactEffect = null, params string[] damageTags)
         {
-            Vector3 forward = Owner.EyeRotation.Forward;
+            Vector3 forward = Owner.AimRay.Forward;
             forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
             forward = forward.Normal;
 
-            foreach (TraceResult trace in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * 5000, bulletSize))
+            foreach (TraceResult trace in TraceBullet(Owner.AimRay.Position, Owner.AimRay.Position + forward * 5000, bulletSize))
             {
-                if (!IsServer || !trace.Entity.IsValid() || trace.Entity.IsWorld)
+                if (!Game.IsServer || !trace.Entity.IsValid() || trace.Entity.IsWorld)
                 {
                     continue;
                 }
@@ -101,7 +101,7 @@ namespace TTTReborn.Items
                 {
                     DamageInfo damageInfo = new DamageInfo()
                         .WithPosition(trace.EndPosition)
-                        .WithFlag(damageType)
+                        .WithTags(damageTags ?? new[] { "crush" })
                         .WithForce(forward * 100f * force)
                         .UsingTraceResult(trace)
                         .WithAttacker(Owner)
@@ -120,7 +120,7 @@ namespace TTTReborn.Items
             }
         }
 
-        public override void Simulate(Client owner)
+        public override void Simulate(IClient owner)
         {
             base.Simulate(owner);
 

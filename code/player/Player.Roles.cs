@@ -82,16 +82,16 @@ namespace TTTReborn
 
         public void SyncMIA(Player player = null)
         {
-            if (Gamemode.Game.Instance.Round is not InProgressRound)
+            if (Gamemode.TTTGame.Instance.Round is not InProgressRound)
             {
                 return;
             }
 
             if (player == null)
             {
-                List<Client> traitors = new();
+                List<IClient> traitors = new();
 
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
                     if ((client.Pawn as Player).Team.GetType() == typeof(TraitorTeam))
                     {

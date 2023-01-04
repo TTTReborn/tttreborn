@@ -10,9 +10,9 @@ namespace TTTReborn.Rounds
 
         public override void OnSecond()
         {
-            if (Host.IsServer && Utils.HasMinimumPlayers())
+            if (Game.IsServer && Utils.HasMinimumPlayers())
             {
-                Gamemode.Game.Instance.ForceRoundChange(new PreRound());
+                Gamemode.TTTGame.Instance.ForceRoundChange(new PreRound());
             }
 
             base.OnSecond();
@@ -29,9 +29,9 @@ namespace TTTReborn.Rounds
 
         protected override void OnStart()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
                     if (client.Pawn is Player player)
                     {
@@ -49,7 +49,7 @@ namespace TTTReborn.Rounds
             {
                 await GameTask.DelaySeconds(1);
 
-                if (player.IsValid() && Gamemode.Game.Instance.Round is WaitingRound)
+                if (player.IsValid() && Gamemode.TTTGame.Instance.Round is WaitingRound)
                 {
                     player.Respawn();
                 }

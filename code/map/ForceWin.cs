@@ -56,11 +56,11 @@ namespace TTTReborn.Map
 
         private static void ForceEndRound(Team team)
         {
-            if (Gamemode.Game.Instance.Round is InProgressRound)
+            if (Gamemode.TTTGame.Instance.Round is InProgressRound)
             {
                 //Logic taken from InProgressRound.LoadPostRound. Should reference the function instead?
                 NetworkableGameEvent.RegisterNetworked(new Events.Game.FinishEvent(team));
-                Gamemode.Game.Instance.ForceRoundChange(new PostRound());
+                Gamemode.TTTGame.Instance.ForceRoundChange(new PostRound());
             }
         }
     }

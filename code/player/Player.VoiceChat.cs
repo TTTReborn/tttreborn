@@ -13,7 +13,7 @@ namespace TTTReborn
         // clientside-only
         public bool IsSpeaking { get; internal set; } = false;
 
-        private static readonly Dictionary<Player, List<Client>> OldReceiveClients = new();
+        private static readonly Dictionary<Player, List<IClient>> OldReceiveClients = new();
 
         private void TickPlayerVoiceChat()
         {
@@ -23,7 +23,7 @@ namespace TTTReborn
 
                 if (Input.Pressed(InputButton.Walk))
                 {
-                    if (Local.Pawn is Player player && CanUseTeamVoiceChat(player))
+                    if (Game.LocalPawn is Player player && CanUseTeamVoiceChat(player))
                     {
                         RequestTeamChat(true);
                     }
@@ -59,11 +59,11 @@ namespace TTTReborn
         {
             player.IsTeamVoiceChatEnabled = toggle;
 
-            List<Client> clients = new();
+            List<IClient> clients = new();
 
             if (toggle)
             {
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
                     if (client.Pawn is Player pawnPlayer && player.Team == pawnPlayer.Team)
                     {
@@ -82,7 +82,7 @@ namespace TTTReborn
                 }
 
                 // cleanup disconnected clients
-                foreach (Client client in OldReceiveClients[player])
+                foreach (IClient client in OldReceiveClients[player])
                 {
                     if (client.IsValid())
                     {
@@ -111,7 +111,7 @@ namespace TTTReborn
 
             player.IsTeamVoiceChatEnabled = toggle;
 
-            if (Local.Pawn is Player localPlayer && localPlayer != player)
+            if (Game.LocalPawn is Player localPlayer && localPlayer != player)
             {
                 return;
             }
@@ -123,7 +123,7 @@ namespace TTTReborn
         [Event("player_role_select")]
         protected static void OnSelectRole(Player player)
         {
-            if (!Host.IsServer)
+            if (!Game.IsServer)
             {
                 return;
             }
@@ -134,10 +134,10 @@ namespace TTTReborn
                 ToggleTeamChat(player, false);
             }
 
-            Client playerClient = player.Client;
+            IClient playerClient = player.Client;
 
             // sync already talking other players with the current player
-            foreach (Client client in Client.All)
+            foreach (IClient client in Game.Clients)
             {
                 if (client.Pawn is Player pawnPlayer && player != pawnPlayer && pawnPlayer.IsTeamVoiceChatEnabled)
                 {

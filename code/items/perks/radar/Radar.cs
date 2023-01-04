@@ -29,7 +29,7 @@ namespace TTTReborn.Items
 
         public override void OnRemove()
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 ClearRadarPoints();
             }
@@ -39,7 +39,7 @@ namespace TTTReborn.Items
 
         private void UpdatePositions()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 if (Info.Owner is not Player owner)
                 {
@@ -50,7 +50,7 @@ namespace TTTReborn.Items
 
                 foreach (Player player in Utils.GetAlivePlayers())
                 {
-                    if (player.Client.PlayerId == owner.Client.PlayerId)
+                    if (player.Client.SteamId == owner.Client.SteamId)
                     {
                         continue;
                     }
@@ -93,7 +93,7 @@ namespace TTTReborn.Items
         {
             base.OnEquip();
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 UpdatePositions();
             }
@@ -101,7 +101,7 @@ namespace TTTReborn.Items
 
         public override void OnCountdown()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 UpdatePositions();
             }
@@ -120,7 +120,7 @@ namespace TTTReborn.Items
         [ClientRpc]
         public static void ClientSendRadarPositions(Player player, RadarPointData[] points)
         {
-            if (!player.IsValid() || player != Local.Pawn)
+            if (!player.IsValid() || player != Game.LocalPawn)
             {
                 return;
             }

@@ -17,12 +17,12 @@ namespace TTTReborn.Camera
         {
             base.Activated();
 
-            Rotation = CurrentView.Rotation;
+            Rotation = Sandbox.Camera.Rotation;
         }
 
         public override void Update()
         {
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace TTTReborn.Camera
 
         private Vector3 GetSpectatePoint()
         {
-            if (Local.Pawn is not Player player || !player.IsSpectatingPlayer)
+            if (Game.LocalPawn is not Player player || !player.IsSpectatingPlayer)
             {
                 return DefaultPosition;
             }
@@ -49,17 +49,17 @@ namespace TTTReborn.Camera
             return player.CurrentPlayer.EyePosition;
         }
 
-        public override void BuildInput(InputBuilder input)
-        {
-            _lookAngles += input.AnalogLook;
-            _lookAngles.roll = 0;
+        //public override void BuildInput(InputBuilder input)
+        //{
+        //    _lookAngles += input.AnalogLook;
+        //    _lookAngles.roll = 0;
 
-            base.BuildInput(input);
-        }
+        //    base.BuildInput(input);
+        //}
 
         public override void Deactivated()
         {
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 return;
             }

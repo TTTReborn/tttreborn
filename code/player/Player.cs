@@ -43,10 +43,10 @@ namespace TTTReborn
         // Important: Server-side only
         public void InitialSpawn()
         {
-            bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
+            bool isPostRound = Gamemode.TTTGame.Instance.Round is Rounds.PostRound;
 
             IsInitialSpawning = true;
-            IsForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+            IsForcedSpectator = isPostRound || Gamemode.TTTGame.Instance.Round is Rounds.InProgressRound;
 
             NetworkableGameEvent.RegisterNetworked(new Events.Player.InitialSpawnEvent(Client));
 
@@ -79,7 +79,7 @@ namespace TTTReborn
         {
             Model = WorldModel;
 
-            Animator = new StandardPlayerAnimator();
+            //Animator = new StandardPlayerAnimator();
 
             EnableHideInFirstPerson = true;
             EnableShadowInFirstPerson = false;
@@ -102,7 +102,7 @@ namespace TTTReborn
             if (!IsForcedSpectator)
             {
                 Controller = new DefaultWalkController();
-                CameraMode = new FirstPersonCamera();
+                //CameraMode = new FirstPersonCamera();
 
                 EnableAllCollisions = true;
                 EnableDrawing = true;
@@ -114,9 +114,9 @@ namespace TTTReborn
 
             RemovePlayerCorpse();
             Inventory.DeleteContents();
-            Gamemode.Game.Instance.Round.OnPlayerSpawn(this);
+            Gamemode.TTTGame.Instance.Round.OnPlayerSpawn(this);
 
-            switch (Gamemode.Game.Instance.Round)
+            switch (Gamemode.TTTGame.Instance.Round)
             {
                 case Rounds.PreRound:
                 case Rounds.WaitingRound:
@@ -148,7 +148,7 @@ namespace TTTReborn
                 NetworkableGameEvent.RegisterNetworked(new Events.Player.DiedEvent(this));
             }
 
-            BecomePlayerCorpseOnServer(_lastDamageInfo.Force, GetHitboxBone(_lastDamageInfo.HitboxIndex));
+            BecomePlayerCorpseOnServer(_lastDamageInfo.Force, _lastDamageInfo.BoneIndex);
 
             ShowFlashlight(false, false);
 
@@ -156,11 +156,11 @@ namespace TTTReborn
 
             using (Prediction.Off())
             {
-                if (Gamemode.Game.Instance.Round is Rounds.InProgressRound)
+                if (Gamemode.TTTGame.Instance.Round is Rounds.InProgressRound)
                 {
                     SyncMIA();
                 }
-                else if (Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.Data.IsIdentified)
+                else if (Gamemode.TTTGame.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.Data.IsIdentified)
                 {
                     PlayerCorpse.Data.IsIdentified = true;
 
@@ -174,9 +174,9 @@ namespace TTTReborn
             Inventory.DeleteContents();
         }
 
-        public override void Simulate(Client client)
+        public override void Simulate(IClient client)
         {
-            if (IsClient)
+            if (Game.IsClient)
             {
                 TickPlayerVoiceChat();
             }
@@ -195,16 +195,16 @@ namespace TTTReborn
             }
 
             // Input requested a carriable entity switch
-            if (Input.ActiveChild != null)
-            {
-                ActiveChild = Input.ActiveChild;
-            }
+            //if (Input.ActiveChild != null)
+            //{
+            //    ActiveChild = Input.ActiveChild;
+            //}
 
             SimulateActiveChild(client, ActiveChild);
 
             TickItemSimulate();
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 TickPlayerUse();
                 TickPlayerDropCarriable();
@@ -217,7 +217,7 @@ namespace TTTReborn
             }
 
             PawnController controller = GetActiveController();
-            controller?.Simulate(client, this, GetActiveAnimator());
+            // controller?.Simulate(client, this, GetActiveAnimator());
         }
 
         protected override void UseFail()
@@ -227,7 +227,7 @@ namespace TTTReborn
 
         public override void StartTouch(Entity other)
         {
-            if (IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
@@ -240,7 +240,7 @@ namespace TTTReborn
 
         public override void EndTouch(Entity other)
         {
-            if (IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
@@ -272,22 +272,22 @@ namespace TTTReborn
 
         private void TickPlayerChangeSpectateCamera()
         {
-            if (!Input.Pressed(InputButton.Jump) || !IsServer)
+            if (!Input.Pressed(InputButton.Jump) || !Game.IsServer)
             {
                 return;
             }
 
-            using (Prediction.Off())
-            {
-                CameraMode = CameraMode switch
-                {
-                    RagdollSpectateCamera => new FreeSpectateCamera(),
-                    FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-                    ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
-                    FirstPersonSpectatorCamera => new FreeSpectateCamera(),
-                    _ => CameraMode
-                };
-            }
+            //using (Prediction.Off())
+            //{
+            //    CameraMode = CameraMode switch
+            //    {
+            //        RagdollSpectateCamera => new FreeSpectateCamera(),
+            //        FreeSpectateCamera => new ThirdPersonSpectateCamera(),
+            //        ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
+            //        FirstPersonSpectatorCamera => new FreeSpectateCamera(),
+            //        _ => CameraMode
+            //    };
+            //}
         }
 
         private void TickItemSimulate()

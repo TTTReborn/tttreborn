@@ -20,7 +20,7 @@ namespace TTTReborn.Events
         {
             if (player != null && player.Client != null)
             {
-                PlayerId = player.Client.PlayerId;
+                PlayerId = player.Client.SteamId;
                 PlayerName = player.Client.Name;
             }
         }

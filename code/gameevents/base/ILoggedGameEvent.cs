@@ -13,8 +13,8 @@ namespace TTTReborn
 
         public float CreatedAt { get; set; }
 
-        public virtual Sandbox.UI.Panel GetEventPanel(Client client = null) => new UI.EventPanel(this);
+        public virtual Sandbox.UI.Panel GetEventPanel(IClient client = null) => new UI.EventPanel(this);
 
-        public virtual bool Contains(Client client) => false;
+        public virtual bool Contains(IClient client) => false;
     }
 }

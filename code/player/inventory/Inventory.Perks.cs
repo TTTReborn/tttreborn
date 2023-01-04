@@ -25,7 +25,7 @@ namespace TTTReborn
 
             PerkList.Add(perk);
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 _owner.ClientAddPerk(To.Single(_owner), perk.Info.LibraryName);
             }
@@ -47,7 +47,7 @@ namespace TTTReborn
             perk.Remove();
             perk.Delete();
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 _owner.ClientRemovePerk(To.Single(_owner), perk.Info.LibraryName);
             }
@@ -94,7 +94,7 @@ namespace TTTReborn
 
             PerkList.Clear();
 
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 _owner.ClientClearPerks(To.Single(_owner));
             }

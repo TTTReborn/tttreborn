@@ -82,8 +82,8 @@ namespace TTTReborn.UI.VisualProgramming
 
             Vector2 pos = StartPoint.Position;
             Vector2 delta = vector2 - pos;
-            Vector2 finalPos = new(pos);
-            Vector2 finalSize = new(delta);
+            Vector2 finalPos = new(pos.x, pos.y);
+            Vector2 finalSize = new(delta.x, delta.y);
 
             float halfLineThickness = LINE_THICKNESS * 0.5f;
 

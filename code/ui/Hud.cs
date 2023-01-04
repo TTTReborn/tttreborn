@@ -14,7 +14,7 @@ namespace TTTReborn.UI
 
         public Hud()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 return;
             }
@@ -30,7 +30,7 @@ namespace TTTReborn.UI
         [Event.Hotload]
         public static void OnHotReloaded()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 return;
             }
@@ -39,7 +39,7 @@ namespace TTTReborn.UI
 
             _ = new Hud();
 
-            if (Local.Client.Pawn is Player player)
+            if (Game.LocalClient.Pawn is Player player)
             {
                 Current.AliveHudInstance.Enabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
             }
@@ -50,7 +50,7 @@ namespace TTTReborn.UI
         [Event("player_spawn")]
         protected void OnPlayerSpawned(Player player)
         {
-            if (IsServer || player != Local.Client.Pawn)
+            if (Game.IsServer || player != Game.LocalClient.Pawn)
             {
                 return;
             }
@@ -61,7 +61,7 @@ namespace TTTReborn.UI
         [Event("player_died")]
         protected void OnPlayerDied(Player deadPlayer)
         {
-            if (IsServer || deadPlayer != Local.Client.Pawn)
+            if (Game.IsServer || deadPlayer != Game.LocalClient.Pawn)
             {
                 return;
             }
@@ -70,9 +70,9 @@ namespace TTTReborn.UI
         }
 
         [Event("player_initialspawn")]
-        public static void Initialize(Client client)
+        public static void Initialize(IClient client)
         {
-            if (Host.IsServer || client != Local.Client)
+            if (Game.IsServer || client != Game.LocalClient)
             {
                 return;
             }

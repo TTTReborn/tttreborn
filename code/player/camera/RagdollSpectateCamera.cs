@@ -10,7 +10,7 @@ namespace TTTReborn.Camera
         {
             base.Activated();
 
-            FocusPoint = CurrentView.Position - GetViewOffset();
+            FocusPoint = Game.LocalPawn.Position - GetViewOffset();
         }
 
         public override void Update()
@@ -18,21 +18,21 @@ namespace TTTReborn.Camera
             FocusPoint = Vector3.Lerp(FocusPoint, GetSpectatePoint(), Time.Delta * 5.0f);
 
             Position = FocusPoint + GetViewOffset();
-            Rotation = Input.Rotation;
+            Rotation = Input.AnalogLook.ToRotation();
 
             Viewer = null;
         }
 
         public virtual Vector3 GetSpectatePoint()
         {
-            if (Local.Pawn is Player player && player.Corpse.IsValid())
+            if (Game.LocalPawn is Player player && player.Corpse.IsValid())
             {
                 return player.Corpse.PhysicsGroup.MassCenter;
             }
 
-            return Local.Pawn.Position;
+            return Game.LocalPawn.Position;
         }
 
-        public virtual Vector3 GetViewOffset() => Input.Rotation.Forward * -130 + Vector3.Up * 20;
+        public virtual Vector3 GetViewOffset() => Input.AnalogLook.Forward * -130 + Vector3.Up * 20;
     }
 }
