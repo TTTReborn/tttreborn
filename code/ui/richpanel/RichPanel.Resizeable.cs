@@ -137,12 +137,12 @@ namespace TTTReborn.UI
             _draggingMouseStartPosition = Mouse.Position;
             _boxDataBeforeDraggingStarted = new BoxData
             {
-                Width = (float) Math.Ceiling(Box.Rect.width),
-                Height = (float) Math.Ceiling(Box.Rect.height),
-                Top = (float) Math.Ceiling(Box.Rect.top),
-                Right = (float) Math.Ceiling(Box.Rect.right),
-                Bottom = (float) Math.Ceiling(Box.Rect.bottom),
-                Left = (float) Math.Ceiling(Box.Rect.left)
+                Width = (float) Math.Ceiling(Box.Rect.Width),
+                Height = (float) Math.Ceiling(Box.Rect.Height),
+                Top = (float) Math.Ceiling(Box.Rect.Top),
+                Right = (float) Math.Ceiling(Box.Rect.Right),
+                Bottom = (float) Math.Ceiling(Box.Rect.Bottom),
+                Left = (float) Math.Ceiling(Box.Rect.Left)
             };
 
             Matrix? matrix = GlobalMatrix;
@@ -186,10 +186,10 @@ namespace TTTReborn.UI
             float screenWidth = Screen.Width;
             float screenHeight = Screen.Height;
 
-            float width = Box.Rect.width;
-            float height = Box.Rect.height;
-            float left = Box.Rect.left;
-            float top = Box.Rect.top;
+            float width = Box.Rect.Width;
+            float height = Box.Rect.Height;
+            float left = Box.Rect.Left;
+            float top = Box.Rect.Top;
 
             float minWidth = ComputedStyle.MinWidth != null ? ComputedStyle.MinWidth.Value.GetPixels(screenWidth) : width;
             float maxWidth = ComputedStyle.MaxWidth != null ? ComputedStyle.MaxWidth.Value.GetPixels(screenWidth) : width;
@@ -296,7 +296,7 @@ namespace TTTReborn.UI
             {
                 CurrentHorizontalDragAnchor = DragAnchor.LEFT;
             }
-            else if (MousePosition.x < Box.Rect.width && MousePosition.x > Box.Rect.width - DRAG_OBLIGINGNESS)
+            else if (MousePosition.x < Box.Rect.Width && MousePosition.x > Box.Rect.Width - DRAG_OBLIGINGNESS)
             {
                 CurrentHorizontalDragAnchor = DragAnchor.RIGHT;
             }
@@ -309,7 +309,7 @@ namespace TTTReborn.UI
             {
                 CurrentVerticalDragAnchor = DragAnchor.TOP;
             }
-            else if (MousePosition.y < Box.Rect.height && MousePosition.y > Box.Rect.height - DRAG_OBLIGINGNESS)
+            else if (MousePosition.y < Box.Rect.Height && MousePosition.y > Box.Rect.Height - DRAG_OBLIGINGNESS)
             {
                 CurrentVerticalDragAnchor = DragAnchor.BOTTOM;
             }

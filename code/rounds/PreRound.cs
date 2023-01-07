@@ -27,11 +27,11 @@ namespace TTTReborn.Rounds
 
         protected override void OnStart()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
-                Gamemode.Game.Instance.MapHandler.Reset();
+                Gamemode.TTTGame.Instance.MapHandler.Reset();
 
-                foreach (Client client in Client.All)
+                foreach (IClient client in Game.Clients)
                 {
                     if (client.Pawn is Player player)
                     {
@@ -68,7 +68,7 @@ namespace TTTReborn.Rounds
 
             AssignRolesAndRespawn(players);
 
-            Gamemode.Game.Instance.ChangeRound(new InProgressRound
+            Gamemode.TTTGame.Instance.ChangeRound(new InProgressRound
             {
                 Players = players,
                 Spectators = spectators
@@ -108,7 +108,7 @@ namespace TTTReborn.Rounds
             {
                 await GameTask.DelaySeconds(1);
 
-                if (player.IsValid() && Gamemode.Game.Instance.Round is PreRound)
+                if (player.IsValid() && Gamemode.TTTGame.Instance.Round is PreRound)
                 {
                     player.Respawn();
                 }

@@ -32,7 +32,7 @@ namespace TTTReborn.Map
         [Input]
         public void Activate(Entity activator)
         {
-            if (activator is Player player && Gamemode.Game.Instance.Round is InProgressRound)
+            if (activator is Player player && Gamemode.TTTGame.Instance.Round is InProgressRound)
             {
                 if (player.Role.Name.Equals(CheckValue) || player.Team.Name.Equals(CheckValue))
                 {

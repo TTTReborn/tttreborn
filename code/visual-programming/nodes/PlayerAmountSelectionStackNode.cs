@@ -24,7 +24,7 @@ namespace TTTReborn.VisualProgramming
                 return null;
             }
 
-            int allPlayerAmount = Client.All.Count; // TODO just use available players, not specs
+            int allPlayerAmount = Game.Clients.Count; // TODO just use available players, not specs
 
             object[] buildArray = new object[playerAmountListCount];
 

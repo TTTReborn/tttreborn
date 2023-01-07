@@ -12,11 +12,11 @@ namespace TTTReborn.Globals
     {
         public readonly static Random RNG = new();
 
-        public static List<Client> GetClients(Func<Player, bool> predicate = null)
+        public static List<IClient> GetClients(Func<Player, bool> predicate = null)
         {
-            List<Client> clients = new();
+            List<IClient> clients = new();
 
-            foreach (Client client in Client.All)
+            foreach (IClient client in Game.Clients)
             {
                 if (client.Pawn is Player player && (predicate == null || predicate.Invoke(player)))
                 {
@@ -31,7 +31,7 @@ namespace TTTReborn.Globals
         {
             List<Player> players = new();
 
-            foreach (Client client in Client.All)
+            foreach (IClient client in Game.Clients)
             {
                 if (client.Pawn is Player player && (predicate == null || predicate.Invoke(player)))
                 {
@@ -46,7 +46,7 @@ namespace TTTReborn.Globals
 
         public static Player GetPlayerById(long playerId)
         {
-            Client client = Client.All.FirstOrDefault((cl) => cl.PlayerId == playerId, null);
+            IClient client = Game.Clients.FirstOrDefault((cl) => cl.SteamId == playerId, null);
 
             if (client != null && client.Pawn is Player player)
             {
@@ -71,7 +71,7 @@ namespace TTTReborn.Globals
         /// <returns>List of all available and matching types of the given type</returns>
         public static List<Type> GetTypes<T>(Func<Type, bool> predicate)
         {
-            IEnumerable<Type> types = TypeLibrary.GetTypes<T>().Where(t => !t.IsAbstract && !t.ContainsGenericParameters);
+            IEnumerable<Type> types = TypeLibrary.GetTypes<T>().Where(t => !t.IsAbstract && !t.TargetType.ContainsGenericParameters).Select(t => t.TargetType);
 
             if (predicate != null)
             {
@@ -115,7 +115,7 @@ namespace TTTReborn.Globals
         /// </summary>
         /// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
         /// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-        public static string GetLibraryName(Type type) => TypeLibrary.GetDescription(type).ClassName.ToLower();
+        public static string GetLibraryName(Type type) => TypeLibrary.GetType(type).ClassName.ToLower();
 
         public static T GetAttribute<T>(Type type) where T : Attribute => TypeLibrary.GetAttribute<T>(type);
 
@@ -181,7 +181,7 @@ namespace TTTReborn.Globals
 
         public static bool IsEnabled(this Panel panel) => !panel.HasClass("disabled");
 
-        public static string GetTypeName(Type type) => type.FullName.Replace(type.Namespace, "").TrimStart('.');
+        public static string GetTypeName(Type type) => type.FullName/*.Replace(type.Namespace, "")*/.TrimStart('.');
 
         public enum Realm
         {
@@ -241,37 +241,37 @@ namespace TTTReborn.Globals
 
         public static void SetPropertyValue<T>(object obj, string propertyName, T value)
         {
-            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+            //PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
 
-            if (propertyInfo != null && propertyInfo.CanWrite)
-            {
-                try
-                {
-                    propertyInfo.SetValue(obj, Convert.ChangeType(value, propertyInfo.GetValue(obj).GetType()));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error($"Tried to write property '{propertyName}' of '{obj}' with '{value}' ({ex.Message})");
-                }
-            }
-            else
-            {
-                Log.Warning($"Tried to write property '{propertyName}' of '{obj}' with '{value}'");
-            }
+            //if (propertyInfo != null && propertyInfo.CanWrite)
+            //{
+            //    try
+            //    {
+            //        propertyInfo.SetValue(obj, Convert.ChangeType(value, propertyInfo.GetValue(obj).GetType()));
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Log.Error($"Tried to write property '{propertyName}' of '{obj}' with '{value}' ({ex.Message})");
+            //    }
+            //}
+            //else
+            //{
+            //    Log.Warning($"Tried to write property '{propertyName}' of '{obj}' with '{value}'");
+            //}
         }
 
-        public static T GetPropertyValue<T>(object obj, string propertyName)
-        {
-            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+        public static T GetPropertyValue<T>(object obj, string propertyName) {
+        
+            //PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
 
-            if (propertyInfo == null || !propertyInfo.CanRead)
-            {
-                Log.Warning($"Tried to read non-existing property '{propertyName}' of '{obj}'");
+            //if (propertyInfo == null || !propertyInfo.CanRead)
+            //{
+            //    Log.Warning($"Tried to read non-existing property '{propertyName}' of '{obj}'");
 
                 return default;
-            }
+            //}
 
-            return (T) propertyInfo.GetValue(obj);
+            //return (T) propertyInfo.GetValue(obj);
         }
 
         public static object GetPropertyValue(object obj, string propertyName) => GetPropertyValue<object>(obj, propertyName);

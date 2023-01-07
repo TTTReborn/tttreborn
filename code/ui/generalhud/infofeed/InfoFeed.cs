@@ -18,11 +18,11 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/infofeed/InfoFeed.scss");
         }
 
-        public virtual Panel AddEntry(Client leftClient, string method)
+        public virtual Panel AddEntry(IClient leftClient, string method)
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 
-            bool isLeftLocal = leftClient == Local.Client;
+            bool isLeftLocal = leftClient == Game.LocalClient;
 
             Player leftPlayer = leftClient.Pawn as Player;
 
@@ -44,12 +44,12 @@ namespace TTTReborn.UI
             return e;
         }
 
-        public virtual Panel AddEntry(Client leftClient, Client rightClient, string method, string postfix = "")
+        public virtual Panel AddEntry(IClient leftClient, IClient rightClient, string method, string postfix = "")
         {
             InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 
-            bool isLeftLocal = leftClient == Local.Client;
-            bool isRightLocal = rightClient == Local.Client;
+            bool isLeftLocal = leftClient == Game.LocalClient;
+            bool isRightLocal = rightClient == Game.LocalClient;
 
             Player leftPlayer = leftClient.Pawn as Player;
 

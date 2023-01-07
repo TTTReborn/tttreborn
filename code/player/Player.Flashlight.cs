@@ -52,7 +52,7 @@ namespace TTTReborn
 
             if (IsFlashlightOn)
             {
-                if (IsServer)
+                if (Game.IsServer)
                 {
                     _worldFlashlight.TurnOff();
                 }
@@ -62,7 +62,7 @@ namespace TTTReborn
                 }
             }
 
-            if (IsServer)
+            if (Game.IsServer)
             {
                 using (Prediction.Off())
                 {
@@ -74,7 +74,7 @@ namespace TTTReborn
             {
                 if (!HasFlashlightEntity)
                 {
-                    if (IsServer)
+                    if (Game.IsServer)
                     {
                         _worldFlashlight = new()
                         {
@@ -97,7 +97,7 @@ namespace TTTReborn
                 }
                 else
                 {
-                    if (IsServer)
+                    if (Game.IsServer)
                     {
                         _worldFlashlight.SetParent(null);
                         _worldFlashlight.Rotation = EyeRotation;
@@ -111,12 +111,12 @@ namespace TTTReborn
                     }
                 }
 
-                if (IsServer && playSounds)
+                if (Game.IsServer && playSounds)
                 {
                     PlaySound("flashlight-on");
                 }
             }
-            else if (IsServer && playSounds)
+            else if (Game.IsServer && playSounds)
             {
                 PlaySound("flashlight-off");
             }
@@ -134,23 +134,23 @@ namespace TTTReborn
 
             if (IsFlashlightOn)
             {
-                _worldFlashlight.Rotation = Rotation.Slerp(_worldFlashlight.Rotation, Input.Rotation, SMOOTH_SPEED);
-                _worldFlashlight.Position = Vector3.Lerp(_worldFlashlight.Position, EyePosition + Input.Rotation.Forward * FLASHLIGHT_DISTANCE, SMOOTH_SPEED);
+                _worldFlashlight.Rotation = Rotation.Slerp(_worldFlashlight.Rotation, Input.AnalogLook.ToRotation(), SMOOTH_SPEED); ;
+                _worldFlashlight.Position = Vector3.Lerp(_worldFlashlight.Position, EyePosition + Input.AnalogLook.Forward * FLASHLIGHT_DISTANCE, SMOOTH_SPEED);
             }
         }
 
-        public override void PostCameraSetup(ref CameraSetup camSetup)
-        {
-            camSetup.ZNear = 0.1f;
+        //public override void PostCameraSetup(ref CameraSetup camSetup)
+        //{
+        //    camSetup.ZNear = 0.1f;
 
-            base.PostCameraSetup(ref camSetup);
+        //    base.PostCameraSetup(ref camSetup);
 
-            if (IsFlashlightOn)
-            {
-                _viewFlashlight.Rotation = Input.Rotation;
-                _viewFlashlight.Position = EyePosition + Input.Rotation.Forward * FLASHLIGHT_DISTANCE;
-            }
-        }
+        //    if (IsFlashlightOn)
+        //    {
+        //        _viewFlashlight.Rotation = Input.AnalogLook.ToRotation();
+        //        _viewFlashlight.Position = EyePosition + Input.AnalogLook.Forward * FLASHLIGHT_DISTANCE;
+        //    }
+        //}
     }
 
     [HideInEditor]

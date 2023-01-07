@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Diagnostics;
 
 namespace TTTReborn.Globals
 {
@@ -6,12 +7,12 @@ namespace TTTReborn.Globals
     {
         public static void Debug(this Logger log, params object[] obj)
         {
-            if (!Gamemode.Game.Instance?.Debug ?? true)
+            if (!Gamemode.TTTGame.Instance?.Debug ?? true)
             {
                 return;
             }
 
-            string host = Host.IsServer ? "SERVER" : "CLIENT";
+            string host = Game.IsServer ? "SERVER" : "CLIENT";
 
             log.Info($"[DEBUG][{host}] {string.Join(',', obj)}");
         }

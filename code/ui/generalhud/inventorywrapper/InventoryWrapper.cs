@@ -16,7 +16,7 @@ namespace TTTReborn.UI
             StyleSheet.Load("/ui/generalhud/inventorywrapper/InventoryWrapper.scss");
 
             Effects = AddChild<Effects>();
-            InventorySelection = AddChild<InventorySelection>();
+            //InventorySelection = AddChild<InventorySelection>();
         }
     }
 }

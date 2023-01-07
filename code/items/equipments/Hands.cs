@@ -32,11 +32,11 @@ namespace TTTReborn.Items
         private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
         private bool IsPushingEntity = false;
 
-        public override void Simulate(Client client)
+        public override void Simulate(IClient client)
         {
             base.Simulate(client);
 
-            if (!IsServer || Owner is not Player player)
+            if (!Game.IsServer || Owner is not Player player)
             {
                 return;
             }
@@ -130,7 +130,7 @@ namespace TTTReborn.Items
             TraceResult tr = Trace.Ray(eyePos, eyePos + eyeDir * MAX_INTERACT_DISTANCE)
                 .UseHitboxes()
                 .Ignore(player)
-                .HitLayer(CollisionLayer.Debris)
+                //.HitLayer(CollisionLayer.Debris)
                 .EntitiesOnly()
                 .Run();
 
@@ -186,21 +186,21 @@ namespace TTTReborn.Items
             base.OnDestroy();
         }
 
-        public override void SimulateAnimator(PawnAnimator anim)
+        public override void SimulateAnimator(CitizenAnimationHelper anim)
         {
-            if (!IsServer || IsPushingEntity)
+            if (!Game.IsServer || IsPushingEntity)
             {
                 return;
             }
 
             if (IsHoldingEntity)
             {
-                anim.SetAnimParameter("holdtype", 4);
-                anim.SetAnimParameter("holdtype_handedness", 0);
+                anim.HoldType = CitizenAnimationHelper.HoldTypes.HoldItem;
+                anim.Handedness = CitizenAnimationHelper.Hand.Both;
             }
             else
             {
-                anim.SetAnimParameter("holdtype", 0);
+                anim.HoldType = CitizenAnimationHelper.HoldTypes.None;
             }
         }
     }

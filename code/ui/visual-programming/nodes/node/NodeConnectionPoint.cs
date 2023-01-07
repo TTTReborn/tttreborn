@@ -24,7 +24,7 @@ namespace TTTReborn.UI.VisualProgramming
             {
                 Rect rect = Box.Rect;
 
-                return new Vector2(rect.left + rect.width * 0.5f, rect.top + rect.height * 0.5f);
+                return new Vector2(rect.Left + rect.Width * 0.5f, rect.Top + rect.Height * 0.5f);
             }
         }
 

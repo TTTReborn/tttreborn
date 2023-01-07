@@ -23,7 +23,7 @@ namespace TTTReborn.UI
 
             NameLabel.UpdateTranslation(new TranslationData(Utils.GetTranslationKey(carriable.Info.LibraryName, "NAME")));
 
-            if (Local.Pawn is Player player)
+            if (Game.LocalPawn is Player player)
             {
                 if (carriable is Weapon weapon && carriable.CarriableInfo.Category != CarriableCategories.Melee)
                 {
@@ -36,7 +36,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is Player player)
+            if (Game.LocalPawn is Player player)
             {
                 SlotLabel.Style.BackgroundColor = player.Team.Color;
             }

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Serialization;
 
+using System.Linq;
+
 using Sandbox;
 
 using TTTReborn.UI;
@@ -17,7 +19,7 @@ namespace TTTReborn.Settings
 
     namespace Categories
     {
-        using Globalization;
+        using TTTReborn.Globalization;
 
         public partial class General
         {
@@ -71,39 +73,46 @@ namespace TTTReborn.Globalization
         {
             Languages.Clear();
 
-            foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
+            foreach (string file in FileSystem.Mounted.FindFile("/lang", "*.json", false))
             {
                 string name = Path.GetFileNameWithoutExtension(file);
-                string json = FileSystem.Mounted.ReadAllText($"/lang/packs/{file}");
+                string json = FileSystem.Mounted.ReadAllText($"/lang/{file}");
 
                 Language language = new(name, json);
+                string key = language.Data.Code ?? name;
 
-                Languages.Add(language.Data.Code ?? name, language);
-
-                Log.Info($"Added language pack: '{name}'.");
+                if (!Languages.ContainsKey(key))
+                {
+                    Languages.Add(key, language);
+                    Log.Info($"Added language pack: '{name}'.");
+                } else
+                {
+                    Log.Warning($"Tried adding language pack for '{key}' again!");
+                }
             }
 
             ActiveLanguage = GetLanguageByCode(FALLBACK_LANGUAGE);
 
-            FileSystem.Mounted.Watch().OnChangedFile += (fileName) =>
-            {
-                foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
-                {
-                    if (fileName.Equals(file))
-                    {
-                        Load();
+            // FIXME FileSystem.Mounted.Watch() is not avilable anymore
+            //FileSystem.Mounted.Watch().OnChangedFile += (fileName) =>
+            //{
+            //    foreach (string file in FileSystem.Mounted.FindFile("/lang/packs/", "*.json", false))
+            //    {
+            //        if (fileName.Equals(file))
+            //        {
+            //            Load();
 
-                        // TODO reload HUD
+            //            // TODO reload HUD
 
-                        break;
-                    }
-                }
-            };
+            //            break;
+            //        }
+            //    }
+            //};
         }
 
         public static Language GetLanguageByCode(string name)
         {
-            Language lang = null;
+            Language lang = default;
 
             if (Languages != null && !string.IsNullOrEmpty(name))
             {
@@ -140,7 +149,7 @@ namespace TTTReborn.Globalization
 
 namespace TTTReborn
 {
-    using Globalization;
+    using TTTReborn.Globalization;
 
     public partial class Player
     {

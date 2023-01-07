@@ -31,7 +31,7 @@ namespace TTTReborn.Map
 
         private static async Task<List<string>> GetTTTMapNames()
         {
-            Package result = await Package.Fetch(Global.GameIdent, true);
+            Package result = await Package.Fetch(Game.Server.GameIdent, true);
 
             return result.GetMeta<List<string>>("MapList");
         }

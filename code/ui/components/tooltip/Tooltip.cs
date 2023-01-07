@@ -32,10 +32,10 @@ namespace TTTReborn.UI
 
             Rect rect = RelatedPanel.Box.Rect;
 
-            Style.Left = Length.Pixels(rect.left);
-            Style.Top = Length.Pixels(rect.top);
+            Style.Left = Length.Pixels(rect.Left);
+            Style.Top = Length.Pixels(rect.Top);
             Style.MinWidth = Length.Pixels(200f);
-            Style.MaxWidth = Length.Pixels(Math.Max(rect.width, 200f));
+            Style.MaxWidth = Length.Pixels(Math.Max(rect.Width, 200f));
 
             Instance = this;
         }

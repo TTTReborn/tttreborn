@@ -7,8 +7,8 @@ namespace TTTReborn.Events.Player
     {
         /// <summary>
         /// Occurs when a player initializes.
-        /// <para>The <strong><see cref="Client"/></strong> instance of the player who spawned initially.</para>
+        /// <para>The <strong><see cref="IClient"/></strong> instance of the player who spawned initially.</para>
         /// </summary>
-        public InitialSpawnEvent(Client client) : base(client) { }
+        public InitialSpawnEvent(IClient client) : base(client) { }
     }
 }

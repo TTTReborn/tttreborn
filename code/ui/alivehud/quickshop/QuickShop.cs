@@ -50,7 +50,7 @@ namespace TTTReborn.UI
 
             SelectedItemData = null;
 
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 return;
             }
@@ -94,7 +94,7 @@ namespace TTTReborn.UI
                     return;
                 }
 
-                if (SelectedItemData?.IsBuyable(Local.Pawn as Player) ?? false)
+                if (SelectedItemData?.IsBuyable(Game.LocalPawn as Player) ?? false)
                 {
                     Player.RequestItem(item.ItemData?.Name);
 
@@ -159,7 +159,7 @@ namespace TTTReborn.UI
                 return;
             }
 
-            int newCredits = (Local.Pawn as Player).Credits;
+            int newCredits = (Game.LocalPawn as Player).Credits;
 
             if (_credits != newCredits)
             {
@@ -173,7 +173,7 @@ namespace TTTReborn.UI
 
 namespace TTTReborn
 {
-    using UI;
+    using TTTReborn.UI;
 
     public partial class Player
     {
@@ -189,7 +189,7 @@ namespace TTTReborn
                 QuickShop.Instance.Enabled = false;
                 QuickShop.Instance.Update();
             }
-            else if (Input.Pressed(InputButton.View) && Local.Pawn is Player player)
+            else if (Input.Pressed(InputButton.View) && Game.LocalPawn is Player player)
             {
                 if (!(player.Shop?.Accessable() ?? false))
                 {

@@ -22,7 +22,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not Player player || player.Controller is not DefaultWalkController playerController)
+            if (Game.LocalPawn is not Player player || player.Controller is not DefaultWalkController playerController)
             {
                 return;
             }

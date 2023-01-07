@@ -15,10 +15,10 @@ namespace TTTReborn.Rounds
         public override string RoundName { get; set; } = "In Progress";
 
         [Net]
-        public List<Player> Players { get; set; }
+        public IList<Player> Players { get; set; }
 
         [Net]
-        public List<Player> Spectators { get; set; }
+        public IList<Player> Spectators { get; set; }
 
         private List<LogicButton> _logicButtons;
 
@@ -57,11 +57,11 @@ namespace TTTReborn.Rounds
 
         protected override void OnStart()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 // For now, if the Weapons.Count of the map is zero, let's just give the players
                 // a fixed weapon loadout.
-                if (Gamemode.Game.Instance.MapHandler.Weapons.Count < Players.Count)
+                if (Gamemode.TTTGame.Instance.MapHandler.Weapons.Count < Players.Count)
                 {
                     foreach (Player player in Players)
                     {
@@ -138,13 +138,13 @@ namespace TTTReborn.Rounds
         {
             NetworkableGameEvent.RegisterNetworked(new Events.Game.FinishEvent(winningTeam));
 
-            Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed++;
-            Gamemode.Game.Instance.ForceRoundChange(new PostRound());
+            Gamemode.TTTGame.Instance.MapSelection.TotalRoundsPlayed++;
+            Gamemode.TTTGame.Instance.ForceRoundChange(new PostRound());
         }
 
         public override void OnSecond()
         {
-            if (Host.IsServer)
+            if (Game.IsServer)
             {
                 if (!ServerSettings.Instance.Debug.PreventWin)
                 {
@@ -159,7 +159,7 @@ namespace TTTReborn.Rounds
 
                 if (!Utils.HasMinimumPlayers() && IsRoundOver() == null)
                 {
-                    Gamemode.Game.Instance.ForceRoundChange(new WaitingRound());
+                    Gamemode.TTTGame.Instance.ForceRoundChange(new WaitingRound());
                 }
             }
         }
@@ -182,7 +182,7 @@ namespace TTTReborn.Rounds
         {
             base.OnFinish();
 
-            if (!Host.IsServer)
+            if (!Game.IsServer)
             {
                 return;
             }
@@ -205,12 +205,12 @@ namespace TTTReborn.Rounds
         [Event("player_role_select")]
         protected static void OnPlayerRoleChange(Player _)
         {
-            if (Host.IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
 
-            if (Gamemode.Game.Instance.Round is InProgressRound inProgressRound)
+            if (Gamemode.TTTGame.Instance.Round is InProgressRound inProgressRound)
             {
                 inProgressRound.ChangeRoundIfOver();
             }
@@ -219,7 +219,7 @@ namespace TTTReborn.Rounds
         [Event("settings_change")]
         protected static void OnChangeSettings()
         {
-            if (Host.IsClient || Gamemode.Game.Instance.Round is not InProgressRound inProgressRound)
+            if (Game.IsClient || Gamemode.TTTGame.Instance.Round is not InProgressRound inProgressRound)
             {
                 return;
             }

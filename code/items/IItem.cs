@@ -25,7 +25,7 @@ namespace TTTReborn.Items
 
         void Delete();
 
-        void Simulate(Client owner);
+        void Simulate(IClient owner);
 
         void OnPurchase(Player player)
         {

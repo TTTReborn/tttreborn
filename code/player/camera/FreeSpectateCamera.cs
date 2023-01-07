@@ -18,8 +18,8 @@ namespace TTTReborn.Camera
         {
             base.Activated();
 
-            _targetPos = CurrentView.Position;
-            _targetRot = CurrentView.Rotation;
+            //_targetPos = CurrentView.Position;
+            //_targetRot = CurrentView.Rotation;
 
             Position = _targetPos;
             Rotation = _targetRot;
@@ -28,7 +28,7 @@ namespace TTTReborn.Camera
 
         public override void Update()
         {
-            if (Local.Client == null)
+            if (Game.LocalClient == null)
             {
                 return;
             }
@@ -42,26 +42,26 @@ namespace TTTReborn.Camera
             Rotation = Rotation.Slerp(Rotation, _targetRot, 10 * RealTime.Delta * (1 - LERP_MODE));
         }
 
-        public override void BuildInput(InputBuilder input)
-        {
-            _moveInput = input.AnalogMove;
+        //public override void BuildInput(InputBuilder input)
+        //{
+        //    _moveInput = input.AnalogMove;
 
-            _moveSpeed = 1;
+        //    _moveSpeed = 1;
 
-            if (input.Down(InputButton.Run))
-            {
-                _moveSpeed = 5;
-            }
+        //    if (input.Down(InputButton.Run))
+        //    {
+        //        _moveSpeed = 5;
+        //    }
 
-            if (input.Down(InputButton.Duck))
-            {
-                _moveSpeed = 0.2f;
-            }
+        //    if (input.Down(InputButton.Duck))
+        //    {
+        //        _moveSpeed = 0.2f;
+        //    }
 
-            _lookAngles += input.AnalogLook;
-            _lookAngles.roll = 0;
+        //    _lookAngles += input.AnalogLook;
+        //    _lookAngles.roll = 0;
 
-            base.BuildInput(input);
-        }
+        //    base.BuildInput(input);
+        //}
     }
 }

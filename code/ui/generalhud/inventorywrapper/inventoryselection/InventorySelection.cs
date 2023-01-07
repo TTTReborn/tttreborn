@@ -33,7 +33,7 @@ namespace TTTReborn.UI
             AddClass("text-shadow");
             AddClass("inventory-selection");
 
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 return;
             }
@@ -51,7 +51,7 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 return;
             }
@@ -218,10 +218,10 @@ namespace TTTReborn.UI
         /// IClientInput implementation, calls during the client input build.
         /// You can both read and write to input, to affect what happens down the line.
         /// </summary>
-        [Event.BuildInput]
-        protected void ProcessClientInventorySelectionInput(InputBuilder input)
+        [Event.Client.BuildInput]
+        protected void ProcessClientInventorySelectionInput()
         {
-            if (Local.Pawn is not Player player || player.IsSpectatingPlayer)
+            if (Game.LocalPawn is not Player player || player.IsSpectatingPlayer)
             {
                 return;
             }
@@ -233,7 +233,7 @@ namespace TTTReborn.UI
 
             List<Panel> childrenList = Children.ToList();
             ICarriableItem activeCarriable = player.ActiveChild as ICarriableItem;
-            int keyboardIndexPressed = GetKeyboardNumberPressed(input);
+            int keyboardIndexPressed = GetKeyboardNumberPressed();
 
             if (keyboardIndexPressed != -1)
             {
@@ -261,28 +261,28 @@ namespace TTTReborn.UI
                     }
                 }
 
-                if (activeCarriable == null || activeCarriableOfSlotTypeIndex == -1)
-                {
-                    // The user isn't holding an active carriable, or is holding a weapon that has a different
-                    // hold type than the one selected using the keyboard. We can just select the first weapon.
-                    input.ActiveChild = weaponsOfSlotTypeSelected.FirstOrDefault() as Entity;
-                }
-                else
-                {
-                    // The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
-                    // Find the next possible weapon within the hold types.
-                    input.ActiveChild = weaponsOfSlotTypeSelected[GetNextWeaponIndex(activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count)] as Entity;
-                }
+                //if (activeCarriable == null || activeCarriableOfSlotTypeIndex == -1)
+                //{
+                //    // The user isn't holding an active carriable, or is holding a weapon that has a different
+                //    // hold type than the one selected using the keyboard. We can just select the first weapon.
+                //    Input.ActiveChild = weaponsOfSlotTypeSelected.FirstOrDefault() as Entity;
+                //}
+                //else
+                //{
+                //    // The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
+                //    // Find the next possible weapon within the hold types.
+                //    input.ActiveChild = weaponsOfSlotTypeSelected[GetNextWeaponIndex(activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count)] as Entity;
+                //}
             }
 
-            int mouseWheelIndex = input.MouseWheel;
+            int mouseWheelIndex = Input.MouseWheel;
 
             if (mouseWheelIndex != 0)
             {
                 int activeCarriableIndex = childrenList.FindIndex((p) => p is InventorySlot slot && slot.Carriable.Info.LibraryName == activeCarriable?.Info.LibraryName);
                 int newSelectedIndex = NormalizeSlotIndex(-mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1);
 
-                input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
+                //input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
             }
         }
 
@@ -291,11 +291,11 @@ namespace TTTReborn.UI
 
         private static int NormalizeSlotIndex(int index, int maxIndex) => index > maxIndex ? 0 : index < 0 ? maxIndex : index;
 
-        private int GetKeyboardNumberPressed(InputBuilder input)
+        private int GetKeyboardNumberPressed()
         {
             for (int i = 0; i < _slotInputButtons.Length; i++)
             {
-                if (input.Pressed(_slotInputButtons[i]))
+                if (Input.Pressed(_slotInputButtons[i]))
                 {
                     return i;
                 }

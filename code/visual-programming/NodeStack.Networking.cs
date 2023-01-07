@@ -24,12 +24,12 @@ namespace TTTReborn.VisualProgramming
 
             To to = To.Single(ConsoleSystem.Caller);
 
-            if (!ConsoleSystem.Caller.HasPermission("visualprogramming"))
-            {
-                ClientInitializeNodesFromStack(to, false);
+            //if (!ConsoleSystem.Caller.HasPermission("visualprogramming"))
+            //{
+            //    ClientInitializeNodesFromStack(to, false);
 
-                return;
-            }
+            //    return;
+            //}
 
             ClientInitializeNodesFromStack(to, true, JsonSerializer.Serialize(Instance.GetJsonData()));
         }
@@ -72,10 +72,10 @@ namespace TTTReborn.VisualProgramming
         [ConCmd.Server]
         private static void ServerUploadPartialStack(int packetHash, int packetNum, int maxPackets, string partialStack)
         {
-            if (!ConsoleSystem.Caller?.HasPermission("visualprogramming") ?? true)
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller?.HasPermission("visualprogramming") ?? true)
+            //{
+            //    return;
+            //}
 
             ProceedPartialUpload(packetHash, packetNum, maxPackets, partialStack);
 
@@ -177,10 +177,10 @@ namespace TTTReborn.VisualProgramming
         [ConCmd.Server]
         public static void ServerResetStack()
         {
-            if (!ConsoleSystem.Caller?.HasPermission("visualprogramming") ?? true)
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller?.HasPermission("visualprogramming") ?? true)
+            //{
+            //    return;
+            //}
 
             Instance.Init();
 

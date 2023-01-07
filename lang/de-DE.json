@@ -1,0 +1,410 @@
+{
+    "__LANGUAGE__": {
+        "NAME": "Deutsch",
+        "CODE": "de-DE"
+    },
+    "ROLE": {
+        "NONE": {
+            "NAME": "Unbekannt"
+        },
+        "INNOCENT": {
+            "NAME": "Unschuldiger"
+        },
+        "TRAITOR": {
+            "NAME": "Verräter"
+        },
+        "DETECTIVE": {
+            "NAME": "Detektiv"
+        }
+    },
+    "TEAM": {
+        "INNOCENTS": {
+            "NAME": "Unschuldige",
+            "WIN": "DIE UNSCHULDIGEN GEWINNEN!"
+        },
+        "TRAITORS": {
+            "NAME": "Verräter",
+            "WIN": "DIE VERRÄTER GEWINNEN!"
+        },
+        "NONES": {
+            "NAME": "Niemand",
+            "WIN": "UNENTSCHIEDEN!"
+        }
+    },
+    "WIN": {
+        "DESCRIPTION": "Danke, dass Du TTT Reborn spielst, weitere Updates und Statistiken werden folgen!"
+    },
+    "ROUND": {
+        "STATE": {
+            "WAITING": "Warten",
+            "PREPARING": "Vorbereitung",
+            "IN_PROGRESS": "Im Gange",
+            "POST": "Runde vorbei",
+            "MAP_SELECTION": "Wähle eine Map"
+        }
+    },
+    "PLAYER": {
+        "STATUS": {
+            "HEALTH": {
+                "HEALTHY": "Gesund",
+                "HURT": "Verletzt",
+                "WOUNDED": "Verwundet",
+                "BADLY_WOUNDED": "Schwer verwundet",
+                "NEAR_DEATH": "Dem Tode nahe",
+                "DEAD": "Tot"
+            }
+        }
+    },
+    "CORPSE": {
+        "INSPECT": {
+            "QUICKINFO": {
+                "HEADSHOT": "Kopfschuss",
+                "SUICIDE": "Selbstmord",
+                "DISTANCE": "{0}m",
+                "TIME": "{0}"
+            },
+            "IDENTIFIER": {
+                "TIMESINCEDEATH": "Er/Sie starb vor ungefähr {0}.",
+                "HEADSHOT": "Die tötliche Wunde war ein Kopfschuss. Keine Zeit zum Schreien.",
+                "SUICIDE": "Du kannst keinen spezifischen Grund für den Tod dieses Terry's finden.",
+                "KILLED": "Er/Sie wurde von etwa {0}m entfernt getötet.",
+                "WEAPON": "Es scheint, als wäre '{0}' genutzt worden, um Ihn/Sie zu töten.",
+                "PERK": "Er/Sie trug '{0}'."
+            }
+        },
+        "USE": {
+            "IDENTIFY": "Halten, um die Leiche zu identifizieren",
+            "INSPECT": "Halten, um die Leiche zu inspizieren",
+            "COVERTINSPECT": "Halten, um die Leiche verdeckt zu inspizieren"
+        }
+    },
+    "SCOREBOARD": {
+        "HEADER": {
+            "GAMEMODE": "{0} Server",
+            "CREATEDBY": "Erstellt von {0}",
+            "PLAYERAMOUNT": "{0} / {1} Spieler",
+            "SERVERINFO": "{0} Spieler. Map: {1}",
+            "PLAYERSLEFT": "{0} Spieler verbleibend"
+        },
+        "GROUP": {
+            "ALIVE": "Lebendig",
+            "DEAD": "Bestätigte Tode",
+            "MISSING": "Vermisst",
+            "SPECTATOR": "Zuschauer"
+        },
+        "COLUMNS": {
+            "KARMA": "Karma",
+            "DEATHS": "Tode",
+            "SCORE": "Punkte",
+            "PING": "Ping"
+        }
+    },
+    "QUICKSHOP": {
+        "CREDITS": {
+            "DESCRIPTION": "Du hast ${0}"
+        },
+        "ITEM": {
+            "DESCRIPTION": "Die Beschreibung für das Item '{0}' wird sich später an dieser Stelle befinden."
+        }
+    },
+    "REALM": {
+        "CLIENT": "Client",
+        "SERVER": "Server"
+    },
+    "MENU": {
+        "SETTINGS": {
+            "TITLE": "Einstellungen",
+            "CLIENT": "Client Einstellungen",
+            "SERVER": "Server Einstellungen",
+            "LOADING": "Lade...",
+            "TABS": {
+                "GENERAL": {
+                    "TITLE": "Allgemein",
+                    "LANGUAGE": {
+                        "TITLE" : "Sprache",
+                        "DESCRIPTION": "Die Anzeige-Sprache für den Nutzer"
+                    },
+                    "RETURNMISSINGKEYS": {
+                        "TITLE": "Debuggung: Gebe fehlende Language-Keys zurück",
+                        "DESCRIPTION": "Falls es einen fehlenden Language-Key gibt, gebe diesen statt des Fallbacks zurück."
+                    }
+                },
+                "DEBUG": {
+                    "TITLE": "Debug",
+                    "PREVENTWIN": {
+                        "TITLE": "Sieg unterbinden",
+                        "DESCRIPTION": "Soll das Rundenende aufgrund eines Sieges basierend auf Zeitablauf oder erfüllte Siegbedingung unterbunden werden? (Map-Trigger ausgenommen)"
+                    }
+                },
+                "AFK": {
+                    "TITLE": "AFK",
+                    "SECONDSTILLKICK": {
+                        "TITLE": "AFK Zeit",
+                        "DESCRIPTION": "Die Zeit bevor der Spieler als AFK markiert wird."
+                    },
+                    "SHOULDKICKPLAYERS": {
+                        "TITLE": "Sollen AFK-Spieler gekickt werden?",
+                        "DESCRIPTION": "Ob ein Spieler gekickt oder (falls deaktiviert) als Zuschauer gesetzt werden soll."
+                    }
+                },
+                "MOVEMENT": {
+                    "TITLE": "Sprinten",
+                    "ISSPRINTENABLED": {
+                        "TITLE" : "Sprinten aktivieren?",
+                        "DESCRIPTION": "Ob Sprinten auf dem Server aktiviert sein soll."
+                    }
+                },
+                "ROUND": {
+                    "TITLE": "Runden",
+                    "MINPLAYERS": {
+                        "TITLE": "Minimum Spieler",
+                        "DESCRIPTION": "Die minimale Anzahl an Spielern, die für den Start des Spiels benötigt werden. Falls die Spielerzahl unterhalb der gesetzten Zahl fällt, wird das Spiel abgebrochen, sofern es bereits gestartet ist."
+                    },
+                    "PREROUNDTIME": {
+                        "TITLE": "Vorbereitungszeit",
+                        "DESCRIPTION": "Die Zeit, wie lange die Vorbereitungsrunde gehen soll."
+                    },
+                    "ROUNDTIME": {
+                        "TITLE": "Rundenzeit",
+                        "DESCRIPTION": "Die Zeit, wie lange die Hauptrunde gehen soll."
+                    },
+                    "POSTROUNDTIME": {
+                        "TITLE": "Nachrundenzeit",
+                        "DESCRIPTION": "Die Zeit, bevor die nächste Runde startet."
+                    },
+                    "MAPSELECTIONROUNDTIME": {
+                        "TITLE": "Mapauswahl: Rundenzeit",
+                        "DESCRIPTION": "Die Zeit für die Mapauswahl"
+                    },
+                    "TOTALROUNDS": {
+                        "TITLE": "Maximale Rundenanzahl",
+                        "DESCRIPTION": "Maximale Rundenanzahl, bis es zur Mapauswahl kommt"
+                    },
+                    "KILLTIMEREWARD": {
+                        "TITLE": "Belohnungszeit für Tötung",
+                        "DESCRIPTION": "Die Extrazeit, die ein Verräter für das Töten von Unschuldigen bekommt."
+                    }
+                },
+                "MAP": {
+                    "TITLE": "Map",
+                    "DEFAULTMAP": {
+                        "TITLE": "Standard-Map",
+                        "DESCRIPTION": "Wähle eine Map aus, welche standardmäßig ausgewählt wird."
+                    }
+                }
+            },
+            "BUTTONS": {
+                "SAVE": "Speichern",
+                "LOAD": "Laden",
+                "OVERWRITE": {
+                    "TITLE": "Überschreibe '{0}'",
+                    "DESCRIPTION": "Möchtest du '{0}' mit den aktuellen Einstellungen überschreiben? (Falls du zustimmst, gehen die Einstellungen, die in der ausgewählten Datei gespeichert sind, verloren!)"
+                }
+            }
+        },
+        "KEYBINDINGS": {
+            "TITLE": "Tastaturbelegung",
+            "RESTRICTION": "Wegen Restriktionen der S&Box Entwickler kannst Du deine Keybindings leider nur im S&Box Optionsmenü oder über die Konsole ändern.",
+            "MOVEMENT": {
+                "TITLE": "Bewegung",
+                "FORWARD": "Vorwärts",
+                "BACK": "Rückwärts",
+                "LEFT": "Links",
+                "RIGHT": "Rechts",
+                "JUMP": "Springen",
+                "CROUCH": "Ducken",
+                "SPRINT": "Sprinten"
+            },
+            "WEAPONS": {
+                "TITLE": "Waffen",
+                "FIRE": "Feuern",
+                "RELOAD": "Nachladen",
+                "DROP_WEAPON": "Waffe fallenlassen",
+                "DROP_AMMO": "Munition fallenlassen"
+            },
+            "ACTIONS": {
+                "TITLE": "Aktionen",
+                "USE": "Nutzen",
+                "FLASHLIGHT": "Taschenlampe"
+            },
+            "COMMUNICATION": {
+                "TITLE": "Kommunikation",
+                "VOICECHAT": "Sprachchat",
+                "TEAMVOICECHAT": "Team-Sprachchat",
+                "TEAMTEXTCHAT": "Team-Textchat"
+            },
+            "MENUS": {
+                "TITLE": "Menüs",
+                "MENU": "Scoreboard, Menü, Logs etc.",
+                "QUICKSHOP": "QuickShop"
+            }
+        },
+        "TESTING": {
+            "TITLE": "Testen",
+            "FILESELECTION": "Explorer"
+        },
+        "SHOPEDITOR": {
+            "TITLE": "Shop Editor",
+            "TOGGLEROLE": "Umschalten, um den Shop für die aktuell ausgewählte Rolle zu de-/aktivieren.",
+            "SELECTROLE": "Wähle eine Rolle aus, um den damit verbundenen Shop zu modifizieren.",
+            "ENABLEROLE": "Aktiviert",
+            "NOPERMISSION": "Du hast keine Berechtigungen, um auf den ShopEditor zuzugreifen.",
+            "EDIT": {
+                "TITLE": "Bearbeite das Item.",
+                "DESCRIPTION": "Bearbeite das Item '{0}'"
+            },
+            "PRICE": {
+                "TITLE": "Preis",
+                "DESCRIPTION": "Der Preis von: '{0}'."
+            }
+        },
+        "ROLEEDITOR": {
+            "TITLE": "Role Editor",
+            "RESET": {
+                "TITLE": "RoleSelection zurücksetzen",
+                "DESCRIPTION": "Bist du dir sicher, dass du die RoleSelection zurücksetzen willst?"
+            }
+        }
+    },
+    "GAMERESULTSMENU": {
+        "EMPTY": "Events werden erst zum Rundenende erstellt.",
+        "TITLE": "Events der letzten Runde:",
+        "ALLFILTER": "Global",
+        "PLAYERFILTER": "Du",
+        "EVENTS": {
+            "SCORING": {
+                "PLAYERNAME": "Spielername",
+                "SCORE": "Punkte",
+                "KARMA": "Karma"
+            }
+        }
+    },
+    "MAPSELECTION": {
+        "VOTE": "Wähle die nächste Map!"
+    },
+    "WEAPON": {
+        "PISTOL": {
+            "NAME": "Pistole"
+        },
+        "SMG": {
+            "NAME": "SMG"
+        },
+        "SHOTGUN": {
+            "NAME": "Schrot"
+        },
+        "SNIPER": {
+            "NAME": "Scharfschützengewehr"
+        },
+        "KNIFE": {
+            "NAME": "Messer"
+        },
+        "NEWTONLAUNCHER": {
+            "NAME": "Newtonlauncher"
+        },
+        "OFFENSIVEEQUIPMENT": {
+            "NAME": "Offensives Equipment"
+        },
+        "RPG7": {
+            "NAME": "RPG-7"
+        },
+        "BAYONET": {
+            "NAME": "Bayonet"
+        },
+        "DEAGLE": {
+            "NAME": "Desert Eagle"
+        },
+        "FAL": {
+            "NAME": "FAL"
+        },
+        "L96A1": {
+            "NAME": "L96A1"
+        },
+        "SPAS12": {
+            "NAME": "SPAS12"
+        },
+        "UMP45": {
+            "NAME": "UMP45"
+        },
+        "AMMO": {
+            "NAME": "Munition",
+            "WEAPON": "{0} Munition"
+        },
+        "USE": "Drücken, um '{0}' aufzuheben"
+    },
+    "EQUIPMENT": {
+        "HANDS": {
+            "NAME": "Hände"
+        },
+        "C4": {
+            "NAME": "C4",
+            "UI": {
+                "PICKUP": "Aufheben",
+                "DESTROY": "Zerstören",
+                "ARM": "Schärfen",
+                "DEFUSECHANCE": "{0}% Chance zu entschärfen"
+            },
+            "USE": {
+                "ARM": "Halten, um das C4 scharf zu machen",
+                "DEFUSE": "Drücken, um das C4 zu entschärfen"
+            }
+        },
+        "DECOY": {
+            "NAME": "Köder"
+        },
+        "HEALTHSTATION": {
+            "NAME": "HealthStation",
+            "USE": "Halten, um HealthStation zu nutzen ({0})"
+        },
+        "MAGNETOSTICK": {
+            "NAME": "MagnetoStick"
+        }
+    },
+    "PERK": {
+        "BODYARMOR": {
+            "NAME": "Körperschild"
+        },
+        "RADAR": {
+            "NAME": "Radar"
+        }
+    },
+    "ENTITY": {
+        "USE": "Drücken, um mit '{0}' zu interagieren",
+        "ENT_BUTTON": "Knopf"
+    },
+    "DOOR": {
+        "OPEN": "Drücken, um die Tür zu öffnen",
+        "CLOSE": "Drücken, um die Tür zu schließen",
+        "LOCKED": "Die Tür ist verschlossen"
+    },
+    "GAMEEVENT": {
+        "PLAYER": {
+            "TAKEDAMAGE": {
+                "TITLE": "Ein Spieler hat Schaden erlitten",
+                "DESCRIPTION": "'{0}' hat {1} Schaden von '{2}' erhalten"
+            },
+            "DIED": {
+                "TITLE": "Ein Spieler ist gestorben",
+                "NOREASON": "'{0}' starb",
+                "BYSUICIDE": "'{0}' hat sich selbst umgebracht",
+                "BYPLAYER": "'{0}' wurde vom Spieler '{1}' getötet",
+                "BYOBJECT": "'{0}' wurde vom Objekt '{1}' getötet"
+            },
+            "SPAWN": {
+                "TITLE": "Ein Spieler ist respawnt",
+                "DESCRIPTION": "'{0}' ist respawnt"
+            },
+            "ROLE": {
+                "SELECT": {
+                    "TITLE": "Einem Spieler wurde eine neue Rolle zugewiesen",
+                    "DESCRIPTION": "'{0}' wurde die Rolle '{1}' zugewiesen"
+                }
+            }
+        },
+        "GAME": {
+            "FINISH": {
+                "TITLE": "Rundenende",
+                "DESCRIPTION": "'{0}' hat gewonnen"
+            }
+        }
+    }
+}

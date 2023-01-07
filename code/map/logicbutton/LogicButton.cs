@@ -56,7 +56,7 @@ namespace TTTReborn.Map
         {
             Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
 
-            if (IsServer)
+            if (Game.IsServer)
             {
                 Reset();
             }
@@ -65,7 +65,7 @@ namespace TTTReborn.Map
         // (Re)initialize our variables to default. Runs at preround as well as during construction
         public void Reset()
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             IsLocked = Locked;
             IsDelayed = false;
@@ -75,7 +75,7 @@ namespace TTTReborn.Map
 
         public void OnSecond() // Hijack the round timer to tick on every second. No reason to tick any faster.
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             if (HasDelay && IsDelayed && !IsRemoved && NextUse <= 0) // Check timer if button has delayed, no reason to check if button is removed.
             {
@@ -86,7 +86,7 @@ namespace TTTReborn.Map
         [Input]
         public void Press(Player activator)
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             if (!IsDisabled) // Make sure button is not delayed, locked or removed.
             {
@@ -113,7 +113,7 @@ namespace TTTReborn.Map
         [Input]
         public void Lock()
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             IsLocked = true;
         }
@@ -121,7 +121,7 @@ namespace TTTReborn.Map
         [Input]
         public void Unlock()
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             IsLocked = false;
         }
@@ -129,7 +129,7 @@ namespace TTTReborn.Map
         [Input]
         public void Toggle()
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             IsLocked = !IsLocked;
         }

@@ -43,7 +43,7 @@ namespace TTTReborn.Items
 
         public static ShopItemData CreateItemData(Type type)
         {
-            TypeDescription typeDescription = TypeLibrary.GetDescription(type);
+            TypeDescription typeDescription = TypeLibrary.GetType(type);
             bool buyable = false;
 
             ShopItemData shopItemData = new(typeDescription.ClassName)
@@ -51,7 +51,7 @@ namespace TTTReborn.Items
                 Type = type
             };
 
-            foreach (object obj in type.GetCustomAttributes(false))
+            foreach (object obj in typeDescription.GetAttributes<Attribute>())
             {
                 if (obj is BuyableAttribute buyableAttribute)
                 {

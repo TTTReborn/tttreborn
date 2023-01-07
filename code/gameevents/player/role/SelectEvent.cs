@@ -23,6 +23,6 @@ namespace TTTReborn.Events.Player.Role
             }
         }
 
-        public bool Contains(Client client) => PlayerName == client.Name;
+        public bool Contains(IClient client) => PlayerName == client.Name;
     }
 }

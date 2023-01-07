@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 using Sandbox;
+using Sandbox.Physics;
 
 using TTTReborn.Entities;
 using TTTReborn.Globalization;
@@ -45,12 +46,13 @@ namespace TTTReborn
 
         public PlayerCorpse()
         {
-            MoveType = MoveType.Physics;
             UsePhysicsCollision = true;
 
-            SetInteractsAs(CollisionLayer.Debris);
-            SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
-            SetInteractsExclude(CollisionLayer.Player);
+            Tags.Add("corpse");
+            Tags.Add("debris");
+
+            //SetInteractsWith(CollisionLayer.WORLD_GEOMETRY);
+            //SetInteractsExclude(CollisionLayer.Player);
 
             Data.KilledTime = Time.Now;
         }
@@ -59,7 +61,7 @@ namespace TTTReborn
         {
             DeadPlayer = player;
 
-            Data.PlayerId = player.Client.PlayerId;
+            Data.PlayerId = player.Client.SteamId;
             Data.Name = player.Client.Name;
             Data.RoleName = player.Role.Name;
             Data.TeamName = player.Team.Name;
@@ -169,7 +171,7 @@ namespace TTTReborn
         {
             using (Prediction.Off())
             {
-                if (IsClient && !Input.Down(InputButton.Use))
+                if (Game.IsClient && !Input.Down(InputButton.Use))
                 {
                     if (InspectMenu.Instance != null)
                     {
@@ -183,7 +185,7 @@ namespace TTTReborn
                 {
                     bool covert = Input.Down(InputButton.Duck);
 
-                    if (IsServer)
+                    if (Game.IsServer)
                     {
                         if (!covert)
                         {

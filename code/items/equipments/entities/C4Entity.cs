@@ -93,7 +93,7 @@ namespace TTTReborn.Items
             SetupPhysicsFromModel(PhysicsMotionType.Dynamic);
         }
 
-        [Event.Frame]
+        //[Event.Frame]
         private void UpdateDisplayTransform()
         {
             if (!CreatedDisplay)
@@ -228,7 +228,7 @@ namespace TTTReborn.Items
                     float force = BOMB_FORCE * distanceMul * ent.PhysicsBody.Mass;
                     Vector3 forceDir = (targetPos - sourcePos).Normal;
 
-                    ent.TakeDamage(DamageInfo.Explosion(sourcePos, forceDir * force, damage)
+                    ent.TakeDamage(DamageInfo.FromExplosion(sourcePos, forceDir * force, damage)
                         .WithAttacker(this));
                 }
             }
@@ -299,7 +299,7 @@ namespace TTTReborn.Items
 
         public void HintTick(Player player)
         {
-            if (IsClient)
+            if (Game.IsClient)
             {
                 return;
             }
@@ -347,7 +347,7 @@ namespace TTTReborn.Items
         [ClientRpc]
         public void ClientCloseC4Menu(C4Entity c4Entity)
         {
-            Host.AssertClient();
+            Game.AssertClient();
 
             CloseC4Menu(c4Entity);
         }

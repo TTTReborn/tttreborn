@@ -8,10 +8,10 @@ namespace TTTReborn.Items
 
         public virtual void MeleeStrike(float damage, float force)
         {
-            Vector3 forward = Owner.EyeRotation.Forward;
+            Vector3 forward = Owner.AimRay.Forward;
             forward = forward.Normal;
 
-            foreach (TraceResult tr in TraceBullet(Owner.EyePosition, Owner.EyePosition + forward * MeleeDistance, 10f))
+            foreach (TraceResult tr in TraceBullet(Owner.AimRay.Position, Owner.AimRay.Position + forward * MeleeDistance, 10f))
             {
                 if (!tr.Entity.IsValid())
                 {
@@ -20,7 +20,7 @@ namespace TTTReborn.Items
 
                 tr.Surface.DoBulletImpact(tr);
 
-                if (!IsServer)
+                if (!Game.IsServer)
                 {
                     continue;
                 }
@@ -41,7 +41,7 @@ namespace TTTReborn.Items
         {
             (Owner as AnimatedEntity).SetAnimParameter("b_attack", true);
 
-            if (IsClient)
+            if (Game.IsClient)
             {
                 ShootEffects(GetClipInfoIndex(clipInfo));
             }

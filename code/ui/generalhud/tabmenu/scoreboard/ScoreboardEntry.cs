@@ -11,7 +11,7 @@ namespace TTTReborn.UI
     public class ScoreboardEntry : Panel
     {
         public string ScoreboardGroupName;
-        public Client Client;
+        public IClient Client;
 
         private Image PlayerAvatar { get; set; }
         private string PlayerName { get; set; }
@@ -33,9 +33,9 @@ namespace TTTReborn.UI
             Score = Client.GetInt("score").ToString();
             Karma = Client.GetInt("karma").ToString();
 
-            SetClass("me", Client == Local.Client);
+            SetClass("me", Client == Game.LocalClient);
 
-            PlayerAvatar.SetTexture($"avatar:{Client.PlayerId}");
+            PlayerAvatar.SetTexture($"avatar:{Client.SteamId}");
 
             if (Client.Pawn is Player player && player.Role is not NoneRole && player.Role is not InnocentRole)
             {

@@ -15,12 +15,12 @@ namespace TTTReborn.UI
         {
             base.Tick();
 
-            if (Local.Pawn is not Player player)
+            if (Game.LocalPawn is not Player player)
             {
                 return;
             }
 
-            this.Enabled(!player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound);
+            this.Enabled(!player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.TTTGame.Instance.Round is Rounds.InProgressRound);
 
             if (this.IsEnabled())
             {

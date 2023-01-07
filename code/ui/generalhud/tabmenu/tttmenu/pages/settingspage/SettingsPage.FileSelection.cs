@@ -158,10 +158,10 @@ namespace TTTReborn
         [ConCmd.Server(Name = "ttt_serversettings_saveas_request")]
         public static void RequestSaveServerSettingsAs(string filePath, string fileName, bool overwrite = false)
         {
-            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            //{
+            //    return;
+            //}
 
             if (overwrite || !FileSystem.Data.FileExists(filePath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION))
             {
@@ -185,10 +185,10 @@ namespace TTTReborn
         [ConCmd.Server(Name = "ttt_serversettings_loadfrom_request")]
         public static void RequestLoadFrom(string filePath, string fileName)
         {
-            if (!ConsoleSystem.Caller.HasPermission("serversettings"))
-            {
-                return;
-            }
+            //if (!ConsoleSystem.Caller.HasPermission("serversettings"))
+            //{
+            //    return;
+            //}
 
             SettingsManager.Instance = SettingFunctions.LoadSettings<ServerSettings>(filePath, fileName);
 

@@ -6,11 +6,11 @@ using TTTReborn.Items;
 
 namespace TTTReborn.Gamemode
 {
-    public partial class Game
+    public partial class TTTGame
     {
         public static void PrecacheFiles()
         {
-            Host.AssertServer();
+            Game.AssertServer();
 
             Precache.Add("particles/impact.generic.vpcf");
             Precache.Add("particles/impact.flesh.vpcf");
