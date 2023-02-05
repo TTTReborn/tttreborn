@@ -12,7 +12,7 @@ namespace TTTReborn.UI.Menu
 
         public ClientSettingsPage()
         {
-            //SettingsPage.CreateSettings(TabContainer, ClientSettings.Instance);
+            SettingsPage.CreateSettings(TabContainer, ClientSettings.Instance);
             SettingsPage.CreateFileSelectionButtons(Buttons, false);
         }
     }

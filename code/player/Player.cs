@@ -1,330 +1,52 @@
 using Sandbox;
 
-using TTTReborn.Camera;
-using TTTReborn.Items;
-using TTTReborn.Roles;
-using TTTReborn.WorldUI;
+namespace TTTReborn;
 
-namespace TTTReborn
+/// <summary>
+/// This is what you should derive your player from. This base exists in addon code
+/// so we can take advantage of codegen for replication. The side effect is that we
+/// can put stuff in here that we don't need to access from the engine - which gives
+/// more transparency to our code.
+/// </summary>
+[Title("Player"), Icon("emoji_people")]
+public partial class Player : AnimatedEntity
 {
-    public partial class Player : Sandbox.Player
+	/// <summary>
+	/// A generic corpse entity
+	/// </summary>
+	public ModelEntity Corpse { get; set; }
+
+    public static readonly Model WorldModel = Model.Load("models/citizen/citizen.vmdl");
+
+    public Player()
     {
-        private static int CarriableDropVelocity { get; set; } = 300;
-
-        [Net, Local]
-        public int Credits { get; set; } = 0;
-
-        [Net]
-        public bool IsForcedSpectator { get; set; } = false;
-
-        public bool IsInitialSpawning { get; set; } = false;
-
-        public RoleWorldIcon RoleWorldIcon { get; set; }
-
-        public new Inventory Inventory
-        {
-            get => (Inventory) base.Inventory;
-            private init => base.Inventory = value;
-        }
-
-        public new DefaultWalkController Controller
-        {
-            get => (DefaultWalkController) base.Controller;
-            private set => base.Controller = value;
-        }
-
-        private DamageInfo _lastDamageInfo;
-
-        public Player()
-        {
-            Inventory = new Inventory(this);
-        }
-
-        // Important: Server-side only
-        public void InitialSpawn()
-        {
-            bool isPostRound = Gamemode.TTTGame.Instance.Round is Rounds.PostRound;
-
-            IsInitialSpawning = true;
-            IsForcedSpectator = isPostRound || Gamemode.TTTGame.Instance.Round is Rounds.InProgressRound;
-
-            NetworkableGameEvent.RegisterNetworked(new Events.Player.InitialSpawnEvent(Client));
-
-            Respawn();
-
-            // sync roles
-            using (Prediction.Off())
-            {
-                foreach (Player player in Utils.GetPlayers())
-                {
-                    if (isPostRound || player.IsConfirmed)
-                    {
-                        player.SendClientRole(To.Single(this));
-                    }
-                }
-
-                Client.SetValue("forcedspectator", IsForcedSpectator);
-            }
-
-            IsInitialSpawning = false;
-            IsForcedSpectator = false;
-        }
-
-        public static readonly Model WorldModel = Model.Load("models/citizen/citizen.vmdl");
-
-        // Important: Server-side only
-        // TODO: Convert to a player.RPC, event based system found inside of...
-        // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
-        public override void Respawn()
-        {
-            Model = WorldModel;
-
-            //Animator = new StandardPlayerAnimator();
-
-            EnableHideInFirstPerson = true;
-            EnableShadowInFirstPerson = false;
-            EnableDrawing = true;
-
-            Credits = 0;
-
-            SetRole(new NoneRole());
-
-            IsMissingInAction = false;
-
-            using (Prediction.Off())
-            {
-                NetworkableGameEvent.RegisterNetworked(new Events.Player.SpawnEvent(this));
-                SendClientRole();
-            }
-
-            base.Respawn();
-
-            if (!IsForcedSpectator)
-            {
-                Controller = new DefaultWalkController();
-                //CameraMode = new FirstPersonCamera();
-
-                EnableAllCollisions = true;
-                EnableDrawing = true;
-            }
-            else
-            {
-                MakeSpectator(false);
-            }
-
-            RemovePlayerCorpse();
-            Inventory.DeleteContents();
-            Gamemode.TTTGame.Instance.Round.OnPlayerSpawn(this);
-
-            switch (Gamemode.TTTGame.Instance.Round)
-            {
-                case Rounds.PreRound:
-                case Rounds.WaitingRound:
-                    IsConfirmed = false;
-                    CorpseConfirmer = null;
-
-                    Client.SetValue("forcedspectator", IsForcedSpectator);
-
-                    break;
-            }
-        }
-
-        public override void ClientSpawn()
-        {
-            base.ClientSpawn();
-
-            if (IsLocalPawn)
-            {
-                return;
-            }
-
-            RoleWorldIcon = new(this);
-        }
-
-        public override void OnKilled()
-        {
-            using (Prediction.Off())
-            {
-                NetworkableGameEvent.RegisterNetworked(new Events.Player.DiedEvent(this));
-            }
-
-            BecomePlayerCorpseOnServer(_lastDamageInfo.Force, _lastDamageInfo.BoneIndex);
-
-            ShowFlashlight(false, false);
-
-            IsMissingInAction = true;
-
-            using (Prediction.Off())
-            {
-                if (Gamemode.TTTGame.Instance.Round is Rounds.InProgressRound)
-                {
-                    SyncMIA();
-                }
-                else if (Gamemode.TTTGame.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.Data.IsIdentified)
-                {
-                    PlayerCorpse.Data.IsIdentified = true;
-
-                    RPCs.ClientConfirmPlayer(null, PlayerCorpse, PlayerCorpse.GetSerializedData());
-                }
-            }
-
-            base.OnKilled();
-
-            Inventory.DropAll();
-            Inventory.DeleteContents();
-        }
-
-        public override void Simulate(IClient client)
-        {
-            if (Game.IsClient)
-            {
-                TickPlayerVoiceChat();
-            }
-            else
-            {
-                TickAFKSystem();
-            }
-
-            TickEntityHints();
-
-            if (LifeState != LifeState.Alive)
-            {
-                TickPlayerChangeSpectateCamera();
-
-                return;
-            }
-
-            // Input requested a carriable entity switch
-            //if (Input.ActiveChild != null)
-            //{
-            //    ActiveChild = Input.ActiveChild;
-            //}
-
-            SimulateActiveChild(client, ActiveChild);
-
-            TickItemSimulate();
-
-            if (Game.IsServer)
-            {
-                TickPlayerUse();
-                TickPlayerDropCarriable();
-                TickPlayerFlashlight();
-            }
-            else
-            {
-                TickPlayerShop();
-                TickLogicButtonActivate();
-            }
-
-            PawnController controller = GetActiveController();
-            // controller?.Simulate(client, this, GetActiveAnimator());
-        }
-
-        protected override void UseFail()
-        {
-            // Do nothing. By default this plays a sound that we don't want.
-        }
-
-        public override void StartTouch(Entity other)
-        {
-            if (Game.IsClient)
-            {
-                return;
-            }
-
-            if (other is PickupTrigger && other.Parent is IPickupable pickupable)
-            {
-                pickupable.PickupStartTouch(this);
-            }
-        }
-
-        public override void EndTouch(Entity other)
-        {
-            if (Game.IsClient)
-            {
-                return;
-            }
-
-            if (other is PickupTrigger && other.Parent is IPickupable pickupable)
-            {
-                pickupable.PickupEndTouch(this);
-            }
-        }
-
-        private void TickPlayerDropCarriable()
-        {
-            using (Prediction.Off())
-            {
-                if (Input.Pressed(InputButton.Drop) && !Input.Down(InputButton.Run) && ActiveChild != null && Inventory != null)
-                {
-                    Entity droppedEntity = Inventory.DropActive();
-
-                    if (droppedEntity != null)
-                    {
-                        if (droppedEntity.PhysicsGroup != null)
-                        {
-                            droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * CarriableDropVelocity;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void TickPlayerChangeSpectateCamera()
-        {
-            if (!Input.Pressed(InputButton.Jump) || !Game.IsServer)
-            {
-                return;
-            }
-
-            //using (Prediction.Off())
-            //{
-            //    CameraMode = CameraMode switch
-            //    {
-            //        RagdollSpectateCamera => new FreeSpectateCamera(),
-            //        FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-            //        ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
-            //        FirstPersonSpectatorCamera => new FreeSpectateCamera(),
-            //        _ => CameraMode
-            //    };
-            //}
-        }
-
-        private void TickItemSimulate()
-        {
-            if (Client == null)
-            {
-                return;
-            }
-
-            PerksInventory perks = Inventory.Perks;
-
-            for (int i = 0; i < perks.Count(); i++)
-            {
-                perks.Get(i).Simulate(Client);
-            }
-        }
-
-        protected override void OnDestroy()
-        {
-            RemovePlayerCorpse();
-
-            base.OnDestroy();
-        }
-
-        [Event("player_spawn")]
-        protected static void OnPlayerSpawn(Player player)
-        {
-            if (!player.IsValid())
-            {
-                return;
-            }
-
-            player.IsMissingInAction = false;
-            player.IsConfirmed = false;
-            player.CorpseConfirmer = null;
-
-            player.SetRole(new NoneRole());
-        }
+        Inventory = new Inventory(this);
     }
+
+    protected override void OnDestroy()
+    {
+        RemovePlayerCorpse();
+
+        base.OnDestroy();
+    }
+
+	/// <summary>
+	/// Create a physics hull for this player. The hull stops physics objects and players passing through
+	/// the player. It's basically a big solid box. It also what hits triggers and stuff.
+	/// The player doesn't use this hull for its movement size.
+	/// </summary>
+	public virtual void CreateHull()
+	{
+		SetupPhysicsFromAABB(PhysicsMotionType.Keyframed, new Vector3(-16, -16, 0), new Vector3(16, 16, 72));
+
+		//var capsule = new Capsule(new Vector3(0, 0, 16), new Vector3(0, 0, 72 - 16), 32);
+		//var phys = SetupPhysicsFromCapsule(PhysicsMotionType.Keyframed, capsule);
+
+
+		//	phys.GetBody(0).RemoveShadowController();
+
+		// TODO - investigate this? if we don't set movetype then the lerp is too much. Can we control lerp amount?
+		// if so we should expose that instead, that would be awesome.
+		EnableHitboxes = true;
+	}
 }

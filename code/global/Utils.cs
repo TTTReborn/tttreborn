@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using Sandbox;
 using Sandbox.UI;
@@ -241,37 +240,37 @@ namespace TTTReborn.Globals
 
         public static void SetPropertyValue<T>(object obj, string propertyName, T value)
         {
-            //PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+            PropertyDescription propertyDescription = TypeLibrary.GetType(obj.GetType()).GetProperty(propertyName);
 
-            //if (propertyInfo != null && propertyInfo.CanWrite)
-            //{
-            //    try
-            //    {
-            //        propertyInfo.SetValue(obj, Convert.ChangeType(value, propertyInfo.GetValue(obj).GetType()));
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Log.Error($"Tried to write property '{propertyName}' of '{obj}' with '{value}' ({ex.Message})");
-            //    }
-            //}
-            //else
-            //{
-            //    Log.Warning($"Tried to write property '{propertyName}' of '{obj}' with '{value}'");
-            //}
+            if (propertyDescription != null && propertyDescription.CanWrite)
+            {
+               try
+               {
+                   propertyDescription.SetValue(obj, Convert.ChangeType(value, propertyDescription.GetValue(obj).GetType()));
+               }
+               catch (Exception ex)
+               {
+                   Log.Error($"Tried to write property '{propertyName}' of '{obj}' with '{value}' ({ex.Message})");
+               }
+            }
+            else
+            {
+               Log.Warning($"Tried to write property '{propertyName}' of '{obj}' with '{value}'");
+            }
         }
 
         public static T GetPropertyValue<T>(object obj, string propertyName) {
-        
-            //PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
 
-            //if (propertyInfo == null || !propertyInfo.CanRead)
-            //{
-            //    Log.Warning($"Tried to read non-existing property '{propertyName}' of '{obj}'");
+            PropertyDescription propertyDescription = TypeLibrary.GetType(obj.GetType()).GetProperty(propertyName);
+
+            if (propertyDescription == null || !propertyDescription.CanRead)
+            {
+                Log.Warning($"Tried to read non-existing property '{propertyName}' of '{obj}'");
 
                 return default;
-            //}
+            }
 
-            //return (T) propertyInfo.GetValue(obj);
+            return (T) propertyDescription.GetValue(obj);
         }
 
         public static object GetPropertyValue(object obj, string propertyName) => GetPropertyValue<object>(obj, propertyName);

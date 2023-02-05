@@ -4,116 +4,194 @@ using Sandbox;
 
 using TTTReborn.Items;
 
-namespace TTTReborn
+namespace TTTReborn;
+
+public enum HitboxIndex
 {
-    public enum HitboxIndex
+    Pelvis = 1,
+    Stomach = 2,
+    Rips = 3,
+    Neck = 4,
+    Head = 5,
+    LeftUpperArm = 7,
+    LeftLowerArm = 8,
+    LeftHand = 9,
+    RightUpperArm = 11,
+    RightLowerArm = 12,
+    RightHand = 13,
+    RightUpperLeg = 14,
+    RightLowerLeg = 15,
+    RightFoot = 16,
+    LeftUpperLeg = 17,
+    LeftLowerLeg = 18,
+    LeftFoot = 19,
+}
+
+public enum HitboxGroup
+{
+    None = -1,
+    Generic = 0,
+    Head = 1,
+    Chest = 2,
+    Stomach = 3,
+    LeftArm = 4,
+    RightArm = 5,
+    LeftLeg = 6,
+    RightLeg = 7,
+    Gear = 10,
+    Special = 11,
+}
+
+public partial class Player
+{
+    private DamageInfo _lastDamageInfo;
+	private TimeSince timeSinceDied;
+
+    [Net]
+    public float MaxHealth { get; set; } = 100f;
+
+    public Weapon LastDamageWeapon { get; private set; }
+
+    public bool LastDamageWasHeadshot { get; private set; } = false;
+
+    public float LastDistanceToAttacker { get; private set; } = 0f;
+
+    public float ArmorReductionPercentage { get; private set; } = 0.7f; // TODO Move ArmorReductionPercentage to read off a cvar for added customization
+
+    public void SetHealth(float health)
     {
-        Pelvis = 1,
-        Stomach = 2,
-        Rips = 3,
-        Neck = 4,
-        Head = 5,
-        LeftUpperArm = 7,
-        LeftLowerArm = 8,
-        LeftHand = 9,
-        RightUpperArm = 11,
-        RightLowerArm = 12,
-        RightHand = 13,
-        RightUpperLeg = 14,
-        RightLowerLeg = 15,
-        RightFoot = 16,
-        LeftUpperLeg = 17,
-        LeftLowerLeg = 18,
-        LeftFoot = 19,
+        Health = Math.Min(health, MaxHealth);
     }
 
-    public enum HitboxGroup
+    public override void TakeDamage(DamageInfo info)
     {
-        None = -1,
-        Generic = 0,
-        Head = 1,
-        Chest = 2,
-        Stomach = 3,
-        LeftArm = 4,
-        RightArm = 5,
-        LeftLeg = 6,
-        RightLeg = 7,
-        Gear = 10,
-        Special = 11,
-    }
+        LastDamageWasHeadshot = info.BoneIndex == (int) HitboxGroup.Head;
 
-    public partial class Player
-    {
-        [Net]
-        public float MaxHealth { get; set; } = 100f;
-
-        public Weapon LastDamageWeapon { get; private set; }
-
-        public bool LastDamageWasHeadshot { get; private set; } = false;
-
-        public float LastDistanceToAttacker { get; private set; } = 0f;
-
-        public float ArmorReductionPercentage { get; private set; } = 0.7f; // TODO Move ArmorReductionPercentage to read off a cvar for added customization
-
-        public void SetHealth(float health)
+        if (LastDamageWasHeadshot)
         {
-            Health = Math.Min(health, MaxHealth);
+            info.Damage *= 2.0f;
         }
 
-        public override void TakeDamage(DamageInfo info)
+        // TODO this should be handled by hooks and in the item itself
+        // If player has bodyarmor, was not shot in the head, and was shot by a bullet, reduce damage by 30%.
+        if (Inventory.Perks.Has(Utils.GetLibraryName(typeof(BodyArmor))) && !LastDamageWasHeadshot && info.HasTag("bullet"))
         {
-            LastDamageWasHeadshot = info.BoneIndex == (int) HitboxGroup.Head;
+            info.Damage *= ArmorReductionPercentage;
+        }
 
-            if (LastDamageWasHeadshot)
+        LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as Weapon : null;
+
+        To client = To.Single(this);
+
+        if (info.Attacker is Player attacker && attacker != this)
+        {
+            LastDistanceToAttacker = Utils.SourceUnitsToMeters(Position.Distance(attacker.Position));
+
+            if (Gamemode.TTTGame.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
             {
-                info.Damage *= 2.0f;
+                return;
             }
 
-            // TODO this should be handled by hooks and in the item itself
-            // If player has bodyarmor, was not shot in the head, and was shot by a bullet, reduce damage by 30%.
-            if (Inventory.Perks.Has(Utils.GetLibraryName(typeof(BodyArmor))) && !LastDamageWasHeadshot && info.HasTag("bullet"))
+            ClientAnotherPlayerDidDamage(client, info.Position, Health.LerpInverse(100, 0));
+        }
+        else
+        {
+            LastDistanceToAttacker = 0f;
+        }
+
+        NetworkableGameEvent.RegisterNetworked(client, new Events.Player.TakeDamageEvent(this, info.Damage, info.Attacker));
+
+        // Play pain sounds
+        if (info.HasTag("fall"))
+        {
+            PlaySound("fall").SetVolume(0.5f).SetPosition(info.Position);
+        }
+        else if (info.HasTag("bullet"))
+        {
+            PlaySound("grunt" + Game.Random.Int(1, 4)).SetVolume(0.4f).SetPosition(info.Position);
+        }
+
+        // Register player damage with the Karma system
+        Gamemode.TTTGame.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as Player, this, info.Damage);
+
+        _lastDamageInfo = info;
+
+        if (LifeState == LifeState.Dead)
+        {
+            return;
+        }
+
+        base.TakeDamage(info);
+
+        this.ProceduralHitReaction(info);
+
+        //
+        // Add a score to the killer
+        //
+        if (LifeState == LifeState.Dead && info.Attacker != null)
+        {
+            if (info.Attacker.Client != null && info.Attacker != this)
             {
-                info.Damage *= ArmorReductionPercentage;
+                info.Attacker.Client.AddInt("kills");
             }
+        }
 
-            LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as Weapon : null;
-
-            To client = To.Single(this);
-
-            if (info.Attacker is Player attacker && attacker != this)
-            {
-                LastDistanceToAttacker = Utils.SourceUnitsToMeters(Position.Distance(attacker.Position));
-
-                if (Gamemode.TTTGame.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound))
-                {
-                    return;
-                }
-
-                ClientAnotherPlayerDidDamage(client, info.Position, Health.LerpInverse(100, 0));
-            }
-            else
-            {
-                LastDistanceToAttacker = 0f;
-            }
-
-            NetworkableGameEvent.RegisterNetworked(client, new Events.Player.TakeDamageEvent(this, info.Damage, info.Attacker));
-
-            // Play pain sounds
-            if (info.HasTag("fall"))
-            {
-                PlaySound("fall").SetVolume(0.5f).SetPosition(info.Position);
-            }
-            else if (info.HasTag("bullet"))
-            {
-                PlaySound("grunt" + Game.Random.Int(1, 4)).SetVolume(0.4f).SetPosition(info.Position);
-            }
-
-            // Register player damage with the Karma system
-            Gamemode.TTTGame.Instance?.Karma?.RegisterPlayerDamage(info.Attacker as Player, this, info.Damage);
-
-            _lastDamageInfo = info;
-
-            base.TakeDamage(info);
+        if (info.HasTag("blast"))
+        {
+            Deafen(To.Single(Client), info.Damage.LerpInverse(0, 60));
         }
     }
+
+	/// <summary>
+	/// Applies flashbang-like ear ringing effect to the player.
+	/// </summary>
+	/// <param name="strength">Can be approximately treated as duration in seconds.</param>
+	[ClientRpc]
+	public void Deafen(float strength)
+	{
+		Audio.SetEffect("flashbang", strength, velocity: 20.0f, fadeOut: 4.0f * strength);
+	}
+
+	/// <summary>
+	/// Called once the player's health reaches 0.
+	/// </summary>
+	public override void OnKilled()
+	{
+        using (Prediction.Off())
+        {
+            NetworkableGameEvent.RegisterNetworked(new Events.Player.DiedEvent(this));
+        }
+
+        BecomePlayerCorpseOnServer(_lastDamageInfo.Force, _lastDamageInfo.BoneIndex);
+
+        ShowFlashlight(false, false);
+
+        IsMissingInAction = true;
+
+        using (Prediction.Off())
+        {
+            if (Gamemode.TTTGame.Instance.Round is Rounds.InProgressRound)
+            {
+                SyncMIA();
+            }
+            else if (Gamemode.TTTGame.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.Data.IsIdentified)
+            {
+                PlayerCorpse.Data.IsIdentified = true;
+
+                RPCs.ClientConfirmPlayer(null, PlayerCorpse, PlayerCorpse.GetSerializedData());
+            }
+        }
+
+		GameManager.Current?.OnKilled(this);
+
+		timeSinceDied = 0;
+		LifeState = LifeState.Dead;
+
+		StopUsing();
+
+		Client?.AddInt("deaths", 1);
+
+        Inventory.DropAll();
+        Inventory.DeleteContents();
+	}
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 
 using Sandbox;
 
@@ -268,28 +267,28 @@ namespace TTTReborn.Items
 
         public virtual T GetClipInfoMax<T>(string propertyName) where T : IComparable
         {
-            //if (ClipInfos.Length < 1)
-            //{
+            if (ClipInfos.Length < 1)
+            {
                 return default;
-            //}
+            }
 
-            //PropertyInfo propertyInfo = ClipInfos[0].GetType().GetProperty(propertyName);
-            //T highest = (T) propertyInfo.GetValue(ClipInfos[0], null);
+            PropertyDescription propertyDescription = TypeLibrary.GetType(ClipInfos[0].GetType()).GetProperty(propertyName);
+            T highest = (T) propertyDescription.GetValue(ClipInfos[0]);
 
-            //if (ClipInfos.Length > 1)
-            //{
-            //    for (int i = 1; i < ClipInfos.Length; i++)
-            //    {
-            //        T tmp = (T) propertyInfo.GetValue(ClipInfos[i], null);
+            if (ClipInfos.Length > 1)
+            {
+                for (int i = 1; i < ClipInfos.Length; i++)
+                {
+                    T tmp = (T) propertyDescription.GetValue(ClipInfos[i]);
 
-            //        if (tmp.CompareTo(highest) > 0)
-            //        {
-            //            highest = tmp;
-            //        }
-            //    }
-            //}
+                    if (tmp.CompareTo(highest) > 0)
+                    {
+                        highest = tmp;
+                    }
+                }
+            }
 
-            //return highest;
+            return highest;
         }
     }
 }
