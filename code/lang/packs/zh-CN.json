@@ -1,0 +1,410 @@
+{
+    "__LANGUAGE__": {
+        "NAME": "简体中文",
+        "CODE": "zh-CN"
+    },
+    "ROLE": {
+        "NONE": {
+            "NAME": "未知"
+        },
+        "INNOCENT": {
+            "NAME": "无辜者"
+        },
+        "TRAITOR": {
+            "NAME": "叛徒"
+        },
+        "DETECTIVE": {
+            "NAME": "侦探"
+        }
+    },
+    "TEAM": {
+        "INNOCENTS": {
+            "NAME": "无辜者",
+            "WIN": "无辜者获胜！"
+        },
+        "TRAITORS": {
+            "NAME": "叛徒",
+            "WIN": "叛徒获胜！"
+        },
+        "NONES": {
+            "NAME": "无",
+            "WIN": "平局！"
+        }
+    },
+    "WIN": {
+        "DESCRIPTION": "感谢您玩TTT Reborn，更多更新和统计数据即将到来！"
+    },
+    "ROUND": {
+        "STATE": {
+            "WAITING": "等待",
+            "PREPARING": "准备中",
+            "IN_PROGRESS": "进行中",
+            "POST": "回合结束",
+            "MAP_SELECTION": "选择下一个地图"
+        }
+    },
+    "PLAYER": {
+        "STATUS": {
+            "HEALTH": {
+                "HEALTHY": "健康",
+                "HURT": "受伤",
+                "WOUNDED": "重伤",
+                "BADLY_WOUNDED": "重伤",
+                "NEAR_DEATH": "濒临死亡",
+                "DEAD": "死亡"
+            }
+        }
+    },
+    "CORPSE": {
+        "INSPECT": {
+            "QUICKINFO": {
+                "HEADSHOT": "爆头",
+                "SUICIDE": "自杀",
+                "DISTANCE": "{0}米",
+                "TIME": "{0}"
+            },
+            "IDENTIFIER": {
+                "TIMESINCEDEATH": "他们大约在{0}前死去。",
+                "HEADSHOT": "致命伤是爆头。来不及尖叫。",
+                "SUICIDE": "您无法找到这个Terry死亡的具体原因。",
+                "KILLED": "他们被距离约{0}米远的地方杀死。",
+                "WEAPON": "看起来他们是被'{0}'杀死的。",
+                "PERK": "他们携带了'{0}'。"
+            }
+        },
+        "USE": {
+            "IDENTIFY": "按住以识别尸体",
+            "INSPECT": "按住以检查尸体",
+            "COVERTINSPECT": "按住以隐秘检查尸体"
+        }
+    },
+    "SCOREBOARD": {
+        "HEADER": {
+            "GAMEMODE": "{0} 服务器",
+            "CREATEDBY": "创建者：{0}",
+            "PLAYERAMOUNT": "{0} / {1} 玩家",
+            "SERVERINFO": "{0} 玩家. 地图: {1}",
+            "PLAYERSLEFT": "剩余 {0} 位玩家"
+        },
+        "GROUP": {
+            "ALIVE": "活着",
+            "DEAD": "已确认死亡",
+            "MISSING": "失踪中",
+            "SPECTATOR": "观众"
+        },
+        "COLUMNS": {
+            "KARMA": "业力",
+            "DEATHS": "死亡",
+            "SCORE": "得分",
+            "PING": "延迟"
+        }
+    },
+    "QUICKSHOP": {
+        "CREDITS": {
+            "DESCRIPTION": "你有 $ {0}"
+        },
+        "ITEM": {
+            "DESCRIPTION": "物品 '{0}' 的描述将放在这里。"
+        }
+    },
+    "REALM": {
+        "CLIENT": "客户端",
+        "SERVER": "服务器"
+    },
+    "MENU": {
+        "SETTINGS": {
+            "TITLE": "设置",
+            "CLIENT": "客户端设置",
+            "SERVER": "服务器设置",
+            "LOADING": "加载中...",
+            "TABS": {
+                "GENERAL": {
+                    "TITLE": "通用",
+                    "LANGUAGE": {
+                        "TITLE": "语言",
+                        "DESCRIPTION": "客户端显示的语言"
+                    },
+                    "RETURNMISSINGKEYS": {
+                        "TITLE": "调试: 返回缺失键",
+                        "DESCRIPTION": "如果显示的语言缺少键，返回它。"
+                    }
+                },
+                "DEBUG": {
+                    "TITLE": "调试",
+                    "PREVENTWIN": {
+                        "TITLE": "防止回合结束",
+                        "DESCRIPTION": "是否应该抑制基于已用时间或已满足胜利条件的回合结束？(地图触发器除外)"
+                    }
+                },
+                "AFK": {
+                    "TITLE": "AFK",
+                    "SECONDSTILLKICK": {
+                        "TITLE": "AFK 时间",
+                        "DESCRIPTION": "在玩家被标记为 AFK 之前的时间长度（以分钟为单位）。"
+                    },
+                    "SHOULDKICKPLAYERS": {
+                        "TITLE": "是否踢出玩家？",
+                        "DESCRIPTION": "玩家是否应该被踢出或移动到旁观者。"
+                    }
+                },
+                "MOVEMENT": {
+                    "TITLE": "奔跑",
+                    "ISSPRINTENABLED": {
+                        "TITLE": "启用奔跑？",
+                        "DESCRIPTION": "服务器上是否应启用奔跑。"
+                    }
+                },
+                "ROUND": {
+                    "TITLE": "回合",
+                    "MINPLAYERS": {
+                        "TITLE": "最少玩家",
+                        "DESCRIPTION": "开始所需的最少玩家数量。如果低于设定数量，游戏将在已开始时停止。"
+                    },
+                    "PREROUNDTIME": {
+                        "TITLE": "准备时间",
+                        "DESCRIPTION": "允许的准备时间。"
+                    },
+                    "ROUNDTIME": {
+                        "TITLE": "回合时间",
+                        "DESCRIPTION": "允许的主要回合时间。"
+                    },
+                    "POSTROUNDTIME": {
+                        "TITLE": "回合后时间",
+                        "DESCRIPTION": "下一回合开始之前的时间。"
+                    },
+                    "MAPSELECTIONROUNDTIME": {
+                        "TITLE": "地图选择：回合时间",
+                        "DESCRIPTION": "用于地图选择的时间"
+                    },
+                    "TOTALROUNDS": {
+                        "TITLE": "总回合数",
+                        "DESCRIPTION": "玩完此数量的回合后会出现地图选择。"
+                    },
+                    "KILLTIMEREWARD": {
+                        "TITLE": "击杀时间奖励",
+                        "DESCRIPTION": "击杀无辜者后，叛徒得到的额外时间奖励。"
+                    }
+                },
+                "MAP": {
+                    "TITLE": "地图",
+                    "DEFAULTMAP": {
+                        "TITLE": "默认地图",
+                        "DESCRIPTION": "选择默认被选中的地图。"
+                    }
+                }
+            },
+            "BUTTONS": {
+                "SAVE": "保存",
+                "LOAD": "加载",
+                "OVERWRITE": {
+                    "TITLE": "覆盖 '{0}'",
+                    "DESCRIPTION": "是否要用当前设置覆盖 '{0}'？（如果同意，此文件中定义的设置将丢失！）"
+                }
+            }
+        },
+        "KEYBINDINGS": {
+            "TITLE": "按键绑定",
+            "RESTRICTION": "由于 S&Box 开发人员的限制，您只能通过 S&Box 选项菜单或控制台更改绑定。",
+            "MOVEMENT": {
+                "TITLE": "移动",
+                "FORWARD": "前进",
+                "BACK": "后退",
+                "LEFT": "向左",
+                "RIGHT": "向右",
+                "JUMP": "跳跃",
+                "CROUCH": "蹲下",
+                "SPRINT": "冲刺"
+            },
+            "WEAPONS": {
+                "TITLE": "武器",
+                "FIRE": "开火",
+                "RELOAD": "重新装填",
+                "DROP_WEAPON": "丢弃武器",
+                "DROP_AMMO": "丢弃弹药"
+            },
+            "ACTIONS": {
+                "TITLE": "动作",
+                "USE": "使用",
+                "FLASHLIGHT": "手电筒"
+            },
+            "COMMUNICATION": {
+                "TITLE": "通讯",
+                "VOICECHAT": "语音聊天",
+                "TEAMVOICECHAT": "组队语音聊天",
+                "TEAMTEXTCHAT": "组队文字聊天"
+            },
+            "MENUS": {
+                "TITLE": "菜单",
+                "MENU": "记分牌、菜单、日志等",
+                "QUICKSHOP": "快速购物"
+            }
+        },
+        "TESTING": {
+            "TITLE": "测试",
+            "FILESELECTION": "资源管理器"
+        },
+        "SHOPEDITOR": {
+            "TITLE": "商店编辑器",
+            "TOGGLEROLE": "切换当前选择的角色商店的启用/禁用状态。",
+            "SELECTROLE": "选择一个角色以修改连接的商店。",
+            "ENABLEROLE": "已启用",
+            "NOPERMISSION": "您没有访问商店编辑器的权限。",
+            "EDIT": {
+                "TITLE": "编辑此物品。",
+                "DESCRIPTION": "编辑 '{0}'。"
+            },
+            "PRICE": {
+                "TITLE": "价格",
+                "DESCRIPTION": "物品 '{0}' 的价格。"
+            }
+        },
+        "ROLEEDITOR": {
+            "TITLE": "角色编辑器",
+            "RESET": {
+                "TITLE": "重置角色选择",
+                "DESCRIPTION": "您确定要重置角色选择吗？"
+            }
+        }
+    },
+    "GAMERESULTSMENU": {
+        "EMPTY": "游戏回合结束后才会生成事件。",
+        "TITLE": "上一局游戏事件：",
+        "ALLFILTER": "全局",
+        "PLAYERFILTER": "你",
+        "EVENTS": {
+            "SCORING": {
+                "PLAYERNAME": "玩家名字",
+                "SCORE": "分数",
+                "KARMA": "善恶值"
+            }
+        }
+    },
+    "MAPSELECTION": {
+        "VOTE": "投票选举下一张地图！"
+    },
+    "WEAPON": {
+        "PISTOL": {
+            "NAME": "手枪"
+        },
+        "SMG": {
+            "NAME": "冲锋枪"
+        },
+        "SHOTGUN": {
+            "NAME": "霰弹枪"
+        },
+        "SNIPER": {
+            "NAME": "狙击枪"
+        },
+        "KNIFE": {
+            "NAME": "刀"
+        },
+        "NEWTONLAUNCHER": {
+            "NAME": "牛顿发射器"
+        },
+        "OFFENSIVEEQUIPMENT": {
+            "NAME": "攻击装备"
+        },
+        "RPG7": {
+            "NAME": "RPG-7"
+        },
+        "BAYONET": {
+            "NAME": "刺刀"
+        },
+        "DEAGLE": {
+            "NAME": "沙漠之鹰"
+        },
+        "FAL": {
+            "NAME": "FAL步枪"
+        },
+        "L96A1": {
+            "NAME": "L96A1狙击步枪"
+        },
+        "SPAS12": {
+            "NAME": "SPAS12霰弹枪"
+        },
+        "UMP45": {
+            "NAME": "UMP45冲锋枪"
+        },
+        "AMMO": {
+            "NAME": "弹药",
+            "WEAPON": "{0}弹药"
+        },
+        "USE": "按 '{0}' 拾取"
+    },
+    "EQUIPMENT": {
+        "HANDS": {
+            "NAME": "手"
+        },
+        "C4": {
+            "NAME": "C4",
+            "UI": {
+                "PICKUP": "拾取",
+                "DESTROY": "销毁",
+                "ARM": "布设",
+                "DEFUSECHANCE": "有 {0}% 的概率拆除"
+            },
+            "USE": {
+                "ARM": "按住以布设C4",
+                "DEFUSE": "按下以拆除C4"
+            }
+        },
+        "DECOY": {
+            "NAME": "诱饵"
+        },
+        "HEALTHSTATION": {
+            "NAME": "医疗站",
+            "USE": "按住使用医疗站 ({0})"
+        },
+        "MAGNETOSTICK": {
+            "NAME": "磁力棒"
+        }
+    },
+    "PERK": {
+        "BODYARMOR": {
+            "NAME": "防弹衣"
+        },
+        "RADAR": {
+            "NAME": "雷达"
+        }
+    },
+    "ENTITY": {
+        "USE": "按下与 '{0}' 交互",
+        "ENT_BUTTON": "按钮"
+    },
+    "DOOR": {
+        "OPEN": "按下以打开门",
+        "CLOSE": "按下以关闭门",
+        "LOCKED": "门已锁定"
+    },
+    "GAMEEVENT": {
+        "PLAYER": {
+            "TAKEDAMAGE": {
+                "TITLE": "玩家受到伤害",
+                "DESCRIPTION": "'{0}' 受到了 '{2}' 的 {1} 点伤害"
+            },
+            "DIED": {
+                "TITLE": "玩家死亡",
+                "NOREASON": "'{0}' 死亡",
+                "BYSUICIDE": "'{0}' 自杀身亡",
+                "BYPLAYER": "'{0}' 被 '{1}' 击杀",
+                "BYOBJECT": "'{0}' 被 '{1}' 击杀"
+            },
+            "SPAWN": {
+                "TITLE": "玩家重生",
+                "DESCRIPTION": "'{0}' 重生"
+            },
+            "ROLE": {
+                "SELECT": {
+                    "TITLE": "玩家获得新角色",
+                    "DESCRIPTION": "'{0}' 获得了角色 '{1}'"
+                }
+            }
+        },
+        "GAME": {
+            "FINISH": {
+                "TITLE": "游戏结束",
+                "DESCRIPTION": "'{0}' 获胜"
+            }
+        }
+    }
+}
