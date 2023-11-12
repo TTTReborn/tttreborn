@@ -1,0 +1,410 @@
+{
+    "__LANGUAGE__": {
+        "NAME": "Türkçe",
+        "CODE": "tr"
+    },
+    "ROLE": {
+        "NONE": {
+            "NAME": "Bilinmeyen"
+        },
+        "INNOCENT": {
+            "NAME": "Masum"
+        },
+        "TRAITOR": {
+            "NAME": "Hain"
+        },
+        "DETECTIVE": {
+            "NAME": "Dedektif"
+        }
+    },
+    "TEAM": {
+        "INNOCENTS": {
+            "NAME": "Masumlar",
+            "WIN": "MASUMLAR KAZANDI!"
+        },
+        "TRAITORS": {
+            "NAME": "Hainler",
+            "WIN": "HAİNLER KAZANDI!"
+        },
+        "NONES": {
+            "NAME": "Hiçbiri",
+            "WIN": "BERABERE!"
+        }
+    },
+    "WIN": {
+        "DESCRIPTION": "TTT Reborn'u oynadığınız için teşekkürler, daha çok güncelleme ve istatistikler yakında!"
+    },
+    "ROUND": {
+        "STATE": {
+            "WAITING": "Bekleniyor",
+            "PREPARING": "Hazırlanıyor",
+            "IN_PROGRESS": "Devam etmekte",
+            "POST": "Raunt bitti",
+            "MAP_SELECTION": "Sonraki haritayı seçiliyor"
+        }
+    },
+    "PLAYER": {
+        "STATUS": {
+            "HEALTH": {
+                "HEALTHY": "Sağlıklı",
+                "HURT": "Hasar Görmüş",
+                "WOUNDED": "Yaralı",
+                "BADLY_WOUNDED": "Ağır Yaralı",
+                "NEAR_DEATH": "Ölümün Eşiğinde",
+                "DEAD": "Ölü"
+            }
+        }
+    },
+    "CORPSE": {
+        "INSPECT": {
+            "QUICKINFO": {
+                "HEADSHOT": "Kafadan Vuruş",
+                "SUICIDE": "İntihar",
+                "DISTANCE": "{0}m",
+                "TIME": "{0}"
+            },
+            "IDENTIFIER": {
+                "TIMESINCEDEATH": "Yaklaşık {0} önce öldüler.",
+                "HEADSHOT": "Ölümcül yara kafadan vurulmaydı. Çığlık atmaya zaman yoktu.",
+                "SUICIDE": "Bu Terörün ölümünün belirli bir nedenini bulamıyorsunuz.",
+                "KILLED": "Yaklaşık {0}m uzaktan öldürüldüler.",
+                "WEAPON": "Onları öldürmek için '{0}' kullanılmış gibi görünüyor.",
+                "PERK": "Bir '{0}' taşıyorlardı."
+            }
+        },
+        "USE": {
+            "IDENTIFY": "Cesedin kimliğini belirlemek için basılı tutun",
+            "INSPECT": "Cesedi incelemek için basılı tutun",
+            "COVERTINSPECT": "Cesedi gizlice incelemek için basılı tutun"
+        }
+    },
+    "SCOREBOARD": {
+        "HEADER": {
+            "GAMEMODE": "{0} Sunucusu",
+            "CREATEDBY": "{0} tarafından yaratıldı",
+            "PLAYERAMOUNT": "{0} / {1} Oyuncu",
+            "SERVERINFO": "{0} Oyuncu. Harita: {1}",
+            "PLAYERSLEFT": "{0} oyuncu kaldı"
+        },
+        "GROUP": {
+            "ALIVE": "Canlı",
+            "DEAD": "Ölümü Onaylanmış",
+            "MISSING": "Eylem Eksik",
+            "SPECTATOR": "İzleyiciler"
+        },
+        "COLUMNS": {
+            "KARMA": "Karma",
+            "DEATHS": "Ölüm",
+            "SCORE": "Skor",
+            "PING": "Gecikme"
+        }
+    },
+    "QUICKSHOP": {
+        "CREDITS": {
+            "DESCRIPTION": "{0}$ paran var"
+        },
+        "ITEM": {
+            "DESCRIPTION": "'{0}' öğesinin açıklaması buraya gelecek."
+        }
+    },
+    "REALM": {
+        "CLIENT": "Kullanıcı",
+        "SERVER": "Sunucu"
+    },
+    "MENU": {
+        "SETTINGS": {
+            "TITLE": "Ayarlar",
+            "CLIENT": "Kullanıcı Ayarları",
+            "SERVER": "Sunucu Ayarları",
+            "LOADING": "Yükleniyor...",
+            "TABS": {
+                "GENERAL": {
+                    "TITLE": "Genel",
+                    "LANGUAGE": {
+                        "TITLE" : "Dil",
+                        "DESCRIPTION": "Kullanıcıda görüntülenen dil"
+                    },
+                    "RETURNMISSINGKEYS": {
+                        "TITLE": "Hata ayıklama: Eksik rumuzu iade et",
+                        "DESCRIPTION": "Görüntülenen dilin rumuzu eksikse onu iade edin."
+                    }
+                },
+                "DEBUG": {
+                    "TITLE": "Hata Ayıklama",
+                    "PREVENTWIN": {
+                        "TITLE": "Zaferi bastır",
+                        "DESCRIPTION": "Geçen süreye veya yerine getirilen zafer koşuluna dayalı bir zaferin neden olduğu raundun sonu iptal edilsin mi? (Harita tetikleyicileri hariç)"
+                    }
+                },
+                "AFK": {
+                    "TITLE": "BOŞTA KALMA",
+                    "SECONDSTILLKICK": {
+                        "TITLE": "Boşta Kalma Süresi",
+                        "DESCRIPTION": "Bir oyuncunun boşta olarak işaretlenmesinden önce geçen dakika cinsinden sürenin uzunluğu."
+                    },
+                    "SHOULDKICKPLAYERS": {
+                        "TITLE": "Oyuncuları Atmalı?",
+                        "DESCRIPTION": "Bir oyuncunun atılması veya İzleyicilere alınmasının gerekip gerekmediği."
+                    }
+                },
+                "MOVEMENT": {
+                    "TITLE": "Koşma",
+                    "ISSPRINTENABLED": {
+                        "TITLE" : "Koşma Etkinleştirilsin?",
+                        "DESCRIPTION": "Sunucuda koşmanın etkinleştirilip etkinleştirilmeyeceği."
+                    }
+                },
+                "ROUND": {
+                    "TITLE": "Rauntlar",
+                    "MINPLAYERS": {
+                        "TITLE": "En Az Oyuncu",
+                        "DESCRIPTION": "Başlamak için gereken en az oyuncu sayısı. Ayarlanan miktarın altında ve oyun zaten başlamışsa durdurulacaktır."
+                    },
+                    "PREROUNDTIME": {
+                        "TITLE": "Hazırlık Süresi",
+                        "DESCRIPTION": "Hazırlık için izin verilen süre."
+                    },
+                    "ROUNDTIME": {
+                        "TITLE": "Raunt Süresi",
+                        "DESCRIPTION": "Ana raunt için izin verilen süre"
+                    },
+                    "POSTROUNDTIME": {
+                        "TITLE": "Raunt Sonu Süresi",
+                        "DESCRIPTION": "Bir sonraki raundun başlamasına kadar geçen süre."
+                    },
+                    "MAPSELECTIONROUNDTIME": {
+                        "TITLE": "Harita Seçimi Raunt Süresi",
+                        "DESCRIPTION": "Harita seçimi süresi"
+                    },
+                    "TOTALROUNDS": {
+                        "TITLE": "Toplam Raunt",
+                        "DESCRIPTION": "Harita seçimine kadar oynanacak toplam raunt sayısı"
+                    },
+                    "KILLTIMEREWARD": {
+                        "TITLE": "Öldürme Süre Ödülü",
+                        "DESCRIPTION": "Masum öldüren hainlere verilen ekstra süre."
+                    }
+                },
+                "MAP": {
+                    "TITLE": "Harita",
+                    "DEFAULTMAP": {
+                        "TITLE": "Varsayılan Harita",
+                        "DESCRIPTION": "Varsayılan olarak seçilen bir haritayı seçin."
+                    }
+                }
+            },
+            "BUTTONS": {
+                "SAVE": "Kaydet",
+                "LOAD": "Yükle",
+                "OVERWRITE": {
+                    "TITLE": "'{0}' kaydının üstüne yaz",
+                    "DESCRIPTION": "Geçerli ayarları '{0}' üzerine yazmak istiyor musunuz? (Kabul ederseniz bu dosyada tanımlanan ayarlar kaybolacaktır!)"
+                }
+            }
+        },
+        "KEYBINDINGS": {
+            "TITLE": "Tuş Atamaları",
+            "RESTRICTION": "S&Box geliştiricilerinin kısıtlamaları nedeniyle tuş atamalarınızı yalnızca s&box ayarlar menüsünden veya konsol aracılığıyla değiştirebilirsiniz.",
+            "MOVEMENT": {
+                "TITLE": "Hareket",
+                "FORWARD": "İleri",
+                "BACK": "Geri",
+                "LEFT": "Sol",
+                "RIGHT": "Sağ",
+                "JUMP": "Zıplama",
+                "CROUCH": "Eğilme",
+                "SPRINT": "Koşma"
+            },
+            "WEAPONS": {
+                "TITLE": "Silahlar",
+                "FIRE": "Ateş",
+                "RELOAD": "Şarjör Değiştir",
+                "DROP_WEAPON": "Silahı Bırak",
+                "DROP_AMMO": "Mermi Bırak"
+            },
+            "ACTIONS": {
+                "TITLE": "Eylemler",
+                "USE": "Kullan",
+                "FLASHLIGHT": "El feneri"
+            },
+            "COMMUNICATION": {
+                "TITLE": "İletişim",
+                "VOICECHAT": "Sesli Sohbet",
+                "TEAMVOICECHAT": "Takım Sesli Sohbeti",
+                "TEAMTEXTCHAT": "Takım Metin Sohbeti"
+            },
+            "MENUS": {
+                "TITLE": "Menüler",
+                "MENU": "Skor tablosu, Menü, günlükler vb.",
+                "QUICKSHOP": "Hızlı Mağaza"
+            }
+        },
+        "TESTING": {
+            "TITLE": "Deneme",
+            "FILESELECTION": "Dosya Gezgini"
+        },
+        "SHOPEDITOR": {
+            "TITLE": "Mağaza Düzenleyici",
+            "TOGGLEROLE": "Şu anda seçili rol için mağazayı devre dışı bırakmak/etkinleştirmek için geçiş yapın.",
+            "SELECTROLE": "Bağlı mağazayı düzenlemek için bir rol seçin.",
+            "ENABLEROLE": "Aktif",
+            "NOPERMISSION": "Mağaza Düzenleyiciye erişim izniniz yok.",
+            "EDIT": {
+                "TITLE": "Bu öğeyi düzenle.",
+                "DESCRIPTION": "Bu öğeyi düzenle '{0}'"
+            },
+            "PRICE": {
+                "TITLE": "Fiyat",
+                "DESCRIPTION": "Bu öğenin fiyatı '{0}'."
+            }
+        },
+        "ROLEEDITOR": {
+            "TITLE": "Rol Düzenleyici",
+            "RESET": {
+                "TITLE": "Rol Seçimini Sıfırla",
+                "DESCRIPTION": "Rol Seçimini sıfırlamak istediğinize emin misiniz?"
+            }
+        }
+    },
+    "GAMERESULTSMENU": {
+        "EMPTY": "Olaylar bir raundun sonunda oluşturulur.",
+        "TITLE": "Son raundun olayları:",
+        "ALLFILTER": "Genel",
+        "PLAYERFILTER": "Siz",
+        "EVENTS": {
+            "SCORING": {
+                "PLAYERNAME": "Oyuncu Adı",
+                "SCORE": "Skor",
+                "KARMA": "Karma"
+            }
+        }
+    },
+    "MAPSELECTION": {
+        "VOTE": "Sonraki harita için oyla!"
+    },
+    "WEAPON": {
+        "PISTOL": {
+            "NAME": "Tabanca"
+        },
+        "SMG": {
+            "NAME": "SMG"
+        },
+        "SHOTGUN": {
+            "NAME": "Pompalı"
+        },
+        "SNIPER": {
+            "NAME": "Keskin Nişancı"
+        },
+        "KNIFE": {
+            "NAME": "Bıçak"
+        },
+        "NEWTONLAUNCHER": {
+            "NAME": "Newton Fırlatıcı"
+        },
+        "OFFENSIVEEQUIPMENT": {
+            "NAME": "Saldırı Ekipmanları"
+        },
+        "RPG7": {
+            "NAME": "RPG-7"
+        },
+        "BAYONET": {
+            "NAME": "Bayonet"
+        },
+        "DEAGLE": {
+            "NAME": "Desert Eagle"
+        },
+        "FAL": {
+            "NAME": "FAL"
+        },
+        "L96A1": {
+            "NAME": "L96A1"
+        },
+        "SPAS12": {
+            "NAME": "SPAS12"
+        },
+        "UMP45": {
+            "NAME": "UMP45"
+        },
+        "AMMO": {
+            "NAME": "Cephane",
+            "WEAPON": "{0} Cephane"
+        },
+        "USE": "'{0}' almak için basın"
+    },
+    "EQUIPMENT": {
+        "HANDS": {
+            "NAME": "Eller"
+        },
+        "C4": {
+            "NAME": "C4",
+            "UI": {
+                "PICKUP": "Al",
+                "DESTROY": "Yok Et",
+                "ARM": "Kuşan",
+                "DEFUSECHANCE": "Etkisiz hale getirme şansı %{0}"
+            },
+            "USE": {
+                "ARM": "C4'ü devreye almak için basılı tutun",
+                "DEFUSE": "C4'ü etkisiz hale getirmek için basın"
+            }
+        },
+        "DECOY": {
+            "NAME": "Tuzak"
+        },
+        "HEALTHSTATION": {
+            "NAME": "Sağlık İstasyonu",
+            "USE": "Sağlık İstasyonunu kullanmak için basılı tutun ({0})"
+        },
+        "MAGNETOSTICK": {
+            "NAME": "Manyeto Çubuk"
+        }
+    },
+    "PERK": {
+        "BODYARMOR": {
+            "NAME": "Vücut Zırhı"
+        },
+        "RADAR": {
+            "NAME": "Radar"
+        }
+    },
+    "ENTITY": {
+        "USE": "'{0}' ile etkileşimde bulunmak için basın",
+        "ENT_BUTTON": "Düğme"
+    },
+    "DOOR": {
+        "OPEN": "Kapıyı açmak için basın",
+        "CLOSE": "Kapıyı kapatmak için basın",
+        "LOCKED": "Kapı kilitli"
+    },
+    "GAMEEVENT": {
+        "PLAYER": {
+            "TAKEDAMAGE": {
+                "TITLE": "Bir oyuncu hasar aldı",
+                "DESCRIPTION": "'{0}', '{2}' adlı oyuncudan {1} hasar aldı"
+            },
+            "DIED": {
+                "TITLE": "Bir oyuncu öldü",
+                "NOREASON": "'{0}' öldü",
+                "BYSUICIDE": "'{0}' intihar etti",
+                "BYPLAYER": "'{0}', oyuncu '{1}' tarafından öldürüldü",
+                "BYOBJECT": "'{0}', '{1}' nesnesi tarafından öldürüldü"
+            },
+            "SPAWN": {
+                "TITLE": "Bir oyuncu yeniden canlandı",
+                "DESCRIPTION": "'{0}' yeniden canlandı"
+            },
+            "ROLE": {
+                "SELECT": {
+                    "TITLE": "Bir oyuncu yeni bir rol aldı",
+                    "DESCRIPTION": "'{0}', '{1}' rolünü aldı"
+                }
+            }
+        },
+        "GAME": {
+            "FINISH": {
+                "TITLE": "Raunt Sonu",
+                "DESCRIPTION": "'{0}' kazandı"
+            }
+        }
+    }
+}
